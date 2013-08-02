@@ -1,3 +1,16 @@
 /IVMP.opensdf
 /IVMP.sdf
 /IVMP.v11.suo
+*.log
+/Binary/Debug
+/Client/Core/Debug
+/Client/Launcher/Debug
+/Client/LaunchHelper/Debug
+/Network/Core/Debug
+/Server/Debug
+/Binary/Release
+/Client/Core/Release
+/Client/Launcher/Release
+/Client/LaunchHelper/Release
+/Network/Core/Release
+/Server/Release
