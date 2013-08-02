@@ -10,3 +10,7 @@ In IV:MP you are able to do almost anything that you can do in single player GTA
 ##Legal
 
 IV: Multiplayer (IV:MP) is in no way affiliated with Rockstar Games, Rockstar North or any of Rockstar's subcompanies.
+
+## Info
+
+Please check our coding style guide https://github.com/XForce/ivmultiplayer/wiki/Cody-Style-Guide
