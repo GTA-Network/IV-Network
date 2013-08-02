@@ -1,5 +1,4 @@
-IVMultiplayer
-an alternative multiplayer for Grand Theft Auto IV
+IVMultiplayer[IV:MP]
 =============
 
 ## Description
