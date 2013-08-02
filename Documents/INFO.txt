@@ -1,14 +1,13 @@
 /* =========================================================
 
-	  V:Multiplayer - http://www.vmultiplayer.com
+	  IV:Multiplayer - http://www.ivmultiplayer.com
 
 
 
--- File: Direct3Device9.h
+-- File: 
 
--- Project: Client
+-- Project: 
 
-
--- Description: Direct3Device9 interface hook header file
+-- Description: 
 
 =============================================================*/
