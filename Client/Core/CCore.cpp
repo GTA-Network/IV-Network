@@ -13,29 +13,29 @@
 extern	CCore			* pCore;
 bool					bDeviceLost = false;
 
-DWORD WINAPI WaitForGame( LPVOID lpParam )
+DWORD WINAPI WaitForGame(LPVOID lpParam)
 {
 	return 1;
 }
 
-CCore::CCore( void )
+CCore::CCore(void)
 {
 	// Mark as not initialised
 	m_bInitialised = false;
 
 	// Mark the game as not loaded
-	SetGameLoaded( false );
+	SetGameLoaded(false);
 }
 
-CCore::~CCore( void )
+CCore::~CCore()
 {
 	//CLogFile::Printf( "CCore::~CCore" );
 }
 
-bool CCore::Initialise( void )
+bool CCore::Initialise()
 {
 	// Are we already initialsed?
-	if( m_bInitialised )
+	if(m_bInitialised)
 		return false;
 
 	/*
@@ -49,43 +49,43 @@ bool CCore::Initialise( void )
 	CSettings::ParseCommandLine( GetCommandLine() );
 
 	// Set the info
-	SetNick( CVAR_GET_STRING("nick") );
-	SetHost( CVAR_GET_STRING("ip") );
-	SetPort( CVAR_GET_INTEGER("port") );
-	SetPass( CVAR_GET_STRING("pass") );
+	SetNick(CVAR_GET_STRING("nick"));
+	SetHost(CVAR_GET_STRING("ip"));
+	SetPort(CVAR_GET_INTEGER("port"));
+	SetPass(CVAR_GET_STRING("pass"));
 	*/
 
 	// Get the applicatin base address
-	m_uiBaseAddress = (unsigned int)GetModuleHandle( NULL );
+	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
 
 	// Subtract the image size from the base address
 	m_uiBaseAddress -= 0x400000;
 
-	//CLogFile::Printf( "Done!" );
+	//CLogFile::Printf("Done!");
 	return true;
 }
 
-void CCore::OnGameLoad( void )
+void CCore::OnGameLoad()
 {
 	// Is the game already loaded?
-	if( IsGameLoaded() )
+	if(IsGameLoaded())
 		return;
 
 	// Mark the game as loaded
-	SetGameLoaded( true );
+	SetGameLoaded(true);
 }
 
-void CCore::OnGamePreLoad( void )
+void CCore::OnGamePreLoad()
 {
 	// Is the game loaded?
-	if( IsGameLoaded() )
+	if(IsGameLoaded())
 		return;
 
 	// Create a thread to wait for the game
-	CreateThread( 0, 0, WaitForGame, 0, 0, 0 ); // Remove thread ? 
+	CreateThread(0, 0, WaitForGame, 0, 0, 0); // Remove thread ? 
 }
 
-void CCore::OnDeviceCreate( IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters )
+void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
 	// Initialise the graphics module
 
@@ -94,7 +94,7 @@ void CCore::OnDeviceCreate( IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * 
 	// Create the gui instance
 }
 
-void CCore::OnDeviceLost( IDirect3DDevice9 * pDevice )
+void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 {
 	// Let the graphics module know the device is lost
 
@@ -104,7 +104,7 @@ void CCore::OnDeviceLost( IDirect3DDevice9 * pDevice )
 	bDeviceLost = true;
 }
 
-void CCore::OnDeviceReset( IDirect3DDevice9 * pDevice )
+void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
 {
 	// Let the graphics module know the device is reset
 
@@ -112,48 +112,48 @@ void CCore::OnDeviceReset( IDirect3DDevice9 * pDevice )
 	bDeviceLost = false;
 }
 
-void CCore::OnDevicePreRender( void )
+void CCore::OnDevicePreRender()
 {
 	// Is the scripting manager active?
-	if( true )
+	if(true)
 	{
 		// Call the script event
 		
 	}
 }
 
-void CCore::OnDeviceRender( void )
+void CCore::OnDeviceRender()
 {
 	// Has the device been lost?
-	if( bDeviceLost )
+	if(bDeviceLost)
 		return;
 
 	// Render 
 }
 
-void CCore::OnGameProcess( void )
+void CCore::OnGameProcess()
 {
 	// Is the network module instance valid?
-	if( true )
+	if(true)
 	{
 		// Pulse the network
 	}
 
 	// Is the timer manager instance valid?
-	if( true )
+	if(true)
 	{
 		// Pulse the timer manager
 	}
 
 	// Is the file transfer instance valid?
-	if( true )
+	if(true)
 	{
 		// Pulse the file transfer
 	}
 
 
 	// Is the scripting manager active?
-	if( true )
+	if(true)
 	{
 		// Call the script event
 	}

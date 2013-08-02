@@ -14,9 +14,9 @@
 CCore		* pCore = NULL;
 HMODULE		g_hModule = NULL;
 
-BOOL WINAPI DllMain( HMODULE hModule, DWORD dwReason, void * pReserved )
+BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 {
-	switch( dwReason )
+	switch(dwReason)
 	{
 	case DLL_PROCESS_ATTACH:
 		{
@@ -24,31 +24,31 @@ BOOL WINAPI DllMain( HMODULE hModule, DWORD dwReason, void * pReserved )
 			g_hModule = hModule;
 
 			// Disable thread library calls
-			DisableThreadLibraryCalls( hModule );
+			DisableThreadLibraryCalls(hModule);
 
 			// Install the exception handler
-			//CExceptionHandler::Install( );
+			//CExceptionHandler::Install();
 
 			// Create the core instance
 			pCore = new CCore;
 
 			// Did the core fail to create or initialsie?
-			if( !pCore || !pCore->Initialise() )
+			if(!pCore || !pCore->Initialise())
 			{
-				//CLogFile::Printf( "Terminating..." );
+				//CLogFile::Printf("Terminating...");
 
 				// Terminate the process
-				TerminateProcess( GetCurrentProcess(), 0 );
+				TerminateProcess(GetCurrentProcess(), 0);
 			}
 			break;
 		}
 
 	case DLL_PROCESS_DETACH:
 		{
-			//CLogFile::Print( "Terminating process" );
+			//CLogFile::Print("Terminating process");
 
 			// Terminate the process
-			TerminateProcess( GetCurrentProcess(), 0 );
+			TerminateProcess(GetCurrentProcess(), 0);
 			break;
 		}
 	}

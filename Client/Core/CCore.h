@@ -5,10 +5,11 @@
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==============================================================================
+//==========================================================================================
 
 #ifndef CCore_h
 #define CCore_h
+
 #include "CGame.h"
 
 typedef int IDirect3DDevice9;
@@ -25,28 +26,28 @@ private:
 	CGame							* m_pGame;
 public:
 
-									CCore( void );
-									~CCore( void );
+									CCore();
+									~CCore();
 
-	bool							Initialise( void );
+	bool							Initialise();
 
-	void							OnGameLoad( void );
-	void							OnGamePreLoad( void );
+	void							OnGameLoad();
+	void							OnGamePreLoad();
 
-	void							OnGameProcess( void );
+	void							OnGameProcess();
 
-	void							SetGameLoaded( bool bLoaded ) { m_bGameLoaded = bLoaded; }
-	bool							IsGameLoaded( void ) { return m_bGameLoaded; }
+	void							SetGameLoaded(bool bLoaded) { m_bGameLoaded = bLoaded; }
+	bool							IsGameLoaded() { return m_bGameLoaded; }
 
-	void							OnDeviceCreate( IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters );
-	void							OnDeviceLost( IDirect3DDevice9 * pDevice );
-	void							OnDeviceReset( IDirect3DDevice9 * pDevice );
-	void							OnDevicePreRender( void );
-	void							OnDeviceRender( void );
+	void							OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
+	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
+	void							OnDeviceReset(IDirect3DDevice9 * pDevice);
+	void							OnDevicePreRender();
+	void							OnDeviceRender();
 
-	unsigned int					GetBaseAddress( void ) { return m_uiBaseAddress; }
+	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
 
-	CGame							* GetGame( void ) { return m_pGame; }
+	CGame							* GetGame() { return m_pGame; }
 };
 
 #endif // CCore_h

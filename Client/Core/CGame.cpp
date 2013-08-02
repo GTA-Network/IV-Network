@@ -8,18 +8,17 @@
 //==============================================================================
 
 #include	"CGame.h"
-#include	<Windows.h>
 #include	"CCore.h"
+#include	<Windows.h>
 
 extern	CCore				* pCore;
 
-DWORD WINAPI WaitForWrapperList( LPVOID lpParam )
+DWORD WINAPI WaitForWrapperList(LPVOID lpParam)
 {
-
 	return 1;
 }
 
-void CGame::Setup( )
+void CGame::Setup()
 {
 	// Create a thread to wait for the entity wrappers
 	CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForWrapperList, 0, 0, 0 ); // Remove Thread?

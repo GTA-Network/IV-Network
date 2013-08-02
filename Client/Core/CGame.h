@@ -14,8 +14,8 @@ class CGame {
 
 public:
 
-	CGame			( void ) { };
-	~CGame			( void ) { };
+					CGame() { };
+					~CGame() { };
 
 	void			Setup( );
 };
