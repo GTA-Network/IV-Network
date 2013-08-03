@@ -25,9 +25,43 @@
 typedef CString string;							// CString class defined is in /Shared/CString.h
 typedef unsigned short EntityId;
 
+// If compiling in debug mode force mod debug mode
+#ifdef _DEBUG
+#undef IVMP_DEBUG
+#define IVMP_DEBUG 1
+#endif
+
+// Forced debug
+#ifdef FORCE_DEBUG
+#ifndef IVMP_DEBUG
+#define IVMP_DEBUG 1
+#endif
+#endif
+
+// Forced release
+#ifdef FORCE_RELEASE
+#ifdef IVMP_DEBUG
+#undef IVMP_DEBUG
+#endif
+#endif
+
+// Version defines
+#ifdef IVMP_DEBUG
+#define DEBUG_IDENTIFIER " - Debug"
+#else
+#define DEBUG_IDENTIFIER
+#endif
+
 // define
 #define MOD_NAME "IV:Multiplayer"
 #define INVALID_ENTITY_ID ((EntityId)0xFFFF)
+
+// Mod version string
+#define MOD_VERSION_STRING "1.0.0 DEV"
+
+// Version identifiers
+#define VERSION_IDENTIFIER MOD_NAME " " MOD_VERSION_STRING DEBUG_IDENTIFIER " [" __DATE__ ", " __TIME__ "]"
+#define VERSION_IDENTIFIER_2 MOD_NAME " " MOD_VERSION_STRING DEBUG_IDENTIFIER
 
 // Operating system string
 #ifdef _WIN32
@@ -66,6 +100,9 @@ typedef unsigned short EntityId;
 #else
 #define EXPORT extern "C"
 #endif
+
+// Include all defines for game limits
+#include "GameLimits.h"
 
 // Warning disable
 #pragma warning(disable:4996)// Disables _s warning

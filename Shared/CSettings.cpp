@@ -18,8 +18,8 @@ TiXmlDocument                     CSettings::m_XMLDocument;
 
 void CSettings::LoadDefaults()
 {
-#ifdef _SERVER
 	AddString("logfile", "ivmp-svr.log");
+	AddInteger("queryport", 10000, 1024, 65534);
 	AddInteger("port", 9999, 1024, 65535);
 	AddInteger("httpport", 9998, 80, 65535);
 	AddString("httpserver", "");
@@ -48,9 +48,7 @@ void CSettings::LoadDefaults()
 	AddList("clientresource");
 	AddList("module");
 	AddList("config");
-#else
 	AddString("ip", "127.0.0.1");
-	AddInteger("port", 9999, 1024, 65535);
 	AddString("nick", "player");
 	AddString("pass", "");
 	AddBool("windowed", false);
@@ -61,7 +59,6 @@ void CSettings::LoadDefaults()
 	AddInteger("chatbgr", 0, 0, 255);
 	AddInteger("chatbgg", 0, 0, 255);
 	AddInteger("chatbgb", 0, 0, 255);
-#endif
 }
 
 SettingsValue * CSettings::GetSetting(CString strSetting)

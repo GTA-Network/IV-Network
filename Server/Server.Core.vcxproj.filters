@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Shared\Threading">
       <UniqueIdentifier>{8dbf3979-002f-425e-a759-005ff26867c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{e5eb6bcc-58d5-462b-afe5-450e5ea84136}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -44,6 +47,24 @@
     </ClCompile>
     <ClCompile Include="..\Shared\Threading\CThread.cpp">
       <Filter>Source Files\Shared\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\CSettings.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\ticpp.cpp">
+      <Filter>Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinystr.cpp">
+      <Filter>Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxml.cpp">
+      <Filter>Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlerror.cpp">
+      <Filter>Libraries</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp">
+      <Filter>Libraries</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

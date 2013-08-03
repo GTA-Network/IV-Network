@@ -8,6 +8,7 @@
 //==============================================================================
 
 #include "CInput.h"
+#include <CLogFile.h>
 
 extern bool g_bClose;
 
@@ -16,8 +17,45 @@ void CInput::InputThread(CThread* pThread)
 	CString strInput = GetInput();
 	while(true)
 	{
-		if(strInput == "quit")
-			g_bClose = true;
+		ProcessInput(strInput);
+
+		strInput = GetInput();
+	}
+}
+
+
+void CInput::ProcessInput(CString strInput)
+{
+	// Get the command and parameters
+	size_t sSplit = strInput.Find(' ', 0);
+	CString strCommand = strInput.Substring(0, sSplit++);
+	CString strParameters = strInput.Substring(sSplit, (strInput.GetLength() - sSplit));
+
+	if(strCommand.IsEmpty())
+		return;
+	else if(strCommand == "quit" || strCommand == "Quit" || strCommand == "exit") {
+		CLogFile::Print("[Server] Server is going to shutdown NOW ....");
+		g_bClose = true;
+		return;
+
+	} else if(strCommand == "help" || strCommand == "?" || strCommand == "--usage") {
+		printf("========== Available console commands: ==========\n");
+		printf("say <text>\n");
+		printf("uptime\n");
+		printf("scripts\n");
+		printf("players\n");
+		printf("loadscript <name>\n");
+		printf("loadclientscript <name>\n");
+		printf("loadresource <name>\n");
+		printf("reloadscript <name>\n");
+		printf("reloadclientscript <name>\n");
+		printf("reloadresource <name>\n");
+		printf("unloadscript <name>\n");
+		printf("unloadclientscript <name>\n");
+		printf("unloadresource <name>\n");
+		printf("exit\n");
+		return;
+
 	}
 }
 

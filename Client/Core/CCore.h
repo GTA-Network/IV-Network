@@ -27,6 +27,7 @@
 #include <Hooks\CDirect3D.h>
 #include <Hooks\CDirectInputProxy.h>
 #include <Hooks\CXLive.h>
+#include <IV\CIVScriptHook.h>
 
 class CCore {
 

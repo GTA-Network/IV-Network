@@ -21,6 +21,7 @@ public:
 	~CInput();
 
 	static CString	GetInput();
+	static void		ProcessInput(CString strInput);
 	static void		InputThread(CThread* pThread);
 };
 
