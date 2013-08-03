@@ -12,6 +12,11 @@
 
 // Common definitions for both client and server, windows and linux (structs, etc).
 
+#ifdef _WIN32
+#include <WinSock2.h>
+#include <Windows.h>
+#endif
+
 // include
 #include "CString.h"
 

@@ -12,7 +12,7 @@
 
 #ifdef _WIN32
 #include <WinSock2.h>
-#include <windows.h>
+#include <Windows.h>
 #else
 #include <sys/time.h>
 typedef unsigned long DWORD;

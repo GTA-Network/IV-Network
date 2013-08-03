@@ -10,9 +10,8 @@
 #ifndef CMutex_h
 #define CMutex_h
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
+#include <Common.h>
+
 #include <CString.h>
 
 #define USE_CRITICAL_SECTION

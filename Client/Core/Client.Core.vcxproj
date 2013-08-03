@@ -78,6 +78,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Shared\CLogFile.cpp" />
+    <ClCompile Include="..\..\Shared\CString.cpp" />
+    <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
+    <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
+    <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\COffsets.cpp" />

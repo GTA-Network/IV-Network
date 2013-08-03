@@ -10,8 +10,11 @@
 #ifndef CCore_h
 #define CCore_h
 
+#include <Common.h>
+
 #include "Game/CGame.h"
 #include "Game/COffsets.h"
+#include "CLogFile.h"
 
 typedef int IDirect3DDevice9;
 typedef int D3DPRESENT_PARAMETERS;

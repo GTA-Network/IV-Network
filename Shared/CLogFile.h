@@ -32,7 +32,7 @@ public:
 	static LogFileCallback_t GetCallback() { m_mutex.Lock(); LogFileCallback_t pfnLogFileCallback = m_pfnCallback; m_mutex.Unlock(); return pfnLogFileCallback; }
 	static void				 SetUseTimeStamp(bool bTimeStamp) { m_mutex.Lock(); m_bUseTimeStamp = bTimeStamp; m_mutex.Unlock(); }
 	static bool              GetUseTimeStamp() { m_mutex.Lock(); bool bTimeStamp = m_bUseTimeStamp; m_mutex.Unlock(); return bTimeStamp; }
-	static void              Open(String strLogFile, bool bAppend = false);
+	static void              Open(CString strLogFile, bool bAppend = false);
 	static void              Print(const char * szString);
 	static void              Printf(const char * szFormat, ...);
 	static void              PrintDebugf(const char * szFormat, ...);

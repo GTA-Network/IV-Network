@@ -20,7 +20,7 @@ LogFileCallback_t CLogFile::m_pfnCallback = NULL;
 bool              CLogFile::m_bUseTimeStamp = true;
 CMutex            CLogFile::m_mutex;
 
-void CLogFile::Open(String strLogFile, bool bAppend)
+void CLogFile::Open(CString strLogFile, bool bAppend)
 {
 	// Lock the mutex
 	m_mutex.TryLock(1);

@@ -10,6 +10,7 @@
 #define CThread_h
 
 #ifdef _WIN32
+#include <WinSock2.h>
 #include <windows.h>
 #endif
 #include "CMutex.h"
