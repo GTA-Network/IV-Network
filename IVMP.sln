@@ -19,9 +19,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{88789B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22AE1-C342-472E-AD5A-51388EC1DD0D}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\CLogFile.cpp = Shared\CLogFile.cpp
+		Shared\CLogFile.h = Shared\CLogFile.h
 		Shared\Common.h = Shared\Common.h
 		Shared\CString.cpp = Shared\CString.cpp
 		Shared\CString.h = Shared\CString.h
+		Shared\SharedUtility.cpp = Shared\SharedUtility.cpp
+		Shared\SharedUtility.h = Shared\SharedUtility.h
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network.Core", "Network\Core\Network.Core.vcxproj", "{766B64D1-3EE0-42C3-A69A-D1293FE90524}"
@@ -41,6 +45,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{B416D3CF-6
 		Shared\Math\CIVVector.h = Shared\Math\CIVVector.h
 		Shared\Math\CMaths.h = Shared\Math\CMaths.h
 		Shared\Math\CVector3.h = Shared\Math\CVector3.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threading", "Threading", "{58C4FE7A-B82C-4A71-83A2-0C5D6F04B1FE}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Threading\CMutex.cpp = Shared\Threading\CMutex.cpp
+		Shared\Threading\CMutex.h = Shared\Threading\CMutex.h
+		Shared\Threading\CThread.cpp = Shared\Threading\CThread.cpp
+		Shared\Threading\CThread.h = Shared\Threading\CThread.h
 	EndProjectSection
 EndProject
 Global
@@ -80,5 +92,6 @@ Global
 		{766B64D1-3EE0-42C3-A69A-D1293FE90524} = {FF6C4EC1-6142-4E00-BCB6-28EAAF9A1DE8}
 		{5AD2BD08-FCBD-474F-AECD-F9ACDA0A2031} = {88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}
 		{B416D3CF-6183-425A-8F23-4C3079B243EF} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
+		{58C4FE7A-B82C-4A71-83A2-0C5D6F04B1FE} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 	EndGlobalSection
 EndGlobal
