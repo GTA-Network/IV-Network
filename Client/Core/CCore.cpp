@@ -78,6 +78,15 @@ bool CCore::Initialise()
 	// Patch game addresses
 	CPatches::Initialize();
 
+	// Install the XLive hook
+	CXLiveHook::Install();
+
+	// Install the Direct3D hook
+	CDirect3DHook::Install();
+
+	// Install the DirectInput hook
+	CDirectInputHook::Install();
+
 	CLogFile::Printf("Done!");
 	return true;
 }

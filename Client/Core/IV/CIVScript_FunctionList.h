@@ -1,13 +1,14 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
-// File: NativesList.h
+// File: CIVScript_FunctionList.cpp
 // Project: Client.Core
-// Author(s): aru
+// Author: FRi<FRi.developing@gmail.com>
 // License: Contains zlib licensed code from ScriptHook by aru
 //
 //==============================================================================
 
-#pragma once
+#ifndef CIVScript_FunctionList_h
+#define CIVScript_FunctionList_h
 
 namespace CIVScript
 {
@@ -2857,3 +2858,5 @@ namespace CIVScript
 		NATIVE_TASK_HOLD_OBJECT = 0x1FBD3ACA
 	};
 };
+
+#endif // CIVScript_FunctionList_h

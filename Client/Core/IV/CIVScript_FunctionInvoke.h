@@ -1,20 +1,18 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
-// File: NativeInvoke.h
+// File: CIVScript_FunctionInvoke.cpp
 // Project: Client.Core
-// Author(s): aru
+// Author: FRi<FRi.developing@gmail.com>
 // License: Contains zlib licensed code from ScriptHook by aru
 //
 //==============================================================================
 
-// TODO: NativeInvoke.cpp
-
-#pragma once
+#ifndef CIVScript_FunctionInvoke_h
+#define CIVScript_FunctionInvoke_h
 
 #include "CIVScript_FunctionContext.h"
-#include <Game\CGame.h>
+#include <CCore.h>
 #include <CLogFile.h>
-#include <Game\COffsets.h>
 
 // Log native calls(detect crash scripting functions)
 //#define NATIVE_LOG 1
@@ -435,3 +433,5 @@ public:
 		return cxt.GetResult<R>();
 	}
 };
+
+#endif // CIVScript_FunctionInvoke_h

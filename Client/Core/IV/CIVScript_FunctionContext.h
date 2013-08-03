@@ -1,14 +1,16 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
-// File: NativeContext.h
+// File: CIVScript_FunctionContext.cpp
 // Project: Client.Core
-// Author(s): aru
+// Author: FRi<FRi.developing@gmail.com>
 // License: Contains zlib licensed code from ScriptHook by aru
 //
 //==============================================================================
 
-#pragma once
+#ifndef CIVScript_FunctionContext_h
+#define CIVScript_FunctionContext_h
 
+#include <Math\CMaths.h>
 #include "IVCommon.h"
 
 class IVNativeCallContext
@@ -98,3 +100,5 @@ public:
 		return *(T *)m_TempStack;
 	}
 };
+
+#endif // CIVScript_FunctionContext_h

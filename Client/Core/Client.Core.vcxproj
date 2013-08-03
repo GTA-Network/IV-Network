@@ -55,11 +55,12 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared; ../../../Shared; ../../Libraries; ../Core; ../;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../Core;../;../../Libraries/DXSDK/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../Libraries/DXSDK/Lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,6 +100,14 @@
     <ClCompile Include="Game\Entity\CEntityManager.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Graphics\CDirect3D9Proxy.cpp" />
+    <ClCompile Include="Graphics\CDirect3DDevice9Proxy.cpp" />
+    <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />
+    <ClCompile Include="Graphics\CDirectInputDevice8Proxy.cpp" />
+    <ClCompile Include="Graphics\Input.cpp" />
+    <ClCompile Include="Hooks\CDirect3D.cpp" />
+    <ClCompile Include="Hooks\CDirectInputProxy.cpp" />
+    <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
@@ -129,6 +138,14 @@
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
+    <ClInclude Include="Graphics\CDirect3D9Proxy.h" />
+    <ClInclude Include="Graphics\CDirect3DDevice9Proxy.h" />
+    <ClInclude Include="Graphics\CDirectInput8Proxy.h" />
+    <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
+    <ClInclude Include="Graphics\Input.h" />
+    <ClInclude Include="Hooks\CDirect3D.h" />
+    <ClInclude Include="Hooks\CDirectInputProxy.h" />
+    <ClInclude Include="Hooks\CXLive.h" />
     <ClInclude Include="IV\CIVScript.h" />
     <ClInclude Include="IV\CIVScriptEnums.h" />
     <ClInclude Include="IV\CIVScriptHook.h" />

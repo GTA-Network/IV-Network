@@ -7,7 +7,6 @@
 //
 //==========================================================================================
 
-
 #ifndef CIVScriptingHook_h
 #define CIVScriptingHook_h
 
@@ -93,9 +92,6 @@ protected:
 	unsigned int _fA8;							// A8-AC field_A8    dd ?
 	unsigned int m_nFlags;						// AC-B0 m_nFlags    dd ?
 };
-
-
-#include <Common.h>
 
 class CIVScriptingHook {
 private:

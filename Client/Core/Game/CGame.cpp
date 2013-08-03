@@ -32,6 +32,8 @@ void CGame::Setup()
 
 void CGame::Initialise()
 {
+	g_pCore->SetClientState(GAME_STATE_NONE);
+
 	//if(!m_pLocalPlayer)
 		//m_pLocalPlayer = new CLocalPlayer();
 
@@ -53,4 +55,15 @@ void CGame::UnprotectMemory()
 		if(!strcmp(pszSectionName, ".text") || !strcmp(pszSectionName, ".rdata"))
 			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
 	}
+}
+
+void CGame::RenderRAGEScripts()
+{
+	// Do we need to reset the game?
+
+
+	// If our network manager exists process it
+
+	// If we have text to draw draw it
+	
 }

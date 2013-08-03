@@ -7,7 +7,8 @@
 //
 //==============================================================================
 
-#pragma once
+#ifndef CIVScript_Enums_h
+#define CIVScript_Enums_h
 
 namespace CIVScript
 {
@@ -3005,3 +3006,5 @@ namespace CIVScript
 	typedef unsigned int eColour; // Should use ColourIndex instead!
 
 }
+
+#endif // CIVScript_Enums_h

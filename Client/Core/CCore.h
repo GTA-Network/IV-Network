@@ -16,14 +16,17 @@
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include  <Patcher\CPatcher.h>
+
+#include <d3d9.h>
 
 #include "CLogFile.h"
 #include "CSettings.h"
 #include "SharedUtility.h"
 #include <Game\eGame.h>
-
-typedef int IDirect3DDevice9;
-typedef int D3DPRESENT_PARAMETERS;
+#include <Hooks\CDirect3D.h>
+#include <Hooks\CDirectInputProxy.h>
+#include <Hooks\CXLive.h>
 
 class CCore {
 
