@@ -15,7 +15,7 @@ extern bool g_bClose;
 void CInput::InputThread(CThread* pThread)
 {
 	CString strInput = GetInput();
-	while(true)
+	while(pThread->IsRunning())
 	{
 		ProcessInput(strInput);
 
@@ -66,7 +66,6 @@ CString CInput::GetInput()
 	CString strInputString;
 
 	// Wait for input from the console
-	// TODO: Make non-blocking
 	fgets(szInputBuffer, sizeof(szInputBuffer), stdin);
 
 	// Do we have anything in the input?

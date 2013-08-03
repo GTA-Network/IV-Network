@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared;../Network/Core</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -81,7 +81,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\tinyxml\ticpp.cpp" />
+    <ClCompile Include="..\Libraries\tinyxml\tinystr.cpp" />
+    <ClCompile Include="..\Libraries\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\Shared\CLogFile.cpp" />
+    <ClCompile Include="..\Shared\CSettings.cpp" />
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />

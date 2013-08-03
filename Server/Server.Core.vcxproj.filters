@@ -22,6 +22,9 @@
     <Filter Include="Libraries">
       <UniqueIdentifier>{e5eb6bcc-58d5-462b-afe5-450e5ea84136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries\tinyxml">
+      <UniqueIdentifier>{b78a73f4-f916-4edd-a5d8-301fb04d7744}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -52,19 +55,19 @@
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\ticpp.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\tinystr.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\tinyxml.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\tinyxmlerror.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp">
-      <Filter>Libraries</Filter>
+      <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,12 @@
     <Filter Include="Header Files\RakNet">
       <UniqueIdentifier>{80934438-9605-4761-8c3a-a5aa86d948b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{01a21d64-976b-4875-aa52-21b1c1857adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\Network">
+      <UniqueIdentifier>{354fe038-4d25-4697-8968-b85bf9083c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RakNet\_FindFirst.cpp">
@@ -353,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="CNetworkServer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Network\CBitStream.cpp">
+      <Filter>Shared\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

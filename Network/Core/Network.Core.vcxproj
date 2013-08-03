@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="CNetworkServer.cpp" />
     <ClCompile Include="RakNet\Base64Encoder.cpp" />
     <ClCompile Include="RakNet\BitStream.cpp" />

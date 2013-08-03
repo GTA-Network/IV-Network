@@ -29,7 +29,12 @@ int main(int argc, char ** argv)
 	{
 		string strErrorMsg("Failed to start server! %s", g_strStartError.Get());
 		CLogFile::Printf(strErrorMsg);
-		return 1;
+#ifdef _WIN32
+		ExitProcess(EXIT_FAILURE);
+#else
+		exit(EXIT_FAILURE);
+#endif
+		return EXIT_FAILURE;
 	}
 
 	// Start input
@@ -42,7 +47,7 @@ int main(int argc, char ** argv)
 	}
 
 	// Stop the input thread
-	inputThread.Stop();
+	inputThread.Stop(true, true);
 
 	// Shutdown
 	pServer->Shutdown();
@@ -51,5 +56,9 @@ int main(int argc, char ** argv)
 	SAFE_DELETE(pServer);
 
 	// Exit process
-	return EXIT_SUCCESS;
+#ifdef _WIN32
+	ExitProcess(EXIT_SUCCESS);
+#else
+	exit(EXIT_SUCCESS);
+#endif
 }

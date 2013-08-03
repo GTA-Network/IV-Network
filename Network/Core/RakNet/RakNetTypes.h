@@ -18,9 +18,6 @@
 #include "SocketIncludes.h"
 
 
-
-
-
 namespace RakNet {
 /// Forward declarations
 class RakPeerInterface;
