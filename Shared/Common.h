@@ -54,6 +54,7 @@ typedef unsigned short EntityId;
 
 // define
 #define MOD_NAME "IV:Multiplayer"
+#define INVALID_ENTITY_ID ((EntityId)0xFFFF)
 
 // Mod version string
 #define MOD_VERSION_STRING "1.0.0 DEV"
