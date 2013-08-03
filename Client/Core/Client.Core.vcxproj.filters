@@ -63,6 +63,21 @@
     <Filter Include="Source Files\Hooks">
       <UniqueIdentifier>{4d98599e-a030-4714-9650-a026b6476c88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\IV">
+      <UniqueIdentifier>{ed47c9ab-c746-4002-bb9e-6ab0c12aae6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\IV\Script">
+      <UniqueIdentifier>{5ea8cd6f-b8df-4dcc-b043-c24e7d76e210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game\IV">
+      <UniqueIdentifier>{0cff53a5-1477-412c-933c-d3eff5bd0a24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game\IV\Script">
+      <UniqueIdentifier>{be55135c-f35c-4165-8dc3-ec5697b99acb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Game">
+      <UniqueIdentifier>{56ae8c03-3b4a-4dde-bb18-7bebf63e0244}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -137,6 +152,9 @@
     <ClCompile Include="Network\CLocalPlayer.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="IV\CIVScriptHook.cpp">
+      <Filter>Source Files\Game\IV\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -210,6 +228,27 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h">
       <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScriptHook.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Game\eGame.h">
+      <Filter>Header Files\Shared\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScript.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScriptEnums.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScript_FunctionInvoke.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScript_FunctionContext.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVScript_FunctionList.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

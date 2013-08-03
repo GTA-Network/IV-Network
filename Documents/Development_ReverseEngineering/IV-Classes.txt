@@ -1,0 +1,1962 @@
+
+ART::Rockstar::CBUTaskBase
+  ART::Rockstar::NmRsCBUArmsWindmillAdaptive
+  ART::Rockstar::NmRsCBUBodyBalance
+  ART::Rockstar::NmRsCBUBodyFoetal
+  ART::Rockstar::NmRsCBUBodyWrithe
+  ART::Rockstar::NmRsCBUBraceForImpact
+  ART::Rockstar::NmRsCBUCatchFall
+  ART::Rockstar::NmRsCBUDynamicBalancer
+  ART::Rockstar::NmRsCBUFallOverWall
+  ART::Rockstar::NmRsCBUFlinch
+  ART::Rockstar::NmRsCBUGrab
+  ART::Rockstar::NmRsCBUHeadLook
+  ART::Rockstar::NmRsCBUHighFall
+  ART::Rockstar::NmRsCBUPedal
+  ART::Rockstar::NmRsCBUPointArm
+  ART::Rockstar::NmRsCBURollDownStairs
+  ART::Rockstar::NmRsCBURollUp
+  ART::Rockstar::NmRsCBUShot
+  ART::Rockstar::NmRsCBUSpineTwist
+
+ART::SegmentLoader
+  ART::AgentComponentsManager
+  ART::AssetManager
+
+rage::atAny::PlaceHolder
+  rage::atAny::Holder<float>
+  rage::atAny::Holder<int>
+  rage::atAny::Holder<rage::fragInst *>
+  rage::atAny::Holder<rage::Matrix34 const *>
+  rage::atAny::Holder<rage::Matrix34>
+  rage::atAny::Holder<rage::phImpact::Iterator>
+  rage::atAny::Holder<rage::phInst *>
+  rage::atAny::Holder<rage::Vector3>
+
+rage::audEffect
+  rage::audBiquadFilterEffect
+  rage::audCompressorEffect
+  rage::audConvolutionEffect
+  rage::audDelayEffect
+  rage::audNullEffect
+  rage::audReverbEffect
+  rage::audWaveshaperEffect
+
+rage::audEntity
+  audGtaAudioEntity
+    audAmbientAudioEntity
+    audBoatAudioEntity
+    audCollisionAudioEntity
+    audCutsceneAudioEntity
+    audDoorAudioEntity
+    audEmitterAudioEntity
+    audExplosionAudioEntity
+    audFireAudioEntity
+    audFrontendAudioEntity
+    audObjectAudioEntity
+    audPedAudioEntity
+    audPoliceScanner
+    audRadioAudioEntity
+    audScriptAudioEntity
+    audSmashableAudioEntity
+    audSpeechAudioEntity
+    audVehicleAudioEntity
+    audWeaponAudioEntity
+    audWeatherAudioEntity
+  audSpeechManager
+
+rage::audOcclusionGroupManager
+  audGtaOcclusionGroupManager
+
+rage::audSound
+  rage::audAssertSound
+  rage::audCollapsingStereoSound
+  rage::audCrossfadeSound
+  rage::audEnvelopeSound
+  rage::audEnvironmentSound
+  rage::audForLoopSound
+  rage::audIfSound
+  rage::audLoopingSound
+  rage::audMathOperationSound
+  rage::audMultitrackSound
+  rage::audOnStopSound
+  rage::audRandomizedSound
+  rage::audRetriggeredOverlappedSound
+  rage::audSequentialSound
+  rage::audSimpleSound
+  rage::audSpeechSound
+  rage::audStreamingSound
+  rage::audSwitchSound
+  rage::audTwinLoopSound
+  rage::audVariableBlockSound
+  rage::audVariableCurveSound
+  rage::audVariablePrintValueSound
+  rage::audVariableSetTimeSound
+  rage::audWrapperSound
+
+rage::audTracker
+  audPlaceableTracker
+
+rage::AutoIdDescriptor
+  rage::AutoIdDescriptor_T<rage::netEvent>
+    rage::netEvent::AutoIdDesc__
+    rage::netEventAckReceived::AutoIdDesc__
+    rage::netEventBandwidthExceeded::AutoIdDesc__
+    rage::netEventConnectionClosed::AutoIdDesc__
+    rage::netEventConnectionError::AutoIdDesc__
+    rage::netEventConnectionEstablished::AutoIdDesc__
+    rage::netEventConnectionRequested::AutoIdDesc__
+    rage::netEventFrameReceived::AutoIdDesc__
+    rage::netEventOutOfMemory::AutoIdDesc__
+  rage::AutoIdDescriptor_T<rage::netMessage>
+    CMsgCloneSync::AutoIdDesc__
+    CMsgGetReadyToStartPlaying::AutoIdDesc__
+    CMsgHostData::AutoIdDesc__
+    CMsgInformObjectIDs::AutoIdDesc__
+    CMsgPackedCloneSyncAcks::AutoIdDesc__
+    CMsgPackedEventReliablesMsgs::AutoIdDesc__
+    CMsgPackedEvents::AutoIdDesc__
+    CMsgPackedReliables::AutoIdDesc__
+    CMsgPeerData::AutoIdDesc__
+    CMsgReassignConfirm::AutoIdDesc__
+    CMsgReassignNegotiate::AutoIdDesc__
+    CMsgReassignResponse::AutoIdDesc__
+    CMsgStartedLocalPlayerPlaying::AutoIdDesc__
+    CMsgVoiceStatus::AutoIdDesc__
+    CNetworkArrayMgr::CMsgArrayElements::AutoIdDesc__
+    CNetworkArrayMgr::CMsgArrayElementsAck::AutoIdDesc__
+    MsgBlacklist::AutoIdDesc__
+    MsgDenyJoin::AutoIdDesc__
+    MsgGamerRank::AutoIdDesc__
+    MsgGamerRankBroadcast::AutoIdDesc__
+    MsgGamerRankRequest::AutoIdDesc__
+    MsgKickPlayer::AutoIdDesc__
+    MsgRejoin::AutoIdDesc__
+    MsgTvtReservationRequest::AutoIdDesc__
+    MsgTvtSummons::AutoIdDesc__
+    MsgViralKillMe::AutoIdDesc__
+    rage::netComplaintMsg::AutoIdDesc__
+    rage::netMessage::AutoIdDesc__
+    rage::netTimeSyncMsg::AutoIdDesc__
+    rage::rlMsgQosProbeRequest::AutoIdDesc__
+    rage::rlMsgQosProbeResponse::AutoIdDesc__    
+    rage::rlMsgSearchRequest::AutoIdDesc__
+    rage::rlMsgSearchResponse::AutoIdDesc__
+    rage::rlUploadMsgDeleteRecordReply::AutoIdDesc__
+    rage::rlUploadMsgDeleteRecordRequest::AutoIdDesc__
+    rage::rlUploadMsgDownloadFileReply::AutoIdDesc__
+    rage::rlUploadMsgDownloadFileRequest::AutoIdDesc__
+    rage::rlUploadMsgGetNumOwnedReply::AutoIdDesc__
+    rage::rlUploadMsgGetNumOwnedRequest::AutoIdDesc__
+    rage::rlUploadMsgGetTableSizeReply::AutoIdDesc__
+    rage::rlUploadMsgGetTableSizeRequest::AutoIdDesc__
+    rage::rlUploadMsgOverwriteFileReply::AutoIdDesc__
+    rage::rlUploadMsgOverwriteFileRequest::AutoIdDesc__
+    rage::rlUploadMsgOverwriteUserDataReply::AutoIdDesc__
+    rage::rlUploadMsgOverwriteUserDataRequest::AutoIdDesc__
+    rage::rlUploadMsgProgress::AutoIdDesc__
+    rage::rlUploadMsgRateRecordReply::AutoIdDesc__
+    rage::rlUploadMsgRateRecordRequest::AutoIdDesc__
+    rage::rlUploadMsgReadRandomRecordReply::AutoIdDesc__
+    rage::rlUploadMsgReadRandomRecordRequest::AutoIdDesc__
+    rage::rlUploadMsgReadRecordReply::AutoIdDesc__
+    rage::rlUploadMsgReadRecordRequest::AutoIdDesc__
+    rage::rlUploadMsgReadRecordsByGamerReply::AutoIdDesc__
+    rage::rlUploadMsgReadRecordsByGamerRequest::AutoIdDesc__
+    rage::rlUploadMsgReadRecordsByRankReply::AutoIdDesc__
+    rage::rlUploadMsgReadRecordsByRankRequest::AutoIdDesc__
+    rage::rlUploadMsgUploadFileReply::AutoIdDesc__
+    rage::rlUploadMsgUploadFileRequest::AutoIdDesc__
+    rage::snMsgAddGamerToSessionCmd::AutoIdDesc__
+    rage::snMsgBase::AutoIdDesc__
+    rage::snMsgChangeSessionAttributesCmd::AutoIdDesc__
+    rage::snMsgConfigResponse::AutoIdDesc__
+    rage::snMsgConfigRequest::AutoIdDesc__
+    rage::snMsgJoinResponse::AutoIdDesc__
+    rage::snMsgJoinRequest::AutoIdDesc__
+    rage::snMsgMigrateHostResponse::AutoIdDesc__
+    rage::snMsgMigrateHostRequest::AutoIdDesc__
+    rage::snMsgRegisterForMatchResponse::AutoIdDesc__
+    rage::snMsgRegisterForMatchRequest::AutoIdDesc__
+    rage::snMsgRemoveGamersFromSessionCmd::AutoIdDesc__
+    rage::snMsgSetInvitableCmd::AutoIdDesc__
+    rage::snMsgSetMaxSlotsCmd::AutoIdDesc__
+    rage::snMsgStartMatchCmd::AutoIdDesc__
+    rage::snMsgGamerMatchInfoResponse::AutoIdDesc__
+    rage::snMsgGamerMatchInfoRequest::AutoIdDesc__
+  rage::AutoIdDescriptor_T<rage::rlPresenceEvent>
+    rage::rlPresenceEvent::AutoIdDesc__
+    rage::rlPresenceEventFriendStatusChanged::AutoIdDesc__
+    rage::rlPresenceEventInviteAccepted::AutoIdDesc__
+    rage::rlPresenceEventInviteReceived::AutoIdDesc__
+    rage::rlPresenceEventJoinedViaPresence::AutoIdDesc__
+    rage::rlPresenceEventMsgReceived::AutoIdDesc__
+    rage::rlPresenceEventProfileChanged::AutoIdDesc__
+    rage::rlPresenceEventSigninStatusChanged::AutoIdDesc__
+  rage::AutoIdDescriptor_T<rage::snEvent>
+    rage::snEvent::AutoIdDesc__
+    rage::snEventAddedGamer::AutoIdDesc__
+    rage::snEventGetGamerData::AutoIdDesc__
+    rage::snEventJoinFailed::AutoIdDesc__
+    rage::snEventJoinRequest::AutoIdDesc__
+    rage::snEventRemovedGamer::AutoIdDesc__
+    rage::snEventSessionAttrsChanged::AutoIdDesc__
+    rage::snEventSessionDestroyed::AutoIdDesc__
+    rage::snEventSessionEnded::AutoIdDesc__
+    rage::snEventSessionHosted::AutoIdDesc__
+    rage::snEventSessionJoined::AutoIdDesc__
+    rage::snEventSessionMigrateEnd::AutoIdDesc__
+    rage::snEventSessionMigrateStart::AutoIdDesc__
+    rage::snEventSessionStarted::AutoIdDesc__
+
+rage::crAnimChannel
+  rage::crAnimChannelCurveFloat
+  rage::crAnimChannelDeltaFloat
+  rage::crAnimChannelQuantizeFloat
+  rage::crAnimChannelRawBool
+  rage::crAnimChannelRawFloat
+  rage::crAnimChannelRawInt
+  rage::crAnimChannelRawQuaternion
+  rage::crAnimChannelRawVector3
+  rage::crAnimChannelRleInt
+  rage::crAnimChannelStaticFloat
+  rage::crAnimChannelStaticInt
+  rage::crAnimChannelStaticQuaternion
+  rage::crAnimChannelStaticVector3
+
+rage::crCreatureComponent
+  rage::crCreatureComponentBlendShapes
+  rage::crCreatureComponentExtraDofs
+  rage::crCreatureComponentMover
+  rage::crCreatureComponentSkeleton
+
+rage::crFrame
+  rage::crFrameBuffer
+
+rage::crFrameDof
+  rage::crFrameDofFloat
+  rage::crFrameDofInt
+  rage::crFrameDofQuaternion
+  rage::crFrameDofVector3
+
+rage::crmfAngle
+  rage::crmfAngleRadians
+
+rage::crmtFrameBuffer
+  rage::crmtFrameBufferDynamic
+  rage::crmtFrameBufferFixed<75>
+
+rage::crmtIterator
+  rage::crmtComposer
+    rage::crmtComposerOptimized
+  rage::crmtUpdater
+
+rage::crmtManager
+  rage::crmtManagerMixer
+    crmtManagerChannel
+      crmtManagerPriority
+
+rage::crmtNode
+  rage::crmtNodeAnimation
+  rage::crmtNodeFrame
+  rage::crmtNodeParent    
+    rage::crmtNodeCapture
+    rage::crmtNodeExpression
+    rage::crmtNodeExtrapolate
+    rage::crmtNodeFilter
+    rage::crmtNodeMirror
+    rage::crmtNodeN
+      rage::crmtNodeAddN
+      rage::crmtNodeBlendN
+    rage::crmtNodePair
+      rage::crmtNodeAddSubtract
+      rage::crmtNodeBlend
+  rage::crmtNodeProxy
+
+rage::crmtRequest
+  rage::crmtRequestAnimation
+    rage::crmtRequestFrame
+  rage::crmtRequestSource<1>
+    rage::crmtRequestExpression
+    rage::crmtRequestExtrapolate
+    rage::crmtRequestFilter
+    rage::crmtRequestInsert
+  rage::crmtRequestSource<2>
+    rage::crmtRequestAddSubtract
+    rage::crmtRequestBlend
+  rage::crmtRequestSource<32>
+    rage::crmtRequestN
+      rage::crmtRequestAddN
+      rage::crmtRequestBlendN
+
+rage::datBase
+  rage::atDNode<CNetworkArrayHandler *,rage::datBase>
+    CAtdNodeNetworkArrayHandler
+  rage::atDNode<CNetworkEvent *,rage::datBase>
+    CNetworkEventMgr::CAtdNodeNetworkEvent
+  rage::atDNode<CNetworkObject *,rage::datBase>
+    CNetworkObjectMgr::CAtdNodeNetworkObject
+  rage::atDNode<CNetworkObjectMgr::SyncMessageObjectInfo,rage::datBase>
+  rage::atDNode<CNetworkObjectReassignMgr::CReassignObjectInfo *,rage::datBase>
+    CNetworkObjectReassignMgr::CAtdNodeReassignInfo
+  rage::atReferenceCounter
+    rage::crExpressionProcessor
+      crExpressionProcessorPooledObject
+    rage::crFrameFilter
+      crFrameFilterBoneMask      
+      rage::crExpressionProcessor::ExpressionFilter
+      rage::crFrameFilters<8,0>
+        rage::crmtComposerOptimized::CombiningFilter
+      rage::crFrameFilterMover
+    rage::crFrameFilterN
+      crmtManagerPriority::crFrameFilterWeightCorrection
+    rage::crmtMotionTree
+    rage::crmtObserver
+      rage::crmtObserverFunctor
+        crmtObserverFunctorNoRefCount
+      crmtObserverPooledObject
+    rage::ptxEffectRule
+      rage::ptxEffectRuleStd
+    rage::ptxEmitRule
+      rage::ptxEmitRuleStd
+    rage::ptxGpuShader
+      rage::ptxGpuRenderShader
+      rage::ptxGpuUpdateShader
+    rage::ptxRenderSetup
+      CSetLightingConstants
+      CSetLightingConstantsRain
+    rage::ptxRule
+      rage::ptxModel
+      rage::ptxSprite
+  rage::CPostFX
+  rage::CurveNurbsBlendFunctionConst
+  rage::CurveNurbsKnot
+  rage::crAnimation
+  rage::crJointData
+  rage::crWeightSet
+  rage::evtInstance
+  rage::evtSet
+  rage::fragCachePoolManager
+  rage::fragManagerBase
+    rage::fragManagerTemplate<rage::fragTypeStub>
+      rage::fragManager
+  rage::fragTuneStruct
+    atSingleton<rage::fragTuneStruct>
+  rage::fragTypeChild  
+  rage::grbTarget
+  rage::grbTargetManager
+  rage::grcIndexBuffer
+    rage::grcIndexBufferD3D
+  rage::grcSetup
+    rage::grmSetup
+  rage::grcVertexBuffer
+    rage::grcVertexBufferD3D
+  rage::grmGeometry
+    rage::grmGeometryQB
+  rage::grmModel
+  rage::grmShaderPreset
+  rage::ParseClass<rage::ptxgpuRenderSettings>
+    rage::ptxgpuRenderSettings
+  rage::ParseClass<rage::ptxSimpleEmitter>
+    rage::ptxSimpleEmitter
+  rage::pgBase
+    rage::grcTexture
+      rage::grcRenderTarget
+        rage::grcRenderTargetPC
+      rage::grcTextureReferenceBase
+        rage::grcTextureReference
+      rage::grcTextureString
+      rage::grcTexturePC
+    rage::grmShader
+      rage::grmShaderFx
+    rage::grmShaderGroup
+    rage::pgBaseWrapper<rage::datOwner<rage::phBound>>
+    rage::fragType
+      gtaFragType
+    rage::pgDictionary<rage::crAnimation>
+    rage::pgDictionary<rage::grcTexture>
+    rage::pgDictionary<gtaDrawable>
+    rage::pgDictionary<rage::phBound>      
+    rage::pgDictionary<rage::ptxEmitRule>
+    rage::pgDictionary<rage::ptxEffectRule>
+    rage::pgDictionary<rage::ptxRule>
+    rage::pgDictionary<rage::rmcDrawable>
+    rage::rmcDrawableBase
+      rage::rmcDrawable
+        gtaDrawable
+        rage::fragDrawable
+  rage::phInst
+    ART::Rockstar::phInstNM
+    rage::phInstBreakable
+      rage::fragInst -- multiple inheritance: rage::pgStreamableRef<rage::fragType>
+        fragInstGta
+        rage::fragInstNM
+          fragInstNMGta
+    phInstGta
+  rage::phLevelBase
+    rage::phLevelNew
+  rage::phMaterial
+    phMaterialGta
+  rage::phMaterialMgr
+    phMaterialMgrGta
+  rage::ProceduralTexture
+    rage::ProceduralTextureSkyhat
+    rage::ProceduralTextureVerletWater
+  rage::ProceduralReflection  
+  rage::ptxDomain
+    rage::ptxDomainBox
+    rage::ptxDomainCylinder
+    rage::ptxDomainSphere
+    rage::ptxDomainVortex
+  rage::ptxNetObject
+    rage::ptxKeyframe4
+    rage::rmPtfxKeyframe
+  rage::ptxRulePropList
+    rage::ptxModelRulePropList
+    rage::ptxSpriteRulePropList
+  rage::rmcTypeFileParser
+  rage::rmPtfxManager
+    atSingleton<rage::rmPtfxManager>
+  rage::rmPtfxShaderVar
+    rage::rmPtfxShaderVar_Bool
+    rage::rmPtfxShaderVar_Float
+    rage::rmPtfxShaderVar_Float2
+    rage::rmPtfxShaderVar_Float3
+    rage::rmPtfxShaderVar_Float4
+    rage::rmPtfxShaderVar_Int
+    rage::rmPtfxShaderVar_Keyframe
+    rage::rmPtfxShaderVar_Texture
+  rage::SkyDome
+  rage::ShaderFragment
+    rage::AtmosphericScattering
+    rage::DayLighting
+    rage::EnviromentDomeLighting
+    rage::FogControl
+    rage::IntervalShadows
+    rage::SkyhatMiniNoise
+    rage::SkyhatPerlinNoise
+    rage::SkyLightController
+    rage::VerletWaterPerturbation
+    rage::VerletWaterSimulation
+    rage::VerletWaterSurface
+    rage::WaterFogControl
+
+rage::datBitBuffer
+  CMessageBuffer
+    CDeltaBuffer
+
+rage::fiBaseTokenizer
+  rage::fiAsciiTokenizer
+    rage::fiTokenizer
+  rage::fiBinTokenizer
+
+rage::fiDevice
+  rage::fiCachedDevice
+  rage::fiDeviceLocal
+    fiDeviceXContent
+  rage::fiDeviceMemory
+  rage::fiDeviceRelative
+  rage::fiDeviceTcpIp
+  rage::fiPackfile
+  fiStreamingDevice
+
+rage::netEvent
+  rage::netEventAckReceived
+  rage::netEventBandwidthExceeded
+  rage::netEventConnectionClosed
+  rage::netEventConnectionError
+  rage::netEventConnectionEstablished
+  rage::netEventFrameReceived
+    rage::netConnection::InFrame
+  rage::netEventConnectionRequested
+  rage::netEventFrameReceived
+  rage::netEventOutOfMemory
+
+rage::parMember
+  rage::parMemberArray
+  rage::parMemberEnum
+  rage::parMemberMatrix
+  rage::parMemberSimple
+  rage::parMemberString
+  rage::parMemberStruct
+  rage::parMemberVector
+
+rage::parStream
+  rage::parStreamIn
+    rage::parStreamInRbf
+    rage::parStreamInXml
+      CHtmlParser
+  rage::parStreamOut  
+    rage::parStreamOutRbf
+    rage::parStreamOutXml
+
+rage::phArchetypeBase
+  rage::phArchetype
+    rage::phArchetypePhys
+      rage::phArchetypeDamp
+        phArchetypeGta
+
+rage::phBroadPhase
+  rage::btAxisSweep3
+  rage::btImmediateModeBroadphase
+    rage::btAxisSweep1
+    rage::btNxN
+    rage::btSpatialHash
+  rage::phLevelBroadPhase
+
+rage::phCollider
+  rage::phArticulatedCollider
+  rage::phConstrainedCollider
+
+rage::phInstBehavior
+  phInstBehaviorExplosionGta
+
+rage::phJoint
+  rage::phJoint1Dof
+  rage::phJoint3Dof
+  rage::phPrismaticJoint
+
+rage::pgStreamableRefBase
+  rage::pgStreamableRef<rage::fragType>
+    rage::fragInst -- multiple inheritance: rage::phInstBreakable
+      fragInstGta
+
+rage::rageShaderMaterialParam
+  rage::rageShaderMaterialParamBool
+  rage::rageShaderMaterialParamFloat
+  rage::rageShaderMaterialParamInt
+  rage::rageShaderMaterialParamMatrix34
+  rage::rageShaderMaterialParamMatrix44
+  rage::rageShaderMaterialParamString
+  rage::rageShaderMaterialParamTexture
+  rage::rageShaderMaterialParamVector2
+  rage::rageShaderMaterialParamVector3
+  rage::rageShaderMaterialParamVector4
+
+rage::rlTaskBase
+  rage::rlTask<rage::rlMatch>
+    rage::rlMatch_detail::Task
+      rage::rlMatch_detail::CreateTask
+      rage::rlMatch_detail::EarlyLeaveTask
+      rage::rlMatch_detail::EndTask
+      rage::rlMatch_detail::RegisterTask
+      rage::rlMatch_detail::ReportStatsTask
+      rage::rlMatch_detail::StartTask
+  rage::rlTask<rage::snSession>  
+    rage::snTask
+      rage::snActivateSessionTask
+      rage::snAddRemoteGamerTask
+        rage::TaskAndStatus<rage::snAddRemoteGamerTask>
+      rage::snChangeAttributesTask
+        rage::TaskAndStatus<rage::snChangeAttributesTask>
+      rage::snConnectToPeerTask
+      rage::snDestroyTask
+      rage::snDropGamersTask
+        rage::TaskAndStatus<rage::snDropGamersTask>
+      rage::snEndTask
+      rage::snEstablishSessionTask
+      rage::snGuestRegisterForMatchTask
+        rage::TaskAndStatus<rage::snGuestRegisterForMatchTask>
+      rage::snGuestStartTask
+        rage::TaskAndStatus<rage::snGuestStartTask> 
+      rage::snHandleJoinRequestTask
+        rage::TaskAndStatus<rage::snHandleJoinRequestTask>
+      rage::snHostSessionTask
+      rage::snHostStartTask
+      rage::snJoinGamersToRlineTask
+        rage::TaskAndStatus<rage::snJoinGamersToRlineTask>
+      rage::snJoinSessionTask
+      rage::snLeaveGamersFromRlineTask
+      rage::snMigrateSessionTask
+        rage::TaskAndStatus<rage::snMigrateSessionTask>
+      rage::snQueryHostConfigTask
+      rage::snRegisterRemoteGamersForMatchTask
+      rage::snSetInvitableTask
+        rage::TaskAndStatus<rage::snSetInvitableTask>
+      rage::snSetMaxSlotsTask
+        rage::TaskAndStatus<rage::snSetMaxSlotsTask>
+      rage::snSendInvitesTask
+
+rage::rmcInstanceDataBase
+  rmcInstanceWheelData
+
+rage::scrThread
+  GtaThread
+
+rage::snEvent
+  rage::snEventAddedGamer
+  rage::snEventGetGamerData
+  rage::snEventJoinFailed
+  rage::snEventJoinRequest
+  rage::snEventRemovedGamer
+  rage::snEventSessionAttrsChanged
+  rage::snEventSessionDestroyed
+  rage::snEventSessionEnded
+  rage::snEventSessionHosted
+  rage::snEventSessionJoined
+  rage::snEventSessionMigrateEnd
+  rage::snEventSessionMigrateStart
+  rage::snEventSessionStarted
+
+rage::sysMemAllocator
+  rage::crMiniHeapAllocator
+  rage::fragHeapAllocator
+  rage::miniheapAllocator
+  rage::sysEmergencyAllocator
+  rage::sysMemBuddyAllocator
+  rage::sysMemExternalAllocator
+  rage::sysMemFixedAllocator
+  rage::sysMemMultiAllocator
+  rage::sysMemSimpleAllocator
+  CDrawCommandAllocator
+
+rage::VarCache
+  rage::AtmosphericScattering::AtmoscattVarCache
+  rage::DayLighting::DayLightingVarCache
+  rage::EnviromentDomeLighting::EnviromentDomeVarCache
+  rage::FogControl::FogControlVarCache
+  rage::IntervalShadows::IntervalShadowVarCache
+  rage::SkyhatMiniNoise::SkyhatMiniNoiseVarCache
+  rage::SkyhatPerlinNoise::SkyhatPerlinNoiseVarCache
+  rage::SkyLightController::SkyLightVarCache
+  rage::VerletWaterPerturbation::VerletWaterPerturbationVarCache
+  rage::VerletWaterSimulation::VerletWaterSimulationVarCache
+  rage::VerletWaterSurface::VerletWaterSurfaceVarCache
+  rage::WaterFogControl::WaterFogControlVarCache
+
+audRadioEmitter
+  audEntityRadioEmitter
+  audStaticRadioEmitter
+
+btCollisionAlgorithm
+  btCompoundCollisionAlgorithm
+  btConvexConcaveCollisionAlgorithm
+  btConvexConvexAlgorithm
+  btEmptyAlgorithm
+  btSphereSphereCollisionAlgorithm
+
+C2dEffect
+  CAudioAttr  
+  CBuoyancyAttr
+  CEscalatorAttr
+  CExplosionAttr  
+  CLadderInfo  
+  CLightAttr
+  CLightShaftAttr
+  CParticleAttr
+  CProcObjAttr
+  CScrollBar
+  CSpawnPoint
+  CSwayableAttr
+  CWorldPointAttr
+  CWalkDontWalkAttr
+
+CAnimAssociations
+  CAnimAssociationsNY
+
+CAtdVirtualBase
+  rage::atDNode<CAnimChange,CAtdVirtualBase>
+    CAtdNodeAnimChangePooledObject
+  rage::atDNode<CAnimPlayer,CAtdVirtualBase>
+    CAtdNodeAnimPlayerPooledObject
+  
+CBaseDC  
+  CAddModelInfoReferenceDC
+  CAddTxdReferenceDC
+  CClearRenderTargetDC
+  CCreateRenderListGroupDC
+  CCustomShaderEffectDC
+  CDataBlockDC
+  CDrawCurvedWindowDC
+  CDrawDefLight
+  CDrawEntityDC
+  CDrawFragDC
+  CDrawFragTypeDC
+  CDrawMobilePhoneCameraDC
+  CDrawPedDC
+  CDrawPedPropDC
+  CDrawPedPropsDC
+  CDrawPhoneDC_NY
+  CDrawPlayerDC
+  CDrawPolyLoadingClockDC
+  CDrawPtxEffectInst
+  CDrawRadarCircleDC
+  CDrawRadarMapSectionDC
+  CDrawRadioHudTextDC
+  CDrawRectDC
+  CDrawSkinnedEntityDC
+  CDrawSLODPedDC
+  CDrawSpriteDC
+  CDrawSpriteInPerspectiveDC
+  CDrawSpritePerspDC
+  CDrawSpriteUVDC
+  CDrawTriShapeDC
+  CDrawWaterSurfaceDC
+  CEndDrawListDC
+  CGRCDEVICE_SetRenderStateDC
+  CGrcResetToDefault
+  CGrcState_SetCullMode
+  CGrcState_SetDepthWrite
+  CGrcState_SetLightingMode
+  CHud_RenderBarDC
+  CHud_RenderSpriteDC
+  CHud_RenderWindowDC
+  CInsertEndFenceDC
+  CLockRenderTargetDC
+  CNewDrawListDC  
+  CRAGE_SetRenderStateDC
+  CRenderFontBufferDC
+  CSetClipPlaneDC
+  CSetClipPlaneEnableDC
+  CSetColorWrite
+  CSetCurrentViewportDC
+  CSetCurrentViewportToNULL
+  CSetGeometryVertexOffsets
+  CSetReflctOccParamsDC
+  CSetRenderLightsDC
+  CSetShaderGPRAlloc
+  CSetupDefLight
+  CShaderFx_PopForcedTechnique
+  CShaderFx_PushForcedTechnique
+  CSmashMan_ResetDrawBuckets
+  CSmashMan_SetDrawBuckets
+  CUnLockRenderTargetDC
+  CUseLightsInAreaDC
+  CViewport_Callback_DC
+  T_CB_Generic_1Arg<void (__cdecl *)(bool),bool>  
+  T_CB_Generic_1Arg<void (__cdecl *)(bool),unsigned int>
+  T_CB_Generic_1Arg<void (__cdecl *)(CBox const &),CBox>
+  T_CB_Generic_1Arg<void (__cdecl *)(enum  rage::grcAlphaMaskOffset),enum  rage::grcAlphaMaskOffset>
+  T_CB_Generic_1Arg<void (__cdecl *)(enum  rage::grcBlendSet),enum  rage::grcBlendSet>
+  T_CB_Generic_1Arg<void (__cdecl *)(float),float>
+  T_CB_Generic_1Arg<void (__cdecl *)(int),int>
+  T_CB_Generic_1Arg<void (__cdecl *)(rage::Color32),rage::Color32>
+  T_CB_Generic_1Arg<void (__cdecl *)(rage::grcTexture const *),rage::grcTexture const *>
+  T_CB_Generic_1Arg<void (__cdecl *)(rage::grmShader *),rage::grmShader *>
+  T_CB_Generic_1Arg<void (__cdecl *)(rage::Matrix44 &),rage::Matrix44>
+  T_CB_Generic_1Arg<void (__cdecl *)(rage::Vector4 const &),rage::Vector4>
+  T_CB_Generic_1Arg<void (__cdecl *)(unsigned int),int>
+  T_CB_Generic_2Args<void (__cdecl *)(bool,bool),bool,bool>
+  T_CB_Generic_2Args<void (__cdecl *)(CBaseModelInfo *,int),CBaseModelInfo *,int>
+  T_CB_Generic_2Args<void (__cdecl *)(CBox const &,bool),CBox,unsigned int>
+  T_CB_Generic_2Args<void (__cdecl *)(float,float),float,float>
+  T_CB_Generic_2Args<void (__cdecl *)(int,bool),int,bool>
+  T_CB_Generic_2Args<void (__cdecl *)(int,rage::grcRenderTarget *),int,rage::grcRenderTarget *>
+  T_CB_Generic_2Args<void (__cdecl *)(int,rage::Vector4 const &),int,rage::Vector4>
+  T_CB_Generic_2Args<void (__cdecl *)(rage::grcRenderTarget *,int),rage::grcRenderTarget *,int>
+  T_CB_Generic_2Args<void (__cdecl *)(rage::grcTexture const *,rage::Vector4 &),rage::grcRenderTarget const *,rage::Vector4>
+  T_CB_Generic_3Args<void (__cdecl *)(float,float,float),float,float,float>
+  T_CB_Generic_3Args<void (__cdecl *)(int,rage::Matrix34 const &,unsigned char),int,rage::Matrix34,unsigned char>
+  T_CB_Generic_3Args<void (__cdecl *)(int,rage::Vector4 &,rage::Matrix34 &),int,rage::Vector4,rage::Matrix34>
+  T_CB_Generic_3Args<void (__cdecl *)(rage::grcRenderTarget *,int,float),rage::grcRenderTarget *,int,float>
+  T_CB_Generic_4Args<void (__cdecl *)(float,int,int,int),float,int,int,int>
+  T_CB_Generic_4Args<void (__cdecl *)(int,bool,bool,bool),int,bool,bool,bool>
+  T_CB_Generic_4Args<void (__cdecl *)(int,enum  RenderListId,enum  CRenderer::RenderBucketTypes,enum  eRenderMode),int,enum  RenderListId,enum  CRenderer::RenderBucketTypes,enum  eRenderMode>
+  T_CB_Generic_4Args<void (__cdecl *)(int,int,bool,bool),int,int,bool,bool>
+  T_CB_Generic_4Args<void (__cdecl *)(rage::Color32 &,float,float,float),rage::Color32,float,float,float>
+  T_CB_Generic_4Args<void (__cdecl *)(rage::grcTexture *,CRect &,CRect &,rage::Color32 &),rage::grcTexture *,CRect,CRect,rage::Color32>
+  T_CB_Generic_4Args<void (__cdecl *)(rage::Vector4 &,float,float,float),rage::Vector4,float,float,float>
+  T_CB_Generic_5Args<void (__cdecl *)(float,float,CRect &,HtmlRenderState &,bool),float,float,CRect,HtmlRenderState,bool>
+  T_CB_Generic_5Args<void (__cdecl *)(int,enum  RenderListId,enum  CRenderer::RenderBucketTypes,enum  eRenderMode,int),int,enum  RenderListId,enum  CRenderer::RenderBucketTypes,enum  eRenderMode,int>
+  T_CB_Generic_5Args<void (__cdecl *)(rage::grcRenderTarget *,rage::grcRenderTarget *,int,int,int),rage::grcRenderTarget *,rage::grcRenderTarget *,int,int,int>
+  T_CB_Generic_6Args<void (__cdecl *)(HtmlRenderState &,float,float,float,float,unsigned int),HtmlRenderState,float,float,float,float,int>
+  T_CB_Generic_6Args<void (__cdecl *)(rage::rmcDrawable const *,rage::Matrix34 const &,int,int,int,int),rage::rmcDrawable *,rage::Matrix34,int,int,signed char,int>
+  T_CB_Generic_NoArgs<void (__cdecl *)(void)>
+  T_SetGlobalVar_1Arg<rage::grcRenderTarget *>
+  T_SetGlobalVar_1Arg<rage::grcTexture *>
+  T_SetGlobalVar_1Arg<rage::Matrix44>
+  T_SetGlobalVar_1Arg<rage::Vector4>
+  T_SetShaderGroupVar_1Arg<rage::Matrix44>
+  T_SetShaderGroupVar_1Arg<rage::Vector4>
+
+CCam
+  CCam
+  CCam1stPerson
+  CCam2Player
+  CCam2PlayerVeh
+  CCamAimWeapon
+  CCamAimWeaponVeh
+  CCamAnimated
+  CCamBusted
+  CCamCinematic
+  CCamCinematicCamMan
+  CCamCinematicHeliChase
+  CCamCinematicVehOffset
+  CCamCinematography
+  CCamCutscene
+  CCamDebug
+  CCamFinal
+  CCamFireTruck
+  CCamFollowPed
+  CCamFollowVehicle
+  CCamFpsWeapon
+  CCamFree
+  CCamGame
+  CCamHistory
+  CCamIdle
+  CCamIntermezzo
+  CCamInterp
+  CCamMarket
+  CCamPhoto
+  CCamPlayerSettings
+  CCamRadar
+  CCamScript
+  CCamScripted
+  CCamSector
+  CCamShake
+  CCamSkeleton
+  CCamSpline
+  CCamTrans
+  CCamViewFind
+  CCamViewports
+  CCamViewSeq
+  CCamWasted
+  CCamWeaponAiming
+
+CCamScriptInstruction
+  CCamScriptInstruction_ActivateCam
+  CCamScriptInstruction_ActivateViewport
+  CCamScriptInstruction_AddInterpCustomSpeedGraphMarker
+  CCamScriptInstruction_AddPedToCinematographyAI
+  CCamScriptInstruction_AttachCamToViewport
+  CCamScriptInstruction_CamProcess
+  CCamScriptInstruction_DestroyAllCams
+  CCamScriptInstruction_DestroyCam
+  CCamScriptInstruction_DoFadeIn_Q
+  CCamScriptInstruction_DoFadeIn_UNHACKED_Q
+  CCamScriptInstruction_DoFadeOut_Q
+  CCamScriptInstruction_DoFadeOut_UNHACKED_Q
+  CCamScriptInstruction_EnableCamCollision
+  CCamScriptInstruction_EnableDebugCam
+  CCamScriptInstruction_ForceTelescopeCam
+  CCamScriptInstruction_InheritRoll
+  CCamScriptInstruction_InsertSplineNode
+  CCamScriptInstruction_InterpolateToGameCam
+  CCamScriptInstruction_InterpolateToScriptCam
+  CCamScriptInstruction_PointCamAtObj_Q
+  CCamScriptInstruction_PointCamAtPed_Q
+  CCamScriptInstruction_PointCamAtVehicle_Q
+  CCamScriptInstruction_PropagateCam
+  CCamScriptInstruction_ResetCamSplineCustomSpeedGraph
+  CCamScriptInstruction_ResetInterpCustomSpeedGraph
+  CCamScriptInstruction_Restore_Q
+  CCamScriptInstruction_RestoreJumpCut_Q
+  CCamScriptInstruction_SequenceEmpty
+  CCamScriptInstruction_SequenceStartProcessing
+  CCamScriptInstruction_SequenceStopProcessing
+  CCamScriptInstruction_SequenceWait
+  CCamScriptInstruction_SetCamBehindPed_Q
+  CCamScriptInstruction_SetCameraControlsDisabledWithPlayerControls
+  CCamScriptInstruction_SetCamInFrontPed_Q
+  CCamScriptInstruction_SetCamLookAtPos_Q
+  CCamScriptInstruction_SetCamPos_Q
+  CCamScriptInstruction_SetCamRot_Q
+  CCamScriptInstruction_SetCamSplineCustomSpeedGraph
+  CCamScriptInstruction_SetCamTargetPed
+  CCamScriptInstruction_SetCinematicButtonEnabled
+  CCamScriptInstruction_SetCinematicCam_Q
+  CCamScriptInstruction_SetCollideWithPeds
+  CCamScriptInstruction_SetDollyZoomLock
+  CCamScriptInstruction_SetDrunkCam
+  CCamScriptInstruction_SetFar
+  CCamScriptInstruction_SetFarDOF
+  CCamScriptInstruction_SetFollowPedPitchLimitDown
+  CCamScriptInstruction_SetFollowPedPitchLimitUp
+  CCamScriptInstruction_SetFollowVehicleCamOffset
+  CCamScriptInstruction_SetFOV
+  CCamScriptInstruction_SetGameCameraControlsActive
+  CCamScriptInstruction_SetGameCamHeading
+  CCamScriptInstruction_SetGameCamPitch
+  CCamScriptInstruction_SetGameFollowVehicleCamSubMode
+  CCamScriptInstruction_SetHintFOV
+  CCamScriptInstruction_SetHintMoveInDist
+  CCamScriptInstruction_SetHintMoveInDistDefault
+  CCamScriptInstruction_SetHintTimes
+  CCamScriptInstruction_SetHintTimesDefault
+  CCamScriptInstruction_SetInterpDetail_Rot_Style_Angles
+  CCamScriptInstruction_SetInterpDetail_Rot_Style_Quats
+  CCamScriptInstruction_SetInterpGraphTypePos
+  CCamScriptInstruction_SetInterpGraphTypeRot
+  CCamScriptInstruction_SetInterpolationTime_Q
+  CCamScriptInstruction_SetInterpStateSrc
+  CCamScriptInstruction_SetInterpStyleCore
+  CCamScriptInstruction_SetInterpStyleDetailed
+  CCamScriptInstruction_SetLookTargetCam
+  CCamScriptInstruction_SetLookTargetEntity
+  CCamScriptInstruction_SetLookTargetOffset
+  CCamScriptInstruction_SetLookTargetOffsetRelative
+  CCamScriptInstruction_SetLookTargetPos
+  CCamScriptInstruction_SetMotionBlur
+  CCamScriptInstruction_SetName
+  CCamScriptInstruction_SetNear
+  CCamScriptInstruction_SetNearDOF
+  CCamScriptInstruction_SetPos
+  CCamScriptInstruction_SetPosTargetEntity
+  CCamScriptInstruction_SetPosTargetOffset
+  CCamScriptInstruction_SetPosTargetOffsetRelative
+  CCamScriptInstruction_SetProstituteCamActive
+  CCamScriptInstruction_SetRoll
+  CCamScriptInstruction_SetRot
+  CCamScriptInstruction_SetRotOrder
+  CCamScriptInstruction_SetScreenFade
+  CCamScriptInstruction_SetScriptFollowCamHeading
+  CCamScriptInstruction_SetScriptModeActive
+  CCamScriptInstruction_SetShake
+  CCamScriptInstruction_SetSniperZoomFactor
+  CCamScriptInstruction_SetSplineDuration
+  CCamScriptInstruction_SetSplineProgress
+  CCamScriptInstruction_SetSplineSpeedConstant
+  CCamScriptInstruction_SetSplineSpeedGraph
+  CCamScriptInstruction_SetStockShake
+  CCamScriptInstruction_SetTelescopeCamAngleLimits
+  CCamScriptInstruction_SetViewport
+  CCamScriptInstruction_SetViewportDest
+  CCamScriptInstruction_SetViewportMirrored
+  CCamScriptInstruction_SetViewportPriority
+  CCamScriptInstruction_SetViewportShape
+  CCamScriptInstruction_SetWidescreenBorders
+  CCamScriptInstruction_SetWidescreenBordersInstant
+  CCamScriptInstruction_SnapShotCam
+  CCamScriptInstruction_UnAttachCam
+  CCamScriptInstruction_UnAttachCamFromViewport
+  CCamScriptInstruction_UnInheritRollCam
+  CCamScriptInstruction_UnPointCam
+
+CCustomShaderEffectBase
+  CCustomShaderEffectAnimUVFX
+  CCustomShaderEffectPedBoneDamageFX
+  CCustomShaderEffectPedProp
+  CCustomShaderEffectVehicleFX
+
+CDummyTask
+  CDummyTask_FallDownAndGetUp
+  CDummyTask_Flee
+  CDummyTask_PlayAnim
+    CDummyTask_Dead
+    CDummyTask_Injured
+  CDummyTask_ShockingEventWatch
+  CDummyTask_Stationary
+  CDummyTask_Wander
+
+CEntitySeekPosCalculator
+  CEntitySeekPosCalculatorRadiusAngleOffset
+  CEntitySeekPosCalculatorStandard
+
+CEvent
+  CEventBuildingCollision
+  CEventCarUndriveable
+  CEventClimbLadderOnRoute
+  CEventClimbNavMeshOnRoute
+  CEventCommunicateEvent
+  CEventCopCarBeingStolen
+  CEventDeath
+  CEventEditableResponse
+    CEventAcquaintancePed
+      CEventAcquaintancePedDislike
+      CEventAcquaintancePedHate
+      CEventAcquaintancePedHateBadlyLit
+      CEventAcquaintancePedLike
+      CEventAcquaintancePedRespect
+      CEventAcquaintancePedWanted
+      CEventSeenCop      
+    CEventAttractor
+      CEventScriptedAttractor    
+    CEventCallForCover
+    CEventDamage
+    CEventDeadPed
+    CEventDraggedOutCar
+    CEventFireNearby
+    CEventGunShot
+      CEventGunShotWhizzedBy
+        CEventGunShotBulletImpact
+    CEventHealthLow
+    CEventHealthReallyLow
+    CEventInjuredCryForHelp
+    CEventMeleeAction
+    CEventPedEnteredMyVehicle
+    CEventPotentialGetRunOver
+    CEventPotentialWalkIntoFire
+    CEventPotentialWalkIntoVehicle
+    CEventSeenPanickedPed
+    CEventShoutTargetPosition
+    CEventSoundDynamic
+    CEventVehicleDamage
+      CEventVehicleDamageWeapon
+    CEventVehicleOnFire
+  CEventFlushTasks
+  CEventGivePedTask
+  CEventGunAimedAt
+  CEventImminentDanger
+  CEventInAir
+  CEventInWater
+  CEventLeaderEnteredCarAsDriver
+  CEventLeaderEnteredCover
+  CEventLeaderExitedCarAsDriver
+  CEventLeaderLeftCover
+  CEventLeaderHolsteredWeapon
+  CEventLeaderUnholsteredWeapon
+  CEventMustLeaveBoat
+  CEventNewTask
+  CEventObjectCollision
+  CEventOnFire
+  CEventPedCollisionWithPed
+    CEventPedCollisionWithPlayer
+    CEventPlayerCollisionWithPed
+  CEventPedOnCarRoof
+  CEventPedToChase
+  CEventPedToFlee
+  CEventPlayerLockOnTarget
+  CEventPotentialBeWalkedInto
+  CEventRanOverPed
+  CEventRevived
+  CEventScriptCommand
+  CEventShocking
+  CEventStaticCountReachedMax
+  CEventStuckInAir
+  CEventSwitch2NM
+  CEventVehicleCollision
+  CEventVehicleToSteal
+
+CEventHandler
+  CEventHandlerNY
+
+CEventScanner
+  CEventScannerNY
+
+CExpensiveProcess
+  CEntityScanner
+    CObjectScanner
+    CPedScanner
+    CVehicleScanner
+  CTargetting
+    CPedTargetting
+
+CHtmlNode
+  CHtmlDataNode
+  CHtmlElementNode
+    CHtmlTableElementNode
+    CHtmlTableNode
+
+CIntermezzoEvent
+  CIntermezzoEventFalling
+  CIntermezzoEventFallingThruAir
+  CIntermezzoEventGarage
+  CIntermezzoEventIntro
+  CIntermezzoEventPlaceBomb
+  CIntermezzoEventPlayerJackedVehicle
+  CIntermezzoEventPlayerJackVehicle
+  CIntermezzoEventStuntJump
+  CIntermezzoEventVaultWall
+
+CLoader
+  CLoaderDirect
+
+CNetCloneTask
+  CNetCloneTaskBeHit
+  CNetCloneTaskComplexClimbLadder
+  CNetCloneTaskComplexCombatRetreat
+  CNetCloneTaskComplexFallAndGetUp
+  CNetCloneTaskComplexGangDriveby
+  CNetCloneTaskComplexGun
+  CNetCloneTaskComplexInAirAndLand
+  CNetCloneTaskComplexJump
+  CNetCloneTaskComplexNewUseCover
+  CNetCloneTaskComplexOnFire
+  CNetCloneTaskComplexSlideIntoCover
+  CNetCloneTaskDead
+  CNetCloneTaskDie
+  CNetCloneTaskPickUpAndCarryObject
+  CNetCloneTaskPlayRandomAmbients
+  CNetCloneTaskPlayScriptAnim
+  CNetCloneTaskSimpleCarDrive
+  CNetCloneTaskSimpleClimb
+  CNetCloneTaskSimpleMeleeActionResult
+  CNetCloneTaskSimpleNM
+    CNetCloneTaskSimpleNMBalance
+    CNetCloneTaskSimpleNMBrace
+    CNetCloneTaskSimpleNMExplosion
+    CNetCloneTaskSimpleNMFlinch
+    CNetCloneTaskSimpleNMHighFall
+    CNetCloneTaskSimpleNMJumpRoll
+    CNetCloneTaskSimpleNMOnFire
+    CNetCloneTaskSimpleNMRelax
+    CNetCloneTaskSimpleNMShot  
+  CNetCloneTaskSimplePlayerAimProjectile  
+  CNetCloneTaskSimpleSidewaysDive
+  CNetCloneTaskSimpleThrowProjectile
+  CNetCloneTaskSitDownIdleThenStand
+  CNetCloneTaskStandOnObject
+  CNetCloneTaskVehicleBase
+    CNetCloneTaskComplexNewExitVehicle
+    CNetCloneTaskComplexNewGetInVehicle
+
+CNetworkArrayHandler
+  CDataBlockArrayHandler
+    CScriptClientVariablesArrayHandler
+    CScriptHostVariablesArrayHandler
+  CDispatchOrderArrayHandler
+  CDynamicPickupsArrayHandler
+  CPedGroupsArrayHandler
+  CPlayerInfoArrayHandler
+  CStaticPickupsArrayHandler
+
+CNetworkBlender
+  CNetBlenderLinInterp
+    CNetBlenderDummyPed
+    CNetBlenderPed
+    CNetBlenderPhysical
+      CNetBlenderBoat
+      CNetBlenderHeli
+
+CNetworkEvent
+  CAlterWantedLevelEvent
+  CChangeRadioStationEvent
+  CCreatePickupEvent
+  CDoorBreakEvent
+  CExplosionEventBase
+    CRequestExplosionEvent
+    CStartExplosionEvent
+  CFireEventBase
+    CRequestFireEvent
+    CStartFireEvent
+  CGameClockAndWeatherEvent
+  CGiveControlEvent
+  CGiveWeaponEvent
+  CHostVariablesVerifyEvent
+  CMarkAsNoLongerNeededEvent
+  CObjectIdFreedEvent
+  CPlayerTauntEvent
+  CRagdollRequestEvent
+  CRemoveAllWeaponsEvent
+  CRemoveWeaponEvent
+  CRequestControlEvent
+  CRequestPickupEvent
+  CResurrectedLocalPlayerEvent
+  CResurrectPlayerEvent
+  CSessionSettingsChangedEvent
+  CStartProjectileEvent
+  CUpdateGPSDestinationEvent
+  CVehicleComponentControlEvent
+  CWeaponDamageEvent
+
+CNetworkObject
+  CNetObjEntity
+    CNetObjDynamicEntity
+      CNetObjDummyPed
+      CNetObjPhysical
+        CNetObjObject
+        CNetObjPed
+          CNetObjPlayer
+        CNetObjVehicle
+          CNetObjAutomobile
+            CNetObjHeli
+            CNetObjPlane
+          CNetObjBike
+          CNetObjBoat
+          CNetObjTrain
+
+CNetworkObject::CNetObjSyncData
+  CNetObjDummyPed::CNetObjDummyPedSyncData
+  CNetObjPlayer::CNetObjPlayerSyncData
+  CNetObjObject::CNetObjObjectSyncData
+  CNetObjPed::CNetObjPedSyncData
+  CNetObjVehicle::CNetObjVehicleSyncData
+
+CollisionShape
+  rage::phBoundBase
+    rage::phBound
+      rage::phBoundCapsule
+      rage::phBoundComposite
+      rage::phBoundGrid
+      rage::phBoundPolyhedron
+        rage::phBoundBox
+        rage::phBoundGeometry
+          rage::phBoundGeomCullable
+            rage::phBoundBVH
+            rage::phBoundOctree
+            rage::phBoundQuadtree
+          rage::phBoundCurvedGeometry
+      rage::phBoundRibbon
+      rage::phBoundSphere
+      rage::phBoundSurface
+      rage::phBoundTaperedCapsule
+      rage::TriangleShape
+
+ConvexPenetrationDepthSolver
+  btGjkEpaPenetrationDepthSolver
+  MinkowskiPenetrationDepthSolver
+  TrianglePenetrationDepthSolver
+
+CParseNetworkObject
+  CParseEntity
+    CParseDynamicEntity
+      CParseDummyPed
+      CParsePhysical
+        CParseObject
+        CParsePed
+          CParsePlayer
+        CParseVehicle
+          CParseAutomobile
+            CParseHeli
+          CParseBike
+          CParseBoat
+
+CPedAttractor
+  CPedAtmAttractor
+  CPedLookAtAttractor
+  CPedParkAttractor
+  CPedPizzaAttractor
+  CPedSeatAttractor
+  CPedShelterAttractor
+  CPedStepAttractor
+  CPedStopAttractor
+  CPedTriggerScriptAttractor
+
+CPedData
+  CPedDataNY
+    CPedDataCop
+
+CPedFactory
+  CPedFactoryNY
+
+CPedFormation
+  CPedFormation_Arrowhead
+  CPedFormation_FollowInLine
+  CPedFormation_LineAbreast
+  CPedFormation_Loose
+  CPedFormation_SurroundFacingAhead
+  CPedFormation_SurroundFacingInwards
+  CPedFormation_V
+
+CPlayStatBase
+  CPlayStatInt
+    CPlayStatIntFloat
+    CPlayStatIntInt
+    CPlayStatIntStr
+  CPlayStatFloat
+  CPlayStatSessionInfo
+
+CRenderPhase
+  CRenderPhaseBlit
+  CRenderPhaseCloudGeneration
+  CRenderPhaseDeferredLighting_LightsToScreen
+  CRenderPhaseDeferredLighting_SceneToGBuffer
+  CRenderPhaseDrawScene
+  CRenderPhaseFrontEnd
+  CRenderPhaseHeight
+  CRenderPhaseHtml
+  CRenderPhaseInteriorReflection
+  CRenderPhaseMirrorReflection
+  CRenderPhasePhoneModel
+  CRenderPhasePlayerSettings
+  CRenderPhasePostRenderViewport
+  CRenderPhasePreRenderViewport
+  CRenderPhaseRadar
+  CRenderPhaseRainUpdate
+  CRenderPhaseReflection
+  CRenderPhaseScript2d
+  CRenderPhaseSetDefaultRenderState
+  CRenderPhaseTreeImposters
+  CRenderPhaseWarpShadow
+  CRenderPhaseWaterReflection
+  CRenderPhaseWaterSurface
+
+CScriptCommands
+  CScriptCommandsNY
+
+CTask
+  CTaskComplex
+    CTaskComplexAimAndThrowProjectile
+    CTaskComplexArrestedAIPedAndDriveAway
+    CTaskComplexArrestPed    
+    CTaskComplexAvoidPlayerTargetting
+    CTaskComplexBackOff
+    CTaskComplexBeArrestedAndDrivenAway
+    CTaskComplexCarDrive
+      CTaskComplexCarDriveMission
+        CTaskComplexCarDriveMissionFleeScene
+        CTaskComplexCarDriveMissionKillPed
+      CTaskComplexCarDriveWander
+      CTaskComplexDriveToPoint
+    CTaskComplexCarDriveBasic
+    CTaskComplexCarDriveTimed
+    CTaskComplexCarReactToVehicleCollision
+    CTaskComplexCarReactToVehicleCollisionGetOut
+    CTaskComplexCarSetTempAction
+    CTaskComplexClimbLadder
+    CTaskComplexClimbLadderFully
+    CTaskComplexCombat
+    CTaskComplexCombatAdditionalTask
+    CTaskComplexCombatClosestTargetInArea
+    CTaskComplexCombatSubtask
+      CTaskComplexCombatAdvanceSubtask
+      CTaskComplexCombatBustPed
+      CTaskComplexCombatChargeSubtask
+      CTaskComplexCombatExecutePedSubtask
+      CTaskComplexCombatFireSubtask
+      CTaskComplexCombatFlankSubtask
+      CTaskComplexCombatInvestigateSubtask
+      CTaskComplexCombatPersueInCarSubtask
+      CTaskComplexCombatPullFromCarSubtask
+      CTaskComplexCombatRetreatSubtask
+      CTaskComplexCombatSeekCoverSubtask
+    CTaskComplexControlMovement
+    CTaskComplexCop
+    CTaskComplexCopHelicopter
+    CTaskComplexDestroyCar
+    CTaskComplexDestroyCarArmed
+    CTaskComplexDie
+    CTaskComplexDriveFireTruck
+    CTaskComplexDrivePointRoute
+    CTaskComplexEnterAnyCarAsDriver
+    CTaskComplexEscapeBlast
+    CTaskComplexEvasiveStep
+    CTaskComplexExtinguishFires
+    CTaskComplexFallAndGetUp
+    CTaskComplexFleeAndDive
+    CTaskComplexFleeAnyMeans
+    CTaskComplexFollowLeaderAnyMeans
+    CTaskComplexFollowLeaderInFormation
+    CTaskComplexFollowPatrolRoute
+    CTaskComplexFollowPedFootsteps
+    CTaskComplexGangDriveby
+    CTaskComplexGangHasslePed
+    CTaskComplexGetOffBoat
+    CTaskComplexGetOutOfWater
+    CTaskComplexGetUpAndStandStill
+    CTaskComplexGoIntoCover
+    CTaskComplexGoToAttractor    
+    CTaskComplexGoToCarDoorAndStandStill
+    CTaskComplexGoToPointAiming
+      CTaskComplexGoToPointShooting
+    CTaskComplexGoToPointAnyMeans
+    CTaskComplexGun
+    CTaskComplexHelicopterStrafe
+    CTaskComplexHitResponse
+    CTaskComplexInjuredOnGround
+    CTaskComplexInvestigateDeadPed
+    CTaskComplexInWater
+    CTaskComplexJump
+    CTaskComplexLeaveAnyCar
+    CTaskComplexLeaveCarAndFlee
+    CTaskComplexLeaveCarAndWander
+    CTaskComplexMedicDriver
+    CTaskComplexMedicPassenger
+    CTaskComplexMedicTreatInjuredPed
+    CTaskComplexMedicWandering
+    CTaskComplexMelee
+    CTaskComplexMobileMakeCall
+    CTaskComplexMove  -- multiple inheritance: CTaskMoveInterface      
+      CTaskComplexMove_StepAwayFromCollisionObjects
+      CTaskComplexMoveAroundCoverPoints
+      CTaskComplexMoveAvoidOtherPedWhileWandering
+      CTaskComplexMoveBeInFormation
+      CTaskComplexMoveCrossRoadAtTrafficLights
+      CTaskComplexMoveCrowdAroundLocation
+      CTaskComplexMoveFollowNavMeshRoute
+      CTaskComplexMoveFollowPointRoute
+      CTaskComplexMoveGetToPointContinuous
+      CTaskComplexMoveGoToPointAndStandStill
+        CTaskComplexGoToPointAndStandStillTimed
+      CTaskComplexMoveGoToPointStandStillAchieveHeading
+      CTaskComplexMoveGoToPointRelativeToEntityAndStandStill
+      CTaskComplexMoveGoToShelterAndWait
+      CTaskComplexMoveGetOntoMainNavMesh
+      CTaskComplexMoveReturnToRoute      
+      CTaskComplexMoveSeekEntity<CEntitySeekPosCalculatorRadiusAngleOffset>
+      CTaskComplexMoveSeekEntity<CEntitySeekPosCalculatorStandard>      
+      CTaskComplexMoveSequence      
+      CTaskComplexMoveWaitForTraffic      
+      CTaskComplexMoveWander
+      CTaskComplexWalkRoundCarWhileWandering
+      CTaskComplexWalkRoundEntity
+    CTaskComplexMoveAboutInjured
+    CTaskComplexNewUseCover
+    CTaskComplexNM
+    CTaskComplexOnFire
+    CTaskComplexPickUpAndCarryObject
+    CTaskComplexPickUpObject
+    CTaskComplexPlayerDrive
+    CTaskComplexPlayerGun
+    CTaskComplexPlayerIdles
+    CTaskComplexPlayerInCover
+    CTaskComplexPlayerOnFoot
+    CTaskComplexPlayerPlaceCarBomb
+    CTaskComplexPlayerSettingsTask
+    CTaskComplexReact    
+    CTaskComplexReactToGunAimedAt
+    CTaskComplexReactToRanPedOver
+    CTaskComplexRevive
+    CTaskComplexScenario
+      CTaskComplexChatScenario
+      CTaskComplexDrivingScenario
+      CTaskComplexGetInCarScenario
+      CTaskComplexMobileChatScenario
+      CTaskComplexMoveBetweenPointsScenario
+      CTaskComplexPoliceSniperScenario
+      CTaskComplexSeatedScenario
+      CTaskComplexStationaryScenario
+      CTaskComplexWalkWithPedScenario
+      CTaskComplexWanderingScenario
+    CTaskComplexScreamInCarThenLeave
+    CTaskComplexSearchForPedInCar
+    CTaskComplexSearchForPedOnFoot
+    CTaskComplexSearchWander
+    CTaskComplexSeekCover
+    CTaskComplexSeekEntityAiming
+    CTaskComplexSeekCover
+      CTaskComplexSeekCoverShooting
+    CTaskComplexSeperate
+    CTaskComplexSequence
+    CTaskComplexSetAndGuardArea
+    CTaskComplexShockingEvent
+      CTaskComplexShockingEventFlee
+      CTaskComplexShockingEventGoto
+      CTaskComplexShockingEventHurryAway
+      CTaskComplexShockingEventWatch
+    CTaskComplexShuffleBetweenSeats
+    CTaskComplexSitDownThenIdleThenStandUp
+    CTaskComplexSitIdle
+    CTaskComplexSlideIntoCover
+    CTaskComplexSmartFleeEntity
+      CTaskComplexFleeShooting
+    CTaskComplexSmartFleePoint
+    CTaskComplexStandGuard
+    CTaskComplexStealCar
+    CTaskComplexStuckInAir
+    CTaskComplexThrowProjectile
+    CTaskComplexTrackEntity
+    CTaskComplexTreatAccident
+    CTaskComplexTurnToFaceEntityOrCoord
+    CTaskComplexUseAttractor
+    CTaskComplexUseClimbOnRoute
+    CTaskComplexUseDropDownOnRoute
+    CTaskComplexUseEffect
+    CTaskComplexUseLadderOnRoute
+    CTaskComplexUseMobilePhone
+    CTaskComplexUseMobilePhoneAndMovement
+    CTaskComplexUseSequence
+    CTaskComplexUseWaterCannon
+    CTaskComplexVehicleSubtask
+      CTaskComplexClearVehicleSeat
+      CTaskComplexClimbIntoVehicle
+      CTaskComplexCloseVehicleDoor
+      CTaskComplexNewExitVehicle
+      CTaskComplexNewGetInVehicle
+      CTaskComplexOpenVehicleDoor
+    CTaskComplexWaitAtAttractor
+    CTaskComplexWaitForBus
+    CTaskComplexWaitForCondition
+      CTaskComplexDriveWanderForTime
+      CTaskComplexWaitForDoorToBeOpen
+      CTaskComplexWaitForMyCarToStop
+      CTaskComplexWaitForSeatToBeFree
+      CTaskComplexWaitForSteppingOut
+      CTaskComplexWaitForTime
+      CTaskComplexWaitTillItsOkToStop
+    CTaskComplexWaitForDryWeather
+    CTaskComplexWalkRoundFire
+    CTaskComplexWander
+      CTaskComplexWanderCop
+      CTaskComplexWanderCriminal
+      CTaskComplexWanderFlee
+      CTaskComplexWanderMedic
+      CTaskComplexWanderStandard    
+  CTaskSimple
+    CTaskSimpleAffectSecondaryBehaviour
+    CTaskSimpleAimGun
+    CTaskSimpleAnim
+      CTaskSimpleRunAnim
+        CTaskSimpleCower
+        CTaskSimpleHitFromBack
+        CTaskSimpleHitFromFront
+        CTaskSimpleHitFromLeft
+        CTaskSimpleHitFromRight
+        CTaskSimpleHitWall
+        CTaskSimpleShunt
+        CTaskSimpleStartCar
+      CTaskSimpleRunDictAnim
+      CTaskSimpleRunNamedAnim
+        CTaskSimpleSlideToCoord
+      CTaskSimpleRunScriptAnim
+      CTaskSimpleRunTimedAnim
+        CTaskSimpleHandsUp
+    CTaskSimpleArrestPed
+    CTaskSimpleAssessInjuredPed
+    CTaskSimpleBeHit
+    CTaskSimpleBlendFromNM
+    CTaskSimpleCarAlign
+    CTaskSimpleCarCloseDoorFromInside
+    CTaskSimpleCarCloseDoorFromOutside
+    CTaskSimpleCarGetIn
+    CTaskSimpleCarGetOut
+    CTaskSimpleCarJumpOut
+    CTaskSimpleCarOpenDoorFromOutside
+    CTaskSimpleCarOpenLockedDoorFromOutside
+    CTaskSimpleCarSetPedInVehicle
+    CTaskSimpleCarSetPedOut
+    CTaskSimpleCarShuffle
+    CTaskSimpleCarSlowBeDraggedOut
+    CTaskSimpleCarSlowDragPedOut
+    CTaskSimpleClearLookAt
+    CTaskSimpleClimb
+    CTaskSimpleClimbLadder
+    CTaskSimpleCombatRoll
+    CTaskSimpleCreateCarAndGetIn
+    CTaskSimpleDead
+    CTaskSimpleDie
+    CTaskSimpleDoNothing
+    CTaskSimpleDuck
+    CTaskSimpleDuckToggle
+    CTaskSimpleFall
+    CTaskSimpleFireGun
+    CTaskSimpleGetUp
+    CTaskSimpleHitHead
+    CTaskSimpleInjuredOnGroundTransition
+    CTaskSimpleJumpBase
+      CTaskSimpleJumpInAir
+      CTaskSimpleJumpLand      
+      CTaskSimpleJumpLaunch
+    CTaskSimpleLeaveGroup
+    CTaskSimpleLoadAnimPlayAnim
+    CTaskSimpleMeleeActionResult
+    CTaskSimpleMove -- multiple inheritance: CTaskMoveInterface
+      CTaskSimpleMoveAchieveHeading
+      CTaskSimpleMoveBase
+        CTaskSimpleMoveTrackingEntity
+      CTaskSimpleMoveDoNothing
+      CTaskSimpleMoveGoToPoint
+        CTaskSimpleMoveGoToPointOnRoute
+      CTaskSimpleMoveInAir
+      CTaskSimpleMoveMeleeMovement
+      CTaskSimpleMoveNone
+      CTaskSimpleMovePlayer
+      CTaskSimpleMoveSlideToCoord
+      CTaskSimpleMoveStandStill
+        CTaskSimpleMovePathfindProblem
+        CTaskSimpleMoveWaitForNavMeshSpecialActionEvent
+    CTaskSimpleMoveSwim
+    CTaskSimpleNetworkClone
+    CTaskSimpleNewGangDriveBy
+    CTaskSimpleNM      
+      CTaskSimpleNMBalance      
+      CTaskSimpleNMBrace
+      CTaskSimpleNMExplosion
+      CTaskSimpleNMFallDown
+      CTaskSimpleNMFlinch
+      CTaskSimpleNMHighFall      
+      CTaskSimpleNMJumpRollFromRoadVehicle
+      CTaskSimpleNMOnFire
+      CTaskSimpleNMPose
+      CTaskSimpleNMRelax
+        CTaskSimpleNMRollUpAndRelax
+      CTaskSimpleNMScriptControl
+      CTaskSimpleNMShot
+      CTaskSimpleNMSit
+    CTaskSimpleNone
+    CTaskSimpleOpenDoor
+    CTaskSimplePause
+    CTaskSimplePauseSystemTimer
+    CTaskSimplePickUpObject
+    CTaskSimplePlayAnimAndSlideIntoCover
+    CTaskSimplePlayAnimAndSlideOutOfCover
+    CTaskSimplePlayerAimProjectile
+    CTaskSimplePlayerBeArrested    
+    CTaskSimplePlayRandomAmbients    
+    CTaskSimplePlaySwatSignalAnim
+    CTaskSimplePlayUpperCombatAnim
+    CTaskSimplePutDownObject
+    CTaskSimplePutOnHelmet
+    CTaskSimpleReloadGun
+    CTaskSimpleSay
+    CTaskSimpleSayAudio
+    CTaskSimpleSetCharCombatDecisionMaker
+    CTaskSimpleSetCharDecisionMaker
+    CTaskSimpleSetCharIgnoreWeaponRangeFlag
+    CTaskSimpleSetPedAsAutoDriver    
+    CTaskSimpleShakeFist
+    CTaskSimpleShovePed
+    CTaskSimpleSidewaysDive
+    CTaskSimpleSitDown    
+    CTaskSimpleSmashCarWindow
+    CTaskSimpleStandStill
+      CTaskSimplePathfindProblem
+      CTaskSimpleWaitUntilAreaCodesMatch
+    CTaskSimpleStandUp
+    CTaskSimpleSwapWeapon
+    CTaskSimpleTakeOffHelmet
+    CTaskSimpleThrowGrenadeFromVehicle
+    CTaskSimpleThrowProjectile
+    CTaskSimpleTired
+    CTaskSimpleTogglePedThreatScanner
+    CTaskSimpleTriggerLookAt
+    CTaskSimpleWaitForBus
+    CTaskSimpleWaitUntilPedIsOutCar
+
+CTaskInfo
+  CAnimTaskInfoBase
+    CScriptAnimTaskInfo
+  CJackTaskInfo
+  CSequenceTaskInfo
+  CTargetTaskInfo
+    CMedicTaskInfo
+    CMeleeTaskInfo
+  CTaskInfoWithCloneTask
+    CComplexClimbLadderTaskInfo
+    CComplexCombatRetreatInfo
+    CComplexFallAndGetUpTaskInfo
+    CComplexGangDrivebyTaskInfo
+    CComplexJumpTaskInfo
+    CComplexNewUseCoverInfo
+    CComplexOnFireInfo
+    CComplexSlideIntoCoverInfo
+    CDeadInfo
+    CDieInfo
+    CPlayRandomAmbientsInfo
+    CScenarioTaskInfo
+    CSimpleAimPlayerProjectileInfo
+    CSimpleClimbTaskInfo
+    CSimpleMeleeActionResultTaskInfo
+    CSimpleNMBalanceTaskInfo
+    CSimpleNMBraceTaskInfo
+    CSimpleNMExplosionTaskInfo
+    CSimpleNMFlinchTaskInfo
+    CSimpleNMHighFallTaskInfo
+    CSimpleNMJumpRollTaskInfo
+    CSimpleNMOnFireTaskInfo
+    CSimpleNMRelaxTaskInfo
+    CSimpleNMShotTaskInfo
+    CSimpleSidewaysDiveTaskInfo
+    CSimpleThrowProjectileInfo
+    CSitDownIdleThenStandTaskInfo
+    CSitIdleTaskInfo
+    CStandUpTaskInfo
+    CStatusTaskInfo
+      CComplexOpenVehicleDoorTaskInfo
+      CComplexClearVehicleSeatTaskInfo
+      CComplexClimbIntoVehicleTaskInfo
+      CSimpleCarDriveTaskInfo
+      CStatusAndTargetTaskInfo
+        CComplexGunTaskInfo        
+        CComplexPickUpAndCarryObjectTaskInfo
+        CVehicleTaskInfo
+          CComplexNewExitVehicleTaskInfo
+          CComplexNewGetInVehicleTaskInfo
+  CWeaponHolsterInfo
+
+CTaskMoveInterface
+  CTaskComplexMove -- multiple inheritance: CTaskComplex     
+    -- see above
+  CTaskSimpleMove -- multiple inheritance: CTaskSimple
+    -- see above
+
+CTaskSet
+  CWeightedTaskSet
+
+CVehicleFactory
+  CVehicleFactoryNY
+
+CViewport
+  CViewport3DScene
+    CViewportGame
+    CViewportScripted
+  CViewportFrontend3DScene
+  CViewportHtml
+  CViewportMobilePhone
+  CViewportPrimaryOrtho
+  CViewportRadar
+
+CVirtualBase
+  CBaseModelInfo
+    CInstanceModelInfo
+    CMloModelInfo
+    CPedModelInfo
+    CTimeModelInfo
+    CVehicleModelInfo
+    CWeaponModelInfo
+  CEntity
+    CBuilding
+      CInteriorInst
+      CPortalInst
+    CDynamicEntity
+      CAnimatedBuilding
+      CDummyPed
+      CPhysical
+        CObject
+          CCutsceneObject
+        CPed
+          CPlayerPed
+        CVehicle
+          CAutomobile
+            CHeli
+            CPlane
+          CBike
+          CBoat
+          CTrain
+    CDummyObject
+    CPrtSysEntity
+
+---- Unformatted part ---=
+0000:     CFontStringProcess
+0000:     ::::CFontRenderString
+0000:         CFontStringProcess
+0000:     ::::CFontGetNumberLines
+0000:         CFontStringProcess
+0000:     CAnimRequestHelper
+0000:     CEventFactory
+0000:     CInformFriendsEvent
+0000:     CInformGroupEvent
+0000:     CPedIntelligenceFactory
+0000:     CMissionCleanup
+0000:     CTaskList
+0000:     CMovementEventHandler
+0000:     CPedIntelligence
+0000:     CPedMoveBlendBase
+0000:     CPedMoveBlendOnFoot
+0000:         CPedMoveBlendBase
+0000:     CEventHandler
+0000:     CEventScanner
+0000:     CAnimPlayer
+0000:     CSimpleIkManager
+0000:     CIkManager
+0000:         CSimpleIkManager
+0000:     CTaskSimpleIK
+0000:     CPedDamageResponse
+0000:     CEventGroup
+0000:     CEventGlobalGroup
+0000:         CEventGroup
+0000:     ART::ARTFeedbackInterface
+0000:     ARTFeedbackInterfaceGta
+0000:         ART::ARTFeedbackInterface
+0000:     CPortalTracker
+0000:     CPortalVisTracker
+0000:         CPortalTracker
+0000:     rage::audOcclusionGroupInterface
+0000:     audGtaOcclusionGroup
+0000:         rage::audOcclusionGroupInterface
+0000:     rage::rlMatchFilter
+0000:     rage::rlConcreteMatchFilter<MatchFilter_Main>
+0000:         rage::rlMatchFilter
+0000:     CNetworkArrayMgr
+0000:     rage::crmtComposerData
+0000:     rage::crmtComposerOptimizedData
+0000:         rage::crmtComposerData
+0000:     rage::spdApical
+0000:     rage::spdShaft
+0000:         rage::spdApical
+0000:     rage::pgStreamableRef<rage::fragType>
+0000:         rage::pgStreamableRefBase
+0000:     rage::SkyDomeProceduralControl::SkyStruct
+0000:     rage::SkyDomeProceduralControl::TopStruct
+0000:     rage::SkyDomeProceduralControl::CloudStruct
+0000:     rage::SkyDomeProceduralControl::LightStruct
+0000:     rage::SkyDomeProceduralControl::NightStruct
+0000:     rage::SkyDomeProceduralControl
+0000:     rage::ptxTimeLine
+0000:     rage::ptxEmitterData
+0000:     rage::ptxEmitRuleStd::stdEmitterData
+0000:         rage::ptxEmitterData
+0000:     rage::rmPtfxShader
+0000:     rage::parInstanceVisitor
+0000:     ::::KeyframeChecker
+0000:         rage::parInstanceVisitor
+0000:     rage::rmPtfxShaderTemplate
+0000:     rage::grcVertexBufferEditor
+0000:     rage::ProceduralTextureRenderTargetDef
+0000:     rage::ProceduralTextureShaderDef
+0000:     rage::ptxEvent
+0000:     rage::ptxEventEmitter
+0000:         rage::ptxEvent
+0000:     rage::ptxEventEffect
+0000:         rage::ptxEvent
+0000:     rage::crAnimTolerance
+0000:     rage::crAnimToleranceSimple
+0000:         rage::crAnimTolerance
+0000:     rage::VectorT<double>
+0000:     rage::MatrixT<double>
+0000:     rage::VectorT<int>
+0000:     rage::scrThread
+0000:     rage::parBuildTreeVisitor
+0000:         rage::parInstanceVisitor
+0000:     rage::parInitVisitor
+0000:         rage::parInstanceVisitor
+0000:     rage::parStructure
+0000:     rage::parRTStructure
+0000:         rage::parStructure
+0000:     ART::APILogger
+0000:     rage::nmAPILogger
+0000:         ART::APILogger
+0000:     NMutils::BasicLogger
+0000:     rage::nmLogger
+0000:         NMutils::BasicLogger
+0000:     ART::VirtualWorld
+0000:     ART::Plugin
+0000:     ART::PluginFactoryBase
+0000:     ART::Rockstar::NmRsPlugin
+0000:         ART::Plugin
+0000:     ART::PluginRegistrar<ART::Rockstar::NmRsPlugin>
+0000:     ART::PluginFactory<ART::Rockstar::NmRsPlugin>
+0000:         ART::PluginFactoryBase
+0000:     ART::MemoryManager
+0000:     ART::PluginRegistry
+0000:     ART::PluginManager
+0000:     ART::Rockstar::NmRsCharacter
+0000:     ART::SubAgentBuilder
+0000:     ART::TransformSource
+0000:     ART::IncomingTransformProcessor
+0000:     ART::Rockstar::NmRsEngine
+0000:         ART::SubAgentBuilder
+0008:         ART::SegmentLoader
+0010:         ART::Engine
+0018:         ART::TransformSource
+0020:         ART::IncomingTransformProcessor
+0000:     ART::SegmentDataProcessor
+0000:     ART::SegmentDataBLZPack
+0000:         ART::SegmentDataProcessor
+0000:     NMutils::MemoryStream
+0000:     NMutils::MemoryStreamReader
+0000:     ART::Rockstar::NmRsEffectorBase
+0000:     ART::Rockstar::NmRs1DofEffector
+0000:         ART::Rockstar::NmRsEffectorBase
+0000:     ART::Rockstar::NmRs3DofEffector
+0000:         ART::Rockstar::NmRsEffectorBase
+0000:     ART::Engine
+0000:     rage::grcTextureFactory
+0000:     rage::grmShaderFactory
+0000:     rage::grmShaderFactoryStandard
+0000:         rage::grmShaderFactory
+0000:     rage::grmModelFactory
+0000:     rage::grcTextureFactoryPC
+0000:         rage::grcTextureFactory
+0000:     rage::crJointDataFile
+0000:     rage::grcTextureFactoryString
+0000:         rage::grcTextureFactory
+0000:     rage::rageShaderMaterial
+0000:     rage::rageShaderMaterialTemplate
+0000:     rage::rageShaderMaterialGroup
+0000:     rage::rsmSourceVertexColourDescription
+0000:     rage::rsmSourceVertexColourDescriptions
+0000:     rage::rsmRunTimeVertexColourDescription
+0000:     rage::rsmRunTimeVertexColourDescriptions
+0000:     rage::rageShaderMaterialUserData
+0000:     rage::rageShaderMaterialUserDataGroup
+0000:     rage::audVoicePhysical
+0000:     rage::audVoicePC
+0000:         rage::audVoicePhysical
+0000:     rage::audVoicePcmPC
+0000:         rage::audVoicePhysical
+0000:     DiscreteCollisionDetectorInterface::Result
+0000:     DiscreteCollisionDetectorInterface
+0000:     rage::phManifoldResult
+0000:         DiscreteCollisionDetectorInterface::Result
+0000:     rage::phSleep
+0000:     rage::phSimulator
+0000:     rage::phConstraint
+0000:     rage::cvCurve<rage::Vector3>
+0000:     rage::cvCurveCatRom
+0000:         rage::cvCurve<rage::Vector3>
+0000:     rage::phRopeContact
+0010:         rage::phContact
+0000:     rage::phRope
+0000:         rage::phInstBehavior
+0000:     rage::phRopeConstraint
+0000:         rage::phConstraint
+0000:     rage::cvCurveNurbs<rage::Vector3>
+0000:         rage::cvCurve<rage::Vector3>
+0000:     rage::GjkPairDetector
+0000:         DiscreteCollisionDetectorInterface
+0000:     ConvexCast::CastResult
+0000:     PointCollector
+0000:         DiscreteCollisionDetectorInterface::Result
+0000:     TriangleCallback
+0000:     btConvexTriangleCallback
+0000:         TriangleCallback
+0000:     rage::btOverlappingPairCache
+0000:     btDispatcher
+0000:     btCollisionDispatcher
+0000:         btDispatcher
+0000:     ConvexCast
+0000:     ContinuousConvexCollision
+0000:         ConvexCast
+0000:     rage::net_detail::Cxn
+0000:         rage::netConnection
+0000:     rage::netConnectionManager
+0000:     rage::rlPresenceEvent
+0000:     rage::rlPresenceEventSigninStatusChanged
+0000:         rage::rlPresenceEvent
+0000:     rage::rlPresenceEventProfileChanged
+0000:         rage::rlPresenceEvent
+0000:     rage::rlPresenceEventFriendStatusChanged
+0000:         rage::rlPresenceEvent
+0000:     rage::rlPresenceEventInviteAccepted
+0000:         rage::rlPresenceEvent
+0000:     rage::rlPresenceEventJoinedViaPresence
+0000:         rage::rlPresenceEvent
+0000:     rage::rlPresence::Worker
+0000:         rage::rlWorker
+0000:     rage::netTimeSync
+0000:     rage::rlStats::Command
+0000:     rage::rlStats::ReadCommand
+0000:         rage::rlStats::Command
+0000:     rage::rlStats::ReadByRankCommand
+0000:         rage::rlStats::ReadCommand
+0000:             rage::rlStats::Command
+0000:     rage::rlStats::ReadByGamerCommand
+0000:         rage::rlStats::ReadCommand
+0000:             rage::rlStats::Command
+0000:     rage::rlAchievement::Worker
+0000:         rage::rlWorker
+0000:     rage::rlFriendsReader::Worker
+0000:         rage::rlWorker
+0000:     rage::netPacketRecorder
+0000:     rage::netBandwidthRecorder
+0000:         rage::netPacketRecorder
+0000:     rage::rlSession::Cmd
+0000:     rage::rlSession::CmdActivate
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdJoin
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdChangeAttrs
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdMigrate
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdSetInvitable
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdSetMaxSlots
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::Worker
+0000:         rage::rlWorker
+0000:     rage::rlSession::SessionWorker
+0000:         rage::rlSession::Worker
+0000:             rage::rlWorker
+0000:     rage::rlSession::LanListener
+0000:         rage::rlSession::Worker
+0000:             rage::rlWorker
+0000:     rage::rlSession::CmdLeave
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdSendInvites
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdHost
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdHostOffline
+0000:         rage::rlSession::CmdHost
+0000:             rage::rlSession::Cmd
+0000:     rage::rlSession::CmdEstablish
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession::CmdDestroy
+0000:         rage::rlSession::Cmd
+0000:     rage::rlSession
+0000:     rage::netConnection
+0000:     rage::rlWorker
+0000:     CPedIntelligenceFactoryNY
+0000:         CPedIntelligenceFactory
+0000:     CEventFactoryNY
+0000:         CEventFactory
+0000:     CMissionCleanupNY
+0000:         CMissionCleanup
+0000:     CHtmlTextFormat
+0000:         CFontStringProcess
+0000:     CNetworkArrayMgrNY
+0000:         CNetworkArrayMgr
+0000:     CPedIntelligenceNY
+0000:         CPedIntelligence

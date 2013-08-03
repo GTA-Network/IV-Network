@@ -99,6 +99,7 @@
     <ClCompile Include="Game\Entity\CEntityManager.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CLocalPlayer.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="..\..\Libraries\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
+    <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="Game\CGame.h" />
@@ -127,6 +129,12 @@
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
+    <ClInclude Include="IV\CIVScript.h" />
+    <ClInclude Include="IV\CIVScriptEnums.h" />
+    <ClInclude Include="IV\CIVScriptHook.h" />
+    <ClInclude Include="IV\CIVScript_FunctionContext.h" />
+    <ClInclude Include="IV\CIVScript_FunctionInvoke.h" />
+    <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="StdInc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

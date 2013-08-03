@@ -11,7 +11,6 @@
 #define CCore_h
 
 #include <Common.h>
-
 #include "Game/CGame.h"
 
 #include "Game/COffsets.h"
@@ -21,6 +20,7 @@
 #include "CLogFile.h"
 #include "CSettings.h"
 #include "SharedUtility.h"
+#include <Game\eGame.h>
 
 typedef int IDirect3DDevice9;
 typedef int D3DPRESENT_PARAMETERS;
@@ -34,6 +34,8 @@ private:
 	unsigned int					m_uiBaseAddress;
 
 	CGame							* m_pGame;
+
+	eGAMEStates						m_eGameState;
 public:
 
 									CCore();
@@ -59,6 +61,9 @@ public:
 	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
 
 	CGame							* GetGame() { return m_pGame; }
+
+	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
+	eGAMEStates						GetClientState() { return m_eGameState; }
 };
 
 #endif // CCore_h

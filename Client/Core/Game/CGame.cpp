@@ -32,11 +32,11 @@ void CGame::Setup()
 
 void CGame::Initialise()
 {
-	if(!m_pLocalPlayer)
-		m_pLocalPlayer = new CLocalPlayer;
+	//if(!m_pLocalPlayer)
+		//m_pLocalPlayer = new CLocalPlayer();
 
-	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY);
-	m_pLocalPlayer->Reset();
+	//m_pLocalPlayer->SetPlayerId(INVALID_ENTITY);
+	//m_pLocalPlayer->Reset();
 }
 
 void CGame::UnprotectMemory()
