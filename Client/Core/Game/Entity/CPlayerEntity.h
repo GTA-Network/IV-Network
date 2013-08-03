@@ -22,6 +22,9 @@ public:
 
 	bool				IsSpawned();
 
+	virtual bool		Create();
+	virtual bool		Destroy();
+
 	EntityId			GetPlayerId() { return CNetworkEntity::GetId(); }
 	void				SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }
 

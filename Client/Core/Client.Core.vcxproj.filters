@@ -57,6 +57,12 @@
     <Filter Include="Header Files\Libraries\TinyXML">
       <UniqueIdentifier>{7cdf702d-b1e9-4083-bf5d-d1c7b66e1d53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Hooks">
+      <UniqueIdentifier>{02408d36-7c79-41de-99ef-1ffc5dac31db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Hooks">
+      <UniqueIdentifier>{4d98599e-a030-4714-9650-a026b6476c88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -124,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp">
       <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CLocalPlayer.h">
+      <Filter>Header Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CLocalPlayer.cpp">
+      <Filter>Source Files\Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

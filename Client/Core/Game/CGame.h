@@ -10,15 +10,20 @@
 #ifndef CGame_h
 #define CGame_h
 
+#include <Network\CLocalPlayer.h>
+
 class CGame {
+private:
+	CLocalPlayer			*m_pLocalPlayer;
 
 public:
+							CGame() { };
+							~CGame() { };
 
-					CGame() { };
-					~CGame() { };
-
-	static void		Setup();
-	static void		UnprotectMemory();
+	void					Initialise();
+	static void				Setup();
+	static void				UnprotectMemory();
+	CLocalPlayer			*GetLocalPlayer() { return m_pLocalPlayer; }
 };
 
 #endif // CGame_h

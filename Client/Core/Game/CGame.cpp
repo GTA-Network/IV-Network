@@ -30,6 +30,15 @@ void CGame::Setup()
 	CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0 ); // Remove Thread?
 }
 
+void CGame::Initialise()
+{
+	if(!m_pLocalPlayer)
+		m_pLocalPlayer = new CLocalPlayer;
+
+	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY);
+	m_pLocalPlayer->Reset();
+}
+
 void CGame::UnprotectMemory()
 {
 	BYTE * pImageBase = (BYTE *)(g_pCore->GetBase() + 0x400000);

@@ -10,6 +10,27 @@
 #include "CPlayerEntity.h"
 
 
+CPlayerEntity::CPlayerEntity() : 
+	CNetworkEntity()
+{
+}
+
+CPlayerEntity::~CPlayerEntity()
+{
+
+}
+
+bool CPlayerEntity::Create()
+{
+	//
+	return true;
+}
+
+bool CPlayerEntity::Destroy()
+{
+	//
+	return true;
+}
 void CPlayerEntity::GetPosition(CVector3& vecPos)
 {
 	// Check if player is spawned
