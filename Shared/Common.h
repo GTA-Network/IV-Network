@@ -17,5 +17,6 @@
 
 // typedef
 typedef CString string;							// CString class defined is in /Shared/CString.h
+typedef unsigned short EntityId;
 
 #endif // Common_h

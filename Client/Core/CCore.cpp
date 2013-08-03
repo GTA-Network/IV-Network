@@ -5,7 +5,7 @@
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==============================================================================
+//==========================================================================================
 
 #include	"CCore.h"
 #include	<Windows.h>
@@ -25,6 +25,10 @@ CCore::CCore(void)
 
 	// Mark the game as not loaded
 	SetGameLoaded(false);
+
+	// Reset instances
+	m_pGame = NULL;
+	m_pOffsets = NULL;
 }
 
 CCore::~CCore()
@@ -38,28 +42,21 @@ bool CCore::Initialise()
 	if(m_bInitialised)
 		return false;
 
-	/*
-	// Open the log file
-	CLogFile::Open( "multiplayer\\client.log" );
-
-	// Open the settings file
-	CSettings::Open( SharedUtility::GetAbsolutePath("multiplayer\\settings\\ivmp.xml"), true, false );
-
-	// Parse the command line
-	CSettings::ParseCommandLine( GetCommandLine() );
-
-	// Set the info
-	SetNick(CVAR_GET_STRING("nick"));
-	SetHost(CVAR_GET_STRING("ip"));
-	SetPort(CVAR_GET_INTEGER("port"));
-	SetPass(CVAR_GET_STRING("pass"));
-	*/
-
 	// Get the applicatin base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
 
 	// Subtract the image size from the base address
 	m_uiBaseAddress -= 0x400000;
+
+	// Create the game instance
+	m_pGame = new CGame;
+
+	// Create the offsets instance
+	m_pOffsets = new COffsets;
+
+	// Check if we have our offset instance
+	if(m_pOffsets)
+		m_pOffsets->Initialize(m_uiBaseAddress);
 
 	//CLogFile::Printf("Done!");
 	return true;

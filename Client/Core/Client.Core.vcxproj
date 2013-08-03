@@ -55,6 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <AdditionalIncludeDirectories>../../Shared; ../Core;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,12 +78,28 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp" />
-    <ClCompile Include="CGame.cpp" />
+    <ClCompile Include="Game\CGame.cpp" />
+    <ClCompile Include="Game\COffsets.cpp" />
+    <ClCompile Include="Game\Entity\CEntityManager.cpp" />
+    <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
+    <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h" />
-    <ClInclude Include="CGame.h" />
+    <ClInclude Include="Game\CGame.h" />
+    <ClInclude Include="Game\COffsets.h" />
+    <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
+    <ClInclude Include="Game\Entity\CActorEntity.h" />
+    <ClInclude Include="Game\Entity\CBlipEntity.h" />
+    <ClInclude Include="Game\Entity\CCheckpointEntity.h" />
+    <ClInclude Include="Game\Entity\CEntityManager.h" />
+    <ClInclude Include="Game\Entity\CFireEntity.h" />
+    <ClInclude Include="Game\Entity\CNetworkEntity.h" />
+    <ClInclude Include="Game\Entity\CObjectEntity.h" />
+    <ClInclude Include="Game\Entity\CPickupEntity.h" />
+    <ClInclude Include="Game\Entity\CPlayerEntity.h" />
+    <ClInclude Include="Game\Entity\CVehicleEntity.h" />
     <ClInclude Include="StdInc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

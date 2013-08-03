@@ -10,7 +10,8 @@
 #ifndef CCore_h
 #define CCore_h
 
-#include "CGame.h"
+#include "Game/CGame.h"
+#include "Game/COffsets.h"
 
 typedef int IDirect3DDevice9;
 typedef int D3DPRESENT_PARAMETERS;
@@ -24,6 +25,7 @@ private:
 	unsigned int					m_uiBaseAddress;
 
 	CGame							* m_pGame;
+	COffsets						* m_pOffsets;
 public:
 
 									CCore();
@@ -48,6 +50,7 @@ public:
 	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
 
 	CGame							* GetGame() { return m_pGame; }
+	COffsets						* GetOffsets() { return m_pOffsets; }
 };
 
 #endif // CCore_h

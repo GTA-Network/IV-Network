@@ -36,6 +36,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server.Core", "Server\Serve
 		{766B64D1-3EE0-42C3-A69A-D1293FE90524} = {766B64D1-3EE0-42C3-A69A-D1293FE90524}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{B416D3CF-6183-425A-8F23-4C3079B243EF}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Math\CIVVector.h = Shared\Math\CIVVector.h
+		Shared\Math\CMaths.h = Shared\Math\CMaths.h
+		Shared\Math\CVector3.h = Shared\Math\CVector3.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -72,5 +79,6 @@ Global
 		{4257EAF3-7A0B-4E2D-A45D-78E4FBCF67F2} = {B595E6DA-BAB2-43D5-B5FB-23D511693726}
 		{766B64D1-3EE0-42C3-A69A-D1293FE90524} = {FF6C4EC1-6142-4E00-BCB6-28EAAF9A1DE8}
 		{5AD2BD08-FCBD-474F-AECD-F9ACDA0A2031} = {88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}
+		{B416D3CF-6183-425A-8F23-4C3079B243EF} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 	EndGlobalSection
 EndGlobal

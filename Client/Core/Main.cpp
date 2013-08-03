@@ -5,11 +5,10 @@
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==============================================================================
+//=========================================================================================
 
 #include "CCore.h"
 #include <Windows.h>
-
 
 CCore		* pCore = NULL;
 HMODULE		g_hModule = NULL;
