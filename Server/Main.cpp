@@ -19,6 +19,9 @@ bool g_bClose = false;
 
 int main(int argc, char ** argv)
 {
+	// Open the log file
+	CLogFile::Open("ivmp-svr.log", true);
+
 	CServer* pServer = new CServer();
 
 	if(pServer)
@@ -30,25 +33,33 @@ int main(int argc, char ** argv)
 		// Startup server and load all scripts
 		if(!pServer->Startup())
 		{
-			CLogFile::Printf("Failed to start server! ");
-			return 1;
+			CLogFile::Printf("Failed to start server!");
+#ifdef _WIN32
+			ExitProcess(0);
+#else
+			exit(0);
+#endif
 		}
 
 		while(!g_bClose)
 		{
 			pServer->Process();
+			
 		}
 
 		pServer->Shutdown();
 
 		// Stop the input thread
-		inputThread.Stop();
-		
+		inputThread.Stop(true, true);
+
 		// Delete our server
 		SAFE_DELETE(pServer);
 
-		// Exit process
-		return 1;
+#ifdef _WIN32
+		ExitProcess(0);
+#else
+		exit(0);
+#endif
 	}
 	else
 	{
