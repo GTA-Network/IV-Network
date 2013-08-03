@@ -8,10 +8,11 @@
 //==========================================================================================
 
 #include	"CGame.h"
+#include	<Patcher\CPatcher.h>
 #include	<CCore.h>
 #include	<Windows.h>
 
-extern	CCore				* pCore;
+extern	CCore				* g_pCore;
 
 /*
 	==== Why WaitForGameStartup ====
@@ -27,4 +28,20 @@ DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 void CGame::Setup()
 {
 	CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0 ); // Remove Thread?
+}
+
+void CGame::UnprotectMemory()
+{
+	BYTE * pImageBase = (BYTE *)(g_pCore->GetBase() + 0x400000);
+	PIMAGE_DOS_HEADER   pDosHeader = (PIMAGE_DOS_HEADER)pImageBase;
+	PIMAGE_NT_HEADERS   pNtHeader  = (PIMAGE_NT_HEADERS)(pImageBase + pDosHeader->e_lfanew);
+	PIMAGE_SECTION_HEADER pSection = IMAGE_FIRST_SECTION(pNtHeader);
+
+	for(int iSection = 0; iSection < pNtHeader->FileHeader.NumberOfSections; iSection++, pSection++)
+	{
+		char * pszSectionName = (char *)pSection->Name;
+
+		if(!strcmp(pszSectionName, ".text") || !strcmp(pszSectionName, ".rdata"))
+			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
+	}
 }

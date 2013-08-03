@@ -122,6 +122,9 @@
     <ClCompile Include="..\..\Libraries\tinyxml\tinyxmlparser.cpp">
       <Filter>Source Files\Libraries\TinyXML</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Libraries\tinyxml\tinyxml.h">
       <Filter>Header Files\Libraries\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Patcher\CPatcher.h">
+      <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

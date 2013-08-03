@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../Libraries; ../Core;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared; ../../../Shared; ../../Libraries; ../Core;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,6 +86,7 @@
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
+    <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="..\..\Libraries\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
+    <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />

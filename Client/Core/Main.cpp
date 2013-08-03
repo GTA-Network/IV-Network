@@ -11,7 +11,7 @@
 #include <WinSock2.h>
 #include <Windows.h>
 
-CCore		* pCore = NULL;
+CCore		* g_pCore = NULL;
 HMODULE		g_hModule = NULL;
 
 BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
@@ -26,16 +26,13 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			// Disable thread library calls
 			DisableThreadLibraryCalls(hModule);
 
-			// Install the exception handler
-			//CExceptionHandler::Install();
-
 			// Create the core instance
-			pCore = new CCore;
+			g_pCore = new CCore;
 
 			// Did the core fail to create or initialsie?
-			if(!pCore || !pCore->Initialise())
+			if(!g_pCore || !g_pCore->Initialise())
 			{
-				//CLogFile::Printf("Terminating...");
+				CLogFile::Printf("Terminating...");
 
 				// Terminate the process
 				TerminateProcess(GetCurrentProcess(), 0);
@@ -45,7 +42,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 
 	case DLL_PROCESS_DETACH:
 		{
-			//CLogFile::Print("Terminating process");
+			CLogFile::Print("Terminating process");
 
 			// Terminate the process
 			TerminateProcess(GetCurrentProcess(), 0);

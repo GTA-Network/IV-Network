@@ -14,8 +14,10 @@ class CPatches {
 private:
 
 public:
-	CPatches();
-	~CPatches();
+					CPatches() { };
+					~CPatches() { };
+
+	static void		Initialize();
 };
 
 #endif // CPatches_h

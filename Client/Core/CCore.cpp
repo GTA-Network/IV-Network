@@ -10,8 +10,8 @@
 #include	"CCore.h"
 #include	<Windows.h>
 
-extern	CCore			* pCore;
-bool					bDeviceLost = false;
+extern	CCore			* g_pCore;
+bool					g_bDeviceLost = false;
 
 DWORD WINAPI WaitForGame(LPVOID lpParam)
 {
@@ -28,7 +28,6 @@ CCore::CCore(void)
 
 	// Reset instances
 	m_pGame = NULL;
-	m_pOffsets = NULL;
 }
 
 CCore::~CCore()
@@ -44,6 +43,7 @@ bool CCore::Initialise()
 
 	// Open the log file
 	CLogFile::Open( "IVMP-Client.log" );
+	CLogFile::Printf( "CCore::Initialize" );
 
 	// Get the applicatin base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
@@ -54,15 +54,29 @@ bool CCore::Initialise()
 	// Open the settings file
 	CSettings::Open( SharedUtility::GetAbsolutePath("IVMP-Client.xml"), true, false );
 
+	// Parse the command line
+	CSettings::ParseCommandLine( GetCommandLine() );
+
+	/* // Set the info
+	SetNick( CVAR_GET_STRING("nick") );
+	SetHost( CVAR_GET_STRING("ip") );
+	SetPort( CVAR_GET_INTEGER("port") );
+	SetPass( CVAR_GET_STRING("pass") );*/
+
 	// Create the game instance
 	m_pGame = new CGame;
 
-	// Create the offsets instance
-	m_pOffsets = new COffsets;
+	// Unprotect memory before starting addressing
+	m_pGame->UnprotectMemory();
 
-	// Check if we have our offset instance
-	if(m_pOffsets)
-		m_pOffsets->Initialize(m_uiBaseAddress);
+	// Intialize the offsets instance
+	COffsets::Initialize(m_uiBaseAddress);
+
+	// Apply hook's to game
+	CHooks::Intialize();
+
+	// Patch game addresses
+	CPatches::Initialize();
 
 	CLogFile::Printf("Done!");
 	return true;
@@ -76,6 +90,10 @@ void CCore::OnGameLoad()
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
+
+	// Create Instances
+	// Startup the network module
+	// Connect to the network
 }
 
 void CCore::OnGamePreLoad()
@@ -104,7 +122,7 @@ void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 	// Release the saved stateblock
 
 	// Mark as lost device
-	bDeviceLost = true;
+	g_bDeviceLost = true;
 }
 
 void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
@@ -112,7 +130,7 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
 	// Let the graphics module know the device is reset
 
 	// Mark as not lost device
-	bDeviceLost = false;
+	g_bDeviceLost = false;
 }
 
 void CCore::OnDevicePreRender()
@@ -128,7 +146,7 @@ void CCore::OnDevicePreRender()
 void CCore::OnDeviceRender()
 {
 	// Has the device been lost?
-	if(bDeviceLost)
+	if(g_bDeviceLost)
 		return;
 
 	// Render 

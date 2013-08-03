@@ -1,6 +1,6 @@
 //================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
-// File: CGame.cpp
+// File: COffsets.cpp
 // Project: Client.Core
 // Author: FRi<FRi.developing@gmail.com>, XForce
 // License: See LICENSE in root directory
@@ -9,6 +9,7 @@
 
 #include "COffsets.h"
 #include "CGame.h"
+#include "../../Shared/CLogFile.h"
 
 eGameVersion COffsets::m_GameVersion = GAME_VERSION_UNKNOWN;
 
@@ -22,12 +23,13 @@ INIT_OFF(FUNC_CPlayerPed__Constructor);
 INIT_OFF(FUNC_CPedIntelligence__Reset);
 INIT_OFF(FUNC_CPed__ScalarDeletingDestructor);
 
-INIT_OFF(FÙNC_CEpisodes__IsEpisodeAvaliable);
+INIT_OFF(FUNC_CEpisodes__IsEpisodeAvaliable);
 INIT_OFF(FUNC_GetPlayerInfoFromIndex);
 INIT_OFF(FUNC_GetIndexFromPlayerInfo);
 INIT_OFF(FUNC_GetLocalPlayerPed);
 INIT_OFF(FUNC_CTask__Destructor);
 INIT_OFF(FUNC_RemoveInitialLoadingScreens);
+INIT_OFF(FUNC_GENERATETEXTURE);
 
 // Game
 INIT_OFF(VAR_MenuActive_1);
@@ -247,6 +249,8 @@ enum ePATCH_SIG
 
 void COffsets::Initialize(unsigned int uiBase)
 {
+	CLogFile::Printf( "Starting patching addresses to offsets" );
+
 	m_GameVersion = GAME_VERSION_UNKNOWN;
 	unsigned int * uiTestAddr = (unsigned int *)(uiBase + 0x608C34);
 
@@ -261,12 +265,13 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(CALL_StartLoadingTune,0x41FDA0);
 			SET_OFF(VAR_NumberOfParkedCars,0xF1D964);
 
-			SET_OFF(FÙNC_CEpisodes__IsEpisodeAvaliable, 0x814810);
+			SET_OFF(FUNC_CEpisodes__IsEpisodeAvaliable, 0x814810);
 			SET_OFF(FUNC_GetPlayerInfoFromIndex, 0x817F20);
 			SET_OFF(FUNC_GetIndexFromPlayerInfo, 0x817DC0);
 			SET_OFF(FUNC_GetLocalPlayerPed, 0x817F40);
 			SET_OFF(FUNC_CTask__Destructor, 0xA288D0);
 			SET_OFF(FUNC_RemoveInitialLoadingScreens, 0x424B26);
+			SET_OFF(FUNC_GENERATETEXTURE, 0x639710);
 
 			//Player
 			SET_OFF(FUNC_CreatePlayerPed,0x81CB90);
@@ -478,4 +483,5 @@ void COffsets::Initialize(unsigned int uiBase)
 			break;
 
 	};
+	CLogFile::Printf( "Finished patching addresses to offsets" );
 }

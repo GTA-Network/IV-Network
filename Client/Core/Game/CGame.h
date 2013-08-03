@@ -17,7 +17,8 @@ public:
 					CGame() { };
 					~CGame() { };
 
-	void			Setup( );
+	static void		Setup();
+	static void		UnprotectMemory();
 };
 
 #endif // CGame_h

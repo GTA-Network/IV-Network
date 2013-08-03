@@ -10,4 +10,4 @@
 #include	"CGameFiles.h"
 #include	<CCore.h>
 
-extern	CCore				* pCore;
+extern	CCore				* g_pCore;

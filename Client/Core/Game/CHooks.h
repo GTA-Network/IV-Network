@@ -14,8 +14,10 @@ class CHooks {
 private:
 
 public:
-	CHooks();
-	~CHooks();
+					CHooks() { };
+					~CHooks() { };
+
+	static void		Intialize();
 };
 
 #endif // CHooks_h

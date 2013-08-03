@@ -47,12 +47,13 @@ public:
 	DEF_OFF(FUNC_CPedMoveBlendOnFoot__Constructor);
 	DEF_OFF(FUNC_NEW_CPedData);
 
-	DEF_OFF(FÙNC_CEpisodes__IsEpisodeAvaliable);
+	DEF_OFF(FUNC_CEpisodes__IsEpisodeAvaliable);
 	DEF_OFF(FUNC_GetPlayerInfoFromIndex);
 	DEF_OFF(FUNC_GetIndexFromPlayerInfo);
 	DEF_OFF(FUNC_GetLocalPlayerPed);
 	DEF_OFF(FUNC_CTask__Destructor);
 	DEF_OFF(FUNC_RemoveInitialLoadingScreens);
+	DEF_OFF(FUNC_GENERATETEXTURE);
 
 	DEF_OFF(CALL_StartLoadingTune);
 	DEF_OFF(VAR_NumberOfParkedCars);
