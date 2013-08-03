@@ -9,7 +9,7 @@
 
 #include	"CPatches.h"
 #include	<CCore.h>
-#include	"../../../Shared/Patcher/CPatcher.h"
+#include	<Patcher\CPatcher.h>
 
 extern	CCore				* g_pCore;
 

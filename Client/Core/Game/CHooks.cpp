@@ -10,7 +10,7 @@
 #include	"CHooks.h"
 #include	"COffsets.h"
 #include	<CCore.h>
-#include	"../../../Shared/Patcher/CPatcher.h"
+#include	<Patcher\CPatcher.h>
 
 // Temp typedef(until we're added this classes)
 typedef DWORD IVTask;

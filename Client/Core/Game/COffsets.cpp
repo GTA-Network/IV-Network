@@ -9,7 +9,7 @@
 
 #include "COffsets.h"
 #include "CGame.h"
-#include "../../Shared/CLogFile.h"
+#include <CLogFile.h>
 
 eGameVersion COffsets::m_GameVersion = GAME_VERSION_UNKNOWN;
 
