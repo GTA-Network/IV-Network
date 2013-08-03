@@ -87,6 +87,8 @@ bool CCore::Initialise()
 	// Install the DirectInput hook
 	CDirectInputHook::Install();
 
+	CIVScriptingHook::InstallScriptHooks();
+
 	CLogFile::Printf("Done!");
 	return true;
 }
