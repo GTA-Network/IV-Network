@@ -7,7 +7,12 @@
 //
 //==========================================================================================
 
+#include "SharedUtility.h"
 #include <string.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <stdio.h>
 #ifdef _WIN32
 #include <winsock2.h>
 #include <windows.h>
@@ -24,11 +29,6 @@
 #include <limits.h>
 #include <unistd.h>
 #endif
-#include <time.h>
-#include <sys/stat.h>
-#include <errno.h>
-#include "SharedUtility.h"
-#include <stdio.h>
 
 #ifndef _WIN32
 #define MAX_PATH PATH_MAX
@@ -108,17 +108,17 @@ namespace SharedUtility
 		return szExePath;
 	}
 
-	String GetAbsolutePath(const char * szFormat, ...)
+	CString GetAbsolutePath(const char * szFormat, ...)
 	{
 		va_list args;
 		char szBuffer[1024];
 		va_start(args, szFormat);
 		vsnprintf(szBuffer, sizeof(szBuffer), szFormat, args);
 		va_end(args);
-		return String("%s%s", GetAppPath(), szBuffer);
+		return CString("%s%s", GetAppPath(), szBuffer);
 	}
 
-	String FileNameFromPath(String strPath)
+	CString FileNameFromPath(CString strPath)
 	{
 		// Find the last back slash
 		unsigned int uiLastBackslash = strPath.ReverseFind('\\');
@@ -127,7 +127,7 @@ namespace SharedUtility
 		unsigned int uiLastForwardslash = strPath.ReverseFind('/');
 
 		// Did we not find any slashes?
-		if(uiLastBackslash == String::nPos && uiLastForwardslash == String::nPos)
+		if(uiLastBackslash == std::string::npos && uiLastForwardslash == std::string::npos)
 		{
 			// Return the path
 			return strPath;
@@ -136,9 +136,9 @@ namespace SharedUtility
 		// Find the highest index out of the two last slashes
 		unsigned int uiLastSlash = 0;
 		{
-			if(uiLastBackslash == String::nPos)
+			if(uiLastBackslash == std::string::npos)
 				uiLastSlash = uiLastForwardslash;
-			else if(uiLastForwardslash == String::nPos)
+			else if(uiLastForwardslash == std::string::npos)
 				uiLastSlash = uiLastBackslash;
 			else
 				uiLastSlash = ((uiLastBackslash > uiLastForwardslash) ? uiLastBackslash : uiLastForwardslash);
@@ -155,7 +155,7 @@ namespace SharedUtility
 		}
 
 		// Return the file name
-		return strPath.SubStr(uiLastSlash);
+		return strPath.Substring(uiLastSlash);
 	}
 
 #ifdef WIN32
@@ -576,7 +576,7 @@ namespace SharedUtility
 		return 0;
 	}
 
-	String RemoveIllegalCharacters(String& strFileName)
+	CString RemoveIllegalCharacters(CString& strFileName)
 	{
 		// Reset the found count
 		unsigned int uiFound = 0;
@@ -602,7 +602,7 @@ namespace SharedUtility
 		return strFileName;
 	}
 
-	String GetTimePassedFromTime(unsigned long ulTime)
+	CString GetTimePassedFromTime(unsigned long ulTime)
 	{
 		int iSecondsPassed = ((GetTime() - ulTime) / 1000);
 		int iSeconds       = (iSecondsPassed % 60);
@@ -612,6 +612,6 @@ namespace SharedUtility
 		int iHours         = (iHoursPassed % 60);
 		int iDaysPassed    = (iHoursPassed / 24);
 		int iDays          = (iDaysPassed % 24);
-		return String("%d day(s), %d hour(s), %d minute(s) and %d second(s)", iDays, iHours, iMinutes, iSeconds);
+		return CString("%d day(s), %d hour(s), %d minute(s) and %d second(s)", iDays, iHours, iMinutes, iSeconds);
 	}
 };

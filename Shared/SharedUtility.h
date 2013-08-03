@@ -10,6 +10,9 @@
 #ifndef SharedUtility_h
 #define SharedUtility_h
 
+#include <string>
+#include "Common.h"
+#include "CString.h"
 #ifdef WIN32
 #include <WinSock2.h>
 #include <windows.h>
@@ -17,9 +20,6 @@
 #include <sys/time.h>
 typedef unsigned long DWORD;
 #endif
-#include <string>
-#include "Common.h"
-#include <CString.h>
 
 namespace SharedUtility
 {
@@ -38,10 +38,10 @@ const char * GetAppPath();
 const char * GetExePath();
 
 // Prepend the application path to the string provided
-String GetAbsolutePath(const char * szFormat, ...);
+CString GetAbsolutePath(const char * szFormat, ...);
 
 // Return the filename from the path
-String FileNameFromPath(String strPath);
+CString FileNameFromPath(CString strPath);
 
 #ifdef WIN32
 // Inject the library into the specified process
@@ -114,10 +114,10 @@ const char * inet_ntop(int af, const void * src, char * dst, int cnt);
 int inet_pton(int af, const char * src, void * dst);
 
 // Remove illegal characters from a file name
-String RemoveIllegalCharacters(String& strFileName);
+CString RemoveIllegalCharacters(CString& strFileName);
 
 // Return a string with the amount of time passed from the specified time
-String GetTimePassedFromTime(unsigned long ulTick);
+CString GetTimePassedFromTime(unsigned long ulTick);
 }
 
 #endif

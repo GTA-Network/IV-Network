@@ -27,6 +27,9 @@
     <ClCompile Include="..\..\Shared\CString.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\SharedUtility.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Shared\CString.h">
@@ -35,5 +38,16 @@
     <ClInclude Include="..\..\Shared\Common.h">
       <Filter>Header Files\Shared</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\SharedUtility.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Launcher.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
