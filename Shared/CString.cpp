@@ -700,6 +700,6 @@ char * CString::GetData() const
 char * CString::CopyData() const
 {
 	char * c = new char[m_stdStr.length()];
-	strcpy(c, m_stdStr.c_str());
+	strcpy_s(c, m_stdStr.length(), m_stdStr.c_str());
 	return c;
 }
