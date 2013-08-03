@@ -827,5 +827,8 @@
     <ClInclude Include="NetCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CRPCHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

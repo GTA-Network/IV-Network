@@ -10,18 +10,21 @@
 #ifndef CServer_h
 #define CServer_h
 
+#include "Common.h"
+#include "CNetworkServer.h"
+
 class CServer {
 
 private:
+	CNetworkServer * m_pNetServer;
 
 public:
 	CServer();
 	~CServer();
 
-	bool	Startup();
+	bool	Startup(string& outStrError);
 	void	Process();
 	void	Shutdown();
-
 };
 
 #endif // CServer_h

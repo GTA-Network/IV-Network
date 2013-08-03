@@ -193,6 +193,7 @@
     <ClCompile Include="RakNet\_FindFirst.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CRPCHandler.hpp" />
     <ClInclude Include="NetCommon.h" />
     <ClInclude Include="CNetworkServer.h" />
     <ClInclude Include="CRakNetInterface.h" />
