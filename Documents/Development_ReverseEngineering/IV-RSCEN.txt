@@ -1,0 +1,148 @@
+each RSC file constains one serialized object with all included data.
+
+wad: rage::pgDictionary<rage::crAnimation>
+wbd: rage::pgDictionary<rage::phBound>
+wbn: rage::pgBaseWrapper<rage::datOwner<rage::phBound>>
+wbs: rage::grbTargetManager
+wdd: rage::pgDictionary<gtaDrawable>
+wdr: gtaDrawable
+wft: gtaFragType
+whm: CHtmlDocument
+wtd: rage::pgDictionary<rage::grcTexturePC>
+
+
+// ** Classes and structures **
+
+// stupid name, but it is really collection, and it's really simple :-)
+template<typename T> struct CSimpleCollection {	// size = 8
+	T*	pData;	// +0   pointer to T[wSize]
+	WORD	wCount;	// +4	number of used elements in pData
+	WORD	wSize;	// +6	
+};
+
+template<class T> struct CPtrCollection { // size = 8
+	T**	pData;	// +0
+	WORD	wCount;	// +2
+	WORD	wSize;
+};
+
+
+struct rage::datBase { // size = 4
+	void * __vmt;	// +0 VMT placeholder (must be removed, if any virtual method declared)
+};
+
+struct rage::pgBase : public rage::datBase { // size = 8
+	DWORD * m_pBlockMap;	// +4 points to memory manager info (array of 128 DWORDs, first entry must be 0)
+};
+
+template<class T> struct rage::pgDictionary : public rage::pgBase {	// size = 0x20
+	rage::pgDictionary<T> *		m_pParentDictionary;	// +8	
+	DWORD				m_dwUsageCount;		// +0x0C
+	CSimpleCollection <DWORD>	m_nameHashes;		// +0x10 hashes of entry names, for fast lookup
+	CPtrCollection<T>		m_entries;		// +0x18
+};
+
+-------------------------------------------------------------------------------
+// wdr/wdd contents
+
+struct rage::grcVertexBufferD3D : public rage::datBase { // size = 0x20
+  	WORD	m_wVertexCount; 	// +4 
+  	BYTE	m_bLocked;  		// +6 flag: is m_pLockedData valid
+  	BYTE	_align1;  		// +7
+  	BYTE *	m_pLockedData;  	// +8 pointer to buffer, obtained by IDirect3DVertexBuffer9::Lock, in file, same as m_pVertexData
+  	DWORD	m_dwVertexSize;		// +0xC vertex size in bytes
+  	void *	_f10;			// +0x10 pointer to unknown struct with vertex format
+  	DWORD  	m_dwLockThreadId;	// +0x14 (0 in file)
+  	BYTE *  m_pVertexData;  	// +0x18 pointer to loaded data (in GPU seg)
+  	IDirect3DVertexBuffer9 * piVertexBuffer;  // +0x1C (0 in file)
+};
+
+struct rage::grcIndexBufferD3D : public rage::datBase { // size = 0x10
+  	DWORD	m_dwIndexCount;	// +4
+  	WORD *	m_pIndexData;  	// +8
+  	IDirect3DIndexBuffer9 * piIndexBuffer; // +0xC
+};
+
+struct rage::grmGeometry : public rage::datBase {  // size = 0x4C
+	DWORD	_f4;  // +4
+	DWORD  	_f8;
+  	rage::grcVertexBufferD3D * m_vertexBuffers[4];  // +0xC
+  	rage::grcIndexBufferD3D  * m_indexBuffers[4]; 	// +0x1C
+  	DWORD  	m_dwIndexCount;		// +0x2C
+  	DWORD  	m_dwFaceCount;		// +0x30
+  	WORD  	m_wVertexCount;		// +0x34
+  	WORD  	m_wIndicesPerFace;	// +0x36  
+  	void *  _f38;   
+  	WORD  	m_wVertexStride;   	// +0x3C Essentially size of each vertex
+  	WORD  	_f3E;
+  	DWORD  	_f40;
+  	void *	_f44;
+  	DWORD  	_f48;
+};
+
+struct rage::grmModel : public rage::datBase {  // size = 0x1C 
+	CPtrCollection<rage::grmGeometry>  m_geometries;  // +4 
+  	void *	_fC;
+  	void *	_f10;
+  	BYTE  	_f14;
+  	BYTE  	_f15;
+  	BYTE  	_f16;
+  	BYTE   	_f17;
+  	BYTE  	_f18;
+  	BYTE  	_f19;
+  	WORD  	_f1A;
+};
+
+struct rage::grmShaderGroup : public rage::datBase { // size = 0x50
+	rage::pgDictionary<rage::grcTexture> *	m_txd;		// +4
+  	CPtrCollection<rage::grmShaderFx> 	m_shaders;	// +8
+	CPtrCollection<void> 			_f10;		// collection of unknown structs
+	CPtrCollection<void> 			_f18;		// collection of unknown structs
+	CPtrCollection<void> 			_f20;		// collection of unknown structs
+	CPtrCollection<void> 			_f28;		// collection of unknown structs
+	CSimpleCollection<DWORD> 		_f30;
+	CSimpleCollection<CSimpleCollection<DWORD>> 	_f38;     
+	CSimpleCollection<DWORD> 		_f40;
+	CSimpleCollection<DWORD> 		_f48;
+};
+
+struct rage::rmcDrawable : public rage::pgBase { // size = 0x80
+	void *	m_shaderGroup;	// +8 pointer to rage::grmShaderGroup (unknown yet)
+	void *	_fC;		// +0xC pointer to unknown object (rage::crJointDataFile inside)
+	BYTE	_unknown10[48];	// unknown
+	CPtrCollection<rage::grmModel> * m_models[4];	// +0x40 pointers to collections of models
+	BYTE	_unknown50[48];	// unknown
+};
+
+struct gtaDrawable : public rage::rmcDrawable { // size = 0x88
+	CSimpleCollection<CLightAttr>  m_lightAttrs;  // +0x80
+};
+
+-------------------------------------------------------------------------------
+// wtd contents
+
+struct rage::grcTexturePC : public rage::pgBase { // size = 0x50
+	BYTE	_f8;		// +0x08 unknown
+	BYTE	m_nbDepth;	// +0x09 volume texture depth
+	WORD	_fA;		// +0x0A unknown
+	DWORD	_fC;		// +0x0C unknown
+	DWORD	_f10;		// +0x10 unknown
+	char * 	m_pszTextureName;// +14 pointer to texture filename
+	IDirect3DBaseTexture9 * m_pITexture; // +0x18 ptr to created D3D texture object
+	DWORD	_f18;		// +0x18 unknown
+	WORD	m_wWidth;	// +0x1C texture width (edge length for cube texture)
+	WORD	m_wHeight;	// +0x1E texture height
+	D3DFORMAT m_pixelFormat;// +0x20 texture pixel format
+	WORD	m_wStride;	// +0x24 bytes per texture line
+	BYTE	m_eTextureType;	// +0x26 texture type (1 - cube texture, 3 - volume texture, other - regular texture) 
+	BYTE	m_nbLevels;	// +0x27 number of levels in the texture (see IDirect3DDevice9::CreateTexture)
+	D3DVECTOR	_f28;	// +0x28 unknown
+	D3DVECTOR	_f34;	// +0x34 unknown
+	rage::grcTexture * m_pPrev;// +0x40 prev texture in global texture linked list
+	rage::grcTexture * m_pNext;// +0x44 next texture in global texture linked list
+	BYTE *	m_pPixelData;	// +0x48 as is (points into GPU part of RSC)
+	BYTE	_f4C;		// +0x4C unknown
+	BYTE	_f4D;		// +0x4D unknown
+	BYTE	_f4E;		// +0x4E unknown
+	BYTE	_f4F;		// +0x4F unknown
+};

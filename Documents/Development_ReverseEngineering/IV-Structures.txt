@@ -1,0 +1,156 @@
+class scrThread
+{
+public:
+	virtual ~scrThread();
+	virtual int reset(int i1,int i2,int i3);
+	virtual int run(int i1);
+	virtual int loop(int i1);
+	virtual int closeDown();
+ 
+	DWORD	threadId;
+	DWORD	scriptHash;
+	DWORD	state;
+	DWORD	IP;
+	DWORD	currentFrame;
+	DWORD	SP;
+	DWORD	timerA;
+	DWORD	timerB;
+	DWORD	timerC;
+	float	waitTime;
+	BYTE	zPadding1[28];
+	DWORD	exIP;
+	DWORD	exFrameSP;
+	BYTE	zPadding2[4];
+	void*	stack;
+	BYTE	zPadding3[4];
+	void*	XLiveBuffer;
+	BYTE	zPadding4[8];
+	char*	exitMessage;
+	char	programName[54];
+	BYTE	zPadding5[14];
+	bool	saveScript;
+	bool	playerControlOnInMissionCleanup;
+	bool	clearHelpInMissionCleanup;
+	BYTE	zPadding6[1];
+	bool	allowNonMinigameTextMessages;
+	BYTE	zPadding7[1];
+	bool	errorInScript;
+	bool	canBePaused;
+	BYTE	zPadding8[3];
+	bool	canRemoveBlipsCreatedByAnyScript;
+	BYTE	zPadding9[7];
+	DWORD	flags;
+};
+
+class CWeaponInfo // size: 0x110 (1.0.7.0)
+{
+        // weapontype (index of array element)
+        int weapontype;            // 0x0 | 0
+ 
+        // slottype (index of array element)
+        int slot;                  // 0x4 | 4
+ 
+        // firetype (index of array element)     
+        int firetype;              // 0x8 | 8
+ 
+        // damagetype (index of array element)
+        int damagetype;            // 0xC | 12
+ 
+        // group (index of array element)
+        int group;                 // 0x10 | 16
+ 
+        float targetrange;         // 0x14 | 20
+        float weaponrange;         // 0x18 | 24
+        int stattype;              // 0x1C | 28
+ 
+        // Weaponflags stored as bitflags. Refer to corresponding array. (if n-th bit is 1, array element n is true)
+        DWORD weaponflags;         // 0x20 | 32
+        DWORD modelhash;           // 0x24 | 36
+ 
+        float aimaccuracy;         // 0x34 | 52
+        float aimaccuracyfps;      // 0x38 | 52
+ 
+        float offset_x;            // 0x40 | 64
+        float offset_y;            // 0x44 | 68
+        float offset_z;            // 0x48 | 72
+        float crouchoffset_x;      // 0x50 | 80
+        float crouchoffset_y;      // 0x54 | 84
+        float crouchoffset_z;      // 0x58 | 88
+        float reticule_standing;   // 0x64 | 100
+        float reticule_ducked;     // 0x68 | 104
+        float reticule_scale;      // 0x6C | 108
+        int rumbleduration;        // 0x70 | 112
+        float rumbleintensity;     // 0x74 | 116
+        int pickup_regentime;      // 0x78 | 120
+        short pickup_ammoonstreet; // 0x80 | 124 
+ 
+        // damage:
+        short damage;              // 0x82 | 130
+        short damagefps;           // 0x84 | 132
+ 
+        short clipsize             // 0x86 | 132
+        short ammomax;             // 0x88 | 136
+        int timebetweenshots;      // 0x8C | 140
+        float physicsforce;        // 0x90 | 144
+        int reloadtime_normal;     // 0x94 | 150
+        int reloadtime_fast;       // 0x98 | 154
+        int reloadtime_crouch;     // 0x9C | 160
+        int projectiletype;        // 0xA0
+        int projectilefusetime;    // 0xA4
+ 
+        float projectilephysicsexplodeimpactthreshold // 0xD0
+        float projectilephysicsexplodeimpactwithvehiclethreshold // 0xD4
+        float projectilephysicsvehiclevelocity // 0xD8
+ 
+        // damage, continued:
+        float networkplayermod;    // 0xF0 | 240
+        float networkpedmod;       // 0xF4 | 244
+        float aimingaccuracytime;  // 0xF8
+        int   aimingpellets;       // 0xFC
+};
+
+class CVehicleInfo //Size=0x0110(272)
+{
+public:
+	char sIdentifier[16]; //0x0000  
+	float fMass; //0x0010  
+	float centreOfMassX; //0x0020  
+	float centreOfMassY; //0x0024  
+	float centreOfMassZ; //0x0028  
+	__int32 nPercentSubmerged; //0x0030  
+	float m_fDriveInertia; //0x003C  
+	__int16 m_nDriveGears; //0x0040  
+	float m_fDriveForce; //0x0044   
+	float m_fBrakeForce; //0x0074   
+	float m_fTractionCurveMax; //0x008C   
+	float m_fTractionCurveMin; //0x0094   
+	float m_fSuspensionForce; //0x00B4  
+	float m_fSuspensionCompDamp; //0x00B8  
+	float m_fSuspensionReboundDamp; //0x00BC  
+	float m_fSuspensionUpperLimit; //0x00C0  
+	float m_fSuspensionLowerLimit; //0x00C4  
+	float m_fSuspensionRaise; //0x00C8  
+	float m_fCollisionDamageMult; //0x00D4  
+	float m_fWeaponDamageMult; //0x00D8  
+	float m_fDeformationDamageMult; //0x00DC  
+	float m_fEngineDamageMult; //0x00E0  
+	float m_fSeatOffsetDist; //0x00E4  
+	__int32 m_nMonetaryValue; //0x00E8  
+	DWORD mFlags; //0x00EC  
+};
+
+struct CVector
+{
+	VECTOR	bodyHeading;		// 0x0 | 0
+	VECTOR	visionHeading;		// 0x10 | 16
+	VECTOR	unkVector;			// 0x20 | 32
+	VECTOR	position;			// 0x30 | 48
+};
+
+struct VECTOR
+{
+	float	x;	// 0x0 | 0
+	float	y;	// 0x4 | 4
+	float	z;	// 0x8 | 8
+	float	unk;
+};

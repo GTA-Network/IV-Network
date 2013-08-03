@@ -22,6 +22,7 @@ public:
 
 	void					Initialise();
 	static void				Setup();
+	static void				RenderRAGEScripts();
 	static void				UnprotectMemory();
 	CLocalPlayer			*GetLocalPlayer() { return m_pLocalPlayer; }
 };
