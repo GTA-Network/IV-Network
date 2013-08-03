@@ -11,28 +11,32 @@
 
 CServer::CServer()
 {
-
+	m_pNetServer = new CNetworkServer();
 }
 
 CServer::~CServer()
 {
-
+	SAFE_DELETE(m_pNetServer);
 }
 
 
-bool CServer::Startup()
+bool CServer::Startup(string& outStrError)
 {
-
+	if(!m_pNetServer->EnsureStarted(7890, 1, NULL))
+	{
+		outStrError = "Failed to start network port.";
+		return false;
+	}
 
 	return true;
 }
 
 void CServer::Process()
 {
-
+	m_pNetServer->Process();
 }
 
 void CServer::Shutdown()
 {
-
+	m_pNetServer->EnsureStopped(10);
 }

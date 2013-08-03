@@ -693,7 +693,7 @@ bool CString::IsAllocated() const
 
 char * CString::GetData() const
 {
-	// TODO: Better way?
+	// Better way?
 	return (char *)m_stdStr.data();
 }
 

@@ -34,7 +34,7 @@ public:
 	CNetPlayerSocket * GetPlayerSocket(EntityId playerId);
 	bool CNetworkServer::IsPlayerConnected(EntityId playerId);
 	unsigned int Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel = PACKET_CHANNEL_DEFAULT);
-	unsigned int RPC(eRPCIdentfier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel);
+	unsigned int RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel);
 	void DisconnectPlayer(EntityId playerid, bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority);
 	void BanIp(string strIpAddress, unsigned int uiTimeMilliseconds);
 	void UnbanIp(string strIpAddress);

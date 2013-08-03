@@ -189,7 +189,7 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	for(std::list<CNetPlayerSocket *>::iterator iter = m_playerSocketsList.begin(); iter != m_playerSocketsList.end(); iter++)
 	{
 		// Is this the player socket we are looking for?
-		if((*iter)->GetPlayerId() == playerId)
+		if((*iter)->playerId == playerId)
 		{
 			// Return the player socket
 			return (*iter);
@@ -230,7 +230,7 @@ int CNetworkServer::GetPlayerAveragePing(EntityId playerId)
 	return m_pNetPeer->GetAveragePing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
 }
 
-// network server pulse
+// Network server pulse
 void CNetworkServer::Process()
 {
 	NetPacket * pPacket = NULL;
@@ -244,6 +244,7 @@ void CNetworkServer::Process()
 			// Pass it to the packet handler
 			//m_pfnPacketHandler(pPacket);
 		}
+
 		// Deallocate the packet memory used
 		DeallocatePacket(pPacket);
 	}
@@ -260,7 +261,7 @@ unsigned int CNetworkServer::Send(CBitStream * pBitStream, ePacketPriority prior
 }
 
 // Sends RPC packet
-unsigned int CNetworkServer::RPC(eRPCIdentfier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
+unsigned int CNetworkServer::RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
 {
 	if(playerId != INVALID_ENTITY_ID && !IsPlayerConnected(playerId))
 		return 0;
@@ -276,7 +277,7 @@ unsigned int CNetworkServer::RPC(eRPCIdentfier rpcId, CBitStream * pBitStream, e
 		(playerId == INVALID_ENTITY_ID) ? RakNet::UNASSIGNED_SYSTEM_ADDRESS : m_pNetPeer->GetSystemAddressFromIndex(playerId), bBroadcast);
 }
 
-// Closes
+// Closes connection to a client (optionally send notification)
 void CNetworkServer::DisconnectPlayer(EntityId playerId, bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority)
 {
 	m_pNetPeer->CloseConnection(

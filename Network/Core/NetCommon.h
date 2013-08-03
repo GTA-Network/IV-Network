@@ -328,11 +328,6 @@ enum ePacketPriority
 	PRIORITY_COUNT
 };
 
-enum eRPCIdentfier
-{
-	RPC_PlayerConnectRequest
-};
-
 // Packet channels
 enum ePacketChannels
 {	
@@ -343,6 +338,15 @@ enum ePacketChannels
 	PACKET_CHANNEL_SCRIPT,	// Packet channel used for script
 	
 	PACKET_CHANNEL_COUNT	// Number of packet channels
+};
+
+// Type of RPC
+typedef unsigned short RPCIdentifier;
+
+// RPCs definitions
+enum eRPCIdentifier : RPCIdentifier
+{
+	RPC_PlayerConnectRequest
 };
 
 #endif // NetCommon_h

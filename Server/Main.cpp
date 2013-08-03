@@ -14,44 +14,42 @@
 #include <CLogFile.h>
 #include <Threading/CThread.h>
 
-
 bool g_bClose = false;
+string g_strStartError;
 
 int main(int argc, char ** argv)
 {
 	CServer* pServer = new CServer();
 
-	if(pServer)
+	// Start our input thread which handles all the input
+	CThread inputThread;
+
+	// Start server and load all scripts
+	if(!pServer->Startup(g_strStartError))
 	{
-		// Start our input thread which handles all the input
-		CThread inputThread;
-		inputThread.Start(CInput::InputThread);
-
-		// Startup server and load all scripts
-		if(!pServer->Startup())
-		{
-			CLogFile::Printf("Failed to start server! ");
-			return 1;
-		}
-
-		while(!g_bClose)
-		{
-			pServer->Process();
-		}
-
-		pServer->Shutdown();
-
-		// Stop the input thread
-		inputThread.Stop();
-		
-		// Delete our server
-		SAFE_DELETE(pServer);
-
-		// Exit process
+		string strErrorMsg("Failed to start server! %s", g_strStartError.Get());
+		CLogFile::Printf(strErrorMsg);
 		return 1;
 	}
-	else
+
+	// Start input
+	inputThread.Start(CInput::InputThread);
+
+	// Program loop
+	while(!g_bClose)
 	{
-		CLogFile::Printf("Unable to create the server instance");
+		pServer->Process();
 	}
+
+	// Stop the input thread
+	inputThread.Stop();
+
+	// Shutdown
+	pServer->Shutdown();
+		
+	// Delete our server
+	SAFE_DELETE(pServer);
+
+	// Exit process
+	return EXIT_SUCCESS;
 }
