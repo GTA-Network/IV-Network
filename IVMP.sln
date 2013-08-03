@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22A
 		Shared\CLogFile.cpp = Shared\CLogFile.cpp
 		Shared\CLogFile.h = Shared\CLogFile.h
 		Shared\Common.h = Shared\Common.h
+		Shared\CSettings.cpp = Shared\CSettings.cpp
+		Shared\CSettings.h = Shared\CSettings.h
 		Shared\CString.cpp = Shared\CString.cpp
 		Shared\CString.h = Shared\CString.h
 		Shared\SharedUtility.cpp = Shared\SharedUtility.cpp
@@ -59,6 +61,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patcher", "Patcher", "{5647
 	ProjectSection(SolutionItems) = preProject
 		Shared\Patcher\CPatcher.cpp = Shared\Patcher\CPatcher.cpp
 		Shared\Patcher\CPatcher.h = Shared\Patcher\CPatcher.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{D7EBB58A-E021-4EAE-9F03-A58440D8282C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TinyXML", "TinyXML", "{45278608-79FF-45D7-A03E-140152BF726B}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\tinyxml\ticpp.cpp = Libraries\tinyxml\ticpp.cpp
+		Libraries\tinyxml\ticpp.h = Libraries\tinyxml\ticpp.h
+		Libraries\tinyxml\ticpprc.h = Libraries\tinyxml\ticpprc.h
+		Libraries\tinyxml\tinystr.cpp = Libraries\tinyxml\tinystr.cpp
+		Libraries\tinyxml\tinystr.h = Libraries\tinyxml\tinystr.h
+		Libraries\tinyxml\tinyxml.cpp = Libraries\tinyxml\tinyxml.cpp
+		Libraries\tinyxml\tinyxml.h = Libraries\tinyxml\tinyxml.h
+		Libraries\tinyxml\tinyxmlerror.cpp = Libraries\tinyxml\tinyxmlerror.cpp
+		Libraries\tinyxml\tinyxmlparser.cpp = Libraries\tinyxml\tinyxmlparser.cpp
 	EndProjectSection
 EndProject
 Global
@@ -100,5 +117,6 @@ Global
 		{B416D3CF-6183-425A-8F23-4C3079B243EF} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{58C4FE7A-B82C-4A71-83A2-0C5D6F04B1FE} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{564791E2-70BB-4F49-8C54-135ED7E3025D} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
+		{45278608-79FF-45D7-A03E-140152BF726B} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
 	EndGlobalSection
 EndGlobal

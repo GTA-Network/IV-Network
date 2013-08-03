@@ -68,4 +68,15 @@ typedef unsigned short EntityId;
 // Warning disable
 #pragma warning(disable:4996)// Disables _s warning
 
+// Macros
+#define		ARRAY_LENGTH(array)			(sizeof(array) / sizeof(array[0]))
+#define		SAFE_DELETE(memory)			if(memory) { delete memory; memory = NULL; }
+#define		SAFE_RELEASE(p)				{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
+#define		PAD(prefix, name, size)		BYTE prefix##_##name##[size]
+
+// Bit manipulation macros
+#define SET_BIT(a, b) a |= b
+#define IS_BIT_SET(a, b) ((a & b) != 0)
+#define UNSET_BIT(a, b) a &= ~(b)
+
 #endif // Common_h

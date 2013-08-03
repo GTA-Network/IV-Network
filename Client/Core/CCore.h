@@ -15,6 +15,8 @@
 #include "Game/CGame.h"
 #include "Game/COffsets.h"
 #include "CLogFile.h"
+#include "CSettings.h"
+#include "SharedUtility.h"
 
 typedef int IDirect3DDevice9;
 typedef int D3DPRESENT_PARAMETERS;

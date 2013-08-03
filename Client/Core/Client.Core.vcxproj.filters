@@ -51,6 +51,12 @@
     <Filter Include="Source Files\Game\Entity">
       <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Libraries\TinyXML">
+      <UniqueIdentifier>{ea52250c-f438-49bf-a887-9dbe9d425185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\TinyXML">
+      <UniqueIdentifier>{7cdf702d-b1e9-4083-bf5d-d1c7b66e1d53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -88,6 +94,33 @@
     </ClCompile>
     <ClCompile Include="..\..\Shared\SharedUtility.cpp">
       <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CPatches.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CHooks.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CGameFiles.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\CSettings.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\tinyxml\ticpp.cpp">
+      <Filter>Source Files\Libraries\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\tinyxml\tinystr.cpp">
+      <Filter>Source Files\Libraries\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxml.cpp">
+      <Filter>Source Files\Libraries\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxmlerror.cpp">
+      <Filter>Source Files\Libraries\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxmlparser.cpp">
+      <Filter>Source Files\Libraries\TinyXML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +168,30 @@
     </ClInclude>
     <ClInclude Include="Game\COffsets.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CPatches.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CHooks.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CGameFiles.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\CSettings.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\tinyxml\ticpp.h">
+      <Filter>Header Files\Libraries\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\tinyxml\ticpprc.h">
+      <Filter>Header Files\Libraries\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\tinyxml\tinystr.h">
+      <Filter>Header Files\Libraries\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\tinyxml\tinyxml.h">
+      <Filter>Header Files\Libraries\TinyXML</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

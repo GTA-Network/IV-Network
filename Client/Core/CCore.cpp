@@ -33,7 +33,7 @@ CCore::CCore(void)
 
 CCore::~CCore()
 {
-	//CLogFile::Printf( "CCore::~CCore" );
+	CLogFile::Printf( "CCore::~CCore" );
 }
 
 bool CCore::Initialise()
@@ -42,11 +42,17 @@ bool CCore::Initialise()
 	if(m_bInitialised)
 		return false;
 
+	// Open the log file
+	CLogFile::Open( "IVMP-Client.log" );
+
 	// Get the applicatin base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
 
 	// Subtract the image size from the base address
 	m_uiBaseAddress -= 0x400000;
+
+	// Open the settings file
+	CSettings::Open( SharedUtility::GetAbsolutePath("IVMP-Client.xml"), true, false );
 
 	// Create the game instance
 	m_pGame = new CGame;
@@ -58,7 +64,7 @@ bool CCore::Initialise()
 	if(m_pOffsets)
 		m_pOffsets->Initialize(m_uiBaseAddress);
 
-	//CLogFile::Printf("Done!");
+	CLogFile::Printf("Done!");
 	return true;
 }
 
