@@ -94,6 +94,7 @@
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
+    <ClCompile Include="Game\CGameFuncs.cpp" />
     <ClCompile Include="Game\CHooks.cpp" />
     <ClCompile Include="Game\COffsets.cpp" />
     <ClCompile Include="Game\CPatches.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
+    <ClInclude Include="Game\CGameFuncs.h" />
     <ClInclude Include="Game\CHooks.h" />
     <ClInclude Include="Game\COffsets.h" />
     <ClInclude Include="Game\CPatches.h" />
@@ -152,6 +154,8 @@
     <ClInclude Include="IV\CIVScript_FunctionContext.h" />
     <ClInclude Include="IV\CIVScript_FunctionInvoke.h" />
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
+    <ClInclude Include="IV\IVCommon.h" />
+    <ClInclude Include="IV\IVData.h" />
     <ClInclude Include="StdInc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

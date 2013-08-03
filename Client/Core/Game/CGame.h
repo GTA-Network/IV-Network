@@ -10,6 +10,7 @@
 #ifndef CGame_h
 #define CGame_h
 
+#include "CGameFuncs.h"
 #include <Network\CLocalPlayer.h>
 
 class CGame {

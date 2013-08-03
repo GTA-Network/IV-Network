@@ -1,18 +1,20 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
 // File: IVCommon.h
 // Project: Client.Core
-// Author(s): jenksta
-//            listener
+// Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==============================================================================
+//==========================================================================================
 
-#pragma once
+#ifndef IVCommon_h
+#define IVCommon_h
 
 #include <Common.h>
 
+#ifndef PAD
 #define PAD(prefix, name, size) BYTE prefix##_##name##[size]
+#endif // PAD
 
 template <typename T>
 struct CSimpleCollection
@@ -109,3 +111,5 @@ public:
 		memcpy(&vecPosition, &matMatrix->vecPosition, sizeof(CVector3));
 	}
 };
+
+#endif // IVCommon_h

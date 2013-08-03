@@ -105,7 +105,8 @@ typedef unsigned short EntityId;
 #include "GameLimits.h"
 
 // Warning disable
-#pragma warning(disable:4996)// Disables _s warning
+#pragma warning(disable:4996) // Disables _s warning
+#pragma warning(disable:4409) // Disable illegal instruction warming(asm)
 
 // Macros
 #define		ARRAY_LENGTH(array)			(sizeof(array) / sizeof(array[0]))

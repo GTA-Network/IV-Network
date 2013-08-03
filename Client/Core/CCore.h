@@ -11,23 +11,25 @@
 #define CCore_h
 
 #include <Common.h>
-#include "Game/CGame.h"
-
-#include "Game/COffsets.h"
-#include "Game/CPatches.h"
-#include "Game/CHooks.h"
-#include  <Patcher\CPatcher.h>
-
 #include <d3d9.h>
 
-#include "CLogFile.h"
-#include "CSettings.h"
-#include "SharedUtility.h"
+#include <CLogFile.h>
+#include <CSettings.h>
+#include <SharedUtility.h>
+#include <Patcher\CPatcher.h>
+
 #include <Game\eGame.h>
+#include <IV\CIVScriptHook.h>
+
 #include <Hooks\CDirect3D.h>
 #include <Hooks\CDirectInputProxy.h>
 #include <Hooks\CXLive.h>
-#include <IV\CIVScriptHook.h>
+
+#include "Game/CGame.h"
+#include "Game/COffsets.h"
+#include "Game/CPatches.h"
+#include "Game/CHooks.h"
+
 
 class CCore {
 
