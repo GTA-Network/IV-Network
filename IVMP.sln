@@ -4,20 +4,37 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B595E6DA-BAB2-43D5-B5FB-23D511693726}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client.Core", "Client\Core\Client.Core.vcxproj", "{56387735-7D4A-47AA-A885-09CCC5D5AA67}"
+	ProjectSection(ProjectDependencies) = postProject
+		{766B64D1-3EE0-42C3-A69A-D1293FE90524} = {766B64D1-3EE0-42C3-A69A-D1293FE90524}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client.Launcher", "Client\Launcher\Client.Launcher.vcxproj", "{F96CE161-F2AD-4743-B67B-A27CDD9B1F91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56387735-7D4A-47AA-A885-09CCC5D5AA67} = {56387735-7D4A-47AA-A885-09CCC5D5AA67}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{FF6C4EC1-6142-4E00-BCB6-28EAAF9A1DE8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22AE1-C342-472E-AD5A-51388EC1DD0D}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Common.h = Shared\Common.h
+		Shared\CString.cpp = Shared\CString.cpp
+		Shared\CString.h = Shared\CString.h
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network.Core", "Network\Core\Network.Core.vcxproj", "{766B64D1-3EE0-42C3-A69A-D1293FE90524}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client.LaunchHelper", "Client\LaunchHelper\Client.LaunchHelper.vcxproj", "{4257EAF3-7A0B-4E2D-A45D-78E4FBCF67F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F96CE161-F2AD-4743-B67B-A27CDD9B1F91} = {F96CE161-F2AD-4743-B67B-A27CDD9B1F91}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server.Core", "Server\Server.Core.vcxproj", "{5AD2BD08-FCBD-474F-AECD-F9ACDA0A2031}"
+	ProjectSection(ProjectDependencies) = postProject
+		{766B64D1-3EE0-42C3-A69A-D1293FE90524} = {766B64D1-3EE0-42C3-A69A-D1293FE90524}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

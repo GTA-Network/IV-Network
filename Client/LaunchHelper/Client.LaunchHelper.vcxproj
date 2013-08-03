@@ -39,12 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <TargetName>$(ProjectName).$(Configuration)</TargetName>
+    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <IntDir>$(SolutionDir)\Binary\temp\build_clientlauncherhelper\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Binary\$(Configuration)\</OutDir>
-    <TargetName>$(ProjectName).$(Configuration)</TargetName>
+    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <IntDir>$(SolutionDir)\Binary\temp\build_clientlauncherhelper\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
