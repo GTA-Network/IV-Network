@@ -87,41 +87,11 @@
     <Filter Include="Header Files\Graphics\DirectX">
       <UniqueIdentifier>{988e7dd1-d65f-4a38-a1b9-c47e57eb882f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Graphics\DirectX\D3D">
-      <UniqueIdentifier>{b21e6011-778e-4c9d-8964-dcb5d1666cc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics\DirectX\D3DProxy">
-      <UniqueIdentifier>{49648eb9-ad51-4701-8d7a-cd346f07ea4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics\DirectX\D3DInputProxy">
-      <UniqueIdentifier>{81ad06fc-0c1e-4fb3-bc97-607d8d679701}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\DirectX">
       <UniqueIdentifier>{cd43da58-0887-4362-9f1e-e23c692def23}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\DirectX\D3D">
-      <UniqueIdentifier>{68fe4036-31a5-4c67-a82d-aa784d8ca214}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\DirectX\D3DProxy">
-      <UniqueIdentifier>{014ae494-75f0-4479-8636-4dc944797669}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\DirectX\D3DInputProxy">
-      <UniqueIdentifier>{ab441dc5-ad49-4521-868c-d1bbe556c6f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Hooks\Direct3D">
-      <UniqueIdentifier>{f341e66d-e98f-49c0-a858-373bc154aa40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Hooks\DirectInput">
-      <UniqueIdentifier>{1a58d29e-5bc6-407c-87d6-3928b69b0a77}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Hooks\XLive">
       <UniqueIdentifier>{16e62a00-346f-471e-8201-061e353da731}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Hooks\Direct3D">
-      <UniqueIdentifier>{06cc80dc-2ff6-4104-bc52-7df34764b188}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Hooks\DirectInput">
-      <UniqueIdentifier>{132d122b-9626-4f1d-8720-30a8626fc858}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Hooks\XLive">
       <UniqueIdentifier>{3095689f-dda9-44a7-b043-0ba3fbd38c38}</UniqueIdentifier>
@@ -203,32 +173,35 @@
     <ClCompile Include="IV\CIVScriptHook.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Hooks\CDirect3D.cpp">
-      <Filter>Source Files\Hooks\Direct3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Hooks\CDirectInputProxy.cpp">
-      <Filter>Source Files\Hooks\DirectInput</Filter>
-    </ClCompile>
     <ClCompile Include="Hooks\CXLive.cpp">
       <Filter>Source Files\Hooks\XLive</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\CDirect3D9Proxy.cpp">
-      <Filter>Source Files\Graphics\DirectX\D3DInputProxy</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\CDirect3DDevice9Proxy.cpp">
-      <Filter>Source Files\Graphics\DirectX\D3DInputProxy</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\CDirectInput8Proxy.cpp">
-      <Filter>Source Files\Graphics\DirectX\D3DProxy</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\CDirectInputDevice8Proxy.cpp">
-      <Filter>Source Files\Graphics\DirectX\D3DProxy</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\CGameFuncs.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CGraphics.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\IDirect3D9Proxy.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CDirectInputDevice8Proxy.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CDirectInput8Proxy.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CDirectInput8Hook.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CDirect3D9Hook.cpp">
+      <Filter>Source Files\Graphics\DirectX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,24 +301,6 @@
     <ClInclude Include="Hooks\CXLive.h">
       <Filter>Header Files\Hooks\XLive</Filter>
     </ClInclude>
-    <ClInclude Include="Hooks\CDirect3D.h">
-      <Filter>Header Files\Hooks\Direct3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Hooks\CDirectInputProxy.h">
-      <Filter>Header Files\Hooks\DirectInput</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h">
-      <Filter>Header Files\Graphics\DirectX\D3DInputProxy</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\CDirectInput8Proxy.h">
-      <Filter>Header Files\Graphics\DirectX\D3DInputProxy</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\CDirect3DDevice9Proxy.h">
-      <Filter>Header Files\Graphics\DirectX\D3DProxy</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\CDirect3D9Proxy.h">
-      <Filter>Header Files\Graphics\DirectX\D3DProxy</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -357,6 +312,30 @@
     </ClInclude>
     <ClInclude Include="IV\IVData.h">
       <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CGraphics.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CDirect3D9Hook.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CDirectInput8Hook.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IDirect3D9Proxy.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\StdDXInc.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CDirectInput8Proxy.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h">
+      <Filter>Header Files\Graphics\DirectX</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

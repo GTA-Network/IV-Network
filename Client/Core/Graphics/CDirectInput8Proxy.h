@@ -10,12 +10,12 @@
 #ifndef CDirectInput8Proxy_h
 #define CDirectInput8Proxy_h
 
-#include "CDirectInputDevice8Proxy.h"
+#include "StdDXInc.h"
 
 class CDirectInput8Proxy : public IDirectInput8
 {
 private:
-	IDirectInput8 * m_dinput;
+	IDirectInput8A *    m_pDevice;
 
 public:
 	CDirectInput8Proxy(IDirectInput8 * dinput);

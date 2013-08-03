@@ -10,9 +10,9 @@
 #ifndef CDirectInputDevice8Proxy_h
 #define CDirectInputDevice8Proxy_h
 
-#define DIRECTINPUT_VERSION 0x0800
+#include "StdDXInc.h"
 
-#include "DXSDK/Include/dinput.h"
+#define DIRECTINPUT_VERSION		0x0800
 
 enum eDIDeviceType
 {
@@ -25,12 +25,15 @@ enum eDIDeviceType
 class CDirectInputDevice8Proxy : public IDirectInputDevice8
 {
 private:
-	IDirectInput8 * m_pDI;
-	IDirectInputDevice8 * m_pDIDevice;
-	eDIDeviceType m_DeviceType;
+	IDirectInputDevice8A *		m_pDevice;
+	eDIDeviceType				m_DeviceType;
+
+	POINT						m_Cursor;
+    bool						m_bMouseButtons[3];
 
 public:
-	CDirectInputDevice8Proxy(IDirectInput8 * dinput, IDirectInputDevice8 * dinputdevice, eDIDeviceType DeviceType);
+
+	CDirectInputDevice8Proxy(IDirectInputDevice8A * pDevice, eDIDeviceType DeviceType);
 
 	/*** IUnknown methods ***/
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, LPVOID * ppvObj);
@@ -68,5 +71,6 @@ public:
 	HRESULT STDMETHODCALLTYPE SetActionMap(LPDIACTIONFORMATA p0, LPCSTR p1, DWORD p2);
 	HRESULT STDMETHODCALLTYPE GetImageInfo(LPDIDEVICEIMAGEINFOHEADERA p0);
 };
+
 
 #endif // CDirectInputDevice8Proxy_h

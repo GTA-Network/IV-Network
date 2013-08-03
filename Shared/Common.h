@@ -31,6 +31,9 @@ typedef unsigned short EntityId;
 #define IVMP_DEBUG 1
 #endif
 
+// DirectX Input version
+#define DIRECTINPUT_VERSION 0x0800
+
 // Forced debug
 #ifdef FORCE_DEBUG
 #ifndef IVMP_DEBUG

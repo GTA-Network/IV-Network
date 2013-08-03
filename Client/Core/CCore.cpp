@@ -41,8 +41,6 @@ bool CCore::Initialise()
 	if(m_bInitialised)
 		return false;
 
-	// Open the log file
-	CLogFile::Open("IVMP-Client.log");
 	CLogFile::Printf("CCore::Initialize");
 
 	// Get the applicatin base address
@@ -66,6 +64,9 @@ bool CCore::Initialise()
 	// Create the game instance
 	m_pGame = new CGame;
 
+	// Create the graphics instance
+	m_pGraphics = new CGraphics;
+
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();
 
@@ -80,12 +81,6 @@ bool CCore::Initialise()
 
 	// Install the XLive hook
 	CXLiveHook::Install();
-
-	// Install the Direct3D hook
-	CDirect3DHook::Install();
-
-	// Install the DirectInput hook
-	CDirectInputHook::Install();
 
 	// Install the RAGEScriptThread hook..
 	CIVScriptingHook::InstallScriptHooks();
@@ -155,7 +150,7 @@ void CCore::OnDevicePreRender()
 	}
 }
 
-void CCore::OnDeviceRender()
+void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Has the device been lost?
 	if(g_bDeviceLost)

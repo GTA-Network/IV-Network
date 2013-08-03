@@ -1,228 +1,223 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
 // File: CDirectInputDevice8Proxy.cpp
 // Project: Client.Core
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==========================================================================================
+//==============================================================================
 
 #include "CDirectInputDevice8Proxy.h"
-//#include <Game/CGame.h>
+#include <CCore.h>
+extern CCore * g_pCore;
 
-int m_iStartLoadTicks = 0;
-char cOldReturn = 0;
-
-CDirectInputDevice8Proxy::CDirectInputDevice8Proxy(IDirectInput8 * dinput, IDirectInputDevice8 * dinputdevice, eDIDeviceType DeviceType)
+CDirectInputDevice8Proxy::CDirectInputDevice8Proxy(IDirectInputDevice8 * pDevice, eDIDeviceType DeviceType)
 {
-	m_pDI = dinput;
-	m_pDIDevice = dinputdevice;
+	// Initialize our device member variable
+	m_pDevice	= pDevice;
+
 	m_DeviceType = DeviceType;
+	m_Cursor.x = 0;
+	m_Cursor.y = 0;
+	memset(m_bMouseButtons, 0, sizeof(m_bMouseButtons));
 }
 
-/*** IUnknown methods ***/
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::QueryInterface(REFIID riid, LPVOID * ppvObj)
 {
-	return m_pDIDevice->QueryInterface(riid, ppvObj);
+	return m_pDevice->QueryInterface(riid, ppvObj);
 }
 
 ULONG STDMETHODCALLTYPE CDirectInputDevice8Proxy::AddRef()
 {
-	return m_pDIDevice->AddRef();
+	return m_pDevice->AddRef();
 }
 
 ULONG STDMETHODCALLTYPE CDirectInputDevice8Proxy::Release()
 {
-	ULONG uRet = m_pDIDevice->Release();
+	ULONG uRet = m_pDevice->Release( );
 
-	if(uRet == 0)
-		// If the reference count is 0 delete ourselves
+	if ( uRet == 0 )
 		delete this;
 
 	return uRet;
 }
 
-/*** IDirectInputDevice8A methods ***/
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetCapabilities(LPDIDEVCAPS p0)
 {
-	return m_pDIDevice->GetCapabilities(p0);
+	return m_pDevice->GetCapabilities(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::EnumObjects(LPDIENUMDEVICEOBJECTSCALLBACKA p0, LPVOID p1, DWORD p2)
 {
-	return m_pDIDevice->EnumObjects(p0, p1, p2);
+	return m_pDevice->EnumObjects(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetProperty(REFGUID rguid, LPDIPROPHEADER p1)
 {
-	return m_pDIDevice->GetProperty(rguid, p1);
+	return m_pDevice->GetProperty(rguid, p1);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SetProperty(REFGUID rguid, LPCDIPROPHEADER p1)
 {
-	return m_pDIDevice->SetProperty(rguid, p1);
+	return m_pDevice->SetProperty(rguid, p1);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::Acquire()
 {
-	return m_pDIDevice->Acquire();
+	return m_pDevice->Acquire();
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::Unacquire()
 {
-	return m_pDIDevice->Unacquire();
-}	
+	return m_pDevice->Unacquire();
+}
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetDeviceState(DWORD p0, LPVOID p1)
 {
-	HRESULT hResult = m_pDIDevice->GetDeviceState(p0, p1);
+	HRESULT hResult			= m_pDevice->GetDeviceState( p0, p1 );
+	char * keyBuffer = (char *)p1;
 
-	/*if(!CGame::GetInputState())
+	// Is the game loaded?
+	/*if( g_pCore->GetGame()->GetNetworkModule()->IsConnected() )
 	{
-		// If the input is disabled clear the buffer
-		memset(p1, 0, p0);
-	}
-
-	if(m_DeviceType == DIDEVICE_TYPE_KEYBOARD)
-	{
-		// Get the key buffer pointer
-		char * keyBuffer = (char *)p1;
-
-		// Don't let the game receive the escape key
-		//keyBuffer[DIK_ESCAPE] = 0;
-
-		if(CGame::GetState() == GAME_STATE_NONE)
+		// Is the chat input visible?
+		if( g_pClient->GetChat()->IsInputVisible() )
 		{
-			if(CGame::IsMenuActive())
-			{
-				CGame::SetInputState(false);
-				CGame::SetState(GAME_STATE_MAIN_MENU);
-			}
-		}
-
-		// HACK: This fakes a key press for the DLC menu and main menu
-		if(CGame::GetState() == GAME_STATE_NONE || CGame::GetState() == GAME_STATE_LOADING)
-		{
-			cOldReturn = !cOldReturn;
-			keyBuffer[DIK_RETURN] = cOldReturn;
+			// Don't pass keys to the game (TODO: Find better way!)
+			keyBuffer[ DIK_W ] = 0;
+			keyBuffer[ DIK_S ] = 0;
+			keyBuffer[ DIK_A ] = 0;
+			keyBuffer[ DIK_D ] = 0;
+			keyBuffer[ DIK_SPACE ] = 0;
+			keyBuffer[ DIK_ESCAPE ] = 0;
+			keyBuffer[ DIK_LSHIFT ] = 0;
+			keyBuffer[ DIK_RSHIFT ] = 0;
+			keyBuffer[ DIK_RETURN ] = 0;
+			keyBuffer[ DIK_BACKSPACE ] = 0;
+			keyBuffer[ DIK_LCONTROL ] = 0;
+			keyBuffer[ DIK_RCONTROL ] = 0;
+			keyBuffer[ DIK_RALT ] = 0;
+			keyBuffer[ DIK_LALT ] = 0;
+			keyBuffer[ DIK_NUMPADENTER ] = 0;
+			keyBuffer[ DIK_X ] = 0;
+			keyBuffer[ DIK_F ] = 0;
+			keyBuffer[ DIK_RETURN ] = 0;
+			keyBuffer[ DIK_UPARROW ] = 0;
+			keyBuffer[ DIK_DOWNARROW ] = 0;
+			keyBuffer[ DIK_LEFTARROW ] = 0;
+			keyBuffer[ DIK_RIGHTARROW ] = 0;
+			keyBuffer[ DIK_P ] = 0;
 		}
 	}*/
-
 	return hResult;
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetDeviceData(DWORD p0, LPDIDEVICEOBJECTDATA p1, LPDWORD p2, DWORD p3)
 {
-	HRESULT hResult = m_pDIDevice->GetDeviceData(p0, p1, p2, p3);
-
-	//if(!CGame::GetInputState())
-		// If the input is state is disabled clear the buffer
-		//memset(p1, 0, (p0 * (*p2)));
-
-	return hResult;
+	return m_pDevice->GetDeviceData( p0, p1, p2, p3 );
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SetDataFormat(LPCDIDATAFORMAT p0)
 {
-	return m_pDIDevice->SetDataFormat(p0);
+	return m_pDevice->SetDataFormat(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SetEventNotification(HANDLE p0)
 {
-	return m_pDIDevice->SetEventNotification(p0);
+	return m_pDevice->SetEventNotification(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SetCooperativeLevel(HWND p0, DWORD p1)
 {
-	return m_pDIDevice->SetCooperativeLevel(p0, p1);
+	return m_pDevice->SetCooperativeLevel(p0, p1);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetObjectInfo(LPDIDEVICEOBJECTINSTANCEA p0, DWORD p1, DWORD p2)
 {
-	return m_pDIDevice->GetObjectInfo(p0, p1, p2);
+	return m_pDevice->GetObjectInfo(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetDeviceInfo(LPDIDEVICEINSTANCEA p0)
 {
-	return m_pDIDevice->GetDeviceInfo(p0);
+	return m_pDevice->GetDeviceInfo(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::RunControlPanel(HWND p0, DWORD p1)
 {
-	return m_pDIDevice->RunControlPanel(p0, p1);
+	return m_pDevice->RunControlPanel(p0, p1);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::Initialize(HINSTANCE p0, DWORD p1, REFGUID rguid)
 {
-	return m_pDIDevice->Initialize(p0, p1, rguid);
+	return m_pDevice->Initialize(p0, p1, rguid);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::CreateEffect(REFGUID rguid, LPCDIEFFECT p1, LPDIRECTINPUTEFFECT * p2, LPUNKNOWN p3)
 {
-	return m_pDIDevice->CreateEffect(rguid, p1, p2, p3);
+	return m_pDevice->CreateEffect(rguid, p1, p2, p3);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::EnumEffects(LPDIENUMEFFECTSCALLBACKA p0, LPVOID p1, DWORD p2)
 {
-	return m_pDIDevice->EnumEffects(p0, p1, p2);
+	return m_pDevice->EnumEffects(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetEffectInfo(LPDIEFFECTINFOA p0, REFGUID rguid)
 {
-	return m_pDIDevice->GetEffectInfo(p0, rguid);
+	return m_pDevice->GetEffectInfo(p0, rguid);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetForceFeedbackState(LPDWORD p0)
 {
-	return m_pDIDevice->GetForceFeedbackState(p0);
+	return m_pDevice->GetForceFeedbackState(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SendForceFeedbackCommand(DWORD p0)
 {
-	return m_pDIDevice->SendForceFeedbackCommand(p0);
+	return m_pDevice->SendForceFeedbackCommand(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::EnumCreatedEffectObjects(LPDIENUMCREATEDEFFECTOBJECTSCALLBACK p0, LPVOID p1, DWORD p2)
 {
-	return m_pDIDevice->EnumCreatedEffectObjects(p0, p1, p2);
+	return m_pDevice->EnumCreatedEffectObjects(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::Escape(LPDIEFFESCAPE p0)
 {
-	return m_pDIDevice->Escape(p0);
+	return m_pDevice->Escape(p0);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::Poll()
 {
-	return m_pDIDevice->Poll();
+	return m_pDevice->Poll();
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SendDeviceData(DWORD p0, LPCDIDEVICEOBJECTDATA p1, LPDWORD p2, DWORD p3)
 {
-	return m_pDIDevice->SendDeviceData(p0, p1, p2, p3);
+	return m_pDevice->SendDeviceData(p0, p1, p2, p3);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::EnumEffectsInFile(LPCSTR p0, LPDIENUMEFFECTSINFILECALLBACK p1, LPVOID p2, DWORD p3)
 {
-	return m_pDIDevice->EnumEffectsInFile(p0, p1, p2, p3);
+	return m_pDevice->EnumEffectsInFile(p0, p1, p2, p3);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::WriteEffectToFile(LPCSTR p0, DWORD p2, LPDIFILEEFFECT p3, DWORD p4)
 {
-	return m_pDIDevice->WriteEffectToFile(p0, p2, p3, p4);
+	return m_pDevice->WriteEffectToFile(p0, p2, p3, p4);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::BuildActionMap(LPDIACTIONFORMATA p0, LPCSTR p1, DWORD p2)
 {
-	return m_pDIDevice->BuildActionMap(p0, p1, p2);
+	return m_pDevice->BuildActionMap(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::SetActionMap(LPDIACTIONFORMATA p0, LPCSTR p1, DWORD p2)
 {
-	return m_pDIDevice->SetActionMap(p0, p1, p2);
+	return m_pDevice->SetActionMap(p0, p1, p2);
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetImageInfo(LPDIDEVICEIMAGEINFOHEADERA p0)
 {
-	return m_pDIDevice->GetImageInfo(p0);
+	return m_pDevice->GetImageInfo(p0);
 }

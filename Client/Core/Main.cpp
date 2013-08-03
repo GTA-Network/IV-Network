@@ -25,6 +25,9 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 
 			// Disable thread library calls
 			DisableThreadLibraryCalls(hModule);
+			
+			// Open the log file
+			CLogFile::Open("IVMP-Client.log");
 
 			// Create the core instance
 			g_pCore = new CCore;

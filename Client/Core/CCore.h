@@ -26,6 +26,7 @@
 #include <Hooks\CXLive.h>
 
 #include "Game/CGame.h"
+#include "Graphics\CGraphics.h"
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
@@ -42,7 +43,7 @@ private:
 	unsigned int					m_uiBaseAddress;
 
 	CGame							* m_pGame;
-
+	CGraphics						* m_pGraphics;
 	eGAMEStates						m_eGameState;
 public:
 
@@ -63,12 +64,13 @@ public:
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
 	void							OnDeviceReset(IDirect3DDevice9 * pDevice);
 	void							OnDevicePreRender();
-	void							OnDeviceRender();
+	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
 
 	unsigned int					GetBase() { return m_uiBaseAddress; }
 	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
 
 	CGame							* GetGame() { return m_pGame; }
+	CGraphics						* GetGraphics() { return m_pGraphics; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

@@ -36,11 +36,11 @@ void CGame::Initialise()
 {
 	g_pCore->SetClientState(GAME_STATE_NONE);
 
-	if(!m_pLocalPlayer)
+	/*if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer();
 
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
-	m_pLocalPlayer->Reset();
+	m_pLocalPlayer->Reset();*/
 }
 
 void CGame::UnprotectMemory()

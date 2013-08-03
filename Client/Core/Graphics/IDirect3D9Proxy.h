@@ -1,31 +1,29 @@
 //================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
-// File: CDirect3D9Proxy.h
+// File: IDirect3D9Proxy.h
 // Project: Client.Core
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
 
-#ifndef CDirect3D9Proxy_h
-#define CDirect3D9Proxy_h
+#ifndef IDirect3D9Proxy_h
+#define IDirect3D9Proxy_h
 
-#include "CDirect3DDevice9Proxy.h"
+#include "StdDXInc.h"
 
-class Direct3D9Proxy : public IDirect3D9
+class IDirect3D9Proxy : public IDirect3D9
 {
 private:
 	IDirect3D9 * m_pD3D;
 
 public:
-	Direct3D9Proxy(IDirect3D9 * pD3D);
+	IDirect3D9Proxy(IDirect3D9 * pD3D);
 
-	/*** IUnknown methods ***/
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void ** ppvObj);
 	ULONG STDMETHODCALLTYPE AddRef();
 	ULONG STDMETHODCALLTYPE Release();
 
-	/*** IDirect3D9 methods ***/
 	HRESULT STDMETHODCALLTYPE RegisterSoftwareDevice(void * pInitializeFunction);
 	UINT STDMETHODCALLTYPE GetAdapterCount();
 	HRESULT STDMETHODCALLTYPE GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAPTER_IDENTIFIER9 * pIdentifier);
@@ -42,4 +40,4 @@ public:
 	HRESULT STDMETHODCALLTYPE CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, DWORD BehaviorFlags, D3DPRESENT_PARAMETERS * pPresentationParameters, IDirect3DDevice9 ** ppReturnedDeviceInterface);
 };
 
-#endif // CDirect3D9Proxy_h
+#endif // IDirect3D9Proxy_h

@@ -15,6 +15,6 @@
 
 // Include basic client files
 #include "CCore.h"
-#include "CGame.h"
+#include <Game/CGame.h>
 
 #endif // StdInc_h
