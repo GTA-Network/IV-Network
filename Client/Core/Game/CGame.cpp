@@ -7,11 +7,11 @@
 //
 //==========================================================================================
 
-#include	"CGame.h"
-#include	<Patcher\CPatcher.h>
 #include	<CCore.h>
+#include	"CGame.h"
+#include	<Network\CLocalPlayer.h>
+#include	<Patcher\CPatcher.h>
 #include	<Windows.h>
-
 extern	CCore				* g_pCore;
 
 /*
@@ -20,6 +20,8 @@ extern	CCore				* g_pCore;
 	So GTA IV loads all resources and when our player connects to a server, we have check if the game(resources are) is ready.
 	If the Wrapperlist is ready, we can spawn the localplayer
 */
+
+
 DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 {
 	return 1;
@@ -34,11 +36,11 @@ void CGame::Initialise()
 {
 	g_pCore->SetClientState(GAME_STATE_NONE);
 
-	//if(!m_pLocalPlayer)
-		//m_pLocalPlayer = new CLocalPlayer();
+	if(!m_pLocalPlayer)
+		m_pLocalPlayer = new CLocalPlayer();
 
-	//m_pLocalPlayer->SetPlayerId(INVALID_ENTITY);
-	//m_pLocalPlayer->Reset();
+	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
+	m_pLocalPlayer->Reset();
 }
 
 void CGame::UnprotectMemory()

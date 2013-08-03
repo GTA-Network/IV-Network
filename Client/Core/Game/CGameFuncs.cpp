@@ -6,13 +6,11 @@
 // License: See LICENSE in root directory
 //
 //==========================================================================================
-
+ 
 #include "CGameFuncs.h"
 #include <CCore.h>
-
 #include <IV\IVData.h>
 #include <IV\CIVScript.h>
-
 #include <Game\COffsets.h>
 #include <CString.h>
 

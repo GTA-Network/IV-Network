@@ -8,11 +8,8 @@
 //==========================================================================================
 
 #include "CLocalPlayer.h"
-#include "CCore.h"
+#include <CCore.h>
 //include "KeySync.h"
-#include <Patcher\CPatcher.h>
-#include <Game\COffsets.h>
-#include <Math\CMaths.h>
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
@@ -52,8 +49,7 @@ void __declspec(naked) HandleLocalPlayerSpawn()
         }
 }
 
-CLocalPlayer::CLocalPlayer() : CPlayerEntity(),
-        m_bIsDead(false),
+CLocalPlayer::CLocalPlayer() : m_bIsDead(false),
         m_bToggleControl(true),
         m_fSpawnAngle(0),
         m_ulLastPureSyncTime(0),
@@ -76,27 +72,27 @@ CLocalPlayer::~CLocalPlayer()
 
 void CLocalPlayer::Respawn()
 {
-        // Set the local player state to respawning
-        *(DWORD *)COffsets::VAR_LocalPlayerState = 5;
+    // Set the local player state to respawning
+    *(DWORD *)COffsets::VAR_LocalPlayerState = 5;
 }
 
 void CLocalPlayer::HandleSpawn()
 {
-        // Flag us as alive
-        m_bIsDead = false;
+    // Flag us as alive
+    m_bIsDead = false;
 }
 
 void CLocalPlayer::DoDeathCheck()
 {
-        // Have we not yet processed the death and is the local player dead?
-        if(!m_bIsDead && IsDead())
-        {
-            // Send the death notification to the server
-			;
+    // Have we not yet processed the death and is the local player dead?
+    if(!m_bIsDead && IsDead())
+    {
+        // Send the death notification to the server
+		;
 
-            // Mark ourselves as dead
-            m_bIsDead = true;
-        }
+        // Mark ourselves as dead
+        m_bIsDead = true;
+    }
 }
 
 void CLocalPlayer::Pulse()
@@ -109,8 +105,8 @@ void CLocalPlayer::Pulse()
 
 void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
 {
-        m_vecSpawnPosition = vecPosition;
-        m_fSpawnAngle = fHeading;
+    m_vecSpawnPosition = vecPosition;
+    m_fSpawnAngle = fHeading;
 }
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
@@ -173,17 +169,17 @@ unsigned short CLocalPlayer::GetPing()
 
 void CLocalPlayer::SetControl(bool control)
 {
-        m_bToggleControl = control;
+	m_bToggleControl = control;
 }
 
 bool CLocalPlayer::GetControl()
 {
-        return m_bToggleControl;
+	return m_bToggleControl;
 }
 
 void CLocalPlayer::Reset()
 {
-        m_bFirstSpawn = false;
-        m_bFinishedInitialize = false;
-        m_bSpawnMarked = false;
+    m_bFirstSpawn = false;
+    m_bFinishedInitialize = false;
+    m_bSpawnMarked = false;
 }
