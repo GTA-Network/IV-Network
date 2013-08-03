@@ -27,6 +27,7 @@ typedef unsigned short EntityId;
 
 // define
 #define MOD_NAME "IV:Multiplayer"
+#define INVALID_ENTITY_ID ((EntityId)0xFFFF)
 
 // Operating system string
 #ifdef _WIN32
