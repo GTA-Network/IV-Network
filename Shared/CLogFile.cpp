@@ -66,7 +66,7 @@ void CLogFile::Printf(const char * szFormat, ...)
 	va_list vaArgs;
 	char szBuffer[2048];
 	va_start(vaArgs, szFormat);
-	vsnprintf(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
 	va_end(vaArgs);
 
 	// Print the message
@@ -86,7 +86,7 @@ void CLogFile::PrintDebugf(const char * szFormat, ...)
 	va_list vaArgs;
 	char szBuffer[2048];
 	va_start(vaArgs, szFormat);
-	vsnprintf(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
 	va_end(vaArgs);
 
 	// Print the message
@@ -132,7 +132,7 @@ void CLogFile::PrintfToFile(const char * szFormat, ...)
 	va_list vaArgs;
 	char szBuffer[2048];
 	va_start(vaArgs, szFormat);
-	vsnprintf(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), szFormat, vaArgs);
 	va_end(vaArgs);
 
 	// Print the message to the log file

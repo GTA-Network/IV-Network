@@ -13,7 +13,7 @@
 CMutex::CMutex()
 {
 	// Create the mutex
-#ifdef WIN32
+#ifdef _WIN32
 #ifdef USE_CRITICAL_SECTION
 	InitializeCriticalSection(&m_criticalSection);
 #else
@@ -27,7 +27,7 @@ CMutex::CMutex()
 CMutex::~CMutex()
 {
 	// Delete the mutex
-#ifdef WIN32
+#ifdef _WIN32
 #ifdef USE_CRITICAL_SECTION
 	DeleteCriticalSection(&m_criticalSection);
 #else
@@ -41,7 +41,7 @@ CMutex::~CMutex()
 void CMutex::Lock()
 {
 	// Lock the mutex
-#ifdef WIN32
+#ifdef _WIN32
 #ifdef USE_CRITICAL_SECTION
 	EnterCriticalSection(&m_criticalSection);
 #else
@@ -61,7 +61,7 @@ bool CMutex::TryLock(unsigned int uiTimeOutMilliseconds)
 #else
 	if(uiTimeOutMilliseconds == 0)
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		bLocked = (TryEnterCriticalSection(&m_criticalSection) != 0);
 #else
 		bLocked = pthread_mutex_trylock(&m_mutex);
@@ -73,7 +73,7 @@ bool CMutex::TryLock(unsigned int uiTimeOutMilliseconds)
 
 		while(SharedUtility::GetTime() < ulEndTime)
 		{
-#ifdef WIN32
+#ifdef _WIN32
 			if(TryEnterCriticalSection(&m_criticalSection))
 #else
 			if(pthread_mutex_trylock(&m_mutex))
@@ -92,7 +92,7 @@ bool CMutex::TryLock(unsigned int uiTimeOutMilliseconds)
 void CMutex::Unlock()
 {
 	// Unlock the mutex
-#ifdef WIN32
+#ifdef _WIN32
 #ifdef USE_CRITICAL_SECTION
 	LeaveCriticalSection(&m_criticalSection);
 #else

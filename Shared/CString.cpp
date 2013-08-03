@@ -11,7 +11,7 @@
 #include "CString.h"
 #include <sstream>
 
-#ifdef WIN32
+#ifdef _WIN32
 	#define stricmp _stricmp
 	#include <stdarg.h>     // va_list, va_start, va_arg, va_end
 #else
@@ -35,7 +35,7 @@ CString::CString(const char * szFormat, ...)
 		char szString[BUFFER_SIZE];
 		va_list vaArgs;
 		va_start(vaArgs, szFormat);
-		vsnprintf(szString, sizeof(szString), szFormat, vaArgs);
+		vsnprintf_s(szString, sizeof(szString), szFormat, vaArgs);
 		va_end(vaArgs);
 		Set(szString);
 	}
@@ -246,7 +246,7 @@ void CString::Format(const char * szFormat, ...)
 	char szString[BUFFER_SIZE];
 	va_list vaArgs;
 	va_start(vaArgs, szFormat);
-	vsprintf(szString, szFormat, vaArgs);
+	vsprintf_s(szString, szFormat, vaArgs);
 	va_end(vaArgs);
 	Set(szString);
 }
@@ -368,7 +368,7 @@ int CString::ToInteger() const
 void CString::FromInteger(int iValue)
 {
 	char szBuffer[64];
-	sprintf(szBuffer, "%i", iValue);
+	sprintf_s(szBuffer, "%i", iValue);
 	Set(szBuffer);
 }
 
@@ -485,7 +485,7 @@ void CString::AppendF(const char * szFormat, ...)
 		char szString[BUFFER_SIZE];
 		va_list vaArgs;
 		va_start(vaArgs, szFormat);
-		vsprintf(szString, szFormat, vaArgs);
+		vsprintf_s(szString, szFormat, vaArgs);
 		va_end(vaArgs);
 
 		// Copy the string to the end of our string

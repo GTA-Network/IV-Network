@@ -44,7 +44,7 @@ void CThread::Start(ThreadFunction_t pfnThreadFunction, bool bWaitForStart)
 	m_bRunning = false;
 
 	// Create the thread
-#ifdef WIN32
+#ifdef _WIN32
 	m_hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)StartAddress, (void *)this, 0, NULL);
 #else
 	pthread_create(&m_thread, NULL, StartAddress, (void *)this);
@@ -71,7 +71,7 @@ bool CThread::Stop(bool bWaitForExit, bool bTerminate)
 		if(bTerminate)
 		{
 			// Terminate the thread
-#ifdef WIN32
+#ifdef _WIN32
 			TerminateThread(m_hThread, 0);
 #else
 			pthread_cancel(m_thread);
@@ -79,7 +79,7 @@ bool CThread::Stop(bool bWaitForExit, bool bTerminate)
 		}
 
 		// Delete the thread
-#ifdef WIN32
+#ifdef _WIN32
 		CloseHandle(m_hThread);
 #else
 		pthread_cancel(m_thread);
@@ -103,7 +103,7 @@ bool CThread::Stop(bool bWaitForExit, bool bTerminate)
 		// Set the started state to false
 		SetStarted(false);
 
-#ifdef WIN32
+#ifdef _WIN32
 		// Reset the thread handle
 		m_hThread = NULL;
 #else
@@ -168,7 +168,7 @@ bool CThread::IsRunning()
 	return bRunning;
 }
 
-#ifdef WIN32
+#ifdef _WIN32
 void CThread::StartAddress(CThread * pThis)
 #else
 void * CThread::StartAddress(void * pVoidThis)

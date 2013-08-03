@@ -11,7 +11,7 @@
 #define CMaths_h
 
 #include "CVector3.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #else
 typedef unsigned long DWORD;

@@ -10,16 +10,18 @@
 #ifndef SharedUtility_h
 #define SharedUtility_h
 
-#include <string>
-#include "Common.h"
-#include "CString.h"
-#ifdef WIN32
+#ifdef _WIN32
 #include <WinSock2.h>
 #include <windows.h>
 #else
 #include <sys/time.h>
 typedef unsigned long DWORD;
 #endif
+
+#include <string>
+#include "Common.h"
+#include "CString.h"
+
 
 namespace SharedUtility
 {
@@ -43,7 +45,7 @@ CString GetAbsolutePath(const char * szFormat, ...);
 // Return the filename from the path
 CString FileNameFromPath(CString strPath);
 
-#ifdef WIN32
+#ifdef _WIN32
 // Inject the library into the specified process
 int InjectLibraryIntoProcess(HANDLE hProcess, const char * szLibraryPath);
 

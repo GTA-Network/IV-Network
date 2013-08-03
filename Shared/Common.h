@@ -23,7 +23,7 @@ typedef unsigned short EntityId;
 #define MOD_NAME "IV:Multiplayer"
 
 // Operating system string
-#ifdef WIN32
+#ifdef _WIN32
 #define OS_STRING "Windows"
 #else
 #define OS_STRING "Linux"
@@ -31,13 +31,13 @@ typedef unsigned short EntityId;
 
 // Library debug suffix
 #ifdef _DEBUG
-#define DEBUG_SUFFIX ".Debug"
+#define DEBUG_SUFFIX // ".Debug"
 #else
 #define DEBUG_SUFFIX
 #endif
 
 // Library extension
-#ifdef WIN32
+#ifdef _WIN32
 #define LIBRARY_EXTENSION ".dll"
 #else
 #define LIBRARY_EXTENSION ".so"
@@ -54,13 +54,13 @@ typedef unsigned short EntityId;
 #ifdef EXPORT
 #undef EXPORT
 #endif
-#ifdef WIN32
+#ifdef _WIN32
 #define EXPORT extern "C" __declspec(dllexport)
 #else
 #define EXPORT extern "C"
 #endif
 
 // Warning disable
-#pragma warning(disable:4996)
+#pragma warning(disable:4996)// Disables _s warning
 
 #endif // Common_h

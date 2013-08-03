@@ -42,7 +42,7 @@ namespace SharedUtility
 	{
 		for(size_t i = strlen(szString); i > 0; --i)
 		{
-#ifdef WIN32
+#ifdef _WIN32
 			if(szString[i] == '\\')
 #else
 			if(szString[i] == '/')
@@ -65,7 +65,7 @@ namespace SharedUtility
 
 		while(szStrippedPath != szPath)
 		{
-#ifdef WIN32
+#ifdef _WIN32
 			if(*szStrippedPath == '\\')
 #else
 			if(*szStrippedPath == '/')
@@ -80,11 +80,11 @@ namespace SharedUtility
 
 	const char * GetAppPath()
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		static unsigned int nDummy;
 #endif
 		static char szAppPath[MAX_PATH];
-#ifdef WIN32
+#ifdef _WIN32
 		HMODULE hModuleHandle;
 		GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, 
 			(LPCSTR)&nDummy, &hModuleHandle);
@@ -99,7 +99,7 @@ namespace SharedUtility
 	const char * GetExePath()
 	{
 		static char szExePath[MAX_PATH];
-#ifdef WIN32
+#ifdef _WIN32
 		GetModuleFileName(GetModuleHandle(NULL), szExePath, MAX_PATH);
 #else
 		readlink("/proc/self/exe", szExePath, MAX_PATH);
@@ -113,7 +113,7 @@ namespace SharedUtility
 		va_list args;
 		char szBuffer[1024];
 		va_start(args, szFormat);
-		vsnprintf(szBuffer, sizeof(szBuffer), szFormat, args);
+		vsnprintf_s(szBuffer, sizeof(szBuffer), szFormat, args);
 		va_end(args);
 		return CString("%s%s", GetAppPath(), szBuffer);
 	}
@@ -158,7 +158,7 @@ namespace SharedUtility
 		return strPath.Substring(uiLastSlash);
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	int InjectLibraryIntoProcess(HANDLE hProcess, const char * szLibraryPath)
 	{
 		int iReturn = 0;
@@ -418,7 +418,7 @@ namespace SharedUtility
 
 	unsigned long GetTime()
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		return timeGetTime();
 #else
 		timeval ts;
@@ -471,7 +471,7 @@ namespace SharedUtility
 	{
 		// Create the directory
 		int 
-#ifdef WIN32
+#ifdef _WIN32
 			iReturn = mkdir(szPath);
 #else
 			iReturn = mkdir(szPath, 0775);

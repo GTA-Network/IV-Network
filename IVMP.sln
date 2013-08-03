@@ -55,6 +55,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Threading", "Threading", "{
 		Shared\Threading\CThread.h = Shared\Threading\CThread.h
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patcher", "Patcher", "{564791E2-70BB-4F49-8C54-135ED7E3025D}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Patcher\CPatcher.cpp = Shared\Patcher\CPatcher.cpp
+		Shared\Patcher\CPatcher.h = Shared\Patcher\CPatcher.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -93,5 +99,6 @@ Global
 		{5AD2BD08-FCBD-474F-AECD-F9ACDA0A2031} = {88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}
 		{B416D3CF-6183-425A-8F23-4C3079B243EF} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{58C4FE7A-B82C-4A71-83A2-0C5D6F04B1FE} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
+		{564791E2-70BB-4F49-8C54-135ED7E3025D} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 	EndGlobalSection
 EndGlobal

@@ -9,7 +9,7 @@
 #ifndef CThread_h
 #define CThread_h
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #endif
 #include "CMutex.h"
@@ -19,7 +19,7 @@ class CThread
 private:
 	typedef void     (* ThreadFunction_t)(CThread * pCreator);
 
-#ifdef WIN32
+#ifdef _WIN32
 	HANDLE           m_hThread;
 #else
 	pthread_t        m_thread;
@@ -75,7 +75,7 @@ public:
 		return pUserData;
 	}
 
-#ifdef WIN32
+#ifdef _WIN32
 	static void StartAddress(CThread * pThis);
 #else
 	static void * StartAddress(void * pThis);
