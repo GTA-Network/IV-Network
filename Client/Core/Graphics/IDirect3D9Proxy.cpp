@@ -11,7 +11,12 @@
 #include <CCore.h>
 #include "CDirectInput8Hook.h"
 #include <dinput.h>
+#include <Windows.h>
+#include <windowsx.h>
+#include "Input.h"
+
 extern CCore * g_pCore;
+extern WNDPROC m_wWndProc;
 
 IDirect3D9Proxy::IDirect3D9Proxy(IDirect3D9 * pD3D)
 {
@@ -110,10 +115,12 @@ HRESULT STDMETHODCALLTYPE IDirect3D9Proxy::CreateDevice(UINT Adapter, D3DDEVTYPE
 
 	// Create the device
 	HRESULT hr = m_pD3D->CreateDevice(Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
-	/*
-	// Subclass the window
-	CWindowSubclass::Subclass( hFocusWindow );
-	*/
+	
+	SetWindowLong(hFocusWindow, GWL_STYLE, GetWindowLong(hFocusWindow, GWL_STYLE) & ~WS_MINIMIZEBOX & ~WS_MAXIMIZEBOX);
+
+    if(!m_wWndProc)
+        m_wWndProc = SubclassWindow(hFocusWindow, WndProc_Hook);
+	 
 	if(SUCCEEDED(hr))
 	{
 		// Initialise the graphics

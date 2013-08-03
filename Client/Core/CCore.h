@@ -21,17 +21,16 @@
 #include <Game\eGame.h>
 #include <IV\CIVScriptHook.h>
 
-#include <Hooks\CDirect3D.h>
-#include <Hooks\CDirectInputProxy.h>
 #include <Hooks\CXLive.h>
 
 #include "Game/CGame.h"
-#include "Graphics\CGraphics.h"
+#include "Graphics/CGraphics.h"
+#include "Graphics/CChat.h"
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
 
-#include "Network\CLocalPlayer.h"
+#include "Network/CLocalPlayer.h"
 
 
 class CCore {
@@ -44,6 +43,8 @@ private:
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
+	CChat							* m_pChat;
+
 	eGAMEStates						m_eGameState;
 public:
 
@@ -71,6 +72,7 @@ public:
 
 	CGame							* GetGame() { return m_pGame; }
 	CGraphics						* GetGraphics() { return m_pGraphics; }
+	CChat							* GetChat() { return m_pChat; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

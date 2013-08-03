@@ -185,9 +185,6 @@
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp">
       <Filter>Source Files\Graphics\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\CGraphics.cpp">
-      <Filter>Source Files\Graphics\DirectX</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp">
       <Filter>Source Files\Graphics\DirectX</Filter>
     </ClCompile>
@@ -202,6 +199,12 @@
     </ClCompile>
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp">
       <Filter>Source Files\Graphics\DirectX</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CGraphics.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CChat.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +339,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h">
       <Filter>Header Files\Graphics\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CChat.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

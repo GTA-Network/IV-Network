@@ -8,7 +8,6 @@
 //==========================================================================================
 
 #include	"CCore.h"
-#include	<Windows.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
@@ -28,6 +27,8 @@ CCore::CCore(void)
 
 	// Reset instances
 	m_pGame = NULL;
+	m_pGraphics = NULL;
+	m_pChat = NULL;
 }
 
 CCore::~CCore()
@@ -67,6 +68,9 @@ bool CCore::Initialise()
 	// Create the graphics instance
 	m_pGraphics = new CGraphics;
 
+	// Create the chat instance
+	m_pChat = new CChat(30, 30);
+
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();
 
@@ -97,6 +101,10 @@ void CCore::OnGameLoad()
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
+
+	m_pChat->SetVisible(true);
+
+	m_pChat->Output( "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
 	// Create Instances
 	// Startup the network module
@@ -153,10 +161,15 @@ void CCore::OnDevicePreRender()
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Has the device been lost?
-	if(g_bDeviceLost)
+	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
-	// Render 
+	m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
+
+	if(m_pChat)
+		m_pChat->Render();
+	
+	pDevice->Present(NULL,NULL,NULL,NULL);
 }
 
 void CCore::OnGameProcess()

@@ -77,38 +77,6 @@ HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetDeviceState(DWORD p0, LPV
 	HRESULT hResult			= m_pDevice->GetDeviceState( p0, p1 );
 	char * keyBuffer = (char *)p1;
 
-	// Is the game loaded?
-	/*if( g_pCore->GetGame()->GetNetworkModule()->IsConnected() )
-	{
-		// Is the chat input visible?
-		if( g_pClient->GetChat()->IsInputVisible() )
-		{
-			// Don't pass keys to the game (TODO: Find better way!)
-			keyBuffer[ DIK_W ] = 0;
-			keyBuffer[ DIK_S ] = 0;
-			keyBuffer[ DIK_A ] = 0;
-			keyBuffer[ DIK_D ] = 0;
-			keyBuffer[ DIK_SPACE ] = 0;
-			keyBuffer[ DIK_ESCAPE ] = 0;
-			keyBuffer[ DIK_LSHIFT ] = 0;
-			keyBuffer[ DIK_RSHIFT ] = 0;
-			keyBuffer[ DIK_RETURN ] = 0;
-			keyBuffer[ DIK_BACKSPACE ] = 0;
-			keyBuffer[ DIK_LCONTROL ] = 0;
-			keyBuffer[ DIK_RCONTROL ] = 0;
-			keyBuffer[ DIK_RALT ] = 0;
-			keyBuffer[ DIK_LALT ] = 0;
-			keyBuffer[ DIK_NUMPADENTER ] = 0;
-			keyBuffer[ DIK_X ] = 0;
-			keyBuffer[ DIK_F ] = 0;
-			keyBuffer[ DIK_RETURN ] = 0;
-			keyBuffer[ DIK_UPARROW ] = 0;
-			keyBuffer[ DIK_DOWNARROW ] = 0;
-			keyBuffer[ DIK_LEFTARROW ] = 0;
-			keyBuffer[ DIK_RIGHTARROW ] = 0;
-			keyBuffer[ DIK_P ] = 0;
-		}
-	}*/
 	return hResult;
 }
 

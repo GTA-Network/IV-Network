@@ -101,6 +101,7 @@
     <ClCompile Include="Game\Entity\CEntityManager.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Graphics\CChat.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
+    <ClInclude Include="Graphics\CChat.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Proxy.h" />

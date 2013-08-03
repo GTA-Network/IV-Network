@@ -32,6 +32,7 @@ void CRageThread_Script_Process()
 	{
 		g_iRageScriptFrames++;
 		CIVScript::DoScreenFadeIn(0);
+		g_pCore->OnGameLoad();
 	}
 
 	if(!g_bRageScriptLoaded)
