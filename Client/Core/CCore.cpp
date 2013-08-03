@@ -87,6 +87,7 @@ bool CCore::Initialise()
 	// Install the DirectInput hook
 	CDirectInputHook::Install();
 
+	// Install the RAGEScriptThread hook..
 	CIVScriptingHook::InstallScriptHooks();
 
 	CLogFile::Printf("Done!");
