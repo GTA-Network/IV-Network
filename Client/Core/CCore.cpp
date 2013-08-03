@@ -32,7 +32,7 @@ CCore::CCore(void)
 
 CCore::~CCore()
 {
-	CLogFile::Printf( "CCore::~CCore" );
+	CLogFile::Printf("CCore::~CCore");
 }
 
 bool CCore::Initialise()
@@ -42,8 +42,8 @@ bool CCore::Initialise()
 		return false;
 
 	// Open the log file
-	CLogFile::Open( "IVMP-Client.log" );
-	CLogFile::Printf( "CCore::Initialize" );
+	CLogFile::Open("IVMP-Client.log");
+	CLogFile::Printf("CCore::Initialize");
 
 	// Get the applicatin base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
@@ -55,13 +55,13 @@ bool CCore::Initialise()
 	CSettings::Open( SharedUtility::GetAbsolutePath("IVMP-Client.xml"), true, false );
 
 	// Parse the command line
-	CSettings::ParseCommandLine( GetCommandLine() );
+	CSettings::ParseCommandLine(GetCommandLine());
 
 	/* // Set the info
-	SetNick( CVAR_GET_STRING("nick") );
-	SetHost( CVAR_GET_STRING("ip") );
-	SetPort( CVAR_GET_INTEGER("port") );
-	SetPass( CVAR_GET_STRING("pass") );*/
+	SetNick(CVAR_GET_STRING("nick"));
+	SetHost(CVAR_GET_STRING("ip"));
+	SetPort(CVAR_GET_INTEGER("port"));
+	SetPass(CVAR_GET_STRING("pass"));*/
 
 	// Create the game instance
 	m_pGame = new CGame;
