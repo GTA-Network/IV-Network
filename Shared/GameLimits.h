@@ -38,9 +38,6 @@
 // NOTE: MUST be unsigned!
 typedef unsigned short EntityId;
 
-// Define used for invalid entity ids
-#define INVALID_ENTITY_ID (EntityId)0xFFFF
-
 // Type used for dimension ids
 typedef unsigned char DimensionId;
 

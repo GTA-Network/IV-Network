@@ -189,7 +189,7 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	for(std::list<CNetPlayerSocket *>::iterator iter = m_playerSocketsList.begin(); iter != m_playerSocketsList.end(); iter++)
 	{
 		// Is this the player socket we are looking for?
-		if((*iter)->GetPlayerId() == playerId)
+		//if((*iter)->GetPlayerId() == playerId)
 		{
 			// Return the player socket
 			return (*iter);
