@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../Common.h"
-#include <Windows.h>
 
 #define X86_NOP 0x90
 #define X86_RETN 0xC3

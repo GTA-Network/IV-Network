@@ -11,19 +11,22 @@
 #define CCore_h
 
 #include <Common.h>
-
 #include "Game/CGame.h"
 
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include  <Patcher\CPatcher.h>
+
+#include <d3d9.h>
 
 #include "CLogFile.h"
 #include "CSettings.h"
 #include "SharedUtility.h"
-
-typedef int IDirect3DDevice9;
-typedef int D3DPRESENT_PARAMETERS;
+#include <Game\eGame.h>
+#include <Hooks\CDirect3D.h>
+#include <Hooks\CDirectInputProxy.h>
+#include <Hooks\CXLive.h>
 
 class CCore {
 
@@ -34,6 +37,8 @@ private:
 	unsigned int					m_uiBaseAddress;
 
 	CGame							* m_pGame;
+
+	eGAMEStates						m_eGameState;
 public:
 
 									CCore();
@@ -59,6 +64,9 @@ public:
 	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
 
 	CGame							* GetGame() { return m_pGame; }
+
+	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
+	eGAMEStates						GetClientState() { return m_eGameState; }
 };
 
 #endif // CCore_h

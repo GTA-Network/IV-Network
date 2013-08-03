@@ -93,4 +93,5 @@ CString CInput::GetInput()
 			return strInputString;
 		}
 	}
+	return strInputString;
 }

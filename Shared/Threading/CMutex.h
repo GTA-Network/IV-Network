@@ -11,7 +11,6 @@
 #define CMutex_h
 
 #include <Common.h>
-
 #include <CString.h>
 
 #define USE_CRITICAL_SECTION
