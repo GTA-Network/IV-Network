@@ -107,6 +107,7 @@ typedef unsigned short EntityId;
 // Warning disable
 #pragma warning(disable:4996) // Disables _s warning
 #pragma warning(disable:4409) // Disable illegal instruction warming(asm)
+#pragma warning(disable:4042) // Disable LNK 4042 extra objects
 
 // Macros
 #define		ARRAY_LENGTH(array)			(sizeof(array) / sizeof(array[0]))

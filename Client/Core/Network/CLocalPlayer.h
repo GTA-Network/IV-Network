@@ -12,7 +12,12 @@
 
 #include <winsock2.h>
 #include <windows.h>
+
 #include <Game\Entity\CPlayerEntity.h>
+
+#include <Patcher\CPatcher.h>
+#include <Game\COffsets.h>
+#include <Math\CMaths.h>
 
 class CLocalPlayer : public CPlayerEntity
 {
@@ -31,8 +36,8 @@ private:
         bool                            m_bRadarVisible;
 
 public:
-        CLocalPlayer();
-        ~CLocalPlayer();
+						CLocalPlayer();
+						~CLocalPlayer();
 
         void			Respawn();
         void			HandleSpawn();

@@ -30,6 +30,8 @@
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
 
+#include "Network\CLocalPlayer.h"
+
 
 class CCore {
 
