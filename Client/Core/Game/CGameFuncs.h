@@ -13,6 +13,7 @@
 #include <Common.h>
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
+#include <IV\IVData.h>
 
 class CGameFunction
 {
