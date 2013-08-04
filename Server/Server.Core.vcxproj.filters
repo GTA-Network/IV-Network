@@ -25,6 +25,15 @@
     <Filter Include="Libraries\tinyxml">
       <UniqueIdentifier>{b78a73f4-f916-4edd-a5d8-301fb04d7744}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{d87a78f7-4e6a-40aa-8152-f37f40148b06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting">
+      <UniqueIdentifier>{ae4d5c2d-faa3-4636-9d70-b75bcb66945b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\Squirrel">
+      <UniqueIdentifier>{ac71d78d-41aa-4f52-ae48-ddf989fb58d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -69,6 +78,78 @@
     <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp">
       <Filter>Libraries\tinyxml</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\CScriptingManager.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\CSquirrelScriptingManager.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\CSquirrelScript.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\CScript.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqbaselib.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqclass.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqcompiler.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqdebug.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqfuncstate.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqlexer.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqmem.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqobject.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstate.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdaux.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdblob.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdio.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdmath.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdrex.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstream.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstring.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdsystem.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqtable.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqvm.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -76,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="CInput.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CScriptingManager.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CScript.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CSquirrelScript.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CSquirrelScriptingManager.h">
+      <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

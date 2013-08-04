@@ -12,11 +12,13 @@
 
 #include "Common.h"
 #include "CNetworkServer.h"
+#include "Scripting/CSquirrelScriptingManager.h"
 
 class CServer {
 
 private:
-	CNetworkServer * m_pNetServer;
+	CNetworkServer				* m_pNetServer;
+	CSquirrelScriptingManager	* m_pScriptingManager;
 
 public:
 	CServer();

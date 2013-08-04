@@ -55,7 +55,8 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries;../Libraries/Squirrel;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -81,6 +82,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqbaselib.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqclass.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqcompiler.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqdebug.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqfuncstate.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqlexer.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqmem.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqobject.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstate.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdaux.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdblob.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdio.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdmath.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdrex.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstream.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstring.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqstdsystem.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqtable.cpp" />
+    <ClCompile Include="..\Libraries\Squirrel\sqvm.cpp" />
     <ClCompile Include="..\Libraries\tinyxml\ticpp.cpp" />
     <ClCompile Include="..\Libraries\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\Libraries\tinyxml\tinyxml.cpp" />
@@ -95,10 +116,18 @@
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CServer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scripting\CScript.cpp" />
+    <ClCompile Include="Scripting\CScriptingManager.cpp" />
+    <ClCompile Include="Scripting\CSquirrelScript.cpp" />
+    <ClCompile Include="Scripting\CSquirrelScriptingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
+    <ClInclude Include="Scripting\CScript.h" />
+    <ClInclude Include="Scripting\CScriptingManager.h" />
+    <ClInclude Include="Scripting\CSquirrelScript.h" />
+    <ClInclude Include="Scripting\CSquirrelScriptingManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
