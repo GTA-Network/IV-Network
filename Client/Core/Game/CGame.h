@@ -33,7 +33,7 @@ private:
 	static CTaskManager			*m_pTaskManager;
 	static CPools				*m_pPool;
 	static CCamera				*m_pCamera;
-
+	CIVModelInfo				m_modelInfos[NUM_ModelInfos];
 public:
 							CGame() { };
 							~CGame() { };
@@ -48,6 +48,8 @@ public:
 	CTaskManager			*GetTaskManager() { return m_pTaskManager; }
 	CPools					*GetPools() { return m_pPool; }
 	CCamera					*GetCamera() { return m_pCamera; }
+
+	CIVModelInfo			* GetModelInfo( int iModelIndex );
 };
 
 #endif // CGame_h

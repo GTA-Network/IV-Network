@@ -12,6 +12,7 @@
 
 #include <Game/IVEngine/CIVHud.h>
 #include <Game/IVEngine/CIVWeather.h>
+#include <Game/IVEngine/CIVModelInfo.h>
 
 extern	CCore				* g_pCore;
 //extern CLocalPlayer			* g_pLocalPlayer;
@@ -109,4 +110,12 @@ void CGame::PrepareWorld()
 
 	CIVWeather::SetWeather(WEATHER_SUNNY);
 	CIVWeather::SetTime(7, 0);
+}
+
+CIVModelInfo * CGame::GetModelInfo( int iModelIndex )
+{
+	if( iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid() )
+		return &m_modelInfos[iModelIndex];
+
+	return NULL;
 }

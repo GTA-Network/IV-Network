@@ -50,6 +50,12 @@ private:
 	CFPSCounter						* m_pFPSCounter;
 
 	eGAMEStates						m_eGameState;
+
+	CString							m_strNick;
+	CString							m_strHost;
+	unsigned short					m_usPort;
+	CString							m_strPass;
+
 public:
 
 									CCore();
@@ -84,6 +90,15 @@ public:
 
 	void							SetLocalPlayerIndex(unsigned iIndex) { m_uiLocalPlayerIndex = iIndex; }
 	unsigned						GetLocalPlayerIndex() { return m_uiLocalPlayerIndex; }
+
+	void							SetNick( CString strNick ) { m_strNick = strNick; }
+	CString							GetNick( ) { return m_strNick; }
+	void							SetHost( CString strHost ) { m_strHost = strHost; }
+	CString							GetHost( ) { return m_strHost; }
+	void							SetClientPort( unsigned short usPort ) { m_usPort = usPort; }
+	unsigned short					GetPort( ) { return m_usPort; }
+	void							SetPass( CString strPass ) { m_strPass = strPass; }
+	CString							GetPass( ) { return m_strPass; }
 };
 
 #endif // CCore_h
