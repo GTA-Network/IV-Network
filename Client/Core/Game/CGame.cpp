@@ -44,7 +44,7 @@ DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 
 void CGame::Setup()
 {
-	//CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0 ); // Remove Thread?
+	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Remove Thread?
 
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 
@@ -56,13 +56,13 @@ void CGame::Setup()
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 
 	// Create new civpad instance
-	m_pPad = new CIVPad( (IVPad *)(g_pCore->GetBase() + 0x10FB818) );
+	m_pPad = new CIVPad((IVPad *)(g_pCore->GetBase() + 0x10FB818));
 
 	// Create task manager instance
 	m_pTaskManager = new CTaskManager();
 
 	// Create new pool instance
-	m_pPool = new CPools( );
+	m_pPool = new CPools();
 }
 
 void CGame::Initialise()
@@ -211,9 +211,9 @@ void CGame::PrepareWorld()
 	CIVWeather::SetTime(7, 0);
 }
 
-CIVModelInfo * CGame::GetModelInfo( int iModelIndex )
+CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 {
-	if( iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid() )
+	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())
 		return &m_modelInfos[iModelIndex];
 
 	return NULL;

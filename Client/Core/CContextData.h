@@ -23,31 +23,31 @@ private:
 
 public:
 
-	CContextData( CIVPlayerInfo * pPlayerInfo )
+	CContextData(CIVPlayerInfo * pPlayerInfo)
 	{
 		// Set the player info
-		SetPlayerInfo( pPlayerInfo );
+		SetPlayerInfo(pPlayerInfo);
 
 		// Set the player ped
-		SetPlayerPed( NULL );
+		SetPlayerPed(NULL);
 
 		// Create the pad
-		m_pPad = new CIVPad( );
+		m_pPad = new CIVPad();
 	}
 
-	~CContextData( )
+	~CContextData()
 	{
 		// Delete the pad
-		SAFE_DELETE( m_pPad );
+		SAFE_DELETE(m_pPad);
 	}
 
-	void              SetPlayerPed( CIVPlayerPed * pPlayerPed ) { m_pPlayerPed = pPlayerPed; }
-	CIVPlayerPed    * GetPlayerPed( ) { return m_pPlayerPed; }
+	void              SetPlayerPed(CIVPlayerPed * pPlayerPed) { m_pPlayerPed = pPlayerPed; }
+	CIVPlayerPed    * GetPlayerPed() { return m_pPlayerPed; }
 
-	void              SetPlayerInfo( CIVPlayerInfo * pPlayerInfo ) { m_pPlayerInfo = pPlayerInfo; }
-	CIVPlayerInfo   * GetPlayerInfo( ) { return m_pPlayerInfo; }
+	void              SetPlayerInfo(CIVPlayerInfo * pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
+	CIVPlayerInfo   * GetPlayerInfo() { return m_pPlayerInfo; }
 
-	CIVPad			* GetPad( ) { return m_pPad; }
+	CIVPad			* GetPad() { return m_pPad; }
 
 };
 
@@ -57,17 +57,17 @@ private:
 
 public:
 
-	CContextDataManager( ) { };
-	~CContextDataManager( );
+	CContextDataManager() { };
+	~CContextDataManager();
 
-	static	CContextData			* CreateContextData( CIVPlayerInfo * pPlayerInfo );
-	static	void					DestroyContextData( CContextData * pContextData );
+	static	CContextData			* CreateContextData(CIVPlayerInfo * pPlayerInfo);
+	static	void					DestroyContextData(CContextData * pContextData);
 
-	static CContextData				* GetContextData( BYTE bytePlayerNumber );
-	static CContextData				* GetContextData( CIVPlayerInfo * pPlayerInfo );
-	static CContextData				* GetContextData( IVPlayerInfo * pPlayerInfo );
-	static CContextData				* GetContextData( CIVPlayerPed * pPlayerPed );
-	static CContextData				* GetContextData( IVPlayerPed * pPlayerPed );
+	static CContextData				* GetContextData(BYTE bytePlayerNumber);
+	static CContextData				* GetContextData(CIVPlayerInfo * pPlayerInfo);
+	static CContextData				* GetContextData(IVPlayerInfo * pPlayerInfo);
+	static CContextData				* GetContextData(CIVPlayerPed * pPlayerPed);
+	static CContextData				* GetContextData(IVPlayerPed * pPlayerPed);
 
 };
 

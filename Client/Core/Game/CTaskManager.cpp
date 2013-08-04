@@ -10,34 +10,34 @@
 #include "CTaskManager.h"
 #include <CLogFile.h>
 
-CTaskManager::CTaskManager( )
+CTaskManager::CTaskManager()
 {
-	CLogFile::Printf( "CTaskManager::CTaskManager" );
+	CLogFile::Printf("CTaskManager::CTaskManager");
 }
 
-CTaskManager::~CTaskManager( )
+CTaskManager::~CTaskManager()
 {
-	CLogFile::Printf( "CTaskManager::~CTaskManager" );
+	CLogFile::Printf("CTaskManager::~CTaskManager");
 	// Loop through all the client tasks
-	for( std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
+	for(std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++)
 	{
 		// Delete the client task pair
 		delete (*iter);
 	}
 }
 
-bool CTaskManager::AddTask( CIVTask * pClientTask )
+bool CTaskManager::AddTask(CIVTask * pClientTask)
 {
-	CLogFile::Printf( "CTaskManager::AddTask( 0x%p )", pClientTask );
+	CLogFile::Printf("CTaskManager::AddTask(0x%p)", pClientTask);
 	// Do we have an invalid task pointer?
-	if( !pClientTask )
+	if(!pClientTask)
 		return false;
 
 	// Create the client task pair
 	ClientTaskPair * pClientTaskPair = new ClientTaskPair;
 
 	// Do we have an invalid task pair?
-	if( !pClientTaskPair )
+	if(!pClientTaskPair)
 		return false;
 
 	// Set the client task pair pointers
@@ -45,29 +45,29 @@ bool CTaskManager::AddTask( CIVTask * pClientTask )
 	pClientTaskPair->pClientTask = pClientTask;
 
 	// Add the client task pair to the client task pair list
-	m_taskList.push_back( pClientTaskPair );
+	m_taskList.push_back(pClientTaskPair);
 
 	return true;
 }
 
-bool CTaskManager::RemoveTask( CIVTask * pClientTask )
+bool CTaskManager::RemoveTask(CIVTask * pClientTask)
 {
-	CLogFile::Printf( "CTaskManager::RemoveTask( 0x%p )", pClientTask );
+	CLogFile::Printf("CTaskManager::RemoveTask(0x%p)", pClientTask);
 	// Do we have an invalid task pointer?
-	if( !pClientTask )
+	if(!pClientTask)
 		return false;
 
 	// Loop through all the client tasks
-	for( std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
+	for(std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++)
 	{
 		// Is this the client task pair we are looking for?
-		if( (*iter)->pClientTask == pClientTask )
+		if((*iter)->pClientTask == pClientTask)
 		{
 			// Delete the client task pair
 			delete (*iter);
 
 			// Remove it from the list
-			m_taskList.remove( *iter );
+			m_taskList.remove(*iter);
 
 			return true;
 		}
@@ -76,18 +76,18 @@ bool CTaskManager::RemoveTask( CIVTask * pClientTask )
 	return false;
 }
 
-IVTask * CTaskManager::GetGameTaskFromClientTask( CIVTask * pClientTask )
+IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
 {
-	CLogFile::Printf( "CTaskManager::GetGameTaskFromClientTask( 0x%p )", pClientTask );
+	CLogFile::Printf("CTaskManager::GetGameTaskFromClientTask(0x%p)", pClientTask);
 	// Do we have an invalid task pointer?
-	if( !pClientTask )
+	if(!pClientTask)
 		return NULL;
 
 	// Loop through all the client tasks
-	for( std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
+	for(std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++)
 	{
 		// Is this the client task pair we are looking for?
-		if( (*iter)->pClientTask == pClientTask )
+		if((*iter)->pClientTask == pClientTask)
 		{
 			return (*iter)->pGameTask;
 		}
@@ -96,28 +96,28 @@ IVTask * CTaskManager::GetGameTaskFromClientTask( CIVTask * pClientTask )
 	return NULL;
 }
 
-CIVTask * CTaskManager::GetClientTaskFromGameTask( IVTask * pGameTask, bool bCreateIfNotExist )
+CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist)
 {
-	CLogFile::Printf( "CTaskManager::GetClientTaskFromGameTask( 0x%p, %s )", pGameTask, bCreateIfNotExist ? "true" : "false" );
+	CLogFile::Printf("CTaskManager::GetClientTaskFromGameTask(0x%p, %s)", pGameTask, bCreateIfNotExist ? "true" : "false");
 	// Do we have an invalid task pointer?
-	if( !pGameTask )
+	if(!pGameTask)
 		return NULL;
 
 	// Loop through all the client tasks
-	for( std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++ )
+	for(std::list< ClientTaskPair *>::iterator iter = m_taskList.begin(); iter != m_taskList.end(); iter++)
 	{
 		// Is this the client task pair we are looking for?
-		if( (*iter)->pGameTask == pGameTask )
+		if((*iter)->pGameTask == pGameTask)
 		{
 			return (*iter)->pClientTask;
 		}
 	}
 
 	// Create the task if requested
-	if( bCreateIfNotExist )
+	if(bCreateIfNotExist)
 	{
 		// Create a temp intance
-		CIVTask * pTempClientTask = new CIVTask( pGameTask );
+		CIVTask * pTempClientTask = new CIVTask(pGameTask);
 
 		// Is this task simple?
 		bool bIsSimple = pTempClientTask->IsSimple();
@@ -128,13 +128,13 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask( IVTask * pGameTask, bool bCre
 		// Create the client task instance
 		CIVTask * pClientTask = NULL;
 
-		if( bIsSimple )
-			pClientTask = new CIVTaskSimple( (IVTaskSimple *)pGameTask );
+		if(bIsSimple)
+			pClientTask = new CIVTaskSimple((IVTaskSimple *)pGameTask);
 		else
-			pClientTask = new CIVTaskComplex( (IVTaskComplex *)pGameTask );
+			pClientTask = new CIVTaskComplex((IVTaskComplex *)pGameTask);
 
 		// Add the task
-		AddTask( pClientTask );
+		AddTask(pClientTask);
 
 		// Return the new task
 		return pClientTask;
@@ -143,19 +143,19 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask( IVTask * pGameTask, bool bCre
 	return NULL;
 }
 
-bool CTaskManager::HandleTaskDelete( IVTask * pGameTask )
+bool CTaskManager::HandleTaskDelete(IVTask * pGameTask)
 {
 	// Do we have an invalid task pointer?
-	if( !pGameTask )
+	if(!pGameTask)
 		return NULL;
 
 	// Try and get the client task pointer for this game task
-	CIVTask * pClientTask = GetClientTaskFromGameTask( pGameTask, false );
+	CIVTask * pClientTask = GetClientTaskFromGameTask(pGameTask, false);
 
 	// Do we have a valid client task pointer?
-	if( pClientTask )
+	if(pClientTask)
 	{
-		CLogFile::Printf( "CTaskManager::HandleTaskDelete( 0x%p )" , pGameTask);
+		CLogFile::Printf("CTaskManager::HandleTaskDelete(0x%p)" , pGameTask);
 
 		// Remove the task
 		RemoveTask(pClientTask);

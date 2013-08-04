@@ -119,10 +119,10 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity( bool bLocalPlayer ) : CNetworkEntity(),
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 	m_bLocalPlayer(bLocalPlayer)
 {
-	m_strNick.Set( "Player" );
+	m_strNick.Set("Player");
 	m_usPlayerId = -1;
 	m_usPing = 0;
 	m_bNetworked = false;
@@ -130,47 +130,47 @@ CPlayerEntity::CPlayerEntity( bool bLocalPlayer ) : CNetworkEntity(),
 	m_bSpawned = false;
 	m_pPlayerPed = NULL;
 	m_pPlayerInfo = NULL;
-	m_pModelInfo = g_pCore->GetGame()->GetModelInfo( 211 );
+	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(211);
 	m_bytePlayerNumber = INVALID_PLAYER_PED;
 	m_pContextData = NULL;
 	m_vecPosition = CVector3();
 	m_pVehicle = NULL;
 	m_byteSeat = 0;
-	memset( &m_lastControlState, 0, sizeof(CControls) );
-	memset( &m_ControlState, 0, sizeof(CControls) );
+	memset(&m_lastControlState, 0, sizeof(CControls));
+	memset(&m_ControlState, 0, sizeof(CControls));
 	ResetVehicleEnterExit();
 
 	// Is this the localplayer?
-	if( IsLocalPlayer() )
+	if(IsLocalPlayer())
 	{
 		// Set the localplayer CIVScript handle
-		m_bytePlayerNumber = (BYTE)CPools::GetLocalPlayerIndex( );
+		m_bytePlayerNumber = (BYTE)CPools::GetLocalPlayerIndex();
 
 		// Create a new player ped instance
-		m_pPlayerPed = new CIVPlayerPed( CPools::GetPlayerInfoFromIndex(0)->m_pPlayerPed );
+		m_pPlayerPed = new CIVPlayerPed(CPools::GetPlayerInfoFromIndex(0)->m_pPlayerPed);
 
 		// Get the localplayer info pointer
-		m_pPlayerInfo = new CIVPlayerInfo( CPools::GetPlayerInfoFromIndex(0) );
+		m_pPlayerInfo = new CIVPlayerInfo(CPools::GetPlayerInfoFromIndex(0));
 
 		// Add our model reference
-		m_pModelInfo->AddReference( false );
+		m_pModelInfo->AddReference(false);
 
 		// Set the localplayer name
-		SetNick( g_pCore->GetNick() );
+		SetNick(g_pCore->GetNick());
 
 		// Setup localplayer
-		CIVScript::SetPlayerControlAdvanced( m_bytePlayerNumber, true, true, true );
-		CIVScript::SetCameraControlsDisabledWithPlayerControls( true );
+		CIVScript::SetPlayerControlAdvanced(m_bytePlayerNumber, true, true, true);
+		CIVScript::SetCameraControlsDisabledWithPlayerControls(true);
 
-		CLogFile::Printf( "m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo );
+		CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
 	}
 }
 
 CPlayerEntity::~CPlayerEntity()
 {
 	// Is this not the localplayer?
-	if( !IsLocalPlayer() )
-		Destroy( );
+	if(!IsLocalPlayer())
+		Destroy();
 }
 
 unsigned short CPlayerEntity::GetPing()
@@ -187,46 +187,46 @@ unsigned short CPlayerEntity::GetPing()
 void CPlayerEntity::Process()
 {
 	// Is the player spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Process vehicle entry/exit
-		ProcessVehicleEnterExit( );
+		ProcessVehicleEnterExit();
 
 		// Is this the localplayer?
-		if( IsLocalPlayer() )
+		if(IsLocalPlayer())
 		{
 			// Copy the current control state to the previous control state
-			memcpy( &m_lastControlState, &m_ControlState, sizeof(CControls) );
+			memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
 
 			// Update the current control state
-			g_pCore->GetGame()->GetPad()->GetCurrentControlState( m_ControlState );
+			g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
 
 			// Are we spawned?
-			if( IsSpawned() )
+			if(IsSpawned())
 			{
 				// Are we on-foot?
-				if( IsOnFoot() )
+				if(IsOnFoot())
 				{
 					// Send on foot sync data
-					SendOnFootData( );
+					SendOnFootData();
 				}
 				else
 				{
 					// Are we the vehicle driver?
-					if( !IsPassenger() )
+					if(!IsPassenger())
 					{
 						// Send in vehicle data
-						SendInVehicleData( );
+						SendInVehicleData();
 					}
 					else
 					{
 						// Send passenger data
-						SendPassengerData( );
+						SendPassengerData();
 					}
 				}
 
 				// Chek vehicle enter/exit key
-				CheckVehicleEnterExit( );
+				CheckVehicleEnterExit();
 			}
 		}
 	}
@@ -235,35 +235,35 @@ void CPlayerEntity::Process()
 bool CPlayerEntity::Create()
 {
 	// Is this the localplayer or are we alread spawned?
-	if( IsLocalPlayer() && IsSpawned() )
+	if(IsLocalPlayer() && IsSpawned())
 		return false;
 
 	// Find a free player number
-	m_bytePlayerNumber = (BYTE)CPools::FindFreePlayerInfoIndex( );
+	m_bytePlayerNumber = (BYTE)CPools::FindFreePlayerInfoIndex();
 
 	// Invalid player number?
-	if( m_bytePlayerNumber == INVALID_PLAYER_PED )
+	if(m_bytePlayerNumber == INVALID_PLAYER_PED)
 		return false;
 
 	// Add our model reference and load the model
-	m_pModelInfo->AddReference( true );
+	m_pModelInfo->AddReference(true);
 
 	// Get the model index
-	int iModelIndex = m_pModelInfo->GetIndex( );
+	int iModelIndex = m_pModelInfo->GetIndex();
 
 	// Create the player info instance
-	m_pPlayerInfo = new CIVPlayerInfo( m_bytePlayerNumber );
+	m_pPlayerInfo = new CIVPlayerInfo(m_bytePlayerNumber);
 
 	// Create our context data
-	m_pContextData = CContextDataManager::CreateContextData( m_pPlayerInfo );
+	m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
 
 	// Allocate the player ped
-	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate( );
+	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
 
-	CLogFile::Printf( "m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed );
+	CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed);
 
 	// Ensure the ped was allocated
-	if( !pPlayerPed )
+	if(!pPlayerPed)
 		return false;
 
 	// Create the ped
@@ -279,8 +279,8 @@ bool CPlayerEntity::Create()
 	_asm call dwFunc;
 
 	// Setup the ped
-	dwFunc = ( g_pCore->GetBase() + 0x43A6A0 );
-	DWORD dwPedFactory = ( g_pCore->GetBase() + 0x15E35A0 );
+	dwFunc = (g_pCore->GetBase() + 0x43A6A0);
+	DWORD dwPedFactory = (g_pCore->GetBase() + 0x15E35A0);
 	Matrix34 * pMatrix = NULL;
 
 	_asm push iModelIndex;
@@ -290,45 +290,45 @@ bool CPlayerEntity::Create()
 	_asm call dwFunc;
 
 	// Setup ped intelligence
-	*(DWORD *)( pPlayerPed + 0x260 ) |= 1u;
-	dwFunc = ( g_pCore->GetBase() + 0x89EC20 );
+	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
+	dwFunc = (g_pCore->GetBase() + 0x89EC20);
 
 	_asm push 2;
 	_asm mov ecx, pPlayerPed;
 	_asm call dwFunc;
 
 	// Set the player info
-	m_pPlayerInfo->SetPlayerPed( pPlayerPed );
+	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
 
 	// Set our player info with the ped
 	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
 
 	// Set the game player info pointer
-	CPools::SetPlayerInfoAtIndex( (unsigned int)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo() );
+	CPools::SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
 	// Create the player ped instance
-	m_pPlayerPed = new CIVPlayerPed( pPlayerPed );
+	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
 
 	// Set the context data player ped pointer
-	m_pContextData->SetPlayerPed( m_pPlayerPed );
+	m_pContextData->SetPlayerPed(m_pPlayerPed);
 
 	// Add to the world
-	m_pPlayerPed->AddToWorld( );
+	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
-	CIVScript::AddBlipForChar( GetScriptingHandle(), &m_uiBlip );
-	CIVScript::ChangeBlipSprite( m_uiBlip, CIVScript::BLIP_OBJECTIVE );
-	CIVScript::ChangeBlipScale( m_uiBlip, 0.5 );
-	CIVScript::ChangeBlipNameFromAscii( m_uiBlip, GetNick().Get() );
+	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	CIVScript::ChangeBlipSprite(m_uiBlip, CIVScript::BLIP_OBJECTIVE);
+	CIVScript::ChangeBlipScale(m_uiBlip, 0.5);
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, GetNick().Get());
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke< unsigned int >( CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255 );
+	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255);
 
 	// Temp
-	CIVScript_NativeInvoke::Invoke< unsigned int >( CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true );
+	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
 
 	// Mark as spawned
-	Spawn( );
+	Spawn();
 
 	return true;
 }
@@ -336,18 +336,18 @@ bool CPlayerEntity::Create()
 bool CPlayerEntity::Destroy()
 {
 	// Is this the localplayer?
-	if( IsLocalPlayer() )
+	if(IsLocalPlayer())
 		return false;
 
 	// Is the player not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return false;
 
 	// Get the ped pointer
 	IVPlayerPed * pPlayerPed = m_pPlayerPed->GetPlayerPed();
 
 	// Deconstruct the ped intelligence
-	DWORD dwFunc = ( g_pCore->GetBase() + 0x9C4DF0 );
+	DWORD dwFunc = (g_pCore->GetBase() + 0x9C4DF0);
 	IVPedIntelligence * pPedIntelligence = pPlayerPed->m_pPedIntelligence;
 
 	_asm push 0;
@@ -357,39 +357,39 @@ bool CPlayerEntity::Destroy()
 	*(DWORD *)(pPlayerPed + 0x260) &= 0xFFFFFFFE;
 
 	// Remove the ped from the world
-	m_pPlayerPed->RemoveFromWorld( );
+	m_pPlayerPed->RemoveFromWorld();
 
 	// Delete the player ped
-	dwFunc = ( g_pCore->GetBase() + 0x8ACAC0 );
+	dwFunc = (g_pCore->GetBase() + 0x8ACAC0);
 
 	_asm push 1;
 	_asm mov ecx, pPlayerPed;
 	_asm call dwFunc;
 
 	// Remove the model reference
-	m_pModelInfo->RemoveReference( );
+	m_pModelInfo->RemoveReference();
 
 	// Do we have a valid context data record?
-	if( m_pContextData )
+	if(m_pContextData)
 	{
 		// Delete the context data instance
-		CContextDataManager::DestroyContextData( m_pContextData );
+		CContextDataManager::DestroyContextData(m_pContextData);
 
 		// Invalidate the context data pointer
 		m_pContextData = NULL;
 	}
 
 	// Delete the player ped instance
-	SAFE_DELETE( m_pPlayerPed );
+	SAFE_DELETE(m_pPlayerPed);
 
 	// Delete the player info instance
-	SAFE_DELETE( m_pPlayerInfo );
+	SAFE_DELETE(m_pPlayerInfo);
 
 	// Do we have a valid CIVScript handle?
-	if( m_bytePlayerNumber != INVALID_PLAYER_PED )
+	if(m_bytePlayerNumber != INVALID_PLAYER_PED)
 	{
 		// Reset the game player info pointer
-		CPools::SetPlayerInfoAtIndex( (unsigned int)m_bytePlayerNumber, NULL );
+		CPools::SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, NULL);
 
 		// Invalidate the player number
 		m_bytePlayerNumber = INVALID_PLAYER_PED;
@@ -399,24 +399,24 @@ bool CPlayerEntity::Destroy()
 	m_bSpawned = false;
 
 	// Remove the blip
-	CIVScript::RemoveBlip( m_uiBlip );
+	CIVScript::RemoveBlip(m_uiBlip);
 
 	return true;
 }
 
-void CPlayerEntity::Serialize( CBitStream * bitStream )
+void CPlayerEntity::Serialize(CBitStream * bitStream)
 {
 	// Is the player on-foot?
-	if( IsOnFoot() )
+	if(IsOnFoot())
 	{
 		// GET CLIENT DATA
 	}
 }
 
-void CPlayerEntity::Deserialize( CBitStream * bitStream )
+void CPlayerEntity::Deserialize(CBitStream * bitStream)
 {
 	// Is the player not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return;
 
 	// SET DATA
@@ -439,42 +439,42 @@ bool CPlayerEntity::GetPosition(CVector3 *vecPosition)
 	return true;
 }
 
-void CPlayerEntity::Teleport( CVector3 vecPosition )
+void CPlayerEntity::Teleport(CVector3 vecPosition)
 {
-	CIVScript::SetCharCoordinatesNoOffset( GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ );
+	CIVScript::SetCharCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 
 	// Set position for varible.
 	m_vecPosition = m_vecPosition;
 }
 
-void CPlayerEntity::SetColor( unsigned int uiColor )
+void CPlayerEntity::SetColor(unsigned int uiColor)
 {
 	// Save the colour
 	m_uiColor = uiColor;
 
 	// Do we have an active blip?
-	if( m_uiBlip )
+	if(m_uiBlip)
 	{
 		// Set the blip colour
-		CIVScript::ChangeBlipColour( m_uiBlip, uiColor );
+		CIVScript::ChangeBlipColour(m_uiBlip, uiColor);
 	}
 
 	// Do we have a vaid player info pointer?
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 	{
 		// Set the player colour
-		m_pPlayerInfo->SetColour( uiColor );
+		m_pPlayerInfo->SetColour(uiColor);
 	}
 }
 
-unsigned int CPlayerEntity::GetScriptingHandle( )
+unsigned int CPlayerEntity::GetScriptingHandle()
 {
-	return g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf( m_pPlayerPed->GetPed() );
+	return g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf(m_pPlayerPed->GetPed());
 }
 
-void CPlayerEntity::SetHealth( float fHealth )
+void CPlayerEntity::SetHealth(float fHealth)
 {
-	m_pPlayerPed->SetHealth( fHealth );
+	m_pPlayerPed->SetHealth(fHealth);
 }
 
 float CPlayerEntity::GetHealth()
@@ -482,7 +482,7 @@ float CPlayerEntity::GetHealth()
 	return (m_pPlayerPed->GetHealth());
 }
 
-void CPlayerEntity::SetRotation( float fAngle )
+void CPlayerEntity::SetRotation(float fAngle)
 {
 	IVPed * pPed = m_pPlayerPed->GetPed();
 
@@ -500,22 +500,22 @@ float CPlayerEntity::GetRotation()
 	return 0.0f;
 }
 
-void CPlayerEntity::SetModel( int iModelId )
+void CPlayerEntity::SetModel(int iModelId)
 {
     // Get the model hash from skin id
     DWORD dwModelHash = SkinIdToModelHash(iModelId);
          
     // Get the model index
-    int iModelIndex = CIVModelManager::GetModelIndexFromHash( dwModelHash );
+    int iModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
 
     // Get the model info
-    CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo( iModelIndex );
+    CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
 
     // Add reference
-    pModelInfo->AddReference( true );
+    pModelInfo->AddReference(true);
 
     // change the model from the player
-    CIVScript::ChangePlayerModel( GetScriptingHandle(),(CIVScript::eModel)dwModelHash );
+    CIVScript::ChangePlayerModel(GetScriptingHandle(),(CIVScript::eModel)dwModelHash);
   
 	// remove from world
 	m_pPlayerPed->RemoveFromWorld();
@@ -527,125 +527,125 @@ void CPlayerEntity::SetModel( int iModelId )
     m_pPlayerPed->AddToWorld();
 }
 
-void CPlayerEntity::SetControlState( CControls * pControlState )
+void CPlayerEntity::SetControlState(CControls * pControlState)
 {
 	// Is the player spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Get the game pad
-		CIVPad * pPad = g_pCore->GetGame()->GetPad( );
+		CIVPad * pPad = g_pCore->GetGame()->GetPad();
 
 		// Is this not the localplayr?
-		if( !IsLocalPlayer() )
+		if(!IsLocalPlayer())
 		{
 			// Get the context data pad
-			pPad = m_pContextData->GetPad( );
+			pPad = m_pContextData->GetPad();
 		}
 
 		// Set the last control state
-		pPad->SetLastControlState( m_ControlState );
+		pPad->SetLastControlState(m_ControlState);
 
 		// Set the current control state
-		pPad->SetCurrentControlState( *pControlState );
+		pPad->SetCurrentControlState(*pControlState);
 	}
 
 	// Copy the current control state
-	memcpy( &m_lastControlState, &m_ControlState, sizeof(CControls) );
+	memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
 
 	// Copy the control state
-	memcpy( &m_ControlState, pControlState, sizeof(CControls) );
+	memcpy(&m_ControlState, pControlState, sizeof(CControls));
 }
 
-void CPlayerEntity::GetControlState( CControls * pControlState )
+void CPlayerEntity::GetControlState(CControls * pControlState)
 {
 	// Copy the current controls
-	memcpy( pControlState, &m_ControlState, sizeof(CControls) );
+	memcpy(pControlState, &m_ControlState, sizeof(CControls));
 }
 
-void CPlayerEntity::GetLastControlState( CControls * pControlState )
+void CPlayerEntity::GetLastControlState(CControls * pControlState)
 {
 	// Copy the last controls
-	memcpy( pControlState, &m_lastControlState, sizeof(CControls) );
+	memcpy(pControlState, &m_lastControlState, sizeof(CControls));
 }
 
-void CPlayerEntity::InternalPutInVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
+void CPlayerEntity::InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
 {
 	// Is the player spawned and not in a vehicle?
-	if( IsSpawned() && !InternalIsInVehicle() )
+	if(IsSpawned() && !InternalIsInVehicle())
 	{
 		// Is this the driver seat?
-		if( byteSeat == 0 )
+		if(byteSeat == 0)
 		{
-			CIVScript::WarpCharIntoCar( GetScriptingHandle(), pVehicle->GetScriptingHandle() );
+			CIVScript::WarpCharIntoCar(GetScriptingHandle(), pVehicle->GetScriptingHandle());
 		}
 		else
 		{
 			// Is the passenger seat valid?
-			if( byteSeat <= pVehicle->GetMaxPassengers() )
+			if(byteSeat <= pVehicle->GetMaxPassengers())
 			{
-				CIVScript::WarpCharIntoCarAsPassenger( GetScriptingHandle(), pVehicle->GetScriptingHandle(), (byteSeat - 1) );
+				CIVScript::WarpCharIntoCarAsPassenger(GetScriptingHandle(), pVehicle->GetScriptingHandle(), (byteSeat - 1));
 			}
 		}
 	}
 }
 
-void CPlayerEntity::InternalRemoveFromVehicle( )
+void CPlayerEntity::InternalRemoveFromVehicle()
 {
 	// Are we spawned and in a vehicle?
-	if( IsSpawned() && m_pVehicle )
+	if(IsSpawned() && m_pVehicle)
 	{
 		// Create the car set ped out task
-		CIVTaskSimpleCarSetPedOut * pTask = new CIVTaskSimpleCarSetPedOut( m_pVehicle->GetGameVehicle(), 0xF, 0, 1 );
+		CIVTaskSimpleCarSetPedOut * pTask = new CIVTaskSimpleCarSetPedOut(m_pVehicle->GetGameVehicle(), 0xF, 0, 1);
 
 		// Was the task created?
-		if( pTask )
+		if(pTask)
 		{
 			// Process the ped
-			pTask->ProcessPed( m_pPlayerPed );
+			pTask->ProcessPed(m_pPlayerPed);
 
 			// Destroy the task
-			pTask->Destroy( );
+			pTask->Destroy();
 		}
 	}
 }
 
-bool CPlayerEntity::InternalIsInVehicle( )
+bool CPlayerEntity::InternalIsInVehicle()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 		return (m_pPlayerPed->IsInVehicle() && m_pPlayerPed->GetCurrentVehicle());
 	
 	return false;
 }
 
-CVehicleEntity * CPlayerEntity::InternalGetVehicle( )
+CVehicleEntity * CPlayerEntity::InternalGetVehicle()
 {
 	
 	return NULL;
 }
 
-void CPlayerEntity::PutInVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
+void CPlayerEntity::PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
 {
 	// Are we not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return;
 
 	// Is the vehicle invalid?
-	if( !pVehicle )
+	if(!pVehicle)
 		return;
 
 	// Are we already in a vehicle?
-	if( IsInVehicle() )
+	if(IsInVehicle())
 	{
 		// Remove from the vehicle
-		RemoveFromVehicle( );
+		RemoveFromVehicle();
 	}
 
 	// Put the player in the vehicle
-	InternalPutInVehicle( pVehicle, byteSeat );
+	InternalPutInVehicle(pVehicle, byteSeat);
 
 	// Reset entry/exit
-	ResetVehicleEnterExit( );
+	ResetVehicleEnterExit();
 
 	// Store the vehicle pointer
 	m_pVehicle = pVehicle;
@@ -654,24 +654,24 @@ void CPlayerEntity::PutInVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
 	m_byteSeat = byteSeat;
 
 	// Set us in the vehicle
-	m_pVehicle->SetOccupant( byteSeat, this );
+	m_pVehicle->SetOccupant(byteSeat, this);
 }
 
-void CPlayerEntity::RemoveFromVehicle( )
+void CPlayerEntity::RemoveFromVehicle()
 {
 	// Are we not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return;
 
 	// Are we not in a vehicle?
-	if( !m_pVehicle )
+	if(!m_pVehicle)
 		return;
 
 	// Internally remove ourselfs from the vehicle
-	InternalRemoveFromVehicle( );
+	InternalRemoveFromVehicle();
 
 	// Reset the vehicle seat
-	m_pVehicle->SetOccupant( m_byteSeat, NULL );
+	m_pVehicle->SetOccupant(m_byteSeat, NULL);
 
 	// Reset our vehicle pointer
 	m_pVehicle = NULL;
@@ -680,7 +680,7 @@ void CPlayerEntity::RemoveFromVehicle( )
 	m_byteSeat = 0;
 
 	// Reset entry/exit
-	ResetVehicleEnterExit( );
+	ResetVehicleEnterExit();
 }
 
 bool CPlayerEntity::IsAnyWeaponUser()
@@ -691,51 +691,51 @@ bool CPlayerEntity::IsAnyWeaponUser()
 	return bReturn;
 }
 
-void CPlayerEntity::SendOnFootData( )
+void CPlayerEntity::SendOnFootData()
 {
 	// Construct a new bitstream
 	CBitStream bitStream;
 		
 	// Serialize the player with the bitstream
-	Serialize( &bitStream );
+	Serialize(&bitStream);
 }
 
-void CPlayerEntity::SendInVehicleData( )
+void CPlayerEntity::SendInVehicleData()
 {
 	// Construct a new bitstream
 	CBitStream bitStream;
 		
 	// Serialize the vehicle with the bitstream
-	m_pVehicle->Serialize( &bitStream );
+	m_pVehicle->Serialize(&bitStream);
 }
 
-void CPlayerEntity::SendPassengerData( )
+void CPlayerEntity::SendPassengerData()
 {
 	// Construct a new bitstream
 	CBitStream bitStream;
 
 	// Write the vehicle id
-	bitStream.Write( m_pVehicle->GetId() );
+	bitStream.Write(m_pVehicle->GetId());
 }
 
-void CPlayerEntity::EnterVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
+void CPlayerEntity::EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
 {
 	// Are we not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return;
 
 	// Is the vehicle invalid?
-	if( !pVehicle )
+	if(!pVehicle)
 		return;
 
 	// Are we already in a vehicle?
-	if( IsInVehicle() )
+	if(IsInVehicle())
 		return;
 
 	// Create the enter vehicle task
 	int iUnknown = -4;
 
-	switch( byteSeat )
+	switch(byteSeat)
 	{
 	case 0: iUnknown = -7; break;
 	case 1: iUnknown = 2; break;
@@ -744,16 +744,16 @@ void CPlayerEntity::EnterVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
 	}
 
 	unsigned int uiUnknown = 0;
-	if( byteSeat > 0 )
+	if(byteSeat > 0)
 		uiUnknown = 0x200000;
 
-	CIVTaskComplexNewGetInVehicle * pTask = new CIVTaskComplexNewGetInVehicle( pVehicle->GetGameVehicle(), iUnknown, 27, uiUnknown, -2.0f );
+	CIVTaskComplexNewGetInVehicle * pTask = new CIVTaskComplexNewGetInVehicle(pVehicle->GetGameVehicle(), iUnknown, 27, uiUnknown, -2.0f);
 
 	// Did the task get created?
-	if( pTask )
+	if(pTask)
 	{
 		// Set it as the ped task
-		pTask->SetAsPedTask( m_pPlayerPed, TASK_PRIORITY_PRIMARY );
+		pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_PRIMARY);
 	}
 
 	// Mark as enter a vehicle
@@ -762,20 +762,20 @@ void CPlayerEntity::EnterVehicle( CVehicleEntity * pVehicle, BYTE byteSeat )
 	m_vehicleEnterExit.byteSeat = byteSeat;
 }
 
-void CPlayerEntity::ExitVehicle( eExitVehicleType exitType )
+void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 {
 	// Are we not spawned?
-	if( !IsSpawned() )
+	if(!IsSpawned())
 		return;
 
 	// Are we not in a vehicle?
-	if( !m_pVehicle )
+	if(!m_pVehicle)
 	{
 		// Are we entering a vehicle?
-		if( HasVehicleEnterExit() )
+		if(HasVehicleEnterExit())
 		{
 			// Clear the vehicle entry task
-			ClearVehicleEntryTask( );
+			ClearVehicleEntryTask();
 		}
 		return;
 	}
@@ -784,14 +784,14 @@ void CPlayerEntity::ExitVehicle( eExitVehicleType exitType )
 	int iModelId;
 	int iExitMode = 0xF;
 
-	m_pVehicle->GetMoveSpeed( &vecMoveSpeed );
-	iModelId = CIVModelManager::ModelHashToVehicleId( m_pVehicle->GetModelInfo()->GetHash() );
+	m_pVehicle->GetMoveSpeed(&vecMoveSpeed);
+	iModelId = CIVModelManager::ModelHashToVehicleId(m_pVehicle->GetModelInfo()->GetHash());
 
-	if( exitType == EXIT_VEHICLE_NORMAL )
+	if(exitType == EXIT_VEHICLE_NORMAL)
 	{
-		if( vecMoveSpeed.fX < -10 || vecMoveSpeed.fX > 10 || vecMoveSpeed.fY < -10 || vecMoveSpeed.fY > 10 )
+		if(vecMoveSpeed.fX < -10 || vecMoveSpeed.fX > 10 || vecMoveSpeed.fY < -10 || vecMoveSpeed.fY > 10)
 		{
-			switch( iModelId )
+			switch(iModelId)
 			{
 				case 2: case 4: case 5: case 7: case 8: case 10: case 11:
 				case 31: case 32: case 49: case 50: case 51: case 52:
@@ -802,7 +802,7 @@ void CPlayerEntity::ExitVehicle( eExitVehicleType exitType )
 
 				default:
 				{
-					if( iModelId != 12 && iModelId < 166 )
+					if(iModelId != 12 && iModelId < 166)
 						iExitMode = 0x100E;
 				}
 			}
@@ -814,44 +814,44 @@ void CPlayerEntity::ExitVehicle( eExitVehicleType exitType )
 	}
 
 	// Create the vehile exit task
-	CIVTaskComplexNewExitVehicle * pTask = new CIVTaskComplexNewExitVehicle( m_pVehicle->GetGameVehicle(), iExitMode, 0, 0 );
+	CIVTaskComplexNewExitVehicle * pTask = new CIVTaskComplexNewExitVehicle(m_pVehicle->GetGameVehicle(), iExitMode, 0, 0);
 
 	// Did the task get created
-	if( pTask )
+	if(pTask)
 	{
 		// Set the ped task
-		pTask->SetAsPedTask( m_pPlayerPed, TASK_PRIORITY_PRIMARY );
+		pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_PRIMARY);
 	}
 
 	// Mark as exiting vehicle
 	m_vehicleEnterExit.bExiting = true;
 }
 
-void CPlayerEntity::CheckVehicleEnterExit( )
+void CPlayerEntity::CheckVehicleEnterExit()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Are we not in a vehicle?
-		if( !InternalIsInVehicle() )
+		if(!InternalIsInVehicle())
 		{
 			// Has the enter/exit vehicle key been pressed?
-			if( m_lastControlState.IsUsingEnterExitVehicle() || m_lastControlState.IsUsingHorn() )
+			if(m_lastControlState.IsUsingEnterExitVehicle() || m_lastControlState.IsUsingHorn())
 			{
 				// Are we not already requesting an enter?
-				if( !m_vehicleEnterExit.bEntering )
+				if(!m_vehicleEnterExit.bEntering)
 				{
 					CVehicleEntity * pVehicle = NULL;
 					BYTE byteSeat = 0;
-					bool bFound = GetClosestVehicle( m_lastControlState.IsUsingHorn(), &pVehicle, byteSeat );
+					bool bFound = GetClosestVehicle(m_lastControlState.IsUsingHorn(), &pVehicle, byteSeat);
 
 					// Have we found a vehicle?
-					if( bFound )
+					if(bFound)
 					{
 						// Enter the vehicle
-						EnterVehicle( pVehicle, byteSeat );
+						EnterVehicle(pVehicle, byteSeat);
 
-						//g_pClient->GetChat()->Output( "HandleVehicleEntry( %d, %d )", pVehicle->GetId(), byteSeat );
+						//g_pClient->GetChat()->Output("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat);
 					}
 				}
 			}
@@ -859,25 +859,25 @@ void CPlayerEntity::CheckVehicleEnterExit( )
 		else
 		{
 			// Has the enter/exit vehicle key been pressed?
-			if( m_lastControlState.IsUsingEnterExitVehicle() )
+			if(m_lastControlState.IsUsingEnterExitVehicle())
 			{
 				// Are we not already requesting an exit?
-				if( !m_vehicleEnterExit.bExiting )
+				if(!m_vehicleEnterExit.bExiting)
 				{
 					// Exit the vehicle
-					ExitVehicle( EXIT_VEHICLE_NORMAL );
+					ExitVehicle(EXIT_VEHICLE_NORMAL);
 
-					//g_pClient->GetChat()->Output( "HandleVehicleExit( %d, %d )", m_pVehicle->GetId(), m_byteSeat );
+					//g_pClient->GetChat()->Output("HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat);
 				}
 			}
 		}
 	}
 }
 
-bool CPlayerEntity::GetClosestVehicle( bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat )
+bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat)
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		float fCurrent = 6.0f;
 		CVector3 vecVehiclePosition;
@@ -885,22 +885,22 @@ bool CPlayerEntity::GetClosestVehicle( bool bPassenger, CVehicleEntity ** pVehic
 
 		// Get our current position
 		CVector3 vecPosition;
-		GetPosition( &vecPosition );
+		GetPosition(&vecPosition);
 
 		// Loop through all current vehicles
-		/*for( int i = 0; i < g_pClient->GetGame()->GetVehicleManager()->GetCount(); i++ )
+		/*for(int i = 0; i < g_pClient->GetGame()->GetVehicleManager()->GetCount(); i++)
 		{
 			// Get a pointer to this vehicle
 			CVehicleEntity * pThisVehicle = g_pClient->GetGame()->GetVehicleManager()->Get(i);
 
 			// Get this vehicle position
-			pThisVehicle->GetPosition( &vecVehiclePosition );
+			pThisVehicle->GetPosition(&vecVehiclePosition);
 
 			// Get the disance between us and the vehicle
-			float fDistance = GetDistanceBetweenPoints3D( vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecVehiclePosition.fX, vecVehiclePosition.fY, vecVehiclePosition.fZ );
+			float fDistance = GetDistanceBetweenPoints3D(vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecVehiclePosition.fX, vecVehiclePosition.fY, vecVehiclePosition.fZ);
 
 			// Is the distance less than the current?
-			if( fDistance < fCurrent )
+			if(fDistance < fCurrent)
 			{
 				// Set the current distance
 				fCurrent = fDistance;
@@ -911,22 +911,22 @@ bool CPlayerEntity::GetClosestVehicle( bool bPassenger, CVehicleEntity ** pVehic
 		}
 
 		// Do we have a valid vehicle pointer?
-		if( !pClosestVehicle )
+		if(!pClosestVehicle)
 			return false;
 
 		// Are we looking for a passenger seat?
-		if( bPassenger )
+		if(bPassenger)
 		{
 			// Loop through all passenger seats
 			BYTE byteCurrentSeat = 0;
 
-			for( BYTE i = 0; i < pClosestVehicle->GetMaxPassengers(); i++ )
+			for(BYTE i = 0; i < pClosestVehicle->GetMaxPassengers(); i++)
 			{
 				byteCurrentSeat = (i + 1);
 			}
 
 			// Do we not have a valid seat?
-			if( byteCurrentSeat == 0 )
+			if(byteCurrentSeat == 0)
 				return false;
 
 			// Set the seat
@@ -946,62 +946,62 @@ bool CPlayerEntity::GetClosestVehicle( bool bPassenger, CVehicleEntity ** pVehic
 	return false;
 }
 
-void CPlayerEntity::ClearVehicleEntryTask( )
+void CPlayerEntity::ClearVehicleEntryTask()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Get the ped task
-		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask( TASK_PRIORITY_PRIMARY );
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
 		// Is the task valid?
-		if( pTask )
+		if(pTask)
 		{
 			// Is this task getting in a vehicle?
-			if( pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE )
+			if(pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE)
 			{
-				m_pPlayerPed->GetPedTaskManager()->RemoveTask( TASK_PRIORITY_PRIMARY );
+				m_pPlayerPed->GetPedTaskManager()->RemoveTask(TASK_PRIORITY_PRIMARY);
 			}
 		}
 	}
 }
 
-void CPlayerEntity::ClearVehicleExitTask( )
+void CPlayerEntity::ClearVehicleExitTask()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Get the ped task
-		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask( TASK_PRIORITY_PRIMARY );
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
 		// Is the task valid?
-		if( pTask )
+		if(pTask)
 		{
 			// Is this task getting out of a vehicle?
-			if( pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE )
+			if(pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE)
 			{
-				m_pPlayerPed->GetPedTaskManager()->RemoveTask( TASK_PRIORITY_PRIMARY );
+				m_pPlayerPed->GetPedTaskManager()->RemoveTask(TASK_PRIORITY_PRIMARY);
 			}
 		}
 	}
 }
 
-void CPlayerEntity::ProcessVehicleEnterExit( )
+void CPlayerEntity::ProcessVehicleEnterExit()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Are we internally in a vehicle?
-		if( InternalIsInVehicle() )
+		if(InternalIsInVehicle())
 		{
 			// Are we flagged as entering a vehicle?
-			if( m_vehicleEnterExit.bEntering )
+			if(m_vehicleEnterExit.bEntering)
 			{
 				// Has the enter vehicle task finished?
-				if( !IsGettingIntoAVehicle() )
+				if(!IsGettingIntoAVehicle())
 				{
 					// Vehicle entry is complete
-					m_vehicleEnterExit.pVehicle->SetOccupant( m_vehicleEnterExit.byteSeat, this );
+					m_vehicleEnterExit.pVehicle->SetOccupant(m_vehicleEnterExit.byteSeat, this);
 
 					// Store the vehicle
 					m_pVehicle = m_vehicleEnterExit.pVehicle;
@@ -1010,35 +1010,35 @@ void CPlayerEntity::ProcessVehicleEnterExit( )
 					m_byteSeat = m_vehicleEnterExit.byteSeat;
 
 					// Reset vehicle enter/exit
-					ResetVehicleEnterExit( );
+					ResetVehicleEnterExit();
 
 					// Send to the server
 					CBitStream bitStream;
-					bitStream.WriteCompressed( m_pVehicle->GetId() );
-					bitStream.Write( m_byteSeat );
+					bitStream.WriteCompressed(m_pVehicle->GetId());
+					bitStream.Write(m_byteSeat);
 
-					//g_pClient->GetChat()->Output( "VehicleEntryComplete()" );
+					//g_pClient->GetChat()->Output("VehicleEntryComplete()");
 				}
 			}
 		}
 		else
 		{
 			// Are we flagged as exiting?
-			if( m_vehicleEnterExit.bExiting )
+			if(m_vehicleEnterExit.bExiting)
 			{
 				// Has the exit vehicle task finished?
-				if( !IsGettingOutOfAVehicle() )
+				if(!IsGettingOutOfAVehicle())
 				{
 					// Send to the server
 					CBitStream bitStream;
-					bitStream.WriteCompressed( m_pVehicle->GetId() );
-					bitStream.Write( m_byteSeat );
+					bitStream.WriteCompressed(m_pVehicle->GetId());
+					bitStream.Write(m_byteSeat);
 
 					// Vehicle exit is complete
-					m_pVehicle->SetOccupant( m_byteSeat, NULL );
+					m_pVehicle->SetOccupant(m_byteSeat, NULL);
 
 					// Reset vehicle enter/exit
-					ResetVehicleEnterExit( );
+					ResetVehicleEnterExit();
 
 					// Reset the vehicle
 					m_pVehicle = NULL;
@@ -1046,14 +1046,14 @@ void CPlayerEntity::ProcessVehicleEnterExit( )
 					// Reset the seat
 					m_byteSeat = 0;
 
-					//g_pClient->GetChat()->Output( "VehicleExitComplete()" );
+					//g_pClient->GetChat()->Output("VehicleExitComplete()");
 				}
 			}
 		}
 	}
 }
 
-void CPlayerEntity::ResetVehicleEnterExit( )
+void CPlayerEntity::ResetVehicleEnterExit()
 {
 	// Reset
 	m_vehicleEnterExit.bEntering = false;
@@ -1069,19 +1069,19 @@ void CPlayerEntity::ResetVehicleEnterExit( )
 	//ClearVehicleExitTask();
 }
 
-bool CPlayerEntity::IsGettingIntoAVehicle( )
+bool CPlayerEntity::IsGettingIntoAVehicle()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Get the ped task
-		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask( TASK_PRIORITY_PRIMARY );
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
 		// Is the task valid?
-		if( pTask )
+		if(pTask)
 		{
 			// Is this task getting in a vehicle?
-			if( pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE )
+			if(pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE)
 				return true;
 		}
 	}
@@ -1089,19 +1089,19 @@ bool CPlayerEntity::IsGettingIntoAVehicle( )
 	return false;
 }
 
-bool CPlayerEntity::IsGettingOutOfAVehicle( )
+bool CPlayerEntity::IsGettingOutOfAVehicle()
 {
 	// Are we spawned?
-	if( IsSpawned() )
+	if(IsSpawned())
 	{
 		// Get the ped task
-		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask( TASK_PRIORITY_PRIMARY );
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
 		// Is the task valid?
-		if( pTask )
+		if(pTask)
 		{
 			// Is this task getting in a vehicle?
-			if( pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE )
+			if(pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE)
 				return true;
 		}
 	}

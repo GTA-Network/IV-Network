@@ -68,6 +68,9 @@ public:
 	virtual	bool		IsMoving();
 	virtual void		StopMoving();
 
+	virtual void		Serialize(CBitStream * bitStream);
+	virtual void		Deserialize(CBitStream * bitStream);
+
 	virtual void		AddToWorld() { /* Nothing can be done here */ };
 	virtual void		RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };
 
