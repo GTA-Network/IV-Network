@@ -8,20 +8,28 @@
 //==============================================================================
 
 #include "CIVCam.h"
-
-CIVCam::CIVCam( )
+CIVCam::CIVCam()
+	: m_pCam(NULL)
 {
-	// Set the cam
-	SetCam( NULL );
 }
 
-CIVCam::CIVCam( IVCam * pCam )
+CIVCam::CIVCam(IVCam * pCam)
+	: m_pCam(pCam)
 {
-	// Set the cam
-	SetCam( pCam );
 }
 
-CIVCam::~CIVCam( )
+CIVCam::~CIVCam()
 {
+}
 
+void CIVCam::SetPosition(const CVector3& vecPosition)
+{
+	if(m_pCam)
+		memcpy(&m_pCam->m_data1.m_matMatrix.vecPosition, &vecPosition, sizeof(CVector3));
+}
+
+void CIVCam::GetPosition(CVector3& vecPosition)
+{
+	if(m_pCam)
+		memcpy(&vecPosition, &m_pCam->m_data1.m_matMatrix.vecPosition, sizeof(CVector3));
 }

@@ -34,15 +34,15 @@ public:
 										CLocalPlayer();
 										~CLocalPlayer() { };
 
-        virtual void					Respawn();
-        virtual void					Reset();
-        virtual void					Pulse();
-        virtual void					HandleSpawn();
+        void							Respawn();
+        void							Reset();
+        void							Pulse();
+        void							HandleSpawn();
 
 		bool							IsDead();
         void							DoDeathCheck();
 
-        virtual void					SetSpawnLocation(CVector3 vecPosition, float fHeading);
+        void							SetSpawnLocation(CVector3 vecPosition, float fHeading);
         void							GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
         float							GetSpawnRotation() { return m_fSpawnAngle; }
 
@@ -50,9 +50,9 @@ public:
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
         bool							IsRadarVisible() { return m_bRadarVisible; }
 
-		virtual void					SetControl(bool bControl) { m_bToggleControl = bControl; }
-		virtual bool					GetControl() { return m_bToggleControl; }
-		virtual void					SetPlayerControlAdvanced(bool bControl, bool bCamera);
+		void							SetControl(bool bControl) { m_bToggleControl = bControl; }
+		bool							GetControl() { return m_bToggleControl; }
+		void							SetPlayerControlAdvanced(bool bControl, bool bCamera);
 
 		unsigned short					GetPing();
 };

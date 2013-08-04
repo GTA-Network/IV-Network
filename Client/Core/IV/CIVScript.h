@@ -64,6 +64,16 @@ namespace CIVScript
 	static void SetCarCoordinates(unsigned int vehicle, float pX, float pY, float pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_COORDINATES, vehicle, pX, pY, pZ); }
 	static void FixCar(unsigned int vehicle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_FIX_CAR, vehicle); }
 	static void SetCarHeading(unsigned int vehicle, float dir) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_HEADING, vehicle, dir); }
+
+	static void SetCarCoordinatesNoOffset(unsigned int vehicle, float x, float y, float z) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_COORDINATES_NO_OFFSET, vehicle, x, y, z); }
+	static void SetCarLivery(unsigned int vehicle, int livery) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_LIVERY, vehicle, livery); }
+    static void GetCarLivery(unsigned int vehicle, int* livery) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_CAR_LIVERY, vehicle, livery); }
+	static void LockCarDoor(unsigned int vehicle, int flag) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_LOCK_CAR_DOORS, vehicle, flag); }
+	static void SetTaxiLights(unsigned int vehicle, bool toggle) { CIVScript_NativeInvoke::Invoke<unsigned int>( NATIVE_SET_TAXI_LIGHTS, vehicle, toggle); }
+    static void ForceCarLights(unsigned int vehicle, int flag) { CIVScript_NativeInvoke::Invoke<unsigned int>( NATIVE_FORCE_CAR_LIGHTS, vehicle, flag); }
+	static void ControlCarDoor(unsigned int vehicle, eVehicleDoor door, unsigned int unknown_maybe_open, float angle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CONTROL_CAR_DOOR, vehicle, door, unknown_maybe_open, angle); }
+	static void OpenCarDoor(unsigned int vehicle, eVehicleDoor door) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_OPEN_CAR_DOOR, vehicle, door); }
+	static void ShutCarDoor(unsigned int vehicle, eVehicleDoor door) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SHUT_CAR_DOOR, vehicle, door); }
 };
 
 #endif // CIVScript_h

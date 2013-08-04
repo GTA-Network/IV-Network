@@ -53,6 +53,8 @@ public:
 	void				AttachToObject(unsigned int uiObject) {};
 	void				Dettach() {};
 
+	bool				IsOnScreen(const CVector3& vecPosition);
+
 	void				SetCamBehindPed(unsigned int uiPed);
 };
 

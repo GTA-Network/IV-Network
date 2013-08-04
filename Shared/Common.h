@@ -177,4 +177,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 // XLive Hook
 #define FAKE_MAGIC 0xDEADDEAD
 
+// Camera defs
+#define CVEC_TO_D3DVEC(vec) &D3DXVECTOR3(vec.fX, vec.fY, vec.fZ)
+#define D3DVEC_TO_CVEC(vec) &CVector3(vec.x, vec.y, vec.z)
+
 #endif // Common_h

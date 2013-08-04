@@ -18,24 +18,27 @@ extern bool      g_bControlsDisabled;
 
 void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngle)
 {
-    _asm pushad;
+    _asm	pushad;
  
-	g_pCore->GetGame()->GetLocalPlayer()->GetSpawnPosition(vecSpawnPosition);
+	CLogFile::Printf("%s",__FUNCTION__);
+	vecSpawnPosition = &CVector3(DEVELOPMENT_SPAWN_POSITION);
     *fAngle = g_pCore->GetGame()->GetLocalPlayer()->GetSpawnRotation();
 
-	_asm popad;
+	_asm	popad;
 }
 
 void __declspec(naked) HandleLocalPlayerSpawn()
 {
-    _asm pushad;
+    _asm	pushad;
 
-	g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
+	CLogFile::Printf("%s",__FUNCTION__);
+    g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
 
-    _asm popad;
+    _asm	popad;
+    _asm	jmp COffsets::FUNC_SpawnPlayer;
 }
 
-CLocalPlayer::CLocalPlayer() : CPlayerEntity(),
+CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 		m_bIsDead(false),
         m_bToggleControl(true),
         m_fSpawnAngle(0),
@@ -98,10 +101,8 @@ void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 {
-	CLogFile::Printf("CLocalPlayer::SetPlayerControlAdvanced with playerIndex %d",GetScriptingHandle());
-
 	CIVScript::SetPlayerControlAdvanced(GetScriptingHandle(), bControl, bControl, bControl);
-	CIVScript::SetCameraControlsDisabledWithPlayerControls(bCamera);
+	CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 }
 
 bool CLocalPlayer::IsDead()

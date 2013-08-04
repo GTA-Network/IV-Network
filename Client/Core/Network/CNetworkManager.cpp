@@ -24,6 +24,7 @@ CNetworkManager::~CNetworkManager()
 void CNetworkManager::Process()
 {
 	// Render Players
+	/*
 	if(g_pCore->GetGame()->GetPlayerManager())
 	{
 		for(EntityId i = 0; i < g_pCore->GetGame()->GetPlayerManager()->GetMax(); i++)
@@ -45,5 +46,5 @@ void CNetworkManager::Process()
 				g_pCore->GetGame()->GetVehicleManager()->GetAt(i)->Process();
 			}
 		}
-	}
+	}*/
 }

@@ -112,7 +112,7 @@ void CChat::Render()
 
 void CChat::Output(const char * szText, bool bColorCoded)
 {
-	CLogFile::Printf("CChat::Output: %s",szText);
+	//CLogFile::Printf("CChat::Output: %s",szText);
 	 
 	CChatLine * pLine = NULL;
 	const char * szRemainingText = szText;
@@ -352,8 +352,20 @@ void CChat::ProcessInput()
 
 				CVector3 vecCreatePos; 
 				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
-				CVehicleEntity * pVehicle = new CVehicleEntity(g_pCore->GetGame()->GetCharacterManager()->VehicleIdToModelHash(iVehicleType),vecCreatePos,0.0f,0,0,0,0);
-				pVehicle->Create();
+
+				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
+				if(pVehicle)
+				{
+					CLogFile::Printf("Blah");
+
+					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+
+					pVehicle->Create();
+
+					pVehicle->SetPosition(vecCreatePos);
+
+					pVehicle->SetColors(0, 0, 0, 0);
+				}
 
 			}
 			else if(strCommand == "chat-renderlines")
@@ -655,9 +667,6 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 
 void CChatLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShadow)
 {
-	//if(m_Sections.size() < 1)
-		//return;
-
 	float fOffsetX = fX;
 	std::vector< CChatLineSection >::iterator iter = m_Sections.begin();
 
