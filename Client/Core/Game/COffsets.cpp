@@ -242,6 +242,11 @@ INIT_OFF(FUNC_IVGAME_INITCUTSCENE);
 INIT_OFF(FUNC_IVGAME_STOPCUTSCENE);
 INIT_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
 
+INIT_OFF(FUNC_CTaskComplexGun__Constructor);
+INIT_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
+INIT_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
+INIT_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
+
 enum ePATCH_SIG
 {
 	IV_101 = 0x831F7518,
@@ -496,6 +501,12 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_IVGAME_INITCUTSCENE,0x866980);
 			SET_OFF(FUNC_IVGAME_STOPCUTSCENE,0x865E10);
 			SET_OFF(FUNC_IVGAME_LOADWORLDATPOSITION,0xB2BBA0);
+
+			// New tasks
+			SET_OFF(FUNC_CTaskComplexGun__Constructor,0xA5FD80);
+			SET_OFF(FUNC_CTaskSimpleFireGun__Counstructor,0xCC7400);
+			SET_OFF(FUNC_CTaskSimpleAimGun__Constructor,0xCC87F0); 
+			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor,0xCCAD20);
 
 			break;
 		default:

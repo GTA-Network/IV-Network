@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -94,16 +94,36 @@
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
+    <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CPools.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
     <ClCompile Include="Game\CHooks.cpp" />
     <ClCompile Include="Game\COffsets.cpp" />
     <ClCompile Include="Game\CPatches.cpp" />
+    <ClCompile Include="Game\CTaskManager.cpp" />
     <ClCompile Include="Game\Entity\CEntityManager.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVEntity.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVHud.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVModelInfo.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVModelManager.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPad.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPed.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPedTaskManager.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPhysical.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPlayerInfo.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPlayerPed.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVTask.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVVehicle.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVWeather.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
+    <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
@@ -128,13 +148,16 @@
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
+    <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CPools.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />
     <ClInclude Include="Game\CHooks.h" />
     <ClInclude Include="Game\COffsets.h" />
     <ClInclude Include="Game\CPatches.h" />
+    <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
     <ClInclude Include="Game\Entity\CActorEntity.h" />
     <ClInclude Include="Game\Entity\CBlipEntity.h" />
@@ -146,6 +169,25 @@
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
+    <ClInclude Include="Game\IVEngine\CIVCam.h" />
+    <ClInclude Include="Game\IVEngine\CIVDynamicEntity.h" />
+    <ClInclude Include="Game\IVEngine\CIVEntity.h" />
+    <ClInclude Include="Game\IVEngine\CIVHud.h" />
+    <ClInclude Include="Game\IVEngine\CIVModelInfo.h" />
+    <ClInclude Include="Game\IVEngine\CIVModelManager.h" />
+    <ClInclude Include="Game\IVEngine\CIVPad.h" />
+    <ClInclude Include="Game\IVEngine\CIVPadData.h" />
+    <ClInclude Include="Game\IVEngine\CIVPed.h" />
+    <ClInclude Include="Game\IVEngine\CIVPedTaskManager.h" />
+    <ClInclude Include="Game\IVEngine\CIVPhysical.h" />
+    <ClInclude Include="Game\IVEngine\CIVPlayerInfo.h" />
+    <ClInclude Include="Game\IVEngine\CIVPlayerPed.h" />
+    <ClInclude Include="Game\IVEngine\CIVPool.h" />
+    <ClInclude Include="Game\IVEngine\CIVTask.h" />
+    <ClInclude Include="Game\IVEngine\CIVVehicle.h" />
+    <ClInclude Include="Game\IVEngine\CIVWeather.h" />
+    <ClInclude Include="Game\IVEngine\CIVWorld.h" />
+    <ClInclude Include="Game\IVEngine\IVTasks.h" />
     <ClInclude Include="Graphics\CChat.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />

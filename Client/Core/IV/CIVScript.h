@@ -34,8 +34,18 @@ namespace CIVScript
 
 	static void SetPlayerControl(unsigned int playerIndex, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_PLAYER_CONTROL, playerIndex, value); }
 	static void SetPlayerControlAdvanced(unsigned int playerIndex, bool unknown1, bool unknown2, bool unknown3) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_PLAYER_CONTROL_ADVANCED, playerIndex, unknown1, unknown2, unknown3); }
-
 	static void SetCameraControlsDisabledWithPlayerControls(bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAMERA_CONTROLS_DISABLED_WITH_PLAYER_CONTROLS, value); }
+	
+	static void CreateCam(unsigned int camtype_usually14, unsigned int *camera) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_CAM, camtype_usually14, camera); }
+    static void DestroyCam(unsigned int camera) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DESTROY_CAM, camera); }
+    static bool DoesCamExist(unsigned int camera) { return CIVScript_NativeInvoke::Invoke<bool>(NATIVE_DOES_CAM_EXIST, camera); }
+    static void SetCamActive(unsigned int camera, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_ACTIVE, camera, value); }
+	static void ActivateScriptedCams(int unknown1_1, int unknown2_1) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ACTIVATE_SCRIPTED_CAMS, unknown1_1, unknown2_1); }
+    static void PointCamAtCoord(unsigned int cam, float pX, float pY, float pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_POINT_CAM_AT_COORD, cam, pX, pY, pZ); }
+	static void GetCamPos(unsigned int camera,  float *pX, float *pY, float *pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_CAM_POS, camera, pX, pY, pZ); }
+	static void SetCamBehindPed(unsigned int ped) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_BEHIND_PED, ped); }
+	static void SetCamPos(unsigned int camera, float pX, float pY, float pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_POS, camera, pX, pY, pZ); }
+	static void SetCamPropagate(unsigned int camera, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_PROPAGATE, camera, value); }
 };
 
 #endif // CIVScript_h

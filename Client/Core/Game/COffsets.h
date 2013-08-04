@@ -271,6 +271,12 @@ public:
 	DEF_OFF(FUNC_IVGAME_INITCUTSCENE);
 	DEF_OFF(FUNC_IVGAME_STOPCUTSCENE);
 	DEF_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
+
+	// New Tasks
+	DEF_OFF(FUNC_CTaskComplexGun__Constructor);
+	DEF_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
+	DEF_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
+	DEF_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
 };
 
 #endif

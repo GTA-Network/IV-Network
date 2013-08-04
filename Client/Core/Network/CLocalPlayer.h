@@ -35,13 +35,13 @@ public:
 						CLocalPlayer();
 						~CLocalPlayer();
 
-        void			Respawn();
+        virtual void	Respawn();
         void			HandleSpawn();
 		bool			IsDead();
         void			DoDeathCheck();
         void			Pulse();
         virtual void	SetSpawnLocation(CVector3 vecPosition, float fHeading);
-        void			SetPlayerControlAdvanced(bool bControl, bool bCamera);
+        virtual void	SetPlayerControlAdvanced(bool bControl, bool bCamera);
         void			SendOnFootSync();
         void			SendInVehicleSync();
         void			SendPassengerSync();

@@ -20,6 +20,11 @@ extern	CCore				* g_pCore;
 	If the Wrapperlist is ready, we can spawn the localplayer
 */
 CLocalPlayer*   CGame::m_pLocalPlayer = 0;
+CIVPad		*	CGame::m_pPad = 0;
+CTaskManager*	CGame::m_pTaskManager = 0;
+CPools		*	CGame::m_pPool = 0;
+CCamera		*	CGame::m_pCamera = 0;
+
 DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 {
 	return 1;
@@ -37,6 +42,15 @@ void CGame::Setup()
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
+
+	// Create new civpad instance
+	m_pPad = new CIVPad( (IVPad *)(g_pCore->GetBase() + 0x10FB818) );
+
+	// Create task manager instance
+	m_pTaskManager = new CTaskManager();
+
+	// Create new pool instance
+	m_pPool = new CPools( );
 }
 
 void CGame::Initialise()
@@ -46,6 +60,13 @@ void CGame::Initialise()
 	m_pLocalPlayer->SetPlayerIndex(g_pCore->GetLocalPlayerIndex()); // Got from CIVScriptHook
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Respawn();
+
+	m_pPool->Initialise();
+
+	CCamera * pCamera = new CCamera;
+	if(!m_pCamera)
+		m_pCamera = pCamera;
+
 }
 
 void CGame::UnprotectMemory()

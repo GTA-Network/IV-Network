@@ -11,14 +11,9 @@
 #include	"COffsets.h"
 #include	<CCore.h>
 #include	<Patcher\CPatcher.h>
+#include	<Game/IVEngine/CIVPlayerInfo.h>
 
-// Temp typedef(until we're added this classes)
-typedef DWORD IVTask;
-typedef DWORD IVPlayerInfo;
-typedef DWORD IVPool;
-typedef DWORD IVPlayerPed;
-
-extern	CCore				* g_pCore;
+extern	CCore	* g_pCore;
 IVTask       * ___pTask = NULL;
 unsigned int   uiPlayerInfoIndex = 0;
 IVPlayerInfo * pReturnedPlayerInfo = NULL;
@@ -48,14 +43,14 @@ void _declspec(naked) CTask__Destructor_Hook()
                 pushad
         }
 
-		/*
+		
         // Do we have a client task manager?
-        if(g_pClient->GetClientTaskManager())
+		if(g_pCore->GetGame()->GetTaskManager())
         {
                 // Let the client task manager handle this task deletion
-                g_pClient->GetClientTaskManager()->HandleTaskDelete(___pTask);
+                g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(___pTask);
         }
-		*/
+		
         _asm
         {
                 popad
@@ -225,11 +220,11 @@ IVPlayerPed * GetPlayerPedFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
         // Is the player info pointer valid?
         if(pPlayerInfo)
-              ;  // _pPlayerPed = pPlayerInfo->m_pPlayerPed;
+               _pPlayerPed = pPlayerInfo->m_pPlayerPed;
         else
         {
                 // Player info pointer is invalid, use the local player ped
-                //_pPlayerPed = GetLocalPlayerPed();
+                _pPlayerPed = GetLocalPlayerPed();
         }
 
         return _pPlayerPed;

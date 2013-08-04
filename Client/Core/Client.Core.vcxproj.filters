@@ -96,6 +96,12 @@
     <Filter Include="Header Files\Hooks\XLive">
       <UniqueIdentifier>{3095689f-dda9-44a7-b043-0ba3fbd38c38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Game\IVEngine">
+      <UniqueIdentifier>{66f0e727-9728-4c50-a35b-064380e4a8b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\IVEngine">
+      <UniqueIdentifier>{7296ed96-ec8b-4ac1-a22b-d9181a241e34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -208,6 +214,66 @@
     </ClCompile>
     <ClCompile Include="Graphics\CFPSCounter.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVCam.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVEntity.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVHud.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVModelInfo.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVModelManager.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPad.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPed.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPedTaskManager.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPhysical.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPlayerInfo.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPlayerPed.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVTask.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVVehicle.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVWeather.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVWorld.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\IVTasks.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CTaskManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CPools.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +414,72 @@
     </ClInclude>
     <ClInclude Include="Graphics\CFPSCounter.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVCam.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVDynamicEntity.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVEntity.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVHud.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVModelInfo.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVModelManager.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPad.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPadData.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPed.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPedTaskManager.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPhysical.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPlayerInfo.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPlayerPed.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVPool.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVTask.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVVehicle.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVWeather.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\CIVWorld.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\IVTasks.h">
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CTaskManager.h">
+      <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CPools.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
