@@ -18,6 +18,10 @@ class CSquirrelScript : public CScript {
 
 private:
 	SQVM		* m_pVM;
+
+	static void      PrintFunction(SQVM * pVM, const char * szFormat, ...);
+	static void      CompilerErrorFunction(SQVM * pVM, const char * szError, const char * szSource, int iLine, int iColumn);
+	static SQInteger PrintErrorFunction(SQVM * pVM);
 public:
 	CSquirrelScript();
 	~CSquirrelScript();
@@ -29,6 +33,7 @@ public:
 
 
 	void		RegisterConstant(CString strConstantName, CSquirrelScriptArgument value);
+	void		RegisterFunction(CString strFunctionName, SQFUNCTION pfnFunction, int iParameterCount, CString strFunctionTemplate);
 };
 
 #endif // CSquirrelScript_h

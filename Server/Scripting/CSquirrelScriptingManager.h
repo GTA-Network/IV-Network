@@ -24,7 +24,7 @@ public:
 	CScript *			LoadScript(CString strScript, CString strPath);
 	void				UnloadScript(CScript* pScript);
 	void				UnloadAll();
-
+	void				RegisterConstant(CString strConstantName, CScriptArgument value);
 };
 
 #endif // CSquirrelScriptingManager_h

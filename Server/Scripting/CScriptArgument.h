@@ -21,7 +21,6 @@ enum eScriptArgumentType {
 	ST_STRING,
 	ST_TABLE,
 	ST_ARRAY,
-
 };
 
 class CScriptArgument {
@@ -49,6 +48,8 @@ public:
 	CScriptArgument(const CScriptArgument& p);
 	~CScriptArgument();
 
+	eScriptArgumentType	 GetType() { return type; }
+
 	void                 reset();
 	
 	void                 serialize(CBitStream * pBitStream);
@@ -64,8 +65,7 @@ public:
 	int                  GetInteger() const { return (type == ST_INTEGER) ? data.i : 0; }
 	bool                 GetBool()    const { return (type == ST_BOOL)    ? data.b : (type == ST_INTEGER ? data.i != 0 : false); }
 	float                GetFloat()   const { return (type == ST_FLOAT)   ? data.f : 0.0f; }
-	const char         * GetString()  const { return (type == ST_STRING)  ? data.str->Get() : NULL; }
-
+	CString			   * GetString()  const { return (type == ST_STRING)  ? data.str : NULL; }
 };
 
 #endif // CScriptArgument_h
