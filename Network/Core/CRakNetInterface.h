@@ -1,7 +1,7 @@
 //================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
 // File: CRakNetInterface.h
-// Project: Client.Core
+// Project: Network.Core
 // Author: CrackHD
 // License: See LICENSE in root directory
 //
