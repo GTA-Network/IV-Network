@@ -17,11 +17,12 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4)
+CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4) : CNetworkEntity()
 {
 	m_pVehicle = NULL;
 	m_vehicleId = INVALID_ENTITY_ID;
 	m_pDriver = NULL;
+
 	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
 	// Get the model hash from the model id
@@ -38,6 +39,10 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_byteColor[1] = color2;
 	m_byteColor[2] = color3;
 	m_byteColor[3] = color4;
+
+	// Set the interpolate variables
+	m_interp.pos.ulFinishTime = 0;
+	m_interp.rot.ulFinishTime = 0;
 
 	// Set the rotation
 	m_fSpawnAngle = fAngle;
@@ -67,52 +72,18 @@ bool CVehicleEntity::Create()
 		return false;
 
 	// Load the model
-	//m_pModelInfo->AddReference(true);
+	m_pModelInfo->AddReference(true);
 
-	// Get our model index
-    int iModelIndex = m_pModelInfo->GetIndex();
+	DWORD dwModelHash = m_pModelInfo->GetHash();
 
-    // Create the vehicle
-    DWORD dwFunc = (g_pCore->GetBase() + 0x8415D0);
-	CVector3 * pVecPosition = &m_vecSpawnPosition;
-    IVVehicle * pVehicle = NULL;
-    _asm
-    {
-            push 1
-            push 1
-            push pVecPosition
-            push iModelIndex
-            call dwFunc
-            add esp, 10h
-            mov pVehicle, eax
-    }
-
-    // Invalid vehicle?
-    if(!pVehicle)
-            return false;
-
-	dwFunc = (g_pCore->GetBase() + 0xC6CFC0);
-    _asm
-    {
-            push pVehicle
-            call dwFunc
-            add esp, 4
-    }
+	unsigned uiVehicleHandle;
+	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &uiVehicleHandle, true);
 
     // Create the vehicle instance
-    m_pVehicle = new CIVVehicle(pVehicle);
+	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(uiVehicleHandle));
 
-	 // Invalid vehicle instance?
-    if(!m_pVehicle)
-		return false;
-
-	// Add the vehicle to the world
-	//m_pVehicle->AddToWorld();
-
+	m_pVehicle->SetCarCanBeDamaged(false);
 	m_pVehicle->SetCanBeVisiblyDamaged(false);
-
-	// Disable damage(until we have synced the damage)
-	CIVScript::SetCarCanBeDamaged(GetScriptingHandle(), false);
 
 	// Mark as spawned
 	m_bSpawned = true;

@@ -114,7 +114,6 @@ void CCore::OnGameLoad()
 	m_pChat->SetVisible(true);
 	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
-	// Create Instances(playermanager etc)
 	// Startup the network module
 	// Connect to the network
 }

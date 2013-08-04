@@ -88,7 +88,7 @@ public:
 	CPools								*GetPools() { return m_pPool; }
 	CCamera								*GetCamera() { return m_pCamera; }
 
-	CIVModelInfo						* GetModelInfo( int iModelIndex );
+	CIVModelInfo						*GetModelInfo( int iModelIndex );
 
 	CPlayerManager						*GetPlayerManager() { return m_pPlayerManager; }
 	CVehicleManager						*GetVehicleManager() { return m_pVehicleManager; }

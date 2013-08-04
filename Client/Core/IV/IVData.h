@@ -13,7 +13,7 @@
 #include <Common.h>
 
 #define		ARRAY_ModelInfos				0x15F73B0
-#define		NUM_ModelInfos					65535
+#define		NUM_ModelInfos					31000
 
 #define		MIN_INPUT_VALUE					0
 #define		DEFAULT_BINARY_INPUT_VALUE		0

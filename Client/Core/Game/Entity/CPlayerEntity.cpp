@@ -139,12 +139,12 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 	memset(&m_lastControlState, 0, sizeof(CControls));
 	memset(&m_ControlState, 0, sizeof(CControls));
 	ResetVehicleEnterExit();
+
 	CNetworkEntity::SetType(PLAYER_ENTITY);
 
 	// Is this the localplayer?
 	if(IsLocalPlayer())
 	{
-
 		// Set the localplayer CIVScript handle
 		m_bytePlayerNumber = (BYTE)CPools::GetLocalPlayerIndex();
 
