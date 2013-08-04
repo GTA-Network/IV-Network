@@ -39,6 +39,7 @@ public:
 							~CGame() { };
 
 	void					Initialise();
+	void					PrepareWorld();
 	static void				Setup();
 	static void				RenderRAGEScripts();
 	static void				UnprotectMemory();

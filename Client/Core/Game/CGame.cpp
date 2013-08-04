@@ -7,8 +7,11 @@
 //
 //==========================================================================================
 
-#include	"CGame.h"
-#include	<CCore.h>
+#include "CGame.h"
+#include <CCore.h>
+
+#include <Game/IVEngine/CIVHud.h>
+#include <Game/IVEngine/CIVWeather.h>
 
 extern	CCore				* g_pCore;
 //extern CLocalPlayer			* g_pLocalPlayer;
@@ -37,7 +40,7 @@ void CGame::Setup()
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 
 	if(!m_pLocalPlayer)
-		m_pLocalPlayer = new CLocalPlayer();
+		m_pLocalPlayer = new CLocalPlayer;
 
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Reset();
@@ -67,6 +70,7 @@ void CGame::Initialise()
 	if(!m_pCamera)
 		m_pCamera = pCamera;
 
+	PrepareWorld();
 }
 
 void CGame::UnprotectMemory()
@@ -94,4 +98,15 @@ void CGame::RenderRAGEScripts()
 
 	// If we have text to draw draw it
 	
+}
+
+void CGame::PrepareWorld()
+{
+	CIVHud::SetHudVisible(false);
+	CIVHud::SetRadarVisible(false);
+	CIVHud::SetAreaNamesEnabled(false);
+	CIVHud::SetPlayerNamesVisible(0);
+
+	CIVWeather::SetWeather(WEATHER_SUNNY);
+	CIVWeather::SetTime(7, 0);
 }
