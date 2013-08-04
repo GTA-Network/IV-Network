@@ -110,30 +110,26 @@
     <ClCompile Include="..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\Shared\CSettings.cpp" />
     <ClCompile Include="..\Shared\CString.cpp" />
+    <ClCompile Include="..\Shared\CXML.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CResource.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CSquirrel.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CServer.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Scripting\CScript.cpp" />
-    <ClCompile Include="Scripting\CScriptArgument.cpp" />
-    <ClCompile Include="Scripting\CScriptingManager.cpp" />
-    <ClCompile Include="Scripting\CSquirrelScript.cpp" />
-    <ClCompile Include="Scripting\CSquirrelScriptArgument.cpp" />
-    <ClCompile Include="Scripting\CSquirrelScriptingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
     <ClInclude Include="Scripting\CScript.h" />
-    <ClInclude Include="Scripting\CScriptArgument.h" />
-    <ClInclude Include="Scripting\CScriptArguments.h" />
-    <ClInclude Include="Scripting\CScriptingManager.h" />
-    <ClInclude Include="Scripting\CSquirrelScript.h" />
-    <ClInclude Include="Scripting\CSquirrelScriptArgument.h" />
-    <ClInclude Include="Scripting\CSquirrelScriptArguments.h" />
-    <ClInclude Include="Scripting\CSquirrelScriptingManager.h" />
+    <ClInclude Include="Shared\Scripting\CResource.h" />
+    <ClInclude Include="Shared\Scripting\CResourceManager.h" />
+    <ClInclude Include="Shared\Scripting\CSquirrel.h" />
+    <ClInclude Include="Shared\Scripting\CSquirrelArgument.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
