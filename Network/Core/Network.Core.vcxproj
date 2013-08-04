@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
+    <ClCompile Include="CNetworkClient.cpp" />
     <ClCompile Include="CNetworkServer.cpp" />
     <ClCompile Include="RakNet\Base64Encoder.cpp" />
     <ClCompile Include="RakNet\BitStream.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="RakNet\_FindFirst.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CNetworkClient.h" />
     <ClInclude Include="CRPCHandler.hpp" />
     <ClInclude Include="NetCommon.h" />
     <ClInclude Include="CNetworkServer.h" />

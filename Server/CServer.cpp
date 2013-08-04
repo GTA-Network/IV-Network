@@ -27,12 +27,14 @@ CServer::~CServer()
 bool CServer::Startup(string& outStrError)
 {
 	// Open the settings file
-	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), false, false))
+	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml, server will shut down in 3 seconds..");
 		Sleep(3000);
 		return false;
 	}
+
+	m_pScriptingManager = new CSquirrelScriptingManager();
 
 	CLogFile::Print("");
 	CLogFile::Print("====================================================================");
@@ -104,13 +106,13 @@ bool CServer::Startup(string& outStrError)
 	{
 		CString strPath(SharedUtility::GetAbsolutePath("scripts/%s", strScript.Get()));
 
-		//if(!g_pScriptingManager->Load(strScript, strPath))
+		if(!m_pScriptingManager->LoadScript(strScript, strPath))
 		{
 			CLogFile::Printf("Warning: Failed to load script %s.", strScript.Get());
 			iFailedResources++;
 		}
-		/*else
-			iResourcesLoaded++;*/
+		else
+			iResourcesLoaded++;
 	}
 
 	auto clientresources = CVAR_GET_LIST("clientresource");

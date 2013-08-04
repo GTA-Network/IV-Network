@@ -36,7 +36,7 @@ public:
 			delete (*i);
 	}
 
-	bool AddFunction(RPCIdentifier rpcId, RPCFunction_t rpcFunction)
+	bool AddFunction(eRPCIdentifier rpcId, RPCFunction_t rpcFunction)
 	{
 		// Make sure it isn't already added
 		RPCFunction * pFunction = GetFunctionFromIdentifier(rpcId);
