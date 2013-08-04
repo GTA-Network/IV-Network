@@ -19,14 +19,14 @@ public:
 	int R, G, B, A;
 	DWORD dwHexColor;
 
-	inline		CColor( void )
+	inline		CColor(void)
 	{
 		R = G = B = A = 255;
 
 		dwHexColor = ToHex(A, R, G, B);
 	}
 
-	inline		CColor( unsigned char _R, unsigned char _G, unsigned char _B, unsigned char _A = 255 )
+	inline		CColor(unsigned char _R, unsigned char _G, unsigned char _B, unsigned char _A = 255)
 	{
 		R = _R;
 		G = _G;
@@ -36,7 +36,7 @@ public:
 		dwHexColor = ToHex(A, R, G, B);
 	}
 
-	inline		CColor( unsigned long ulColor )
+	inline		CColor(unsigned long ulColor)
 	{
 		A = (((DWORD)ulColor >> 24) & 0xFF);
 		R = (((DWORD)ulColor >> 16) & 0xFF);
@@ -46,12 +46,12 @@ public:
 		dwHexColor = ulColor;
 	}
 
-	inline		CColor( const CColor& other )
+	inline		CColor(const CColor& other)
 	{
 		*this = other;
 	}
 
-	inline		CColor&		operator = ( const CColor& color )
+	inline		CColor&		operator = (const CColor& color)
 	{
 		R = color.R;
 		G = color.G;
@@ -62,7 +62,7 @@ public:
 		return *this;
 	}
 
-	inline		CColor&		operator = ( unsigned long ulColor )
+	inline		CColor&		operator = (unsigned long ulColor)
 	{
 		A = (((DWORD)ulColor >> 24) & 0xFF);
 		R = (((DWORD)ulColor >> 16) & 0xFF);

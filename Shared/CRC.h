@@ -96,9 +96,9 @@ private:
 
 public:
 
-	CChecksum( void )
+	CChecksum()
 	{
-		Reset( );
+		Reset();
 	}
 
 	bool operator == (CChecksum checksum)
@@ -111,35 +111,35 @@ public:
 		return (m_uiChecksum != checksum.m_uiChecksum);
 	}
 	
-	void Reset( void )
+	void Reset()
 	{
 		m_uiChecksum = ~0;
 	}
 
-	unsigned int GetChecksum( void )
+	unsigned int GetChecksum()
 	{
 		return ~m_uiChecksum;
 	}
 
-	void Add( unsigned char * ucData, unsigned int uiLength )
+	void Add(unsigned char * ucData, unsigned int uiLength)
 	{
-		for( unsigned int i = 0; i < uiLength; i++ )
+		for(unsigned int i = 0; i < uiLength; i++)
 		{
 			m_uiChecksum = ((m_uiChecksum >> 8) ^ uiCrc32Table[(m_uiChecksum ^ ucData[i]) & 0xFF]);
 		}
 	}
 
-	void Add( const bool &bData ) 				{ ADD_TEMPLATE(bData, sizeof(bool)); }
-	void Add( const char &cData ) 				{ ADD_TEMPLATE(cData, sizeof(char)); }
-	void Add( const unsigned char &ucData ) 	{ ADD_TEMPLATE(ucData, sizeof(unsigned char)); }
-	void Add( const short &sData ) 				{ ADD_TEMPLATE(sData, sizeof(short)); }
-	void Add( const unsigned short &usData ) 	{ ADD_TEMPLATE(usData, sizeof(unsigned short)); }
-	void Add( const int &iData ) 				{ ADD_TEMPLATE(iData, sizeof(int)); }
-	void Add( const unsigned int &uiData ) 		{ ADD_TEMPLATE(uiData, sizeof(unsigned int)); }
-	void Add( const long &lData ) 				{ ADD_TEMPLATE(lData, sizeof(long)); }
-	void Add( const unsigned long &ulData ) 	{ ADD_TEMPLATE(ulData, sizeof(unsigned long)); }
-	void Add( const float &fData ) 				{ ADD_TEMPLATE(fData, sizeof(float)); }
-	void Add( const double &dData ) 			{ ADD_TEMPLATE(dData, sizeof(double)); }
+	void Add(const bool &bData) 				{ ADD_TEMPLATE(bData, sizeof(bool)); }
+	void Add(const char &cData) 				{ ADD_TEMPLATE(cData, sizeof(char)); }
+	void Add(const unsigned char &ucData) 	{ ADD_TEMPLATE(ucData, sizeof(unsigned char)); }
+	void Add(const short &sData) 				{ ADD_TEMPLATE(sData, sizeof(short)); }
+	void Add(const unsigned short &usData) 	{ ADD_TEMPLATE(usData, sizeof(unsigned short)); }
+	void Add(const int &iData) 				{ ADD_TEMPLATE(iData, sizeof(int)); }
+	void Add(const unsigned int &uiData) 		{ ADD_TEMPLATE(uiData, sizeof(unsigned int)); }
+	void Add(const long &lData) 				{ ADD_TEMPLATE(lData, sizeof(long)); }
+	void Add(const unsigned long &ulData) 	{ ADD_TEMPLATE(ulData, sizeof(unsigned long)); }
+	void Add(const float &fData) 				{ ADD_TEMPLATE(fData, sizeof(float)); }
+	void Add(const double &dData) 			{ ADD_TEMPLATE(dData, sizeof(double)); }
 
 };
 
@@ -148,39 +148,39 @@ class CFileChecksum : public CChecksum
 
 public:
 
-	CFileChecksum( void ) : CChecksum( )
+	CFileChecksum() : CChecksum()
 	{
 
 	}
 
-	bool Calculate( String strFile )
+	bool Calculate(String strFile)
 	{
 		// Reset
-		Reset( );
+		Reset();
 
 		// Does the file not exist?
-		if( !SharedUtility::Exists( strFile.Get() ) )
+		if(!SharedUtility::Exists(strFile.Get()))
 			return false;
 
 		// Open the file
-		FILE * fFile = fopen( strFile.Get(), "rb" );
+		FILE * fFile = fopen(strFile.Get(), "rb");
 		
 		// Did the file fail to open?
-		if( !fFile )
+		if(!fFile)
 			return false;
 
 		// Read the file data in 512 byte blocks
 		unsigned int uiBytesRead = 0;
 		unsigned char ucData[512];
 
-		while( (uiBytesRead = fread(ucData, 1, sizeof(ucData), fFile)) > 0 )
+		while((uiBytesRead = fread(ucData, 1, sizeof(ucData), fFile)) > 0)
 		{
 			// Add the read data to the checksum
-			Add( ucData, uiBytesRead );
+			Add(ucData, uiBytesRead);
 		}
 
 		// Close the file
-		fclose( fFile );
+		fclose(fFile);
 
 		return true;
 	}

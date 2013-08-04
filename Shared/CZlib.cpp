@@ -21,7 +21,7 @@
 
 #define CHUNK	16384
 
-int CZlib::Inflate( FILE * pSource, FILE * pDestination )
+int CZlib::Inflate(FILE * pSource, FILE * pDestination)
 {
 	int ret;
     unsigned have;
@@ -87,22 +87,22 @@ int CZlib::Inflate( FILE * pSource, FILE * pDestination )
     return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
-int CZlib::Decompress( String strFileName, String strOutput )
+int CZlib::Decompress(String strFileName, String strOutput)
 {
 	// Open the files
-	FILE * in = fopen( strFileName.Get(), "r" );
-	FILE * out = fopen( strOutput.Get(), "w+" );
+	FILE * in = fopen(strFileName.Get(), "r");
+	FILE * out = fopen(strOutput.Get(), "w+");
 
 	// Enable binary mode
-	SET_BINARY_MODE( in );
-	SET_BINARY_MODE( out );
+	SET_BINARY_MODE(in);
+	SET_BINARY_MODE(out);
 
 	// Deflate the file
-	int iReturn = Inflate( in, out );
+	int iReturn = Inflate(in, out);
 
 	// Close the files
-	fclose( in );
-	fclose( out );
+	fclose(in);
+	fclose(out);
 
 	return iReturn;
 }
