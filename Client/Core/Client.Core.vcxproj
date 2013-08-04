@@ -105,9 +105,9 @@
     <ClCompile Include="Game\COffsets.cpp" />
     <ClCompile Include="Game\CPatches.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
-    <ClCompile Include="Game\Entity\CEntityManager.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
     <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVEntity.cpp" />
@@ -156,6 +156,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CContextData.h" />
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CEntitiesManager.h" />
     <ClInclude Include="CPools.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />

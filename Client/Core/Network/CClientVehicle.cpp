@@ -7,10 +7,13 @@
 //
 //==============================================================================
 
+#include <Game/IVEngine/CIVModelManager.h>
+#include <Game/Entity/CVehicleEntity.h>
 #include "CClientVehicle.h"
 #include "CClientPlayer.h"
-#include <Game/IVEngine/CIVModelManager.h>
+
 #include <IV/CIVScript.h>
+
 #include <CCore.h>
 extern CCore * g_pCore;
 
@@ -51,11 +54,11 @@ CClientVehicle::~CClientVehicle( )
 	if( IsSpawned() )
 	{
 		// Destroy the vehicle
-		Destroy( );
+		DeSpawn( );
 	}
 }
 
-bool CClientVehicle::Create( )
+bool CClientVehicle::Spawn( )
 {
 	// Is the vehicle already spawned?
 	if( IsSpawned() )
@@ -88,7 +91,7 @@ bool CClientVehicle::Create( )
 	return true;
 }
 
-void CClientVehicle::Destroy( )
+void CClientVehicle::DeSpawn( )
 {
 	// Is the vehicle not spawned?
 	if( !IsSpawned() )

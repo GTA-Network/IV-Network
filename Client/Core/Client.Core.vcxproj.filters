@@ -116,9 +116,6 @@
     <ClCompile Include="CCore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\Entity\CEntityManager.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp">
       <Filter>Source Files\Game\Entity</Filter>
     </ClCompile>
@@ -289,6 +286,9 @@
     </ClCompile>
     <ClCompile Include="Network\CClientVehicle.cpp">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Entity\CVehicleEntity.cpp">
+      <Filter>Source Files\Game\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,6 +516,9 @@
     </ClInclude>
     <ClInclude Include="Network\CClientVehicle.h">
       <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CEntitiesManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

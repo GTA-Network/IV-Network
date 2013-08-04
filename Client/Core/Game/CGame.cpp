@@ -15,7 +15,21 @@
 #include <Game/IVEngine/CIVModelInfo.h>
 
 extern	CCore				* g_pCore;
-//extern CLocalPlayer			* g_pLocalPlayer;
+
+CLocalPlayer				*CGame::m_pLocalPlayer = 0;
+CIVPad						*CGame::m_pPad = 0;
+CTaskManager				*CGame::m_pTaskManager = 0;
+CPools						*CGame::m_pPool = 0;
+CCamera						*CGame::m_pCamera = 0;
+CPlayerManager				*CGame::m_pPlayerManager = 0;
+CVehicleManager				*CGame::m_pVehicleManager = 0;
+CActorManager				*CGame::m_pActorManager = 0;
+CObjectManager				*CGame::m_pObjectManager = 0;
+CFireManager				*CGame::m_pFireManager = 0;
+CPickupManager				*CGame::m_pPickupManager = 0;
+C3DLabelManager				*CGame::m_p3DLabelManager = 0;
+CBlipManager				*CGame::m_pBlipManager = 0;
+CCheckpointManager			*CGame::m_pCheckpointManager = 0;
 
 /*
 	==== Why WaitForGameStartup ====
@@ -23,12 +37,6 @@ extern	CCore				* g_pCore;
 	So GTA IV loads all resources and when our player connects to a server, we have check if the game(resources are) is ready.
 	If the Wrapperlist is ready, we can spawn the localplayer
 */
-CLocalPlayer*   CGame::m_pLocalPlayer = 0;
-CIVPad		*	CGame::m_pPad = 0;
-CTaskManager*	CGame::m_pTaskManager = 0;
-CPools		*	CGame::m_pPool = 0;
-CCamera		*	CGame::m_pCamera = 0;
-
 DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 {
 	return 1;
@@ -59,18 +67,110 @@ void CGame::Setup()
 
 void CGame::Initialise()
 {
+	// Update client state to state ingame
 	g_pCore->SetClientState(GAME_STATE_INGAME);
 
+	// Set basic localplayer attributes
 	m_pLocalPlayer->SetPlayerIndex(g_pCore->GetLocalPlayerIndex()); // Got from CIVScriptHook
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Respawn();
 
+	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)
 	m_pPool->Initialise();
 
+	// Create our camera instance if it doesn't exist/isn't created yet
 	CCamera * pCamera = new CCamera;
 	if(!m_pCamera)
 		m_pCamera = pCamera;
 
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pPlayerManager)
+		m_pPlayerManager = new CPlayerManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pVehicleManager)
+		m_pVehicleManager = new CVehicleManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pActorManager)
+		m_pActorManager = new CActorManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pObjectManager)
+		m_pObjectManager = new CObjectManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pFireManager)
+		m_pFireManager = new CFireManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pPickupManager)
+		m_pPickupManager = new CPickupManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_p3DLabelManager)
+		m_p3DLabelManager = new C3DLabelManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pBlipManager)
+		m_pBlipManager = new CBlipManager();
+
+	// Create our manager instance if it doesn't exist/isn't created yet
+	if(!m_pCheckpointManager)
+		m_pCheckpointManager = new CCheckpointManager();
+
+	PrepareWorld();
+}
+
+void CGame::Reset()
+{
+	// Disconnect from network
+	; 
+
+	// Delte our instance if it exists/is created
+	if(m_pCamera)
+		SAFE_DELETE(m_pCamera);
+
+	// Delte our instance if it exists/is created
+	if(m_pPlayerManager)
+		SAFE_DELETE(m_pPlayerManager);
+
+	// Delte our instance if it exists/is created
+	if(m_pVehicleManager)
+		SAFE_DELETE(m_pVehicleManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pActorManager)
+		SAFE_DELETE(m_pActorManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pObjectManager)
+		SAFE_DELETE(m_pObjectManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pFireManager)
+		SAFE_DELETE(m_pFireManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pPickupManager)
+		SAFE_DELETE(m_pPickupManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_p3DLabelManager)
+		SAFE_DELETE(m_p3DLabelManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pBlipManager)
+		SAFE_DELETE(m_pBlipManager);
+
+	// Delte our instance if it exists/is created
+	if(!m_pCheckpointManager)
+		SAFE_DELETE(m_pCheckpointManager);
+
+	// Re-initialse our client
+	Initialise();
+
+	// Prepare our world
 	PrepareWorld();
 }
 
@@ -93,7 +193,6 @@ void CGame::UnprotectMemory()
 void CGame::RenderRAGEScripts()
 {
 	// Do we need to reset the game?
-
 
 	// If our network manager exists process it
 

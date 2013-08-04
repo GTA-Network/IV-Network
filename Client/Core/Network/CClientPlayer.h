@@ -15,7 +15,8 @@
 #include <CContextData.h>
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVModelInfo.h>
-#include <Network\CBitStream.h>
+#include <Network/CBitStream.h>
+#include <Game/Entity/CPlayerEntity.h>
 
 enum eExitVehicleType
 {
@@ -24,11 +25,8 @@ enum eExitVehicleType
 };
 
 class CClientVehicle;
-class CClientPlayer
-{
-
+class CClientPlayer : public CPlayerEntity {
 private:
-
 	bool				m_bLocalPlayer;
 	bool				m_bNetworked;
 	bool				m_bSpawned;

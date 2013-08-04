@@ -32,23 +32,6 @@
 #define IV_SCROLLBAR_7_TEXT "stay in sane       min speed 20 miles       max speed 30 miles       check your fuel       tiredness killed her       car thefts on the up. lock your car       be a courteous driver       watch your speed       "
 #define IV_SCROLLBAR_8_TEXT "crime on an all time low.       ~~~~~       sudden influx illegal immigrants from balkan says mayor.       liberty city attracts more tourist than any other city in the world       "
 
-struct sScrollBarInfo {
-	unsigned iID;
-	CString strLocation;
-	CString strDefaultText;
-};
-
-sScrollBarInfo scrollBarItems[] = {
-	{0, "Financial", IV_SCROLLBAR_1_TEXT},
-	{1, "Theatre", IV_SCROLLBAR_2_TEXT},
-	{2, "Advertising", IV_SCROLLBAR_3_TEXT},
-	{3, "Clock", IV_SCROLLBAR_4_TEXT},
-	{4, "URIs", IV_SCROLLBAR_5_TEXT},
-	{5, "ComedyClub", IV_SCROLLBAR_6_TEXT},
-	{6, "Traffic(Tunnel)", IV_SCROLLBAR_7_TEXT},
-	{7, "News", IV_SCROLLBAR_8_TEXT},
-};
-
 // Area Names
 #define IV_MAX_AREAS 128
 #define IV_MAX_STREETS 128

@@ -11,15 +11,14 @@
 #define CClientVehicle_h
 
 #include <Common.h>
+
+#include <Game/Entity/CVehicleEntity.h>
 #include <Game/IVEngine/CIVVehicle.h>
 #include <Game/IVEngine/CIVModelInfo.h>
 
 class CClientPlayer;
-class CClientVehicle
-{
-
+class CClientVehicle : public CVehicleEntity {
 private:
-
 	CIVVehicle				* m_pVehicle;
 	EntityId				m_vehicleId;
 	CIVModelInfo			* m_pModelInfo;
@@ -37,8 +36,8 @@ public:
 	CClientVehicle( int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4 );
 	~CClientVehicle( );
 
-	bool					Create( );
-	void					Destroy( );
+	bool					Spawn( );
+	void					DeSpawn( );
 
 	void					SetId( EntityId vehicleId ) { m_vehicleId = vehicleId; }
 	EntityId				GetId( ) { return m_vehicleId; }
