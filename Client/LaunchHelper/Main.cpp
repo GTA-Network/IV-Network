@@ -11,8 +11,8 @@
 #include <Patcher\CPatcher.h>
 #include <ShlObj.h>
 #include <mmsystem.h>
-#include <windowsx.h>
 #include <Windows.h>
+#include <windowsx.h>
 
 typedef UINT_PTR (WINAPI * SetTimer_t)(HWND hWnd, UINT_PTR nIDEvent, UINT uElapse, TIMERPROC lpTimerFunc);
 typedef BOOL (WINAPI * CreateProcessW_t)(LPCWSTR, LPWSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCWSTR, LPSTARTUPINFOA, LPPROCESS_INFORMATION);

@@ -151,8 +151,7 @@ DWORD WINAPI xlive_5367(HANDLE, DWORD, DWORD, BYTE *, DWORD);
 DWORD WINAPI xlive_5372(HANDLE, DWORD, DWORD, DWORD, BYTE *, HANDLE);
 
 // Hook Class
-class CXLiveHook
-{
+class CXLiveHook {
 public:
 	static void Install();
 };

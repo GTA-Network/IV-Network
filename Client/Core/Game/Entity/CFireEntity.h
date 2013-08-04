@@ -12,8 +12,7 @@
 
 #include "CNetworkEntity.h"
 
-class CFireEntity : public CNetworkEntity
-{
+class CFireEntity : public CNetworkEntity {
 private:
 
 public:

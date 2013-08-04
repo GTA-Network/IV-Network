@@ -28,8 +28,7 @@ enum eEntityType
 	INVALID_ENTITY,
 };
 
-class CNetworkEntity
-{
+class CNetworkEntity {
 private:
 	eEntityType			m_eType;
 	EntityId			m_entityId;

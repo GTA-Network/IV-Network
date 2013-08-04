@@ -10,10 +10,9 @@
 #ifndef CPickupEntity_h
 #define CPickupEntity_h
 
-#include "../CNetworkEntity.h"
+#include "CNetworkEntity.h"
 
-class CPickupEntity : public CNetworkEntity
-{
+class CPickupEntity : public CNetworkEntity {
 private:
 
 public:

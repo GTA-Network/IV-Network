@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-class CDirectInput8Proxy : public IDirectInput8
-{
+class CDirectInput8Proxy : public IDirectInput8 {
 private:
 	IDirectInput8A *    m_pDevice;
 

@@ -29,12 +29,12 @@
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include "Graphics/CFPSCounter.h"
 
 #include "Network/CLocalPlayer.h"
 
 
 class CCore {
-
 private:
 
 	bool							m_bInitialised;
@@ -44,6 +44,7 @@ private:
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
 	CChat							* m_pChat;
+	CFPSCounter						* m_pFPSCounter;
 
 	eGAMEStates						m_eGameState;
 public:
@@ -73,6 +74,7 @@ public:
 	CGame							* GetGame() { return m_pGame; }
 	CGraphics						* GetGraphics() { return m_pGraphics; }
 	CChat							* GetChat() { return m_pChat; }
+	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

@@ -19,13 +19,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{88789B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22AE1-C342-472E-AD5A-51388EC1DD0D}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\CColor.h = Shared\CColor.h
 		Shared\CLogFile.cpp = Shared\CLogFile.cpp
 		Shared\CLogFile.h = Shared\CLogFile.h
 		Shared\Common.h = Shared\Common.h
+		Shared\CRC.h = Shared\CRC.h
 		Shared\CSettings.cpp = Shared\CSettings.cpp
 		Shared\CSettings.h = Shared\CSettings.h
 		Shared\CString.cpp = Shared\CString.cpp
 		Shared\CString.h = Shared\CString.h
+		Shared\CZlib.cpp = Shared\CZlib.cpp
+		Shared\CZlib.h = Shared\CZlib.h
 		Shared\SharedUtility.cpp = Shared\SharedUtility.cpp
 		Shared\SharedUtility.h = Shared\SharedUtility.h
 	EndProjectSection
@@ -83,6 +87,105 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{DCE885CE-3
 		Shared\Game\eGame.h = Shared\Game\eGame.h
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DirectXSDK", "DirectXSDK", "{35F133D7-2A89-4DF6-83CD-1D2DFB2260F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Include", "Include", "{79B1B456-98FB-4948-95CB-0A9B4912EC0B}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\DXSDK\Include\audiodefs.h = Libraries\DXSDK\Include\audiodefs.h
+		Libraries\DXSDK\Include\comdecl.h = Libraries\DXSDK\Include\comdecl.h
+		Libraries\DXSDK\Include\D3D10.h = Libraries\DXSDK\Include\D3D10.h
+		Libraries\DXSDK\Include\D3D10_1.h = Libraries\DXSDK\Include\D3D10_1.h
+		Libraries\DXSDK\Include\D3D10_1shader.h = Libraries\DXSDK\Include\D3D10_1shader.h
+		Libraries\DXSDK\Include\D3D10effect.h = Libraries\DXSDK\Include\D3D10effect.h
+		Libraries\DXSDK\Include\d3d10misc.h = Libraries\DXSDK\Include\d3d10misc.h
+		Libraries\DXSDK\Include\d3d10sdklayers.h = Libraries\DXSDK\Include\d3d10sdklayers.h
+		Libraries\DXSDK\Include\D3D10shader.h = Libraries\DXSDK\Include\D3D10shader.h
+		Libraries\DXSDK\Include\d3d9.h = Libraries\DXSDK\Include\d3d9.h
+		Libraries\DXSDK\Include\d3d9caps.h = Libraries\DXSDK\Include\d3d9caps.h
+		Libraries\DXSDK\Include\d3d9types.h = Libraries\DXSDK\Include\d3d9types.h
+		Libraries\DXSDK\Include\D3DX10.h = Libraries\DXSDK\Include\D3DX10.h
+		Libraries\DXSDK\Include\d3dx10async.h = Libraries\DXSDK\Include\d3dx10async.h
+		Libraries\DXSDK\Include\D3DX10core.h = Libraries\DXSDK\Include\D3DX10core.h
+		Libraries\DXSDK\Include\D3DX10math.h = Libraries\DXSDK\Include\D3DX10math.h
+		Libraries\DXSDK\Include\D3DX10math.inl = Libraries\DXSDK\Include\D3DX10math.inl
+		Libraries\DXSDK\Include\D3DX10mesh.h = Libraries\DXSDK\Include\D3DX10mesh.h
+		Libraries\DXSDK\Include\D3DX10tex.h = Libraries\DXSDK\Include\D3DX10tex.h
+		Libraries\DXSDK\Include\d3dx9.h = Libraries\DXSDK\Include\d3dx9.h
+		Libraries\DXSDK\Include\d3dx9anim.h = Libraries\DXSDK\Include\d3dx9anim.h
+		Libraries\DXSDK\Include\d3dx9core.h = Libraries\DXSDK\Include\d3dx9core.h
+		Libraries\DXSDK\Include\d3dx9effect.h = Libraries\DXSDK\Include\d3dx9effect.h
+		Libraries\DXSDK\Include\d3dx9math.h = Libraries\DXSDK\Include\d3dx9math.h
+		Libraries\DXSDK\Include\d3dx9math.inl = Libraries\DXSDK\Include\d3dx9math.inl
+		Libraries\DXSDK\Include\d3dx9mesh.h = Libraries\DXSDK\Include\d3dx9mesh.h
+		Libraries\DXSDK\Include\d3dx9shader.h = Libraries\DXSDK\Include\d3dx9shader.h
+		Libraries\DXSDK\Include\d3dx9shape.h = Libraries\DXSDK\Include\d3dx9shape.h
+		Libraries\DXSDK\Include\d3dx9tex.h = Libraries\DXSDK\Include\d3dx9tex.h
+		Libraries\DXSDK\Include\d3dx9xof.h = Libraries\DXSDK\Include\d3dx9xof.h
+		Libraries\DXSDK\Include\ddraw.h = Libraries\DXSDK\Include\ddraw.h
+		Libraries\DXSDK\Include\dinput.h = Libraries\DXSDK\Include\dinput.h
+		Libraries\DXSDK\Include\dinputd.h = Libraries\DXSDK\Include\dinputd.h
+		Libraries\DXSDK\Include\dsconf.h = Libraries\DXSDK\Include\dsconf.h
+		Libraries\DXSDK\Include\dsetup.h = Libraries\DXSDK\Include\dsetup.h
+		Libraries\DXSDK\Include\dsound.h = Libraries\DXSDK\Include\dsound.h
+		Libraries\DXSDK\Include\dvp.h = Libraries\DXSDK\Include\dvp.h
+		Libraries\DXSDK\Include\dxdiag.h = Libraries\DXSDK\Include\dxdiag.h
+		Libraries\DXSDK\Include\DxErr.h = Libraries\DXSDK\Include\DxErr.h
+		Libraries\DXSDK\Include\dxerr9.h = Libraries\DXSDK\Include\dxerr9.h
+		Libraries\DXSDK\Include\dxfile.h = Libraries\DXSDK\Include\dxfile.h
+		Libraries\DXSDK\Include\DXGI.h = Libraries\DXSDK\Include\DXGI.h
+		Libraries\DXSDK\Include\DXGIType.h = Libraries\DXSDK\Include\DXGIType.h
+		Libraries\DXSDK\Include\dxsdkver.h = Libraries\DXSDK\Include\dxsdkver.h
+		Libraries\DXSDK\Include\gameux.h = Libraries\DXSDK\Include\gameux.h
+		Libraries\DXSDK\Include\multimon.h = Libraries\DXSDK\Include\multimon.h
+		Libraries\DXSDK\Include\PIXPlugin.h = Libraries\DXSDK\Include\PIXPlugin.h
+		Libraries\DXSDK\Include\rmxfguid.h = Libraries\DXSDK\Include\rmxfguid.h
+		Libraries\DXSDK\Include\rmxftmpl.h = Libraries\DXSDK\Include\rmxftmpl.h
+		Libraries\DXSDK\Include\rpcsal_old.h = Libraries\DXSDK\Include\rpcsal_old.h
+		Libraries\DXSDK\Include\X3DAudio.h = Libraries\DXSDK\Include\X3DAudio.h
+		Libraries\DXSDK\Include\xact3.h = Libraries\DXSDK\Include\xact3.h
+		Libraries\DXSDK\Include\xact3d3.h = Libraries\DXSDK\Include\xact3d3.h
+		Libraries\DXSDK\Include\xact3wb.h = Libraries\DXSDK\Include\xact3wb.h
+		Libraries\DXSDK\Include\XAPO.h = Libraries\DXSDK\Include\XAPO.h
+		Libraries\DXSDK\Include\XAPOBase.h = Libraries\DXSDK\Include\XAPOBase.h
+		Libraries\DXSDK\Include\XAPOFX.h = Libraries\DXSDK\Include\XAPOFX.h
+		Libraries\DXSDK\Include\xaudio2.h = Libraries\DXSDK\Include\xaudio2.h
+		Libraries\DXSDK\Include\xaudio2fx.h = Libraries\DXSDK\Include\xaudio2fx.h
+		Libraries\DXSDK\Include\XInput.h = Libraries\DXSDK\Include\XInput.h
+		Libraries\DXSDK\Include\xma2defs.h = Libraries\DXSDK\Include\xma2defs.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{8AFF9BDE-5D96-423F-9236-52FBF1F96CBD}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\DXSDK\Lib\d3d10.lib = Libraries\DXSDK\Lib\d3d10.lib
+		Libraries\DXSDK\Lib\d3d10_1.lib = Libraries\DXSDK\Lib\d3d10_1.lib
+		Libraries\DXSDK\Lib\d3d10_1d.lib = Libraries\DXSDK\Lib\d3d10_1d.lib
+		Libraries\DXSDK\Lib\d3d9.lib = Libraries\DXSDK\Lib\d3d9.lib
+		Libraries\DXSDK\Lib\d3dx10.lib = Libraries\DXSDK\Lib\d3dx10.lib
+		Libraries\DXSDK\Lib\d3dx10d.lib = Libraries\DXSDK\Lib\d3dx10d.lib
+		Libraries\DXSDK\Lib\d3dx9.lib = Libraries\DXSDK\Lib\d3dx9.lib
+		Libraries\DXSDK\Lib\d3dx9d.lib = Libraries\DXSDK\Lib\d3dx9d.lib
+		Libraries\DXSDK\Lib\d3dxof.lib = Libraries\DXSDK\Lib\d3dxof.lib
+		Libraries\DXSDK\Lib\ddraw.lib = Libraries\DXSDK\Lib\ddraw.lib
+		Libraries\DXSDK\Lib\dinput8.lib = Libraries\DXSDK\Lib\dinput8.lib
+		Libraries\DXSDK\Lib\dsetup.lib = Libraries\DXSDK\Lib\dsetup.lib
+		Libraries\DXSDK\Lib\dsound.lib = Libraries\DXSDK\Lib\dsound.lib
+		Libraries\DXSDK\Lib\DxErr.lib = Libraries\DXSDK\Lib\DxErr.lib
+		Libraries\DXSDK\Lib\DxErr9.lib = Libraries\DXSDK\Lib\DxErr9.lib
+		Libraries\DXSDK\Lib\dxgi.lib = Libraries\DXSDK\Lib\dxgi.lib
+		Libraries\DXSDK\Lib\dxguid.lib = Libraries\DXSDK\Lib\dxguid.lib
+		Libraries\DXSDK\Lib\X3DAudio.lib = Libraries\DXSDK\Lib\X3DAudio.lib
+		Libraries\DXSDK\Lib\xapobase.lib = Libraries\DXSDK\Lib\xapobase.lib
+		Libraries\DXSDK\Lib\xapobased.lib = Libraries\DXSDK\Lib\xapobased.lib
+		Libraries\DXSDK\Lib\XAPOFX.lib = Libraries\DXSDK\Lib\XAPOFX.lib
+		Libraries\DXSDK\Lib\XInput.lib = Libraries\DXSDK\Lib\XInput.lib
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Detours", "Detours", "{C9077BDC-4FD0-4B9C-B3BA-13CF641F6F9F}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\Detours\detours.h = Libraries\Detours\detours.h
+		Libraries\Detours\detours.lib = Libraries\Detours\detours.lib
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -124,5 +227,9 @@ Global
 		{564791E2-70BB-4F49-8C54-135ED7E3025D} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{DCE885CE-3722-45BA-8426-EED2400A9ED6} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{45278608-79FF-45D7-A03E-140152BF726B} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
+		{35F133D7-2A89-4DF6-83CD-1D2DFB2260F4} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
+		{C9077BDC-4FD0-4B9C-B3BA-13CF641F6F9F} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
+		{79B1B456-98FB-4948-95CB-0A9B4912EC0B} = {35F133D7-2A89-4DF6-83CD-1D2DFB2260F4}
+		{8AFF9BDE-5D96-423F-9236-52FBF1F96CBD} = {35F133D7-2A89-4DF6-83CD-1D2DFB2260F4}
 	EndGlobalSection
 EndGlobal

@@ -14,8 +14,7 @@
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
 
-class CGameFunction
-{
+class CGameFunction {
 public:
 
 	static bool				IsMenuActive();

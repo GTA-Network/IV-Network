@@ -11,8 +11,6 @@
 #define CHooks_h
 
 class CHooks {
-private:
-
 public:
 					CHooks() { };
 					~CHooks() { };

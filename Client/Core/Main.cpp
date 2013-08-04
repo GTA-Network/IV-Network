@@ -11,6 +11,10 @@
 #include <WinSock2.h>
 #include <Windows.h>
 
+#ifndef _CLIENT
+#define _CLIENT
+#endif
+
 CCore		* g_pCore = NULL;
 HMODULE		g_hModule = NULL;
 

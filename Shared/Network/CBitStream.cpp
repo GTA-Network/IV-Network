@@ -123,7 +123,7 @@ void CBitStream::ResetWritePointer(void)
 	m_uiWriteOffsetInBits = 0;
 }
 
-void CBitStream::Write(const string &strIn)
+void CBitStream::Write(const CString &strIn)
 {
 	size_t sLength = strIn.GetLength();
 	Write(sLength);
@@ -135,7 +135,7 @@ void CBitStream::Write(const CVector3 &vecIn)
 	Write((char *)&vecIn, sizeof(CVector3));
 }
 
-bool CBitStream::Read(string &strOut)
+bool CBitStream::Read(CString &strOut)
 {
 	strOut.Clear();
 	size_t sLength = 0;

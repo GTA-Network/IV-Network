@@ -12,8 +12,7 @@
 
 #include "CNetworkEntity.h"
 
-class CBlipEntity
-{
+class CBlipEntity {
 private:
 
 public:

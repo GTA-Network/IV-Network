@@ -12,8 +12,7 @@
 
 #include "CNetworkEntity.h"
 
-class CCheckpointEntity : public CNetworkEntity
-{
+class CCheckpointEntity : public CNetworkEntity {
 private:
 
 public:

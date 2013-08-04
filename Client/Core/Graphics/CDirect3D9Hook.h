@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-class CDirect3D9Hook
-{
+class CDirect3D9Hook {
 private:
 	typedef					IDirect3D9 * (WINAPI * Direct3DCreate9_t)(UINT);
 	bool					m_bHookInstalled;

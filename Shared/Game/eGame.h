@@ -1,11 +1,14 @@
 //================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
-// File: CCore.h
+// File: eGame.h
 // Project: Shared
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
+
+#ifndef eGame_h
+#define eGame_h
 
 enum eGAMEStates
 {
@@ -16,3 +19,5 @@ enum eGAMEStates
 	GAME_STATE_PAUSE_MENU,
 	GAME_STATE_IVMP_PAUSE_MENU,
 };
+
+#endif

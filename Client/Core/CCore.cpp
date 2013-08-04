@@ -56,17 +56,14 @@ bool CCore::Initialise()
 	// Parse the command line
 	CSettings::ParseCommandLine(GetCommandLine());
 
-	/* // Set the info
-	SetNick(CVAR_GET_STRING("nick"));
-	SetHost(CVAR_GET_STRING("ip"));
-	SetPort(CVAR_GET_INTEGER("port"));
-	SetPass(CVAR_GET_STRING("pass"));*/
-
 	// Create the game instance
 	m_pGame = new CGame;
 
 	// Create the graphics instance
 	m_pGraphics = new CGraphics;
+
+	// Create the fps counter instance
+	m_pFPSCounter = new CFPSCounter;
 
 	// Create the chat instance
 	m_pChat = new CChat(30, 30);
@@ -99,14 +96,18 @@ void CCore::OnGameLoad()
 	if(IsGameLoaded())
 		return;
 
+	CLogFile::Print("CCore::OnGameLoad");
+
+	m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
+
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
 	m_pChat->SetVisible(true);
 
-	m_pChat->Output( "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
+	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
-	// Create Instances
+	// Create Instances(playermanager etc)
 	// Startup the network module
 	// Connect to the network
 }
@@ -123,18 +124,16 @@ void CCore::OnGamePreLoad()
 
 void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
-	// Initialise the graphics module
+	CLogFile::Print("CCore::OnDeviceCreate");
 
 	// Setup the chat
-
-	// Create the gui instance
+	if(m_pChat)
+		m_pChat->Setup(pPresentationParameters);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 {
-	// Let the graphics module know the device is lost
-
-	// Release the saved stateblock
+	CLogFile::Print("CCore::OnDeviceReset");
 
 	// Mark as lost device
 	g_bDeviceLost = true;
@@ -142,7 +141,7 @@ void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 
 void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
 {
-	// Let the graphics module know the device is reset
+	CLogFile::Print("CCore::OnDeviceReset");
 
 	// Mark as not lost device
 	g_bDeviceLost = false;

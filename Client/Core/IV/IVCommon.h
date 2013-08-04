@@ -12,10 +12,6 @@
 
 #include <Common.h>
 
-#ifndef PAD
-#define PAD(prefix, name, size) BYTE prefix##_##name##[size]
-#endif // PAD
-
 template <typename T>
 struct CSimpleCollection
 {

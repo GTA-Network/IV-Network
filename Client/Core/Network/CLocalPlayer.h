@@ -19,8 +19,7 @@
 #include <Game\COffsets.h>
 #include <Math\CMaths.h>
 
-class CLocalPlayer : public CPlayerEntity
-{
+class CLocalPlayer : public CPlayerEntity {
 private:
         bool                            m_bIsDead;
         CVector3                        m_vecSpawnPosition;

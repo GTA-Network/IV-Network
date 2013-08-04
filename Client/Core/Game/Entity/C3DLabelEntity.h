@@ -12,8 +12,7 @@
 
 #include "CNetworkEntity.h"
 
-class C3DLabelEntity : public CNetworkEntity
-{
+class C3DLabelEntity : public CNetworkEntity {
 private:
 
 public:

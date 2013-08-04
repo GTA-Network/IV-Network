@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-class IDirect3D9Proxy : public IDirect3D9
-{
+class IDirect3D9Proxy : public IDirect3D9 {
 private:
 	IDirect3D9 * m_pD3D;
 

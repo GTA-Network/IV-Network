@@ -10,10 +10,9 @@
 #ifndef CVehicleEntity_h
 #define CVehicleEntity_h
 
-#include "../CNetworkEntity.h"
+#include "CNetworkEntity.h"
 
-class CVehicleEntity : public CNetworkEntity
-{
+class CVehicleEntity : public CNetworkEntity {
 private:
 
 public:

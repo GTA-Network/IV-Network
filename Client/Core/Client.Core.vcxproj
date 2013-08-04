@@ -56,6 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -106,6 +107,7 @@
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />
     <ClCompile Include="Graphics\CDirectInputDevice8Proxy.cpp" />
+    <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
@@ -147,6 +149,7 @@
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Proxy.h" />
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
+    <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />

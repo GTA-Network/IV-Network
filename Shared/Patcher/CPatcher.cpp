@@ -1,16 +1,16 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
 // File: CPatcher.cpp
-// Project: Shared
-// Author(s): jenksta
-//            Azorbix
+// Project: Client.Core
+// Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
 #include "CPatcher.h"
 #include <malloc.h>
-#ifndef WIN32
+
+#ifndef _WIN32 // Why do we need CPatcher for Linux?! Should the server hook himself or what?! :-P
 #include <sys/mman.h>
 #ifndef PAGESIZE
 #define PAGESIZE 4096

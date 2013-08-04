@@ -14,8 +14,7 @@
 
 typedef HRESULT	( WINAPI * DirectInput8Create_t )( HINSTANCE, DWORD, REFIID, LPVOID *, LPUNKNOWN );
 
-class CDirectInput8Hook
-{
+class CDirectInput8Hook {
 
 private:
 

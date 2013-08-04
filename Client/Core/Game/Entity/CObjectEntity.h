@@ -10,10 +10,9 @@
 #ifndef CObjectEntity_h
 #define CObjectEntity_h
 
-#include "../CNetworkEntity.h"
+#include "CNetworkEntity.h"
 
-class CObjectEntity : public CNetworkEntity
-{
+class CObjectEntity : public CNetworkEntity {
 private:
 
 public:

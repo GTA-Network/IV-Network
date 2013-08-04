@@ -11,8 +11,6 @@
 #define CPatches_h
 
 class CPatches {
-private:
-
 public:
 					CPatches() { };
 					~CPatches() { };

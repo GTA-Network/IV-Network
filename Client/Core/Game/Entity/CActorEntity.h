@@ -12,8 +12,7 @@
 
 #include "CNetworkEntity.h"
 
-class CActorEntity : public CNetworkEntity
-{
+class CActorEntity : public CNetworkEntity {
 private:
 
 public:

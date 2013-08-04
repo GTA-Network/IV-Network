@@ -23,7 +23,6 @@
 
 #include <Math\CMaths.h>
 #include <Detours\detours.h>
-#define		NUM_FONTS		2
 
 struct sFontInfo
 {
@@ -50,27 +49,27 @@ private:
 	unsigned int			m_uiCurrentFPS;
 	unsigned int			m_uiLastCheck;
 
-	bool					LoadFonts( );
+	bool					LoadFonts();
 
 public:
 
-	CGraphics( );
-	~CGraphics( );
+	CGraphics();
+	~CGraphics();
 
-	void					Initialise( IDirect3DDevice9 * pDevice );
-	void					Render( );
+	void					Initialise(IDirect3DDevice9 * pDevice);
+	void					Render();
 
-	void					DrawText( unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, unsigned int fontIndex, bool bShadow, const char * szText );
-	void					DrawText( float fX, float fY, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char * szFormat, ... );
-	void					DrawText( CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char *szFormat, ... );
+	void					DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, unsigned int fontIndex, bool bShadow, const char * szText);
+	void					DrawText(float fX, float fY, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char * szFormat, ...);
+	void					DrawText(CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char *szFormat, ...);
 
-	ID3DXFont				* GetFont( unsigned int uiIndex );
+	ID3DXFont				* GetFont(unsigned int uiIndex);
 
-	void					OnLostDevice( IDirect3DDevice9 * pDevice );
-	void					OnRestoreDevice( IDirect3DDevice9 * pDevice );
+	void					OnLostDevice(IDirect3DDevice9 * pDevice);
+	void					OnRestoreDevice(IDirect3DDevice9 * pDevice);
 
-	float					GetFontHeight( float fScale = 1.0f );
-	float					GetCharacterWidth( char c, float fScale = 1.0f );
+	float					GetFontHeight(float fScale = 1.0f);
+	float					GetCharacterWidth(char c, float fScale = 1.0f);
 
 	inline Vector2			GetSize()
 	{
@@ -82,6 +81,7 @@ public:
 		return Vector2((float)vport.Width, (float)vport.Height);
 	}
 
+	IDirect3DDevice9		*GetDevice() { return m_pDevice; }
 };
 
 #endif // CGraphics_h
