@@ -44,7 +44,7 @@ public:
 	~CNetworkClient();
 
 	bool EnsureStarted();
-	void EnsureStopped(int iBlockDuration);	
+	void EnsureStopped(int iBlockDuration = 10);	
 	void Process();
 	sConnectionState GetState() { return m_state; }
 

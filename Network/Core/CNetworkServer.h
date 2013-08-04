@@ -30,12 +30,11 @@ public:
 	CNetworkServer();
 	~CNetworkServer();
 
-	bool EnsureStarted();
-	void EnsureStopped(int iBlockDuration);	
+	bool EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress);
+	void EnsureStopped(int iBlockDuration = 10);	
 	void Process();
 	CNetPlayerSocket * GetPlayerSocket(EntityId playerId);
 	bool IsPlayerConnected(EntityId playerId);
-	unsigned int Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel = PACKET_CHANNEL_DEFAULT);
 	unsigned int RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel);
 	void DisconnectPlayer(EntityId playerid, bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority);
 	void BanIp(string strIpAddress, unsigned int uiTimeMilliseconds);

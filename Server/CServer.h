@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "CNetworkServer.h"
+#include "CNetworkClient.h"
 #include "Scripting/CSquirrelScriptingManager.h"
 
 class CServer {
@@ -24,7 +25,7 @@ public:
 	CServer();
 	~CServer();
 
-	bool	Startup(string& outStrError);
+	bool	Startup();
 	void	Process();
 	void	Shutdown();
 };

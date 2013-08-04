@@ -1,6 +1,7 @@
 typedef unsigned short PacketId;
 
 #define INTERNAL_PACKET_END 131
+#define INVALID_PACKET_ID 0xFF
 
 // Network packet identifiers (types)
 enum ePacketIdentfier : PacketId

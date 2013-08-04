@@ -9,8 +9,6 @@
 
 #include "CNetworkClient.h"
 
-#define INVALID_PACKET_ID 0xFF
-
 // Init
 CNetworkClient::CNetworkClient()
 {
@@ -241,6 +239,6 @@ void CNetworkClient::Disconnect(bool bSendDisconnectionNotification, ePacketPrio
 {
 	m_state.ucState = 0;
 	m_pNetPeer->CloseConnection(m_state.m_serverAddress, bSendDisconnectionNotification, 0, (PacketPriority)disconnectionPacketPriority);
-	EnsureStopped(500);
+	EnsureStopped();
 	EnsureStarted();
 }
