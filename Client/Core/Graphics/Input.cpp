@@ -18,29 +18,29 @@ extern CCore * g_pCore;
 extern bool g_bDisplayData;
 std::list< CString >		pressedKeys;
 
-CString GetKeyNameByCode( DWORD dwCode )
+CString GetKeyNameByCode(DWORD dwCode)
 {
 	CString strCode;
 
-	if( dwCode >= 0x30 && dwCode <= 0x39 )
+	if(dwCode >= 0x30 && dwCode <= 0x39)
 	{
 		strCode = (unsigned char)dwCode;
 	}
-	else if( dwCode >= 0x41 && dwCode <= 0x5A )
+	else if(dwCode >= 0x41 && dwCode <= 0x5A)
 	{
-		strCode = (unsigned char)( dwCode + 0x20 );
+		strCode = (unsigned char)(dwCode + 0x20);
 	}
-	else if( dwCode >= VK_NUMPAD0 && dwCode <= VK_NUMPAD9 )
+	else if(dwCode >= VK_NUMPAD0 && dwCode <= VK_NUMPAD9)
 	{
-		strCode.Format( "num_%d", dwCode - VK_NUMPAD0 );
+		strCode.Format("num_%d", dwCode - VK_NUMPAD0);
 	}
-	else if( dwCode >= VK_F1 && dwCode <= VK_F12 )
+	else if(dwCode >= VK_F1 && dwCode <= VK_F12)
 	{
-		strCode.Format( "f%d", dwCode - VK_F1 + 1 );
+		strCode.Format("f%d", dwCode - VK_F1 + 1);
 	}
 	else
 	{
-		switch( dwCode )
+		switch(dwCode)
 		{
 		case VK_TAB:
 			strCode = "tab"; break;
@@ -118,53 +118,22 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     // Are we focused?
     if(bFocused)
     {
-		if( uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE) )
+		if(uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE))
 		{
 			return true;
 		}
 
-		if( g_pCore->GetChat() )
-		{
-			bool bInputEnabled = g_pCore->GetChat()->IsInputVisible();
-
-			if( g_pCore->GetChat()->HandleUserInput( uMsg, (DWORD)wParam ) )
-			{
-				// Have we just enabled the chat window?
-				if( !bInputEnabled && g_pCore->GetChat()->IsInputVisible() )
-				{
-					/*
-					for(std::list<String>::iterator iter = pressedKeys.begin(); pressedKeys.size() > 0; iter = pressedKeys.begin())
-					{
-							CSquirrelArguments pArguments;
-							pArguments.push(*iter);
-							pArguments.push("up");
-							g_pClient->GetEvents()->Call("keyPress", &pArguments);
-							pressedKeys.erase(iter);
-					}
-
-					// Clear all keys
-					for(std::list< RakNet::RakString >::iterator iter = pressedKeys.begin(); pressedKeys.size() > 0; iter = pressedKeys.begin() )
-					{
-						CSquirrelArguments pArguments;
-						pArguments.push( *iter );
-						pArguments.push( "up" );
-						pGame->GetClientScriptingManager()->GetEvents()->Call( "onClientKeyPress", &pArguments );
-						pressedKeys.erase( iter );
-					}
-					*/
-					return 1;
-				}
-			}
-		}
+		if(g_pCore->GetChat())
+			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);
 
 		// Is the chat input not visible?
-		if( g_pCore->GetChat() && !g_pCore->GetChat()->IsInputVisible() )
+		if(g_pCore->GetChat() && !g_pCore->GetChat()->IsInputVisible())
 		{
 			// Get the key code string
-			CString strCode = GetKeyNameByCode( (DWORD)wParam );
+			CString strCode = GetKeyNameByCode((DWORD)wParam);
 
 			// Was something presses?
-			if( !strCode.IsEmpty() )
+			if(!strCode.IsEmpty())
 			{
 				CString strState;
 
@@ -189,13 +158,13 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
                 }
 
 				// Is the state valid?
-				if( !strState.IsEmpty() )
+				if(!strState.IsEmpty())
 				{
 					/*// Call the script event
 					CSquirrelArguments pArguments;
-					pArguments.push( strCode );
-					pArguments.push( strState );
-					pGame->GetClientScriptingManager()->GetEvents()->Call( "onClientKeyPress", &pArguments );
+					pArguments.push(strCode);
+					pArguments.push(strState);
+					pGame->GetClientScriptingManager()->GetEvents()->Call("onClientKeyPress", &pArguments);
 					*/
 				}
 			}

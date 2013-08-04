@@ -10,28 +10,23 @@
 #include "CFPSCounter.h"
 #include <SharedUtility.h>
 
-CFPSCounter::CFPSCounter( void )
+CFPSCounter::CFPSCounter()
 {
 	m_ulLastTime = 0;
 	m_uiCurrentFrames = 0;
 	m_uiFramesPerSecond = 0;
 }
 
-CFPSCounter::~CFPSCounter( void )
-{
-
-}
-
-void CFPSCounter::Pulse( void )
+void CFPSCounter::Pulse()
 {
 	// Increase the current frame count
 	m_uiCurrentFrames++;
 
 	// Get the current time
-	unsigned long ulCurrentTime = SharedUtility::GetTime( );
+	unsigned long ulCurrentTime = SharedUtility::GetTime();
 
 	// Has 1 second passed?
-	if( (ulCurrentTime - m_ulLastTime) >= 1000 )
+	if((ulCurrentTime - m_ulLastTime) >= 1000)
 	{
 		// Set the total FPS count
 		m_uiFramesPerSecond = m_uiCurrentFrames;

@@ -61,7 +61,7 @@ private:
 public:
 
 									CCore();
-									~CCore();
+									~CCore() { };
 
 	bool							Initialise();
 

@@ -13,16 +13,16 @@
 class CFPSCounter{
 private:
 	unsigned long		m_ulLastTime;
-	unsigned int		m_uiCurrentFrames;
-	unsigned int		m_uiFramesPerSecond;
+	unsigned			m_uiCurrentFrames;
+	unsigned			m_uiFramesPerSecond;
 
 public:
-	CFPSCounter( void );
-	~CFPSCounter( void );
+						CFPSCounter();
+						~CFPSCounter() { };
 
-	void		Pulse( void );
+	void				Pulse();
 
-	unsigned int		GetFPS( void ) { return m_uiFramesPerSecond; }
+	unsigned			GetFPS() { return m_uiFramesPerSecond; }
 
 };
 

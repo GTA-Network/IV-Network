@@ -57,8 +57,8 @@ private:
 
 public:
 
-	CContextDataManager() { };
-	~CContextDataManager();
+									CContextDataManager() { };
+									~CContextDataManager();
 
 	static	CContextData			* CreateContextData(CIVPlayerInfo * pPlayerInfo);
 	static	void					DestroyContextData(CContextData * pContextData);

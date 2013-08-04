@@ -24,66 +24,85 @@ bool           bInvalidIndex = false;
 IVPool       * g_pIVPool;
 BYTE         * g_pPoolAllocatedMemory;
 
+int				hFile2;
+HANDLE			iTexture;
+int				v2;// edi@1
+signed int		v3;// esi@1
+int				v4;// ecx@2
+int				v5;// eax@3
+int				result;// eax@5
+DWORD			dwJump;
+
+_declspec(naked) void TextureSelect_Hook()
+{   
+	_asm	mov eax, [esp+4];
+	_asm	mov iTexture, eax;
+	_asm	mov eax, [esp+8];
+	_asm	mov hFile2, eax;
+	_asm	pushad;
+
+	if(hFile2 < 10000000) 
+		CLogFile::Printf("WARNING! TextureSelect has an invalid pointer((Pointer)%p/(File/Type)%s!", hFile2, iTexture);
+	else    
+		;//CLogFile::Printf("TextureSelect_Hook: (Pointer)%p/(File/Type)%s", hFile2, iTexture);
+
+	dwJump = (g_pCore->GetBase() + 0x639715);
+
+	_asm	popad;
+	_asm	push ebx;
+	_asm	push esi;
+	_asm	push edi;
+	_asm	mov edi, ecx;
+	_asm	jmp dwJump;
+}
+
+
+_declspec(naked) void CTask__Destructor_Hook()
+{
+	_asm	mov ___pTask, ecx;
+	_asm	pushad;
+
+	if(g_pCore->GetGame()->GetTaskManager())
+		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(___pTask);
+
+	_asm	popad;
+	_asm	push esi;
+	_asm	mov esi, ecx;
+	_asm	push esi;
+	_asm	mov dword ptr [esi], offset COffsets::VAR_CTask__VFTable;
+	_asm	jmp COffsets::RETURN_CTask__Destructor;
+}
+
+_declspec(naked) int CEpisodes__IsEpisodeAvaliable_Hook()
+{
+	_asm	mov eax, [esp+4];
+	_asm	test eax, eax;
+	_asm	jnz it_not;
+	_asm	mov al, 1;
+	_asm	retn 4;
+	_asm	it_not:;
+	_asm	xor al, al;
+	_asm	retn 4;
+}
+
 void RemoveInitialLoadingScreens()
 {
 	// Legal, Legal 2, R*, R*N, GTA:IV, ...
 	for(int i = 0; i < *(int *)(COffsets::VAR_NumLoadingScreens); ++i)
 	{
-		*(DWORD *)(COffsets::VAR_FirstLoadingScreenType + i * 400) = ((i <= 4) ? 4 : i);
-
-		if(i <= 4)
+		if(i <= 4) 
+		{
 			*(DWORD *)(COffsets::VAR_FirstLoadingScreenDuration + i * 400) = 0;
+			*(DWORD *)(COffsets::VAR_FirstLoadingScreenType + i * 400) = 4;
+		}
 	}
 }
 
-void _declspec(naked) CTask__Destructor_Hook()
-{
-	_asm
-	{
-		mov ___pTask, ecx
-		pushad
-	}
-
-
-	// Do we have a client task manager?
-	if(g_pCore->GetGame()->GetTaskManager())
-	{
-		// Let the client task manager handle this task deletion
-		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(___pTask);
-	}
-
-	_asm
-	{
-		popad
-		push esi
-		mov esi, ecx
-		push esi
-		mov dword ptr [esi], offset COffsets::VAR_CTask__VFTable
-		jmp COffsets::RETURN_CTask__Destructor
-	}
-}
-
-void _declspec(naked) CEpisodes__IsEpisodeAvaliable_Hook()
-{
-	_asm
-	{
-		mov eax, [esp+4]
-		test eax, eax
-		jnz it_not
-		mov al, 1
-		retn 4
-it_not:
-		xor al, al
-		retn 4
-	}
-}
 
 IVPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
-	// Default to the local player info just incase the index is invalid
 	pReturnedPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 
-	// Is this not the local player info?
 	if(uiIndex != 0)
 	{
 		CContextData * pContextInfo = CContextDataManager::GetContextData(uiIndex);
@@ -91,34 +110,14 @@ IVPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
 		if(pContextInfo)
 			pReturnedPlayerInfo = pContextInfo->GetPlayerInfo()->GetPlayerInfo();
 	}
+
 	return pReturnedPlayerInfo;
-}
-
-void _declspec(naked) GetPlayerInfoFromIndex_Hook()
-{
-	_asm
-	{
-		mov eax, [esp+4]
-		mov uiPlayerInfoIndex, eax
-			pushad
-	}
-
-	GetPlayerInfoFromIndex(uiPlayerInfoIndex);
-
-	_asm
-	{
-		popad
-			mov eax, pReturnedPlayerInfo
-			retn
-	}
 }
 
 unsigned int GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
-	// Default to the local player info just incase the player info is invalid
 	uiReturnedIndex = 0;
 
-	// Is this not the local player info?
 	if(pPlayerInfo != g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0))
 	{
 		CContextData * pContextInfo = CContextDataManager::GetContextData(pPlayerInfo);
@@ -128,25 +127,6 @@ unsigned int GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 	}
 
 	return uiReturnedIndex;
-}
-
-void _declspec(naked) GetIndexFromPlayerInfo_Hook()
-{
-	_asm
-	{
-		mov eax, [esp+4]
-		mov pReturnedPlayerInfo, eax
-			pushad
-	}
-
-	GetIndexFromPlayerInfo(pReturnedPlayerInfo);
-
-	_asm
-	{
-		popad
-			mov eax, uiReturnedIndex
-			retn
-	}
 }
 
 IVPlayerPed * GetLocalPlayerPed()
@@ -182,8 +162,8 @@ IVPlayerPed * GetLocalPlayerPed()
 	{
 		if(!bInvalidIndex)
 		{
-		CLogFile::Printf("GetLocalPlayerPed Return Is Invalid (Index is %d)", g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
-		bInvalidIndex = true;
+			CLogFile::Printf("GetLocalPlayerPed Return Is Invalid (Index is %d)", g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
+			bInvalidIndex = true;
 		}
 	}
 	else
@@ -198,93 +178,68 @@ IVPlayerPed * GetLocalPlayerPed()
 	return _pPlayerPed;
 }
 
-void _declspec(naked) GetLocalPlayerPed_Hook()
-{
-	_asm
-	{
-		pushad
-	}
-
-	GetLocalPlayerPed();
-
-	_asm
-	{
-		popad
-			mov eax, _pPlayerPed
-			retn
-	}
-}
 
 IVPlayerPed * GetPlayerPedFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Is the player info pointer valid?
 	if(pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
-	else
-	{
-		// Player info pointer is invalid, use the local player ped
+	else // Player info pointer is invalid, use the local player ped
 		_pPlayerPed = GetLocalPlayerPed();
-	}
 
 	return _pPlayerPed;
 }
 
-void _declspec(naked) GetPlayerPedFromPlayerInfo_Hook()
+_declspec(naked) void GetPlayerInfoFromIndex_Hook()
 {
-	_asm
-	{
-		mov eax, [esp+4]
-		mov pReturnedPlayerInfo, eax
-		pushad
-	}
+	_asm	mov eax, [esp+4];
+	_asm	mov uiPlayerInfoIndex, eax;
+	_asm	pushad;
+
+	GetPlayerInfoFromIndex(uiPlayerInfoIndex);
+
+	_asm	popad;
+	_asm	mov eax, pReturnedPlayerInfo;
+	_asm	retn;
+}
+
+_declspec(naked) void GetIndexFromPlayerInfo_Hook()
+{
+	_asm	mov eax, [esp+4];
+	_asm	mov pReturnedPlayerInfo, eax;
+	_asm	pushad;
+
+	GetIndexFromPlayerInfo(pReturnedPlayerInfo);
+
+	_asm	popad;
+	_asm	mov eax, uiReturnedIndex;
+	_asm	retn;
+}
+
+_declspec(naked) void GetLocalPlayerPed_Hook()
+{
+	_asm pushad;
+
+	GetLocalPlayerPed();
+
+	_asm	popad;
+	_asm	mov eax, _pPlayerPed;
+	_asm	retn;
+}
+
+_declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
+{
+	_asm	mov eax, [esp+4];
+	_asm	mov pReturnedPlayerInfo, eax;
+	_asm	pushad;
 
 	GetPlayerPedFromPlayerInfo(pReturnedPlayerInfo);
 
-	_asm
-	{
-		popad
-		mov eax, _pPlayerPed
-		retn
-	}
+	_asm	popad;
+	_asm	mov eax, _pPlayerPed;
+	_asm	retn;
 }
 
-int hFile2;
-HANDLE iTexture;
-int v2;// edi@1
-signed int v3;// esi@1
-int v4;// ecx@2
-int v5;// eax@3
-int result;// eax@5
-DWORD dwJump;
-void _declspec(naked) TextureSelect_Hook()
-{   
-	_asm
-	{
-		mov eax, [esp+4]
-		mov iTexture, eax
-			mov eax, [esp+8]
-		mov hFile2, eax  
-			pushad
-	}
-
-	if(hFile2 < 10000000) 
-	{
-		CLogFile::Printf("WARNING! TextureSelect has an invalid pointer((Pointer)%p/(File/Type)%s!", hFile2, iTexture);
-	}
-	else    
-		;//CLogFile::Printf("TextureSelect_Hook: (Pointer)%p/(File/Type)%s", hFile2, iTexture);
-
-	dwJump = (g_pCore->GetBase() + 0x639715);
-	_asm
-	{
-		popad
-			push ebx
-			push esi
-			push edi
-			mov edi, ecx
-			jmp dwJump
-	}
-}
 
 void CHooks::Intialize()
 {

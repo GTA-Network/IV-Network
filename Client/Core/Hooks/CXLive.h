@@ -10,6 +10,7 @@
 #ifndef CXLive_h
 #define CXLive_h
 
+#include <Common.h>
 #include <CCore.h>
 #include <malloc.h>
 

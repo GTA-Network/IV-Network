@@ -16,7 +16,8 @@
 
 extern CCore * g_pCore;
 
-struct sScrollBarInfo {
+struct sScrollBarInfo 
+{
 	unsigned iID;
 	CString strLocation;
 	CString strDefaultText;
@@ -278,10 +279,10 @@ bool CGameFunction::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPositio
 	CVector3 * pWorldPosition = &vecWorldPosition;
 	Vector2 * pScreenPosition = &vecScreenPosition;
 
-	_asm push pScreenPosition;
-	_asm push 2; // game viewport id(2=map/1=mapicon)
-	_asm push pWorldPosition;
-	_asm call COffsets::FUNC_IVGAME_GETSCREENCOORDSFROM3DCOORDS;
+	_asm	push pScreenPosition;
+	_asm	push 2; // game viewport id(2=map/1=mapicon)
+	_asm	push pWorldPosition;
+	_asm	call COffsets::FUNC_IVGAME_GETSCREENCOORDSFROM3DCOORDS;
 	
 	return false;//return g_pCore->GetCamera()->IsOnScreen(vecWorldPosition);
 }
@@ -306,19 +307,19 @@ void * CGameFunction::Alloc(DWORD dwSize)
 {
 	void * pMemory = NULL;
 
-	_asm push dwSize;
-	_asm call COffsets::FUNC_IVGAME_ALLOCMEMORY;
-	_asm mov pMemory, eax;
-	_asm add esp, 4;
+	_asm	push dwSize;
+	_asm	call COffsets::FUNC_IVGAME_ALLOCMEMORY;
+	_asm	mov pMemory, eax;
+	_asm	add esp, 4;
 
 	return pMemory;
 }
 
 void CGameFunction::Free(void * pMemory)
 {
-	_asm push pMemory;
-	_asm call COffsets::FUNC_IVGAME_FREEMEMORY;
-	_asm add esp, 4;
+	_asm	push pMemory;
+	_asm	call COffsets::FUNC_IVGAME_FREEMEMORY;
+	_asm	add esp, 4;
 }
 
 void CGameFunction::ToggleLazlowStation(bool bToggle)
@@ -329,47 +330,42 @@ void CGameFunction::ToggleLazlowStation(bool bToggle)
 
 void CGameFunction::InitCutscene(char * szCutsceneName, bool bUnknown1, bool bUnknown2)
 {
-    _asm push bUnknown2;
-	_asm push bUnknown1;
-	_asm push szCutsceneName;
-	_asm call COffsets::FUNC_IVGAME_INITCUTSCENE;
-	_asm add esp, 0Ch;
+    _asm	push bUnknown2;
+	_asm	push bUnknown1;
+	_asm	push szCutsceneName;
+	_asm	call COffsets::FUNC_IVGAME_INITCUTSCENE;
+	_asm	add esp, 0Ch;
 }
 
 void CGameFunction::StopCutscene(char * szCutsceneName)
 {
-	_asm push szCutsceneName;
-	_asm call COffsets::FUNC_IVGAME_STOPCUTSCENE;
-	_asm add esp, 4;
+	_asm	push szCutsceneName;
+	_asm	call COffsets::FUNC_IVGAME_STOPCUTSCENE;
+	_asm	add esp, 4;
 }
 
 DWORD CGameFunction::GetNativeAddress(DWORD dwNative)
 {
-    DWORD dwFunc = COffsets::FUNC_ScrVM__FindNativeAddress;
     DWORD dwNativeFunc = NULL;
-    _asm
-    {
-            push esi
-            mov esi, dwNative
-            call dwFunc
-            pop esi
-            mov dwNativeFunc, eax
-    }
+
+    _asm	push esi;
+    _asm	mov esi, dwNative;
+    _asm	call COffsets::FUNC_ScrVM__FindNativeAddress;
+    _asm	pop esi;
+    _asm	mov dwNativeFunc, eax;
 
     if(dwNativeFunc != NULL)
-            return dwNativeFunc;
+		return dwNativeFunc;
 
-    return -1;
+    return (DWORD)0xFFFFFE;
 }
 
 void CGameFunction::LoadWorldAtPosition(CVector3& vecPosition)
 {
 	BYTE * pByteUnknown = &(*(BYTE *)(g_pCore->GetBase() + 0x11DC444));
 	CVector3 * pVecPosition = &vecPosition;
-	_asm
-	{
-		push pVecPosition
-		mov ecx, pByteUnknown
-		call COffsets::FUNC_IVGAME_LOADWORLDATPOSITION
-	}
+
+	_asm	push pVecPosition;
+	_asm	mov ecx, pByteUnknown;
+	_asm	call COffsets::FUNC_IVGAME_LOADWORLDATPOSITION;
 }

@@ -52,7 +52,6 @@ void CGame::Setup()
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 	
-	//m_pLocalPlayer->SetPlayerId(findId);
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 

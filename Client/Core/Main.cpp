@@ -15,7 +15,7 @@
 #define _CLIENT
 #endif
 
-CCore		* g_pCore = NULL;
+CCore		*g_pCore = NULL;
 HMODULE		g_hModule = NULL;
 
 BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
@@ -39,7 +39,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			// Did the core fail to create or initialsie?
 			if(!g_pCore || !g_pCore->Initialise())
 			{
-				CLogFile::Printf("Terminating...");
+				CLogFile::Printf("GTA IV instance failed to create. Shutdown...");
 
 				// Terminate the process
 				TerminateProcess(GetCurrentProcess(), 0);
@@ -49,7 +49,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 
 	case DLL_PROCESS_DETACH:
 		{
-			CLogFile::Print("Terminating process");
+			CLogFile::Print("DLL_PROCESS_DETACH -> GTA IV shutdown");
 
 			// Terminate the process
 			TerminateProcess(GetCurrentProcess(), 0);

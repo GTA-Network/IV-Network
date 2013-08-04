@@ -9,8 +9,6 @@
 
 #include "CXLive.h"
 
-#define FAKE_MAGIC 0xDEADDEAD
-
 // XLive Functions
 int WINAPI XWSAStartup(WORD wVersionRequested, LPWSADATA lpWsaData)
 {

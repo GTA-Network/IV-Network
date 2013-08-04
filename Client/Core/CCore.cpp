@@ -33,11 +33,6 @@ CCore::CCore(void)
 	m_pNetworkManager = NULL;
 }
 
-CCore::~CCore()
-{
-	CLogFile::Printf("CCore::~CCore");
-}
-
 bool CCore::Initialise()
 {
 	// Are we already initialsed?
@@ -165,7 +160,6 @@ void CCore::OnDevicePreRender()
 	if(true)
 	{
 		// Call the script event
-		
 	}
 }
 

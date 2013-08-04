@@ -29,35 +29,32 @@ private:
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
-		unsigned						m_uiPlayerIndex;
 
 public:
 										CLocalPlayer();
-										~CLocalPlayer();
+										~CLocalPlayer() { };
 
         virtual void					Respawn();
-        void							HandleSpawn();
+        virtual void					Reset();
+        virtual void					Pulse();
+        virtual void					HandleSpawn();
+
 		bool							IsDead();
         void							DoDeathCheck();
-        void							Pulse();
+
         virtual void					SetSpawnLocation(CVector3 vecPosition, float fHeading);
-        virtual void					SetPlayerControlAdvanced(bool bControl, bool bCamera);
-        void							SendOnFootSync();
-        void							SendInVehicleSync();
-        void							SendPassengerSync();
-        void							SendSmallSync();
-        bool							IsPureSyncNeeded();
-        bool							IsSmallSyncNeeded();
-        unsigned short					GetPing();
         void							GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
         float							GetSpawnRotation() { return m_fSpawnAngle; }
-        void							SetControl(bool control);
-        bool							GetControl();
+
         bool							GetFirstSpawn() { return m_bFirstSpawn; }
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
         bool							IsRadarVisible() { return m_bRadarVisible; }
 
-        virtual void					Reset();
+		virtual void					SetControl(bool bControl) { m_bToggleControl = bControl; }
+		virtual bool					GetControl() { return m_bToggleControl; }
+		virtual void					SetPlayerControlAdvanced(bool bControl, bool bCamera);
+
+		unsigned short					GetPing();
 };
 
 #endif // CLocalPlayer_h
