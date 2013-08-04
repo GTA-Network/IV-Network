@@ -174,6 +174,15 @@ float CChat::GetCharacterWidth(int iChar)
 	return g_pCore->GetGraphics()->GetCharacterWidth((char)iChar, 1.0f);
 }
 
+void CChat::SetInputVisible(bool bVisible)
+{
+	m_bInputVisible = bVisible;
+
+	// Unlock the player controls
+	if(g_pCore && g_pCore->GetGame() && g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
+		g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true,true);
+}
+
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 {
 	// Was it a key release?
@@ -263,7 +272,7 @@ bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 				SetInputVisible(true);
 
 				// Lock the player controls
-
+				g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false,false);
 				return true;
 			}
 		}
@@ -367,6 +376,7 @@ void CChat::ProcessInput()
 			Outputf(false, "IVMP Player: %s", m_strInputText.Get());
 			AddToHistory();
 		}
+
 		// Is the network module instance valid?
 		/*if(pCore->GetNetworkModule())
 		{

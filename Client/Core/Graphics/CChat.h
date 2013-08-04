@@ -125,7 +125,7 @@ public:
 	void					SetVisible				(bool bVisible) { m_bVisible = bVisible; }
 	bool					IsVisible				() { return m_bVisible; }
 
-	void					SetInputVisible			(bool bInputVisible) { m_bInputVisible = bInputVisible; }
+	void					SetInputVisible			(bool bInputVisible);
 	bool					IsInputVisible			() { return m_bInputVisible; }
 
 	void					SetInput				(CString strInput);

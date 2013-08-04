@@ -160,4 +160,6 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define	CHAT_COMMAND_CHAR '/'
 #define	CHAT_MAX_HISTORY 12
 
+#define DEVELOPMENT_SPAWN_POSITION CVector3(-614.779968f, -762.146912f, 46.311127f)
+
 #endif // Common_h

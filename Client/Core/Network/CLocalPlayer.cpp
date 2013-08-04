@@ -9,6 +9,7 @@
 
 #include "CLocalPlayer.h"
 #include <CCore.h>
+#include <IV\CIVScript.h>
 //include "KeySync.h"
 
 extern CCore *	 g_pCore;
@@ -49,7 +50,8 @@ void __declspec(naked) HandleLocalPlayerSpawn()
         }
 }
 
-CLocalPlayer::CLocalPlayer() : m_bIsDead(false),
+CLocalPlayer::CLocalPlayer() : CPlayerEntity(),
+		m_bIsDead(false),
         m_bToggleControl(true),
         m_fSpawnAngle(0),
         m_ulLastPureSyncTime(0),
@@ -60,6 +62,9 @@ CLocalPlayer::CLocalPlayer() : m_bIsDead(false),
         m_bSpawnMarked(false),
         m_bRadarVisible(true)
 {
+		// Temporary spawn position for development
+		m_vecSpawnPosition = DEVELOPMENT_SPAWN_POSITION;
+
         // Patch to override spawn position and let the game call HandleSpawn
         CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
         CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
@@ -80,6 +85,7 @@ void CLocalPlayer::HandleSpawn()
 {
     // Flag us as alive
     m_bIsDead = false;
+
 }
 
 void CLocalPlayer::DoDeathCheck()
@@ -111,8 +117,10 @@ void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 {
-	//Scripting::SetPlayerControlAdvanced(GetGamePlayerNumber(), bControl, bControl, bControl);
-	//Scripting::SetCameraControlsDisabledWithPlayerControls(bCamera);
+	CLogFile::Printf("CLocalPlayer::SetPlayerControlAdvanced with playerIndex %d",m_uiPlayerIndex);
+
+	//CIVScript::SetPlayerControlAdvanced(m_uiPlayerIndex, bControl, bControl, bControl);
+	CIVScript::SetCameraControlsDisabledWithPlayerControls(bCamera);
 }
 
 void CLocalPlayer::SendOnFootSync()

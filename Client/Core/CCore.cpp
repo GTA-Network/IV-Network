@@ -86,6 +86,9 @@ bool CCore::Initialise()
 	// Install the RAGEScriptThread hook..
 	CIVScriptingHook::InstallScriptHooks();
 
+	// Setup the game instance
+	m_pGame->Setup();
+
 	CLogFile::Printf("Done!");
 	return true;
 }
@@ -98,13 +101,17 @@ void CCore::OnGameLoad()
 
 	CLogFile::Print("CCore::OnGameLoad");
 
+	// Initialize game instance & respawn local player
+	GetGame()->Initialise();
+
+	// Remove all stuff from directx device(which is drawn)
 	m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
+	// Mark chat as visible & print welcome message
 	m_pChat->SetVisible(true);
-
 	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
 	// Create Instances(playermanager etc)
@@ -163,10 +170,19 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
+	// Print our IVMultiplayer "Logo" in the left upper corner
 	m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
 
+	// Render our chat instance
 	if(m_pChat)
 		m_pChat->Render();
+
+	// Before rendering fpscounter instance, update FPS display
+	m_pGraphics->DrawText( 5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get() );
+
+	// Render our fpscounter instance
+	if(m_pFPSCounter)
+		m_pFPSCounter->Pulse();
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);
 }
