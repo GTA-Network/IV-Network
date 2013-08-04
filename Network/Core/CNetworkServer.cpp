@@ -9,8 +9,6 @@
 
 #include "CNetworkServer.h"
 
-#define INVALID_PACKET_ID 0xFF
-
 // Init
 CNetworkServer::CNetworkServer()
 {
@@ -25,12 +23,13 @@ CNetworkServer::~CNetworkServer()
 }
 
 // Ensures peer is started with options. If start failed, returns false
-bool CNetworkServer::EnsureStarted()
+bool CNetworkServer::EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress)
 {
-	RakNet::StartupResult res = m_pNetPeer->Startup(1, &RakNet::SocketDescriptor(), 1, THREAD_PRIORITY_NORMAL);
+	RakNet::SocketDescriptor socketDescriptor(usPort, strHostAddress.Get()); 
+	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, THREAD_PRIORITY_NORMAL);
 
-	if(res == RakNet::RAKNET_STARTED)
-		m_pNetPeer->SetMaximumIncomingConnections(1);
+	if(res == RakNet::RAKNET_STARTED) 
+		m_pNetPeer->SetMaximumIncomingConnections(iMaxPlayers);
 
 	return res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED;
 }
@@ -41,6 +40,7 @@ void CNetworkServer::EnsureStopped(int iBlockDuration)
 	m_pNetPeer->Shutdown(iBlockDuration);
 }
 
+// Process packet, to our internal packet id
 PacketId CNetworkServer::ProcessPacket(RakNet::SystemAddress systemAddress, PacketId packetId, unsigned char * ucData, int iLength)
 {
 	// Get the player id
@@ -76,7 +76,7 @@ PacketId CNetworkServer::ProcessPacket(RakNet::SystemAddress systemAddress, Pack
 			bitStream.Write((PacketId)ID_USER_PACKET_ENUM);
 
 			// Send the packet
-			Send(&bitStream, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, playerId, false);
+			//Send(&bitStream, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, playerId, false); // crackfixme
 			return INVALID_PACKET_ID;
 		}
 		break;
@@ -201,6 +201,11 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	return NULL;
 }
 
+bool CNetworkServer::IsPlayerConnected(EntityId playerId)
+{
+	return GetPlayerSocket(playerId) != NULL;
+}
+
 // Add RakNet peer ban for specified ip for time period
 void CNetworkServer::BanIp(string strIpAddress, unsigned int uiTimeMilliseconds)
 {
@@ -211,6 +216,18 @@ void CNetworkServer::BanIp(string strIpAddress, unsigned int uiTimeMilliseconds)
 void CNetworkServer::UnbanIp(string strIpAddress)
 {
 	m_pNetPeer->RemoveFromBanList(strIpAddress);
+}
+
+// Get player current ping
+int CNetworkServer::GetPlayerLastPing(EntityId playerId)
+{
+	return m_pNetPeer->GetLastPing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
+}
+
+// Get player average ping value
+int CNetworkServer::GetPlayerAveragePing(EntityId playerId)
+{
+	return m_pNetPeer->GetAveragePing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
 }
 
 // Network server pulse

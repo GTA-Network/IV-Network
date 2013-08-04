@@ -23,14 +23,12 @@ CServer::~CServer()
 	SAFE_DELETE(m_pNetServer);
 }
 
-
-bool CServer::Startup(string& outStrError)
+bool CServer::Startup()
 {
 	// Open the settings file
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
-		CLogFile::Print("Failed to open settings.xml, server will shut down in 3 seconds..");
-		Sleep(3000);
+		CLogFile::Print("Failed to open settings.xml..");
 		return false;
 	}
 
@@ -59,7 +57,7 @@ bool CServer::Startup(string& outStrError)
 
 	if(!m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress")))
 	{
-		outStrError = "Failed to start network port.";
+		CLogFile::Print("Failed to start network port.");
 		return false;
 	}
 	
@@ -142,5 +140,5 @@ void CServer::Process()
 
 void CServer::Shutdown()
 {
-	m_pNetServer->EnsureStopped(10);
+	m_pNetServer->EnsureStopped();
 }

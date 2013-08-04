@@ -15,7 +15,6 @@
 #include <Threading/CThread.h>
 
 bool g_bClose = false;
-string g_strStartError;
 
 int main(int argc, char ** argv)
 {
@@ -25,16 +24,11 @@ int main(int argc, char ** argv)
 	CThread inputThread;
 
 	// Start server and load all scripts
-	if(!pServer->Startup(g_strStartError))
+	if(!pServer->Startup())
 	{
-		string strErrorMsg("Failed to start server! %s", g_strStartError.Get());
-		CLogFile::Printf(strErrorMsg);
-#ifdef _WIN32
+		CLogFile::Printf("Failed to start server! Exiting in 10 seconds..");
+		Sleep(10 * 1000);
 		ExitProcess(EXIT_FAILURE);
-#else
-		exit(EXIT_FAILURE);
-#endif
-		return EXIT_FAILURE;
 	}
 
 	// Start input
@@ -42,9 +36,7 @@ int main(int argc, char ** argv)
 
 	// Program loop
 	while(!g_bClose)
-	{
 		pServer->Process();
-	}
 
 	// Stop the input thread
 	inputThread.Stop(true, true);
@@ -56,9 +48,5 @@ int main(int argc, char ** argv)
 	SAFE_DELETE(pServer);
 
 	// Exit process
-#ifdef _WIN32
 	ExitProcess(EXIT_SUCCESS);
-#else
-	exit(EXIT_SUCCESS);
-#endif
 }

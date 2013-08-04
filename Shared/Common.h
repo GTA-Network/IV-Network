@@ -104,6 +104,11 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define DEBUG_SUFFIX
 #endif
 
+// ExitProcess macro for linux
+#ifndef _WIN32
+#define ExitProcess exit
+#endif
+
 // Library extension
 #ifdef _WIN32
 #define LIBRARY_EXTENSION ".dll"
@@ -133,7 +138,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 // Warning disable
 #pragma warning(disable:4996) // Disables _s warning
-#pragma warning(disable:4409) // Disable illegal instruction warming(asm)
+#pragma warning(disable:4409) // Disable illegal instruction warning(asm)
 #pragma warning(disable:4042) // Disable LNK 4042 extra objects
 #pragma warning(disable:4099) // Disable PDB not found warnings
 #pragma warning(disable:4244) // Disable converstion error warnings
