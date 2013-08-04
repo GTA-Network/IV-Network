@@ -21,19 +21,14 @@
 
 template <class T>
 class CIVPool;
-
-class CPools
-{
-
+class CPools {
 private:
-
 	CIVPool< IVPed >				* m_pPedPool;
 	CIVPool< IVVehicle >			* m_pVehiclePool;
 	CIVPool< IVTask >				* m_pTaskPool;
 	CIVPool< IVCam >				* m_pCamPool;
 
 public:
-
 	CPools( );
 	~CPools( );
 
@@ -54,7 +49,6 @@ public:
 	CIVPool< IVVehicle >			* GetVehiclePool( ) { return m_pVehiclePool; }
 	CIVPool< IVTask >				* GetTaskPool( ) { return m_pTaskPool; }
 	CIVPool< IVCam >				* GetCamPool( ) { return m_pCamPool; }
-
 };
 
 #endif // CPools_h

@@ -17,8 +17,7 @@
 #include "CIVPhysical.h"
 #include "CIVPed.h"
 
-class IVVehicle : public IVPhysical
-{
+class IVVehicle : public IVPhysical {
 public:
 	PAD(IVVehicle, pad0, 0xB50);
 	BYTE m_byteRadioStation;
@@ -73,29 +72,26 @@ public:
 	PAD(IVVehicle, pad20, 0xD90);
 };
 
-class CIVVehicle : public CIVPhysical
-{
-
+class CIVVehicle : public CIVPhysical {
 public:
+	CIVVehicle();
+	CIVVehicle(IVVehicle * pVehicle);
+	~CIVVehicle();
 
-	CIVVehicle( );
-	CIVVehicle( IVVehicle * pVehicle );
-	~CIVVehicle( );
+	void					SetVehicle(IVVehicle * pVehicle);
+	IVVehicle				* GetVehicle();
 
-	void					SetVehicle( IVVehicle * pVehicle );
-	IVVehicle				* GetVehicle( );
+	void					SetColors(unsigned char ucColor1, unsigned char ucColor2, unsigned char ucColor3, unsigned char ucColor4);
+	void					GetColors(unsigned char * ucColor1, unsigned char * ucColor2, unsigned char * ucColor3, unsigned char * ucColor4);
 
-	void					SetColors( unsigned char ucColor1, unsigned char ucColor2, unsigned char ucColor3, unsigned char ucColor4 );
-	void					GetColors( unsigned char * ucColor1, unsigned char * ucColor2, unsigned char * ucColor3, unsigned char * ucColor4 );
+	void					SetMaxPassengers(BYTE byteMaxPassengers);
+	BYTE					GetMaxPassengers();
 
-	void					SetMaxPassengers( BYTE byteMaxPassengers );
-	BYTE					GetMaxPassengers( );
+	void					SetDriver(IVPed * pPed);
+	IVPed					* GetDriver();
 
-	void					SetDriver( IVPed * pPed );
-	IVPed					* GetDriver( );
-
-	void					SetPassenger( BYTE byteSeat, IVPed * pPassenger );
-	IVPed					* GetPassenger( BYTE byteSeat );
+	void					SetPassenger(BYTE byteSeat, IVPed * pPassenger);
+	IVPed					* GetPassenger(BYTE byteSeat);
 };
 
 #endif // CIVVehicle_h

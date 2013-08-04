@@ -48,24 +48,20 @@ enum ePedType
 
 class IVPlayerInfo;
 class IVVehicle;
-
-class IVPedIntelligence
-{
+class IVPedIntelligence {
 public:
 	PAD(IVPedIntelligence, pad0, 0x44);
 	IVPedTaskManager * m_pPedTaskManager;
 };
 
-class IVPedBase
-{
+class IVPedBase {
 public:
 	PAD(IVPedBase, pad0, 0x12C);
 	ePedType m_type;
 };
 
 #pragma pack(1)
-class IVPed : public IVPhysical
-{
+class IVPed : public IVPhysical {
 public:
 	PAD(IVPed, pad0, 0x8);
 	BYTE m_bytePlayerNumber;
@@ -114,38 +110,33 @@ public:
 };
 #pragma pack()
 
-class CIVPed : public CIVPhysical
-{
-
+class CIVPed : public CIVPhysical {
 private:
-
 	CIVPedTaskManager	* m_pPedTaskManager;
 	
 public:
+	CIVPed();
+	CIVPed(IVPed * pPed);
+	~CIVPed();
 
-	CIVPed( );
-	CIVPed( IVPed * pPed );
-	~CIVPed( );
+	void				SetPed(IVPed * pPed);
+	IVPed				* GetPed();
 
-	void				SetPed( IVPed * pPed );
-	IVPed				* GetPed( );
+	void				SetPlayerInfo(IVPlayerInfo * pPlayerInfo);
+	IVPlayerInfo		* GetPlayerInfo();
 
-	void				SetPlayerInfo( IVPlayerInfo * pPlayerInfo );
-	IVPlayerInfo		* GetPlayerInfo( );
+	CIVPedTaskManager	* GetPedTaskManager() { return m_pPedTaskManager; }
 
-	CIVPedTaskManager	* GetPedTaskManager( ) { return m_pPedTaskManager; }
+	void				SetCurrentHeading(float m_fCurrentHeading);
+	float				GetCurrentHeading();
 
-	void				SetCurrentHeading( float m_fCurrentHeading );
-	float				GetCurrentHeading( );
+	void				SetDucking(bool bDucking);
+	bool				IsDucking();
 
-	void				SetDucking( bool bDucking );
-	bool				IsDucking( );
+	bool				IsInVehicle();
 
-	bool				IsInVehicle( );
-
-	void				SetCurrentVehicle( IVVehicle * pVehicle );
-	IVVehicle			* GetCurrentVehicle( );
-
+	void				SetCurrentVehicle(IVVehicle * pVehicle);
+	IVVehicle			* GetCurrentVehicle();
 };
 
 #endif // CIVPed_h

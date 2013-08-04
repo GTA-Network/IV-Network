@@ -16,23 +16,18 @@
 #include <Game/eGame.h>
 #include "CIVPed.h"
 
-class IVPlayerPed : public IVPed
-{
+class IVPlayerPed : public IVPed {
 public:
 };
 
-class CIVPlayerPed : public CIVPed
-{
-
+class CIVPlayerPed : public CIVPed {
 public:
+	CIVPlayerPed();
+	CIVPlayerPed(IVPlayerPed * pPlayerPed);
+	~CIVPlayerPed();
 
-	CIVPlayerPed( );
-	CIVPlayerPed( IVPlayerPed * pPlayerPed );
-	~CIVPlayerPed( );
-
-	void					SetPlayerPed( IVPlayerPed * pPlayerPed );
-	IVPlayerPed				* GetPlayerPed( );
-
+	void					SetPlayerPed(IVPlayerPed * pPlayerPed);
+	IVPlayerPed				* GetPlayerPed();
 };
 
 #endif // CIVPlayerPed_h

@@ -15,20 +15,17 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
-class CIVModelManager
-{
-
+class CIVModelManager{
 public:
 
-	static	int			GetModelIndexFromHash( DWORD dwModelHash );
-	static	void		RequestModel( int iModelIndex, DWORD dwFlags = 0x1A );
-	static	void		LoadRequestedModels( );
-	static	bool		HasModelLoaded( int iModelIndex );
-	static	void		ReleaseModel( int iModelIndex );
+	static	int			GetModelIndexFromHash(DWORD dwModelHash);
+	static	void		RequestModel(int iModelIndex, DWORD dwFlags = 0x1A);
+	static	void		LoadRequestedModels();
+	static	bool		HasModelLoaded(int iModelIndex);
+	static	void		ReleaseModel(int iModelIndex);
 
 	static	DWORD	VehicleIdToModelHash(int iModelId);
 	static	int		ModelHashToVehicleId(DWORD dwModelHash);
-
 };
 
 #endif // CIVModelManager_h

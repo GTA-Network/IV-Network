@@ -16,8 +16,7 @@
 #include <Game/eGame.h>
 #include "CIVDynamicEntity.h"
 
-class IVPhysicalVFTable : public IVDynamicEntityVFTable
-{
+class IVPhysicalVFTable : public IVDynamicEntityVFTable {
 public:
 	DWORD mDC;
 	DWORD mE0;
@@ -38,8 +37,7 @@ public:
 	DWORD m11C;
 };
 
-class IVPhysical : public IVDynamicEntity
-{
+class IVPhysical : public IVDynamicEntity {
 public:
 	PAD(IVPhysical, pad0, 0xD8);
 	IVEntity * m_pLastDamageEntity;
@@ -49,30 +47,26 @@ public:
 	PAD(IVPhysical, pad3, 0x1C);
 };
 
-class CIVPhysical : public CIVDynamicEntity
-{
-	
+class CIVPhysical : public CIVDynamicEntity {	
 public:
+	CIVPhysical();
+	CIVPhysical(IVPhysical * pPhysical);
+	~CIVPhysical();
 
-	CIVPhysical( );
-	CIVPhysical( IVPhysical * pPhysical );
-	~CIVPhysical( );
+	void			SetPhysical(IVPhysical * pPhysical);
+	IVPhysical		* GetPhysical();
 
-	void			SetPhysical( IVPhysical * pPhysical );
-	IVPhysical		* GetPhysical( );
+	void			SetMoveSpeed(CVector3 vecMoveSpeed);
+	void			GetMoveSpeed(CVector3 * vecMoveSpeed);
 
-	void			SetMoveSpeed( CVector3 vecMoveSpeed );
-	void			GetMoveSpeed( CVector3 * vecMoveSpeed );
+	void			SetTurnSpeed(CVector3 vecTurnSpeed);
+	void			GetTurnSpeed(CVector3 * vecTurnSpeed);
 
-	void			SetTurnSpeed( CVector3 vecTurnSpeed );
-	void			GetTurnSpeed( CVector3 * vecTurnSpeed );
+	void			SetLastDamageEntity(IVEntity * pLastDamageEntity);
+	IVEntity		* GetLastDamageEntity();
 
-	void			SetLastDamageEntity( IVEntity * pLastDamageEntity );
-	IVEntity		* GetLastDamageEntity( );
-
-	void			SetHealth( float fHealth );
-	float			GetHealth( );
-
+	void			SetHealth(float fHealth);
+	float			GetHealth();
 };
 
 #endif // CIVPhysical_h

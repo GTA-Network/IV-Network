@@ -46,6 +46,24 @@ namespace CIVScript
 	static void SetCamBehindPed(unsigned int ped) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_BEHIND_PED, ped); }
 	static void SetCamPos(unsigned int camera, float pX, float pY, float pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_POS, camera, pX, pY, pZ); }
 	static void SetCamPropagate(unsigned int camera, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_PROPAGATE, camera, value); }
+
+	static void AddBlipForChar(unsigned int ped, unsigned int *pBlip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_CHAR, ped, pBlip); }
+	static void ChangeBlipSprite(unsigned int blip, eBlipSprite sprite) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_SPRITE, blip, sprite); }
+	static void ChangeBlipScale(unsigned int blip, float scale) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_SCALE, blip, scale); }
+	static void ChangeBlipNameFromAscii(unsigned int blip, const char *blipName) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_NAME_FROM_ASCII, blip, blipName); }
+	static void SetCharCoordinatesNoOffset(unsigned int ped, float x, float y, float z) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CHAR_COORDINATES_NO_OFFSET, ped, x, y, z); }
+	static void RemoveBlip(unsigned int blip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REMOVE_BLIP, blip); }
+	static void ChangeBlipColour(unsigned int blip, unsigned int colour) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_COLOUR, blip, colour); }
+	static void WarpCharIntoCar(unsigned int ped, unsigned int vehicle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_WARP_CHAR_INTO_CAR, ped, vehicle); }
+    static void WarpCharIntoCarAsPassenger(unsigned int ped, unsigned int vehicle, unsigned int seatIndex) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_WARP_CHAR_INTO_CAR_AS_PASSENGER, ped, vehicle, seatIndex); }
+
+	static void CreateCar(unsigned int nameHash, float x, float y, float z, unsigned int *pVehicle, bool unknownTrue) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_CAR, nameHash, x, y, z, pVehicle, unknownTrue); }
+	static void SetCarCanBeDamaged(unsigned int vehicle, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_CAN_BE_DAMAGED, vehicle, value); }
+    static void SetCarCanBeVisiblyDamaged(unsigned int vehicle, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_CAN_BE_VISIBLY_DAMAGED, vehicle, value); }
+	static void DeleteCar(unsigned int *pVehicle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DELETE_CAR, pVehicle); }
+	static void SetCarCoordinates(unsigned int vehicle, float pX, float pY, float pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_COORDINATES, vehicle, pX, pY, pZ); }
+	static void FixCar(unsigned int vehicle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_FIX_CAR, vehicle); }
+	static void SetCarHeading(unsigned int vehicle, float dir) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_HEADING, vehicle, dir); }
 };
 
 #endif // CIVScript_h

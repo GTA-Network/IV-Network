@@ -492,9 +492,7 @@ enum eInput
 #define TASK_SIMPLE_BLEND_FROM_NM 2117
 #define TASK_COMPLEX_NM 2118
 
-class CControls
-{
-
+class CControls {
 public:
 
 	unsigned char		ucOnFootMove[4];
@@ -505,7 +503,6 @@ public:
 
 	struct
 	{
-
 		bool bEnterExitVehicle : 1;
 
 		bool bSprint : 1;
@@ -527,7 +524,8 @@ public:
 
 	} keys;
 
-	CControls( );
+	CControls() { };
+	~CControls() { };
 
 	bool IsInCombat( )						const { return (keys.bMeleeAttack1 || keys.bMeleeAttack2 || keys.bMeleeKick || keys.bMeleeBlock); }
 	bool IsFiring( )						const { return (keys.bAttack); }

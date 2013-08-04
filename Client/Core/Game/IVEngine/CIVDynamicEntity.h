@@ -15,8 +15,7 @@
 #include <IV\IVCommon.h>
 #include "CIVEntity.h"
 
-class IVDynamicEntityVFTable : public IVEntityVFTable
-{
+class IVDynamicEntityVFTable : public IVEntityVFTable {
 public:
 	DWORD mCC;
 	DWORD mD0;
@@ -24,25 +23,20 @@ public:
 	DWORD mD8;
 };
 
-class IVDynamicEntity : public IVEntity
-{
+class IVDynamicEntity : public IVEntity {
 	PAD(IVDynamicEntity, pad0, 0x4);
 	DWORD m_pAnim;
 	PAD(IVDynamicEntity, pad1, 0x90);
 };
 
-class CIVDynamicEntity : public CIVEntity
-{
-
+class CIVDynamicEntity : public CIVEntity {
 public:
+	CIVDynamicEntity();
+	CIVDynamicEntity(IVDynamicEntity * pDynamicEntity);
+	~CIVDynamicEntity();
 
-	CIVDynamicEntity( );
-	CIVDynamicEntity( IVDynamicEntity * pDynamicEntity );
-	~CIVDynamicEntity( );
-
-	void				SetDynamicEntity( IVDynamicEntity * pDynamicEntity );
-	IVDynamicEntity		* GetDynamicEntity( );
-
+	void				SetDynamicEntity(IVDynamicEntity * pDynamicEntity);
+	IVDynamicEntity		* GetDynamicEntity();
 };
 
 #endif // CIVDynamicEntity_h

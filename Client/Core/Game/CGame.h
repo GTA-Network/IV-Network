@@ -21,6 +21,7 @@
 #include <Game/IVEngine/CIVPool.h>
 #include "CTaskManager.h"
 #include "CPools.h"
+#include <Game/IVEngine/CIVModelInfo.h>
 #include "IVEngine/CIVCam.h"
 #include "CCamera.h"
 

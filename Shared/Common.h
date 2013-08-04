@@ -43,6 +43,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #include	<string>
 #include	<tchar.h>
 #include	<vector>
+#include	"Game\eGame.h"
+#include	"Network\CBitStream.h"
 #endif
 
 // If compiling in debug mode force mod debug mode

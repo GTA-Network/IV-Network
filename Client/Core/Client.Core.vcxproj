@@ -89,11 +89,13 @@
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
+    <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CContextData.cpp" />
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CPools.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
@@ -136,6 +138,8 @@
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Network\CClientPlayer.cpp" />
+    <ClCompile Include="Network\CClientVehicle.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,8 +149,12 @@
     <ClInclude Include="..\..\Libraries\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
+    <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
+    <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
+    <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CContextData.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CPools.h" />
     <ClInclude Include="Game\CGame.h" />
@@ -206,6 +214,8 @@
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
+    <ClInclude Include="Network\CClientPlayer.h" />
+    <ClInclude Include="Network\CClientVehicle.h" />
     <ClInclude Include="StdInc.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
   </ItemGroup>

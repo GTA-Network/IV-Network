@@ -12,6 +12,14 @@
 
 #include <Common.h>
 
+#define		ARRAY_ModelInfos				0x15F73B0
+#define		NUM_ModelInfos					65535
+
+#define		MIN_INPUT_VALUE					0
+#define		DEFAULT_BINARY_INPUT_VALUE		0
+#define		DEFAULT_ANALOG_INPUT_VALUE		128
+#define		MAX_INPUT_VALUE					255
+
 // Scrollbars
 #define IV_MAX_SCROLLBARS 7
 #define IV_MAX_SCROLLBAR_TEXT_LENGTH 1299
@@ -24,15 +32,13 @@
 #define IV_SCROLLBAR_7_TEXT "stay in sane       min speed 20 miles       max speed 30 miles       check your fuel       tiredness killed her       car thefts on the up. lock your car       be a courteous driver       watch your speed       "
 #define IV_SCROLLBAR_8_TEXT "crime on an all time low.       ~~~~~       sudden influx illegal immigrants from balkan says mayor.       liberty city attracts more tourist than any other city in the world       "
 
-struct sScrollBarInfo
-{
+struct sScrollBarInfo {
 	unsigned iID;
 	CString strLocation;
 	CString strDefaultText;
 };
 
-sScrollBarInfo scrollBarItems[] =
-{
+sScrollBarInfo scrollBarItems[] = {
 	{0, "Financial", IV_SCROLLBAR_1_TEXT},
 	{1, "Theatre", IV_SCROLLBAR_2_TEXT},
 	{2, "Advertising", IV_SCROLLBAR_3_TEXT},

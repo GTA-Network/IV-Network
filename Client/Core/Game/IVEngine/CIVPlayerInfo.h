@@ -25,8 +25,7 @@ struct CIVPlayerInfo_FakeProtectedBuffer
 	BYTE	byteData[4];
 };
 
-class IVPlayerInfo
-{
+class IVPlayerInfo {
 public:
 	PAD(IVPlayerInfo, pad0, 0x4C);
 	char m_szName[20];
@@ -70,39 +69,34 @@ public:
 	CIVPlayerInfo_FakeProtectedBuffer * m_pDisplayScore;
 };
 
-class CIVPlayerInfo
-{
-
+class CIVPlayerInfo {
 private:
-
 	bool					m_bCreatedByUs;
 	IVPlayerInfo			* m_pPlayerInfo;
 
 public:
+	CIVPlayerInfo();
+	CIVPlayerInfo(BYTE bytePlayerNumber);
+	CIVPlayerInfo(IVPlayerInfo * pPlayerInfo);
+	~CIVPlayerInfo();
 
-	CIVPlayerInfo( );
-	CIVPlayerInfo( BYTE bytePlayerNumber );
-	CIVPlayerInfo( IVPlayerInfo * pPlayerInfo );
-	~CIVPlayerInfo( );
+	void				SetPlayerInfo(IVPlayerInfo * pPlayerInfo);
+	IVPlayerInfo		* GetPlayerInfo();
 
-	void				SetPlayerInfo( IVPlayerInfo * pPlayerInfo );
-	IVPlayerInfo		* GetPlayerInfo( );
+	void				SetPlayerNumber(BYTE bytePlayerNumber);
+	BYTE				GetPlayerNumber();
 
-	void				SetPlayerNumber( BYTE bytePlayerNumber );
-	BYTE				GetPlayerNumber( );
+	void				SetPlayerPed(IVPlayerPed * pPlayerPed);
+	IVPlayerPed			* GetPlayerPed();
 
-	void				SetPlayerPed( IVPlayerPed * pPlayerPed );
-	IVPlayerPed			* GetPlayerPed( );
+	void				SetName(char * szName);
+	char				* GetName();
 
-	void				SetName( char * szName );
-	char				* GetName( );
+	void				SetColour(DWORD dwColor);
+	DWORD				GetColour();
 
-	void				SetColour( DWORD dwColor );
-	DWORD				GetColour( );
-
-	void				SetScore( int iScore );
-	int					GetScore( );
-
+	void				SetScore(int iScore);
+	int					GetScore();
 };
 
 #endif // CIVPlayerInfo_h

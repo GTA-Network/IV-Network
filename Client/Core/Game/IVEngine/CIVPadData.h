@@ -15,22 +15,19 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
-class IVPadDataHistoryItem
-{
+class IVPadDataHistoryItem {
 public:
 	BYTE m_byteValue;
 	PAD(IVPadDataHistoryItem, pad0, 3);
 	DWORD m_dwLastUpdate;
 };
 
-class IVPadDataHistory
-{
+class IVPadDataHistory {
 public:
 	IVPadDataHistoryItem	m_historyItems[64];
 };
 
-class IVPadData
-{
+class IVPadData {
 public:
 	DWORD m_dwVFTable;
 	BYTE m_byteUnknown4;

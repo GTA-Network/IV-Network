@@ -15,20 +15,16 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
-class CIVWeather
-{
-
+class CIVWeather {
 public:
+	static	void		SetWeather(eWeather weather);
+	static	eWeather	GetWeather(void);
 
-	static	void		SetWeather( eWeather weather );
-	static	eWeather	GetWeather( void );
+	static	void		SetTime(int uHour, int uMinute);
+	static	void		GetTime(int * uHour, int * uMinute);
 
-	static	void		SetTime( int uHour, int uMinute );
-	static	void		GetTime( int * uHour, int * uMinute );
-
-	static	void		SetDayOfWeek( int uDay );
-	static	void		LockTime( int uHour, int uMinute );
-
+	static	void		SetDayOfWeek(int uDay);
+	static	void		LockTime(int uHour, int uMinute);
 };
 
 #endif // CIVWeather_h

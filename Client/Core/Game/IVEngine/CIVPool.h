@@ -15,8 +15,7 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
-class IVPool
-{
+class IVPool {
 public:
 	BYTE *  m_pObjects;
 	BYTE *  m_pFlags;
@@ -31,31 +30,16 @@ public:
 };
 
 template <class T>
-class CIVPool
-{
+class CIVPool {
 private:
 	IVPool		* m_pPool;
 
 public:
-	CIVPool( )
-	{
-		// Invalidate the pool instance
-		m_pPool = NULL;
-	}
-
-	CIVPool( IVPool * pPool )
-	{
-		// Set the pool instance
-		m_pPool = pPool;
-	}
-
-	~CIVPool( )
-	{
-
-	}
-
-	void		SetPool( IVPool * pPool ) { m_pPool = pPool; }
-	IVPool		* GetPool( ) { return m_pPool; }
+	CIVPool() { m_pPool = NULL; }
+	CIVPool(IVPool * pPool) { m_pPool = pPool; }
+	~CIVPool(){ }
+	void		SetPool(IVPool * pPool) { m_pPool = pPool; }
+	IVPool		* GetPool() { return m_pPool; }
 
 	T * Allocate()
 	{
@@ -77,7 +61,7 @@ public:
 
 	DWORD		GetCount()
 	{
-		if( m_pPool )
+		if(m_pPool)
 			return m_pPool->m_dwCount;
 
 		return 0;
@@ -85,7 +69,7 @@ public:
 
 	DWORD		GetEntrySize()
 	{
-		if( m_pPool )
+		if(m_pPool)
 			return m_pPool->m_dwEntrySize;
 
 		return 0;
@@ -93,17 +77,17 @@ public:
 
 	DWORD		GetUsed()
 	{
-		if( m_pPool )
+		if(m_pPool)
 			return m_pPool->m_dwUsed;
 
 		return 0;
 	}
 
-	unsigned int HandleOf( T * pObject )
+	unsigned int HandleOf(T * pObject)
 	{
 		unsigned int uiHandle = 0;
 
-		if( m_pPool )
+		if(m_pPool)
 		{
 			T * _pObject = pObject;
 			IVPool * pPool = m_pPool;
@@ -119,11 +103,11 @@ public:
 		return uiHandle;
 	}
 
-	T * AtHandle( unsigned int uiHandle )
+	T * AtHandle(unsigned int uiHandle)
 	{
 		T * pObject = NULL;
 
-		if( m_pPool )
+		if(m_pPool)
 		{
 			IVPool * pPool = m_pPool;
 			_asm
@@ -138,9 +122,9 @@ public:
 		return pObject;
 	}
 
-	void Release( T * pObject )
+	void Release(T * pObject)
 	{
-		if( m_pPool )
+		if(m_pPool)
 		{
 			IVPool * pPool = m_pPool;
 			_asm

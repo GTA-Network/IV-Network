@@ -15,22 +15,15 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 #include "CIVPadData.h"
+#include <IV/IVData.h>
 
-// Input values
-#define		MIN_INPUT_VALUE					0
-#define		DEFAULT_BINARY_INPUT_VALUE		0
-#define		DEFAULT_ANALOG_INPUT_VALUE		128
-#define		MAX_INPUT_VALUE					255
-
-class IVPadConfig
-{
+class IVPadConfig {
 public:
 	DWORD dwCount;
 	PAD(IVPadConfig, pad0, 0x7B4);
 };
 
-class IVPad
-{
+class IVPad {
 public:
 	IVPadConfig m_padConfig[5];
 	IVPadData m_padData[INPUT_COUNT];
@@ -49,34 +42,29 @@ public:
 	PAD(IVPad, pad4, 0x14);
 };
 
-class CIVPad
-{
-
+class CIVPad {
 private:
-
 	bool			m_bCreatedByUs;
 	IVPad			* m_pPad;
 
 public:
+	CIVPad();
+	CIVPad(IVPad * pPad);
+	~CIVPad();
 
-	CIVPad( );
-	CIVPad( IVPad * pPad );
-	~CIVPad( );
+	void			SetPad(IVPad * pPad) { m_pPad = pPad; }
+	IVPad			* GetPad() { return m_pPad; }
 
-	void			SetPad( IVPad * pPad ) { m_pPad = pPad; }
-	IVPad			* GetPad( ) { return m_pPad; }
+	bool			IsAnalogInput(eInput input);
 
-	bool			IsAnalogInput( eInput input );
+	void			ToControlState(CControls& controlState, bool bCurrent);
+	void			FromControlState(CControls controlState, bool bCurrent);
 
-	/*void			ToControlState( CControls& controlState, bool bCurrent );
-	void			FromControlState( CControls controlState, bool bCurrent );
+	void			SetCurrentControlState(CControls controlState);
+	void			GetCurrentControlState(CControls& controlState);
 
-	void			SetCurrentControlState( CControls controlState );
-	void			GetCurrentControlState( CControls& controlState );
-
-	void			SetLastControlState( CControls controlState );
-	void			GetLastControlState( CControls& controlState );
-	*/
+	void			SetLastControlState(CControls controlState);
+	void			GetLastControlState(CControls& controlState);
 };
 
 #endif // CIVPad_h

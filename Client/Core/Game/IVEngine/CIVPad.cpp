@@ -27,7 +27,7 @@ extern CCore * g_pCore;
 #define GET_BINARY_KEY(key, binary) \
 	if(bCurrent) { m_pPad->m_padData[key].m_byteCurrentValue = (binary ? MAX_INPUT_VALUE : DEFAULT_BINARY_INPUT_VALUE); } else { m_pPad->m_padData[key].m_byteLastValue = (binary ? MAX_INPUT_VALUE : DEFAULT_BINARY_INPUT_VALUE); }
 
-CIVPad::CIVPad( )
+CIVPad::CIVPad()
 {
 	// Mark as created by us
 	m_bCreatedByUs = true;
@@ -47,37 +47,37 @@ CIVPad::CIVPad( )
 	_asm call COffsets::FUNC_CPad__Initialize;
 
 	// Initialise values
-	for( int i = 0; i < INPUT_COUNT; i++ )
+	for(int i = 0; i < INPUT_COUNT; i++)
 	{
 		m_pPad->m_padData[i].m_byteUnknown4 = MAX_INPUT_VALUE;
 
-		if( IsAnalogInput( (eInput)i ) )
+		if(IsAnalogInput((eInput)i))
 		{
 			m_pPad->m_padData[i].m_byteCurrentValue = DEFAULT_ANALOG_INPUT_VALUE;
 			m_pPad->m_padData[i].m_byteLastValue = DEFAULT_ANALOG_INPUT_VALUE;
 		}
 	}
 
-	CLogFile::Printf( "Remote pad created! (0x%p)", pPad );
+	CLogFile::Printf("Remote pad created! (0x%p)", pPad);
 }
 
-CIVPad::CIVPad( IVPad * pPad )
+CIVPad::CIVPad(IVPad * pPad)
 {
 	// Mark as not created by us
 	m_bCreatedByUs = false;
 
 	// Set the pad
-	SetPad( pPad );
+	SetPad(pPad);
 
-	CLogFile::Printf( "Localplayer pad created! (0x%p)", pPad );
+	CLogFile::Printf("Localplayer pad created! (0x%p)", pPad);
 }
 
-CIVPad::~CIVPad( )
+CIVPad::~CIVPad()
 {
 	// Was the pad created by us?
-	if( m_bCreatedByUs )
+	if(m_bCreatedByUs)
 	{
-		CLogFile::Printf( "Remote pad destroyed! (0x%p)", m_pPad );
+		CLogFile::Printf("Remote pad destroyed! (0x%p)", m_pPad);
 
 		// Deconstruct the pad
 		IVPad * pPad = m_pPad;
@@ -86,11 +86,11 @@ CIVPad::~CIVPad( )
 		_asm call COffsets::FUNC_CPad__Destructor;
 
 		// Delete the pad
-		SAFE_DELETE( m_pPad );
+		SAFE_DELETE(m_pPad);
 	}
 }
 
-bool CIVPad::IsAnalogInput( eInput input )
+bool CIVPad::IsAnalogInput(eInput input)
 {
 	switch(input)
 	{
@@ -124,11 +124,11 @@ bool CIVPad::IsAnalogInput( eInput input )
 
 	return false;
 }
-/*
-void CIVPad::ToControlState( CControls& controlState, bool bCurrent )
+
+void CIVPad::ToControlState(CControls& controlState, bool bCurrent)
 {
 	// Do we not have a valid pad?
-	if( !m_pPad )
+	if(!m_pPad)
 		return;
 
 	// Analog keys
@@ -162,10 +162,10 @@ void CIVPad::ToControlState( CControls& controlState, bool bCurrent )
 	SET_BINARY_KEY(INPUT_VEH_ATTACK2,       controlState.keys.bHeliPrimaryFire);
 }
 
-void CIVPad::FromControlState( CControls controlState, bool bCurrent )
+void CIVPad::FromControlState(CControls controlState, bool bCurrent)
 {
 	// Do we not have a valid pad?
-	if( !m_pPad )
+	if(!m_pPad)
 		return;
 
 	// Analog keys
@@ -199,27 +199,26 @@ void CIVPad::FromControlState( CControls controlState, bool bCurrent )
 	GET_BINARY_KEY(INPUT_VEH_ATTACK2,       controlState.keys.bHeliPrimaryFire);
 }
 
-void CIVPad::SetCurrentControlState( CControls controlState )
+void CIVPad::SetCurrentControlState(CControls controlState)
 {
-	if( m_pPad )
-		FromControlState( controlState, true );
+	if(m_pPad)
+		FromControlState(controlState, true);
 }
 
-void CIVPad::GetCurrentControlState( CControls& controlState )
+void CIVPad::GetCurrentControlState(CControls& controlState)
 {
-	if( m_pPad )
-		ToControlState( controlState, true );
+	if(m_pPad)
+		ToControlState(controlState, true);
 }
 
-void CIVPad::SetLastControlState( CControls controlState )
+void CIVPad::SetLastControlState(CControls controlState)
 {
-	if( m_pPad )
-		FromControlState( controlState, false );
+	if(m_pPad)
+		FromControlState(controlState, false);
 }
 
-void CIVPad::GetLastControlState( CControls& controlState )
+void CIVPad::GetLastControlState(CControls& controlState)
 {
-	if( m_pPad )
-		ToControlState( controlState, false );
+	if(m_pPad)
+		ToControlState(controlState, false);
 }
-*/

@@ -15,8 +15,7 @@
 #include <IV\IVCommon.h>
 
 class CIVWorld;
-class IVEntityVFTable
-{
+class IVEntityVFTable {
 public:
 	DWORD ScalarDeletingDestructor;
 	DWORD SetMatrix;
@@ -71,8 +70,7 @@ public:
 	DWORD mC8;
 };
 
-class IVEntity
-{
+class IVEntity {
 public:
 	IVEntityVFTable * m_VFTable;
 	PAD(IVEntity, pad0, 0xC);
@@ -95,45 +93,40 @@ public:
 	PAD(IVEntity, pad4, 0x4);
 };
 
-class CIVEntity
-{
-
+class CIVEntity {
 private:
-
 	IVEntity			* m_pEntity;
 
 public:
+	CIVEntity();
+	CIVEntity(IVEntity * pEntity);
+	~CIVEntity();
 
-	CIVEntity( );
-	CIVEntity( IVEntity * pEntity );
-	~CIVEntity( );
+	void				SetEntity(IVEntity * pEntity) { m_pEntity = pEntity; }
+	IVEntity			* GetEntity() { return m_pEntity; }
 
-	void				SetEntity( IVEntity * pEntity ) { m_pEntity = pEntity; }
-	IVEntity			* GetEntity( ) { return m_pEntity; }
+	void				SetMatrix(Matrix matMatrix);
+	void				GetMatrix(Matrix * matMatrix);
 
-	void				SetMatrix( Matrix matMatrix );
-	void				GetMatrix( Matrix * matMatrix );
+	void				SetPosition(CVector3 vecPosition);
+	void				GetPosition(CVector3 * vecPosition);
 
-	void				SetPosition( CVector3 vecPosition );
-	void				GetPosition( CVector3 * vecPosition );
+	void				SetRoll(CVector3 vecRoll);
+	void				GetRoll(CVector3 * vecRoll);
 
-	void				SetRoll( CVector3 vecRoll );
-	void				GetRoll( CVector3 * vecRoll );
+	void				SetDirection(CVector3 vecDirection);
+	void				GetDirection(CVector3 * vecDirection);
 
-	void				SetDirection( CVector3 vecDirection );
-	void				GetDirection( CVector3 * vecDirection );
+	void				SetModelIndex(WORD wModelIndex);
+	WORD				GetModelIndex();
 
-	void				SetModelIndex( WORD wModelIndex );
-	WORD				GetModelIndex( );
+	void				SetAlpha(BYTE byteAlpha);
+	BYTE				GetAlpha();
 
-	void				SetAlpha( BYTE byteAlpha );
-	BYTE				GetAlpha( );
+	bool				IsTouchingEntity(CIVEntity * pTouchingEntity);
 
-	bool				IsTouchingEntity( CIVEntity * pTouchingEntity );
-
-	void				AddToWorld( );
-	void				RemoveFromWorld( );
-
+	void				AddToWorld();
+	void				RemoveFromWorld();
 };
 
 #endif // CIVEntity_h

@@ -14,12 +14,9 @@
 #include <Math/CMaths.h>
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
+#include <IV/IVData.h>
 
-#define	ARRAY_ModelInfos			0x15F73B0
-#define	NUM_ModelInfos				65535
-
-class IVBaseModelInfoVFTable
-{
+class IVBaseModelInfoVFTable {
 public:
 	DWORD ScalarDeletingDestructor;
 	DWORD m4;
@@ -38,8 +35,7 @@ public:
 	DWORD m38;
 };
 
-class IVBaseModelInfo
-{
+class IVBaseModelInfo {
 public:
 	IVBaseModelInfoVFTable * m_VFTable;
 	PAD(IVBaseModelInfo, pad0, 0x38);
@@ -54,46 +50,41 @@ public:
 	BYTE byteTextureVariationCount;
 };
 
-class CIVModelInfo
-{
-
+class CIVModelInfo {
 private:
-
 	int			m_iModelIndex;
 	DWORD		m_dwReferenceCount;
 
 public:
+	CIVModelInfo();
+	CIVModelInfo(int iModelIndex);
+	~CIVModelInfo();
 
-	CIVModelInfo( );
-	CIVModelInfo( int iModelIndex );
-	~CIVModelInfo( );
+	IVBaseModelInfo		* GetModelInfo();
 
-	IVBaseModelInfo		* GetModelInfo( );
+	void				SetIndex(int iModelIndex) { m_iModelIndex = iModelIndex; }
+	int					GetIndex() { return m_iModelIndex; }
 
-	void				SetIndex( int iModelIndex ) { m_iModelIndex = iModelIndex; }
-	int					GetIndex( ) { return m_iModelIndex; }
+	BYTE				GetType();
 
-	BYTE				GetType( );
-
-	bool				IsBase( ) { return (GetType() == MODEL_TYPE_BASE); }
+	bool				IsBase() { return (GetType() == MODEL_TYPE_BASE); }
 	bool				IsInstance() { return (GetType() == MODEL_TYPE_BASE); }
 	bool				IsMlo() { return (GetType() == MODEL_TYPE_MLO); }
 	bool				IsTime() { return (GetType() == MODEL_TYPE_TIME); }
 	bool				IsWeapon() { return (GetType() == MODEL_TYPE_WEAPON); }
 	bool				IsVehicle() { return (GetType() == MODEL_TYPE_VEHICLE); }
 	bool				IsPed() { return (GetType() == MODEL_TYPE_PED); }
-	bool				IsValid( ) { return (GetModelInfo() != NULL); }
+	bool				IsValid() { return (GetModelInfo() != NULL); }
 	
-	void				Load( bool bWaitForLoad = true );
-	bool				IsLoaded( );
+	void				Load(bool bWaitForLoad = true);
+	bool				IsLoaded();
 
 	DWORD				GetHash();
 	DWORD				GetReferenceCount();
 	WORD				GetAnimIndex();
 
-	void				AddReference( bool bWaitForLoad );
-	void				RemoveReference( );
-
+	void				AddReference(bool bWaitForLoad);
+	void				RemoveReference();
 };
 
 #endif // CIVModelInfo_h

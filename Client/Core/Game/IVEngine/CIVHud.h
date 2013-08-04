@@ -14,23 +14,20 @@
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
 
-class CIVHud
-{
-
+class CIVHud {
 public:
 
-	static	void	SetHudVisible( bool bVisible );
-	static	bool	IsHudVisible( void );
+	static	void	SetHudVisible(bool bVisible);
+	static	bool	IsHudVisible(void);
 
-	static	void	SetRadarVisible( bool bVisible );
-	static	bool	IsRadarVisible( void );
+	static	void	SetRadarVisible(bool bVisible);
+	static	bool	IsRadarVisible(void);
 
-	static	void	SetPlayerNamesVisible( BYTE byteVisible );
-	static	BYTE	ArePlayerNamesVisible( void );
+	static	void	SetPlayerNamesVisible(BYTE byteVisible);
+	static	BYTE	ArePlayerNamesVisible(void);
 
-	static	void	SetAreaNamesEnabled( bool bEnabled );
-	static	bool	AreAreaNamesEnabled( );
-
+	static	void	SetAreaNamesEnabled(bool bEnabled);
+	static	bool	AreAreaNamesEnabled();
 };
 
 #endif // CIVHud_h

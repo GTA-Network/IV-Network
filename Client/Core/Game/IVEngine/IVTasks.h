@@ -16,17 +16,17 @@
 
 class CIVTaskComplexNewGetInVehicle : public CIVTaskComplex {
 public:
-	CIVTaskComplexNewGetInVehicle( CIVVehicle * pVehicle, int a2, int a3, unsigned int a4, float a5 );
+	CIVTaskComplexNewGetInVehicle(CIVVehicle * pVehicle, int a2, int a3, unsigned int a4, float a5);
 };
 
 class CIVTaskComplexNewExitVehicle : public CIVTaskComplex {
 public:
-	CIVTaskComplexNewExitVehicle( CIVVehicle * pVehicle, int iExitType, int a3, int a4 );
+	CIVTaskComplexNewExitVehicle(CIVVehicle * pVehicle, int iExitType, int a3, int a4);
 };
 
 class CIVTaskSimpleCarSetPedOut : public CIVTaskSimple {
 public:
-	CIVTaskSimpleCarSetPedOut( CIVVehicle * pVehicle, int a2, char a3, char a4 );
+	CIVTaskSimpleCarSetPedOut(CIVVehicle * pVehicle, int a2, char a3, char a4);
 };
 
 class CIVTaskComplexGun : public CIVTaskComplex {

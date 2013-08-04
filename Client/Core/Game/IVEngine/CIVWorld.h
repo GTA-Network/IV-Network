@@ -16,14 +16,10 @@
 #include <Game/eGame.h>
 #include "CIVEntity.h"
 
-class CIVWorld
-{
-
+class CIVWorld {
 public:
-
-	static	void		AddEntity( CIVEntity * pEntity );
-	static	void		RemoveEntity( CIVEntity * pEntity );
-
+	static	void		AddEntity(CIVEntity * pEntity);
+	static	void		RemoveEntity(CIVEntity * pEntity);
 };
 
 #endif // CIVWorld_h

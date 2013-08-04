@@ -13,16 +13,14 @@
 #include <Common.h>
 
 template <typename T>
-struct CSimpleCollection
-{
+struct CSimpleCollection {
 	T           ** pData;
 	unsigned short usCount;
 	unsigned short usSize;
 };
 
 // For gta structures
-class Vector3
-{
+class Vector3 {
 public:
 	float fX;
 	float fY;
@@ -49,8 +47,7 @@ public:
 };
 
 // For gta structures
-class Vector3_Pad
-{
+class Vector3_Pad {
 public:
 	float fX;
 	float fY;
@@ -78,8 +75,7 @@ public:
 };
 
 // For gta structures
-class Matrix34
-{
+class Matrix34 {
 public:
 	Vector3_Pad vecRight;    // 00-10
 	Vector3_Pad vecForward;  // 10-20

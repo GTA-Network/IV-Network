@@ -14,8 +14,7 @@
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
 
-class IVCamData
-{
+class IVCamData {
 public:
 	Matrix34 m_matMatrix;
 	CVector3 m_vecUnknown;
@@ -32,8 +31,7 @@ public:
 	PAD(IVCamData, pad0, 0x3);
 };
 
-class IVCam
-{
+class IVCam {
 public:
 	PAD(IVCam, pad0, 0x10);
 	IVCamData m_CamData1;
@@ -42,22 +40,17 @@ public:
 	PAD(IVCam, pad2, 0x3C);
 };
 
-class CIVCam
-{
-
+class CIVCam{
 private:
-
 	IVCam				* m_pCam;
 
 public:
+	CIVCam();
+	CIVCam(IVCam * pCam);
+	~CIVCam();
 
-	CIVCam( );
-	CIVCam( IVCam * pCam );
-	~CIVCam( );
-
-	void				SetCam( IVCam * pCam ) { m_pCam = pCam; }
-	IVCam				* GetCam( ) { return m_pCam; }
-
+	void				SetCam(IVCam * pCam) { m_pCam = pCam; }
+	IVCam				* GetCam() { return m_pCam; }
 };
 
 #endif // CIVCam_h
