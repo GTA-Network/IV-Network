@@ -51,7 +51,7 @@ void CGame::Setup()
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 
-	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
+	m_pLocalPlayer->GetPlayerEntity()->SetId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 
@@ -72,7 +72,7 @@ void CGame::Initialise()
 
 	// Set basic localplayer attributes
 	m_pLocalPlayer->SetPlayerIndex(g_pCore->GetLocalPlayerIndex()); // Got from CIVScriptHook
-	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
+	m_pLocalPlayer->GetPlayerEntity()->SetId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Respawn();
 
 	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)

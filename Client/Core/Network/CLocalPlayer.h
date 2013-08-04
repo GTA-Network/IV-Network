@@ -31,36 +31,40 @@ private:
         bool                            m_bRadarVisible;
 		unsigned						m_uiPlayerIndex;
 
+		CPlayerEntity					*m_pPlayerEntity;
+
 public:
-						CLocalPlayer();
-						~CLocalPlayer();
+										CLocalPlayer();
+										~CLocalPlayer();
 
-        virtual void	Respawn();
-        void			HandleSpawn();
-		bool			IsDead();
-        void			DoDeathCheck();
-        void			Pulse();
-        virtual void	SetSpawnLocation(CVector3 vecPosition, float fHeading);
-        virtual void	SetPlayerControlAdvanced(bool bControl, bool bCamera);
-        void			SendOnFootSync();
-        void			SendInVehicleSync();
-        void			SendPassengerSync();
-        void			SendSmallSync();
-        bool			IsPureSyncNeeded();
-        bool			IsSmallSyncNeeded();
-        unsigned short	GetPing();
-        void			GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
-        float			GetSpawnRotation() { return m_fSpawnAngle; }
-        void            SetControl(bool control);
-        bool            GetControl();
-        bool            GetFirstSpawn() { return m_bFirstSpawn; }
-        void            SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
-        bool            IsRadarVisible() { return m_bRadarVisible; }
+        virtual void					Respawn();
+        void							HandleSpawn();
+		bool							IsDead();
+        void							DoDeathCheck();
+        void							Pulse();
+        virtual void					SetSpawnLocation(CVector3 vecPosition, float fHeading);
+        virtual void					SetPlayerControlAdvanced(bool bControl, bool bCamera);
+        void							SendOnFootSync();
+        void							SendInVehicleSync();
+        void							SendPassengerSync();
+        void							SendSmallSync();
+        bool							IsPureSyncNeeded();
+        bool							IsSmallSyncNeeded();
+        unsigned short					GetPing();
+        void							GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
+        float							GetSpawnRotation() { return m_fSpawnAngle; }
+        void							SetControl(bool control);
+        bool							GetControl();
+        bool							GetFirstSpawn() { return m_bFirstSpawn; }
+        void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
+        bool							IsRadarVisible() { return m_bRadarVisible; }
 
-		void			SetPlayerIndex(unsigned iIndex) { m_uiPlayerIndex = iIndex; }
-		unsigned		GetPlayerIndex() { return m_uiPlayerIndex; }
+		void							SetPlayerIndex(unsigned iIndex) { m_uiPlayerIndex = iIndex; }
+		unsigned						GetPlayerIndex() { return m_uiPlayerIndex; }
 
-        virtual void    Reset();
+        virtual void					Reset();
+
+		virtual CPlayerEntity			*GetPlayerEntity() { return m_pPlayerEntity; }
 };
 
 #endif // CLocalPlayer_h

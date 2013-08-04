@@ -7,38 +7,67 @@
 //
 //==============================================================================
 
-#ifndef CVehicleEntity_h
-#define CVehicleEntity_h
+#ifndef CClientVehicle_h
+#define CClientVehicle_h
 
-#include "CNetworkEntity.h"
+#include <Common.h>
 
+#include <Game/IVEngine/CIVVehicle.h>
+#include <Game/IVEngine/CIVModelInfo.h>
+
+class CPlayerEntity;
 class CVehicleEntity : public CNetworkEntity {
 private:
+	CIVVehicle				* m_pVehicle;
+	EntityId				m_vehicleId;
+	CIVModelInfo			* m_pModelInfo;
+	bool					m_bSpawned;
+	unsigned int			m_uiVehicleHandle;
+	CVector3				m_vecSpawnPosition;
+	float					m_fSpawnAngle;
+	BYTE					m_byteColor[4];
+
+	CPlayerEntity			* m_pDriver;
+	CPlayerEntity			* m_pPassengers[8]; // Max passenger per vehicle = 8(GTA LIMIT)
 
 public:
-	CVehicleEntity();
-	~CVehicleEntity();
 
-	bool				IsSpawned();
+	CVehicleEntity( int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4 );
+	~CVehicleEntity( );
 
-	virtual bool		Create();
-	virtual bool		Destroy();
+	bool							Create();
+	bool							Destroy();
 
-	EntityId			GetPlayerId() { return CNetworkEntity::GetId(); }
-	void				SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }
+	void							SetId( EntityId vehicleId ) { m_vehicleId = vehicleId; }
+	EntityId						GetId( ) { return m_vehicleId; }
 
-	// Override funtion here
-	virtual void		GetPosition(CVector3& vecPos);
-	virtual void		SetPosition(const CVector3& vecPos);
+	virtual bool					IsSpawned() { return m_bSpawned; }
 
-	virtual void		GetRotation(CVector3& vecRot);
-	virtual void		SetRotation(const CVector3& vecRot);
+	unsigned int					GetScriptingHandle( ) { return m_uiVehicleHandle; }
 
-	virtual void		GetMoveSpeed(CVector3& vecMoveSpeed);
-	virtual void		SetMoveSpeed(const CVector3& vecMoveSpeed);
+	virtual void					Respawn( );
 
-	virtual void		GetTurnSpeed(CVector3& vecTurnSpeed);
-	virtual void		SetTurnSpeed(const CVector3& vecTurnSpeed);
+	virtual void					SetSpawnPosition(CVector3 vecPos);
+
+	virtual void					SetPosition( CVector3 vecPosition );
+	virtual void					GetPosition( CVector3 * vecPosition );
+
+	virtual void					GetMoveSpeed( CVector3 * vecMoveSpeed );
+	virtual void					GetTurnSpeed( CVector3 * vecTurnSpeed );
+
+	virtual void					SetColors(BYTE color1, BYTE color2, BYTE color3, BYTE color4);
+	virtual void					SetHeading(float fAngle);
+
+	virtual BYTE					GetMaxPassengers( );
+
+	virtual void					SetOccupant( BYTE byteSeat, CPlayerEntity * pPlayer );
+	virtual CPlayerEntity			* GetOccupant( BYTE byteSeat );
+
+	virtual void					Serialize( CBitStream * bitStream );
+	virtual void					Deserialize( CBitStream * bitStream );
+
+	virtual CIVVehicle				* GetGameVehicle() { return m_pVehicle; }
+	virtual CIVModelInfo			* GetModelInfo() { return m_pModelInfo; }
 };
 
-#endif // CVehicleEntity_h
+#endif // CClientVehicle_h

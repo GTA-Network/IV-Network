@@ -105,7 +105,14 @@
     <ClCompile Include="Game\COffsets.cpp" />
     <ClCompile Include="Game\CPatches.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
+    <ClCompile Include="Game\Entity\C3DLabelEntity.cpp" />
+    <ClCompile Include="Game\Entity\CActorEntity.cpp" />
+    <ClCompile Include="Game\Entity\CBlipEntity.cpp" />
+    <ClCompile Include="Game\Entity\CCheckpointEntity.cpp" />
+    <ClCompile Include="Game\Entity\CFireEntity.cpp" />
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp" />
+    <ClCompile Include="Game\Entity\CObjectEntity.cpp" />
+    <ClCompile Include="Game\Entity\CPickupEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
@@ -138,8 +145,6 @@
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Network\CClientPlayer.cpp" />
-    <ClCompile Include="Network\CClientVehicle.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -215,8 +220,6 @@
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
-    <ClInclude Include="Network\CClientPlayer.h" />
-    <ClInclude Include="Network\CClientVehicle.h" />
     <ClInclude Include="StdInc.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
   </ItemGroup>
