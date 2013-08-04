@@ -58,6 +58,7 @@ private:
 	static CPools						*m_pPool;
 	static CCamera						*m_pCamera;
 	CIVModelInfo						m_modelInfos[NUM_ModelInfos];
+	static bool							m_LocalPlayerInitialised;
 
 	static CPlayerManager				*m_pPlayerManager;
 	static CVehicleManager				*m_pVehicleManager;
@@ -76,6 +77,7 @@ public:
 
 	void								Initialise();
 	void								PrepareWorld();
+	static void							OnEnvironmentStartUp(bool bForce = false);
 	static void							Setup();
 	static void							RenderRAGEScripts();
 	static void							UnprotectMemory();
@@ -86,7 +88,7 @@ public:
 	CPools								*GetPools() { return m_pPool; }
 	CCamera								*GetCamera() { return m_pCamera; }
 
-	CIVModelInfo						* GetModelInfo( int iModelIndex );
+	CIVModelInfo						*GetModelInfo( int iModelIndex );
 
 	CPlayerManager						*GetPlayerManager() { return m_pPlayerManager; }
 	CVehicleManager						*GetVehicleManager() { return m_pVehicleManager; }

@@ -139,6 +139,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 	memset(&m_lastControlState, 0, sizeof(CControls));
 	memset(&m_ControlState, 0, sizeof(CControls));
 	ResetVehicleEnterExit();
+
 	CNetworkEntity::SetType(PLAYER_ENTITY);
 
 	// Is this the localplayer?
@@ -148,13 +149,14 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 		m_bytePlayerNumber = (BYTE)CPools::GetLocalPlayerIndex();
 
 		// Create a new player ped instance
-		m_pPlayerPed = new CIVPlayerPed(CPools::GetPlayerInfoFromIndex(0)->m_pPlayerPed);
+		IVPlayerInfo * pInfo = CPools::GetPlayerInfoFromIndex(0);
+		m_pPlayerPed = new CIVPlayerPed(pInfo->m_pPlayerPed);
 
 		// Get the localplayer info pointer
 		m_pPlayerInfo = new CIVPlayerInfo(CPools::GetPlayerInfoFromIndex(0));
 
 		// Add our model reference
-		m_pModelInfo->AddReference(false);
+		//m_pModelInfo->AddReference(false);
 
 		// Set the localplayer name
 		SetNick(g_pCore->GetNick());
@@ -162,6 +164,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 		// Setup localplayer
 		CIVScript::SetPlayerControlAdvanced(m_bytePlayerNumber, true, true, true);
 		CIVScript::SetCameraControlsDisabledWithPlayerControls(true);
+
+		m_bSpawned = true;
 
 		CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
 	}
@@ -407,6 +411,7 @@ bool CPlayerEntity::Destroy()
 
 void CPlayerEntity::SetPosition(CVector3 vecPosition)
 {
+	CLogFile::Printf(__FUNCTION__);
 	if(IsSpawned())
 		m_pPlayerPed->SetPosition(vecPosition);
 	else
@@ -421,6 +426,7 @@ bool CPlayerEntity::GetPosition(CVector3 *vecPosition)
 		m_pPlayerPed->GetPosition(vecPosition);
 	else
 		vecPosition = &m_vecPosition;
+
 	return true;
 }
 
@@ -743,7 +749,7 @@ void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 	int iModelId;
 	int iExitMode = 0xF;
 
-	m_pVehicle->GetMoveSpeed(&vecMoveSpeed);
+	m_pVehicle->GetMoveSpeed(vecMoveSpeed);
 	iModelId = CIVModelManager::ModelHashToVehicleId(m_pVehicle->GetModelInfo()->GetHash());
 
 	if(exitType == EXIT_VEHICLE_NORMAL)

@@ -20,7 +20,7 @@ unsigned int   uiPlayerInfoIndex = 0;
 IVPlayerInfo * pReturnedPlayerInfo = NULL;
 unsigned int   uiReturnedIndex = 0;
 IVPlayerPed  * _pPlayerPed = NULL;
-bool           bInvalidIndex = false;
+bool           g_bInvalidIndex = false;
 IVPool       * g_pIVPool;
 BYTE         * g_pPoolAllocatedMemory;
 
@@ -73,7 +73,7 @@ _declspec(naked) void CTask__Destructor_Hook()
 	_asm	jmp COffsets::RETURN_CTask__Destructor;
 }
 
-_declspec(naked) int CEpisodes__IsEpisodeAvaliable_Hook()
+_declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 {
 	_asm	mov eax, [esp+4];
 	_asm	test eax, eax;
@@ -160,18 +160,18 @@ IVPlayerPed * GetLocalPlayerPed()
 	// Some code to test a theory
 	if(_pPlayerPed == NULL)
 	{
-		if(!bInvalidIndex)
+		if(!g_bInvalidIndex)
 		{
 			CLogFile::Printf("GetLocalPlayerPed Return Is Invalid (Index is %d)", g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
-			bInvalidIndex = true;
+			g_bInvalidIndex = true;
 		}
 	}
 	else
 	{
-		if(bInvalidIndex)
+		if(g_bInvalidIndex)
 		{
 			CLogFile::Printf("GetLocalPlayerPed Return Is Now Valid");
-			bInvalidIndex = false;
+			g_bInvalidIndex = false;
 		}
 	}
 	
@@ -218,7 +218,7 @@ _declspec(naked) void GetIndexFromPlayerInfo_Hook()
 
 _declspec(naked) void GetLocalPlayerPed_Hook()
 {
-	_asm pushad;
+	_asm	pushad;
 
 	GetLocalPlayerPed();
 

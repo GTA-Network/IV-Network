@@ -98,7 +98,7 @@ IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
 
 CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist)
 {
-	CLogFile::Printf("CTaskManager::GetClientTaskFromGameTask(0x%p, %s)", pGameTask, bCreateIfNotExist ? "true" : "false");
+	//CLogFile::Printf("CTaskManager::GetClientTaskFromGameTask(0x%p, %s)", pGameTask, bCreateIfNotExist ? "true" : "false");
 	// Do we have an invalid task pointer?
 	if(!pGameTask)
 		return NULL;

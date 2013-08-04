@@ -15,6 +15,7 @@
 #include <Game/IVEngine/CIVModelInfo.h>
 
 extern	CCore				* g_pCore;
+extern bool					  g_bInvalidIndex;
 
 CLocalPlayer				*CGame::m_pLocalPlayer = 0;
 CIVPad						*CGame::m_pPad = 0;
@@ -31,7 +32,7 @@ C3DLabelManager				*CGame::m_p3DLabelManager = 0;
 CBlipManager				*CGame::m_pBlipManager = 0;
 CCheckpointManager			*CGame::m_pCheckpointManager = 0;
 CCharacterManager			*CGame::m_pCharacterManager = 0;
-
+bool						CGame::m_LocalPlayerInitialised = 0;
 /*
 	==== Why WaitForGameStartup ====
 	We can load/start the game in the background and request all resources while the player is in the main menu.
@@ -45,15 +46,9 @@ DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 
 void CGame::Setup()
 {
-	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Destroy Thread?(after he has finished)
+	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Destroy Thread?(after he has finished)
 
 	g_pCore->SetClientState(GAME_STATE_LOADING);
-
-	if(!m_pLocalPlayer)
-		m_pLocalPlayer = new CLocalPlayer;
-	
-	m_pLocalPlayer->Reset();
-	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 
 	// Create new civpad instance
 	m_pPad = new CIVPad((IVPad *)(g_pCore->GetBase() + 0x10FB818));
@@ -72,9 +67,6 @@ void CGame::Initialise()
 {
 	// Update client state to state ingame
 	g_pCore->SetClientState(GAME_STATE_INGAME);
-
-	// Set basic localplayer attributes
-	m_pLocalPlayer->Respawn();
 
 	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)
 	m_pPool->Initialise();
@@ -119,8 +111,42 @@ void CGame::Initialise()
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pCheckpointManager)
 		m_pCheckpointManager = new CCheckpointManager;
+	
+	OnEnvironmentStartUp(false);
 
 	PrepareWorld();
+}
+
+void CGame::OnEnvironmentStartUp(bool bForce)
+{
+	CLogFile::Printf("GetLocalPlayerPed returns %d",g_bInvalidIndex);
+	
+	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
+	IVPlayerPed  * _pPlayerPed = NULL;
+
+	if(pPlayerInfo)
+		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
+	else
+		_pPlayerPed = NULL;
+
+	if(!g_bInvalidIndex || m_pPool->GetLocalPlayerIndex() == -1)
+	{
+		if(!bForce)
+			return;
+		else
+		;
+	}
+
+	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
+
+	CLogFile::Printf("[FUNC] GetLocalPlayerPed returns %d",g_bInvalidIndex);
+	CLogFile::Printf("[FUNC] Creating Player..");
+	if(!m_pLocalPlayer)
+		m_pLocalPlayer = new CLocalPlayer;
+	
+	m_pLocalPlayer->Reset();
+	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
+	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 }
 
 void CGame::Reset()
@@ -195,9 +221,15 @@ void CGame::RenderRAGEScripts()
 {
 	// Do we need to reset the game?
 
+	if(!m_LocalPlayerInitialised)
+		OnEnvironmentStartUp(true);
+
 	// If our network manager exists process it
 	if(g_pCore->GetNetworkManager())
 		g_pCore->GetNetworkManager()->Process();
+
+	if(m_pLocalPlayer)
+		m_pLocalPlayer->Pulse();
 
 	// If we have text to draw draw it
 	
@@ -211,7 +243,7 @@ void CGame::PrepareWorld()
 	CIVHud::SetPlayerNamesVisible(0);
 
 	CIVWeather::SetWeather(WEATHER_SUNNY);
-	CIVWeather::SetTime(7, 0);
+	CIVWeather::SetTime(19, 0);
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

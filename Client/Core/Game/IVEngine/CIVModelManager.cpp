@@ -49,7 +49,7 @@ void CIVModelManager::LoadRequestedModels( )
 	_asm
 	{
 		push 1
-		call COffsets::FUNC_RequestResource
+		call COffsets::FUNC_LoadAllResources
 		add esp, 4
 	}
 }

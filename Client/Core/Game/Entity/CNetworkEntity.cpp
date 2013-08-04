@@ -9,6 +9,7 @@
 
 #include "CNetworkEntity.h"
 #include <Network/CBitStream.h>
+#include <CLogFile.h>
 
 CNetworkEntity::CNetworkEntity()
 	: m_vecPosition(CVector3()),
@@ -33,6 +34,7 @@ void CNetworkEntity::GetPosition(CVector3& vecPos)
 
 void CNetworkEntity::SetPosition(const CVector3& vecPos)
 {
+	CLogFile::Printf(__FUNCTION__);
 	m_vecPosition = vecPos;
 }
 

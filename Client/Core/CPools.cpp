@@ -14,7 +14,7 @@ extern CCore * g_pCore;
 
 #define INVALID_PLAYER_PED 255
 
-CPools::CPools( )
+CPools::CPools()
 {
 	// Reset the ped pool
 	m_pPedPool = NULL;
@@ -29,10 +29,10 @@ CPools::CPools( )
 	m_pCamPool = NULL;
 }
 
-CPools::~CPools( )
+CPools::~CPools()
 {
 	// Delete the cam pool
-	SAFE_DELETE( m_pCamPool );
+	SAFE_DELETE(m_pCamPool);
 
 	// Delete the task pool
 	SAFE_DELETE(m_pTaskPool);
@@ -44,25 +44,25 @@ CPools::~CPools( )
 	SAFE_DELETE(m_pPedPool);
 }
 
-void CPools::Initialise( )
+void CPools::Initialise()
 {
 	// Get the ped pool
-	m_pPedPool = new CIVPool< IVPed >( *(IVPool **)COffsets::VAR_PedPool );
+	m_pPedPool = new CIVPool< IVPed >(*(IVPool **)COffsets::VAR_PedPool);
 
 	// Get the vehicle pool
-	m_pVehiclePool = new CIVPool< IVVehicle >( *(IVPool **)COffsets::VAR_VehiclePool );
+	m_pVehiclePool = new CIVPool< IVVehicle >(*(IVPool **)COffsets::VAR_VehiclePool);
 
 	// Get the task pool
-	m_pTaskPool = new CIVPool< IVTask >( *(IVPool **)COffsets::VAR_TaskPool );
+	m_pTaskPool = new CIVPool< IVTask >(*(IVPool **)COffsets::VAR_TaskPool);
 
 	// Get the cam pool
-	m_pCamPool = new CIVPool< IVCam >( *(IVPool **)COffsets::VAR_CamPool );
+	m_pCamPool = new CIVPool< IVCam >(*(IVPool **)COffsets::VAR_CamPool);
 }
 
-IVPlayerInfo * CPools::GetPlayerInfoFromIndex( unsigned int uiIndex )
+IVPlayerInfo * CPools::GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
 	// Is the index more than the player info array size?
-	if( uiIndex > PLAYER_INFO_ARRAY_SIZE )
+	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
 		return NULL;
 
 	// Get the player info pointer array
@@ -72,19 +72,19 @@ IVPlayerInfo * CPools::GetPlayerInfoFromIndex( unsigned int uiIndex )
 	return pPlayerInfos[uiIndex];
 }
 
-IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed( IVPlayerPed * pPlayerPed )
+IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed)
 {
 	// Loop through all player info indexes
-	for( unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++ )
+	for(unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++)
 	{
 		// Get the current player info
-		IVPlayerInfo * pPlayerInfo = GetPlayerInfoFromIndex( i );
+		IVPlayerInfo * pPlayerInfo = GetPlayerInfoFromIndex(i);
 
 		// Does the current player info exist?
-		if( pPlayerInfo )
+		if(pPlayerInfo)
 		{
 			// Is the current player infos playerped the playerped?
-			if( pPlayerInfo->m_pPlayerPed == pPlayerPed )
+			if(pPlayerInfo->m_pPlayerPed == pPlayerPed)
 				return pPlayerInfo;
 		}
 	}
@@ -92,23 +92,23 @@ IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed( IVPlayerPed * pPlayerPed )
 	return NULL;
 }
 
-unsigned int CPools::GetIndexFromPlayerInfo( IVPlayerInfo * pPlayerInfo )
+unsigned int CPools::GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Loop through all player info indexes
-	for( unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++ )
+	for(unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++)
 	{
 		// Is the current index the player info?
-		if( GetPlayerInfoFromIndex(i) == pPlayerInfo )
+		if(GetPlayerInfoFromIndex(i) == pPlayerInfo)
 			return i;
 	}
 
 	return INVALID_PLAYER_PED;
 }
 
-void CPools::SetPlayerInfoAtIndex( unsigned int uiIndex, IVPlayerInfo * pPlayerInfo )
+void CPools::SetPlayerInfoAtIndex(unsigned int uiIndex, IVPlayerInfo * pPlayerInfo)
 {
 	// Is the index more than the player info array size?
-	if( uiIndex > PLAYER_INFO_ARRAY_SIZE )
+	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
 		return;
 
 	// Get the player info array pointer
@@ -118,25 +118,25 @@ void CPools::SetPlayerInfoAtIndex( unsigned int uiIndex, IVPlayerInfo * pPlayerI
 	pPlayerInfos[uiIndex] = pPlayerInfo;
 }
 
-unsigned int CPools::FindFreePlayerInfoIndex( )
+unsigned int CPools::FindFreePlayerInfoIndex()
 {
 	// Loop through all player info indexes
-	for( unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++ )
+	for(unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++)
 	{
 		// Is the current index free?
-		if( !GetPlayerInfoFromIndex(i) )
+		if(!GetPlayerInfoFromIndex(i))
 			return i;
 	}
 
 	return INVALID_PLAYER_PED;
 }
 
-unsigned int CPools::GetLocalPlayerIndex( )
+unsigned int CPools::GetLocalPlayerIndex()
 {
 	return *(unsigned int *)COffsets::VAR_LocalPlayerId;
 }
 
-void CPools::SetLocalPlayerIndex( unsigned int uiIndex )
+void CPools::SetLocalPlayerIndex(unsigned int uiIndex)
 {
 	*(unsigned int *)COffsets::VAR_LocalPlayerId = uiIndex;
 }
