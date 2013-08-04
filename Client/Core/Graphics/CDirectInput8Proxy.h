@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CDirectInput8Proxy.h
 // Project: Client.Core
@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-class CDirectInput8Proxy : public IDirectInput8
-{
+class CDirectInput8Proxy : public IDirectInput8 {
 private:
 	IDirectInput8A *    m_pDevice;
 

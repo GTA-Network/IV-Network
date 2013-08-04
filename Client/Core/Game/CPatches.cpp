@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CPatches.cpp
 // Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>, XForce
+// Author: FRi<FRi.developing@gmail.com>, xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==========================================================================================

@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CHooks.h
 // Project: Client.Core
@@ -11,8 +11,6 @@
 #define CHooks_h
 
 class CHooks {
-private:
-
 public:
 					CHooks() { };
 					~CHooks() { };

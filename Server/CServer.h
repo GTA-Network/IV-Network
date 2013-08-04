@@ -1,8 +1,8 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CServer.h
 // Project: Client.Core
-// Author: xForce
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -12,11 +12,13 @@
 
 #include "Common.h"
 #include "CNetworkServer.h"
+#include "Scripting/CSquirrelScriptingManager.h"
 
 class CServer {
 
 private:
-	CNetworkServer * m_pNetServer;
+	CNetworkServer				* m_pNetServer;
+	CSquirrelScriptingManager	* m_pScriptingManager;
 
 public:
 	CServer();

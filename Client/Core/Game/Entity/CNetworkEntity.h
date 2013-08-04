@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CNetworkEntity.h
 // Project: Client.Core
-// Author: xForce
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -28,8 +28,7 @@ enum eEntityType
 	INVALID_ENTITY,
 };
 
-class CNetworkEntity
-{
+class CNetworkEntity {
 private:
 	eEntityType			m_eType;
 	EntityId			m_entityId;

@@ -86,7 +86,7 @@ public:
 	void                     Write(const unsigned long &ulIn) { WRITE_TEMPLATE(sizeof(unsigned long), ulIn); }
 	void                     Write(const float &fIn) { WRITE_TEMPLATE(sizeof(float), fIn); }
 	void                     Write(const double &dIn) { WRITE_TEMPLATE(sizeof(double), dIn); }
-	void                     Write(const string &strIn);
+	void                     Write(const CString &strIn);
 	void                     Write(const CVector3 &vecIn);
 	//void                     Write(const CControlState &in);
 
@@ -115,7 +115,7 @@ public:
 	bool                     Read(unsigned long& ulOut) { READ_TEMPLATE(sizeof(unsigned long), ulOut); }
 	bool                     Read(float& fOut) { READ_TEMPLATE(sizeof(float), fOut); }
 	bool                     Read(double& dOut) { READ_TEMPLATE(sizeof(double), dOut); }
-	bool                     Read(string &strOut);
+	bool                     Read(CString &strOut);
 	bool                     Read(CVector3 &vecOut);
 	//bool                     Read(CControlState &out);
 

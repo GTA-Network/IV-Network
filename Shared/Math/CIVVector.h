@@ -1,6 +1,6 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
-// File: CMath.h
+// File: CIVVector.h
 // Project: Shared
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory

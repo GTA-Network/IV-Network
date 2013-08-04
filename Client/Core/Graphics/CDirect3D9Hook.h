@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CDirect3D9Hook.h
 // Project: Client.Core
@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-class CDirect3D9Hook
-{
+class CDirect3D9Hook {
 private:
 	typedef					IDirect3D9 * (WINAPI * Direct3DCreate9_t)(UINT);
 	bool					m_bHookInstalled;

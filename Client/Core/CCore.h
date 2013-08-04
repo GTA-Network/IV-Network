@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CCore.h
 // Project: Client.Core
@@ -16,12 +16,12 @@
 #include <CLogFile.h>
 #include <CSettings.h>
 #include <SharedUtility.h>
-#include <Patcher\CPatcher.h>
+#include <Patcher/CPatcher.h>
 
-#include <Game\eGame.h>
-#include <IV\CIVScriptHook.h>
+#include <Game/eGame.h>
+#include <IV/CIVScriptHook.h>
 
-#include <Hooks\CXLive.h>
+#include <Hooks/CXLive.h>
 
 #include "Game/CGame.h"
 #include "Graphics/CGraphics.h"
@@ -29,21 +29,25 @@
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include "Graphics/CFPSCounter.h"
 
 #include "Network/CLocalPlayer.h"
+#include "Game/Entity/CPlayerEntity.h"
+#include "Game/Entity/CNetworkEntity.h"
 
 
 class CCore {
-
 private:
 
 	bool							m_bInitialised;
 	bool							m_bGameLoaded;
-	unsigned int					m_uiBaseAddress;
+	unsigned						m_uiBaseAddress;
+	unsigned						m_uiLocalPlayerIndex;
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
 	CChat							* m_pChat;
+	CFPSCounter						* m_pFPSCounter;
 
 	eGAMEStates						m_eGameState;
 public:
@@ -67,15 +71,19 @@ public:
 	void							OnDevicePreRender();
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
 
-	unsigned int					GetBase() { return m_uiBaseAddress; }
-	unsigned int					GetBaseAddress() { return m_uiBaseAddress; }
+	unsigned						GetBase() { return m_uiBaseAddress; }
+	unsigned						GetBaseAddress() { return m_uiBaseAddress; }
 
 	CGame							* GetGame() { return m_pGame; }
 	CGraphics						* GetGraphics() { return m_pGraphics; }
 	CChat							* GetChat() { return m_pChat; }
+	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
+
+	void							SetLocalPlayerIndex(unsigned iIndex) { m_uiLocalPlayerIndex = iIndex; }
+	unsigned						GetLocalPlayerIndex() { return m_uiLocalPlayerIndex; }
 };
 
 #endif // CCore_h

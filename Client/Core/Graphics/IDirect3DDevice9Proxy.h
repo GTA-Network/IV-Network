@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: IDirect3DDevice9Proxy.h
 // Project: Client.Core
@@ -12,8 +12,7 @@
 
 #include "StdDXInc.h"
 
-interface IDirect3DDevice9Proxy : public IDirect3DDevice9
-{
+interface IDirect3DDevice9Proxy : public IDirect3DDevice9 {
 private:
 	IDirect3DDevice9 *m_pDevice;
 public:

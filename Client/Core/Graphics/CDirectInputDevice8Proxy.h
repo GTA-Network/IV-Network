@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CDirectInputDevice8Proxy.h
 // Project: Client.Core
@@ -22,8 +22,7 @@ enum eDIDeviceType
 	DIDEVICE_TYPE_JOYSTICK
 };
 
-class CDirectInputDevice8Proxy : public IDirectInputDevice8
-{
+class CDirectInputDevice8Proxy : public IDirectInputDevice8 {
 private:
 	IDirectInputDevice8A *		m_pDevice;
 	eDIDeviceType				m_DeviceType;

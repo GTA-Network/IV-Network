@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CLocalPlayer.cpp
 // Project: Client.Core
@@ -10,30 +10,26 @@
 #ifndef CLocalPlayer_h
 #define CLocalPlayer_h
 
-#include <winsock2.h>
-#include <windows.h>
+#include <Common.h>
 
-#include <Game\Entity\CPlayerEntity.h>
+#include "Game/Entity/CPlayerEntity.h"
+#include "Game/Entity/CNetworkEntity.h"
 
-#include <Patcher\CPatcher.h>
-#include <Game\COffsets.h>
-#include <Math\CMaths.h>
-
-class CLocalPlayer : public CPlayerEntity
-{
+class CLocalPlayer : public CPlayerEntity {
 private:
         bool                            m_bIsDead;
         CVector3                        m_vecSpawnPosition;
         float                           m_fSpawnAngle;
         bool                            m_bToggleControl;
         unsigned long					m_ulLastPureSyncTime;
-        unsigned int					m_uiLastInterior;
+        unsigned 						m_uiLastInterior;
         bool                            m_bDisableVehicleInfo;
         bool                            m_bFirstSpawn;
         bool                            m_bSpawnMarked;
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
+		unsigned						m_uiPlayerIndex;
 
 public:
 						CLocalPlayer();
@@ -44,7 +40,7 @@ public:
 		bool			IsDead();
         void			DoDeathCheck();
         void			Pulse();
-        void			SetSpawnLocation(CVector3 vecPosition, float fHeading);
+        virtual void	SetSpawnLocation(CVector3 vecPosition, float fHeading);
         void			SetPlayerControlAdvanced(bool bControl, bool bCamera);
         void			SendOnFootSync();
         void			SendInVehicleSync();
@@ -61,7 +57,10 @@ public:
         void            SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
         bool            IsRadarVisible() { return m_bRadarVisible; }
 
-        void            Reset();
+		void			SetPlayerIndex(unsigned iIndex) { m_uiPlayerIndex = iIndex; }
+		unsigned		GetPlayerIndex() { return m_uiPlayerIndex; }
+
+        virtual void    Reset();
 };
 
 #endif // CLocalPlayer_h

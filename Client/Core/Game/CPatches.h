@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CPatches.h
 // Project: Client.Core
@@ -11,8 +11,6 @@
 #define CPatches_h
 
 class CPatches {
-private:
-
 public:
 					CPatches() { };
 					~CPatches() { };

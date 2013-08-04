@@ -1,15 +1,16 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
 // File: CPatcher.h
-// Project: Shared
-// Author(s): jenksta
+// Project: Client.Core
+// Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==============================================================================
+//==========================================================================================
 
-#pragma once
+#ifndef CPatcher_h
+#define CPatcher_h
 
-#include "../Common.h"
+#include <Common.h>
 
 #define X86_NOP 0x90
 #define X86_RETN 0xC3
@@ -23,8 +24,7 @@ struct ProtectionInfo
 	int   iSize;
 };
 
-class CPatcher
-{
+class CPatcher {
 public:
 	static ProtectionInfo Unprotect(DWORD dwAddress, int iSize);
 	static void           Reprotect(ProtectionInfo protectionInfo);
@@ -44,3 +44,5 @@ public:
 	static void           UninstallDetourPatch(void * pTrampoline, DWORD dwFunctionAddress);
 	static void			  InstallPushPatch(DWORD dwAddress, DWORD dwFunc);
 };
+
+#endif // CPatcher_h

@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CEntityManager.h
 // Project: Client.Core
-// Author: xForce
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -13,8 +13,7 @@
 #include <Common.h>
 
 template<class T, EntityId max>
-class CEntityManager
-{
+class CEntityManager {
 private:
 	T* m_pEntities[max];
 

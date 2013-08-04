@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CIVScriptHook.cpp
 // Project: Client.Core
@@ -45,7 +45,7 @@ void CRageThread_Script_Process()
 		pThreads->Count = 0;
 
 		// Create Local-Player
-		unsigned uiPlayerIndex = NULL;
+		unsigned uiPlayerIndex;
 		DWORD dwCreatePlayer = (g_pCore->GetBase() + 0xB90990);
 		CVector3 * pBasePos = new CVector3(0.f, 0.f, 0.f);
 
@@ -57,6 +57,7 @@ void CRageThread_Script_Process()
 		_asm mov uiPlayerIndex, eax;*/
 		CIVScript::CreatePlayer(0, 0.0f, 0.0f, 0.0f, &uiPlayerIndex);
 
+		g_pCore->SetLocalPlayerIndex(uiPlayerIndex);
 		g_pCore->SetClientState(GAME_STATE_INGAME);
 	}
 	else

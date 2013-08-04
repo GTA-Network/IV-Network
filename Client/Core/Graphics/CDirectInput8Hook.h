@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CDirectInput8Hook.h
 // Project: Client.Core
@@ -14,8 +14,7 @@
 
 typedef HRESULT	( WINAPI * DirectInput8Create_t )( HINSTANCE, DWORD, REFIID, LPVOID *, LPUNKNOWN );
 
-class CDirectInput8Hook
-{
+class CDirectInput8Hook {
 
 private:
 

@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CGame.h
 // Project: Client.Core
@@ -10,12 +10,17 @@
 #ifndef CGame_h
 #define CGame_h
 
+#include <Common.h>
 #include "CGameFuncs.h"
-#include <Network\CLocalPlayer.h>
+
+#include "Network/CLocalPlayer.h"
+#include "Game/Entity/CPlayerEntity.h"
+#include "Game/Entity/CNetworkEntity.h"
+class CLocalPlayer;
 
 class CGame {
 private:
-	CLocalPlayer			*m_pLocalPlayer;
+	static CLocalPlayer			*m_pLocalPlayer;
 
 public:
 							CGame() { };

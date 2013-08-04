@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CGame.cpp
 // Project: Client.Core
@@ -7,12 +7,11 @@
 //
 //==========================================================================================
 
-#include	<CCore.h>
 #include	"CGame.h"
-#include	<Network\CLocalPlayer.h>
-#include	<Patcher\CPatcher.h>
-#include	<Windows.h>
+#include	<CCore.h>
+
 extern	CCore				* g_pCore;
+//extern CLocalPlayer			* g_pLocalPlayer;
 
 /*
 	==== Why WaitForGameStartup ====
@@ -20,8 +19,7 @@ extern	CCore				* g_pCore;
 	So GTA IV loads all resources and when our player connects to a server, we have check if the game(resources are) is ready.
 	If the Wrapperlist is ready, we can spawn the localplayer
 */
-
-
+CLocalPlayer*   CGame::m_pLocalPlayer = 0;
 DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 {
 	return 1;
@@ -29,18 +27,25 @@ DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 
 void CGame::Setup()
 {
-	CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0 ); // Remove Thread?
+	//CreateThread( 0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0 ); // Remove Thread?
+
+	g_pCore->SetClientState(GAME_STATE_LOADING);
+
+	if(!m_pLocalPlayer)
+		m_pLocalPlayer = new CLocalPlayer();
+
+	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
+	m_pLocalPlayer->Reset();
+	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 }
 
 void CGame::Initialise()
 {
-	g_pCore->SetClientState(GAME_STATE_NONE);
+	g_pCore->SetClientState(GAME_STATE_INGAME);
 
-	/*if(!m_pLocalPlayer)
-		m_pLocalPlayer = new CLocalPlayer();
-
+	m_pLocalPlayer->SetPlayerIndex(g_pCore->GetLocalPlayerIndex()); // Got from CIVScriptHook
 	m_pLocalPlayer->SetPlayerId(INVALID_ENTITY_ID);
-	m_pLocalPlayer->Reset();*/
+	m_pLocalPlayer->Respawn();
 }
 
 void CGame::UnprotectMemory()

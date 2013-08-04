@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CThread.h
 // Project: Shared
@@ -6,14 +6,15 @@
 // License: See LICENSE in root directory
 //
 //==========================================================================================
+
 #ifndef CThread_h
 #define CThread_h
 
+#include "CMutex.h"
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <windows.h>
 #endif
-#include "CMutex.h"
 
 class CThread
 {

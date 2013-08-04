@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: IVCommon.h
 // Project: Client.Core
@@ -11,10 +11,6 @@
 #define IVCommon_h
 
 #include <Common.h>
-
-#ifndef PAD
-#define PAD(prefix, name, size) BYTE prefix##_##name##[size]
-#endif // PAD
 
 template <typename T>
 struct CSimpleCollection

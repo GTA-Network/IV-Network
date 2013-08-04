@@ -206,6 +206,9 @@
     <ClCompile Include="Graphics\CChat.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\CFPSCounter.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -341,6 +344,9 @@
       <Filter>Header Files\Graphics\DirectX</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\CChat.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CFPSCounter.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

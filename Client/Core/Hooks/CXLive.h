@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CXLive.h
 // Project: Client.Core
@@ -151,8 +151,7 @@ DWORD WINAPI xlive_5367(HANDLE, DWORD, DWORD, BYTE *, DWORD);
 DWORD WINAPI xlive_5372(HANDLE, DWORD, DWORD, DWORD, BYTE *, HANDLE);
 
 // Hook Class
-class CXLiveHook
-{
+class CXLiveHook {
 public:
 	static void Install();
 };

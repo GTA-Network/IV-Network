@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: Common.h
 // Project: (Shared)
@@ -19,11 +19,31 @@
 #endif
 
 // include
+#include "CColor.h"
 #include "CString.h"
 
 // typedef
 typedef CString string;							// CString class defined is in /Shared/CString.h
 typedef unsigned short EntityId;
+
+#ifdef _CLIENT
+using namespace std; // Conflicts with string(std::string) in network stuff
+#include	<aclapi.h>
+#include	<algorithm>
+#include	<assert.h>
+#include	<ctime>
+#include	<d3d9.h>
+#include	<list>
+#include	<map>
+#include	<queue>
+#include	<process.h>
+#include	<Psapi.h>
+#include	<stdio.h>
+#include	<stdio.h>
+#include	<string>
+#include	<tchar.h>
+#include	<vector>
+#endif
 
 // If compiling in debug mode force mod debug mode
 #ifdef _DEBUG
@@ -111,16 +131,35 @@ typedef unsigned short EntityId;
 #pragma warning(disable:4996) // Disables _s warning
 #pragma warning(disable:4409) // Disable illegal instruction warming(asm)
 #pragma warning(disable:4042) // Disable LNK 4042 extra objects
+#pragma warning(disable:4099) // Disable PDB not found warnings
+#pragma warning(disable:4244) // Disable converstion error warnings
 
 // Macros
-#define		ARRAY_LENGTH(array)			(sizeof(array) / sizeof(array[0]))
-#define		SAFE_DELETE(memory)			if(memory) { delete memory; memory = NULL; }
-#define		SAFE_RELEASE(p)				{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
-#define		PAD(prefix, name, size)		BYTE prefix##_##name##[size]
+#define ARRAY_LENGTH(array)	(sizeof(array) / sizeof(array[0]))
+#define	SAFE_DELETE(memory)	if(memory) { delete memory; memory = NULL; }
+#define	SAFE_RELEASE(p)	{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
+#define	PAD(prefix, name, size) BYTE prefix##_##name##[size]
 
 // Bit manipulation macros
 #define SET_BIT(a, b) a |= b
 #define IS_BIT_SET(a, b) ((a & b) != 0)
 #define UNSET_BIT(a, b) a &= ~(b)
+
+// Chat definitions
+#define	NUM_FONTS 2
+
+#define	CHAT_TEXT_COLOR CColor(255, 255, 255, 255)
+#define	CHAT_WIDTH 480
+#define	CHAT_MAX_CHAT_LENGTH 96
+#define	CHAT_BUFFER	1024
+
+#define	CHAT_LINE_SPACING 3
+#define	CHAT_RENDER_LINES 20
+#define	CHAT_MAX_LINES CHAT_RENDER_LINES // for now cause we don't have any chat pages
+
+#define	CHAT_COMMAND_CHAR '/'
+#define	CHAT_MAX_HISTORY 12
+
+#define DEVELOPMENT_SPAWN_POSITION CVector3(-614.779968f, -762.146912f, 46.311127f)
 
 #endif // Common_h

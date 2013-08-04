@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: COffsets.cpp
 // Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>, xForce
+// Author: FRi<FRi.developing@gmail.com>, xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
@@ -34,8 +34,7 @@ enum eGameVersion
 // Sets a offset
 #define SET_OFF(x, y) x = (uiBase + y);
 
-class COffsets
-{
+class COffsets {
 private:
 	static eGameVersion m_GameVersion;
 
@@ -271,6 +270,7 @@ public:
 	DEF_OFF(FUNC_IVGAME_TOGGLELAZLOW_2);
 	DEF_OFF(FUNC_IVGAME_INITCUTSCENE);
 	DEF_OFF(FUNC_IVGAME_STOPCUTSCENE);
+	DEF_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
 };
 
 #endif

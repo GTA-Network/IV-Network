@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: COffsets.cpp
 // Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>, XForce
+// Author: FRi<FRi.developing@gmail.com>, xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
@@ -240,6 +240,7 @@ INIT_OFF(FUNC_IVGAME_TOGGLELAZLOW_1);
 INIT_OFF(FUNC_IVGAME_TOGGLELAZLOW_2);
 INIT_OFF(FUNC_IVGAME_INITCUTSCENE);
 INIT_OFF(FUNC_IVGAME_STOPCUTSCENE);
+INIT_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
 
 enum ePATCH_SIG
 {
@@ -494,6 +495,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_IVGAME_TOGGLELAZLOW_2,0x166805C);
 			SET_OFF(FUNC_IVGAME_INITCUTSCENE,0x866980);
 			SET_OFF(FUNC_IVGAME_STOPCUTSCENE,0x865E10);
+			SET_OFF(FUNC_IVGAME_LOADWORLDATPOSITION,0xB2BBA0);
 
 			break;
 		default:

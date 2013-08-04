@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CGameFuncs.h
 // Project: Client.Core
@@ -14,8 +14,7 @@
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
 
-class CGameFunction
-{
+class CGameFunction {
 public:
 
 	static bool				IsMenuActive();
@@ -54,6 +53,7 @@ public:
     static void				InitCutscene(char * szCutsceneName, bool bUnknown1 = false, bool bUnknown2 = false);
 	static void				StopCutscene(char * szCutsceneName);
 	static DWORD            GetNativeAddress(DWORD dwNative);
+	static void				LoadWorldAtPosition(CVector3& vecPosition);
 };
 
 #endif // CGameFuncs_h
