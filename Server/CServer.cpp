@@ -1,8 +1,8 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CServer.cpp
 // Project: Client.Core
-// Author: xForce
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -53,13 +53,83 @@ bool CServer::Startup(string& outStrError)
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 
 	CLogFile::Print("====================================================================");
+	
 
 	if(!m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress")))
 	{
 		outStrError = "Failed to start network port.";
 		return false;
 	}
+	
+	// Load modules
+	auto modules = CVAR_GET_LIST("module");
+	if(modules.size() > 0)
+	{
+		CLogFile::Print("");
+		CLogFile::Print("========================== Loading Modules =========================");
 
+		for(auto strModule : modules)
+		{
+			CLogFile::Printf("Loading module %s.", strModule.Get());
+			if(!strModule.ToLower().EndsWith(".so") && !strModule.ToLower().EndsWith(".dll"))
+			{
+				// If no extension specified in module name string, load SO for linux and DLL for Win
+#ifdef _WIN32
+				strModule.Append(".dll");
+#else
+				strModule.Append(".so");
+#endif		
+			}
+			//CModule * pModule = g_pModuleManager->LoadModule(strModule);
+
+			//if(!pModule)
+				CLogFile::Printf("Warning: Failed to load module %s.", strModule.Get());
+		}
+
+		CLogFile::Print("");
+	}
+
+
+
+	// Loading resources
+	CLogFile::Print("");
+	CLogFile::Print("========================= Loading Resources ========================");
+	
+	auto scripts = CVAR_GET_LIST("script");
+
+	int iResourcesLoaded = 0;
+	int iFailedResources = 0;
+
+	for(auto strScript : scripts)
+	{
+		CString strPath(SharedUtility::GetAbsolutePath("scripts/%s", strScript.Get()));
+
+		//if(!g_pScriptingManager->Load(strScript, strPath))
+		{
+			CLogFile::Printf("Warning: Failed to load script %s.", strScript.Get());
+			iFailedResources++;
+		}
+		/*else
+			iResourcesLoaded++;*/
+	}
+
+	auto clientresources = CVAR_GET_LIST("clientresource");
+	for(auto strClientResource : clientresources)
+	{	
+		//if(!g_pClientResourceFileManager->Start(strClientResource))
+		{
+			CLogFile::Printf("Warning: Failed to load client resource %s.", strClientResource.Get());
+			iFailedResources++;
+		}
+		/*else
+			iResourcesLoaded++;*/
+	}
+
+	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
+
+	CLogFile::Print("");
+	CLogFile::Print("====================================================================");
+	CLogFile::Print("");
 	return true;
 }
 
