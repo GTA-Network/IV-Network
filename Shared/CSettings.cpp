@@ -18,7 +18,6 @@ TiXmlDocument                     CSettings::m_XMLDocument;
 
 void CSettings::LoadDefaults()
 {
-	AddString("logfile", "Server.log");
 	AddInteger("queryport", 10000, 1024, 65534);
 	AddInteger("port", 9999, 1024, 65535);
 	AddInteger("httpport", 9998, 80, 65535);
@@ -79,9 +78,6 @@ bool CSettings::Open(CString strPath, bool bCreate, bool bSave)
 
 	// Load the default settings
 	LoadDefaults();
-
-	// Open the log file
-	CLogFile::Open(GetString("logfile"));
 
 	// Does the settings file not exist?
 	bool bExists = true;

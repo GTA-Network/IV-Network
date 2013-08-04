@@ -29,10 +29,9 @@ bool CServer::Startup()
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
+		Sleep(3000);
 		return false;
 	}
-
-	m_pScriptingManager = new CSquirrelScriptingManager();
 
 	CLogFile::Print("");
 	CLogFile::Print("====================================================================");
@@ -53,7 +52,6 @@ bool CServer::Startup()
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 
 	CLogFile::Print("====================================================================");
-	
 
 	if(!m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress")))
 	{
@@ -89,28 +87,29 @@ bool CServer::Startup()
 		CLogFile::Print("");
 	}
 
-
+	m_pResourceManager = new CResourceManager("resourcers/");
 
 	// Loading resources
 	CLogFile::Print("");
 	CLogFile::Print("========================= Loading Resources ========================");
 	
-	auto scripts = CVAR_GET_LIST("script");
+	auto resources = CVAR_GET_LIST("resource");
 
 	int iResourcesLoaded = 0;
 	int iFailedResources = 0;
 
-	for(auto strScript : scripts)
+	for(auto strResource : resources)
 	{
-		CString strPath(SharedUtility::GetAbsolutePath("scripts/%s", strScript.Get()));
-
-		if(!m_pScriptingManager->LoadScript(strScript, strPath))
+		if(!strResource.IsEmpty())
 		{
-			CLogFile::Printf("Warning: Failed to load script %s.", strScript.Get());
-			iFailedResources++;
+			if(!m_pResourceManager->Load(strResource))
+			{
+				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+				iFailedResources++;
+			}
+			else
+				iResourcesLoaded++;
 		}
-		else
-			iResourcesLoaded++;
 	}
 
 	auto clientresources = CVAR_GET_LIST("clientresource");

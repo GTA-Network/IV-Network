@@ -34,6 +34,15 @@
     <Filter Include="Libraries\Squirrel">
       <UniqueIdentifier>{ac71d78d-41aa-4f52-ae48-ddf989fb58d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shared">
+      <UniqueIdentifier>{c9e3186c-5f40-4e37-84cc-feff00fcadc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting">
+      <UniqueIdentifier>{1670928c-85d5-4798-be1b-fc633f1c209c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting">
+      <UniqueIdentifier>{54ae9526-7f9c-4272-9a7a-f3e23dacddf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -77,18 +86,6 @@
     </ClCompile>
     <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp">
       <Filter>Libraries\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\CScriptingManager.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\CSquirrelScriptingManager.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\CSquirrelScript.cpp">
-      <Filter>Source Files\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="Scripting\CScript.cpp">
-      <Filter>Source Files\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp">
       <Filter>Libraries\Squirrel</Filter>
@@ -150,11 +147,20 @@
     <ClCompile Include="..\Libraries\Squirrel\sqvm.cpp">
       <Filter>Libraries\Squirrel</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\CSquirrelScriptArgument.cpp">
-      <Filter>Source Files\Scripting</Filter>
+    <ClCompile Include="..\Shared\CXML.cpp">
+      <Filter>Source Files\Shared</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\CScriptArgument.cpp">
-      <Filter>Source Files\Scripting</Filter>
+    <ClCompile Include="..\Shared\Scripting\CResource.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSquirrel.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,29 +170,20 @@
     <ClInclude Include="CInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CScriptingManager.h">
-      <Filter>Header Files\Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="Scripting\CScript.h">
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CSquirrelScript.h">
-      <Filter>Header Files\Scripting</Filter>
+    <ClInclude Include="Shared\Scripting\CResource.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CSquirrelScriptingManager.h">
-      <Filter>Header Files\Scripting</Filter>
+    <ClInclude Include="Shared\Scripting\CSquirrel.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CScriptArguments.h">
-      <Filter>Header Files\Scripting</Filter>
+    <ClInclude Include="Shared\Scripting\CResourceManager.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CSquirrelScriptArguments.h">
-      <Filter>Header Files\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\CScriptArgument.h">
-      <Filter>Header Files\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Scripting\CSquirrelScriptArgument.h">
-      <Filter>Header Files\Scripting</Filter>
+    <ClInclude Include="Shared\Scripting\CSquirrelArgument.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
