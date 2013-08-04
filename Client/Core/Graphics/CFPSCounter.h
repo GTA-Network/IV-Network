@@ -12,13 +12,11 @@
 
 class CFPSCounter{
 private:
-
 	unsigned long		m_ulLastTime;
 	unsigned int		m_uiCurrentFrames;
 	unsigned int		m_uiFramesPerSecond;
 
 public:
-
 	CFPSCounter( void );
 	~CFPSCounter( void );
 

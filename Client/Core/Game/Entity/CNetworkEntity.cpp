@@ -8,6 +8,7 @@
 //==============================================================================
 
 #include "CNetworkEntity.h"
+#include <Network/CBitStream.h>
 
 CNetworkEntity::CNetworkEntity()
 	: m_vecPosition(CVector3()),
@@ -79,12 +80,16 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
-void CNetworkEntity::Serialize(CBitStream * bitStream, ePackageType pType)
+void CNetworkEntity::Serialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
+	CBitStream * pBitStream = new CBitStream();
+	pBitStream->Write0();
 }
 
-void CNetworkEntity::Deserialize(CBitStream * bitStream, ePackageType pType)
+void CNetworkEntity::Deserialize(ePackageType pType)
 {
 	// Get Sync package here and recieve it to the server
+	CBitStream * pBitStream = new CBitStream();
+	pBitStream->Write0();
 }

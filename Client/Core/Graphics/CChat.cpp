@@ -346,6 +346,16 @@ void CChat::ProcessInput()
 
 				return;
 			}
+			else if(strCommand == "cv")
+			{
+				int iVehicleType = atoi(strParams.c_str());
+
+				CVector3 vecCreatePos; 
+				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
+				CVehicleEntity * pVehicle = new CVehicleEntity(g_pCore->GetGame()->GetCharacterManager()->VehicleIdToModelHash(iVehicleType),vecCreatePos,0.0f,0,0,0,0);
+				pVehicle->Create();
+
+			}
 			else if(strCommand == "chat-renderlines")
 			{
 				if(strParams.size() <= 0)

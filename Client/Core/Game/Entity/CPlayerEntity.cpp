@@ -433,7 +433,7 @@ void CPlayerEntity::Teleport(CVector3 vecPosition)
 	CNetworkEntity::SetPosition(vecPosition);
 }
 
-void CPlayerEntity::SetColor(unsigned int uiColor)
+void CPlayerEntity::SetColor(unsigned uiColor)
 {
 	// Save the colour
 	m_uiColor = uiColor;
@@ -450,9 +450,10 @@ void CPlayerEntity::SetColor(unsigned int uiColor)
 	{
 		// Set the player colour
 		m_pPlayerInfo->SetColour(uiColor);
+	}
 }
 
-unsigned int CPlayerEntity::GetScriptingHandle()
+unsigned CPlayerEntity::GetScriptingHandle()
 {
 	return g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf(m_pPlayerPed->GetPed());
 }
@@ -674,33 +675,6 @@ bool CPlayerEntity::IsAnyWeaponUser()
 	bool bReturn = false;
 
 	return bReturn;
-}
-
-void CPlayerEntity::SendOnFootData()
-{
-	// Construct a new bitstream
-	CBitStream bitStream;
-		
-	// Serialize the player with the bitstream
-	Serialize(&bitStream);
-}
-
-void CPlayerEntity::SendInVehicleData()
-{
-	// Construct a new bitstream
-	CBitStream bitStream;
-		
-	// Serialize the vehicle with the bitstream
-	m_pVehicle->Serialize(&bitStream);
-}
-
-void CPlayerEntity::SendPassengerData()
-{
-	// Construct a new bitstream
-	CBitStream bitStream;
-
-	// Write the vehicle id
-	bitStream.Write(m_pVehicle->GetId());
 }
 
 void CPlayerEntity::EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)

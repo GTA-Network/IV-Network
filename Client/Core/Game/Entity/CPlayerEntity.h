@@ -65,9 +65,9 @@ public:
 	CPlayerEntity( bool bLocalPlayer = false );
 	~CPlayerEntity();
 
-	virtual bool		IsLocalPlayer() { return m_bLocalPlayer; }
-	virtual bool		IsNetworked() { return m_bNetworked; }
-	virtual bool		IsSpawned() { return m_bSpawned; }
+	bool				IsLocalPlayer() { return m_bLocalPlayer; }
+	bool				IsNetworked() { return m_bNetworked; }
+	bool				IsSpawned() { return m_bSpawned; }
 
 	bool				IsAnyWeaponUser();
 
@@ -87,34 +87,34 @@ public:
 	void				SetPing(unsigned short usPing) { m_usPing = usPing; }
 	unsigned short		GetPing();
 
-	virtual void		SetPosition(CVector3 vecPosition);
-	virtual bool		GetPosition(CVector3 *vecPosition);
-	virtual void		Teleport( CVector3 vecPosition );
+	void				SetPosition(CVector3 vecPosition);
+	bool				GetPosition(CVector3 *vecPosition);
+	void				Teleport( CVector3 vecPosition );
 
-	virtual void		SetNick( CString strNick ) { m_strNick = strNick; }
-	virtual CString		GetNick( ) { return m_strNick; }
+	void				SetNick( CString strNick ) { m_strNick = strNick; }
+	CString				GetNick( ) { return m_strNick; }
 
-	virtual void		SetColor( unsigned int uiColor );
-	virtual unsigned	GetColor() { return m_uiColor; }
+	void				SetColor( unsigned uiColor );
+	unsigned			GetColor() { return m_uiColor; }
 
-	virtual unsigned	GetScriptingHandle( );
+	unsigned			GetScriptingHandle( );
 
-	virtual void		SetHealth( float fHealth );
-	virtual float		GetHealth();
+	void				SetHealth( float fHealth );
+	float				GetHealth();
 
-	virtual void		SetModel( int iModelId );
+	void				SetModel( int iModelId );
 
-	virtual void		SetRotation( float fAngle );
-	virtual float		GetRotation();
+	void				SetRotation( float fAngle );
+	float				GetRotation();
 
 	void				Process();
 
 	bool				Create();
 	bool				Destroy();
 
-	virtual void		SetControlState( CControls * pControlState );
-	virtual void		GetControlState( CControls * pControlState );
-	virtual void		GetLastControlState( CControls * pControlState );
+	void				SetControlState( CControls * pControlState );
+	void				GetControlState( CControls * pControlState );
+	void				GetLastControlState( CControls * pControlState );
 
 	CIVPlayerPed		* GetPlayerPed() { return m_pPlayerPed; }
 	CIVPlayerInfo		* GetPlayerInfo() { return m_pPlayerInfo; }

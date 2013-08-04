@@ -36,6 +36,7 @@
 #include "CPools.h"
 #include "CCamera.h"
 #include "CGameFuncs.h"
+#include "CCharacterManager.h"
 
 typedef CEntityManager<CPlayerEntity, MAX_PLAYERS> CPlayerManager;
 typedef CEntityManager<CVehicleEntity, MAX_VEHICLES> CVehicleManager;
@@ -67,6 +68,7 @@ private:
 	static C3DLabelManager				*m_p3DLabelManager;
 	static CBlipManager					*m_pBlipManager;
 	static CCheckpointManager			*m_pCheckpointManager;
+	static CCharacterManager			*m_pCharacterManager;
 
 public:
 										CGame() { };
@@ -95,6 +97,7 @@ public:
 	C3DLabelManager						*Get3DLabelManager() { return m_p3DLabelManager; }
 	CBlipManager						*GetBlipManager() { return m_pBlipManager; }
 	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
+	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
 };
 
 #endif // CGame_h

@@ -30,6 +30,7 @@ CPickupManager				*CGame::m_pPickupManager = 0;
 C3DLabelManager				*CGame::m_p3DLabelManager = 0;
 CBlipManager				*CGame::m_pBlipManager = 0;
 CCheckpointManager			*CGame::m_pCheckpointManager = 0;
+CCharacterManager			*CGame::m_pCharacterManager = 0;
 
 /*
 	==== Why WaitForGameStartup ====
@@ -44,17 +45,12 @@ DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 
 void CGame::Setup()
 {
-	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Remove Thread?
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Destroy Thread?(after he has finished)
 
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
-
-	// Add our local player into the playermanager
-	/*EntityId findId = m_pPlayerManager->FindFreeSlot();
-	if(findId != INVALID_ENTITY_ID)
-		m_pPlayerManager->Add(findId,NULL);*/
 	
 	//m_pLocalPlayer->SetPlayerId(findId);
 	m_pLocalPlayer->Reset();
@@ -64,10 +60,13 @@ void CGame::Setup()
 	m_pPad = new CIVPad((IVPad *)(g_pCore->GetBase() + 0x10FB818));
 
 	// Create task manager instance
-	m_pTaskManager = new CTaskManager();
+	m_pTaskManager = new CTaskManager;
+
+	// Create the character manager instance
+	m_pCharacterManager = new CCharacterManager;
 
 	// Create new pool instance
-	m_pPool = new CPools();
+	m_pPool = new CPools;
 }
 
 void CGame::Initialise()
@@ -88,39 +87,39 @@ void CGame::Initialise()
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pPlayerManager)
-		m_pPlayerManager = new CPlayerManager();
+		m_pPlayerManager = new CPlayerManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pVehicleManager)
-		m_pVehicleManager = new CVehicleManager();
+		m_pVehicleManager = new CVehicleManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pActorManager)
-		m_pActorManager = new CActorManager();
+		m_pActorManager = new CActorManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pObjectManager)
-		m_pObjectManager = new CObjectManager();
+		m_pObjectManager = new CObjectManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pFireManager)
-		m_pFireManager = new CFireManager();
+		m_pFireManager = new CFireManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pPickupManager)
-		m_pPickupManager = new CPickupManager();
+		m_pPickupManager = new CPickupManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_p3DLabelManager)
-		m_p3DLabelManager = new C3DLabelManager();
+		m_p3DLabelManager = new C3DLabelManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pBlipManager)
-		m_pBlipManager = new CBlipManager();
+		m_pBlipManager = new CBlipManager;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pCheckpointManager)
-		m_pCheckpointManager = new CCheckpointManager();
+		m_pCheckpointManager = new CCheckpointManager;
 
 	PrepareWorld();
 }

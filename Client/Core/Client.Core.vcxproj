@@ -132,6 +132,7 @@
     <ClCompile Include="Game\IVEngine\CIVWeather.cpp" />
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
+    <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CEntitiesManager.h" />
     <ClInclude Include="CPools.h" />
+    <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />

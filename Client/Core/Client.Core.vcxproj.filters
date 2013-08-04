@@ -308,6 +308,9 @@
     <ClCompile Include="CPools.cpp">
       <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CCharacterManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -534,6 +537,9 @@
     </ClInclude>
     <ClInclude Include="Network\CNetworkManager.h">
       <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CCharacterManager.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

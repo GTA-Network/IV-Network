@@ -17,24 +17,19 @@ struct ClientTaskPair
 	CIVTask * pClientTask;
 };
 
-class CTaskManager
-{
-
+class CTaskManager {
 private:
-
 	std::list< ClientTaskPair *> m_taskList;
 
 public:
-
-	CTaskManager( );
-	~CTaskManager( );
+						CTaskManager( );
+						~CTaskManager( );
 
 	bool				AddTask( CIVTask * pClientTask );
 	bool				RemoveTask( CIVTask * pClientTask );
 	IVTask				* GetGameTaskFromClientTask( CIVTask * pClientTask );
 	CIVTask				* GetClientTaskFromGameTask( IVTask * pGameTask, bool bCreateIfNotExist = true );
 	bool				HandleTaskDelete( IVTask * pGameTask );
-
 };
 
 #endif // CIVTaskManager_h
