@@ -53,6 +53,7 @@ public:
     static void				InitCutscene(char * szCutsceneName, bool bUnknown1 = false, bool bUnknown2 = false);
 	static void				StopCutscene(char * szCutsceneName);
 	static DWORD            GetNativeAddress(DWORD dwNative);
+	static void				LoadWorldAtPosition(CVector3& vecPosition);
 };
 
 #endif // CGameFuncs_h

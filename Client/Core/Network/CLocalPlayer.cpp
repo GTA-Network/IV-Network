@@ -8,8 +8,9 @@
 //==========================================================================================
 
 #include "CLocalPlayer.h"
+#include "Game/CGameFuncs.h"
 #include <CCore.h>
-#include <IV\CIVScript.h>
+#include <IV/CIVScript.h>
 //include "KeySync.h"
 
 extern CCore *	 g_pCore;
@@ -86,6 +87,10 @@ void CLocalPlayer::HandleSpawn()
     // Flag us as alive
     m_bIsDead = false;
 
+	// Preload world position
+	CVector3 vecSpawnPosition;
+	GetSpawnPosition(&vecSpawnPosition);
+	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);
 }
 
 void CLocalPlayer::DoDeathCheck()

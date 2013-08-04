@@ -344,3 +344,15 @@ DWORD CGameFunction::GetNativeAddress(DWORD dwNative)
 
     return -1;
 }
+
+void CGameFunction::LoadWorldAtPosition(CVector3& vecPosition)
+{
+	BYTE * pByteUnknown = &(*(BYTE *)(g_pCore->GetBase() + 0x11DC444));
+	CVector3 * pVecPosition = &vecPosition;
+	_asm
+	{
+		push pVecPosition
+		mov ecx, pByteUnknown
+		call COffsets::FUNC_IVGAME_LOADWORLDATPOSITION
+	}
+}
