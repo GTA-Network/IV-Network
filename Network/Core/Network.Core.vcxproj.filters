@@ -363,6 +363,9 @@
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp">
       <Filter>Shared\Network</Filter>
     </ClCompile>
+    <ClCompile Include="CNetworkClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RakNet\_FindFirst.h">
@@ -837,6 +840,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CRPCHandler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CNetworkClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

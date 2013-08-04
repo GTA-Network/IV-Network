@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
 //
 // File: CNetworkServer.cpp
 // Project: Network.Core
@@ -11,25 +11,26 @@
 
 #define INVALID_PACKET_ID 0xFF
 
+// Init
 CNetworkServer::CNetworkServer()
 {
 	m_pNetPeer = new RakNet::RakPeer();
 	m_pNetPeer->AttachPlugin(this);
 }
 
+// Cleanup
 CNetworkServer::~CNetworkServer()
 {
 	SAFE_DELETE(m_pNetPeer);
 }
 
 // Ensures peer is started with options. If start failed, returns false
-bool CNetworkServer::EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress)
+bool CNetworkServer::EnsureStarted()
 {
-	RakNet::SocketDescriptor socketDescriptor(usPort, strHostAddress.Get());
-	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, THREAD_PRIORITY_NORMAL);
+	RakNet::StartupResult res = m_pNetPeer->Startup(1, &RakNet::SocketDescriptor(), 1, THREAD_PRIORITY_NORMAL);
 
 	if(res == RakNet::RAKNET_STARTED)
-		m_pNetPeer->SetMaximumIncomingConnections(iMaxPlayers);
+		m_pNetPeer->SetMaximumIncomingConnections(1);
 
 	return res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED;
 }
@@ -200,12 +201,6 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	return NULL;
 }
 
-// Checks if player is connected fully (registered)
-bool CNetworkServer::IsPlayerConnected(EntityId playerId)
-{
-	return (GetPlayerSocket(playerId) != NULL);
-}
-
 // Add RakNet peer ban for specified ip for time period
 void CNetworkServer::BanIp(string strIpAddress, unsigned int uiTimeMilliseconds)
 {
@@ -218,18 +213,6 @@ void CNetworkServer::UnbanIp(string strIpAddress)
 	m_pNetPeer->RemoveFromBanList(strIpAddress);
 }
 
-// Gets the ping for specified playerid
-int CNetworkServer::GetPlayerLastPing(EntityId playerId)
-{
-	return m_pNetPeer->GetLastPing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
-}
-
-// Gets the average ping for specified player
-int CNetworkServer::GetPlayerAveragePing(EntityId playerId)
-{
-	return m_pNetPeer->GetAveragePing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
-}
-
 // Network server pulse
 void CNetworkServer::Process()
 {
@@ -238,26 +221,12 @@ void CNetworkServer::Process()
 	// Loop until we have processed all packets in the packet queue (if any)
 	while(pPacket = Receive())
 	{
-		// Do we have a packet handler?
-		if(false)//m_pfnPacketHandler)
-		{
-			// Pass it to the packet handler
-			//m_pfnPacketHandler(pPacket);
-		}
+		if(m_pRpcHandler)
+			m_pRpcHandler->HandlePacket(pPacket);
 
 		// Deallocate the packet memory used
 		DeallocatePacket(pPacket);
 	}
-}
-
-// Sends network packet
-unsigned int CNetworkServer::Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
-{
-	if(!pBitStream)
-		return 0;
-
-	return m_pNetPeer->Send((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed(), (PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel, 
-		(playerId == INVALID_ENTITY_ID) ? RakNet::UNASSIGNED_SYSTEM_ADDRESS : m_pNetPeer->GetSystemAddressFromIndex(playerId), bBroadcast);
 }
 
 // Sends RPC packet
@@ -269,11 +238,10 @@ unsigned int CNetworkServer::RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, 
 	CBitStream bitStream;
 	bitStream.Write((PacketId)PACKET_RPC);
 	bitStream.Write(rpcId);
+    bitStream.Write((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed());
 
-	if(pBitStream)
-		bitStream.Write((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed());
-
-	return m_pNetPeer->Send((char *)bitStream.GetData(), bitStream.GetNumberOfBytesUsed(), (PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel, 
+	return m_pNetPeer->Send((char *)bitStream.GetData(), bitStream.GetNumberOfBytesUsed(), 
+		(PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel,
 		(playerId == INVALID_ENTITY_ID) ? RakNet::UNASSIGNED_SYSTEM_ADDRESS : m_pNetPeer->GetSystemAddressFromIndex(playerId), bBroadcast);
 }
 

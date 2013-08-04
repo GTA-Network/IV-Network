@@ -138,6 +138,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define ARRAY_LENGTH(array)	(sizeof(array) / sizeof(array[0]))
 #define	SAFE_DELETE(memory)	if(memory) { delete memory; memory = NULL; }
 #define	SAFE_RELEASE(p)	{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
+#define SAFE_DELETE_ARRAY(memory) if(memory) { delete [] memory; memory = NULL; }
+#define SAFE_FREE(memory) if(memory) { free(memory); memory = NULL; }
 #define	PAD(prefix, name, size) BYTE prefix##_##name##[size]
 
 // Bit manipulation macros

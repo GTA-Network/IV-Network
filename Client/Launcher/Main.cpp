@@ -20,6 +20,9 @@ int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
+    UNREFERENCED_PARAMETER(hPrevInstance);
+    UNREFERENCED_PARAMETER(lpCmdLine);
+
 	// Get the GTA IV install directory from the registry
 	char szInstallDirectory[MAX_PATH];
 	bool bFoundCustomDirectory = false;
