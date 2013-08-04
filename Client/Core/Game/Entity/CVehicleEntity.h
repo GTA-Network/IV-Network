@@ -47,13 +47,17 @@ public:
 	unsigned int						GetScriptingHandle( ) { return m_uiVehicleHandle; }
 
 	virtual void						Respawn( );
+	virtual void						Process();
 
 	virtual void						SetSpawnPosition(CVector3 vecPos);
 
 	virtual void						SetPosition( CVector3 vecPosition );
 	virtual void						GetPosition( CVector3 * vecPosition );
 
+	virtual void						SetMoveSpeed(CVector3 vecPosition);
 	virtual void						GetMoveSpeed( CVector3 * vecMoveSpeed );
+
+	virtual void						SetTurnSpeed(CVector3 vecPosition);
 	virtual void						GetTurnSpeed( CVector3 * vecTurnSpeed );
 
 	virtual void						SetColors(BYTE color1, BYTE color2, BYTE color3, BYTE color4);

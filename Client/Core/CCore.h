@@ -35,6 +35,7 @@
 #include "Game/Entity/CPlayerEntity.h"
 #include "Game/Entity/CNetworkEntity.h"
 
+#include <Network/CNetworkManager.h>
 
 class CCore {
 private:
@@ -48,6 +49,7 @@ private:
 	CGraphics						* m_pGraphics;
 	CChat							* m_pChat;
 	CFPSCounter						* m_pFPSCounter;
+	CNetworkManager					* m_pNetworkManager;
 
 	eGAMEStates						m_eGameState;
 
@@ -66,8 +68,6 @@ public:
 	void							OnGameLoad();
 	void							OnGamePreLoad();
 
-	void							OnGameProcess();
-
 	void							SetGameLoaded(bool bLoaded) { m_bGameLoaded = bLoaded; }
 	bool							IsGameLoaded() { return m_bGameLoaded; }
 
@@ -84,6 +84,7 @@ public:
 	CGraphics						* GetGraphics() { return m_pGraphics; }
 	CChat							* GetChat() { return m_pChat; }
 	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
+	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

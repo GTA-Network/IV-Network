@@ -102,10 +102,10 @@
     <Filter Include="Source Files\Network\Shared">
       <UniqueIdentifier>{f0910143-47ff-47fb-8d51-a9bc2adfd8f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Entity\IV">
-      <UniqueIdentifier>{ed47c9ab-c746-4002-bb9e-6ab0c12aae6e}</UniqueIdentifier>
+    <Filter Include="Source Files\Game\IV">
+      <UniqueIdentifier>{d6de98b1-a0cc-4a14-8e60-4c14375ceb97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Entity\IV\Script">
+    <Filter Include="Source Files\Game\IV\Script">
       <UniqueIdentifier>{5ea8cd6f-b8df-4dcc-b043-c24e7d76e210}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -177,7 +177,7 @@
       <Filter>Source Files\Network</Filter>
     </ClCompile>
     <ClCompile Include="IV\CIVScriptHook.cpp">
-      <Filter>Source Files\Game\Entity\IV\Script</Filter>
+      <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
     <ClCompile Include="Hooks\CXLive.cpp">
       <Filter>Source Files\Hooks\XLive</Filter>
@@ -269,12 +269,6 @@
     <ClCompile Include="Game\CTaskManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="CPools.cpp">
-      <Filter>Source Files\Game\Entity\IV</Filter>
-    </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>Source Files\Game\Entity\IV</Filter>
-    </ClCompile>
     <ClCompile Include="CContextData.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -304,6 +298,15 @@
     </ClCompile>
     <ClCompile Include="Game\Entity\CCheckpointEntity.cpp">
       <Filter>Source Files\Game\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CNetworkManager.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
+    <ClCompile Include="CPools.cpp">
+      <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -528,6 +531,9 @@
     </ClInclude>
     <ClInclude Include="CEntitiesManager.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CNetworkManager.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

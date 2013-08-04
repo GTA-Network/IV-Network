@@ -47,6 +47,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #include	"Network\CBitStream.h"
 #endif
 
+#include "CNetSync.h"
+
 // If compiling in debug mode force mod debug mode
 #ifdef _DEBUG
 #undef IVMP_DEBUG

@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22A
 		Shared\CColor.h = Shared\CColor.h
 		Shared\CLogFile.cpp = Shared\CLogFile.cpp
 		Shared\CLogFile.h = Shared\CLogFile.h
+		Shared\CNetSync.h = Shared\CNetSync.h
 		Shared\Common.h = Shared\Common.h
 		Shared\CRC.h = Shared\CRC.h
 		Shared\CSettings.cpp = Shared\CSettings.cpp

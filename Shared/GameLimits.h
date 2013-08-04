@@ -35,7 +35,6 @@
 #define MAX_VEHICLE_PASSENGERS 8
 
 // Type used for entity ids
-// NOTE: MUST be unsigned!
 typedef unsigned short EntityId;
 
 // Type used for dimension ids

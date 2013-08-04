@@ -51,7 +51,12 @@ void CGame::Setup()
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 
-	m_pLocalPlayer->GetPlayerEntity()->SetId(INVALID_ENTITY_ID);
+	// Add our local player into the playermanager
+	/*EntityId findId = m_pPlayerManager->FindFreeSlot();
+	if(findId != INVALID_ENTITY_ID)
+		m_pPlayerManager->Add(findId,NULL);*/
+	
+	//m_pLocalPlayer->SetPlayerId(findId);
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 
@@ -71,8 +76,6 @@ void CGame::Initialise()
 	g_pCore->SetClientState(GAME_STATE_INGAME);
 
 	// Set basic localplayer attributes
-	m_pLocalPlayer->SetPlayerIndex(g_pCore->GetLocalPlayerIndex()); // Got from CIVScriptHook
-	m_pLocalPlayer->GetPlayerEntity()->SetId(INVALID_ENTITY_ID);
 	m_pLocalPlayer->Respawn();
 
 	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)
@@ -195,6 +198,8 @@ void CGame::RenderRAGEScripts()
 	// Do we need to reset the game?
 
 	// If our network manager exists process it
+	if(g_pCore->GetNetworkManager())
+		g_pCore->GetNetworkManager()->Process();
 
 	// If we have text to draw draw it
 	

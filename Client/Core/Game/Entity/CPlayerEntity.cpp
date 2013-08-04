@@ -139,6 +139,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 	memset(&m_lastControlState, 0, sizeof(CControls));
 	memset(&m_ControlState, 0, sizeof(CControls));
 	ResetVehicleEnterExit();
+	CNetworkEntity::SetType(PLAYER_ENTITY);
 
 	// Is this the localplayer?
 	if(IsLocalPlayer())
@@ -208,7 +209,7 @@ void CPlayerEntity::Process()
 				if(IsOnFoot())
 				{
 					// Send on foot sync data
-					SendOnFootData();
+					Serialize(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 				}
 				else
 				{
@@ -216,12 +217,12 @@ void CPlayerEntity::Process()
 					if(!IsPassenger())
 					{
 						// Send in vehicle data
-						SendInVehicleData();
+						Serialize(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 					}
 					else
 					{
 						// Send passenger data
-						SendPassengerData();
+						Serialize(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
 					}
 				}
 
@@ -404,30 +405,14 @@ bool CPlayerEntity::Destroy()
 	return true;
 }
 
-void CPlayerEntity::Serialize(CBitStream * bitStream)
-{
-	// Is the player on-foot?
-	if(IsOnFoot())
-	{
-		// GET CLIENT DATA
-	}
-}
-
-void CPlayerEntity::Deserialize(CBitStream * bitStream)
-{
-	// Is the player not spawned?
-	if(!IsSpawned())
-		return;
-
-	// SET DATA
-}
-
 void CPlayerEntity::SetPosition(CVector3 vecPosition)
 {
 	if(IsSpawned())
 		m_pPlayerPed->SetPosition(vecPosition);
 	else
 		m_vecPosition = vecPosition;
+
+	CNetworkEntity::SetPosition(vecPosition);
 }
 
 bool CPlayerEntity::GetPosition(CVector3 *vecPosition)
@@ -445,6 +430,7 @@ void CPlayerEntity::Teleport(CVector3 vecPosition)
 
 	// Set position for varible.
 	m_vecPosition = m_vecPosition;
+	CNetworkEntity::SetPosition(vecPosition);
 }
 
 void CPlayerEntity::SetColor(unsigned int uiColor)
@@ -464,7 +450,6 @@ void CPlayerEntity::SetColor(unsigned int uiColor)
 	{
 		// Set the player colour
 		m_pPlayerInfo->SetColour(uiColor);
-	}
 }
 
 unsigned int CPlayerEntity::GetScriptingHandle()

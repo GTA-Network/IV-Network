@@ -79,12 +79,12 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
-void CNetworkEntity::Serialize(CBitStream * bitStream)
+void CNetworkEntity::Serialize(CBitStream * bitStream, ePackageType pType)
 {
 	// Create Sync package here and send it to the server
 }
 
-void CNetworkEntity::Deserialize(CBitStream * bitStream)
+void CNetworkEntity::Deserialize(CBitStream * bitStream, ePackageType pType)
 {
-	// Create Sync package here and send it to the server
+	// Get Sync package here and recieve it to the server
 }

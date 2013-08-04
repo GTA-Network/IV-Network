@@ -29,6 +29,8 @@ CCore::CCore(void)
 	m_pGame = NULL;
 	m_pGraphics = NULL;
 	m_pChat = NULL;
+	m_pFPSCounter = NULL;
+	m_pNetworkManager = NULL;
 }
 
 CCore::~CCore()
@@ -64,6 +66,9 @@ bool CCore::Initialise()
 
 	// Create the fps counter instance
 	m_pFPSCounter = new CFPSCounter;
+
+	// Create the network manager instance
+	m_pNetworkManager = new CNetworkManager;
 
 	// Create the chat instance
 	m_pChat = new CChat(30, 30);
@@ -185,32 +190,4 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		m_pFPSCounter->Pulse();
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);
-}
-
-void CCore::OnGameProcess()
-{
-	// Is the network module instance valid?
-	if(true)
-	{
-		// Pulse the network
-	}
-
-	// Is the timer manager instance valid?
-	if(true)
-	{
-		// Pulse the timer manager
-	}
-
-	// Is the file transfer instance valid?
-	if(true)
-	{
-		// Pulse the file transfer
-	}
-
-
-	// Is the scripting manager active?
-	if(true)
-	{
-		// Call the script event
-	}
 }

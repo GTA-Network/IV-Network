@@ -51,7 +51,8 @@ void __declspec(naked) HandleLocalPlayerSpawn()
         }
 }
 
-CLocalPlayer::CLocalPlayer() : CPlayerEntity(),
+CLocalPlayer::CLocalPlayer() : 
+		CPlayerEntity(),
 		m_bIsDead(false),
         m_bToggleControl(true),
         m_fSpawnAngle(0),
@@ -63,12 +64,12 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(),
         m_bSpawnMarked(false),
         m_bRadarVisible(true)
 {
-		// Temporary spawn position for development
-		m_vecSpawnPosition = DEVELOPMENT_SPAWN_POSITION;
+	// Temporary spawn position for development
+	m_vecSpawnPosition = DEVELOPMENT_SPAWN_POSITION;
 
-        // Patch to override spawn position and let the game call HandleSpawn
-        CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
-        CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
+    // Patch to override spawn position and let the game call HandleSpawn
+    CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
+    CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
 }
 
 CLocalPlayer::~CLocalPlayer()

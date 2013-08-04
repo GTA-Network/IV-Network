@@ -114,6 +114,17 @@ public:
 		return (entityId < max && m_pEntities[entityId] != 0);
 	}
 
+	EntityId	FindFreeSlot()
+	{
+		for(EntityId i = 0; i < max; i++)
+		{
+			if(!DoesExists(i))
+				return i;
+		}
+
+		return INVALID_ENTITY_ID;
+	}
+
 	EntityId	GetCount()
 	{
 		EntityId count = 0;

@@ -22,6 +22,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_pVehicle = NULL;
 	m_vehicleId = INVALID_ENTITY_ID;
 	m_pDriver = NULL;
+	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
 	// Get the model hash from the model id
 	DWORD dwModelHash = CIVModelManager::VehicleIdToModelHash(iVehicleModel);
@@ -46,6 +47,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	// Mark as not spawned
 	m_bSpawned = false;
+
 }
 
 CVehicleEntity::~CVehicleEntity()
@@ -129,6 +131,8 @@ void CVehicleEntity::SetPosition(CVector3 vecPosition)
 	// Is the vehicle spawned?
 	if(IsSpawned())
 		CIVScript::SetCarCoordinates(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+
+	CNetworkEntity::SetPosition(vecPosition);
 }
 
 void CVehicleEntity::GetPosition(CVector3 * vecPosition)
@@ -138,11 +142,29 @@ void CVehicleEntity::GetPosition(CVector3 * vecPosition)
 		m_pVehicle->GetPosition(vecPosition);
 }
 
+void CVehicleEntity::SetMoveSpeed(CVector3 vecPosition)
+{
+	// Is the vehicle spawned?
+	if(IsSpawned())
+		m_pVehicle->SetMoveSpeed(vecPosition);
+
+	CNetworkEntity::SetMoveSpeed(vecPosition);
+}
+
 void CVehicleEntity::GetMoveSpeed(CVector3 * vecMoveSpeed)
 {
 	// Is the vehicle spawned?
 	if(IsSpawned())
 		m_pVehicle->GetMoveSpeed(vecMoveSpeed);
+}
+
+void CVehicleEntity::SetTurnSpeed(CVector3 vecTurnSpeed)
+{
+	// Is the vehicle spawned?
+	if(IsSpawned())
+		m_pVehicle->SetTurnSpeed(vecTurnSpeed);
+
+	CNetworkEntity::SetTurnSpeed(vecTurnSpeed);
 }
 
 void CVehicleEntity::GetTurnSpeed(CVector3 * vecTurnSpeed)
@@ -213,4 +235,18 @@ CPlayerEntity * CVehicleEntity::GetOccupant(BYTE byteSeat)
 		return m_pPassengers[ byteSeat - 1 ];
 	else
 		return NULL;
+}
+
+void CVehicleEntity::Process()
+{
+	// Check if our vehicle is spawned
+	if(IsSpawned())
+	{
+		// Check if we have no driver(otherwise empty vehicle sync)
+		if(m_pDriver == NULL)
+		{
+			// Sync it
+			Serialize(RPC_PACKAGE_TYPE_VEHICLE);
+		}
+	}
 }

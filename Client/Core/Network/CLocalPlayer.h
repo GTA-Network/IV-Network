@@ -31,8 +31,6 @@ private:
         bool                            m_bRadarVisible;
 		unsigned						m_uiPlayerIndex;
 
-		CPlayerEntity					*m_pPlayerEntity;
-
 public:
 										CLocalPlayer();
 										~CLocalPlayer();
@@ -59,12 +57,7 @@ public:
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
         bool							IsRadarVisible() { return m_bRadarVisible; }
 
-		void							SetPlayerIndex(unsigned iIndex) { m_uiPlayerIndex = iIndex; }
-		unsigned						GetPlayerIndex() { return m_uiPlayerIndex; }
-
         virtual void					Reset();
-
-		virtual CPlayerEntity			*GetPlayerEntity() { return m_pPlayerEntity; }
 };
 
 #endif // CLocalPlayer_h
