@@ -1,30 +1,29 @@
 //========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
-// File: CScriptingManager.cpp
+// File: CSquirrelScriptArgument.cpp
 // Project: Client.Core
 // Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
-#include "CScriptingManager.h"
+#include "CSquirrelScriptArgument.h"
 
-CScriptingManager::CScriptingManager()
+
+CSquirrelScriptArgument::CSquirrelScriptArgument()
+	: CScriptArgument()
+{
+
+}
+
+CSquirrelScriptArgument::~CSquirrelScriptArgument()
 {
 
 }
 
 
-CScriptingManager::~CScriptingManager()
+bool CSquirrelScriptArgument::push(SQVM * pVM)
 {
 
-}
-
-
-void CScriptingManager::UnloadAll()
-{
-	for(auto pScript : m_Scripts)
-	{
-		UnloadScript(pScript);
-	}
+	return true;
 }

@@ -150,6 +150,12 @@
     <ClCompile Include="..\Libraries\Squirrel\sqvm.cpp">
       <Filter>Libraries\Squirrel</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\CSquirrelScriptArgument.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\CScriptArgument.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -168,6 +174,18 @@
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\CSquirrelScriptingManager.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CScriptArguments.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CSquirrelScriptArguments.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CScriptArgument.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CSquirrelScriptArgument.h">
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>

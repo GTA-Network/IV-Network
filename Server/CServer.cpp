@@ -27,7 +27,7 @@ CServer::~CServer()
 bool CServer::Startup(string& outStrError)
 {
 	// Open the settings file
-	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), false, false))
+	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml, server will shut down in 3 seconds..");
 		Sleep(3000);

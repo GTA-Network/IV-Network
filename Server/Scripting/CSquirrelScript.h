@@ -11,15 +11,24 @@
 #define CSquirrelScript_h
 
 #include "CScript.h"
+#include "CSquirrelScriptArgument.h"
 #include <Squirrel/squirrel.h>
 
 class CSquirrelScript : public CScript {
 
 private:
-
+	SQVM		* m_pVM;
 public:
 	CSquirrelScript();
 	~CSquirrelScript();
+
+	bool		Load(CString strName, CString strPath);
+	void		Unload();
+
+	bool		Execute();
+
+
+	void		RegisterConstant(CString strConstantName, CSquirrelScriptArgument value);
 };
 
 #endif // CSquirrelScript_h

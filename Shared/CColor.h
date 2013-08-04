@@ -13,7 +13,7 @@
 #include <Windows.h>
 #define	 ToHex(a, r, g, b) ((DWORD)((((a) & 0xFF) << 24) | (((r) & 0xFF) << 16) | (((g) & 0xFF) << 8) | ((b) & 0xFF)))
 
-class CColor{
+class CColor {
 public:
 
 	int R, G, B, A;

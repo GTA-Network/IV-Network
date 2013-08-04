@@ -1,30 +1,22 @@
 //========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
-// File: CScriptingManager.cpp
+// File: CScriptArguments.h
 // Project: Client.Core
 // Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
-#include "CScriptingManager.h"
+#ifndef CScriptArguments_h
+#define CScriptArguments_h
 
-CScriptingManager::CScriptingManager()
-{
+class CScriptArguments {
 
-}
+private:
 
+public:
+	CScriptArguments();
+	~CScriptArguments();
+};
 
-CScriptingManager::~CScriptingManager()
-{
-
-}
-
-
-void CScriptingManager::UnloadAll()
-{
-	for(auto pScript : m_Scripts)
-	{
-		UnloadScript(pScript);
-	}
-}
+#endif // CScriptArguments_h
