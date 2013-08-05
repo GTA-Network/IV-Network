@@ -240,9 +240,68 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 	_asm	retn;
 }
 
+DWORD dwSub7Jmp;
+_declspec(naked) void sub_788F30()
+{
+	_asm
+	{
+		sub     esp, 0Ch
+		pushad
+	}
+	
+	CLogFile::Printf("CALL sub_788F30");
+	dwSub7Jmp = (g_pCore->GetBase() + 0x788F33);
+	_asm
+	{
+		popad
+		jmp dwSub7Jmp;
+	}
+}
+
+DWORD dwSub7BCall;
+DWORD dwSub7BJmp;
+char *szFile;
+__declspec(naked) void Sub_7B2740() //7B27A0
+{
+	dwSub7BCall = (g_pCore->GetBase() + 0x7B27A0);
+
+	_asm
+	{
+		call dwSub7BCall
+
+		mov eax, [ebp+4]
+		mov szFile, eax
+		
+		pushad
+	}
+
+	dwSub7BJmp = (g_pCore->GetBase() + 0x7B27A6);
+	CLogFile::Printf("GTA_FOPEN: %s",szFile);
+
+	_asm
+	{
+		popad
+		pop ebp
+		jmp [dwSub7BJmp]
+	}
+}
+
+__declspec(naked) void CFunctionRetnPatch()
+{
+	_asm
+	{
+		xor eax, eax
+		retn
+	}
+}
+
 
 void CHooks::Intialize()
 {
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x788F30), (DWORD)sub_788F30, 3);
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x7B27A0), (DWORD)Sub_7B2740, 5);
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x422F70), (DWORD)CFunctionRetnPatch, 1);
+
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
 

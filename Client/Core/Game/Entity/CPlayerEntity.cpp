@@ -208,13 +208,13 @@ unsigned short CPlayerEntity::GetPing()
 void CPlayerEntity::Process()
 {
 	// Is the player spawned?
-	if(IsSpawned())
+	if(IsSpawned() && 0 != 0) // disable current processing
 	{
 		// Check vehicle enter/exit
-		CheckVehicleEnterExit();
+		//CheckVehicleEnterExit();
 
 		// Process vehicle enter/exit
-		ProcessVehicleEnterExit();
+		//ProcessVehicleEnterExit();
 
 		// Is this the localplayer?
 		if(IsLocalPlayer())
