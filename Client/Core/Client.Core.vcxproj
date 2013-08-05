@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Libraries/RakNet/;../../../Libraries/RakNet/;../../Network/Core/;../../../Network/Core/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -94,16 +94,17 @@
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
-    <ClCompile Include="CCamera.cpp" />
-    <ClCompile Include="CContextData.cpp" />
     <ClCompile Include="CCore.cpp" />
-    <ClCompile Include="CPools.cpp" />
+    <ClCompile Include="Game\CCamera.cpp" />
+    <ClCompile Include="Game\CCharacterManager.cpp" />
+    <ClCompile Include="Game\CContextData.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
     <ClCompile Include="Game\CHooks.cpp" />
     <ClCompile Include="Game\COffsets.cpp" />
     <ClCompile Include="Game\CPatches.cpp" />
+    <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
     <ClCompile Include="Game\Entity\C3DLabelEntity.cpp" />
     <ClCompile Include="Game\Entity\CActorEntity.cpp" />
@@ -140,7 +141,6 @@
     <ClCompile Include="Game\IVEngine\CIVWeather.cpp" />
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
-    <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
@@ -169,23 +169,23 @@
     <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
-    <ClInclude Include="CCamera.h" />
-    <ClInclude Include="CContextData.h" />
     <ClInclude Include="CCore.h" />
-    <ClInclude Include="CEntitiesManager.h" />
-    <ClInclude Include="CPools.h" />
+    <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />
+    <ClInclude Include="Game\CContextData.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />
     <ClInclude Include="Game\CHooks.h" />
     <ClInclude Include="Game\COffsets.h" />
     <ClInclude Include="Game\CPatches.h" />
+    <ClInclude Include="Game\CPools.h" />
     <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
     <ClInclude Include="Game\Entity\CActorEntity.h" />
     <ClInclude Include="Game\Entity\CBlipEntity.h" />
     <ClInclude Include="Game\Entity\CCheckpointEntity.h" />
+    <ClInclude Include="Game\Entity\CEntitiesManager.h" />
     <ClInclude Include="Game\Entity\CEntityManager.h" />
     <ClInclude Include="Game\Entity\CFireEntity.h" />
     <ClInclude Include="Game\Entity\CNetworkEntity.h" />

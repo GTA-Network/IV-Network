@@ -292,5 +292,6 @@ bool CGame::CheckInstances(bool bInitialised)
 		CHECK_PTR(m_pPlayerManager);
 		CHECK_PTR(m_pVehicleManager);
 	}
-	
+
+	return true;
 }

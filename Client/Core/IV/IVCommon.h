@@ -11,6 +11,7 @@
 #define IVCommon_h
 
 #include <Common.h>
+#include <Math\CMaths.h>
 
 template <typename T>
 struct CSimpleCollection {

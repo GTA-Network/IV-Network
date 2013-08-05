@@ -11,13 +11,15 @@
 #define NetCommon_h
 
 #include <Common.h>
+
 #ifdef _CLIENT
-#include <RakPeerInterface.h>
-#include <BitStream.h>
-#include <MessageIdentifiers.h>
-#include <RPC4Plugin.h>
+#include <RakNet/RakPeerInterface.h>
+#include <RakNet/BitStream.h>
+#include <RakNet/MessageIdentifiers.h>
+#include <RakNet/RPC4Plugin.h>
 using namespace RakNet;
 #endif
+
 #include <Network/PacketIdentifiers.h>
 #include <Network/RPCIdentifiers.h>
 #include <Network/CBitStream.h>

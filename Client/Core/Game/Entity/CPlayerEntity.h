@@ -13,8 +13,8 @@
 #include <Common.h>
 #include "CNetworkEntity.h"
 
-#include <Math\CMaths.h>
-#include <CContextData.h>
+#include <Math/CMaths.h>
+#include <Game/CContextData.h>
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVModelInfo.h>
 #include <Network/CBitStream.h>

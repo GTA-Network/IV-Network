@@ -269,9 +269,6 @@
     <ClCompile Include="Game\CTaskManager.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="CContextData.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp">
       <Filter>Source Files\Network\Shared</Filter>
     </ClCompile>
@@ -302,15 +299,6 @@
     <ClCompile Include="Network\CNetworkManager.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
-    <ClCompile Include="CPools.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\CCharacterManager.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Network\CNetworkRPC.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
@@ -337,6 +325,18 @@
     </ClCompile>
     <ClCompile Include="Game\IVEngine\CIVObject.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CCharacterManager.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CCamera.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CContextData.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CPools.cpp">
+      <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -538,15 +538,6 @@
     <ClInclude Include="Game\CTaskManager.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="CPools.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
-    <ClInclude Include="CContextData.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Network\CLocalPlayer.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
@@ -558,9 +549,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h">
       <Filter>Header Files\Network\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="CEntitiesManager.h">
-      <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Network\CNetworkManager.h">
       <Filter>Header Files\Network</Filter>
@@ -603,6 +591,18 @@
     </ClInclude>
     <ClInclude Include="Game\IVEngine\CIVObject.h">
       <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Entity\CEntitiesManager.h">
+      <Filter>Header Files\Game\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CCamera.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CContextData.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CPools.h">
+      <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
