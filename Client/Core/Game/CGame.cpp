@@ -260,7 +260,7 @@ void CGame::PrepareWorld()
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 
-	g_pCore->GetChat()->Output("Print /spawn to spawn your local player ...",false);
+	g_pCore->GetChat()->Output("Enter /spawn to spawn your local player ...",false);
 }
 
 void CGame::OnClientReadyToGamePlay()
@@ -271,6 +271,7 @@ void CGame::OnClientReadyToGamePlay()
 
 	CIVWeather::SetTime(8,0);
 }
+
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 {
 	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())
@@ -305,9 +306,18 @@ bool CGame::CheckInstances(bool bInitialised)
 		CHECK_PTR(m_pTaskManager);
 		CHECK_PTR(m_pCharacterManager);
 		CHECK_PTR(m_pCamera);
-		
+		CHECK_PTR(m_pLocalPlayer);
+
 		CHECK_PTR(m_pPlayerManager);
 		CHECK_PTR(m_pVehicleManager);
+		CHECK_PTR(m_pActorManager);
+		CHECK_PTR(m_pObjectManager);
+		CHECK_PTR(m_pFireManager);
+		CHECK_PTR(m_pPickupManager);
+		CHECK_PTR(m_p3DLabelManager);
+		CHECK_PTR(m_pBlipManager);
+		CHECK_PTR(m_pCheckpointManager);
+		CHECK_PTR(m_pCharacterManager);
 	}
 
 	return true;
