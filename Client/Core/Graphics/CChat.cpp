@@ -367,7 +367,11 @@ void CChat::ProcessInput()
 					g_pCore->GetChat()->Outputf(false, "Successfully created vehicle %d", pVehicle->GetId());
 
 				}
-
+			}
+			else if(strCommand == "spawn")
+			{
+				g_pCore->GetChat()->Output("Spawning local player ...",false);
+				g_pCore->GetGame()->OnClientReadyToGamePlay();
 			}
 			else if(strCommand == "chat-renderlines")
 			{

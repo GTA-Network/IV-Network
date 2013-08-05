@@ -259,8 +259,18 @@ void CGame::PrepareWorld()
 	CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
+
+	g_pCore->GetChat()->Output("Print /spawn to spawn your local player ...",false);
 }
 
+void CGame::OnClientReadyToGamePlay()
+{
+	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
+
+	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
+
+	CIVWeather::SetTime(8,0);
+}
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 {
 	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())

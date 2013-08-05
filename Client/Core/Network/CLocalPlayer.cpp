@@ -70,9 +70,9 @@ void CLocalPlayer::HandleSpawn()
     m_bIsDead = false;
 
 	// Preload world position
-	CVector3 vecSpawnPosition;
+	/*CVector3 vecSpawnPosition;
 	GetSpawnPosition(&vecSpawnPosition);
-	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);
+	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);*/
 }
 
 void CLocalPlayer::DoDeathCheck()

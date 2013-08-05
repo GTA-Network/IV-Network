@@ -425,7 +425,6 @@ bool CPlayerEntity::Destroy()
 
 void CPlayerEntity::SetPosition(CVector3 vecPosition)
 {
-	CLogFile::Printf(__FUNCTION__);
 	if(IsSpawned())
 		m_pPlayerPed->SetPosition(vecPosition);
 	else
