@@ -151,19 +151,21 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 
 	CLogFile::Printf("[%s] GetLocalPlayerPed returns %d -> Valid -> Patching...", __FUNCTION__, g_bInvalidIndex);
 	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
+
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 	
 	m_pLocalPlayer->Reset();
-	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
+	m_pLocalPlayer->SetSpawnLocation(CVector3(DEVELOPMENT_SPAWN_POSITION),0.0f);
 	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
+
 	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
 }
 
 void CGame::Reset()
 {
 	// Disconnect from network
-	; 
+	g_pCore->GetNetworkManager()->Disconnect();
 
 	// Delte our instance if it exists/is created
 	if(m_pCamera)
@@ -230,8 +232,7 @@ void CGame::UnprotectMemory()
 
 void CGame::RenderRAGEScripts()
 {
-	// Do we need to reset the game?
-
+	// If our loacl player isn't create, try to create it
 	if(!m_LocalPlayerInitialised)
 		OnEnvironmentStartUp(true);
 
@@ -239,10 +240,9 @@ void CGame::RenderRAGEScripts()
 	if(g_pCore->GetNetworkManager())
 		g_pCore->GetNetworkManager()->Process();
 
+	// If our local player exists, pulse him
 	if(m_pLocalPlayer)
-		m_pLocalPlayer->Pulse();
-
-	// If we have text to draw draw it
+		m_pLocalPlayer->Process();
 	
 }
 
@@ -254,7 +254,11 @@ void CGame::PrepareWorld()
 	CIVHud::SetPlayerNamesVisible(0);
 
 	CIVWeather::SetWeather(WEATHER_SUNNY);
-	CIVWeather::SetTime(19, 0);
+	CIVWeather::SetTime(0, 0);
+
+	CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
+	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
+	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

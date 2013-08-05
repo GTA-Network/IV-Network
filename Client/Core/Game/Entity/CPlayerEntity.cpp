@@ -18,6 +18,7 @@
 #include <Game/IVEngine/CIVTask.h>
 #include <Game/IVEngine/IVTasks.h>
 #include <Game/IVEngine/CIVPedTaskManager.h>
+#include <Math/CMaths.h>
 
 #include <CCore.h>
 extern CCore * g_pCore;
@@ -155,8 +156,14 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 		// Get the localplayer info pointer
 		m_pPlayerInfo = new CIVPlayerInfo(CPools::GetPlayerInfoFromIndex(0));
 
+		// Create a new context data instance with the local player info
+        m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
+
+        // Set the context data player ped pointer
+        m_pContextData->SetPlayerPed(m_pPlayerPed);
+
 		// Add our model reference
-		//m_pModelInfo->AddReference(false);
+		m_pModelInfo->AddReference(false);
 
 		// Set the localplayer name
 		SetNick(g_pCore->GetNick());
@@ -169,6 +176,15 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 
 		CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
 	}
+	else
+    {
+        // Set the player ped instance to NULL
+        m_pPlayerPed = NULL;
+
+        // Set the player info instance to NULL
+        m_pPlayerInfo = NULL;
+    }
+
 }
 
 CPlayerEntity::~CPlayerEntity()
@@ -194,7 +210,10 @@ void CPlayerEntity::Process()
 	// Is the player spawned?
 	if(IsSpawned())
 	{
-		// Process vehicle entry/exit
+		// Check vehicle enter/exit
+		CheckVehicleEnterExit();
+
+		// Process vehicle enter/exit
 		ProcessVehicleEnterExit();
 
 		// Is this the localplayer?
@@ -206,35 +225,30 @@ void CPlayerEntity::Process()
 			// Update the current control state
 			g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
 
-			// Are we spawned?
-			if(IsSpawned())
+			// Are we on-foot?
+			if(IsOnFoot())
 			{
-				// Are we on-foot?
-				if(IsOnFoot())
+				// Send on foot sync data
+				Serialize(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
+			}
+			else
+			{
+				// Are we the vehicle driver?
+				if(!IsPassenger())
 				{
-					// Send on foot sync data
-					Serialize(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
+					// Send in vehicle data
+					Serialize(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 				}
 				else
 				{
-					// Are we the vehicle driver?
-					if(!IsPassenger())
-					{
-						// Send in vehicle data
-						Serialize(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
-					}
-					else
-					{
-						// Send passenger data
-						Serialize(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
-					}
+					// Send passenger data
+					Serialize(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
 				}
-
-				// Chek vehicle enter/exit key
-				CheckVehicleEnterExit();
 			}
 		}
 	}
+
+	CNetworkEntity::Pulse();
 }
 
 bool CPlayerEntity::Create()
@@ -816,7 +830,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 						// Enter the vehicle
 						EnterVehicle(pVehicle, byteSeat);
 
-						//g_pClient->GetChat()->Output("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat);
+						g_pCore->GetChat()->Outputf(false, "HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat);
 					}
 				}
 			}
@@ -832,7 +846,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 					// Exit the vehicle
 					ExitVehicle(EXIT_VEHICLE_NORMAL);
 
-					//g_pClient->GetChat()->Output("HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat);
+					g_pCore->GetChat()->Outputf(false, "HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat);
 				}
 			}
 		}
@@ -853,16 +867,16 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 		GetPosition(&vecPosition);
 
 		// Loop through all current vehicles
-		/*for(int i = 0; i < g_pClient->GetGame()->GetVehicleManager()->GetCount(); i++)
+		for(int i = 0; i < g_pCore->GetGame()->GetVehicleManager()->GetCount(); i++)
 		{
 			// Get a pointer to this vehicle
-			CVehicleEntity * pThisVehicle = g_pClient->GetGame()->GetVehicleManager()->Get(i);
+			CVehicleEntity * pThisVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(i);
 
 			// Get this vehicle position
-			pThisVehicle->GetPosition(&vecVehiclePosition);
+			pThisVehicle->GetPosition(vecVehiclePosition);
 
 			// Get the disance between us and the vehicle
-			float fDistance = GetDistanceBetweenPoints3D(vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecVehiclePosition.fX, vecVehiclePosition.fY, vecVehiclePosition.fZ);
+			float fDistance = Math::GetDistanceBetweenPoints3D(vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecVehiclePosition.fX, vecVehiclePosition.fY, vecVehiclePosition.fZ);
 
 			// Is the distance less than the current?
 			if(fDistance < fCurrent)
@@ -902,7 +916,6 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 			// Set the seat
 			byteSeat = 0;
 		}
-		*/
 		// Set the vehicle pointer
 		*pVehicle = pClosestVehicle;
 		return true;

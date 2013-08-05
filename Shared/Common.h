@@ -172,7 +172,9 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define	CHAT_MAX_HISTORY 12
 
 // Spawn position
-#define DEVELOPMENT_SPAWN_POSITION CVector3(-614.779968f, -762.146912f, 46.311127f)
+#define DEVELOPMENT_SPAWN_POSITION -614.779968f, -762.146912f, 46.311127f
+#define GAME_LOAD_CAMERA_POS	488.702759f, 540.719421f, 161.584091f
+#define GAME_LOAD_CAMERA_LOOKAT -16.441833f, 69.520508f, 140.250290f
 
 // XLive Hook
 #define FAKE_MAGIC 0xDEADDEAD

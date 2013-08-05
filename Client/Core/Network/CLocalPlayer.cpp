@@ -51,7 +51,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
         m_bRadarVisible(true)
 {
 	// Temporary spawn position for development
-	m_vecSpawnPosition = DEVELOPMENT_SPAWN_POSITION;
+	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
 
     // Patch to override spawn position and let the game call HandleSpawn
     CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);

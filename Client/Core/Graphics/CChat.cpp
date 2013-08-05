@@ -356,8 +356,6 @@ void CChat::ProcessInput()
 				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
 				if(pVehicle)
 				{
-					CLogFile::Printf("Blah");
-
 					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
 
 					pVehicle->Create();
@@ -365,6 +363,9 @@ void CChat::ProcessInput()
 					pVehicle->SetPosition(vecCreatePos);
 
 					pVehicle->SetColors(0, 0, 0, 0);
+
+					g_pCore->GetChat()->Outputf(false, "Successfully created vehicle %d", pVehicle->GetId());
+
 				}
 
 			}
