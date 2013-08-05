@@ -11,10 +11,13 @@ SOURCES+=$(wildcard ../Shared/Scripting/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=../Binary/ivmp-svr
 
-all: $(SOURCES) $(EXECUTABLE)
+all: $(SOURCES) dir $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) -m32 -lpthread -ldl -o $@
+
+dir:
+	mkdir ../Binary
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
