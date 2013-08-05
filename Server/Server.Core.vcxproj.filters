@@ -49,6 +49,18 @@
     <Filter Include="Source Files\Shared\Network">
       <UniqueIdentifier>{9744e6a8-035a-45af-9b03-8b131a9277b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{c8fa35ce-24c9-4700-9069-30b09927b20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{e9184cd3-a5a3-482e-850f-691615fee643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Natives">
+      <UniqueIdentifier>{e826b532-889c-47ed-882e-1c045e008c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Natives">
+      <UniqueIdentifier>{da2dbf92-1ad0-4999-a772-a54824126988}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -180,6 +192,9 @@
     <ClCompile Include="..\Shared\Scripting\CSquirrelEventHandler.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -220,6 +235,42 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CEventHandler.h">
       <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CNetworkEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CPlayerNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\Natives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\C3DLabelNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CActorNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CBlipNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CCheckpointNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CObjectNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CPickupNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CServerNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CVehicleNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

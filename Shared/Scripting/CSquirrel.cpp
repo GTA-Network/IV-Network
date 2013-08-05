@@ -17,6 +17,12 @@
 #include <Squirrel/sqstdstring.h>
 #include <Squirrel/sqstdsystem.h>
 
+#ifdef _SERVER
+#include <Scripting/Natives/Natives.h>
+#else
+
+#endif
+
 #ifdef _LINUX
 #define stricmp strcasecmp
 #define vsprintf_s vsprintf
@@ -135,6 +141,10 @@ CSquirrel::CSquirrel(CResource* pResource)
 		// Register our shared functions
 
 		// Register our own functions
+#ifdef _SERVER
+		CPlayerNatives::Register(this);
+		//CVehicleNatives::Register(this);
+#endif
 	}
 }
 

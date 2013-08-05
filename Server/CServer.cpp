@@ -157,18 +157,6 @@ bool CServer::Startup()
 		}
 	}
 
-	auto clientresources = CVAR_GET_LIST("clientresource");
-	for(auto strClientResource : clientresources)
-	{	
-		//if(!g_pClientResourceFileManager->Start(strClientResource))
-		{
-			CLogFile::Printf("Warning: Failed to load client resource %s.", strClientResource.Get());
-			iFailedResources++;
-		}
-		/*else
-			iResourcesLoaded++;*/
-	}
-
 	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
 
 #ifdef _WIN32

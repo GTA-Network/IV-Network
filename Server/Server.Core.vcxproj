@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries;../Libraries/Squirrel;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries;../Libraries/Squirrel;./</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -113,7 +113,7 @@
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\CXML.cpp" />
     <ClCompile Include="..\Shared\Network\CBitStream.cpp" />
-	<ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
@@ -126,6 +126,7 @@
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CServer.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Shared\Network\CBitStream.h" />
@@ -141,6 +142,18 @@
     <ClInclude Include="..\Shared\Scripting\CSquirrelEventHandler.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
+    <ClInclude Include="Entity\CNetworkEntity.h" />
+    <ClInclude Include="Scripting\Natives\C3DLabelNatives.h" />
+    <ClInclude Include="Scripting\Natives\CActorNatives.h" />
+    <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
+    <ClInclude Include="Scripting\Natives\CCheckpointNatives.h" />
+    <ClInclude Include="Scripting\Natives\CObjectNatives.h" />
+    <ClInclude Include="Scripting\Natives\CPickupNatives.h" />
+    <ClInclude Include="Scripting\Natives\CPlayerNatives.h" />
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
+    <ClInclude Include="Scripting\Natives\CServerNatives.h" />
+    <ClInclude Include="Scripting\Natives\CVehicleNatives.h" />
+    <ClInclude Include="Scripting\Natives\Natives.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -144,7 +144,7 @@ bool CResource::Reload()
 			{
 				CString strFile = pXML->getAttribute("src");
 
-				CLogFile::Printf("[TODO] Implement client file manager which handles resource client files");
+				CLogFile::Printf("\t[TODO] Implement client file manager which handles resource client files");
 			}
 			if(!pXML->nextNode())
 				break;
@@ -169,7 +169,7 @@ bool CResource::Start()
 	m_pVM = new CSquirrel(this);
 	if(!m_pVM)
 	{
-		CLogFile::Printf("[%s] Failed to create Squirrel VM.", GetName().Get());
+		CLogFile::Printf("\t[%s] Failed to create Squirrel VM.", GetName().Get());
 		return false;
 	}
 
@@ -194,16 +194,15 @@ bool CResource::Start()
 	}
 
 	// call 'resourceStart' event,
-	CEvents::GetInstance()->Call("resourceStart", m_pVM);
-	//m_pVM->GetEvents()->Call("resourceStart");
+	CSquirrelArgument argument = CEvents::GetInstance()->Call("resourceStart", m_pVM);
 
-	//if it fails then cancel the startup
-	//	if(m_pVM->GetEvents()->Call("resourceStart", m_pVM))
-	//	{
-	//		m_eState = STATE_STARTUP_CANCELLED;
-	//		Stop();
-	//		return false;
-	//	}
+	// If resourceStart has failed cancel startup
+	if(argument.GetType() == OT_BOOL && !argument.data.b)
+	{
+		m_eState = STATE_STARTUP_CANCELLED;
+		Stop();
+		return false;
+	}
 	return true;
 }
 
