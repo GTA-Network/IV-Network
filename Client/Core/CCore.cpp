@@ -114,8 +114,15 @@ void CCore::OnGameLoad()
 	m_pChat->SetVisible(true);
 	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
+	m_strHost = "127.0.0.1";
+	m_usPort = 9999;
+	m_strNick = "IVPlayer";
+
 	// Startup the network module
+	m_pNetworkManager->Startup();
+
 	// Connect to the network
+	m_pNetworkManager->Connect();
 }
 
 void CCore::OnGamePreLoad()
