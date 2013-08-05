@@ -5,7 +5,7 @@
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
-//==========================================================================================
+//=================================================================================================
 
 #include "CGame.h"
 #include <CCore.h>
@@ -33,6 +33,9 @@ CBlipManager				*CGame::m_pBlipManager = 0;
 CCheckpointManager			*CGame::m_pCheckpointManager = 0;
 CCharacterManager			*CGame::m_pCharacterManager = 0;
 bool						CGame::m_LocalPlayerInitialised = 0;
+CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
+CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
+
 /*
 	==== Why WaitForGameStartup ====
 	We can load/start the game in the background and request all resources while the player is in the main menu.
@@ -61,6 +64,17 @@ void CGame::Setup()
 
 	// Create new pool instance
 	m_pPool = new CPools;
+	
+	// Initialise our model info array
+	for(int i = 0; i < NUM_ModelInfos; i++)
+		m_modelInfos[i].SetIndex(i);
+		
+	// Initialize our weapon info array
+	for(int i = 0; i < NUM_WeaponInfos; i++)
+	{
+		m_weaponInfos[i].SetType((eWeaponType)i);
+		m_weaponInfos[i].SetWeaponInfo((IVWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(IVWeaponInfo))));
+	}
 }
 
 void CGame::Initialise()
@@ -119,8 +133,6 @@ void CGame::Initialise()
 
 void CGame::OnEnvironmentStartUp(bool bForce)
 {
-	CLogFile::Printf("GetLocalPlayerPed returns %d",g_bInvalidIndex);
-	
 	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
 	IVPlayerPed  * _pPlayerPed = NULL;
 
@@ -133,26 +145,27 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	{
 		if(!bForce)
 			return;
-		else
-		;
 	}
 
 	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
 
-	CLogFile::Printf("[FUNC] GetLocalPlayerPed returns %d",g_bInvalidIndex);
-	CLogFile::Printf("[FUNC] Creating Player..");
+	CLogFile::Printf("[%s] GetLocalPlayerPed returns %d -> Valid -> Patching...", __FUNCTION__, g_bInvalidIndex);
+	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
+
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 	
 	m_pLocalPlayer->Reset();
-	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
+	m_pLocalPlayer->SetSpawnLocation(CVector3(DEVELOPMENT_SPAWN_POSITION),0.0f);
 	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
+
+	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
 }
 
 void CGame::Reset()
 {
 	// Disconnect from network
-	; 
+	g_pCore->GetNetworkManager()->Disconnect();
 
 	// Delte our instance if it exists/is created
 	if(m_pCamera)
@@ -219,8 +232,7 @@ void CGame::UnprotectMemory()
 
 void CGame::RenderRAGEScripts()
 {
-	// Do we need to reset the game?
-
+	// If our loacl player isn't create, try to create it
 	if(!m_LocalPlayerInitialised)
 		OnEnvironmentStartUp(true);
 
@@ -228,10 +240,9 @@ void CGame::RenderRAGEScripts()
 	if(g_pCore->GetNetworkManager())
 		g_pCore->GetNetworkManager()->Process();
 
+	// If our local player exists, pulse him
 	if(m_pLocalPlayer)
-		m_pLocalPlayer->Pulse();
-
-	// If we have text to draw draw it
+		m_pLocalPlayer->Process();
 	
 }
 
@@ -243,7 +254,22 @@ void CGame::PrepareWorld()
 	CIVHud::SetPlayerNamesVisible(0);
 
 	CIVWeather::SetWeather(WEATHER_SUNNY);
-	CIVWeather::SetTime(19, 0);
+	CIVWeather::SetTime(0, 0);
+
+	CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
+	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
+	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
+
+	g_pCore->GetChat()->Output("Enter /spawn to spawn your local player ...",false);
+}
+
+void CGame::OnClientReadyToGamePlay()
+{
+	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
+
+	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
+
+	CIVWeather::SetTime(8,0);
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
@@ -252,4 +278,47 @@ CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 		return &m_modelInfos[iModelIndex];
 
 	return NULL;
+}
+
+CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
+{
+    if(weaponType < NUM_WeaponInfos && weaponType >= 0)
+            return &m_weaponInfos[weaponType];
+
+    return NULL;
+}
+
+bool CGame::CheckInstances(bool bInitialised)
+{
+	// Check Pools
+	if(!bInitialised)
+	{
+		CHECK_PTR(m_pPool);
+		CHECK_PTR(m_pPad);
+		CHECK_PTR(m_pTaskManager);
+		CHECK_PTR(m_pCharacterManager);
+		CHECK_PTR(m_pCamera);
+	}
+	else if(bInitialised)
+	{
+		CHECK_PTR(m_pPool);
+		CHECK_PTR(m_pPad);
+		CHECK_PTR(m_pTaskManager);
+		CHECK_PTR(m_pCharacterManager);
+		CHECK_PTR(m_pCamera);
+		CHECK_PTR(m_pLocalPlayer);
+
+		CHECK_PTR(m_pPlayerManager);
+		CHECK_PTR(m_pVehicleManager);
+		CHECK_PTR(m_pActorManager);
+		CHECK_PTR(m_pObjectManager);
+		CHECK_PTR(m_pFireManager);
+		CHECK_PTR(m_pPickupManager);
+		CHECK_PTR(m_p3DLabelManager);
+		CHECK_PTR(m_pBlipManager);
+		CHECK_PTR(m_pCheckpointManager);
+		CHECK_PTR(m_pCharacterManager);
+	}
+
+	return true;
 }

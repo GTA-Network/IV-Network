@@ -51,7 +51,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
         m_bRadarVisible(true)
 {
 	// Temporary spawn position for development
-	m_vecSpawnPosition = DEVELOPMENT_SPAWN_POSITION;
+	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
 
     // Patch to override spawn position and let the game call HandleSpawn
     CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
@@ -70,9 +70,9 @@ void CLocalPlayer::HandleSpawn()
     m_bIsDead = false;
 
 	// Preload world position
-	CVector3 vecSpawnPosition;
+	/*CVector3 vecSpawnPosition;
 	GetSpawnPosition(&vecSpawnPosition);
-	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);
+	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);*/
 }
 
 void CLocalPlayer::DoDeathCheck()

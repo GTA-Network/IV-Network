@@ -10,6 +10,8 @@
 #ifndef CNetSync_h
 #define CNetSync_h
 
+#include "Common.h"
+
 enum ePackageType
 {
 	RPC_PACKAGE_TYPE_SMALL = 0x1,
@@ -20,5 +22,27 @@ enum ePackageType
 	RPC_PACKAGE_TYPE_ACTOR = 0x4,
 	RPC_PACKAGE_TYPE_OBJECT = 0x5
 };
+
+enum eDisconnectReason
+{
+	REASON_DISCONNECT,
+	REASON_TIMEOUT,
+	REASON_KICKED
+};
+
+enum eNetworkState
+{
+	NETSTATE_NONE				= 0,
+	NETSTATE_STARTED,
+	NETSTATE_CONNECTING,
+	NETSTATE_CONNECTED,
+	NETSTATE_AWAIT_JOIN,
+	NETSTATE_DISCONNECTED,
+	NETSTATE_TIMEOUT,
+	NETSTATE_AWAIT_CONNECT
+};
+
+
+#define	NETWORK_TIMEOUT					3000
 
 #endif // CNetSync_h

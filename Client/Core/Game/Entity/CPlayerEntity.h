@@ -13,8 +13,8 @@
 #include <Common.h>
 #include "CNetworkEntity.h"
 
-#include <Math\CMaths.h>
-#include <CContextData.h>
+#include <Math/CMaths.h>
+#include <Game/CContextData.h>
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVModelInfo.h>
 #include <Network/CBitStream.h>
@@ -62,7 +62,7 @@ private:
 
 public:
 
-	CPlayerEntity( bool bLocalPlayer = false );
+	CPlayerEntity(bool bLocalPlayer = false);
 	~CPlayerEntity();
 
 	bool				IsLocalPlayer() { return m_bLocalPlayer; }
@@ -89,22 +89,22 @@ public:
 
 	void				SetPosition(CVector3 vecPosition);
 	bool				GetPosition(CVector3 *vecPosition);
-	void				Teleport( CVector3 vecPosition );
+	void				Teleport(CVector3 vecPosition);
 
-	void				SetNick( CString strNick ) { m_strNick = strNick; }
-	CString				GetNick( ) { return m_strNick; }
+	void				SetNick(CString strNick) { m_strNick = strNick; }
+	CString				GetNick() { return m_strNick; }
 
-	void				SetColor( unsigned uiColor );
+	void				SetColor(unsigned uiColor);
 	unsigned			GetColor() { return m_uiColor; }
 
-	unsigned			GetScriptingHandle( );
+	unsigned			GetScriptingHandle();
 
-	void				SetHealth( float fHealth );
+	void				SetHealth(float fHealth);
 	float				GetHealth();
 
-	void				SetModel( int iModelId );
+	void				SetModel(int iModelId);
 
-	void				SetRotation( float fAngle );
+	void				SetRotation(float fAngle);
 	float				GetRotation();
 
 	void				Process();
@@ -112,38 +112,38 @@ public:
 	bool				Create();
 	bool				Destroy();
 
-	void				SetControlState( CControls * pControlState );
-	void				GetControlState( CControls * pControlState );
-	void				GetLastControlState( CControls * pControlState );
+	void				SetControlState(CControls * pControlState);
+	void				GetControlState(CControls * pControlState);
+	void				GetLastControlState(CControls * pControlState);
 
 	CIVPlayerPed		* GetPlayerPed() { return m_pPlayerPed; }
 	CIVPlayerInfo		* GetPlayerInfo() { return m_pPlayerInfo; }
 
-	void				PutInVehicle( CVehicleEntity * pVehicle, BYTE byteSeat );
-	void				RemoveFromVehicle( );
+	void				PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
+	void				RemoveFromVehicle();
 
-	bool				IsOnFoot( ) { return (m_pVehicle == NULL); }
-	bool				IsInVehicle( ) { return (m_pVehicle != NULL); }
-	bool				IsPassenger( ) { return (m_pVehicle != NULL && m_byteSeat != 0); }
+	bool				IsOnFoot() { return (m_pVehicle == NULL); }
+	bool				IsInVehicle() { return (m_pVehicle != NULL); }
+	bool				IsPassenger() { return (m_pVehicle != NULL && m_byteSeat != 0); }
 
-	void				InternalPutInVehicle( CVehicleEntity * pVehicle, BYTE byteSeat );
-	void				InternalRemoveFromVehicle( );
-	bool				InternalIsInVehicle( );
-	CVehicleEntity		* InternalGetVehicle( );
+	void				InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
+	void				InternalRemoveFromVehicle();
+	bool				InternalIsInVehicle();
+	CVehicleEntity		* InternalGetVehicle();
 
-	void				EnterVehicle( CVehicleEntity * pVehicle, BYTE byteSeat );
-	void				ExitVehicle( eExitVehicleType exitType );
+	void				EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
+	void				ExitVehicle(eExitVehicleType exitType);
 
-	void				CheckVehicleEnterExit( );
-	void				ProcessVehicleEnterExit( );
-	void				ResetVehicleEnterExit( );
-	bool				HasVehicleEnterExit( ) { return (m_vehicleEnterExit.bEntering || m_vehicleEnterExit.bExiting); }
+	void				CheckVehicleEnterExit();
+	void				ProcessVehicleEnterExit();
+	void				ResetVehicleEnterExit();
+	bool				HasVehicleEnterExit() { return (m_vehicleEnterExit.bEntering || m_vehicleEnterExit.bExiting); }
 
-	void				ClearVehicleEntryTask( );
-	void				ClearVehicleExitTask( );
-	bool				GetClosestVehicle( bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat );
-	bool				IsGettingIntoAVehicle( );
-	bool				IsGettingOutOfAVehicle( );
+	void				ClearVehicleEntryTask();
+	void				ClearVehicleExitTask();
+	bool				GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat);
+	bool				IsGettingIntoAVehicle();
+	bool				IsGettingOutOfAVehicle();
 
 };
 

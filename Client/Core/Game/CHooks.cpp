@@ -240,9 +240,101 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 	_asm	retn;
 }
 
+DWORD dwSub7Jmp;
+_declspec(naked) void sub_788F30()
+{
+	_asm
+	{
+		sub     esp, 0Ch
+		pushad
+	}
+	
+	CLogFile::Printf("CALL sub_788F30");
+	dwSub7Jmp = (g_pCore->GetBase() + 0x788F33);
+	_asm
+	{
+		popad
+		jmp dwSub7Jmp;
+	}
+}
+
+DWORD dwSub7BCall;
+DWORD dwSub7BJmp;
+char *szFile;
+__declspec(naked) void Sub_7B2740() //7B27A0
+{
+	dwSub7BCall = (g_pCore->GetBase() + 0x7B27A0);
+
+	_asm
+	{
+		call dwSub7BCall
+
+		mov eax, [ebp+4]
+		mov szFile, eax
+		
+		pushad
+	}
+
+	dwSub7BJmp = (g_pCore->GetBase() + 0x7B27A6);
+	CLogFile::Printf("GTA_FOPEN: %s",szFile);
+
+	_asm
+	{
+		popad
+		pop ebp
+		jmp [dwSub7BJmp]
+	}
+}
+
+__declspec(naked) void CFunctionRetnPatch()
+{
+	_asm
+	{
+		xor eax, eax
+		retn
+	}
+}
+
+void _declspec(naked) CRASH_625F15_HOOK()
+{
+        _asm
+        {
+                test    eax, eax
+                jz              keks
+                cmp     eax, 100000h
+                jl              keks
+                mov     edx, [eax]
+                push    1
+                mov     ecx, edi
+                call    edx
+
+keks_patch:
+                mov     al, 1
+                pop     edi
+                pop     esi
+                pop     ebp
+                pop     ebx
+                add     esp, 0Ch
+                retn    4
+keks:
+                pushad
+        }
+
+		g_pCore->GetChat()->Output("Prevent crash at 0x625F15");
+
+        _asm
+        {
+                popad
+                jmp keks_patch
+        }
+}
 
 void CHooks::Intialize()
 {
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x788F30), (DWORD)sub_788F30, 3);
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x7B27A0), (DWORD)Sub_7B2740, 5);
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x422F70), (DWORD)CFunctionRetnPatch, 1);
+
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
 
@@ -269,4 +361,11 @@ void CHooks::Intialize()
 
 	// Hook texture select/generate function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
+
+	// This disables some calculate for modelinfo but it seems this is not necessary
+    // Maybe we can disable this patch
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
+
+    // this disables a call to a destructor of a member in rageResourceCache [field_244] 
+    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (DWORD)CRASH_625F15_HOOK /*(GetBase() + 0x625F1D)*/);
 }

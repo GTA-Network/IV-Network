@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ==========
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CVehicleEntity.cpp
 // Project: Client.Core
@@ -82,14 +82,17 @@ bool CVehicleEntity::Create()
     // Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(uiVehicleHandle));
 
-	m_pVehicle->SetCarCanBeDamaged(false);
-	m_pVehicle->SetCanBeVisiblyDamaged(false);
+	// Disable damage
+	//m_pVehicle->SetCarCanBeDamaged(false);
+	//m_pVehicle->SetCanBeVisiblyDamaged(false);
+
+	// Reset Indicators
+	SetIndicatorState(false,false,false,false);
 
 	// Mark as spawned
 	m_bSpawned = true;
 
 	CLogFile::Printf("Created vehicle! (Id: %d, Handle: %d)", m_vehicleId, m_uiVehicleHandle);
-
 	return true;
 }
 

@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ==========
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CBlipEntity.cpp
 // Project: Client.Core

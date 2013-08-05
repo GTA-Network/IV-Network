@@ -41,7 +41,7 @@ bool CCore::Initialise()
 
 	CLogFile::Printf("CCore::Initialize");
 
-	// Get the applicatin base address
+	// Get the application base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
 
 	// Subtract the image size from the base address
@@ -114,8 +114,15 @@ void CCore::OnGameLoad()
 	m_pChat->SetVisible(true);
 	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
 
+	m_strHost = "127.0.0.1";
+	m_usPort = 9999;
+	m_strNick = "IVPlayer";
+
 	// Startup the network module
+	m_pNetworkManager->Startup();
+
 	// Connect to the network
+	m_pNetworkManager->Connect();
 }
 
 void CCore::OnGamePreLoad()
@@ -168,17 +175,17 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
-	// Print our IVMultiplayer "Logo" in the left upper corner
+	// Print our IVMultiplayer "Identifier" in the left upper corner
 	m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
 
 	// Render our chat instance
 	if(m_pChat)
 		m_pChat->Render();
 
-	// Before rendering fpscounter instance, update FPS display
+	// Before rendering FPS-Counter instance, update FPS display
 	m_pGraphics->DrawText( 5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get() );
 
-	// Render our fpscounter instance
+	// Render our FPS-Counter instance
 	if(m_pFPSCounter)
 		m_pFPSCounter->Pulse();
 	
