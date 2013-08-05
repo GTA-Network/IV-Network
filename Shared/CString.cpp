@@ -16,9 +16,13 @@
 	#include <stdarg.h>     // va_list, va_start, va_arg, va_end
 #else
 #define stricmp strcasecmp
-	#include <stdlib.h>
-	#include <string.h>
-	#include <stdio.h>
+#define vsprintf_s vsprintf
+#define vsnprintf_s vsnprintf
+#define sprintf_s sprintf
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
 #endif
 
 #define BUFFER_SIZE 8192
@@ -700,6 +704,10 @@ char * CString::GetData() const
 char * CString::CopyData() const
 {
 	char * c = new char[m_stdStr.length()];
+#ifdef _WIN32
 	strcpy_s(c, m_stdStr.length(), m_stdStr.c_str());
+#else
+	strcpy(c, m_stdStr.c_str());
+#endif
 	return c;
 }

@@ -26,7 +26,7 @@ CNetworkServer::~CNetworkServer()
 RakNet::StartupResult CNetworkServer::Start(unsigned short usPort, int iMaxPlayers, string strHostAddress)
 {
 	RakNet::SocketDescriptor socketDescriptor(usPort, strHostAddress.Get()); 
-	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, THREAD_PRIORITY_NORMAL);
+	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, 0);
 	return res;
 }
 

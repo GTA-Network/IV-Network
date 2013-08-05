@@ -14,7 +14,10 @@
 #ifdef _WIN32
 #include <windows.h>
 #else
+#if !defined(_DWORD_DEF)
 typedef unsigned long DWORD;
+#define _DWORD_DEF
+#endif
 #include <string.h>
 #endif
 #include <math.h>

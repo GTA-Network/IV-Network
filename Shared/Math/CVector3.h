@@ -7,7 +7,12 @@
 //
 //==============================================================================
 
-#pragma once
+#ifndef CVector3_h
+#define CVector3_h
+
+#ifndef _WIN32
+#include <math.h>
+#endif
 
 class CVector3
 {
@@ -109,3 +114,4 @@ public:
                 fZ /= fRight;
         }
 };
+#endif // CVector3_h

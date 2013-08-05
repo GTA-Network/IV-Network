@@ -17,6 +17,17 @@
 #include <Squirrel/sqstdstring.h>
 #include <Squirrel/sqstdsystem.h>
 
+#ifdef _LINUX
+#define stricmp strcasecmp
+#define vsprintf_s vsprintf
+#define vsnprintf_s vsnprintf
+#define sprintf_s sprintf
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+#endif
+
 
 #define DEFAULT_STACK_SIZE 1024
 

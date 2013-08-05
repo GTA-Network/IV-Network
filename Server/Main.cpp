@@ -33,7 +33,11 @@ int main(int argc, char ** argv)
 	if(!g_pServer->Startup())
 	{
 		CLogFile::Printf("Failed to start server! Exiting in 10 seconds..");
+#ifdef _WIN32
 		Sleep(10 * 1000);
+#else
+		sleep(10);
+#endif
 		ExitProcess(EXIT_FAILURE);
 	}
 

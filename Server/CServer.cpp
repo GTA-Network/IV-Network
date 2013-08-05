@@ -31,7 +31,11 @@ bool CServer::Startup()
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
+#ifdef _WIN32
 		Sleep(3000);
+#else
+		sleep(3);
+#endif
 		return false;
 	}
 

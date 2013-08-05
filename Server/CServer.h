@@ -10,6 +10,8 @@
 #ifndef CServer_h
 #define CServer_h
 
+#include <limits.h>
+#define UINT_MAX 4294967295
 #include "Common.h"
 #include "CNetworkServer.h"
 #include <Scripting/CResourceManager.h>
