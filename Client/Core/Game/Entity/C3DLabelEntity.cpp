@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ==========
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
 // File: C3DLabelEntity.cpp
 // Project: Client.Core

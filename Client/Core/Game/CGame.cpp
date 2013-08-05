@@ -61,6 +61,17 @@ void CGame::Setup()
 
 	// Create new pool instance
 	m_pPool = new CPools;
+	
+	// Initialise our model info array
+	for(int i = 0; i < NUM_ModelInfos; i++)
+		m_modelInfos[i].SetIndex(i);
+		
+	// Initialize our weapon info array
+	for(int i = 0; i < NUM_WeaponInfos; i++)
+	{
+		m_weaponInfos[i].SetType((eWeaponType)i);
+		m_weaponInfos[i].SetWeaponInfo((IVWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(IVWeaponInfo))));
+	}
 }
 
 void CGame::Initialise()
@@ -119,8 +130,6 @@ void CGame::Initialise()
 
 void CGame::OnEnvironmentStartUp(bool bForce)
 {
-	CLogFile::Printf("GetLocalPlayerPed returns %d",g_bInvalidIndex);
-	
 	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
 	IVPlayerPed  * _pPlayerPed = NULL;
 
@@ -133,20 +142,19 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	{
 		if(!bForce)
 			return;
-		else
-		;
 	}
 
 	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
 
-	CLogFile::Printf("[FUNC] GetLocalPlayerPed returns %d",g_bInvalidIndex);
-	CLogFile::Printf("[FUNC] Creating Player..");
+	CLogFile::Printf("[%s] GetLocalPlayerPed returns %d -> Valid -> Patching...", __FUNCTION__, g_bInvalidIndex);
+	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 	
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(DEVELOPMENT_SPAWN_POSITION,0.0f);
 	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
+	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
 }
 
 void CGame::Reset()
@@ -252,4 +260,37 @@ CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 		return &m_modelInfos[iModelIndex];
 
 	return NULL;
+}
+
+CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
+{
+    if(weaponType < NUM_WeaponInfos && weaponType >= 0)
+            return &m_weaponInfos[weaponType];
+
+    return NULL;
+}
+
+bool CGame::CheckInstances(bool bInitialised)
+{
+	// Check Pools
+	if(!bInitialised)
+	{
+		CHECK_PTR(m_pPool);
+		CHECK_PTR(m_pPad);
+		CHECK_PTR(m_pTaskManager);
+		CHECK_PTR(m_pCharacterManager);
+		CHECK_PTR(m_pCamera);
+	}
+	else if(bInitialised)
+	{
+		CHECK_PTR(m_pPool);
+		CHECK_PTR(m_pPad);
+		CHECK_PTR(m_pTaskManager);
+		CHECK_PTR(m_pCharacterManager);
+		CHECK_PTR(m_pCamera);
+		
+		CHECK_PTR(m_pPlayerManager);
+		CHECK_PTR(m_pVehicleManager);
+	}
+	
 }

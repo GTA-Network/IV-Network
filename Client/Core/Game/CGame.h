@@ -31,6 +31,7 @@
 #include <Game/IVEngine/CIVPad.h>
 #include <Game/IVEngine/CIVPool.h>
 #include <Game/IVEngine/CIVCam.h>
+#include <Game/IVEngine/CIVWeaponInfo.h>
 
 #include "CTaskManager.h"
 #include "CPools.h"
@@ -48,6 +49,8 @@ typedef CEntityManager<C3DLabelEntity, 0xFFFE> C3DLabelManager;
 typedef CEntityManager<CBlipEntity, MAX_BLIPS> CBlipManager;
 typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 
+#define CHECK_PTR(ptr) if(!ptr) return false;
+
 class CLocalPlayer;
 
 class CGame {
@@ -57,7 +60,8 @@ private:
 	static CTaskManager					*m_pTaskManager;
 	static CPools						*m_pPool;
 	static CCamera						*m_pCamera;
-	CIVModelInfo						m_modelInfos[NUM_ModelInfos];
+	static CIVModelInfo					m_modelInfos[NUM_ModelInfos];
+	static CIVWeaponInfo				m_weaponInfos[NUM_WeaponInfos];
 	static bool							m_LocalPlayerInitialised;
 
 	static CPlayerManager				*m_pPlayerManager;
@@ -81,6 +85,7 @@ public:
 	static void							Setup();
 	static void							RenderRAGEScripts();
 	static void							UnprotectMemory();
+	static bool							CheckInstances(bool bInitialised = false);
 	void								Reset();
 	CLocalPlayer						*GetLocalPlayer() { return m_pLocalPlayer; }
 	CIVPad								*GetPad() { return m_pPad; }
@@ -88,7 +93,8 @@ public:
 	CPools								*GetPools() { return m_pPool; }
 	CCamera								*GetCamera() { return m_pCamera; }
 
-	CIVModelInfo						*GetModelInfo( int iModelIndex );
+	CIVModelInfo						*GetModelInfo(int iModelIndex);
+	CIVWeaponInfo						*GetWeaponInfo(eWeaponType weaponType);
 
 	CPlayerManager						*GetPlayerManager() { return m_pPlayerManager; }
 	CVehicleManager						*GetVehicleManager() { return m_pVehicleManager; }

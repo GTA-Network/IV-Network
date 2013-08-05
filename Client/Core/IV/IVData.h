@@ -14,6 +14,8 @@
 
 #define		ARRAY_ModelInfos				0x15F73B0
 #define		NUM_ModelInfos					31000
+#define		ARRAY_WeaponInfos				0x1540A20
+#define		NUM_WeaponInfos					60
 
 #define		MIN_INPUT_VALUE					0
 #define		DEFAULT_BINARY_INPUT_VALUE		0

@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Libraries/RakNet/;../../../Libraries/RakNet/;../../Network/Core/;../../../Network/Core/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -73,7 +73,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,19 +116,27 @@
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVCheckpoint.cpp" />
     <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVHud.cpp" />
     <ClCompile Include="Game\IVEngine\CIVModelInfo.cpp" />
     <ClCompile Include="Game\IVEngine\CIVModelManager.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVObject.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPad.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPed.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPedTaskManager.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPedWeapons.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPedWeaponSlot.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPhysical.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPlayerInfo.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPlayerPed.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVStreaming.cpp" />
     <ClCompile Include="Game\IVEngine\CIVTask.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVTrain.cpp" />
     <ClCompile Include="Game\IVEngine\CIVVehicle.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVWeapon.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVWeaponInfo.cpp" />
     <ClCompile Include="Game\IVEngine\CIVWeather.cpp" />
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
@@ -149,6 +156,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
+    <ClCompile Include="Network\CNetworkRPC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\tinyxml\ticpp.h" />
@@ -158,8 +166,8 @@
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
-    <ClInclude Include="..\..\Shared\Network\PacketIdentifiers.h" />
-    <ClInclude Include="..\..\Shared\Network\RPCIdentifiers.h" />
+    <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
+    <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CContextData.h" />
@@ -186,21 +194,32 @@
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
     <ClInclude Include="Game\IVEngine\CIVCam.h" />
+    <ClInclude Include="Game\IVEngine\CIVCheckpoint.h" />
     <ClInclude Include="Game\IVEngine\CIVDynamicEntity.h" />
     <ClInclude Include="Game\IVEngine\CIVEntity.h" />
     <ClInclude Include="Game\IVEngine\CIVHud.h" />
     <ClInclude Include="Game\IVEngine\CIVModelInfo.h" />
     <ClInclude Include="Game\IVEngine\CIVModelManager.h" />
+    <ClInclude Include="Game\IVEngine\CIVObject.h" />
     <ClInclude Include="Game\IVEngine\CIVPad.h" />
     <ClInclude Include="Game\IVEngine\CIVPadData.h" />
     <ClInclude Include="Game\IVEngine\CIVPed.h" />
+    <ClInclude Include="Game\IVEngine\CIVPedFactory.h" />
+    <ClInclude Include="Game\IVEngine\CIVPedMoveBlend.h" />
     <ClInclude Include="Game\IVEngine\CIVPedTaskManager.h" />
+    <ClInclude Include="Game\IVEngine\CIVPedWeapons.h" />
+    <ClInclude Include="Game\IVEngine\CIVPedWeaponSlot.h" />
     <ClInclude Include="Game\IVEngine\CIVPhysical.h" />
     <ClInclude Include="Game\IVEngine\CIVPlayerInfo.h" />
     <ClInclude Include="Game\IVEngine\CIVPlayerPed.h" />
     <ClInclude Include="Game\IVEngine\CIVPool.h" />
+    <ClInclude Include="Game\IVEngine\CIVStreaming.h" />
     <ClInclude Include="Game\IVEngine\CIVTask.h" />
+    <ClInclude Include="Game\IVEngine\CIVTrain.h" />
     <ClInclude Include="Game\IVEngine\CIVVehicle.h" />
+    <ClInclude Include="Game\IVEngine\CIVVehicleFactory.h" />
+    <ClInclude Include="Game\IVEngine\CIVWeapon.h" />
+    <ClInclude Include="Game\IVEngine\CIVWeaponInfo.h" />
     <ClInclude Include="Game\IVEngine\CIVWeather.h" />
     <ClInclude Include="Game\IVEngine\CIVWorld.h" />
     <ClInclude Include="Game\IVEngine\IVTasks.h" />
@@ -225,6 +244,7 @@
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
+    <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="StdInc.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
   </ItemGroup>

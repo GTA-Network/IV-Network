@@ -11,6 +11,13 @@
 #define NetCommon_h
 
 #include <Common.h>
+#ifdef _CLIENT
+#include <RakPeerInterface.h>
+#include <BitStream.h>
+#include <MessageIdentifiers.h>
+#include <RPC4Plugin.h>
+using namespace RakNet;
+#endif
 #include <Network/PacketIdentifiers.h>
 #include <Network/RPCIdentifiers.h>
 #include <Network/CBitStream.h>
@@ -23,7 +30,7 @@
 namespace Network
 {
 	// Gets the problem description for failed peer startup result code
-	static string GetErrorMessage(RakNet::StartupResult startResult)
+	static CString GetErrorMessage(RakNet::StartupResult startResult)
 	{
 		switch(startResult)
 		{
@@ -64,7 +71,7 @@ class CNetPlayerSocket
 public:
 	unsigned long ulBinaryAddress;
 	unsigned short usPort;
-	string strSerial;
+	CString strSerial;
 	EntityId playerId;
 
 	CNetPlayerSocket()
@@ -75,16 +82,16 @@ public:
 		strSerial.Set("00000000000000000000000000000000");
 	}
 
-	string GetIPString(bool bIncludePort = false)
+	CString GetIPString(bool bIncludePort = false)
 	{
 		in_addr in;
 		memset(&in, 0, sizeof(in));
 		in.s_addr = ulBinaryAddress;
 
 		if(bIncludePort)
-			return string("%s:%d", inet_ntoa(in), usPort);
+			return CString("%s:%d", inet_ntoa(in), usPort);
 
-		return string(inet_ntoa(in));
+		return CString(inet_ntoa(in));
 	}
 };
 
@@ -114,7 +121,7 @@ struct sClientState
 	RakNet::SystemAddress m_serverAddress;	// raknet server address
 	EntityId localPlayerId;					// our playerId on server
 	eClientStateCode joinState;			// server connection state
-	string strServerOriginal;				// original server address string (for example domain name) used to connect
+	CString strServerOriginal;				// original server address string (for example domain name) used to connect
 
 	// disconnected from any server, and we are not connecting/joining at the moment
 	bool IsDisconnected()			{ return joinState == CLIENT_DISCONNECTED; }
@@ -130,10 +137,10 @@ struct sClientState
 	// peer initialization ok?
 	bool IsPeerStarted()			{ return PEER_IS_STARTED(peerStateCode); }
 	// error message of peer startup
-	string GetStartupErrorMessage() { return Network::GetErrorMessage(peerStateCode); }
+	CString GetStartupErrorMessage() { return Network::GetErrorMessage(peerStateCode); }
 
 	// server IP address
-	string GetServerIP()			{ return inet_ntoa(m_serverAddress.address.addr4.sin_addr); }
+	CString GetServerIP()			{ return inet_ntoa(m_serverAddress.address.addr4.sin_addr); }
 	// server port number
 	unsigned short GetServerPort()	{ return ntohs(m_serverAddress.address.addr4.sin_port); }
 
