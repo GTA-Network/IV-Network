@@ -10,15 +10,19 @@
 #ifndef CServer_h
 #define CServer_h
 
+#include <limits.h>
+#define UINT_MAX 4294967295
 #include "Common.h"
 #include "CNetworkServer.h"
 #include <Scripting/CResourceManager.h>
+#include <Scripting/CEvents.h>
 
 class CServer {
 
 private:
 	CNetworkServer				* m_pNetServer;
 	CResourceManager			* m_pResourceManager;
+	CEvents						* m_pEvents;
 
 public:
 	CServer();
@@ -27,6 +31,9 @@ public:
 	bool	Startup();
 	void	Process();
 	void	Shutdown();
+
+	CNetworkServer		*GetNetServer() { return m_pNetServer; }
+	CResourceManager	*GetResourceManager() { return m_pResourceManager; }
 };
 
 #endif // CServer_h

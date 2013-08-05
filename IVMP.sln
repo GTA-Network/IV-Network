@@ -187,6 +187,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Detours", "Detours", "{C907
 		Libraries\Detours\detours.lib = Libraries\Detours\detours.lib
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{56F19A74-F14D-4E8C-90BF-F47CC6A004C5}"
+	ProjectSection(SolutionItems) = preProject
+		Shared\Network\CBitStream.cpp = Shared\Network\CBitStream.cpp
+		Shared\Network\CBitStream.h = Shared\Network\CBitStream.h
+		Shared\Network\PacketIdentifiers.h = Shared\Network\PacketIdentifiers.h
+		Shared\Network\RPCIdentifiers.h = Shared\Network\RPCIdentifiers.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -227,6 +235,7 @@ Global
 		{58C4FE7A-B82C-4A71-83A2-0C5D6F04B1FE} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{564791E2-70BB-4F49-8C54-135ED7E3025D} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{DCE885CE-3722-45BA-8426-EED2400A9ED6} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
+		{56F19A74-F14D-4E8C-90BF-F47CC6A004C5} = {85B22AE1-C342-472E-AD5A-51388EC1DD0D}
 		{45278608-79FF-45D7-A03E-140152BF726B} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
 		{35F133D7-2A89-4DF6-83CD-1D2DFB2260F4} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}
 		{C9077BDC-4FD0-4B9C-B3BA-13CF641F6F9F} = {D7EBB58A-E021-4EAE-9F03-A58440D8282C}

@@ -47,6 +47,7 @@ void CSettings::LoadDefaults()
 	AddList("clientresource");
 	AddList("module");
 	AddList("config");
+	AddList("resource");
 	AddString("ip", "127.0.0.1");
 	AddString("nick", "player");
 	AddString("pass", "");

@@ -43,6 +43,12 @@
     <Filter Include="Source Files\Shared\Scripting">
       <UniqueIdentifier>{54ae9526-7f9c-4272-9a7a-f3e23dacddf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Shared\Network">
+      <UniqueIdentifier>{08309c4c-74e2-4adf-a80f-6fbeece83831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Network">
+      <UniqueIdentifier>{9744e6a8-035a-45af-9b03-8b131a9277b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -162,6 +168,18 @@
     <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Network\CBitStream.cpp">
+      <Filter>Source Files\Shared\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScript.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSquirrelEventHandler.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -170,19 +188,37 @@
     <ClInclude Include="CInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CScript.h">
-      <Filter>Header Files\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Shared\Scripting\CResource.h">
+    <ClInclude Include="..\Shared\Scripting\CScript.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CSquirrel.h">
+    <ClInclude Include="..\Shared\Scripting\CEvents.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CResourceManager.h">
+    <ClInclude Include="..\Shared\Scripting\CResource.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CSquirrelArgument.h">
+    <ClInclude Include="..\Shared\Scripting\CResourceManager.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrel.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\CBitStream.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\PacketIdentifiers.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\RPCIdentifiers.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelArgument.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelEventHandler.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CEventHandler.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>

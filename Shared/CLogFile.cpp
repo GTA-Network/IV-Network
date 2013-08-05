@@ -11,6 +11,13 @@
 #include "SharedUtility.h"
 
 #ifdef _LINUX
+#define stricmp strcasecmp
+#define vsprintf_s vsprintf
+#define vsnprintf_s vsnprintf
+#define sprintf_s sprintf
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 #include <stdarg.h>
 #endif
 

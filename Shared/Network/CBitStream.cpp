@@ -9,6 +9,9 @@
 //==============================================================================
 
 #include "CBitStream.h"
+#ifdef _LINUX
+#include <string.h>
+#endif
 #include <assert.h>
 
 CBitStream::CBitStream()

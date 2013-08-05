@@ -17,26 +17,28 @@
 bool g_bClose = false;
 string g_strStartError;
 
+CServer * g_pServer = NULL;
+
 int main(int argc, char ** argv)
 {
-	CServer* pServer = new CServer();
-
-	CLogFile::Open("ivmp-svr.log");
+	g_pServer = new CServer();
 
 	// Start our input thread which handles all the input
 	CThread inputThread;
 
+	// Start log file
+	CLogFile::Open("ivmp-svr.log");
+
 	// Start server and load all scripts
-	if(!pServer->Startup())
+	if(!g_pServer->Startup())
 	{
 		CLogFile::Printf("Failed to start server! Exiting in 10 seconds..");
-		Sleep(10 * 1000);
 #ifdef _WIN32
-		ExitProcess(EXIT_FAILURE);
+		Sleep(10 * 1000);
 #else
-		exit(EXIT_FAILURE);
+		sleep(10);
 #endif
-		return EXIT_FAILURE;
+		ExitProcess(EXIT_FAILURE);
 	}
 
 	// Start input
@@ -45,22 +47,18 @@ int main(int argc, char ** argv)
 	// Program loop
 	while(!g_bClose)
 	{
-		pServer->Process();
+		g_pServer->Process();
 	}
 
 	// Stop the input thread
 	inputThread.Stop(true, true);
 
 	// Shutdown
-	pServer->Shutdown();
+	g_pServer->Shutdown();
 		
 	// Delete our server
-	SAFE_DELETE(pServer);
+	SAFE_DELETE(g_pServer);
 
 	// Exit process
-#ifdef _WIN32
 	ExitProcess(EXIT_SUCCESS);
-#else
-	exit(EXIT_SUCCESS);
-#endif
 }

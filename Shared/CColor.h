@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CColor.h
 // Project: Client.Core
@@ -10,7 +10,14 @@
 #ifndef CColor_h
 #define CColor_h
 
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#if !defined(_DWORD_DEF)
+typedef unsigned long DWORD;
+#define _DWORD_DEF
+#endif
+#endif
 #define	 ToHex(a, r, g, b) ((DWORD)((((a) & 0xFF) << 24) | (((r) & 0xFF) << 16) | (((g) & 0xFF) << 8) | ((b) & 0xFF)))
 
 class CColor {

@@ -10,6 +10,7 @@
 #ifndef CResource_h
 #define CResource_h
 
+#include "CScript.h"
 #include "CSquirrel.h"
 
 class CSquirrel;
@@ -33,8 +34,12 @@ private:
 	CString			m_strResourcePath;
 	eResourceState	m_eState;
 
+	CString			m_strAuthor;
+	CString			m_strType;
+	CString			m_strInfoName;
+	int				m_iVersion;
 	
-	std::list<CString> m_Scripts;
+	std::list<CScript> m_Scripts;
 public:
 	CResource();
 	CResource(CString strDirectory, CString strName);

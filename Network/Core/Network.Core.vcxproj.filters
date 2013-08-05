@@ -830,9 +830,6 @@
     <ClInclude Include="RakNet\XBox360Includes.h">
       <Filter>Header Files\RakNet</Filter>
     </ClInclude>
-    <ClInclude Include="CRakNetInterface.h">
-      <Filter>Header Files\RakNet</Filter>
-    </ClInclude>
     <ClInclude Include="CNetworkServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -843,6 +840,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CNetworkClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRakNetInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

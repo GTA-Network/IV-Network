@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CNetworkClient.cpp
 // Project: Network.Core
@@ -14,6 +14,7 @@ CNetworkClient::CNetworkClient()
 {
 	m_pNetPeer = new RakNet::RakPeer();
 	m_pNetPeer->AttachPlugin(this);
+	m_state.Clear();
 }
 
 // Cleanup
@@ -22,15 +23,11 @@ CNetworkClient::~CNetworkClient()
 	SAFE_DELETE(m_pNetPeer);
 }
 
-// Ensures peer is started with options. If start failed, returns false
+// Ensures client peer is started. If start failed, returns false
 bool CNetworkClient::EnsureStarted()
 {
-	RakNet::StartupResult res = m_pNetPeer->Startup(1, &RakNet::SocketDescriptor(), 1, THREAD_PRIORITY_NORMAL);
-
-	if(res == RakNet::RAKNET_STARTED)
-		m_pNetPeer->SetMaximumIncomingConnections(1);
-
-	return res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED;
+	m_state.peerStateCode = m_pNetPeer->Startup(1, &RakNet::SocketDescriptor(), 1, THREAD_PRIORITY_NORMAL);
+	return (m_state.peerStateCode == RakNet::RAKNET_STARTED || m_state.peerStateCode == RakNet::RAKNET_ALREADY_STARTED);
 }
 
 // Stops peer
@@ -84,12 +81,7 @@ PacketId CNetworkClient::ProcessPacket(RakNet::SystemAddress systemAddress, Pack
 
 			// Set the player socket id
 			//m_serverSocket.playerId = playerId; // crackfixme
-
-			// Set the player socket binary address
-			//m_serverSocket.ulBinaryAddress = systemAddress.address.addr4.sin_addr.s_addr;
-
-			// Set the player socket port
-			m_state.usPort = ntohs(systemAddress.address.addr4.sin_port);
+			m_state.localPlayerId = playerId;
 
 			// Reset the bit stream for reuse
 			CBitStream bitStreamSend;
@@ -98,10 +90,8 @@ PacketId CNetworkClient::ProcessPacket(RakNet::SystemAddress systemAddress, Pack
 			bitStreamSend.Write((PacketId)ID_USER_PACKET_ENUM);
 
 			// Send the packet
-			m_state.ucState = 2;
-			//Send(&bitStreamSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, false);
-			//m_bConnected = false;
-			// crackfixme
+			m_state.joinState = CLIENT_JOINING;
+			Send(&bitStreamSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, false);
 			return INVALID_PACKET_ID;
 		}
 		break;
@@ -110,7 +100,7 @@ PacketId CNetworkClient::ProcessPacket(RakNet::SystemAddress systemAddress, Pack
 	case (ID_USER_PACKET_ENUM + 1):
 		{
 			// Set our connected state
-			m_state.ucState = 3;
+			m_state.joinState = CLIENT_JOINING;
 
 			// TODO: Reply wth same packet id
 
@@ -158,16 +148,9 @@ NetPacket * CNetworkClient::Receive()
 		// Is this a valid packet?
 		if(packetId != INVALID_PACKET_ID)
 		{
-			// Create the new packet
+			// Create the new NetPacket
 			pPacket = new NetPacket();
-
-			// Set the packet id
 			pPacket->id = packetId;
-
-			// Set the packet player socket
-			//pPacket->pPlayerSocket = &m_serverSocket;
-
-			// Set the packet length
 			pPacket->dataSize = uiLength;
 
 			// Do we have any packet data?
@@ -193,6 +176,7 @@ NetPacket * CNetworkClient::Receive()
 	return NULL;
 }
 
+// Deallocate NetPacket (after handled)
 void CNetworkClient::DeallocatePacket(NetPacket * pPacket)
 {
 	// Check if we have a disconnection packet
@@ -222,23 +206,32 @@ void CNetworkClient::Process()
 	}
 }
 
-// Sends RPC packet to server
+// Send RPC message to server
 unsigned int CNetworkClient::RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, char cOrderingChannel)
 {
-	CBitStream bitStream;
+	int dataLength = pBitStream->GetNumberOfBytesUsed();
+
+	// Create bitStream with RPC identifier and data from bitStream argument
+	CBitStream bitStream(sizeof(PacketId) + sizeof(RPCIdentifier) + dataLength);
 	bitStream.Write((PacketId)PACKET_RPC);
 	bitStream.Write(rpcId);
-    bitStream.Write((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed());
+    bitStream.Write((char *)pBitStream->GetData(), dataLength);
 
-	return m_pNetPeer->Send((char *)bitStream.GetData(), bitStream.GetNumberOfBytesUsed(), 
+	return Send(&bitStream, priority, reliability, cOrderingChannel);
+}
+
+// Send BitStream to server
+unsigned int CNetworkClient::Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, char cOrderingChannel)
+{
+	return m_pNetPeer->Send((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed(), 
 		(PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel, m_state.m_serverAddress, false);
 }
 
 // Closes connection to a client (optionally send notification)
 void CNetworkClient::Disconnect(bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority)
 {
-	m_state.ucState = 0;
+	m_state.Clear(); // drop connected flag lol..
 	m_pNetPeer->CloseConnection(m_state.m_serverAddress, bSendDisconnectionNotification, 0, (PacketPriority)disconnectionPacketPriority);
-	EnsureStopped();
-	EnsureStarted();
+	//EnsureStopped();
+	//EnsureStarted();
 }

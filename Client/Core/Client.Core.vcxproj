@@ -73,6 +73,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -157,8 +158,8 @@
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
-    <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
-    <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h" />
+    <ClInclude Include="..\..\Shared\Network\PacketIdentifiers.h" />
+    <ClInclude Include="..\..\Shared\Network\RPCIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CContextData.h" />

@@ -57,19 +57,95 @@ bool CResource::Reload()
 		return false;
 	}
 
+	// Reset to root
+	pXML->nodeToRoot();
+
+	if(pXML->findNode("info"))
+	{
+		// Get the resource author
+		const char* szAuthor = pXML->getAttribute("author");
+
+		if(szAuthor)
+			m_strAuthor = szAuthor;
+
+		// Get the resource version
+		const char* szVersion = pXML->getAttribute("version");
+		if(szVersion)
+			m_iVersion = atoi(szVersion);
+	}
+
+	// Reset to root
+	pXML->nodeToRoot();
+
+	if(pXML->findNode("include"))
+	{
+		while(true)
+		{
+			if(!strcmp(pXML->nodeName(),"include"))
+			{
+				const char* szIncludeResource = pXML->getAttribute("resource");
+
+				// TODO implement includes
+				CLogFile::Printf("\t[TODO] Implement includes");
+			}
+			// Attempt to load the next include node (if any)
+			if(!pXML->nextNode())
+				break;
+		}
+	}
+
+	// Reset to root
+	pXML->nodeToRoot();
+
 	// Get the first script node
 	if(pXML->findNode("script"))
 	{
 		while(true)
 		{
-			// Get the script name
-			CString strScript = pXML->nodeContent();
+			if(!strcmp(pXML->nodeName(), "script"))
+			{
+				CScript script;
+				// Get the script name
+				CString strScript = pXML->getAttribute("src");
 
-			// Make sure the name is valid and attempt to load the script
-			if(strScript && !strScript.IsEmpty())
-				m_Scripts.push_back(strScript);
+				// Make sure the name is valid and attempt to load the script
+				if(strScript && !strScript.IsEmpty())
+				{
+					script.SetScriptFilename(strScript);
 
+					CString scriptType = pXML->getAttribute("type");
+					if(scriptType == "client")
+					{
+						script.SetType(CLIENT_SCRIPT);
+					} else if(scriptType == "server") {
+						script.SetType(SERVER_SCRIPT);
+					} else if(scriptType == "shared") {
+						script.SetType(SHARED_SCRIPT);
+					}
+
+					m_Scripts.push_back(script);
+				}
+			}
 			// Attempt to load the next script node (if any)
+			if(!pXML->nextNode())
+				break;
+		}
+	}
+
+		// Reset to root
+	pXML->nodeToRoot();
+
+	// Get the first script node
+	if(pXML->findNode("file"))
+	{
+		while(true)
+		{
+			if(!strcmp(pXML->nodeName(), "file"))
+			{
+				CString strFile = pXML->getAttribute("src");
+
+				CLogFile::Printf("[TODO] Implement client file manager which handles resource client files");
+			}
 			if(!pXML->nextNode())
 				break;
 		}
@@ -86,12 +162,12 @@ bool CResource::Reload()
 bool CResource::Start()
 {
 	// if it's not a loaded, ignore it
-	if( GetState() != STATE_LOADED )
+	if(GetState() != STATE_LOADED)
 		return false;
 
 	// create a squirrel VM
 	m_pVM = new CSquirrel(this);
-	if( !m_pVM )
+	if(!m_pVM)
 	{
 		CLogFile::Printf("[%s] Failed to create Squirrel VM.", GetName().Get());
 		return false;
@@ -106,35 +182,39 @@ bool CResource::Start()
 	}*/
 
 	// show a message
-	CLogFile::Printf("[%s] Started resource.", GetName().Get());
+	CLogFile::Printf("\t[%s] Started resource.", GetName().Get());
 	m_eState = STATE_RUNNING;
 
 	// load all scripts, if at least one fails cancel the startup
-	if( !m_pVM->LoadScripts( m_Scripts ) )
+	if(!m_pVM->LoadScripts(m_Scripts))
 	{
 		m_eState = STATE_STARTUP_CANCELLED;
 		Stop();
 		return false;
 	}
 
-	// call 'resourceStart' event, if it fails then cancel the startup
-	/*if(!CallEvent( "resourceStart", NULL, true, false))
-	{
-		m_eState = STATE_STARTUP_CANCELLED;
-		Stop();
-		return false;
-	}*/
+	// call 'resourceStart' event,
+	CEvents::GetInstance()->Call("resourceStart", m_pVM);
+	//m_pVM->GetEvents()->Call("resourceStart");
+
+	//if it fails then cancel the startup
+	//	if(m_pVM->GetEvents()->Call("resourceStart", m_pVM))
+	//	{
+	//		m_eState = STATE_STARTUP_CANCELLED;
+	//		Stop();
+	//		return false;
+	//	}
 	return true;
 }
 
 bool CResource::Stop()
 {
 	// if it's not a valid resource, we can't stop it
-	if( GetState() != STATE_RUNNING && GetState() != STATE_STARTUP_CANCELLED )
+	if(GetState() != STATE_RUNNING && GetState() != STATE_STARTUP_CANCELLED)
 		return false;
 
-	//if( GetState() == STATE_RUNNING )
-	//	CallEvent("resourceStop", NULL, true, false);
+	if(GetState() == STATE_RUNNING)
+		CEvents::GetInstance()->Call("resourceStop", m_pVM);
 
 	// kill all timers
 	//SAFE_DELETE(m_pTimers);
@@ -155,7 +235,7 @@ bool CResource::IsValidMeta()
 
 void CResource::Process(unsigned long ulTime)
 {
-	if( GetState() == STATE_RUNNING )
+	if(GetState() == STATE_RUNNING)
 	{
 		// Execute all outstanding timers
 		//m_pTimers->Process(ulTime);

@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CNetworkClient.h
 // Project: Network.Core
@@ -20,24 +20,12 @@ class CNetworkClient : CRakNetInterface {
 private:
 	RakNet::RakPeer *		m_pNetPeer;
 	CRPCHandler *			m_pRpcHandler;
-	
-	// Connection status
-	struct sConnectionState
-	{
-		unsigned char ucState;
-		RakNet::SystemAddress m_serverAddress;
-		EntityId localPlayerId;
-		string strHost;
-		unsigned short usPort;
-		
-		bool IsDisconnected() { return ucState == 0; }
-		bool IsConnected() { return ucState == 3; }
-		bool IsConnecting() { return ucState > 0 && ucState < 3; }
-	} m_state;
+	sClientState m_state;
 
 	NetPacket * Receive();
 	PacketId ProcessPacket(RakNet::SystemAddress systemAddress, PacketId packetId, unsigned char * ucData, int iLength);
 	void DeallocatePacket(NetPacket * pPacket);
+	inline unsigned int Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, char cOrderingChannel = PACKET_CHANNEL_DEFAULT);
 
 public:
 	CNetworkClient();
@@ -46,7 +34,6 @@ public:
 	bool EnsureStarted();
 	void EnsureStopped(int iBlockDuration = 10);	
 	void Process();
-	sConnectionState GetState() { return m_state; }
 
 	void Connect(string strServerAddress, unsigned short usPort);
 	void Disconnect(bool bSendDisconnectionNotification = false, ePacketPriority disconnectionPacketPriority = PRIORITY_IMMEDIATE);
@@ -54,6 +41,7 @@ public:
 
 	CRPCHandler * GetRpcHandler() { return m_pRpcHandler; }
 	void SetRpcHandler(CRPCHandler * pRpcHandler) { m_pRpcHandler = pRpcHandler; }
+	sClientState GetState() { return m_state; }
 };
 
 #endif // CNetworkClient_h

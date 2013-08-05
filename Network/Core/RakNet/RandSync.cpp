@@ -1,6 +1,6 @@
 #include "RandSync.h"
 #include "BitStream.h"
-
+#define UINT_MAX 4294967295
 namespace RakNet
 {
 

@@ -25,16 +25,40 @@ CServer::~CServer()
 
 bool CServer::Startup()
 {
+	m_pEvents = new CEvents();
+
 	// Open the settings file
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
+#ifdef _WIN32
 		Sleep(3000);
+#else
+		sleep(3);
+#endif
 		return false;
 	}
 
+#ifdef _WIN32
+		 // Color stuff
+        CONSOLE_SCREEN_BUFFER_INFO csbiScreen;
+        WORD wOldColAttr;       // For input process.
+
+        GetConsoleScreenBufferInfo((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), &csbiScreen);
+        wOldColAttr = csbiScreen.wAttributes;
+
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+
+        // Print message to console.
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+#endif
 	CLogFile::Print("");
 	CLogFile::Print("====================================================================");
+
+#ifdef _WIN32
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+#endif
 
 
 	CLogFile::Print(" " VERSION_IDENTIFIER " " OS_STRING " Server");
@@ -51,11 +75,21 @@ bool CServer::Startup()
 
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 
-	CLogFile::Print("====================================================================");
+#ifdef _WIN32
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+        CLogFile::Print("====================================================================");
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+#else
+        CLogFile::Print("====================================================================");
+#endif
 
-	if(!m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress")))
+
+	RakNet::StartupResult startResult;
+	startResult = m_pNetServer->Start(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
+	if(PEER_IS_STARTED(startResult) == false)
 	{
-		CLogFile::Print("Failed to start network port.");
+		CLogFile::Print("Failed to initialize network component.");
+		CLogFile::Print(Network::GetErrorMessage(startResult));
 		return false;
 	}
 	
@@ -87,12 +121,22 @@ bool CServer::Startup()
 		CLogFile::Print("");
 	}
 
-	m_pResourceManager = new CResourceManager("resourcers/");
+	m_pResourceManager = new CResourceManager("resources/");
 
 	// Loading resources
-	CLogFile::Print("");
-	CLogFile::Print("========================= Loading Resources ========================");
-	
+#ifdef _WIN32
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
+        CLogFile::Print("");
+        CLogFile::Print("============ Loading Resources ===========");
+		CLogFile::Print("");
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+#else
+        CLogFile::Print("");
+        CLogFile::Print("============ Loading Resources ===========");
+		CLogFile::Print("");
+#endif
+
+
 	auto resources = CVAR_GET_LIST("resource");
 
 	int iResourcesLoaded = 0;
@@ -102,6 +146,7 @@ bool CServer::Startup()
 	{
 		if(!strResource.IsEmpty())
 		{
+			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
 			if(!m_pResourceManager->Load(strResource))
 			{
 				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
@@ -126,9 +171,18 @@ bool CServer::Startup()
 
 	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
 
-	CLogFile::Print("");
-	CLogFile::Print("====================================================================");
-	CLogFile::Print("");
+#ifdef _WIN32
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+        CLogFile::Print("");
+        CLogFile::Print("====================================================================");
+        CLogFile::Print("");
+        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+#else
+        CLogFile::Print("");
+        CLogFile::Print("====================================================================");
+        CLogFile::Print("");
+#endif
+
 	return true;
 }
 

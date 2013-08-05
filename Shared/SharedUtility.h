@@ -15,7 +15,10 @@
 #include <Windows.h>
 #else
 #include <sys/time.h>
+#if !defined(_DWORD_DEF)
 typedef unsigned long DWORD;
+#define _DWORD_DEF
+#endif
 #endif
 
 #include <string>
