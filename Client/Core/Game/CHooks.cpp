@@ -295,6 +295,39 @@ __declspec(naked) void CFunctionRetnPatch()
 	}
 }
 
+void _declspec(naked) CRASH_625F15_HOOK()
+{
+        _asm
+        {
+                test    eax, eax
+                jz              keks
+                cmp     eax, 100000h
+                jl              keks
+                mov     edx, [eax]
+                push    1
+                mov     ecx, edi
+                call    edx
+
+keks_patch:
+                mov     al, 1
+                pop     edi
+                pop     esi
+                pop     ebp
+                pop     ebx
+                add     esp, 0Ch
+                retn    4
+keks:
+                pushad
+        }
+
+		g_pCore->GetChat()->Output("Prevent crash at 0x625F15");
+
+        _asm
+        {
+                popad
+                jmp keks_patch
+        }
+}
 
 void CHooks::Intialize()
 {
@@ -328,4 +361,11 @@ void CHooks::Intialize()
 
 	// Hook texture select/generate function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
+
+	// This disables some calculate for modelinfo but it seems this is not necessary
+    // Maybe we can disable this patch
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
+
+    // this disables a call to a destructor of a member in rageResourceCache [field_244] 
+    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (DWORD)CRASH_625F15_HOOK /*(GetBase() + 0x625F1D)*/);
 }

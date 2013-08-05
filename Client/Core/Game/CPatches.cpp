@@ -85,6 +85,7 @@ void CPatches::Initialize()
     // Skip missing tests
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x402B12), 14);
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x402D17), 14);
+
     *(DWORD *)(g_pCore->GetBase() + 0x403870) = 0x90CC033; // xor eax, eax; retn
     *(DWORD *)(g_pCore->GetBase() + 0x404250) = 0x90CC033; // xor eax, eax; retn
 
@@ -95,11 +96,11 @@ void CPatches::Initialize()
     *(DWORD *)(g_pCore->GetBase() + 0xBAC1C0) = 0x90C301B0;
 
     // Fix vehicle crash -> 8 xrefs
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
+    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
 
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + /*0x5A932D*/0x5A8CB0), (g_pCore->GetBase() + 0x5A9361));
+    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + /*0x5A932D*/0x5A8CB0), (g_pCore->GetBase() + 0x5A9361));
 
     // Disable startup/runtime resource check
     *(BYTE*)(g_pCore->GetBase() + 0x119DB14) = 1;
@@ -112,10 +113,18 @@ void CPatches::Initialize()
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x811B6E), 5); // from init blip gtaiv func(startup)
         
     // Prevent crashes on player connect(associated with ped intelligence)
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x815380), (g_pCore->GetBase() + 0x8153D4));
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (g_pCore->GetBase() + 0x625F1D));
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xB2B24D), (g_pCore->GetBase() + 0xB2B259));
+    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x815380), (g_pCore->GetBase() + 0x8153D4));
+    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (g_pCore->GetBase() + 0x625F1D));
+    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xB2B24D), (g_pCore->GetBase() + 0xB2B259));
 
     // Disable weapon when entering vehicle
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x9C5994), 0x30);
+	
+    // This needs to be disabled due to some crashes and to enable the blocked vehicles such as uranus, hellfury, etc.
+    /* INFO: crash occure exactly when accessing dword_13BEEE0 this is related to ZonesNames, but disabling this function dont destroy anything
+    TODO: find what this function does
+    this function checks some flags in modelInfos and loading some models they seems to be not needed
+    This seems to be associated to loading models but they are not used!?
+    */
+    CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x8F2F40);
 }

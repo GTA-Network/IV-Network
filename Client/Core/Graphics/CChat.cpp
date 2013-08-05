@@ -9,6 +9,7 @@
 
 #include "CChat.h"
 #include <CCore.h>
+#include <Game/IVEngine/CIVModelManager.h>
 extern CCore * g_pCore;
 
 CChat::CChat(float fX, float fY)
@@ -348,7 +349,7 @@ void CChat::ProcessInput()
 			}
 			else if(strCommand == "cv")
 			{
-				int iVehicleType = atoi(strParams.c_str());
+				int iVehicleType = 90;
 
 				CVector3 vecCreatePos; 
 				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
@@ -356,16 +357,26 @@ void CChat::ProcessInput()
 				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
 				if(pVehicle)
 				{
-					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+					//pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
 
 					pVehicle->Create();
 
 					pVehicle->SetPosition(vecCreatePos);
+					
+					//pVehicle->SetModel (CIVModelManager::GetModelIndexFromHash(iVehicleType));
+				}
+			}
+			else if(strCommand == "cp")
+			{
+				CVector3 vecCreatePos; 
+				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
 
-					pVehicle->SetColors(0, 0, 0, 0);
+				CPlayerEntity * pPlayer = new CPlayerEntity(false);
+				if(pPlayer)
+				{
+					pPlayer->Create();
 
-					g_pCore->GetChat()->Outputf(false, "Successfully created vehicle %d", pVehicle->GetId());
-
+					pPlayer->Teleport(vecCreatePos);
 				}
 			}
 			else if(strCommand == "spawn")

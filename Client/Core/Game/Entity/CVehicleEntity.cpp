@@ -87,7 +87,7 @@ bool CVehicleEntity::Create()
 	m_pVehicle->SetCanBeVisiblyDamaged(false);
 
 	// Reset Indicators
-	SetIndicatorState(false,false,true,true);
+	SetIndicatorState(false,false,false,false);
 
 	// Mark as spawned
 	m_bSpawned = true;
