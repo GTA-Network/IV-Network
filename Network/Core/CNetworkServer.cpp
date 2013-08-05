@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CNetworkServer.cpp
 // Project: Network.Core
@@ -22,15 +22,15 @@ CNetworkServer::~CNetworkServer()
 	SAFE_DELETE(m_pNetPeer);
 }
 
-// Ensures peer is started with options. If start failed, returns false
-RakNet::StartupResult CNetworkServer::EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress)
+// Attempts to start raknet peer, returns result code
+RakNet::StartupResult CNetworkServer::Start(unsigned short usPort, int iMaxPlayers, string strHostAddress)
 {
 	RakNet::SocketDescriptor socketDescriptor(usPort, strHostAddress.Get()); 
 	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, THREAD_PRIORITY_NORMAL);
 	return res;
 }
 
-// Stops peer
+// Ensures our peer is stopped
 void CNetworkServer::EnsureStopped(int iBlockDuration)
 {
 	m_pNetPeer->Shutdown(iBlockDuration);
@@ -134,10 +134,8 @@ NetPacket * CNetworkServer::Receive()
 			// Do we have any packet data?
 			if(uiLength > 0)
 			{
-				// Allocate and set the packet data
-				pPacket->data = new unsigned char[uiLength];//(unsigned char *)malloc(uiLength);
-
-				// Copy the packet data
+				// Allocate and copy the packet data
+				pPacket->data = new unsigned char[uiLength];
 				memcpy(pPacket->data, ucData, uiLength);
 			}
 			else
@@ -241,11 +239,7 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	{
 		// Is this the player socket we are looking for?
 		if((*iter)->playerId == playerId)
-		{
-			// Return the player socket
 			return (*iter);
-			break;
-		}
 	}
 
 	return NULL;

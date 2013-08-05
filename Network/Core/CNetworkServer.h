@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/XForce/ivmultiplayer ================
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CNetworkServer.h
 // Project: Network.Core
@@ -31,7 +31,7 @@ public:
 	CNetworkServer();
 	~CNetworkServer();
 
-	RakNet::StartupResult EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress);
+	RakNet::StartupResult Start(unsigned short usPort, int iMaxPlayers, string strHostAddress);
 	void EnsureStopped(int iBlockDuration = 10);	
 	void Process();
 	unsigned int RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel);
