@@ -29,32 +29,27 @@ bool CServer::Startup()
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
-		Sleep(3000);
 		return false;
 	}
 
+	// Info
 	CLogFile::Print("");
 	CLogFile::Print("====================================================================");
-
-
 	CLogFile::Print(" " VERSION_IDENTIFIER " " OS_STRING " Server");
 	CLogFile::Print(" Copyright (C) 2009-2013 IV:MP Team");
 	CLogFile::Printf(" Port: %d", CVAR_GET_INTEGER("port"));
 	CLogFile::Printf(" HTTP Port: %d", CVAR_GET_INTEGER("httpport"));
 	CLogFile::Printf(" Query Port: %d", (CVAR_GET_INTEGER("queryport")));
-
 	if(CVAR_GET_STRING("hostaddress").IsNotEmpty())
 		CLogFile::Printf(" Host Address: %s", CVAR_GET_STRING("hostaddress").Get());
-
 	if(CVAR_GET_STRING("httpserver").IsNotEmpty())
 		CLogFile::Printf(" HTTP Server: %s", CVAR_GET_STRING("httpserver").Get());
-
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
-
 	CLogFile::Print("====================================================================");
 
+	// Try to start network component:
 	RakNet::StartupResult startResult;
-	startResult = m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
+	startResult = m_pNetServer->Start(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
 	if(PEER_IS_STARTED(startResult) == false)
 	{
 		CLogFile::Print("Failed to initialize network component.");
@@ -90,17 +85,17 @@ bool CServer::Startup()
 		CLogFile::Print("");
 	}
 
-	m_pResourceManager = new CResourceManager("resourcers/");
-
-	// Loading resources
+	// Load resources
 	CLogFile::Print("");
 	CLogFile::Print("========================= Loading Resources ========================");
-	
+
+	m_pResourceManager = new CResourceManager("resourcers/");
 	auto resources = CVAR_GET_LIST("resource");
 
 	int iResourcesLoaded = 0;
 	int iFailedResources = 0;
 
+	// Load wut?
 	for(auto strResource : resources)
 	{
 		if(!strResource.IsEmpty())
@@ -115,6 +110,7 @@ bool CServer::Startup()
 		}
 	}
 
+	// Load client resources
 	auto clientresources = CVAR_GET_LIST("clientresource");
 	for(auto strClientResource : clientresources)
 	{	
@@ -126,7 +122,6 @@ bool CServer::Startup()
 		/*else
 			iResourcesLoaded++;*/
 	}
-
 	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
 
 	CLogFile::Print("");

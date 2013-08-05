@@ -11,15 +11,15 @@
 #define NetCommon_h
 
 #include <Common.h>
-#include <Network/CPacketIdentifiers.h>
-#include <Network/CRPCIdentifiers.h>
+#include <Network/PacketIdentifiers.h>
+#include <Network/RPCIdentifiers.h>
 #include <Network/CBitStream.h>
 #include <Math/CVector3.h>
 
 // Macro
 #define PEER_IS_STARTED(res) (res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED)
 
-// to do: move it ...
+// to do: move it? ...
 namespace Network
 {
 	// Gets the problem description for failed peer startup result code

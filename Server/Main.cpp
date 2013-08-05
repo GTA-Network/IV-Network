@@ -21,22 +21,18 @@ int main(int argc, char ** argv)
 {
 	CServer* pServer = new CServer();
 
-	CLogFile::Open("ivmp-svr.log");
-
 	// Start our input thread which handles all the input
 	CThread inputThread;
+
+	// Start log file
+	CLogFile::Open("ivmp-svr.log");
 
 	// Start server and load all scripts
 	if(!pServer->Startup())
 	{
 		CLogFile::Printf("Failed to start server! Exiting in 10 seconds..");
 		Sleep(10 * 1000);
-#ifdef _WIN32
 		ExitProcess(EXIT_FAILURE);
-#else
-		exit(EXIT_FAILURE);
-#endif
-		return EXIT_FAILURE;
 	}
 
 	// Start input
@@ -58,9 +54,5 @@ int main(int argc, char ** argv)
 	SAFE_DELETE(pServer);
 
 	// Exit process
-#ifdef _WIN32
 	ExitProcess(EXIT_SUCCESS);
-#else
-	exit(EXIT_SUCCESS);
-#endif
 }
