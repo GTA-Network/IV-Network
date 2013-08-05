@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
 //
 // File: CIVWorld.cpp
 // Project: Client.Core
