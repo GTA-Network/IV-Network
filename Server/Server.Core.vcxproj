@@ -112,10 +112,13 @@
     <ClCompile Include="..\Shared\CSettings.cpp" />
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\CXML.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrel.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CSquirrelEventHandler.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
@@ -124,13 +127,16 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\Scripting\CEventHandler.h" />
+    <ClInclude Include="..\Shared\Scripting\CEvents.h" />
+    <ClInclude Include="..\Shared\Scripting\CResource.h" />
+    <ClInclude Include="..\Shared\Scripting\CResourceManager.h" />
+    <ClInclude Include="..\Shared\Scripting\CScript.h" />
+    <ClInclude Include="..\Shared\Scripting\CSquirrel.h" />
+    <ClInclude Include="..\Shared\Scripting\CSquirrelArgument.h" />
+    <ClInclude Include="..\Shared\Scripting\CSquirrelEventHandler.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
-    <ClInclude Include="Scripting\CScript.h" />
-    <ClInclude Include="Shared\Scripting\CResource.h" />
-    <ClInclude Include="Shared\Scripting\CResourceManager.h" />
-    <ClInclude Include="Shared\Scripting\CSquirrel.h" />
-    <ClInclude Include="Shared\Scripting\CSquirrelArgument.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

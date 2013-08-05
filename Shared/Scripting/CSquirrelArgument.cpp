@@ -9,11 +9,42 @@
 
 #include "CSquirrelArgument.h"
 #include <assert.h>
+#include <Squirrel/squirrel.h>
+#include <Squirrel/sqobject.h>
+#include <Squirrel/sqstring.h>
 
 CSquirrelArgument::CSquirrelArgument(CSquirrelArguments* pArray, bool isArray)
 {
 	type = isArray ? OT_ARRAY : OT_TABLE;
 	data.pArray=pArray;
+}
+
+CSquirrelArgument::CSquirrelArgument(SQObject o)
+{
+	type = o._type;
+
+	switch(type)
+	{
+	case OT_INTEGER:
+		data.i = o._unVal.nInteger;
+		break;
+	case OT_BOOL:
+		data.b = (o._unVal.nInteger != 0);
+		break;
+	case OT_FLOAT:
+		data.f = o._unVal.fFloat;
+		break;
+	case OT_STRING:
+		data.str = new CString(o._unVal.pString->_val);
+		break;
+	case OT_NATIVECLOSURE:
+	case OT_CLOSURE:
+		data.sqObject = o;
+		break;
+	case OT_INSTANCE:
+		data.pInstance = o._unVal.pInstance;
+		break;
+	}
 }
 
 CSquirrelArgument::~CSquirrelArgument()

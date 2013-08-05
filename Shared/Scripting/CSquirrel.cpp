@@ -1,3 +1,12 @@
+//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//
+// File: CSquirrel.cpp
+// Project: (Shared)
+// Author: xForce
+// License: See LICENSE in root directory
+//
+//==============================================================================
+
 #include "CSquirrel.h"
 #include "CSquirrelArgument.h"
 #include <CLogFile.h>
@@ -138,15 +147,16 @@ bool CSquirrel::LoadScript(CString script)
 		CLogFile::Printf("[%s] Failed to load file %s.", m_pResource->GetName().Get(), script.Get());
 		return false;
 	}
-	CLogFile::Printf("[%s] Loaded file %s.", m_pResource->GetName().Get(), script.Get());
+	CLogFile::Printf("\t[%s] Loaded file %s.", m_pResource->GetName().Get(), script.Get());
 	return true;
 }
 
-bool CSquirrel::LoadScripts(std::list<CString> scripts)
+bool CSquirrel::LoadScripts(std::list<CScript> scripts)
 {
 	for(auto strScript : scripts)
-		if(!LoadScript(strScript))
-			return false;
+		if(strScript.GetType() != CLIENT_SCRIPT)
+			if(!LoadScript(strScript.GetScriptFileName()))
+				return false;
 
 	return true;
 }
@@ -249,14 +259,42 @@ bool CSquirrel::Call(SQObjectPtr& pFunction, CSquirrelArguments* pArguments)
 	// Restore the stack top
 	sq_settop(m_pVM, iTop);
 
-	// delete the 'source' variable
-	sq_pushroottable(m_pVM);
-	sq_pushstring(m_pVM, "source", -1);
-	sq_deleteslot(m_pVM, -2, false);
+	//// delete the 'source' variable
+	//sq_pushroottable(m_pVM);
+	//sq_pushstring(m_pVM, "source", -1);
+	//sq_deleteslot(m_pVM, -2, false);
 
 	// return value dependant on the function's return (if it's a boolean false, then this will return false - otherwise true)
 	if( success )
 		return res._type != OT_BOOL || ( res._unVal.nInteger == 0 ? false : true );
 	else
 		return false;
+}
+
+void CSquirrel::Call(SQObjectPtr pFunction, CSquirrelArguments * pArguments, CSquirrelArgument * pReturn)
+{
+	// Get the stack top
+	int iTop = sq_gettop(m_pVM);
+
+	// Process the parameters if needed
+	int iParams = 1;
+
+	if(pArguments)
+	{
+		pArguments->push_to_vm(m_pVM);
+		iParams += pArguments->GetArguments()->size();
+	}
+
+	// Call the function
+	SQObjectPtr res;
+
+	if(m_pVM->Call(pFunction, iParams, m_pVM->_top-iParams, res, true))
+	{
+		// Set the return value if needed
+		if(pReturn)
+			*pReturn = res;
+	}
+
+	// Restore the stack top
+	sq_settop(m_pVM, iTop);
 }

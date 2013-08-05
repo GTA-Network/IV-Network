@@ -162,6 +162,15 @@
     <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScript.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSquirrelEventHandler.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -170,19 +179,28 @@
     <ClInclude Include="CInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\CScript.h">
-      <Filter>Header Files\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="Shared\Scripting\CResource.h">
+    <ClInclude Include="..\Shared\Scripting\CScript.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CSquirrel.h">
+    <ClInclude Include="..\Shared\Scripting\CEvents.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CResourceManager.h">
+    <ClInclude Include="..\Shared\Scripting\CResource.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\Scripting\CSquirrelArgument.h">
+    <ClInclude Include="..\Shared\Scripting\CResourceManager.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrel.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelArgument.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelEventHandler.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CEventHandler.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>

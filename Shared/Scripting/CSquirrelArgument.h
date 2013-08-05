@@ -29,6 +29,8 @@ public:
 		float f;
 		CString* str;
 		CSquirrelArguments* pArray;
+		SQObject sqObject;
+		SQInstance * pInstance;
 	} data;
 
 	CSquirrelArgument(){type=OT_NULL;}
@@ -37,6 +39,7 @@ public:
 	CSquirrelArgument(float f){type=OT_FLOAT; data.f=f;}
 	CSquirrelArgument(CString* str){type=OT_STRING; data.str = new CString(*str);} // clone the string instead of referencing it
 	CSquirrelArgument(CSquirrelArguments* pArray, bool isArray);
+	CSquirrelArgument(SQObject o);
 
 	~CSquirrelArgument();
 
