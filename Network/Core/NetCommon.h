@@ -16,7 +16,49 @@
 #include <Network/CBitStream.h>
 #include <Math/CVector3.h>
 
-// Represents a player socket on server
+// Macro
+#define PEER_IS_STARTED(res) (res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED)
+
+// to do: move it ...
+namespace Network
+{
+	// Gets the problem description for failed peer startup result code
+	static string GetErrorMessage(RakNet::StartupResult startResult)
+	{
+		switch(startResult)
+		{
+		case RakNet::INVALID_SOCKET_DESCRIPTORS:
+			return "Invalid peer configuration.";
+
+		case RakNet::INVALID_MAX_CONNECTIONS:
+			return "Invalid peer \"maxConnections\" option.";
+
+		case RakNet::SOCKET_FAMILY_NOT_SUPPORTED:
+			return "Socket family requested is not supported (IPv6?).";
+
+		case RakNet::SOCKET_FAILED_TO_BIND:
+		case RakNet::PORT_CANNOT_BE_ZERO:
+		case RakNet::SOCKET_PORT_ALREADY_IN_USE:
+			return "Failed bind on specified port number in system (port is already in use?)";
+
+		case RakNet::SOCKET_FAILED_TEST_SEND:
+			return "Failed to finish bind (platform/system issue?).";
+
+		case RakNet::FAILED_TO_CREATE_NETWORK_THREAD:
+			return "Failed to create network thread.";
+
+		case RakNet::COULD_NOT_GENERATE_GUID:
+			return "Could not generate GUID.";
+
+		case RakNet::STARTUP_OTHER_FAILURE:
+			return "Unknown peer startup problem.";			
+		}
+
+		return NULL;
+	}
+};
+
+// Represents a player socket (used on server)
 class CNetPlayerSocket 
 {
 public:
@@ -50,9 +92,58 @@ public:
 struct NetPacket
 {
 	PacketId id;
-	CNetPlayerSocket * pPlayerSocket;
 	unsigned int dataSize;
 	unsigned char * data;
+
+	CNetPlayerSocket * pPlayerSocket; // used on server only
+};
+
+// indicates in which step of connecting/joining some server we are now
+enum eClientStateCode
+{
+	CLIENT_DISCONNECTED,
+	CLIENT_CONNECTING,
+	CLIENT_JOINING,
+	CLIENT_CONNECTED,//joined
+};
+
+// Client state description
+struct sClientState
+{
+	RakNet::StartupResult peerStateCode;
+	RakNet::SystemAddress m_serverAddress;	// raknet server address
+	EntityId localPlayerId;					// our playerId on server
+	eClientStateCode joinState;			// server connection state
+	string strServerOriginal;				// original server address string (for example domain name) used to connect
+
+	// disconnected from any server, and we are not connecting/joining at the moment
+	bool IsDisconnected()			{ return joinState == CLIENT_DISCONNECTED; }
+	// connecting to any server atm?
+	bool IsConnecting()				{ return joinState == CLIENT_CONNECTING;; }
+	// finished connection sequence to server (now joining or joined)?
+	bool IsConnected()				{ return joinState > CLIENT_CONNECTING; }
+	// connected to server and joining?
+	bool IsJoining()				{ return joinState == CLIENT_JOINING; }
+	// finished joining server (online!)?
+	bool IsJoined()					{ return joinState == CLIENT_CONNECTED; }
+
+	// peer initialization ok?
+	bool IsPeerStarted()			{ return PEER_IS_STARTED(peerStateCode); }
+	// error message of peer startup
+	string GetStartupErrorMessage() { return Network::GetErrorMessage(peerStateCode); }
+
+	// server IP address
+	string GetServerIP()			{ return inet_ntoa(m_serverAddress.address.addr4.sin_addr); }
+	// server port number
+	unsigned short GetServerPort()	{ return ntohs(m_serverAddress.address.addr4.sin_port); }
+
+	// clear state (only when disconnecting..)
+	void Clear()
+	{
+		localPlayerId = INVALID_ENTITY_ID;
+		strServerOriginal.Free();
+		joinState = CLIENT_DISCONNECTED;
+	}
 };
 
 // Enumerates supported mode of packet reliability

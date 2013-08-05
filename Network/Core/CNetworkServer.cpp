@@ -23,15 +23,11 @@ CNetworkServer::~CNetworkServer()
 }
 
 // Ensures peer is started with options. If start failed, returns false
-bool CNetworkServer::EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress)
+RakNet::StartupResult CNetworkServer::EnsureStarted(unsigned short usPort, int iMaxPlayers, string strHostAddress)
 {
 	RakNet::SocketDescriptor socketDescriptor(usPort, strHostAddress.Get()); 
 	RakNet::StartupResult res = m_pNetPeer->Startup(iMaxPlayers, &socketDescriptor, 1, THREAD_PRIORITY_NORMAL);
-
-	if(res == RakNet::RAKNET_STARTED) 
-		m_pNetPeer->SetMaximumIncomingConnections(iMaxPlayers);
-
-	return res == RakNet::RAKNET_STARTED || res == RakNet::RAKNET_ALREADY_STARTED;
+	return res;
 }
 
 // Stops peer
@@ -179,9 +175,63 @@ void CNetworkServer::DeallocatePacket(NetPacket * pPacket)
 			m_playerSocketsList.remove(pPlayerSocket);
 	}
 
-	SAFE_DELETE(pPacket->data);
+	SAFE_FREE(pPacket->data);
 	SAFE_DELETE(pPacket);
 }
+
+// Network server pulse
+void CNetworkServer::Process()
+{
+	NetPacket * pPacket = NULL;
+
+	// Loop until we have processed all packets in the packet queue (if any)
+	while(pPacket = Receive())
+	{
+		if(m_pRpcHandler)
+			m_pRpcHandler->HandlePacket(pPacket);
+
+		// Deallocate the packet memory used
+		DeallocatePacket(pPacket);
+	}
+}
+
+// Sends RPC message to player
+unsigned int CNetworkServer::RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
+{
+	if(IsPlayerConnected(playerId) == false)
+		return 0;
+	
+	int dataLength = pBitStream->GetNumberOfBytesUsed();
+
+	// Create bitStream with RPC identifier and data from bitStream argument
+	CBitStream bitStream(sizeof(PacketId) + sizeof(RPCIdentifier) + dataLength);
+	bitStream.Write((PacketId)PACKET_RPC);
+	bitStream.Write(rpcId);
+    bitStream.Write((char *)pBitStream->GetData(), dataLength);
+
+	return Send(&bitStream, priority, reliability, playerId, bBroadcast, cOrderingChannel);
+}
+
+// Send BitStream to player
+unsigned int CNetworkServer::Send(CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
+{
+	return m_pNetPeer->Send((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed(), 
+		(PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel,
+		m_pNetPeer->GetSystemAddressFromIndex(playerId), bBroadcast);
+}
+
+// Closes the connection to a client (optionally sends notification)
+void CNetworkServer::DisconnectPlayer(EntityId playerId, bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority)
+{
+	m_pNetPeer->CloseConnection(
+		m_pNetPeer->GetSystemAddressFromIndex(playerId), 
+		bSendDisconnectionNotification, 0, (PacketPriority)disconnectionPacketPriority);
+}
+
+
+
+
+
 
 // Returns socket for specified player
 CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
@@ -201,9 +251,10 @@ CNetPlayerSocket * CNetworkServer::GetPlayerSocket(EntityId playerId)
 	return NULL;
 }
 
+// Returns true if specified playerId is not invalid and player is connected
 bool CNetworkServer::IsPlayerConnected(EntityId playerId)
 {
-	return GetPlayerSocket(playerId) != NULL;
+	return (playerId != INVALID_ENTITY_ID && GetPlayerSocket(playerId) != NULL);
 }
 
 // Add RakNet peer ban for specified ip for time period
@@ -228,44 +279,4 @@ int CNetworkServer::GetPlayerLastPing(EntityId playerId)
 int CNetworkServer::GetPlayerAveragePing(EntityId playerId)
 {
 	return m_pNetPeer->GetAveragePing(m_pNetPeer->GetSystemAddressFromIndex(playerId));
-}
-
-// Network server pulse
-void CNetworkServer::Process()
-{
-	NetPacket * pPacket = NULL;
-
-	// Loop until we have processed all packets in the packet queue (if any)
-	while(pPacket = Receive())
-	{
-		if(m_pRpcHandler)
-			m_pRpcHandler->HandlePacket(pPacket);
-
-		// Deallocate the packet memory used
-		DeallocatePacket(pPacket);
-	}
-}
-
-// Sends RPC packet
-unsigned int CNetworkServer::RPC(eRPCIdentifier rpcId, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, EntityId playerId, bool bBroadcast, char cOrderingChannel)
-{
-	if(playerId != INVALID_ENTITY_ID && !IsPlayerConnected(playerId))
-		return 0;
-
-	CBitStream bitStream;
-	bitStream.Write((PacketId)PACKET_RPC);
-	bitStream.Write(rpcId);
-    bitStream.Write((char *)pBitStream->GetData(), pBitStream->GetNumberOfBytesUsed());
-
-	return m_pNetPeer->Send((char *)bitStream.GetData(), bitStream.GetNumberOfBytesUsed(), 
-		(PacketPriority)priority, (PacketReliability)reliability, cOrderingChannel,
-		(playerId == INVALID_ENTITY_ID) ? RakNet::UNASSIGNED_SYSTEM_ADDRESS : m_pNetPeer->GetSystemAddressFromIndex(playerId), bBroadcast);
-}
-
-// Closes connection to a client (optionally send notification)
-void CNetworkServer::DisconnectPlayer(EntityId playerId, bool bSendDisconnectionNotification, ePacketPriority disconnectionPacketPriority)
-{
-	m_pNetPeer->CloseConnection(
-		m_pNetPeer->GetSystemAddressFromIndex(playerId), 
-		bSendDisconnectionNotification, 0, (PacketPriority)disconnectionPacketPriority);
 }

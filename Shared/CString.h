@@ -27,6 +27,7 @@ public:
 
 	CString() { Init(); }
 	CString(const char * szFormat, ...);
+	~CString() { Free(); } // Dunno is this needed or not
 
 	operator const char * () const;
 	CString& operator = (const char * szString);

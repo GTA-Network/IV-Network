@@ -22,7 +22,7 @@
 #endif
 
 #define BUFFER_SIZE 8192
-#define NPOS 77777
+#define NPOS std::string::npos // 77777? CrackHD: Find() and some other things will return actually std::string::npos, so 7777 will be incorrect ..
 
 const unsigned int CString::Limit = std::string::npos;
 
