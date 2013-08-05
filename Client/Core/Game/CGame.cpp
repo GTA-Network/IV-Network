@@ -33,6 +33,9 @@ CBlipManager				*CGame::m_pBlipManager = 0;
 CCheckpointManager			*CGame::m_pCheckpointManager = 0;
 CCharacterManager			*CGame::m_pCharacterManager = 0;
 bool						CGame::m_LocalPlayerInitialised = 0;
+CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
+CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
+
 /*
 	==== Why WaitForGameStartup ====
 	We can load/start the game in the background and request all resources while the player is in the main menu.

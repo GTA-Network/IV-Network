@@ -8,7 +8,10 @@
 //==============================================================================
 
 #include "CIVWeapon.h"
-#include "../CGame.h"
+#include <Game/CGame.h>
+
+#include <CCore.h>
+extern CCore * g_pCore;
 
 CIVWeapon::CIVWeapon(IVWeapon * pWeapon) : m_pWeapon(pWeapon)
 {
@@ -23,7 +26,7 @@ CIVWeapon::~CIVWeapon()
 void CIVWeapon::Initialize(eWeaponType weaponType, DWORD dwAmmo, bool bIsPedWeapon)
 {
 	IVWeapon * pWeapon = m_pWeapon;
-	DWORD dwFunc = (CGame::GetBase() + 0x976C20); // CWeapon::Initialize
+	DWORD dwFunc = (g_pCore->GetBase() + 0x976C20); // CWeapon::Initialize
 	_asm
 	{
 		push bIsPedWeapon
@@ -52,7 +55,7 @@ eWeaponSlot CIVWeapon::GetSlot()
 {
 	if(m_pWeapon)
 	{
-		CIVWeaponInfo * pWeaponInfo = CGame::GetWeaponInfo(m_pWeapon->m_weaponType);
+		CIVWeaponInfo * pWeaponInfo = g_pCore->GetGame()->GetWeaponInfo(m_pWeapon->m_weaponType);
 
 		if(pWeaponInfo)
 			return pWeaponInfo->GetWeaponInfo()->m_slot;
@@ -87,7 +90,7 @@ WORD CIVWeapon::GetClipSize()
 {
 	if(m_pWeapon)
 	{
-		CIVWeaponInfo * pWeaponInfo = CGame::GetWeaponInfo(m_pWeapon->m_weaponType);
+		CIVWeaponInfo * pWeaponInfo = g_pCore->GetGame()->GetWeaponInfo(m_pWeapon->m_weaponType);
 
 		if(pWeaponInfo)
 			return pWeaponInfo->GetWeaponInfo()->m_wClipSize;

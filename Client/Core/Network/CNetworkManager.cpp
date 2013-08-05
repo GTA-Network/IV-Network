@@ -92,7 +92,7 @@ void CNetworkManager::Disconnect()
 	SetNetworkState(NETSTATE_DISCONNECTED);
 }
 
-void CNetworkManager::ConnectionAccepted(CPacket * pPacket)
+void CNetworkManager::ConnectionAccepted(NetPacket * pPacket)
 {
 	// Set the network state
 	SetNetworkState(NETSTATE_AWAIT_JOIN);

@@ -1,22 +1,25 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
 //
 // File: CIVTrain.cpp
 // Project: Client.Core
-// Author(s): DMA, FRi
+// Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
+#include "CIVTrain.h"
+
 // NOTE: WORK IN PROGRESS; DO NOT CHANGE THIS FILE!!
 // Question: do we get the scripting handle or the ivtrain class pointer back?
 
-#include "CIVTrain.h"
-#include "../Scripting.h"
+#include <IV/CIVScript.h>
 
+#include <CCore.h>
+extern CCore * g_pCore;
 // Disable C4748 warning...
 #pragma warning( disable : 4748 )
 
-CIVTrain::CIVTrain(EntityId trainId, DWORD dwTrainPointer, String strTrainName)
+CIVTrain::CIVTrain(EntityId trainId, DWORD dwTrainPointer, CString strTrainName)
 {
 	// Reset our train stuff
 	m_dwPointer = NULL;
@@ -34,7 +37,7 @@ CIVTrain::~CIVTrain()
 {
 	// Just delete our data and remove the train
 	unsigned int uiScriptingHandle = m_pTrain->dwHandle;
-	Scripting::DeleteMissionTrain(&uiScriptingHandle);
+	//Scripting::DeleteMissionTrain(&uiScriptingHandle);
 
 	// Delete our train instance
 	SAFE_DELETE(m_pTrain);
@@ -72,7 +75,7 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 	DWORD dwPointer;
 
 	// Define our call address
-	DWORD FUNC_CTrain__CreateTrain = (CGame::GetBase() + 0x94A240);
+	DWORD FUNC_CTrain__CreateTrain = (g_pCore->GetBase() + 0x94A240);
 
 	if(trainRegisterId == 1)
 	{
@@ -91,14 +94,14 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		unsigned int wHandle = NULL;
 
 		// Check if our train already exists
-		BYTE dwCheck = *(BYTE *)(CGame::GetBase() + 0x015BE4BC);
+		BYTE dwCheck = *(BYTE *)(g_pCore->GetBase() + 0x015BE4BC);
 		if(dwCheck != NULL)
 			return;
 
 		// Create our train
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
-		short unkownLoc = (CGame::GetBase() + 0x94A743);
+		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
 		_asm
 		{
 			pushf
@@ -165,14 +168,14 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		unsigned int wHandle = NULL;
 
 		// Check if our train already exists
-		BYTE dwCheck = *(BYTE *)(CGame::GetBase() + 0x015BE4C0);
+		BYTE dwCheck = *(BYTE *)(g_pCore->GetBase() + 0x015BE4C0);
 		if(dwCheck != NULL)
 			return;
 		
 		// Create our train
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
-		short unkownLoc = (CGame::GetBase() + 0x94A743);
+		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
 		_asm
 		{
 			pushf
@@ -238,14 +241,14 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		unsigned int wHandle = NULL;
 
 		// Check if our train already exists
-		BYTE dwCheck = *(BYTE *)(CGame::GetBase() + 0x015BE4C4);
+		BYTE dwCheck = *(BYTE *)(g_pCore->GetBase() + 0x015BE4C4);
 		if(dwCheck != NULL)
 			return;
 
 		// Create our train
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
-		short unkownLoc = (CGame::GetBase() + 0x94A743);
+		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
 		_asm
 		{
 			pushf
@@ -311,14 +314,14 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		unsigned int wHandle = NULL;
 
 		// Check if our train already exists
-		BYTE dwCheck = *(BYTE*)(CGame::GetBase() + 0x015BE4C8);
+		BYTE dwCheck = *(BYTE*)(g_pCore->GetBase() + 0x015BE4C8);
 		if(dwCheck != NULL)
 			return;
 
 		// Create our train
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
-		short unkownLoc = (CGame::GetBase() + 0x94A743);
+		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
 		_asm
 		{
 			pushf
