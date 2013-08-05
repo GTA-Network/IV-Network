@@ -112,7 +112,8 @@
     <ClCompile Include="..\Shared\CSettings.cpp" />
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\CXML.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
+    <ClCompile Include="..\Shared\Network\CBitStream.cpp" />
+	<ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
@@ -127,6 +128,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\Network\CBitStream.h" />
+    <ClInclude Include="..\Shared\Network\PacketIdentifiers.h" />
+    <ClInclude Include="..\Shared\Network\RPCIdentifiers.h" />
     <ClInclude Include="..\Shared\Scripting\CEventHandler.h" />
     <ClInclude Include="..\Shared\Scripting\CEvents.h" />
     <ClInclude Include="..\Shared\Scripting\CResource.h" />

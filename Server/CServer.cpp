@@ -81,7 +81,7 @@ bool CServer::Startup()
 
 
 	RakNet::StartupResult startResult;
-	startResult = m_pNetServer->EnsureStarted(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
+	startResult = m_pNetServer->Start(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
 	if(PEER_IS_STARTED(startResult) == false)
 	{
 		CLogFile::Print("Failed to initialize network component.");
