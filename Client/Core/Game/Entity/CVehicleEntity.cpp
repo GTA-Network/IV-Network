@@ -83,8 +83,8 @@ bool CVehicleEntity::Create()
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(uiVehicleHandle));
 
 	// Disable damage
-	m_pVehicle->SetCarCanBeDamaged(false);
-	m_pVehicle->SetCanBeVisiblyDamaged(false);
+	//m_pVehicle->SetCarCanBeDamaged(false);
+	//m_pVehicle->SetCanBeVisiblyDamaged(false);
 
 	// Reset Indicators
 	SetIndicatorState(false,false,false,false);
