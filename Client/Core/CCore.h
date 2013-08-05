@@ -100,6 +100,8 @@ public:
 	unsigned short					GetPort( ) { return m_usPort; }
 	void							SetPass( CString strPass ) { m_strPass = strPass; }
 	CString							GetPass( ) { return m_strPass; }
+
+	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
 };
 
 #endif // CCore_h

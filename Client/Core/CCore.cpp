@@ -44,6 +44,8 @@ bool CCore::Initialise()
 	// Get the application base address
 	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
 
+	CLogFile::Printf("Game Base: 0x%p (0x%p)", m_uiBaseAddress, (m_uiBaseAddress - 0x400000));
+
 	// Subtract the image size from the base address
 	m_uiBaseAddress -= 0x400000;
 

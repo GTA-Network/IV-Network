@@ -123,6 +123,11 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			return true;
 		}
 
+		if(uMsg == WM_KEYUP && wParam == VK_F12)
+		{
+			DWORD dwFunction = (g_pCore->GetBase() + 0x41FD90);
+			_asm call dwFunction;
+		}
 		if(g_pCore->GetChat())
 			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);
 
