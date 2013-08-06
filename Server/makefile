@@ -17,7 +17,7 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) -m32 -lpthread -ldl -o $@
 
 dir:
-	mkdir ../Binary
+	mkdir -p ../Binary
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@

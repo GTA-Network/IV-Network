@@ -94,6 +94,7 @@ bool CServer::Startup()
 	}
 	
 	// Load modules
+	// Note: modules not implemented yet coming soon
 	auto modules = CVAR_GET_LIST("module");
 	if(modules.size() > 0)
 	{
@@ -177,6 +178,8 @@ bool CServer::Startup()
 void CServer::Process()
 {
 	m_pNetServer->Process();
+
+	m_pResourceManager->Process(0);
 }
 
 void CServer::Shutdown()

@@ -14,4 +14,18 @@
 
 #include "CVehicleNatives.h"
 
+#include "CActorNatives.h"
+
+#include "CBlipNatives.h"
+
+#include "CCheckpointNatives.h"
+
+#include "CObjectNatives.h"
+
+#include "CPickupNatives.h"
+
+#include "CServerNatives.h"
+
+#include "C3DLabelNatives.h"
+
 #endif // Natives_h
