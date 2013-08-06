@@ -24,7 +24,7 @@ CChat::CChat(float fX, float fY)
 	m_bMap = false;
 	m_bOldState = false;
 	m_uiNumLines = CHAT_MAX_LINES;
-	m_uiMostRecentLine = 0;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_TextColor = CHAT_TEXT_COLOR;
 	m_InputTextColor = CColor(255, 255, 255, 255);
 	m_iRenderLines = 10;
@@ -81,24 +81,24 @@ void CChat::Render()
 	float fOffsetY = (m_iRenderLines * fLineDifference + 10.0f);
 
 	// Apply line smooth scroll
-	unsigned int uiLine = (m_uiMostRecentLine % m_iRenderLines);
+	unsigned int uiLine = m_uiMostRecentLine + m_uiScrollOffset;
 	unsigned int uiLinesDrawn = 0;
 
 	// Loop over all chatlines
-	while(m_Lines[ uiLine ].IsActive() && uiLinesDrawn < m_uiNumLines)
+	while (uiLinesDrawn < m_iRenderLines)
 	{
 		// Draw the current line
-		m_Lines[ uiLine ].Draw(m_fX, fOffsetY, 255, true);
+		m_Lines[uiLine].Draw(m_fX, fOffsetY, 255, true);
 
 		// Adjust the offset
 		fOffsetY -= fLineDifference;
 
 		// Increment the lines drawn
-		uiLine = (uiLine + 1) % m_iRenderLines;
+		uiLine++;
 		uiLinesDrawn++;
 
 		// Is this line the end?
-		if(uiLine == m_uiMostRecentLine)
+		if(uiLine >= CHAT_MAX_LINES)
 			break;
 	}
 
@@ -121,9 +121,23 @@ void CChat::Output(const char * szText, bool bColorCoded)
 
 	do
 	{
-		m_uiMostRecentLine = (m_uiMostRecentLine == 0 ? m_iRenderLines - 1 : m_uiMostRecentLine - 1);
+		//m_uiMostRecentLine = (m_uiMostRecentLine == 0 ? CHAT_MAX_LINES - 1 : m_uiMostRecentLine - 1);
+		if (m_uiMostRecentLine == 0)
+		{
+			// Making space for the new line
+			for (int i = CHAT_MAX_LINES - 2; i >= 0; i--)
+			{
+				CLogFile::Printf ("Moving %d to %d", i, i+1);
+				m_Lines [i + 1] = m_Lines [i];
+			}
+			m_uiMostRecentLine = 0;
+		}
+		else
+		{
+			m_uiMostRecentLine--;
+		}
 		
-		pLine = &m_Lines[ m_uiMostRecentLine ];
+		pLine = &m_Lines[m_uiMostRecentLine];
 		
 		if(pLine)
 		{
@@ -152,10 +166,10 @@ void CChat::Clear()
 {
 	for(int i = 0; i < CHAT_MAX_LINES; i++)
 	{
-		m_Lines[ i ].SetActive(false);
+		m_Lines[i].SetActive(false);
 	}
 
-	m_uiMostRecentLine = 0;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_fSmoothScroll = 0;
 }
 
@@ -186,6 +200,10 @@ void CChat::SetInputVisible(bool bVisible)
 
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 {
+	// Are we visible and ingame? (Fixes crash while not ingame)
+	if (!IsVisible() || g_pCore->GetClientState() != GAME_STATE_INGAME)
+		return false;
+
 	// Was it a key release?
 	if(uMsg == WM_KEYUP)
 	{
@@ -505,14 +523,21 @@ void CChat::SetInput(CString strText)
 
 void CChat::ScrollUp()
 {
-	
+	// Are there enough lines to scroll up?
+	if (m_uiMostRecentLine + m_iRenderLines + m_uiScrollOffset < CHAT_MAX_LINES)
+		m_uiScrollOffset = m_uiScrollOffset + m_iRenderLines;
 }
 
 void CChat::ScrollDown()
 {
+	// Are there any lines to scroll down?
+	if (m_uiScrollOffset > 0)
+		m_uiScrollOffset = m_uiScrollOffset - m_iRenderLines;
 	
+	// Is our index lower than the current line?
+	if (m_uiScrollOffset < m_uiMostRecentLine)
+		m_uiScrollOffset = 0;
 }
-
 void CChat::AddToHistory()
 {
 	// Align the history

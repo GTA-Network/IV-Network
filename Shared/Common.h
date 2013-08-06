@@ -166,7 +166,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 #define	CHAT_LINE_SPACING 3
 #define	CHAT_RENDER_LINES 20
-#define	CHAT_MAX_LINES CHAT_RENDER_LINES // for now cause we don't have any chat pages
+#define	CHAT_MAX_LINES 200
 
 #define	CHAT_COMMAND_CHAR '/'
 #define	CHAT_MAX_HISTORY 12

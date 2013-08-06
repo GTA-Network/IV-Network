@@ -181,7 +181,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
 
 	// Render our chat instance
-	if(m_pChat)
+	if(m_pChat && m_pChat->IsVisible())
 		m_pChat->Render();
 
 	// Before rendering FPS-Counter instance, update FPS display

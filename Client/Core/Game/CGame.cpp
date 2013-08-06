@@ -75,6 +75,9 @@ void CGame::Setup()
 		m_weaponInfos[i].SetType((eWeaponType)i);
 		m_weaponInfos[i].SetWeaponInfo((IVWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(IVWeaponInfo))));
 	}
+
+	// Hide the chat
+	g_pCore->GetChat()->SetVisible (false);
 }
 
 void CGame::Initialise()
@@ -125,6 +128,9 @@ void CGame::Initialise()
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pCheckpointManager)
 		m_pCheckpointManager = new CCheckpointManager;
+
+	// Show the chat
+	g_pCore->GetChat()->SetVisible (true);
 	
 	OnEnvironmentStartUp(false);
 
