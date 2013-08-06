@@ -27,6 +27,17 @@ bool CServer::Startup()
 {
 	m_pEvents = new CEvents();
 
+	// Create all the managers
+	m_pPlayerManager = new CPlayerManager();
+	m_pVehicleManager = new CVehicleManager();
+	m_pActorManager = new CActorManager();
+	m_pObjectManager = new CObjectManager();
+	m_pFireManager = new CFireManager();
+	m_pPickupManager = new CPickupManager();
+	m_p3DLabelManager = new C3DLabelManager();
+	m_pBlipManager = new CBlipManager();
+	m_pCheckpointManager = new CCheckpointManager();
+
 	// Open the settings file
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{

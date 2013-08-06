@@ -195,6 +195,57 @@
     <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp">
       <Filter>Source Files\Scripting\Natives</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\Natives\CVehicleNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CActorNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CBlipNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CCheckpointNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CObjectNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CPickupNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CServerNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\C3DLabelEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CActorEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CBlipEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CCheckpointEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CFireEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CNetworkEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CObjectEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CPickupEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CPlayerEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -236,9 +287,6 @@
     <ClInclude Include="..\Shared\Scripting\CEventHandler.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\CNetworkEntity.h">
-      <Filter>Header Files\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Scripting\Natives\CPlayerNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
@@ -271,6 +319,42 @@
     </ClInclude>
     <ClInclude Include="Scripting\Natives\CVehicleNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CPlayerEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CNetworkEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\C3DLabelEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CActorEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CBlipEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CCheckpointEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CEntityManager.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CFireEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CObjectEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CPickupEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CVehicleEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Entities.h">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
