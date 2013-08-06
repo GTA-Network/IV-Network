@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Scripting\Natives">
       <UniqueIdentifier>{da2dbf92-1ad0-4999-a772-a54824126988}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{392fdcb6-0134-41e2-93be-f2521ce87a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{ff853314-74c0-48bb-9934-3898f08b5438}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -246,6 +252,12 @@
     <ClCompile Include="Entity\CPlayerEntity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Entity\CVehicleEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CServerRPCHandler.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -355,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="Entity\Entities.h">
       <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CServerRPCHandler.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,7 +13,11 @@
 #include <limits.h>
 #define UINT_MAX 4294967295
 #include "Common.h"
-#include "CNetworkServer.h"
+
+#include <CNetworkServer.h>
+
+#include <Network/CServerRPCHandler.h>
+
 #include <Scripting/CResourceManager.h>
 #include <Scripting/CEvents.h>
 
@@ -26,7 +30,7 @@ typedef CEntityManager<CActorEntity, MAX_ACTORS> CActorManager;
 typedef CEntityManager<CObjectEntity, MAX_OBJECTS> CObjectManager;
 typedef CEntityManager<CFireEntity, MAX_FIRE> CFireManager;
 typedef CEntityManager<CPickupEntity, MAX_PICKUPS> CPickupManager;
-typedef CEntityManager<C3DLabelEntity, 0xFFFE> C3DLabelManager;
+typedef CEntityManager<C3DLabelEntity, MAX_3D_LABELS> C3DLabelManager;
 typedef CEntityManager<CBlipEntity, MAX_BLIPS> CBlipManager;
 typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 
@@ -34,6 +38,7 @@ class CServer {
 
 private:
 	CNetworkServer				* m_pNetServer;
+	CServerRPCHandler			* m_pRPCHandler;
 	CResourceManager			* m_pResourceManager;
 	CEvents						* m_pEvents;
 
@@ -56,6 +61,7 @@ public:
 	void	Shutdown();
 
 	CNetworkServer		*GetNetServer() { return m_pNetServer; }
+	CServerRPCHandler	*GetRPCHandler() { return m_pRPCHandler; }
 	CResourceManager	*GetResourceManager() { return m_pResourceManager; }
 
 

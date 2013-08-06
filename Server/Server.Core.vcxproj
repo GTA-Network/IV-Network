@@ -134,7 +134,9 @@
     <ClCompile Include="Entity\CObjectEntity.cpp" />
     <ClCompile Include="Entity\CPickupEntity.cpp" />
     <ClCompile Include="Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Network\CServerRPCHandler.cpp" />
     <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CActorNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Entity\CPlayerEntity.h" />
     <ClInclude Include="Entity\CVehicleEntity.h" />
     <ClInclude Include="Entity\Entities.h" />
+    <ClInclude Include="Network\CServerRPCHandler.h" />
     <ClInclude Include="Scripting\Natives\C3DLabelNatives.h" />
     <ClInclude Include="Scripting\Natives\CActorNatives.h" />
     <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
