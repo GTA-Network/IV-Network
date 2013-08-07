@@ -15,48 +15,74 @@ extern CCore * g_pCore;
 #define INVALID_PLAYER_PED 255
 
 CPools::CPools()
+	: m_pPedPool(NULL),
+	m_pVehiclePool(NULL),
+	m_pTaskPool(NULL),
+	m_pCamPool(NULL),
+	m_pPedMoveBlendPool(NULL)
 {
-	// Reset the ped pool
-	m_pPedPool = NULL;
+	// Clear our custom checkpoint array
+	memset(&m_checkpoints, 0, sizeof(m_checkpoints));
 
-	// Reset the vehicle pool
-	m_pVehiclePool = NULL;
-
-	// Reset the task pool
-	m_pTaskPool = NULL;
-
-	// Reset the cam pool
-	m_pCamPool = NULL;
+	// Modify checkpoint rendering to use our custom array
+	/*
+	VAR_RenderCheckpoints_FirstCP                   = (uiBase +  0x855966);
+	VAR_RenderCheckpoints_LastCP                    = (uiBase +  0x856705);
+	*/
+	*(DWORD *)(COffsets::VAR_RenderCheckpoints_FirstCP) = (DWORD)m_checkpoints + 0x18;
+	*(DWORD *)(COffsets::VAR_RenderCheckpoints_LastCP) = (DWORD)m_checkpoints + 0x18 + CHECKPOINT_ARRAY_SIZE * sizeof(IVCheckpoint);
 }
 
 CPools::~CPools()
 {
-	// Delete the cam pool
+	// Delete game pools
 	SAFE_DELETE(m_pCamPool);
-
-	// Delete the task pool
 	SAFE_DELETE(m_pTaskPool);
-
-	// Delete the vehicle pool
 	SAFE_DELETE(m_pVehiclePool);
-
-	// Delete the ped pool
 	SAFE_DELETE(m_pPedPool);
 }
 
-void CPools::Initialise()
+void CPools::SetPtrNodeSinglePoolLimit(DWORD dwLimit)
 {
-	// Get the ped pool
-	m_pPedPool = new CIVPool< IVPed >(*(IVPool **)COffsets::VAR_PedPool);
+	*(DWORD *)(g_pCore->GetBase() + 0xB534B6) = dwLimit;
+}
 
-	// Get the vehicle pool
-	m_pVehiclePool = new CIVPool< IVVehicle >(*(IVPool **)COffsets::VAR_VehiclePool);
+void CPools::SetPtrNodeDoublePoolLimit(DWORD dwLimit)
+{
+	*(DWORD *)(g_pCore->GetBase() + 0xB534F6) = dwLimit;
+}
 
-	// Get the task pool
-	m_pTaskPool = new CIVPool< IVTask >(*(IVPool **)COffsets::VAR_TaskPool);
+void CPools::SetEntryInfoNodePoolLimit(DWORD dwLimit)
+{
+	*(DWORD *)(g_pCore->GetBase() + 0xC796D6) = dwLimit;
+}
 
-	// Get the cam pool
-	m_pCamPool = new CIVPool< IVCam >(*(IVPool **)COffsets::VAR_CamPool);
+void CPools::SetPedPoolLimit(BYTE byteLimit)
+{
+	*(DWORD *)(g_pCore->GetBase() + 0x43A9FC) = (byteLimit * 0xF00); // sizeof(CPed) // for object memory chunk
+	*(BYTE *)(g_pCore->GetBase() + 0x43AA1A) = byteLimit; // for flag memory chunk
+	*(BYTE *)(g_pCore->GetBase() + 0x43AA27) = byteLimit; // for pool object count
+	*(BYTE *)(g_pCore->GetBase() + 0x43AA5C) = byteLimit; // for constructor init loop
+}
+
+void CPools::SetVehiclePoolLimit(DWORD dwLimit)
+{
+	*(DWORD *)(g_pCore->GetBase() + 0x9D43B9) = dwLimit;
+}
+
+void CPools::SetVehicleStructPoolLimit(BYTE byteLimit)
+{
+	*(BYTE *)(g_pCore->GetBase() + 0xBEA871) = byteLimit;
+}
+
+void CPools::Initialize()
+{
+    // Initialize game pools
+    m_pPedPool = new CIVPool<IVPed>(*(IVPool **)COffsets::VAR_PedPool);
+    m_pVehiclePool = new CIVPool<IVVehicle>(*(IVPool **)COffsets::VAR_VehiclePool);
+    m_pTaskPool = new CIVPool<IVTask>(*(IVPool **)COffsets::VAR_TaskPool);
+    m_pCamPool = new CIVPool<IVCam>(*(IVPool **)COffsets::VAR_CamPool);
+    m_pPedMoveBlendPool = new CIVPool<IVPedMoveBlendOnFoot>(*(IVPool **)COffsets::VAR_PedMoveBlendPool);
 }
 
 IVPlayerInfo * CPools::GetPlayerInfoFromIndex(unsigned int uiIndex)
@@ -83,12 +109,13 @@ IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed)
 		// Does the current player info exist?
 		if(pPlayerInfo)
 		{
-			// Is the current player infos playerped the playerped?
+			// Is the current player infos player ped the player ped?
 			if(pPlayerInfo->m_pPlayerPed == pPlayerPed)
 				return pPlayerInfo;
 		}
 	}
 
+	// Player info not found for player ped
 	return NULL;
 }
 
@@ -102,6 +129,7 @@ unsigned int CPools::GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 			return i;
 	}
 
+	// Player info not found in array
 	return INVALID_PLAYER_PED;
 }
 
@@ -111,7 +139,7 @@ void CPools::SetPlayerInfoAtIndex(unsigned int uiIndex, IVPlayerInfo * pPlayerIn
 	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
 		return;
 
-	// Get the player info array pointer
+	// Get the player info pointer array
 	IVPlayerInfo ** pPlayerInfos = (IVPlayerInfo **)COffsets::VAR_PlayerInfoArray;
 
 	// Set the player info pointer
@@ -128,6 +156,7 @@ unsigned int CPools::FindFreePlayerInfoIndex()
 			return i;
 	}
 
+	// No free player info indexes found
 	return INVALID_PLAYER_PED;
 }
 
@@ -139,4 +168,28 @@ unsigned int CPools::GetLocalPlayerIndex()
 void CPools::SetLocalPlayerIndex(unsigned int uiIndex)
 {
 	*(unsigned int *)COffsets::VAR_LocalPlayerId = uiIndex;
+}
+
+IVCheckpoint * CPools::GetCheckpointFromIndex(unsigned int uiIndex)
+{
+	// Is the index more than the checkpoint array size?
+	if(uiIndex > CHECKPOINT_ARRAY_SIZE)
+		return NULL;
+
+	// Return the checkpoint pointer
+	return &m_checkpoints[uiIndex];
+}
+
+unsigned int CPools::FindFreeCheckpointIndex()
+{
+	// Loop through all checkpoint indexes
+	for(unsigned int i = 0; i < CHECKPOINT_ARRAY_SIZE; i++)
+	{
+		// Is the current index free?
+		if(m_checkpoints[i].m_wType == CHECKPOINT_TYPE_NONE)
+			return i;
+	}
+
+	// No free checkpoint indexes found
+	return INVALID_CHECKPOINT;
 }

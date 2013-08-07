@@ -16,39 +16,74 @@
 #include <Game\IVEngine\CIVVehicle.h>
 #include <Game\IVEngine\CIVPlayerPed.h>
 #include <Game\IVEngine\CIVTask.h>
+#include <Game\IVEngine\CIVPedMoveBlend.h>
+#include <Game\IVEngine\CIVCheckpoint.h>
 
-#define				PLAYER_INFO_ARRAY_SIZE			32
+// Player info array size
+#define PLAYER_INFO_ARRAY_SIZE 32 // 32
+
+// Custom (increased) checkpoint array size
+#define CHECKPOINT_ARRAY_SIZE 128
+
+// Invalid checkpoint array index
+#define INVALID_CHECKPOINT 255
 
 template <class T>
 class CIVPool;
-class CPools {
+
+class CPools
+{
 private:
-	CIVPool< IVPed >				* m_pPedPool;
-	CIVPool< IVVehicle >			* m_pVehiclePool;
-	CIVPool< IVTask >				* m_pTaskPool;
-	CIVPool< IVCam >				* m_pCamPool;
+	// Game pools
+	CIVPool<IVPed>                * m_pPedPool;
+	CIVPool<IVVehicle>            * m_pVehiclePool; // Size: 140
+	//#define VAR_BuildingPool_7 0x168FED0
+	//#define VAR_ObjectPool_7 0x1350CE0
+	CIVPool<IVTask>               * m_pTaskPool; // Size: 1200
+	//#define VAR_EventPool_7 0x152F4B4 // Size: 300
+	CIVPool<IVCam>                * m_pCamPool;
+	//#define VAR_TaskInfoPool_7 0x1618040
+	CIVPool<IVPedMoveBlendOnFoot> * m_pPedMoveBlendPool;
+
+	// Custom checkpoint array
+	IVCheckpoint                    m_checkpoints[CHECKPOINT_ARRAY_SIZE];
 
 public:
-	CPools( );
-	~CPools( );
+	CPools();
+	~CPools();
 
-	void							Initialise( );
+	// Pool increases (These must be called before pools are created obviously...)
+	void                 SetPtrNodeSinglePoolLimit(DWORD dwLimit);  // 80000 default
+	void                 SetPtrNodeDoublePoolLimit(DWORD dwLimit);  // 16000 default
+	void                 SetEntryInfoNodePoolLimit(DWORD dwLimit);  // 16000 default
+	void                 SetPedPoolLimit(BYTE byteLimit);           // 120 default
+	void                 SetVehiclePoolLimit(DWORD dwLimit);        // 140 default
+	void                 SetVehicleStructPoolLimit(BYTE byteLimit); // 50 default
 
-	static	IVPlayerInfo			* GetPlayerInfoFromIndex( unsigned int uiIndex );
-	static	IVPlayerInfo			* GetPlayerInfoFromPlayerPed( IVPlayerPed * pPlayerPed );
+	void                 Initialize();
 
-	static	unsigned int			GetIndexFromPlayerInfo( IVPlayerInfo * pPlayerInfo );
-	static	void					SetPlayerInfoAtIndex( unsigned int uiIndex, IVPlayerInfo * pPlayerInfo );
-	
-	static	unsigned int			FindFreePlayerInfoIndex( );
+	// Pools
+	CIVPool<IVPed>     * GetPedPool() { return m_pPedPool; }
+	CIVPool<IVVehicle> * GetVehiclePool() { return m_pVehiclePool; }
+	CIVPool<IVTask>    * GetTaskPool() { return m_pTaskPool; }
+	CIVPool<IVCam>     * GetCamPool() { return m_pCamPool; }
+	CIVPool<IVPedMoveBlendOnFoot> * GetPedMoveBlendPool() { return m_pPedMoveBlendPool; }
 
-	static	unsigned int			GetLocalPlayerIndex( );
-	static	void					SetLocalPlayerIndex( unsigned int uiIndex );
-	
-	CIVPool< IVPed >				* GetPedPool( ) { return m_pPedPool; }
-	CIVPool< IVVehicle >			* GetVehiclePool( ) { return m_pVehiclePool; }
-	CIVPool< IVTask >				* GetTaskPool( ) { return m_pTaskPool; }
-	CIVPool< IVCam >				* GetCamPool( ) { return m_pCamPool; }
+	// Player Infos (An array not a pool)
+	IVPlayerInfo       * GetPlayerInfoFromIndex(unsigned int uiIndex);
+	IVPlayerInfo       * GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed);
+	unsigned int         GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo);
+	void                 SetPlayerInfoAtIndex(unsigned int uiIndex, IVPlayerInfo * pPlayerInfo);
+	unsigned int         FindFreePlayerInfoIndex();
+
+	// Current Player Info Index (Doesn't really belong here, but it was the only place to put it)
+	unsigned int         GetLocalPlayerIndex();
+	void                 SetLocalPlayerIndex(unsigned int uiIndex);
+
+	// Checkpoints (An array not a pool)
+	IVCheckpoint       * GetCheckpointFromIndex(unsigned int uiIndex);
+	unsigned int         FindFreeCheckpointIndex();
 };
+
 
 #endif // CPools_h

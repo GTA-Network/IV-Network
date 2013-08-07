@@ -244,7 +244,7 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 void CVehicleEntity::GetPosition(CVector3& vecPosition)
 {
 	if(IsSpawned())
-		m_pVehicle->GetPosition(&vecPosition);
+		m_pVehicle->GetPosition(vecPosition);
 	else
 		vecPosition = m_vecPosition;
 }
@@ -255,7 +255,7 @@ void CVehicleEntity::SetRotation(const CVector3& vecRotation, bool bResetInterpo
 	{
 		// Get the vehicle matrix
 		Matrix matMatrix;
-		m_pVehicle->GetMatrix(&matMatrix);
+		m_pVehicle->GetMatrix(matMatrix);
 
 		// Convert the rotation from degrees to radians
 		CVector3 vecNewRotation = Math::ConvertDegreesToRadians(vecRotation);
@@ -280,7 +280,7 @@ void CVehicleEntity::GetRotation(CVector3& vecRotation)
 	{
 		// Get the vehicle matrix
 		Matrix matMatrix;
-		m_pVehicle->GetMatrix(&matMatrix);
+		m_pVehicle->GetMatrix(matMatrix);
 
 		// Convert the matrix to euler angles
 		CVector3 vecNewRotation;
@@ -359,7 +359,7 @@ void CVehicleEntity::GetMoveSpeed(CVector3& vecMoveSpeed)
 {
 	// Are we spawned?
 	if(IsSpawned())
-		m_pVehicle->GetMoveSpeed(&vecMoveSpeed);
+		m_pVehicle->GetMoveSpeed(vecMoveSpeed);
 	else
 	vecMoveSpeed = m_vecMoveSpeed;
 }
@@ -377,7 +377,7 @@ void CVehicleEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 {
 	// Are we spawned?
 	if(IsSpawned())
-		m_pVehicle->GetTurnSpeed(&vecTurnSpeed);
+		m_pVehicle->GetTurnSpeed(vecTurnSpeed);
 	else
 		vecTurnSpeed = m_vecTurnSpeed;
 }
@@ -792,7 +792,7 @@ bool CVehicleEntity::IsOnScreen()
     if(IsSpawned())
     {
         CVector3 vecPos;
-        m_pVehicle->GetPosition(&vecPos);
+        m_pVehicle->GetPosition(vecPos);
         return g_pCore->GetGame()->GetCamera()->IsOnScreen(vecPos);
     }
 

@@ -15,7 +15,7 @@
 #include <IV\IVCommon.h>
 #include "CIVEntity.h"
 
-class IVDynamicEntityVFTable : public IVEntityVFTable {
+class IVDynamicEntityVFTable : public IVEntity {
 public:
 	DWORD mCC;
 	DWORD mD0;

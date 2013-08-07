@@ -180,7 +180,7 @@ void CChat::SetInputVisible(bool bVisible)
 	m_bInputVisible = bVisible;
 
 	// Unlock the player controls
-	if(g_pCore && g_pCore->GetGame() && g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
+	if(g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
 		g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true,true);
 }
 

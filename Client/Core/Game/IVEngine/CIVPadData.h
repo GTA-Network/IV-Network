@@ -14,6 +14,7 @@
 #include <Math/CMaths.h>
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
+#include <IV/IVData.h>
 
 class IVPadDataHistoryItem {
 public:

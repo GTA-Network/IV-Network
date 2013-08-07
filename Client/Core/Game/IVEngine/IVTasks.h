@@ -14,39 +14,71 @@
 #include "CIVVehicle.h"
 #include <Common.h>
 
-class CIVTaskComplexNewGetInVehicle : public CIVTaskComplex {
+class CIVTaskComplexNewGetInVehicle : public CIVTaskComplex
+{
 public:
-	CIVTaskComplexNewGetInVehicle(CIVVehicle * pVehicle, int a2, int a3, unsigned int a4, float a5);
+	CIVTaskComplexNewGetInVehicle(CIVVehicle * pVehicle, int a3, int a4, unsigned int a5, float a6);
 };
 
-class CIVTaskComplexNewExitVehicle : public CIVTaskComplex {
+class CIVTaskComplexNewExitVehicle : public CIVTaskComplex
+{
 public:
-	CIVTaskComplexNewExitVehicle(CIVVehicle * pVehicle, int iExitType, int a3, int a4);
+	CIVTaskComplexNewExitVehicle(CIVVehicle * pVehicle, int iExitMode, int a4, int a5);
 };
 
-class CIVTaskSimpleCarSetPedOut : public CIVTaskSimple {
+class CIVTaskComplexDie : public CIVTaskComplex
+{
 public:
-	CIVTaskSimpleCarSetPedOut(CIVVehicle * pVehicle, int a2, char a3, char a4);
+	CIVTaskComplexDie(int a2, int a3, int a4, int a5, float a6, float a7, char a8);
 };
 
-class CIVTaskComplexGun : public CIVTaskComplex {
+class CIVTaskSimpleDead : public CIVTaskSimple
+{
 public:
-	CIVTaskComplexGun(char a2, int a3, int a4, int a5, float fX, float fY, float fZ, int a9, int a10);
+	CIVTaskSimpleDead(DWORD dwDeathTime, char a3, char a4);
 };
 
-class CIVTaskSimpleFireGun : public CIVTaskSimple {
+class CIVTaskSimpleCarSetPedInVehicle : public CIVTaskSimple
+{
 public:
-	CIVTaskSimpleFireGun(float fX, float fY, float fZ, int a5, int a6, int a7);
+	CIVTaskSimpleCarSetPedInVehicle(CIVVehicle * pVehicle, int a3, char a4, char a5);
 };
 
-class CIVTaskSimpleAimGun : public CIVTaskSimple {
+class CIVTaskSimpleCarSetPedOut : public CIVTaskSimple
+{
 public:
-	CIVTaskSimpleAimGun(float fX, float fY, float fZ, int a5, int a6, int a7);
+	CIVTaskSimpleCarSetPedOut(CIVVehicle * pVehicle, int a3, char a4, char a5);
 };
 
-class CIVTaskSimpleReloadGun : public CIVTaskSimple {
+class CIVTaskComplexJump : public CIVTaskComplex
+{
 public:
-	CIVTaskSimpleReloadGun(unsigned int a2, int a3, int a4);
+	// iFlags (0 = Stand still and jump, 0x40 = Move forward and jump)
+	CIVTaskComplexJump(WORD wFlags, int a2); // a2 = CVector4 *
+};
+
+class CIVTaskSimpleTriggerLookAt : public CIVTaskSimple
+{
+public:
+	CIVTaskSimpleTriggerLookAt(CIVEntity * pEntity, int iTime, int iOffsetBoneTag, CVector3 * pOffsetPos, DWORD dwFlags = 0x20, float fSpeed = 0.25f, int iBlendTime = 1000, int iPriority = 2);
+};
+
+class CIVTaskComplexPlayerOnFoot : public CIVTaskComplex
+{
+public:
+	CIVTaskComplexPlayerOnFoot();
+};
+
+class CIVTaskSimpleStopWalking : public CIVTaskSimple
+{
+public:
+	CIVTaskSimpleStopWalking(unsigned int uiPlayerIndex, char iType);
+};
+ 	
+class CIVTaskSimpleStartWalking : public CIVTaskSimple
+{
+public:
+ 	CIVTaskSimpleStartWalking(unsigned int playerIndex, float a1, float a2, float a3, int a4, int a5);
 };
 
 #endif // IVTasks_h

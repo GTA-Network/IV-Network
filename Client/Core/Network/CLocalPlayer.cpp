@@ -101,8 +101,14 @@ void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 {
-	CIVScript::SetPlayerControlAdvanced(GetScriptingHandle(), bControl, bControl, bControl);
-	CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
+	{
+		if(g_pCore->GetChat())
+			g_pCore->GetChat()->Outputf(false,"Settings controls %d, %d",bControl, bCamera);
+	
+		CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
+		CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+	}
 }
 
 bool CLocalPlayer::IsDead()

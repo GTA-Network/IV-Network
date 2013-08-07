@@ -124,14 +124,14 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 {
 	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");
-	m_usPlayerId = -1;
+	m_usPlayerId = INVALID_ENTITY_ID;
 	m_usPing = 0;
 	m_bNetworked = false;
 	m_uiColor = 0xFFFFFFFF;
 	m_bSpawned = false;
 	m_pPlayerPed = NULL;
 	m_pPlayerInfo = NULL;
-	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(211);
+	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(INVALID_PLAYER_PED);
 	m_bytePlayerNumber = INVALID_PLAYER_PED;
 	m_pContextData = NULL;
 	m_vecPosition = CVector3();
@@ -146,15 +146,16 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	// Is this the localplayer?
 	if(IsLocalPlayer())
 	{
+
 		// Set the localplayer CIVScript handle
-		m_bytePlayerNumber = (BYTE)CPools::GetLocalPlayerIndex();
+		m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex();
 
 		// Create a new player ped instance
-		IVPlayerInfo * pInfo = CPools::GetPlayerInfoFromIndex(0);
+		IVPlayerInfo * pInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 		m_pPlayerPed = new CIVPlayerPed(pInfo->m_pPlayerPed);
 
 		// Get the localplayer info pointer
-		m_pPlayerInfo = new CIVPlayerInfo(CPools::GetPlayerInfoFromIndex(0));
+		m_pPlayerInfo = new CIVPlayerInfo(g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0));
 
 		// Create a new context data instance with the local player info
         m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
@@ -168,13 +169,9 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		// Set the localplayer name
 		SetNick(g_pCore->GetNick());
 
-		// Setup localplayer
-		CIVScript::SetPlayerControlAdvanced(m_bytePlayerNumber, true, true, true);
-		CIVScript::SetCameraControlsDisabledWithPlayerControls(true);
-
 		m_bSpawned = true;
 
-		CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
+		CLogFile::Printf("LOCALPLAYER: m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
 	}
 	else
     {
@@ -186,6 +183,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		
 		// Set the context data instance to NULL
 		m_pContextData = NULL;
+
+		m_bytePlayerNumber = INVALID_PLAYER_PED;
     }
 
 }
@@ -260,15 +259,15 @@ bool CPlayerEntity::Create()
 	if(IsLocalPlayer() && IsSpawned())
 		return false;
 
+	// Add our model reference and load the model
+	m_pModelInfo->AddReference(true);
+
 	// Find a free player number
-	m_bytePlayerNumber = (BYTE)CPools::FindFreePlayerInfoIndex();
+	m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->FindFreePlayerInfoIndex();
 
 	// Invalid player number?
 	if(m_bytePlayerNumber == INVALID_PLAYER_PED)
 		return false;
-
-	// Add our model reference and load the model
-	m_pModelInfo->AddReference(true);
 
 	// Get the model index
 	int iModelIndex = m_pModelInfo->GetIndex();
@@ -279,10 +278,13 @@ bool CPlayerEntity::Create()
 	// Create our context data
 	m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
 
+	// Set the game player info pointer
+	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
+
 	// Allocate the player ped
 	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
 
-	CLogFile::Printf("m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed);
+	CLogFile::Printf("CREATE: m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed);
 
 	// Ensure the ped was allocated
 	if(!pPlayerPed)
@@ -311,22 +313,16 @@ bool CPlayerEntity::Create()
 	_asm mov esi, pPlayerPed;
 	_asm call dwFunc;
 
-	// Setup ped intelligence
-	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
-	dwFunc = (g_pCore->GetBase() + 0x89EC20);
-
-	_asm push 2;
-	_asm mov ecx, pPlayerPed;
-	_asm call dwFunc;
-
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
+	
+	// Set the player state to spawned
+	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
+	
+	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
 
 	// Set our player info with the ped
 	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
-
-	// Set the game player info pointer
-	CPools::SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
 	// Create the player ped instance
 	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
@@ -334,17 +330,23 @@ bool CPlayerEntity::Create()
 	// Set the context data player ped pointer
 	m_pContextData->SetPlayerPed(m_pPlayerPed);
 
+	// Setup ped intelligence
+	dwFunc = (g_pCore->GetBase() + 0x89EC20);
+	_asm push 2;
+	_asm mov ecx, pPlayerPed;
+	_asm call dwFunc;
+
 	// Add to the world
 	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
+	//CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255);
+	//CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255);
 
 	// Temp
-	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
+	//CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
 
 	// Mark as spawned
 	Spawn();
@@ -408,7 +410,7 @@ bool CPlayerEntity::Destroy()
 	if(m_bytePlayerNumber != INVALID_PLAYER_PED)
 	{
 		// Reset the game player info pointer
-		CPools::SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, NULL);
+		g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, NULL);
 
 		// Invalidate the player number
 		m_bytePlayerNumber = INVALID_PLAYER_PED;
@@ -436,7 +438,7 @@ void CPlayerEntity::SetPosition(CVector3 vecPosition)
 bool CPlayerEntity::GetPosition(CVector3 *vecPosition)
 {
 	if(IsSpawned())
-		m_pPlayerPed->GetPosition(vecPosition);
+		m_pPlayerPed->GetPosition(*vecPosition);
 	else
 		vecPosition = &m_vecPosition;
 

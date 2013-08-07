@@ -23,6 +23,7 @@ unsigned int g_uiLocalPlayerIndex = 0;
 IVPad        g_localPad;
 bool         g_bInLocalContext = true;
 extern CCore *g_pCore;
+IVPlayerInfo* g_pLocaPlayerInfo = NULL;
 
 void ContextSwitch(IVPed * pPed, bool bPost)
 {
@@ -61,8 +62,9 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 					// Store the local players pad
 					memcpy(&g_localPad, pPad->GetPad(), sizeof(IVPad));
 
-					// Swap the local player index with the remote players index
-					g_pCore->GetGame()->GetPools()->SetLocalPlayerIndex(pContextData->GetPlayerInfo()->GetPlayerNumber());
+					g_pLocaPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(g_uiLocalPlayerIndex);
+
+					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, pContextData->GetPlayerInfo()->GetPlayerInfo());
 
 					// Set the history values
 					for(int i = 0; i < INPUT_COUNT; i++)
@@ -73,7 +75,7 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 						{
 							pPadData->m_byteHistoryIndex++;
 
-							if(pPadData->m_byteHistoryIndex >= 64)
+							if(pPadData->m_byteHistoryIndex >= MAX_HISTORY_ITEMS)
 								pPadData->m_byteHistoryIndex = 0;
 
 							pPadData->m_pHistory->m_historyItems[pPadData->m_byteHistoryIndex].m_byteValue = pPadData->m_byteLastValue;
@@ -92,8 +94,7 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 					// Restore the local players pad
 					memcpy(pPad->GetPad(), &g_localPad, sizeof(IVPad));
 
-					// Restore the local players index
-					g_pCore->GetGame()->GetPools()->SetLocalPlayerIndex(g_uiLocalPlayerIndex);
+					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, g_pLocaPlayerInfo);
 
 					// Flag ourselves as back in local context
 					g_bInLocalContext = true;

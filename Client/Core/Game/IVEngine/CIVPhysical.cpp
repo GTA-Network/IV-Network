@@ -10,147 +10,137 @@
 #include "CIVPhysical.h"
 #include <Game/COffsets.h>
 
-CIVPhysical::CIVPhysical( ) : CIVDynamicEntity( )
+CIVPhysical::CIVPhysical() : CIVDynamicEntity()
 {
 
 }
 
-CIVPhysical::CIVPhysical( IVPhysical * pPhysical ) : CIVDynamicEntity( pPhysical )
+CIVPhysical::CIVPhysical(IVPhysical * pPhysical) : CIVDynamicEntity(pPhysical)
 {
 
 }
 
-CIVPhysical::~CIVPhysical( )
+CIVPhysical::~CIVPhysical()
 {
 
 }
 
-void CIVPhysical::SetPhysical( IVPhysical * pPhysical )
+void CIVPhysical::SetPhysical(IVPhysical * pPhysical)
 {
-	SetDynamicEntity( pPhysical );
+	SetDynamicEntity(pPhysical);
 }
 
-IVPhysical * CIVPhysical::GetPhysical( )
+IVPhysical * CIVPhysical::GetPhysical()
 {
-	return (IVPhysical *)GetDynamicEntity( );
+	return (IVPhysical *)GetDynamicEntity();
 }
 
-void CIVPhysical::SetMoveSpeed( CVector3 vecMoveSpeed )
+void CIVPhysical::SetMoveSpeed(const CVector3& vecMoveSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 	{
-		const CVector3 * pMoveSpeed = &vecMoveSpeed;
+		const CVector3 * pVecMoveSpeed = &vecMoveSpeed;
 		_asm
 		{
-			push pMoveSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__SetMoveSpeed
+			push pVecMoveSpeed
+				mov ecx, pPhysical
+				call COffsets::FUNC_CPhysical__SetMoveSpeed
 		}
 	}
 }
 
-void CIVPhysical::GetMoveSpeed( CVector3 * vecMoveSpeed )
+void CIVPhysical::GetMoveSpeed(CVector3& vecMoveSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 	{
-		CVector3 * pMoveSpeed = vecMoveSpeed;
+		CVector3 * pVecMoveSpeed = &vecMoveSpeed;
 		_asm
 		{
-			push pMoveSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__GetMoveSpeed
+			push pVecMoveSpeed
+				mov ecx, pPhysical
+				call COffsets::FUNC_CPhysical__GetMoveSpeed
 		}
 	}
 }
 
-void CIVPhysical::SetTurnSpeed( CVector3 vecTurnSpeed )
+void CIVPhysical::SetTurnSpeed(const CVector3& vecTurnSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 	{
-		CVector3* pTurnSpeed = &vecTurnSpeed;
+		const CVector3 * pVecTurnSpeed = &vecTurnSpeed;
 		_asm
 		{
-			push pTurnSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__SetTurnSpeed
+			push pVecTurnSpeed
+				mov ecx, pPhysical
+				call COffsets::FUNC_CPhysical__SetTurnSpeed
 		}
 	}
 }
 
-void CIVPhysical::GetTurnSpeed( CVector3 * vecTurnSpeed )
+void CIVPhysical::GetTurnSpeed(CVector3& vecTurnSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 	{
-		CVector3 * pTurnSpeed = vecTurnSpeed;
+		CVector3 * pVecTurnSpeed = &vecTurnSpeed;
 		_asm
 		{
-			push pTurnSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__GetTurnSpeed
+			push pVecTurnSpeed
+				mov ecx, pPhysical
+				call COffsets::FUNC_CPhysical__GetTurnSpeed
 		}
 	}
 }
 
-void CIVPhysical::SetLastDamageEntity( IVEntity * pLastDamageEntity )
+void CIVPhysical::SetLastDamageEntity(IVEntity * pLastDamageEntity)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
-		pPhysical->m_pLastDamageEntity = pLastDamageEntity;
+	if(pPhysical)
+	{
+		IVEntity * _pLastDamageEntity = pLastDamageEntity;
+		_asm
+		{
+			push _pLastDamageEntity
+				mov ecx, pPhysical
+				call COffsets::FUNC_CPhysical__SetLastDamageEntity
+		}
+	}
 }
 
-IVEntity * CIVPhysical::GetLastDamageEntity( )
+IVEntity * CIVPhysical::GetLastDamageEntity()
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 		return pPhysical->m_pLastDamageEntity;
 
 	return NULL;
 }
 
-void CIVPhysical::SetHealth( float fHealth )
+void CIVPhysical::SetHealth(float fHealth)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
+	if(pPhysical)
 	{
-		DWORD dwFunc = ((IVPhysicalVFTable *)pPhysical->m_VFTable)->SetHealth;
-
-		_asm
-		{
-			push 1
-			push fHealth
-			mov ecx, pPhysical
-			call dwFunc
-		}
+		pPhysical->SetHealth(fHealth, 1);
 	}
 }
 
-float CIVPhysical::GetHealth( )
+float CIVPhysical::GetHealth()
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity( );
-	float fHealth = 0.0f;
+	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
-	if( pPhysical )
-	{
-		DWORD dwFunc = ((IVPhysicalVFTable *)pPhysical->m_VFTable)->GetHealth;
+	if(pPhysical)
+		return pPhysical->GetHealth();
 
-		_asm
-		{
-			mov ecx, pPhysical
-			call dwFunc
-			mov fHealth, eax
-		}
-	}
-	
-	return fHealth;
+	return 0.0;
 }

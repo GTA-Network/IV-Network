@@ -12,132 +12,233 @@
 
 extern	CCore * g_pCore;
 
-CIVTaskComplexNewGetInVehicle::CIVTaskComplexNewGetInVehicle( CIVVehicle * pVehicle, int a2, int a3, unsigned int a4, float a5 ) : CIVTaskComplex()
+CIVTaskComplexNewGetInVehicle::CIVTaskComplexNewGetInVehicle(CIVVehicle * pVehicle, int a3, int a4, unsigned int a5, float a6) : CIVTaskComplex()
 {
-	// Create the task
-	Create( );
-
-	// Call the task constructor
-	IVVehicle * pGameVehicle = pVehicle->GetVehicle( );
-	IVTask * pGameTask = GetTask( );
-
-	_asm	push a5;
-	_asm	push a4
-	_asm 	push a3;
-	_asm 	push a2;
-	_asm 	push pGameVehicle;
-	_asm 	mov ecx, pGameTask;
-	_asm 	call COffsets::FUNC_CTaskComplexNewGetInVehicle__Constructor;
-}
-
-CIVTaskComplexNewExitVehicle::CIVTaskComplexNewExitVehicle( CIVVehicle * pVehicle, int iExitType, int a3, int a4 ) : CIVTaskComplex()
-{
-	// Create the task
-	Create( );
-
-	// Call the task constructor
-	IVVehicle * pGameVehicle = pVehicle->GetVehicle( );
-	IVTask * pGameTask = GetTask( );
-
-	_asm
+	if(pVehicle)
 	{
-		push a4
-		push a3
-		push iExitType
-		push pGameVehicle
-		mov ecx, pGameTask
-		call COffsets::FUNC_CTaskComplexNewExitVehicle__Constructor
+
+		// Create the task
+		Create();
+
+		// Call the task constructor
+		IVVehicle * pGameVehicle = pVehicle->GetVehicle();
+		IVTask * pTask = GetTask();
+		_asm
+		{
+			push a6
+			push a5
+			push a4
+			push a3
+			push pGameVehicle
+			mov ecx, pTask
+			call COffsets::FUNC_CTaskComplexNewGetInVehicle__Constructor
+		}
 	}
 }
 
-CIVTaskSimpleCarSetPedOut::CIVTaskSimpleCarSetPedOut( CIVVehicle * pVehicle, int a2, char a3, char a4 ) : CIVTaskSimple()
+CIVTaskComplexNewExitVehicle::CIVTaskComplexNewExitVehicle(CIVVehicle * pVehicle, int iExitMode, int a4, int a5) : CIVTaskComplex()
 {
-	// Create the task
-	Create( );
-
-	// Call the task constructor
-	IVVehicle * pGameVehicle = pVehicle->GetVehicle( );
-	IVTask * pGameTask = GetTask( );
-
-	_asm 
+	if(pVehicle)
 	{
-		push a4
-		push a3
-		push a2
-		push pGameVehicle
-		mov ecx, pGameTask
-		call COffsets::FUNC_CTaskSimpleCarSetPedOut__Constructor
+		// Create the task
+		Create();
+
+		// Call the task constructor
+		IVVehicle * pGameVehicle = pVehicle->GetVehicle();
+		IVTask * pTask = GetTask();
+		_asm
+		{
+			push a5
+			push a4
+			push iExitMode
+			push pGameVehicle
+			mov ecx, pTask
+			call COffsets::FUNC_CTaskComplexNewExitVehicle__Constructor
+		}
 	}
+	/*
+	    {
+    if ( v16 )
+        v26 = (int)"GET_OUT_OF_CAR";
+    else
+        v26 = (int)"GET_OUT_OF_CAR_SHOUT";
+    sub_4483E0(v26, 0, 0, 0, -1, 0, 0, 1.0, 0);
+
+			
+	*/
 }
 
-CIVTaskComplexGun::CIVTaskComplexGun(char a2, int a3, int a4, int a5, float fX, float fY, float fZ, int a9, int a10) : CIVTaskComplex()
+CIVTaskComplexDie::CIVTaskComplexDie(int a2, int a3, int a4, int a5, float a6, float a7, char a8) : CIVTaskComplex()
 {
+	// Create the task
 	Create();
 
-	IVTask *pTask = GetTask();
+	// Call the task constructor
+	IVTask * pTask = GetTask();
 	_asm
 	{
-		push a10
-		push a9
-		push fY
-		push fX
-		push fX
-		push a5
-		push a4
-		push a3
-		push a2
-		mov ecx, pTask
-		call COffsets::FUNC_CTaskComplexGun__Constructor
-	}
-}
-
-CIVTaskSimpleFireGun::CIVTaskSimpleFireGun(float fX, float fY, float fZ, int a5, int a6, int a7) : CIVTaskSimple()
-{
-	Create();
-
-	IVTask *pTask = GetTask();
-	_asm
-	{
+		push a8
 		push a7
 		push a6
 		push a5
-		push fZ
-		push fY
-		push fX
-		mov ecx, pTask
-		call COffsets::FUNC_CTaskSimpleFireGun__Counstructor
-	}
-}
-
-CIVTaskSimpleAimGun::CIVTaskSimpleAimGun(float fX, float fY, float fZ, int a5, int a6, int a7) : CIVTaskSimple()
-{
-	Create();
-
-	IVTask *pTask = GetTask();
-	_asm
-	{
-		push a7
-		push a6
-		push a5
-		push fZ
-		push fY
-		push fX
-		mov ecx, pTask
-		call COffsets::FUNC_CTaskSimpleAimGun__Constructor
-	}
-}
-
-CIVTaskSimpleReloadGun::CIVTaskSimpleReloadGun(unsigned int a2, int a3, int a4) : CIVTaskSimple()
-{ 
-	Create();
-
-	IVTask *pTask = GetTask();
-	_asm
-	{
 		push a4
 		push a3
 		push a2
 		mov ecx, pTask
-		call COffsets::FUNC_CTaskSimpleReloadGun__Constructor
+		call COffsets::FUNC_CTaskComplexDie__Constructor
+	}
+}
+
+CIVTaskSimpleDead::CIVTaskSimpleDead(DWORD dwDeathTime, char a3, char a4) : CIVTaskSimple()
+{
+	// Create the task
+	Create();
+
+	// Call the task constructor
+	IVTask * pTask = GetTask();
+	_asm
+	{
+		push a4
+		push a3
+		push dwDeathTime
+		mov ecx, pTask
+		call COffsets::FUNC_CTaskSimpleDead__Constructor
+	}
+}
+
+CIVTaskSimpleCarSetPedInVehicle::CIVTaskSimpleCarSetPedInVehicle(CIVVehicle * pVehicle, int a3, char a4, char a5) : CIVTaskSimple()
+{
+	if(pVehicle)
+	{
+		// Create the task
+		Create();
+
+		// Call the task constructor
+		IVVehicle * pGameVehicle = pVehicle->GetVehicle();
+		IVTask * pTask = GetTask();
+		_asm
+		{
+			push a5
+			push a4
+			push a3
+			push pGameVehicle
+			mov ecx, pTask
+			call COffsets::FUNC_CTaskSimpleCarSetPedInVehicle__Constructor
+		}
+	}
+}
+
+CIVTaskSimpleCarSetPedOut::CIVTaskSimpleCarSetPedOut(CIVVehicle * pVehicle, int a3, char a4, char a5) : CIVTaskSimple()
+{
+	if(pVehicle)
+	{
+		// Create the task
+		Create();
+
+		// Call the task constructor
+		IVVehicle * pGameVehicle = pVehicle->GetVehicle();
+		IVTask * pTask = GetTask();
+		_asm
+		{
+			push a5
+			push a4
+			push a3
+			push pGameVehicle
+			mov ecx, pTask
+			call COffsets::FUNC_CTaskSimpleCarSetPedOut__Constructor
+		}
+	}
+}
+
+CIVTaskComplexJump::CIVTaskComplexJump(WORD wFlags, int a2)
+{
+	// Create the task
+	Create();
+
+	// Call the task constructor
+	IVTask * pTask = GetTask();
+	_asm
+	{
+		push a2
+		push wFlags
+		mov ecx, pTask
+		call COffsets::FUNC_CTaskComplexJump__Constructor
+	}
+}
+
+CIVTaskSimpleTriggerLookAt::CIVTaskSimpleTriggerLookAt(CIVEntity * pEntity, int iTime, int iOffsetBoneTag, CVector3 * pOffsetPos, DWORD dwFlags, float fSpeed, int iBlendTime, int iPriority)
+{
+	if(pEntity)
+	{
+		// Create the task
+		Create();
+
+		// Call the task constructor
+		IVTask * pTask = GetTask();
+		_asm
+		{
+			push iPriority
+			push iBlendTime
+			push fSpeed
+			push dwFlags
+			push pOffsetPos
+			push iOffsetBoneTag
+			push iTime
+			push pEntity
+			mov ecx, pTask
+			call COffsets::FUNC_CTaskSimpleTriggerLookAt__Constructor
+		}
+	}
+}
+
+CIVTaskComplexPlayerOnFoot::CIVTaskComplexPlayerOnFoot()
+{
+	// Create the task
+	Create();
+
+	// Call the task constructor
+	IVTask * pTask = GetTask();
+	_asm
+	{
+		mov ecx, pTask
+		call COffsets::FUNC_CTaskComplexPlayerOnFoot__Constructor
+	}
+}
+
+CIVTaskSimpleStartWalking::CIVTaskSimpleStartWalking(unsigned int playerIndex, float a1, float a2, float a3, int a4, int a5)
+{
+	 
+	// Create the task
+	Create();
+
+	IVTask * pTask = GetTask();
+	_asm
+	{
+		push 50
+		push a3
+		push a2
+		push a1
+		push a4
+		mov ecx, pTask
+		call COffsets::FUNC_CTaskSimpleStartWalking__Constructor
+	}
+}
+
+CIVTaskSimpleStopWalking::CIVTaskSimpleStopWalking(unsigned int uiPlayerIndex, char iType)
+{
+	// Create the task
+	Create();
+
+	// Call the task constructor
+	IVTask * pTask = GetTask();
+	int fUnkown = (int)8.0; // maybe speed?
+	_asm
+	{
+		push fUnkown
+		push 0
+		push 0
+		push iType
+		mov ecx, pTask
+		call COffsets::FUNC_CTaskSimpleStopWalking__Constructor
 	}
 }
