@@ -156,6 +156,9 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define IS_BIT_SET(a, b) ((a & b) != 0)
 #define UNSET_BIT(a, b) a &= ~(b)
 
+// Logfile definitions
+#define CLIENT_LOG_FILE "IVMP-Client.log"
+
 // Chat definitions
 #define	NUM_FONTS 2
 

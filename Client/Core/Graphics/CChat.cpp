@@ -136,10 +136,17 @@ void CChat::Output(const char * szText, bool bColorCoded)
 		
 		if(pLine)
 		{
+			// Add the message to the chatlog
+			CLogFile::Close();
+			CLogFile::Open ("Chatlog.txt", true);
+			CLogFile::Printf ("%s", szRemainingText);
+			CLogFile::Close();
+			CLogFile::Open (CLIENT_LOG_FILE); // Reopen client logfile
+
 			szRemainingText = pLine->Format(szRemainingText, CHAT_WIDTH, color, bColorCoded);
 			
 			pLine->SetActive(true);
-			
+
 		}
 	}
 	while(szRemainingText);
@@ -425,7 +432,7 @@ void CChat::ProcessInput()
 		{
 			// Temporary(to print messages, until we've added the network manager
 			CString strInput = m_strInputText.Get();
-			Outputf(false, "IVMP Player: %s", m_strInputText.Get());
+			Outputf(false, "%s: %s", g_pCore->GetNick().Get(), m_strInputText.Get());
 			AddToHistory();
 		}
 
