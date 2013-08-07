@@ -56,6 +56,11 @@ void CGameFunction::SetTimeOfDay(int iHour, int iMinute)
     *(DWORD *)(*(DWORD *)(COffsets::VAR_TimeOfDay) + 0x260) = 2;
 }
 
+DWORD CGameFunction::GetTimeOfDay()
+{
+	return *(DWORD *)COffsets::VAR_TimeOfDay;
+}
+
 void CGameFunction::SetDayOfWeek(int iDay) // Format: 1(Sunday), 2(Monday) ... 7((FRi)day)
 {
 	*(DWORD *)(COffsets::VAR_CClock__DayOfWeek) = iDay;

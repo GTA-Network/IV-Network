@@ -65,6 +65,8 @@ void CGame::Setup()
 	// Create new pool instance
 	m_pPool = new CPools;
 	
+	// Install our switches/patches
+	CContextSwitch::InstallKeySyncHooks();
 	// Initialise our model info array
 	for(int i = 0; i < NUM_ModelInfos; i++)
 		m_modelInfos[i].SetIndex(i);

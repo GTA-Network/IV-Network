@@ -23,6 +23,13 @@ IVPlayerPed  * _pPlayerPed = NULL;
 bool           g_bInvalidIndex = false;
 IVPool       * g_pIVPool;
 BYTE         * g_pPoolAllocatedMemory;
+DWORD			dwSub7Jmp;
+DWORD			dwSub7BCall;
+DWORD			dwSub7BJmp;
+char			*szFile;
+bool			bInitialiseGame = true;
+DWORD			dwJumpGame;
+int				iFrameCalls = 0;
 
 int				hFile2;
 HANDLE			iTexture;
@@ -248,7 +255,6 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 	_asm	retn;
 }
 
-DWORD dwSub7Jmp;
 _declspec(naked) void sub_788F30()
 {
 	_asm
@@ -266,10 +272,7 @@ _declspec(naked) void sub_788F30()
 	}
 }
 
-DWORD dwSub7BCall;
-DWORD dwSub7BJmp;
-char *szFile;
-__declspec(naked) void Sub_7B2740() //7B27A0
+_declspec(naked) void Sub_7B2740() //7B27A0
 {
 	dwSub7BCall = (g_pCore->GetBase() + 0x7B27A0);
 
@@ -303,7 +306,7 @@ __declspec(naked) void CFunctionRetnPatch()
 	}
 }
 
-void _declspec(naked) CRASH_625F15_HOOK()
+_declspec(naked) void CRASH_625F15_HOOK()
 {
         _asm
         {
@@ -337,10 +340,6 @@ keks:
         }
 }
 
-
-bool bInitialiseGame = true;
-DWORD dwJumpGame;
-int iFrameCalls = 0;
 _declspec(naked) void CGameProcessHook()
 {
 	if(!bInitialiseGame && iFrameCalls != 300)
@@ -390,127 +389,6 @@ _declspec(naked) void CGameProcessHook()
 		}
 	}
 }
-
-bool							m_bInContextSwitch = false;
-unsigned int					m_uiLocalPlayerIndex;
-IVPad							m_pLocalPad;
-void ContextSwitch(IVPed * pPed, bool bPost)
-{
-	// Is the ped pointer valid?
-	if(pPed)
-	{
-		// Mark as in or out of a context switch
-		m_bInContextSwitch = !bPost;
-
-		// Is this not the localped?
-		if((IVPlayerPed *)pPed != CPools::GetPlayerInfoFromIndex(0)->m_pPlayerPed)
-		{
-			if(!bPost && !m_bInContextSwitch)
-				return;
-
-			if(bPost && m_bInContextSwitch)
-				return;
-
-			// Get the remote player context data
-			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
-
-			// Is the context data pointer valid?
-			if(pContextData)
-			{
-				// Get the game pad
-				CIVPad * pPad = g_pCore->GetGame()->GetPad();
-
-				if(!bPost)
-				{
-					// Store the localplayers index
-					m_uiLocalPlayerIndex = CPools::GetLocalPlayerIndex();
-
-					// Store the localplayers pad
-					memcpy(&m_pLocalPad, pPad->GetPad(), sizeof(IVPad));
-
-					// Change the local player index with the remote player
-					CPools::SetLocalPlayerIndex(pContextData->GetPlayerInfo()->GetPlayerNumber());
-
-					// Set the pad history
-					for(int i = 0; i < INPUT_COUNT; i++)
-					{
-						// Get a pointer to the pad data
-						IVPadData * pPadData = &pContextData->GetPad()->GetPad()->m_padData[i];
-
-						// Is the pad history pointer valid?
-						if(pPadData->m_pHistory)
-						{
-							// Increase the history index
-							pPadData->m_byteHistoryIndex++;
-
-							// Limit
-							if(pPadData->m_byteHistoryIndex >= 64)
-								pPadData->m_byteHistoryIndex = 0;
-							
-							pPadData->m_pHistory->m_historyItems[ pPadData->m_byteHistoryIndex ].m_byteValue = pPadData->m_byteLastValue;
-							pPadData->m_pHistory->m_historyItems[ pPadData->m_byteHistoryIndex ].m_dwLastUpdate = (*(DWORD *)(g_pCore->GetBase() + 0x11DDE74));
-						}
-					}
-
-					// Change the local player pad with the remote players
-					memcpy(pPad->GetPad(), pContextData->GetPad()->GetPad(), sizeof(IVPad));
-
-					// Mark as not in context switch
-					m_bInContextSwitch = false;
-				}
-				else
-				{
-					// Restore the local player pad
-					memcpy(pPad->GetPad(), &m_pLocalPad, sizeof(IVPad));
-
-					// Restore the localplayer index
-					CPools::SetLocalPlayerIndex(m_uiLocalPlayerIndex);
-
-					// Mark as back in context switch
-					m_bInContextSwitch = true;
-				}
-			}
-		}
-	}
-}
-
-IVPed							* m_pPed = NULL;
-IVVehicle						* m_pVehicle = NULL;
-
-void _declspec(naked) CPlayerPed__ProcessInput()
-{
-	_asm mov m_pPed, ecx;
-	_asm pushad;
-
-	ContextSwitch(m_pPed, false);
-
-	_asm popad;
-	_asm call COffsets::FUNC_CPlayerPed__ProcessInput;
-	_asm pushad;
-
-	ContextSwitch(m_pPed, true);
-
-	_asm popad;
-	_asm retn;
-}
-
-void _declspec(naked) CAutomobile__ProcessInput()
-{
-	_asm mov m_pVehicle, ecx;
-	_asm pushad;
-
-	ContextSwitch(m_pVehicle->m_pDriver, false);
-
-	_asm popad;
-	_asm call COffsets::FUNC_CAutomobile__ProcessInput;
-	_asm pushad;
-
-	ContextSwitch(m_pVehicle->m_pDriver, true);
-
-	_asm popad;
-	_asm ret;
-}
-
 
 void CHooks::Intialize()
 {

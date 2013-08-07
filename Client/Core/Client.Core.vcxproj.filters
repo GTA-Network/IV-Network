@@ -674,6 +674,9 @@
     <ClCompile Include="..\..\Network\Core\RakNet\WSAStartupSingleton.cpp">
       <Filter>Source Files\Libraries\RakNet</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CContextSwitch.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1401,6 +1404,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Network\Core\RakNet\XBox360Includes.h">
       <Filter>Header Files\Libraries\RakNet</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CContextSwitch.h">
+      <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

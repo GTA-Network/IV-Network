@@ -37,6 +37,7 @@
 
 #include <Network/CNetworkManager.h>
 
+
 class CCore {
 private:
 
