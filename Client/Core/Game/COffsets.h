@@ -277,6 +277,11 @@ public:
 	DEF_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
 	DEF_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
 	DEF_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
+
+	DEF_OFF(CGame_Process__Sleep);
+	DEF_OFF(CGame_Process_InitialiseRageGame);
+	DEF_OFF(RAGE_LoadGame);
+	DEF_OFF(RAGE_StartNewGame);
 };
 
 #endif

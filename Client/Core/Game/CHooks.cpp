@@ -87,13 +87,21 @@ _declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 
 void RemoveInitialLoadingScreens()
 {
-	// Legal, Legal 2, R*, R*N, GTA:IV, ...
-	for(int i = 0; i < *(int *)(COffsets::VAR_NumLoadingScreens); ++i)
+	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
+	int iLoadScreenType = (g_pCore->GetBase() + 0x18A8F48);
+	int iLoadScreenDuration = (g_pCore->GetBase() + 0x18A8F40);
+
+	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
-		if(i <= 4) 
+		if(i < 2)
 		{
-			*(DWORD *)(COffsets::VAR_FirstLoadingScreenDuration + i * 400) = 0;
-			*(DWORD *)(COffsets::VAR_FirstLoadingScreenType + i * 400) = 4;
+			*(DWORD *)(iLoadScreenType + i * 400) = ((i < 2) ? 3 : 3);
+			*(DWORD *)(iLoadScreenDuration + i * 400) = 3600000;
+		}
+
+		if(i >= 2 && i <= 4)
+		{
+			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
 	}
 }
@@ -329,12 +337,183 @@ keks:
         }
 }
 
+
+bool bInitialiseGame = true;
+DWORD dwJumpGame;
+int iFrameCalls = 0;
+_declspec(naked) void CGameProcessHook()
+{
+	if(!bInitialiseGame && iFrameCalls != 300)
+	{
+		iFrameCalls++;
+		dwJumpGame = (g_pCore->GetBase() + 0x402B03);
+		_asm
+		{
+			mov ebp, esp
+			jmp dwJumpGame
+		}
+	}
+	else
+	{
+		iFrameCalls++;
+		bInitialiseGame = false;
+
+		// Don't process game this time, just start it(works ram usage increases up to ~1,2GB)
+		dwJumpGame = (g_pCore->GetBase() + 0x402BD3);
+		_asm
+		{
+			mov ebp, esp
+			jmp dwJumpGame
+		}
+
+		BYTE b1 = *(BYTE*)(g_pCore->GetBase() + 0x10C74E1) = 0;
+		BYTE b2 = *(BYTE*)(g_pCore->GetBase() + 0x10C79E4) = 1;
+		BYTE b3 = *(BYTE*)(g_pCore->GetBase() + 0x119EB14) = 0;
+		
+		*(DWORD*)(g_pCore->GetBase()+0x10C7854) = 50;
+		
+
+		DWORD keks = *(DWORD *)(g_pCore->GetBase() + 0x10F8078); // keks copyright by xforce
+		DWORD g_rgsc = *(DWORD *)(g_pCore->GetBase() + 0x172427C);
+		DWORD dwFunc = g_pCore->GetBase() + 0x4205B0;
+		int iTime = timeGetTime();
+		_asm
+		{   
+			push 0
+			push 1
+			push 0
+			mov eax, keks
+			mov ecx, g_rgsc
+			mov edi, iTime
+			call dwFunc
+			add esp, 0Ch
+		}
+	}
+}
+
+bool							m_bInContextSwitch = false;
+unsigned int					m_uiLocalPlayerIndex;
+IVPad							m_pLocalPad;
+void ContextSwitch(IVPed * pPed, bool bPost)
+{
+	// Is the ped pointer valid?
+	if(pPed)
+	{
+		// Mark as in or out of a context switch
+		m_bInContextSwitch = !bPost;
+
+		// Is this not the localped?
+		if((IVPlayerPed *)pPed != CPools::GetPlayerInfoFromIndex(0)->m_pPlayerPed)
+		{
+			if(!bPost && !m_bInContextSwitch)
+				return;
+
+			if(bPost && m_bInContextSwitch)
+				return;
+
+			// Get the remote player context data
+			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
+
+			// Is the context data pointer valid?
+			if(pContextData)
+			{
+				// Get the game pad
+				CIVPad * pPad = g_pCore->GetGame()->GetPad();
+
+				if(!bPost)
+				{
+					// Store the localplayers index
+					m_uiLocalPlayerIndex = CPools::GetLocalPlayerIndex();
+
+					// Store the localplayers pad
+					memcpy(&m_pLocalPad, pPad->GetPad(), sizeof(IVPad));
+
+					// Change the local player index with the remote player
+					CPools::SetLocalPlayerIndex(pContextData->GetPlayerInfo()->GetPlayerNumber());
+
+					// Set the pad history
+					for(int i = 0; i < INPUT_COUNT; i++)
+					{
+						// Get a pointer to the pad data
+						IVPadData * pPadData = &pContextData->GetPad()->GetPad()->m_padData[i];
+
+						// Is the pad history pointer valid?
+						if(pPadData->m_pHistory)
+						{
+							// Increase the history index
+							pPadData->m_byteHistoryIndex++;
+
+							// Limit
+							if(pPadData->m_byteHistoryIndex >= 64)
+								pPadData->m_byteHistoryIndex = 0;
+							
+							pPadData->m_pHistory->m_historyItems[ pPadData->m_byteHistoryIndex ].m_byteValue = pPadData->m_byteLastValue;
+							pPadData->m_pHistory->m_historyItems[ pPadData->m_byteHistoryIndex ].m_dwLastUpdate = (*(DWORD *)(g_pCore->GetBase() + 0x11DDE74));
+						}
+					}
+
+					// Change the local player pad with the remote players
+					memcpy(pPad->GetPad(), pContextData->GetPad()->GetPad(), sizeof(IVPad));
+
+					// Mark as not in context switch
+					m_bInContextSwitch = false;
+				}
+				else
+				{
+					// Restore the local player pad
+					memcpy(pPad->GetPad(), &m_pLocalPad, sizeof(IVPad));
+
+					// Restore the localplayer index
+					CPools::SetLocalPlayerIndex(m_uiLocalPlayerIndex);
+
+					// Mark as back in context switch
+					m_bInContextSwitch = true;
+				}
+			}
+		}
+	}
+}
+
+IVPed							* m_pPed = NULL;
+IVVehicle						* m_pVehicle = NULL;
+
+void _declspec(naked) CPlayerPed__ProcessInput()
+{
+	_asm mov m_pPed, ecx;
+	_asm pushad;
+
+	ContextSwitch(m_pPed, false);
+
+	_asm popad;
+	_asm call COffsets::FUNC_CPlayerPed__ProcessInput;
+	_asm pushad;
+
+	ContextSwitch(m_pPed, true);
+
+	_asm popad;
+	_asm retn;
+}
+
+void _declspec(naked) CAutomobile__ProcessInput()
+{
+	_asm mov m_pVehicle, ecx;
+	_asm pushad;
+
+	ContextSwitch(m_pVehicle->m_pDriver, false);
+
+	_asm popad;
+	_asm call COffsets::FUNC_CAutomobile__ProcessInput;
+	_asm pushad;
+
+	ContextSwitch(m_pVehicle->m_pDriver, true);
+
+	_asm popad;
+	_asm ret;
+}
+
+
 void CHooks::Intialize()
 {
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x788F30), (DWORD)sub_788F30, 3);
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x7B27A0), (DWORD)Sub_7B2740, 5);
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x422F70), (DWORD)CFunctionRetnPatch, 1);
-
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
 
@@ -363,7 +542,6 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
 
 	// This disables some calculate for modelinfo but it seems this is not necessary
-    // Maybe we can disable this patch
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
 
     // this disables a call to a destructor of a member in rageResourceCache [field_244] 
