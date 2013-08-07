@@ -14,3 +14,5 @@ IV: Multiplayer (IV:MP) is in no way affiliated with Rockstar Games, Rockstar No
 ## Info
 
 Please check our coding style guide https://github.com/IVMultiplayer/IVMultiplayer/wiki/Code-Style-Guide
+
+We accept only pull request if you want to contribute
