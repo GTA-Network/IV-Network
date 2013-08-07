@@ -72,7 +72,6 @@ void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
 
 void CChat::Render()
 {
-	// Is the chat window not visible?
 	if(!m_bVisible)
 		return;
 
@@ -102,7 +101,6 @@ void CChat::Render()
 			break;
 	}
 
-	// Is the input visible?
 	if(m_bInputVisible)
 	{
 		float y = (m_fY + (m_iRenderLines * fLineDifference) + 30.0f);
@@ -121,15 +119,12 @@ void CChat::Output(const char * szText, bool bColorCoded)
 
 	do
 	{
-		//m_uiMostRecentLine = (m_uiMostRecentLine == 0 ? CHAT_MAX_LINES - 1 : m_uiMostRecentLine - 1);
 		if (m_uiMostRecentLine == 0)
 		{
 			// Making space for the new line
 			for (int i = CHAT_MAX_LINES - 2; i >= 0; i--)
-			{
-				CLogFile::Printf ("Moving %d to %d", i, i+1);
 				m_Lines [i + 1] = m_Lines [i];
-			}
+
 			m_uiMostRecentLine = 0;
 		}
 		else
@@ -200,7 +195,6 @@ void CChat::SetInputVisible(bool bVisible)
 
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 {
-	// Are we visible and ingame? (Fixes crash while not ingame)
 	if (!IsVisible() || g_pCore->GetClientState() != GAME_STATE_INGAME)
 		return false;
 
@@ -213,7 +207,6 @@ bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 		}
 		else if(dwChar == VK_RETURN)
 		{
-			// Is the input enabled?
 			if(m_bInputVisible)
 			{
 				// Process input
@@ -352,7 +345,9 @@ void CChat::ProcessInput()
 			}
 
 			AddToHistory();
-			if(strCommand == "q" || strCommand == "quit" || strCommand == "exit")
+			if(strCommand == "q" 
+				|| strCommand == "quit" 
+				|| strCommand == "exit")
 			{
 				/*// Are we connected to the network?
 				if(g_pCore->GetNetworkModule()->IsConnected())
@@ -410,7 +405,8 @@ void CChat::ProcessInput()
 				// Get the amount of lines to render
 				int iRenderLines = atoi(strParams.c_str());
 
-				if(iRenderLines <= 0 || iRenderLines > CHAT_RENDER_LINES)
+				if(iRenderLines <= 0 
+					|| iRenderLines > CHAT_RENDER_LINES)
 					return Output("USE: /chat-renderlines [amount]", false);
 
 				// Set the render lines amount
@@ -551,7 +547,7 @@ void CChat::AddToHistory()
 
 	// Increase the total history
 	if(m_iTotalHistory < CHAT_MAX_HISTORY)
-		m_iTotalHistory ++;
+		m_iTotalHistory++;
 }
 
 void CChat::AlignHistory()
@@ -569,18 +565,17 @@ void CChat::HistoryUp()
 	// Is there any history to move to?
 	if(m_iCurrentHistory < CHAT_MAX_HISTORY && ((m_iTotalHistory - 1) > m_iCurrentHistory))
 	{
-		//
 		if(m_iCurrentHistory == -1)
 			m_strInputHistory = GetInput();
 
 		// Increase the current history
-		m_iCurrentHistory ++;
+		m_iCurrentHistory++;
 
 		// Is there no history here?
 		if(m_strHistory[m_iCurrentHistory].GetLength() == 0)
 		{
 			// Decrease the current history
-			m_iCurrentHistory --;
+			m_iCurrentHistory--;
 		}
 
 		// Set the input
@@ -594,7 +589,7 @@ void CChat::HistoryDown()
 	if(m_iCurrentHistory > -1)
 	{
 		// Decrease the current history
-		m_iCurrentHistory --;
+		m_iCurrentHistory--;
 
 		//
 		if(m_iCurrentHistory == -1)
