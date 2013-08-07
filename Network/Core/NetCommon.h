@@ -12,13 +12,13 @@
 
 #include <Common.h>
 
-#ifdef _CLIENT
+//#ifdef _CLIENT
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/BitStream.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/RPC4Plugin.h>
 using namespace RakNet;
-#endif
+//#endif
 
 #include <Network/PacketIdentifiers.h>
 #include <Network/RPCIdentifiers.h>

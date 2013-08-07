@@ -16,3 +16,4 @@
 /Server/Release
 /Binary/temp
 /Binary
+*.o

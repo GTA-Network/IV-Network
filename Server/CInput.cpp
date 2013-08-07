@@ -42,16 +42,10 @@ void CInput::ProcessInput(CString strInput)
 		printf("========== Available console commands: ==========\n");
 		printf("say <text>\n");
 		printf("uptime\n");
-		printf("scripts\n");
+		printf("resources\n");
 		printf("players\n");
-		printf("loadscript <name>\n");
-		printf("loadclientscript <name>\n");
 		printf("loadresource <name>\n");
-		printf("reloadscript <name>\n");
-		printf("reloadclientscript <name>\n");
 		printf("reloadresource <name>\n");
-		printf("unloadscript <name>\n");
-		printf("unloadclientscript <name>\n");
 		printf("unloadresource <name>\n");
 		printf("exit\n");
 		return;

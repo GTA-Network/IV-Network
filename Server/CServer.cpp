@@ -16,16 +16,55 @@
 CServer::CServer()
 {
 	m_pNetServer = new CNetworkServer();
+
+	m_pRPCHandler = new CServerRPCHandler();
 }
 
 CServer::~CServer()
 {
 	SAFE_DELETE(m_pNetServer);
+
+	SAFE_DELETE(m_pEvents);
+
+	SAFE_DELETE(m_pPlayerManager);
+
+	SAFE_DELETE(m_pVehicleManager);
+
+	SAFE_DELETE(m_pActorManager);
+
+	SAFE_DELETE(m_pObjectManager);
+
+	SAFE_DELETE(m_pFireManager);
+
+	SAFE_DELETE(m_pPickupManager);
+
+	SAFE_DELETE(m_p3DLabelManager);
+
+	SAFE_DELETE(m_pBlipManager);
+
+	SAFE_DELETE(m_pCheckpointManager);
 }
 
 bool CServer::Startup()
 {
+	// Register our RPCs before set the NetServer´s rpc handler
+	m_pRPCHandler->RegisterRPCs();
+
+	// Set our rpc handler
+	m_pNetServer->SetRpcHandler(m_pRPCHandler);
+
 	m_pEvents = new CEvents();
+
+	// Create all the managers
+	m_pPlayerManager = new CPlayerManager();
+	m_pVehicleManager = new CVehicleManager();
+	m_pActorManager = new CActorManager();
+	m_pObjectManager = new CObjectManager();
+	m_pFireManager = new CFireManager();
+	m_pPickupManager = new CPickupManager();
+	m_p3DLabelManager = new C3DLabelManager();
+	m_pBlipManager = new CBlipManager();
+	m_pCheckpointManager = new CCheckpointManager();
 
 	// Open the settings file
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
@@ -94,6 +133,7 @@ bool CServer::Startup()
 	}
 	
 	// Load modules
+	// Note: modules not implemented yet coming soon
 	auto modules = CVAR_GET_LIST("module");
 	if(modules.size() > 0)
 	{
@@ -177,9 +217,51 @@ bool CServer::Startup()
 void CServer::Process()
 {
 	m_pNetServer->Process();
+
+	m_pResourceManager->Process(0);
+
+	// Pulse all managers
+	// Do not worry about that some managers dont need to be pulsed its just that its complete and all the same structure
+	m_pPlayerManager->Pulse();
+
+	m_pVehicleManager->Pulse();
+
+	m_pActorManager->Pulse();
+
+	m_pObjectManager->Pulse();
+
+	m_pFireManager->Pulse();
+
+	m_pPickupManager->Pulse();
+
+	m_p3DLabelManager->Pulse();
+
+	m_pBlipManager->Pulse();
+
+	m_pCheckpointManager->Pulse();
 }
 
 void CServer::Shutdown()
 {
 	m_pNetServer->EnsureStopped();
+
+	// TODO: clear events
+
+	m_pPlayerManager->Reset();
+
+	m_pVehicleManager->Reset();
+
+	m_pActorManager->Reset();
+
+	m_pObjectManager->Reset();
+
+	m_pFireManager->Reset();
+
+	m_pPickupManager->Reset();
+
+	m_p3DLabelManager->Reset();
+
+	m_pBlipManager->Reset();
+
+	m_pCheckpointManager->Reset();
 }

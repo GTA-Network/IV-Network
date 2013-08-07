@@ -143,7 +143,13 @@ CSquirrel::CSquirrel(CResource* pResource)
 		// Register our own functions
 #ifdef _SERVER
 		CPlayerNatives::Register(this);
-		//CVehicleNatives::Register(this);
+		CVehicleNatives::Register(this);
+		C3DLabelNatives::Register(this);
+		CActorNatives::Register(this);
+		CCheckpointNatives::Register(this);
+		CObjectNatives::Register(this);
+		CServerNatives::Register(this);
+		CBlipNatives::Register(this);
 #endif
 	}
 }
@@ -280,7 +286,7 @@ bool CSquirrel::Call(SQObjectPtr& pFunction, CSquirrelArguments* pArguments)
 	// Restore the stack top
 	sq_settop(m_pVM, iTop);
 
-	//// delete the 'source' variable
+	// delete the 'source' variable
 	//sq_pushroottable(m_pVM);
 	//sq_pushstring(m_pVM, "source", -1);
 	//sq_deleteslot(m_pVM, -2, false);

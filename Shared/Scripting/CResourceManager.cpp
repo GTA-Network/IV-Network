@@ -146,6 +146,7 @@ bool CResourceManager::Restart(CResource* pResource)
 
 void CResourceManager::Process(unsigned long ulTime)
 {
+	// i love range based loops
 	for(auto pResource : m_pResources)
 		pResource->Process(ulTime);
 
