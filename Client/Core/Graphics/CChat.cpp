@@ -138,10 +138,10 @@ void CChat::Output(const char * szText, bool bColorCoded)
 		{
 			// Add the message to the chatlog
 			CLogFile::Close();
-			CLogFile::Open ("Chatlog.txt", true);
-			CLogFile::Printf ("%s", szRemainingText);
+			CLogFile::Open("Chatlog.txt", true);
+			CLogFile::Printf("%s", szRemainingText);
 			CLogFile::Close();
-			CLogFile::Open (CLIENT_LOG_FILE); // Reopen client logfile
+			CLogFile::Open(CLIENT_LOG_FILE, true); // Reopen client logfile
 
 			szRemainingText = pLine->Format(szRemainingText, CHAT_WIDTH, color, bColorCoded);
 			
