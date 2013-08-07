@@ -103,6 +103,9 @@ public:
 	CString							GetPass( ) { return m_strPass; }
 
 	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
+
+	void							GetLoadedModulesList();
+	void							GetLoadedModule(DWORD dwProcessId);
 };
 
 #endif // CCore_h

@@ -15,6 +15,11 @@
 
 extern CCore *g_pCore;
 
+const unsigned char g_szPixel [] = { 0x42, 0x4D, 0x3A, 0, 0, 0, 0, 0, 0, 0, 0x36, 0, 0, 0, 0x28, 0, 0,
+                                    0, 0x1, 0, 0, 0, 0x1, 0, 0, 0, 0x1, 0, 0x18, 0, 0, 0, 0, 0,
+                                    0x4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                    0, 0, 0, 0xFF, 0xFF, 0xFF, 0 };
+
 CGraphics::CGraphics()
 {
 	// Create the d3d9 device hook
@@ -82,6 +87,25 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 			// Terminate process
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
+
+		/*// Basic initialize
+		D3DXCreateLine ( pDevice, &m_pLineInterface );
+		D3DXCreateTextureFromFileInMemory ( pDevice, g_szPixel, sizeof ( g_szPixel ), &m_pDXPixelTexture );
+
+		D3DDEVICE_CREATION_PARAMETERS cparams;
+		RECT rect;
+
+		m_pDevice->GetCreationParameters(&cparams);
+		GetWindowRect(cparams.hFocusWindow, &rect);
+		
+		int width=rect.bottom-rect.top;
+		int height=rect.right-rect.left;
+
+		D3DXCreateTextureFromFile( pDevice, "multiplayer/logo.png", &pLoadingScreenTexture);
+		m_pDevice->SetTexture(0, pLoadingScreenTexture);
+
+		// Reset our device
+		g_pCore->OnDeviceReset(m_pDevice);*/
 	}
 }
 

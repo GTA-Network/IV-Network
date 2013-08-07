@@ -411,7 +411,7 @@ void CChat::ProcessInput()
 		{
 			// Temporary(to print messages, until we've added the network manager
 			CString strInput = m_strInputText.Get();
-			Outputf(false, "IVMP Player: %s", m_strInputText.Get());
+			Outputf(false, "%s:%s", g_pCore->GetNick().Get(), m_strInputText.Get());
 			AddToHistory();
 		}
 

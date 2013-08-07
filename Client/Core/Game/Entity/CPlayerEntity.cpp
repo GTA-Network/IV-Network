@@ -120,9 +120,9 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
-	m_bLocalPlayer(bLocalPlayer)
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 {
+	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");
 	m_usPlayerId = -1;
 	m_usPing = 0;
@@ -183,6 +183,9 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(),
 
         // Set the player info instance to NULL
         m_pPlayerInfo = NULL;
+		
+		// Set the context data instance to NULL
+		m_pContextData = NULL;
     }
 
 }
@@ -335,10 +338,7 @@ bool CPlayerEntity::Create()
 	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
-	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipSprite(m_uiBlip, CIVScript::BLIP_OBJECTIVE);
-	CIVScript::ChangeBlipScale(m_uiBlip, 0.5);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, GetNick().Get());
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
 
 	// Set the player internal name
 	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255);

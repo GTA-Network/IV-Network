@@ -92,6 +92,31 @@ _declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 	_asm	retn 4;
 }
 
+void StartGame_Loading()
+{
+	DWORD unk_10F8088 = g_pCore->GetBase() + 0x10F8088;
+	DWORD sub_5AF930 = g_pCore->GetBase() + 0x5AF930;
+	DWORD dword_10F8078 = g_pCore->GetBase() + 0x10F8078;
+	DWORD dword_10F805C = g_pCore->GetBase() + 0x10F805C;
+	int * v7 = new int(0);
+	_asm
+	{
+		push v7
+		mov ecx, unk_10F8088
+		call sub_5AF930
+	}
+	*(DWORD*)dword_10F8078 = *v7;
+	*(DWORD*)dword_10F805C = *v7;
+	if ( *v7 > 0 )
+	{
+		DWORD sub_7B2DF0 = g_pCore->GetBase() + 0x7B2DF0;
+		_asm
+		{
+			call sub_7B2DF0
+		}
+	}
+}
+
 void RemoveInitialLoadingScreens()
 {
 	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
@@ -100,17 +125,18 @@ void RemoveInitialLoadingScreens()
 
 	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
-		if(i < 2)
+		if(i <= 4)
 		{
-			*(DWORD *)(iLoadScreenType + i * 400) = ((i < 2) ? 3 : 3);
-			*(DWORD *)(iLoadScreenDuration + i * 400) = 3600000;
-		}
-
-		if(i >= 2 && i <= 4)
-		{
+			*(DWORD *)(iLoadScreenType + i * 400) = 0;
 			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
+
+		if(i >= 5)
+		{
+			*(DWORD *)(iLoadScreenType + i * 400) = 7;
+		}
 	}
+	StartGame_Loading();
 }
 
 
