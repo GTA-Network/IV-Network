@@ -118,6 +118,7 @@ public:
 
 	CIVPlayerPed		* GetPlayerPed() { return m_pPlayerPed; }
 	CIVPlayerInfo		* GetPlayerInfo() { return m_pPlayerInfo; }
+	BYTE				GetPlayerGameNumber() { return m_bytePlayerNumber; }
 
 	void				PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
 	void				RemoveFromVehicle();

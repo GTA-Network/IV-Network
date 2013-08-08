@@ -54,8 +54,8 @@ void CGame::Setup()
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 
 	// Create new civpad instance
-	m_pPad = new CIVPad((IVPad *)(g_pCore->GetBase() + 0x10FB818));
-
+	m_pPad = new CIVPad((IVPad *)COffsets::VAR_Pads);
+	
 	// Create task manager instance
 	m_pTaskManager = new CTaskManager;
 
@@ -64,7 +64,10 @@ void CGame::Setup()
 
 	// Create new pool instance
 	m_pPool = new CPools;
-	
+
+	// Install our switches/patches
+	CContextSwitch::InstallKeySyncHooks();
+
 	// Initialise our model info array
 	for(int i = 0; i < NUM_ModelInfos; i++)
 		m_modelInfos[i].SetIndex(i);
@@ -86,7 +89,7 @@ void CGame::Initialise()
 	g_pCore->SetClientState(GAME_STATE_INGAME);
 
 	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)
-	m_pPool->Initialise();
+	m_pPool->Initialize();
 
 	// Create our camera instance if it doesn't exist/isn't created yet
 	CCamera * pCamera = new CCamera;
@@ -276,6 +279,8 @@ void CGame::OnClientReadyToGamePlay()
 	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
 
 	CIVWeather::SetTime(8,0);
+
+	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

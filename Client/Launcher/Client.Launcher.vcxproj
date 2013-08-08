@@ -54,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>../../Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
@@ -81,8 +81,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Libraries\tinyxml\ticpp.cpp" />
+    <ClCompile Include="..\..\Libraries\tinyxml\tinystr.cpp" />
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\Libraries\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\Shared\CLogFile.cpp" />
+    <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
+    <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
+    <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>

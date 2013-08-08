@@ -19,6 +19,7 @@ public:
 
 	static bool				IsMenuActive();
 	static void				SetTimeOfDay(int iHour, int iMinute);
+	static DWORD			GetTimeOfDay();
 	static void				SetDayOfWeek(int iDay);
 	static void				LockTime(int iHour, int iMinute);
 	static void				GetTime(int * iHour, int * iMinute);

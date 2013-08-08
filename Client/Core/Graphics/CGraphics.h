@@ -48,6 +48,9 @@ private:
 
 	bool					LoadFonts();
 
+	struct ID3DXLine*       m_pLineInterface;
+	IDirect3DTexture9		* m_pDXPixelTexture;
+	IDirect3DTexture9		* m_pPixelTexture;
 public:
 	CGraphics();
 	~CGraphics();
@@ -78,6 +81,10 @@ public:
 	}
 
 	IDirect3DDevice9		*GetDevice() { return m_pDevice; }
+	
+	// member function public
+	LPDIRECT3DTEXTURE9		pLoadingScreenTexture;
+	LPD3DXSPRITE			GetSprite() { return m_pSprite; }
 };
 
 #endif // CGraphics_h

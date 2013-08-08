@@ -196,7 +196,7 @@ void CChat::SetInputVisible(bool bVisible)
 	m_bInputVisible = bVisible;
 
 	// Unlock the player controls
-	if(g_pCore && g_pCore->GetGame() && g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
+	if(g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
 		g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true,true);
 }
 
@@ -432,8 +432,7 @@ void CChat::ProcessInput()
 		{
 			// Temporary(to print messages, until we've added the network manager
 			CString strInput = m_strInputText.Get();
-			Outputf(false, "%s: %s", g_pCore->GetNick().Get(), m_strInputText.Get());
-			AddToHistory();
+			Outputf(false, "%s: %s", g_pCore->GetNick().Get(), m_strInputText.Get());			AddToHistory();
 		}
 
 		// Is the network module instance valid?

@@ -247,6 +247,11 @@ INIT_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
 INIT_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
 INIT_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
 
+INIT_OFF(CGame_Process__Sleep);
+INIT_OFF(CGame_Process_InitialiseRageGame);
+INIT_OFF(RAGE_LoadGame);
+INIT_OFF(RAGE_StartNewGame);
+
 enum ePATCH_SIG
 {
 	IV_101 = 0x831F7518,
@@ -507,6 +512,11 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskSimpleFireGun__Counstructor,0xCC7400);
 			SET_OFF(FUNC_CTaskSimpleAimGun__Constructor,0xCC87F0); 
 			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor,0xCCAD20);
+
+			SET_OFF(CGame_Process__Sleep,0x402B3C);
+			SET_OFF(CGame_Process_InitialiseRageGame,0x402C07);
+			SET_OFF(RAGE_LoadGame,0x5B0311);
+			SET_OFF(RAGE_StartNewGame,0x5B03BF);
 
 			break;
 		default:

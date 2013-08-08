@@ -23,6 +23,13 @@ IVPlayerPed  * _pPlayerPed = NULL;
 bool           g_bInvalidIndex = false;
 IVPool       * g_pIVPool;
 BYTE         * g_pPoolAllocatedMemory;
+DWORD			dwSub7Jmp;
+DWORD			dwSub7BCall;
+DWORD			dwSub7BJmp;
+char			*szFile;
+bool			bInitialiseGame = true;
+DWORD			dwJumpGame;
+int				iFrameCalls = 0;
 
 int				hFile2;
 HANDLE			iTexture;
@@ -85,17 +92,51 @@ _declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 	_asm	retn 4;
 }
 
-void RemoveInitialLoadingScreens()
+void StartGame_Loading()
 {
-	// Legal, Legal 2, R*, R*N, GTA:IV, ...
-	for(int i = 0; i < *(int *)(COffsets::VAR_NumLoadingScreens); ++i)
+	DWORD unk_10F8088 = g_pCore->GetBase() + 0x10F8088;
+	DWORD sub_5AF930 = g_pCore->GetBase() + 0x5AF930;
+	DWORD dword_10F8078 = g_pCore->GetBase() + 0x10F8078;
+	DWORD dword_10F805C = g_pCore->GetBase() + 0x10F805C;
+	int * v7 = new int(0);
+	_asm
 	{
-		if(i <= 4) 
+		push v7
+		mov ecx, unk_10F8088
+		call sub_5AF930
+	}
+	*(DWORD*)dword_10F8078 = *v7;
+	*(DWORD*)dword_10F805C = *v7;
+	if ( *v7 > 0 )
+	{
+		DWORD sub_7B2DF0 = g_pCore->GetBase() + 0x7B2DF0;
+		_asm
 		{
-			*(DWORD *)(COffsets::VAR_FirstLoadingScreenDuration + i * 400) = 0;
-			*(DWORD *)(COffsets::VAR_FirstLoadingScreenType + i * 400) = 4;
+			call sub_7B2DF0
 		}
 	}
+}
+
+void RemoveInitialLoadingScreens()
+{
+	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
+	int iLoadScreenType = (g_pCore->GetBase() + 0x18A8F48);
+	int iLoadScreenDuration = (g_pCore->GetBase() + 0x18A8F40);
+
+	for(int i = 0; i < *(int *)iLoadScreens; ++i)
+	{
+		if(i <= 4)
+		{
+			*(DWORD *)(iLoadScreenType + i * 400) = 0;
+			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
+		}
+
+		if(i >= 5)
+		{
+			*(DWORD *)(iLoadScreenType + i * 400) = 7;
+		}
+	}
+	StartGame_Loading();
 }
 
 
@@ -240,7 +281,6 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 	_asm	retn;
 }
 
-DWORD dwSub7Jmp;
 _declspec(naked) void sub_788F30()
 {
 	_asm
@@ -258,10 +298,7 @@ _declspec(naked) void sub_788F30()
 	}
 }
 
-DWORD dwSub7BCall;
-DWORD dwSub7BJmp;
-char *szFile;
-__declspec(naked) void Sub_7B2740() //7B27A0
+_declspec(naked) void Sub_7B2740() //7B27A0
 {
 	dwSub7BCall = (g_pCore->GetBase() + 0x7B27A0);
 
@@ -295,7 +332,7 @@ __declspec(naked) void CFunctionRetnPatch()
 	}
 }
 
-void _declspec(naked) CRASH_625F15_HOOK()
+_declspec(naked) void CRASH_625F15_HOOK()
 {
         _asm
         {
@@ -329,12 +366,58 @@ keks:
         }
 }
 
+_declspec(naked) void CGameProcessHook()
+{
+	if(!bInitialiseGame && iFrameCalls != 300)
+	{
+		iFrameCalls++;
+		dwJumpGame = (g_pCore->GetBase() + 0x402B03);
+		_asm
+		{
+			mov ebp, esp
+			jmp dwJumpGame
+		}
+	}
+	else
+	{
+		iFrameCalls++;
+		bInitialiseGame = false;
+
+		// Don't process game this time, just start it(works ram usage increases up to ~1,2GB)
+		dwJumpGame = (g_pCore->GetBase() + 0x402BD3);
+		_asm
+		{
+			mov ebp, esp
+			jmp dwJumpGame
+		}
+
+		BYTE b1 = *(BYTE*)(g_pCore->GetBase() + 0x10C74E1) = 0;
+		BYTE b2 = *(BYTE*)(g_pCore->GetBase() + 0x10C79E4) = 1;
+		BYTE b3 = *(BYTE*)(g_pCore->GetBase() + 0x119EB14) = 0;
+		
+		*(DWORD*)(g_pCore->GetBase()+0x10C7854) = 50;
+		
+
+		DWORD keks = *(DWORD *)(g_pCore->GetBase() + 0x10F8078); // keks copyright by xforce
+		DWORD g_rgsc = *(DWORD *)(g_pCore->GetBase() + 0x172427C);
+		DWORD dwFunc = g_pCore->GetBase() + 0x4205B0;
+		int iTime = timeGetTime();
+		_asm
+		{   
+			push 0
+			push 1
+			push 0
+			mov eax, keks
+			mov ecx, g_rgsc
+			mov edi, iTime
+			call dwFunc
+			add esp, 0Ch
+		}
+	}
+}
+
 void CHooks::Intialize()
 {
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x788F30), (DWORD)sub_788F30, 3);
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x7B27A0), (DWORD)Sub_7B2740, 5);
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x422F70), (DWORD)CFunctionRetnPatch, 1);
-
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
 
@@ -363,7 +446,6 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
 
 	// This disables some calculate for modelinfo but it seems this is not necessary
-    // Maybe we can disable this patch
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
 
     // this disables a call to a destructor of a member in rageResourceCache [field_244] 

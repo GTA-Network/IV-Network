@@ -38,6 +38,7 @@
 #include "CCamera.h"
 #include "CGameFuncs.h"
 #include "CCharacterManager.h"
+#include "CContextSwitch.h"
 
 typedef CEntityManager<CPlayerEntity, MAX_PLAYERS> CPlayerManager;
 typedef CEntityManager<CVehicleEntity, MAX_VEHICLES> CVehicleManager;

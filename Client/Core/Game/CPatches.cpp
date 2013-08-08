@@ -15,6 +15,12 @@ extern	CCore				* g_pCore;
 
 void CPatches::Initialize()
 {
+	// Skip main menu
+	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitialiseRageGame);
+
+    // Disable long sleep in CGame::Run
+   // *(DWORD *)(g_pCore->GetBase() + 0x401835) = 1;
+
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	*(DWORD *)(g_pCore->GetBaseAddress() + 0x9849F0) = 0x900004C2;
 
@@ -25,9 +31,6 @@ void CPatches::Initialize()
 	// Make the game think we are not connected to the internet
     *(BYTE *)(g_pCore->GetBase() + 0x10F1390) = 0; // byteInternetConnectionState
     *(DWORD *)(g_pCore->GetBase() + 0x7AF1A0) = 0x90C3C032; // xor al, al; retn; nop
-
-	// Disable resouce-loading script "main.sco"
-    *(BYTE *)(g_pCore->GetBase() + 0x809A8A) = 0x75;
 		
     // Always start a new game
     CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x5B0311), (g_pCore->GetBase() + 0x5B03BF));
@@ -57,9 +60,12 @@ void CPatches::Initialize()
 
     // Disable fake cars
     CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x9055D0);
+	
+	// Always start a new game
+	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
 
-    // Disable long sleep in CGame::Run
-    *(DWORD *)(g_pCore->GetBase() + 0x401835) = 1;
+	// Disable startup.sco
+	*(BYTE *)(g_pCore->GetBaseAddress() + 0x809A8A) = 0x75;
 
     // Don't initialize error reporting
     CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0xD356D0);
@@ -127,4 +133,8 @@ void CPatches::Initialize()
     This seems to be associated to loading models but they are not used!?
     */
     CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x8F2F40);
+
+	//CPatcher::InstallJmpPatch((g_pCore->GetBaseAddress() + 0x8589D3), (g_pCore->GetBaseAddress() + 0x859E25));
+
+	*(BYTE *)(g_pCore->GetBase() + 0x857133) = 0xE0;
 }
