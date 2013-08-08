@@ -123,6 +123,7 @@ class CNetworkEntitySubPlayer {
 private:
 
 public:
+	bool						bDuckState;
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
 
@@ -202,6 +203,9 @@ public:
 
 	CNetworkEntitySync	GetLatestSyncPackage() { return m_pEntitySync; }
 	CNetworkEntitySync	GetOldestSyncPackage() { return m_pEntityLastSync; }
+
+	CNetworkEntitySubPlayer	GetPlayerHandle() { return m_pPlayerHandle; }
+	CNetworkEntitySubVehicle GetVehicleHandle() { return m_pVehicleHandle; }
 };
 
 #endif // CNetworkEntity_h

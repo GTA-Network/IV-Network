@@ -32,6 +32,7 @@ void CDevelopment::Process()
 	CVector3 vecPosition; 
 	CVector3 vecMoveSpeed;
 	CVector3 vecTurnSpeed;
+	bool bCrouch;
 
 	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics())
 	{
@@ -42,7 +43,8 @@ void CDevelopment::Process()
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPosition(vecPosition);
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetMoveSpeed(vecMoveSpeed);
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetTurnSpeed(vecTurnSpeed);
-
+		bCrouch = g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPlayerHandle().bDuckState;
+		
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
 		fCurrentLine += 15;
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Move Speed: %.2f, %.2f ,%.2f,", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
@@ -104,6 +106,10 @@ void CDevelopment::Process()
 			m_pDebugPlayer->SetMoveToDirection(vecPosition, vecMoveSpeed, 4);
 			m_iOldMoveStyle = 3;
 		}
+
+		if(m_pDebugPlayer->CNetworkEntity::GetPlayerHandle().bDuckState != bCrouch)
+			m_pDebugPlayer->CPlayerEntity::GetPlayerPed()->SetDucking(bCrouch);
+
 
 		m_pDebugPlayer->CPlayerEntity::SetPosition(vecPosition);
 	}
