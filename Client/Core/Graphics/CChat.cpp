@@ -24,7 +24,7 @@ CChat::CChat(float fX, float fY)
 	m_bMap = false;
 	m_bOldState = false;
 	m_uiNumLines = CHAT_MAX_LINES;
-	m_uiMostRecentLine = 0;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_TextColor = CHAT_TEXT_COLOR;
 	m_InputTextColor = CColor(255, 255, 255, 255);
 	m_iRenderLines = 10;
@@ -72,7 +72,6 @@ void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
 
 void CChat::Render()
 {
-	// Is the chat window not visible?
 	if(!m_bVisible)
 		return;
 
@@ -81,28 +80,27 @@ void CChat::Render()
 	float fOffsetY = (m_iRenderLines * fLineDifference + 10.0f);
 
 	// Apply line smooth scroll
-	unsigned int uiLine = (m_uiMostRecentLine % m_iRenderLines);
+	unsigned int uiLine = m_uiMostRecentLine + m_uiScrollOffset;
 	unsigned int uiLinesDrawn = 0;
 
 	// Loop over all chatlines
-	while(m_Lines[ uiLine ].IsActive() && uiLinesDrawn < m_uiNumLines)
+	while (uiLinesDrawn < m_iRenderLines)
 	{
 		// Draw the current line
-		m_Lines[ uiLine ].Draw(m_fX, fOffsetY, 255, true);
+		m_Lines[uiLine].Draw(m_fX, fOffsetY, 255, true);
 
 		// Adjust the offset
 		fOffsetY -= fLineDifference;
 
 		// Increment the lines drawn
-		uiLine = (uiLine + 1) % m_iRenderLines;
+		uiLine++;
 		uiLinesDrawn++;
 
 		// Is this line the end?
-		if(uiLine == m_uiMostRecentLine)
+		if(uiLine >= CHAT_MAX_LINES)
 			break;
 	}
 
-	// Is the input visible?
 	if(m_bInputVisible)
 	{
 		float y = (m_fY + (m_iRenderLines * fLineDifference) + 30.0f);
@@ -121,16 +119,36 @@ void CChat::Output(const char * szText, bool bColorCoded)
 
 	do
 	{
-		m_uiMostRecentLine = (m_uiMostRecentLine == 0 ? m_iRenderLines - 1 : m_uiMostRecentLine - 1);
+		if (m_uiMostRecentLine == 0)
+		{
+			m_Lines [CHAT_MAX_LINES - 1].SetActive (false);
+
+			// Making space for the new line
+			for (int i = CHAT_MAX_LINES - 2; i >= 0; i--)
+				m_Lines [i + 1] = m_Lines [i];
+
+			m_uiMostRecentLine = 0;
+		}
+		else
+		{
+			m_uiMostRecentLine--;
+		}
 		
-		pLine = &m_Lines[ m_uiMostRecentLine ];
+		pLine = &m_Lines[m_uiMostRecentLine];
 		
 		if(pLine)
 		{
+			// Add the message to the chatlog
+			CLogFile::Close();
+			CLogFile::Open("Chatlog.txt", true);
+			CLogFile::Printf("%s", szRemainingText);
+			CLogFile::Close();
+			CLogFile::Open(CLIENT_LOG_FILE, true); // Reopen client logfile
+
 			szRemainingText = pLine->Format(szRemainingText, CHAT_WIDTH, color, bColorCoded);
 			
 			pLine->SetActive(true);
-			
+
 		}
 	}
 	while(szRemainingText);
@@ -152,10 +170,10 @@ void CChat::Clear()
 {
 	for(int i = 0; i < CHAT_MAX_LINES; i++)
 	{
-		m_Lines[ i ].SetActive(false);
+		m_Lines[i].SetActive(false);
 	}
 
-	m_uiMostRecentLine = 0;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_fSmoothScroll = 0;
 }
 
@@ -186,6 +204,9 @@ void CChat::SetInputVisible(bool bVisible)
 
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 {
+	if (!IsVisible() || g_pCore->GetClientState() != GAME_STATE_INGAME)
+		return false;
+
 	// Was it a key release?
 	if(uMsg == WM_KEYUP)
 	{
@@ -195,7 +216,6 @@ bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 		}
 		else if(dwChar == VK_RETURN)
 		{
-			// Is the input enabled?
 			if(m_bInputVisible)
 			{
 				// Process input
@@ -334,7 +354,9 @@ void CChat::ProcessInput()
 			}
 
 			AddToHistory();
-			if(strCommand == "q" || strCommand == "quit" || strCommand == "exit")
+			if(strCommand == "q" 
+				|| strCommand == "quit" 
+				|| strCommand == "exit")
 			{
 				/*// Are we connected to the network?
 				if(g_pCore->GetNetworkModule()->IsConnected())
@@ -392,7 +414,8 @@ void CChat::ProcessInput()
 				// Get the amount of lines to render
 				int iRenderLines = atoi(strParams.c_str());
 
-				if(iRenderLines <= 0 || iRenderLines > CHAT_RENDER_LINES)
+				if(iRenderLines <= 0 
+					|| iRenderLines > CHAT_RENDER_LINES)
 					return Output("USE: /chat-renderlines [amount]", false);
 
 				// Set the render lines amount
@@ -411,8 +434,7 @@ void CChat::ProcessInput()
 		{
 			// Temporary(to print messages, until we've added the network manager
 			CString strInput = m_strInputText.Get();
-			Outputf(false, "%s:%s", g_pCore->GetNick().Get(), m_strInputText.Get());
-			AddToHistory();
+			Outputf(false, "%s: %s", g_pCore->GetNick().Get(), m_strInputText.Get());			AddToHistory();
 		}
 
 		// Is the network module instance valid?
@@ -505,14 +527,21 @@ void CChat::SetInput(CString strText)
 
 void CChat::ScrollUp()
 {
-	
+	// Are there enough lines to scroll up?
+	if (m_uiMostRecentLine + m_iRenderLines + m_uiScrollOffset < CHAT_MAX_LINES)
+		m_uiScrollOffset = m_uiScrollOffset + m_iRenderLines;
 }
 
 void CChat::ScrollDown()
 {
+	// Are there any lines to scroll down?
+	if (m_uiScrollOffset > 0)
+		m_uiScrollOffset = m_uiScrollOffset - m_iRenderLines;
 	
+	// Is our index lower than the current line?
+	if (m_uiScrollOffset < m_uiMostRecentLine)
+		m_uiScrollOffset = 0;
 }
-
 void CChat::AddToHistory()
 {
 	// Align the history
@@ -526,7 +555,7 @@ void CChat::AddToHistory()
 
 	// Increase the total history
 	if(m_iTotalHistory < CHAT_MAX_HISTORY)
-		m_iTotalHistory ++;
+		m_iTotalHistory++;
 }
 
 void CChat::AlignHistory()
@@ -544,18 +573,17 @@ void CChat::HistoryUp()
 	// Is there any history to move to?
 	if(m_iCurrentHistory < CHAT_MAX_HISTORY && ((m_iTotalHistory - 1) > m_iCurrentHistory))
 	{
-		//
 		if(m_iCurrentHistory == -1)
 			m_strInputHistory = GetInput();
 
 		// Increase the current history
-		m_iCurrentHistory ++;
+		m_iCurrentHistory++;
 
 		// Is there no history here?
 		if(m_strHistory[m_iCurrentHistory].GetLength() == 0)
 		{
 			// Decrease the current history
-			m_iCurrentHistory --;
+			m_iCurrentHistory--;
 		}
 
 		// Set the input
@@ -569,7 +597,7 @@ void CChat::HistoryDown()
 	if(m_iCurrentHistory > -1)
 	{
 		// Decrease the current history
-		m_iCurrentHistory --;
+		m_iCurrentHistory--;
 
 		//
 		if(m_iCurrentHistory == -1)
