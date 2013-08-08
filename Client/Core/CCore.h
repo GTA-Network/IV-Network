@@ -36,7 +36,7 @@
 #include "Game/Entity/CNetworkEntity.h"
 
 #include <Network/CNetworkManager.h>
-
+#include <Game/CDevelopment.h>
 
 class CCore {
 private:
@@ -51,6 +51,7 @@ private:
 	CChat							* m_pChat;
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
+	CDevelopment					* m_pDevelopment;
 
 	eGAMEStates						m_eGameState;
 

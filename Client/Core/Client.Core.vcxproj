@@ -209,6 +209,7 @@
     <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Game\CContextData.cpp" />
     <ClCompile Include="Game\CContextSwitch.cpp" />
+    <ClCompile Include="Game\CDevelopment.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
@@ -439,6 +440,7 @@
     <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CContextData.h" />
     <ClInclude Include="Game\CContextSwitch.h" />
+    <ClInclude Include="Game\CDevelopment.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />

@@ -374,7 +374,7 @@ void CChat::ProcessInput()
 				int iVehicleType = 90;
 
 				CVector3 vecCreatePos; 
-				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
+				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
 
 				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
 				if(pVehicle)
@@ -391,7 +391,7 @@ void CChat::ProcessInput()
 			else if(strCommand == "cp")
 			{
 				CVector3 vecCreatePos; 
-				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecCreatePos);
+				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
 
 				CPlayerEntity * pPlayer = new CPlayerEntity(false);
 				if(pPlayer)

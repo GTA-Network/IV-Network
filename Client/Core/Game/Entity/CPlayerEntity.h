@@ -88,7 +88,7 @@ public:
 	unsigned short		GetPing();
 
 	void				SetPosition(CVector3 vecPosition);
-	bool				GetPosition(CVector3 *vecPosition);
+	void				GetPosition(CVector3 &vecPosition);
 	void				Teleport(CVector3 vecPosition);
 
 	void				SetNick(CString strNick) { m_strNick = strNick; }

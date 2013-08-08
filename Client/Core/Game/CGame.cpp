@@ -269,7 +269,7 @@ void CGame::PrepareWorld()
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 
-	g_pCore->GetChat()->Output("Enter /spawn to spawn your local player ...",false);
+	g_pCore->GetChat()->Output("Enter \"/spawn\" to spawn your local player ...",false);
 }
 
 void CGame::OnClientReadyToGamePlay()

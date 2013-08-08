@@ -132,9 +132,7 @@ void RemoveInitialLoadingScreens()
 		}
 
 		if(i >= 5)
-		{
-			*(DWORD *)(iLoadScreenType + i * 400) = 7;
-		}
+			*(DWORD *)(iLoadScreenType + i * 400) = *(DWORD *)(iLoadScreenType + 5 * 400);
 	}
 	StartGame_Loading();
 }
@@ -323,7 +321,7 @@ _declspec(naked) void Sub_7B2740() //7B27A0
 	}
 }
 
-__declspec(naked) void CFunctionRetnPatch()
+_declspec(naked) void CFunctionRetnPatch()
 {
 	_asm
 	{

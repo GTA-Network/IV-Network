@@ -67,6 +67,9 @@ bool CCore::Initialise()
 	// Create the network manager instance
 	m_pNetworkManager = new CNetworkManager;
 
+	// Create the development instance
+	m_pDevelopment = new CDevelopment;
+
 	// Create the chat instance
 	m_pChat = new CChat(30, 30);
 
@@ -90,6 +93,9 @@ bool CCore::Initialise()
 
 	// Setup the game instance
 	m_pGame->Setup();
+
+	// Setup the development instance
+	m_pDevelopment->SetDebugView(true);
 
 	CLogFile::Printf("Done!");
 	return true;
@@ -217,6 +223,9 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		// Render our FPS-Counter instance
 		if(m_pFPSCounter)
 			m_pFPSCounter->Pulse();
+
+		if(m_pDevelopment)
+			m_pDevelopment->Process();
 	//}
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);

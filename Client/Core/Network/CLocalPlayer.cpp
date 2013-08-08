@@ -89,7 +89,7 @@ void CLocalPlayer::DoDeathCheck()
 
 void CLocalPlayer::Pulse()
 {
-	CPlayerEntity::Pulse();
+	CPlayerEntity::Process();
 	m_bSpawnMarked = true;
 }
 
@@ -103,9 +103,6 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 {
 	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
 	{
-		if(g_pCore->GetChat())
-			g_pCore->GetChat()->Outputf(false,"Settings controls %d, %d",bControl, bCamera);
-	
 		CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 		CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 	}

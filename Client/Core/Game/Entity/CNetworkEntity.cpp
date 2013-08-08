@@ -10,6 +10,8 @@
 #include "CNetworkEntity.h"
 #include <Network/CBitStream.h>
 #include <CLogFile.h>
+#include "CPlayerEntity.h"
+#include "CVehicleEntity.h"
 
 CNetworkEntity::CNetworkEntity()
 	: m_vecPosition(CVector3()),
@@ -82,11 +84,78 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
+void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
+{
+	// Check if our player ptr
+	if(pPlayer)
+	{
+		// Get the latest position
+		pPlayer->GetPosition(m_vecPosition);
+	}
+}
+
+void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
+{
+	// Check if our player ptr
+	if(pVehicle)
+	{
+		// Get the latest position
+		pVehicle->GetPosition(m_vecPosition);
+	}
+}
+
 void CNetworkEntity::Serialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
 	CBitStream * pBitStream = new CBitStream();
-	pBitStream->Write0();
+
+	// Backup old sync
+	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
+
+	// Create package
+	m_pEntitySync = *(new CNetworkEntitySync);
+
+	switch(m_eType)
+	{
+	case PLAYER_ENTITY:
+		{
+			sNetwork_Sync_Entity_Player * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
+
+			// Apply entity type to package
+			m_pEntityLastSync.pEntityType = PLAYER_ENTITY;
+
+			// Apply current 3D Position to the sync package
+			pSyncPacket->vecPosition = m_vecPosition;
+			
+			// Stop current case
+			break;
+
+		}
+	case VEHICLE_ENTITY:
+		{
+			sNetwork_Sync_Entity_Vehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
+
+			// Apply entity type to package
+			m_pEntityLastSync.pEntityType = VEHICLE_ENTITY;
+
+			// Apply current 3D Position to the sync package
+			pSyncPacket->vecPosition = m_vecPosition;
+
+			// Stop current case
+			break;
+		}
+	default:
+		{
+			CLogFile::Print("Failed to get entity type from current entitiy. Sync canceled..");
+			break;
+		}
+	}
+
+	// Send package to network
+	;
+
+	// Clear up memory and delete
+	//memset(&m_pEntitySync,NULL,sizeof(CNetworkEntitySync));
 }
 
 void CNetworkEntity::Deserialize(ePackageType pType)

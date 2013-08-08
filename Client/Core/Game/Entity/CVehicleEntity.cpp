@@ -480,7 +480,7 @@ void CVehicleEntity::Process()
 {
 	Interpolate();
 
-	CNetworkEntity::Pulse();
+	CNetworkEntity::Pulse(this);
 }
 
 void CVehicleEntity::UpdateTargetPosition()

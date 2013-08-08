@@ -230,7 +230,7 @@ void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulCol
 	// Calculating range.
 	float _fRange = 1.0f;
 	CVector3 vecLocalPos;		
-	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(&vecLocalPos);
+	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecLocalPos);
 
 	// Check range status. (Is -1 disabled)
 	if(fRange != -1.0f)

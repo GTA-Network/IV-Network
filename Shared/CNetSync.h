@@ -11,6 +11,7 @@
 #define CNetSync_h
 
 #include "Common.h"
+#include "Math/CMaths.h"
 
 enum ePackageType
 {
@@ -40,6 +41,29 @@ enum eNetworkState
 	NETSTATE_DISCONNECTED,
 	NETSTATE_TIMEOUT,
 	NETSTATE_AWAIT_CONNECT
+};
+
+enum ePackageEntityDefinition
+{
+	RPC_PACKET_ENTITY_PLAYER = 1,
+	RPC_PACKET_ENTITY_VEHICLE = 2
+};
+
+struct sNetwork_Sync_Entity_Player
+{
+	CVector3 vecPosition;
+};
+
+struct sNetwork_Sync_Entity_Vehicle
+{
+	CVector3 vecPosition;
+};
+
+struct sNetwork_Sync_Packet
+{
+	ePackageEntityDefinition eEntity;
+	sNetwork_Sync_Entity_Player pEntityPlayer;
+	sNetwork_Sync_Entity_Vehicle pEntityVehicle;
 };
 
 

@@ -169,6 +169,10 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		// Set the localplayer name
 		SetNick(g_pCore->GetNick());
 
+		// Set our localplayer invincible during development mode
+		CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
+
+		// Mark as spawned
 		m_bSpawned = true;
 
 		CLogFile::Printf("LOCALPLAYER: m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
@@ -210,7 +214,7 @@ unsigned short CPlayerEntity::GetPing()
 void CPlayerEntity::Process()
 {
 	// Is the player spawned?
-	if(IsSpawned() && 0 != 0) // disable current processing
+	if(IsSpawned())
 	{
 		// Check vehicle enter/exit
 		//CheckVehicleEnterExit();
@@ -250,7 +254,7 @@ void CPlayerEntity::Process()
 		}
 	}
 
-	CNetworkEntity::Pulse();
+	CNetworkEntity::Pulse(this);
 }
 
 bool CPlayerEntity::Create()
@@ -340,13 +344,11 @@ bool CPlayerEntity::Create()
 	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
-	//CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
+	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
 
 	// Set the player internal name
-	//CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), GetNick().Get(), 255, 255, 255, 255);
-
-	// Temp
-	//CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
+	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "Im_BATMAN", 255, 255, 255, 255);
 
 	// Mark as spawned
 	Spawn();
@@ -435,14 +437,12 @@ void CPlayerEntity::SetPosition(CVector3 vecPosition)
 	CNetworkEntity::SetPosition(vecPosition);
 }
 
-bool CPlayerEntity::GetPosition(CVector3 *vecPosition)
+void CPlayerEntity::GetPosition(CVector3& vecPosition)
 {
 	if(IsSpawned())
-		m_pPlayerPed->GetPosition(*vecPosition);
+		m_pPlayerPed->GetPosition(vecPosition);
 	else
-		vecPosition = &m_vecPosition;
-
-	return true;
+		vecPosition = m_vecPosition;
 }
 
 void CPlayerEntity::Teleport(CVector3 vecPosition)
@@ -865,7 +865,7 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 
 		// Get our current position
 		CVector3 vecPosition;
-		GetPosition(&vecPosition);
+		GetPosition(vecPosition);
 
 		// Loop through all current vehicles
 		for(int i = 0; i < g_pCore->GetGame()->GetVehicleManager()->GetCount(); i++)
