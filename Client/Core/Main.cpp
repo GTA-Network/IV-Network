@@ -29,9 +29,13 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 
 			// Disable thread library calls
 			DisableThreadLibraryCalls(hModule);
+
+			// Delete the chatlog
+			CLogFile::Open("Chatlog.txt");
+			CLogFile::Close();
 			
 			// Open the log file
-			CLogFile::Open("IVMP-Client.log");
+			CLogFile::Open(CLIENT_LOG_FILE);
 
 			// Create the core instance
 			g_pCore = new CCore;
