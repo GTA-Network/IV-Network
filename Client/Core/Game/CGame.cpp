@@ -80,7 +80,7 @@ void CGame::Setup()
 	}
 
 	// Hide the chat
-	g_pCore->GetChat()->SetVisible (false);
+	g_pCore->GetChat()->SetVisible(false);
 }
 
 void CGame::Initialise()
@@ -281,6 +281,14 @@ void CGame::OnClientReadyToGamePlay()
 	CIVWeather::SetTime(8,0);
 
 	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
+
+	CIVHud::SetHudVisible(true);
+
+	CIVHud::SetRadarVisible(true);
+
+	CIVHud::SetAreaNamesEnabled(true);
+
+	CIVHud::SetPlayerNamesVisible(1);
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

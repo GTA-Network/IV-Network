@@ -10,6 +10,8 @@
 #include "CChat.h"
 #include <CCore.h>
 #include <Game/IVEngine/CIVModelManager.h>
+#include <Game/IVEngine/CIVHud.h>
+
 extern CCore * g_pCore;
 
 CChat::CChat(float fX, float fY)
