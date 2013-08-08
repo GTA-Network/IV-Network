@@ -183,6 +183,9 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
 
 		m_pGraphics->GetSprite()->Begin(0);
+
+		D3DXVECTOR2 spriteCentre = D3DXVECTOR2(960.0f, 540.0f);
+	    D3DXVECTOR2 trans=D3DXVECTOR2(0.0f,0.0f);
 		
 		D3DXMATRIX mat;
 		D3DXVECTOR2 scaling2((1920.0f/1440.0f)/2,(1080.0f/900.0f)/3);
