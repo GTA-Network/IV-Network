@@ -1,8 +1,8 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CEventHandler.h
 // Project: Shared
-// Author: xForce
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -10,20 +10,13 @@
 #ifndef CEventHandler_h
 #define CEventHandler_h
 
-#include <Common.h>
-#include <assert.h>
-#include <Squirrel/squirrel.h>
-#include <Squirrel/sqobject.h>
-#include <Scripting/CSquirrelArgument.h>
+class CEventHandler {
 
-class CEventHandler
-{
+private:
+
 public:
-	virtual SQVM*			GetScript()   const { return 0; };
-	virtual SQObjectPtr		GetFunction() const { return (SQInteger)0; };
-	virtual void*			GetChunk()    const { return 0; };
-	virtual bool			equals(const CEventHandler* other) const = 0;
-	virtual void			Call(CSquirrelArguments* pArguments, CSquirrelArgument* pReturn) = 0;
+	CEventHandler();
+	~CEventHandler();
 };
 
 #endif // CEventHandler_h

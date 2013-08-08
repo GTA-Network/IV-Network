@@ -9,7 +9,7 @@
 
 #include "CObjectNatives.h"
 
-void CObjectNatives::Register(CSquirrel* pVM)
+void CObjectNatives::Register(CScriptVM* pVM)
 {
 
 }

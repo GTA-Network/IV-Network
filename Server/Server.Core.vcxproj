@@ -83,6 +83,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\lua\lapi.c" />
+    <ClCompile Include="..\Libraries\lua\lauxlib.c" />
+    <ClCompile Include="..\Libraries\lua\lbaselib.c" />
+    <ClCompile Include="..\Libraries\lua\lbitlib.c" />
+    <ClCompile Include="..\Libraries\lua\lcode.c" />
+    <ClCompile Include="..\Libraries\lua\lcorolib.c" />
+    <ClCompile Include="..\Libraries\lua\lctype.c" />
+    <ClCompile Include="..\Libraries\lua\ldblib.c" />
+    <ClCompile Include="..\Libraries\lua\ldebug.c" />
+    <ClCompile Include="..\Libraries\lua\ldo.c" />
+    <ClCompile Include="..\Libraries\lua\ldump.c" />
+    <ClCompile Include="..\Libraries\lua\lfunc.c" />
+    <ClCompile Include="..\Libraries\lua\lgc.c" />
+    <ClCompile Include="..\Libraries\lua\linit.c" />
+    <ClCompile Include="..\Libraries\lua\liolib.c" />
+    <ClCompile Include="..\Libraries\lua\llex.c" />
+    <ClCompile Include="..\Libraries\lua\lmathlib.c" />
+    <ClCompile Include="..\Libraries\lua\lmem.c" />
+    <ClCompile Include="..\Libraries\lua\loadlib.c" />
+    <ClCompile Include="..\Libraries\lua\lobject.c" />
+    <ClCompile Include="..\Libraries\lua\lopcodes.c" />
+    <ClCompile Include="..\Libraries\lua\loslib.c" />
+    <ClCompile Include="..\Libraries\lua\lparser.c" />
+    <ClCompile Include="..\Libraries\lua\lstate.c" />
+    <ClCompile Include="..\Libraries\lua\lstring.c" />
+    <ClCompile Include="..\Libraries\lua\lstrlib.c" />
+    <ClCompile Include="..\Libraries\lua\ltable.c" />
+    <ClCompile Include="..\Libraries\lua\ltablib.c" />
+    <ClCompile Include="..\Libraries\lua\ltm.c" />
+    <ClCompile Include="..\Libraries\lua\lundump.c" />
+    <ClCompile Include="..\Libraries\lua\lvm.c" />
+    <ClCompile Include="..\Libraries\lua\lzio.c" />
     <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp" />
     <ClCompile Include="..\Libraries\Squirrel\sqbaselib.cpp" />
     <ClCompile Include="..\Libraries\Squirrel\sqclass.cpp" />
@@ -113,13 +145,10 @@
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\CXML.cpp" />
     <ClCompile Include="..\Shared\Network\CBitStream.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CResource.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CResourceManager.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CSquirrel.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CSquirrelArgument.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CSquirrelEventHandler.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
@@ -148,17 +177,50 @@
     <ClCompile Include="Scripting\Natives\CVehicleNatives.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libraries\lua\lapi.h" />
+    <ClInclude Include="..\Libraries\lua\lauxlib.h" />
+    <ClInclude Include="..\Libraries\lua\lcode.h" />
+    <ClInclude Include="..\Libraries\lua\lctype.h" />
+    <ClInclude Include="..\Libraries\lua\ldebug.h" />
+    <ClInclude Include="..\Libraries\lua\ldo.h" />
+    <ClInclude Include="..\Libraries\lua\lfunc.h" />
+    <ClInclude Include="..\Libraries\lua\lgc.h" />
+    <ClInclude Include="..\Libraries\lua\llex.h" />
+    <ClInclude Include="..\Libraries\lua\llimits.h" />
+    <ClInclude Include="..\Libraries\lua\lmem.h" />
+    <ClInclude Include="..\Libraries\lua\lobject.h" />
+    <ClInclude Include="..\Libraries\lua\lopcodes.h" />
+    <ClInclude Include="..\Libraries\lua\lparser.h" />
+    <ClInclude Include="..\Libraries\lua\lstate.h" />
+    <ClInclude Include="..\Libraries\lua\lstring.h" />
+    <ClInclude Include="..\Libraries\lua\ltable.h" />
+    <ClInclude Include="..\Libraries\lua\ltm.h" />
+    <ClInclude Include="..\Libraries\lua\lua.h" />
+    <ClInclude Include="..\Libraries\lua\lua.hpp" />
+    <ClInclude Include="..\Libraries\lua\luaconf.h" />
+    <ClInclude Include="..\Libraries\lua\lualib.h" />
+    <ClInclude Include="..\Libraries\lua\lundump.h" />
+    <ClInclude Include="..\Libraries\lua\lvm.h" />
+    <ClInclude Include="..\Libraries\lua\lzio.h" />
     <ClInclude Include="..\Shared\Network\CBitStream.h" />
     <ClInclude Include="..\Shared\Network\PacketIdentifiers.h" />
     <ClInclude Include="..\Shared\Network\RPCIdentifiers.h" />
     <ClInclude Include="..\Shared\Scripting\CEventHandler.h" />
     <ClInclude Include="..\Shared\Scripting\CEvents.h" />
-    <ClInclude Include="..\Shared\Scripting\CResource.h" />
-    <ClInclude Include="..\Shared\Scripting\CResourceManager.h" />
+    <ClInclude Include="..\Shared\Scripting\CLuaVM.h" />
     <ClInclude Include="..\Shared\Scripting\CScript.h" />
-    <ClInclude Include="..\Shared\Scripting\CSquirrel.h" />
-    <ClInclude Include="..\Shared\Scripting\CSquirrelArgument.h" />
-    <ClInclude Include="..\Shared\Scripting\CSquirrelEventHandler.h" />
+    <ClInclude Include="..\Shared\Scripting\CScriptArgument.h" />
+    <ClInclude Include="..\Shared\Scripting\CScriptArguments.h" />
+    <ClInclude Include="..\Shared\Scripting\CScriptVM.h" />
+    <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResource.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceClientScript.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceFile.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceManager.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h" />
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
     <ClInclude Include="Entity\C3DLabelEntity.h" />
@@ -185,6 +247,9 @@
     <ClInclude Include="Scripting\Natives\CServerNatives.h" />
     <ClInclude Include="Scripting\Natives\CVehicleNatives.h" />
     <ClInclude Include="Scripting\Natives\Natives.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Server.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,7 +9,7 @@
 
 #include "CServerNatives.h"
 
-void CServerNatives::Register(CSquirrel* pVM)
+void CServerNatives::Register(CScriptVM* pVM)
 {
 
 }

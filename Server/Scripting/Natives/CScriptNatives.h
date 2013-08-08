@@ -10,14 +10,14 @@
 #ifndef CScriptNatives_h
 #define CScriptNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CScriptNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // CScriptNatives_h

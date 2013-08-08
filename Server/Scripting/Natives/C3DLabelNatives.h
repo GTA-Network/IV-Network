@@ -10,14 +10,14 @@
 #ifndef C3DLabelNatives_h
 #define C3DLabelNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class C3DLabelNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // C3DLabelNatives_h

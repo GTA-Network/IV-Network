@@ -9,7 +9,7 @@
 
 #include "CPickupNatives.h"
 
-void CPickupNatives::Register(CSquirrel* pVM)
+void CPickupNatives::Register(CScriptVM* pVM)
 {
 
 }

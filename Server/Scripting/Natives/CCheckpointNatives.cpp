@@ -9,7 +9,7 @@
 
 #include "CCheckpointNatives.h"
 
-void CCheckpointNatives::Register(CSquirrel* pVM)
+void CCheckpointNatives::Register(CScriptVM* pVM)
 {
 
 }

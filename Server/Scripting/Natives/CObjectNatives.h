@@ -10,14 +10,14 @@
 #ifndef CObjectNatives_h
 #define CObjectNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CObjectNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // CObjectNatives_h

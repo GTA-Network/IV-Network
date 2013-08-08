@@ -10,14 +10,14 @@
 #ifndef CBlipNatives_h
 #define CBlipNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CBlipNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // CBlipNatives_h
