@@ -58,7 +58,20 @@ private:
 		BYTE			byteSeat;
 		bool			bExiting;
 		bool			bRequesting;
-	} m_vehicleEnterExit;
+	}					m_vehicleEnterExit;
+
+	struct
+	{
+		struct
+		{
+			CVector3      vecStart;
+			CVector3      vecTarget;
+			CVector3      vecError;
+			float         fLastAlpha;
+			unsigned long ulStartTime;
+			unsigned long ulFinishTime;
+		} pos;
+	}					m_interp;
 
 public:
 
@@ -87,7 +100,7 @@ public:
 	void				SetPing(unsigned short usPing) { m_usPing = usPing; }
 	unsigned short		GetPing();
 
-	void				SetPosition(CVector3 vecPosition);
+	void				SetPosition(CVector3 &vecPosition);
 	void				GetPosition(CVector3 &vecPosition);
 	void				Teleport(CVector3 vecPosition);
 
@@ -146,6 +159,19 @@ public:
 	bool				IsGettingIntoAVehicle();
 	bool				IsGettingOutOfAVehicle();
 
+	// Onfoot
+	void                UpdateTargetPosition();
+
+	void                Interpolate();
+	void                ResetInterpolation();
+
+	void                SetTargetPosition(const CVector3& vecPosition, unsigned long ulDelay);
+	void                SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
+
+	void                RemoveTargetPosition();
+
+	bool                HasTargetPosition() { return (m_interp.pos.ulFinishTime != 0); }
+	void				SetCurrentSyncHeading(float fHeading);
 };
 
 #endif // CPlayerEntity_h

@@ -10,9 +10,16 @@
 #ifndef CDevelopment_h
 #define CDevelopment_h
 
+#include "Entity\CPlayerEntity.h"
+
 class CDevelopment {
 private:
-	bool		bDebugView;
+	bool				bDebugView;
+	bool				bDebugPlayerPresent;
+	CPlayerEntity		*m_pDebugPlayer;
+	bool				bHasAimSyncData;
+	bool				m_bStoreOnFootSwitch;
+	int					m_iOldMoveStyle;
 public:
 				CDevelopment();
 				~CDevelopment();
@@ -20,6 +27,8 @@ public:
 	void		Process();
 	void		SetDebugView(bool bView) { bDebugView = bView; }
 	bool		GetDebugView() { return bDebugView; }
+
+	void		CreateDebugPlayer();
 };
 
 #endif // CDevelopment_h

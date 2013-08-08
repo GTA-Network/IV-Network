@@ -87,6 +87,7 @@ public:
 	CChat							* GetChat() { return m_pChat; }
 	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
+	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

@@ -125,14 +125,14 @@ void RemoveInitialLoadingScreens()
 
 	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
-		if(i <= 4)
+		if(i < 5)
 		{
 			*(DWORD *)(iLoadScreenType + i * 400) = 0;
 			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
 
-		if(i >= 5)
-			*(DWORD *)(iLoadScreenType + i * 400) = *(DWORD *)(iLoadScreenType + 5 * 400);
+		if(i > 4)
+			*(DWORD *)(iLoadScreenType + i * 400) = 7;
 	}
 	StartGame_Loading();
 }

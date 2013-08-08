@@ -390,6 +390,10 @@ void CChat::ProcessInput()
 					//pVehicle->SetModel (CIVModelManager::GetModelIndexFromHash(iVehicleType));
 				}
 			}
+			else if(strCommand == "debug")
+			{
+				g_pCore->GetDevelopmentInstance()->CreateDebugPlayer();
+			}
 			else if(strCommand == "cp")
 			{
 				CVector3 vecCreatePos; 
@@ -407,6 +411,7 @@ void CChat::ProcessInput()
 			{
 				g_pCore->GetChat()->Output("Spawning local player ...",false);
 				g_pCore->GetGame()->OnClientReadyToGamePlay();
+				g_pCore->GetGame()->GetLocalPlayer()->SetModel(21);
 			}
 			else if(strCommand == "chat-renderlines")
 			{

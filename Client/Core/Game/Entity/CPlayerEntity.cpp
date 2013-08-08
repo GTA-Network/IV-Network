@@ -252,6 +252,15 @@ void CPlayerEntity::Process()
 				}
 			}
 		}
+		else
+        {
+			// Are we not in a vehicle?
+			if(!IsInVehicle())
+			{
+				// Process interpolation
+				Interpolate();
+			}
+        }
 	}
 
 	CNetworkEntity::Pulse(this);
@@ -427,7 +436,7 @@ bool CPlayerEntity::Destroy()
 	return true;
 }
 
-void CPlayerEntity::SetPosition(CVector3 vecPosition)
+void CPlayerEntity::SetPosition(CVector3& vecPosition)
 {
 	if(IsSpawned())
 		m_pPlayerPed->SetPosition(vecPosition);
@@ -513,25 +522,31 @@ void CPlayerEntity::SetModel(int iModelId)
     DWORD dwModelHash = SkinIdToModelHash(iModelId);
          
     // Get the model index
-    int iModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
+    int iModelIndex = CIVModelManager::GetModelIndexFromHash( dwModelHash );
+	/*
+	m_pModelInfo->RemoveReference();
 
     // Get the model info
-    CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
+    CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo( iModelIndex );
 
     // Add reference
-    pModelInfo->AddReference(true);
+    pModelInfo->AddReference( true );
 
     // change the model from the player
-    CIVScript::ChangePlayerModel(GetScriptingHandle(),(CIVScript::eModel)dwModelHash);
+    CIVScript::ChangePlayerModel( GetScriptingHandle(),(CIVScript::eModel)dwModelHash );
+
+	m_pModelInfo = pModelInfo;
   
 	// remove from world
-	m_pPlayerPed->RemoveFromWorld();
+	//m_pPlayerPed->RemoveFromWorld();
 
     // set the new ped
-    m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+    //m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
 
 	// re add to world
-    m_pPlayerPed->AddToWorld();
+   //m_pPlayerPed->AddToWorld();
+
+   */
 }
 
 void CPlayerEntity::SetControlState(CControls * pControlState)
@@ -1086,4 +1101,206 @@ bool CPlayerEntity::IsGettingOutOfAVehicle()
 	}
 
 	return false;
+}
+
+void CPlayerEntity::UpdateTargetPosition()
+{
+	if(HasTargetPosition())
+	{
+		unsigned long ulCurrentTime = SharedUtility::GetTime();
+
+		// Get our position
+		CVector3 vecCurrentPosition;
+		GetPosition(vecCurrentPosition);
+
+		// Get the factor of time spent from the interpolation start
+		// to the current time.
+		float fAlpha = Math::Unlerp(m_interp.pos.ulStartTime, ulCurrentTime, m_interp.pos.ulFinishTime);
+
+		// Don't let it overcompensate the error
+		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
+
+		// Get the current error portion to compensate
+		float fCurrentAlpha = (fAlpha - m_interp.pos.fLastAlpha);
+		m_interp.pos.fLastAlpha = fAlpha;
+
+		// Apply the error compensation
+		CVector3 vecCompensation = Math::Lerp(CVector3(), fCurrentAlpha, m_interp.pos.vecError);
+
+		// If we finished compensating the error, finish it for the next pulse
+		if(fAlpha == 1.0f)
+			m_interp.pos.ulFinishTime = 0;
+
+		// Calculate the new position
+		CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
+
+		// Check if the distance to interpolate is too far
+		if((vecCurrentPosition - m_interp.pos.vecTarget).Length() > 5)
+		{
+			// Abort all interpolation
+			m_interp.pos.ulFinishTime = 0;
+			vecNewPosition = m_interp.pos.vecTarget;
+		}
+
+		// Set our new position
+		SetPosition(vecNewPosition);
+	}
+}
+
+void CPlayerEntity::Interpolate()
+{
+	// Are we not getting in/out of a vehicle?
+	if(true)
+		UpdateTargetPosition();
+}
+
+void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)
+{
+	// Are we spawned?
+	if(IsSpawned())
+	{
+		// Update our target position
+		UpdateTargetPosition();
+
+		// Get our position
+		CVector3 vecCurrentPosition;
+		GetPosition(vecCurrentPosition);
+
+		// Set the target position
+		m_interp.pos.vecTarget = vecPosition;
+
+		// Calculate the relative error
+		m_interp.pos.vecError = (vecPosition - vecCurrentPosition);
+
+		// Get the interpolation interval
+		unsigned long ulTime = SharedUtility::GetTime();
+		m_interp.pos.ulStartTime = ulTime;
+		m_interp.pos.ulFinishTime = (ulTime + ulDelay);
+
+		// Initialize the interpolation
+		m_interp.pos.fLastAlpha = 0.0f;
+	}
+}
+
+void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType)
+{
+	if(IsSpawned()) {
+
+		float tX = (vecPos.fX + (vecMove.fX * 10));
+		float tY = (vecPos.fY + (vecMove.fY * 10));
+		float tZ = (vecPos.fZ + (vecMove.fZ * 10));
+		unsigned int uiPlayerIndex = GetScriptingHandle();
+
+		// Destroy the task
+		/*DWORD dwAddress = (CGame::GetBase() + 0x8067A0);
+		_asm
+		{
+		push 17
+		push 0
+		push uiPlayerIndex
+		call dwAddress
+		}*/
+		// Create the task
+		DWORD dwAddress = (g_pCore->GetBase() + 0xB87480);
+		_asm
+		{
+			push 1000
+			push iMoveType
+			push tZ
+			push tY
+			push tX
+			push uiPlayerIndex
+			call dwAddress
+		}
+
+		//Sleep(80);
+		/*
+		float tX = (vecPos.fX + (vecMove.fX * 10));
+		float tY = (vecPos.fY + (vecMove.fY * 10));
+		float tZ = (vecPos.fZ + (vecMove.fZ * 10));
+		unsigned int uiPlayerIndex = GetScriptingHandle();
+
+		// Create the car set ped in vehicle task
+		CIVTaskSimpleStartWalking * pTask = new CIVTaskSimpleStartWalking(uiPlayerIndex,tX, tY, tZ, iMoveType, TICK_RATE);
+
+		// Did the task create successfully?
+		if(pTask)
+		{
+		//pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_TEMP);
+		pTask->ProcessPed(m_pPlayerPed);
+
+		if(m_pOldTask)
+		m_pOldTask->Destroy();
+
+		m_pOldTask = pTask;
+		}*/
+	}
+}
+
+void CPlayerEntity::RemoveTargetPosition()
+{
+	m_interp.pos.ulFinishTime = 0;
+}
+
+void CPlayerEntity::ResetInterpolation()
+{
+	RemoveTargetPosition();
+}
+
+void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
+{
+	if(IsSpawned())
+	{
+		/*
+		float fHeadingFinal;
+		if(fHeading > GetCurrentHeading())
+		fHeadingFinal = fHeading-GetCurrentHeading();
+		else if(GetCurrentHeading() > fHeading)
+		fHeadingFinal = GetCurrentHeading()-fHeading;
+
+		// Check if we have to turn us
+		if(fHeadingFinal > 0.0 && fHeadingFinal < 0.1 || fHeadingFinal < 0.0 && fHeadingFinal > -0.1)
+		return;
+
+		for(int i = 0; i < 10; i++)
+		{
+		if(fHeading > GetCurrentHeading())
+		m_pPlayerPed->SetCurrentHeading(GetCurrentHeading()+fHeadingFinal/10);
+		else if(GetCurrentHeading() > fHeading)
+		m_pPlayerPed->SetCurrentHeading(GetCurrentHeading()-fHeadingFinal/10);
+		}*/
+		// Check if the player has already the same pos
+		if(GetRotation() == fHeading)
+			return;
+
+		// Check if the player isn't moving
+		CVector3 vecMoveSpeed; m_pPlayerPed->GetMoveSpeed(vecMoveSpeed);
+		if(vecMoveSpeed.Length() < 2.0f)
+		{
+			m_pPlayerPed->SetHeading(fHeading);
+			m_pPlayerPed->SetCurrentHeading(fHeading);
+		}
+		/*else if(!m_currentControlState.IsSprinting())
+		{
+			m_pPlayerPed->SetCurrentHeading(fHeading);
+			Sleep(10);
+			m_pPlayerPed->SetCurrentHeading(fHeading);
+		}*/
+		else
+		{
+			float fHeadingFinal;
+			if(fHeading > GetRotation())
+				fHeadingFinal = fHeading-GetRotation();
+			else if(GetRotation() > fHeading)
+				fHeadingFinal = GetRotation()-fHeading;
+
+			for(int i = 0; i < 10; i++)
+			{
+				if(fHeading > GetRotation())
+					m_pPlayerPed->SetCurrentHeading(GetRotation()+fHeadingFinal/10);
+				else if(GetRotation() > fHeading)
+					m_pPlayerPed->SetCurrentHeading(GetRotation()-fHeadingFinal/10);
+			}
+		}
+	}
 }
