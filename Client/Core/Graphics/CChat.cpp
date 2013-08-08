@@ -121,6 +121,8 @@ void CChat::Output(const char * szText, bool bColorCoded)
 	{
 		if (m_uiMostRecentLine == 0)
 		{
+			m_Lines [CHAT_MAX_LINES - 1].SetActive (false);
+
 			// Making space for the new line
 			for (int i = CHAT_MAX_LINES - 2; i >= 0; i--)
 				m_Lines [i + 1] = m_Lines [i];

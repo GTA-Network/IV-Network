@@ -177,33 +177,18 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
-	// Print our IVMultiplayer "Identifier" in the left upper corner
-	m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
 #if 0
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 	{
 		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
 
-	// Render our chat instance
-	if(m_pChat)
-		m_pChat->Render();
 		m_pGraphics->GetSprite()->Begin(0);
-
-
-
-	// Before rendering FPS-Counter instance, update FPS display
-	m_pGraphics->DrawText( 5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get() );
-		D3DXVECTOR2 spriteCentre = D3DXVECTOR2(960.0f, 540.0f);
-		D3DXVECTOR2 trans=D3DXVECTOR2(0.0f,0.0f);
 		
 		D3DXMATRIX mat;
 		D3DXVECTOR2 scaling2((1920.0f/1440.0f)/2,(1080.0f/900.0f)/3);
 		float rotation=0.0f;
 		D3DXMatrixTransformation2D(&mat,NULL,0.0,&scaling2,&spriteCentre,rotation,&trans);
 
-	// Render our FPS-Counter instance
-	if(m_pFPSCounter)
-		m_pFPSCounter->Pulse();
 		m_pGraphics->GetSprite()->SetTransform(&mat);
 		m_pGraphics->GetSprite()->Draw(m_pGraphics->pLoadingScreenTexture,NULL, NULL,&D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255,255,255,255));
 
@@ -215,16 +200,16 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #endif
 		// Print our IVMultiplayer "Identifier" in the left upper corner
 		if(!g_pCore->GetGame()->GetLocalPlayer())
-			m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get() );
+			m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
 		else
-			m_pGraphics->DrawText( 5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get() );
+			m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
 
 		// Render our chat instance
-		if(m_pChat)
+		if(m_pChat && m_pChat->IsVisible())
 			m_pChat->Render();
 
 		// Before rendering FPS-Counter instance, update FPS display
-		m_pGraphics->DrawText( 5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get() );
+		m_pGraphics->DrawText(5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
 		// Render our FPS-Counter instance
 		if(m_pFPSCounter)
