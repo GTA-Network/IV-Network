@@ -12,6 +12,7 @@
 #include <ShlObj.h>
 #include <mmsystem.h>
 #include <Windows.h>
+#include <CSettings.h>
 
 int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
 {
@@ -32,9 +33,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         !SharedUtility::Exists(szInstallDirectory))
         {
         	char szProtocolDirectory[MAX_PATH];
-                String strCommand = String("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath("Client.Launcher.exe"))
+                CString strCommand = CString("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath("Client.Launcher.exe"));
                 
-                if(strcmp(szProtocolDirectory, strCommand.Get())
+                if(strcmp(szProtocolDirectory, strCommand.Get()))
                 	bRenewProtocol = true;
         }
                         
@@ -47,15 +48,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmp","","IVMultiplayer",strlen("IVMultiplayer"));
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmultiplayer","","IVMultiplayer",strlen("IVMultiplayer"));
                
-                String strcommand = String("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath("Client.Launcher.exe"));
+                CString strcommand = CString("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath("Client.Launcher.exe"));
 
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmp","Url Protocol","",0);
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmp\\shell\\open\\command\\","",strcommand.GetData(),strcommand.GetLength());
-                SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmp\\DefaultIcon","",String("Client.Launcher.exe,1").GetData(),strlen("Client.Launcher.exe,1"));
+                SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmp\\DefaultIcon","", CString("Client.Launcher.exe,1").GetData(),strlen("Client.Launcher.exe,1"));
 
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmultiplayer","Url Protocol","",0);
                 SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmultiplayer\\shell\\open\\command\\","",strcommand.GetData(),strcommand.GetLength());
-                SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmultiplayer\\DefaultIcon","",String("Client.Launcher.exe,1").GetData(),strlen("Client.Launcher.exe,1"));
+                SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,"ivmultiplayer\\DefaultIcon","", CString("Client.Launcher.exe,1").GetData(),strlen("Client.Launcher.exe,1"));
         }
 
         // TODO: Steam registry entry support(or the client should just pick the directory via data browser)
@@ -100,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
         // Get the full path to LaunchGTAIV.exe
-        String strApplicationPath("%s\\LaunchGTAIV.exe", szInstallDirectory);
+        CString strApplicationPath("%s\\LaunchGTAIV.exe", szInstallDirectory);
 
         // Check if LaunchGTAIV.exe exists
         if(!SharedUtility::Exists(strApplicationPath.Get()))
@@ -114,7 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", szInstallDirectory, strlen(szInstallDirectory));
 
         // Get the full path of the client core
-        String strClientCore(SharedUtility::GetAbsolutePath(CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
+        CString strClientCore(SharedUtility::GetAbsolutePath(CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
 
         // Check if the client core exists
         if(!SharedUtility::Exists(strClientCore.Get()))
@@ -124,7 +125,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
         // Get the full path of the launch helper
-        String strLaunchHelper(SharedUtility::GetAbsolutePath(CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
+        CString strLaunchHelper(SharedUtility::GetAbsolutePath(CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
 
         // Check if the launch helper exists
         if(!SharedUtility::Exists(strLaunchHelper.Get()))
@@ -178,12 +179,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         }
 
         // Check if we have an server connect command
-        String strServer, strPort;
-        std::string strServerCheck = String(lpCmdLine);
+        CString strServer, strPort;
+        std::string strServerCheck = CString(lpCmdLine);
         std::size_t sizetCMDFound = strServerCheck.find("-ivmp");// -[1]i[2]v[3]m[4]p[5]*space*[6]***.***.***.***
         int iOffset = 0;
         bool bCommandFound = false;
-        String strNewCommandLine = lpCmdLine;
+        CString strNewCommandLine = lpCmdLine;
        
         // Check for shortcut commandline
         if(sizetCMDFound != std::string::npos)
@@ -227,8 +228,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 if(sizetCMDFound_2 != std::string::npos)
                 {
                         // Grab our connect data
-                        strServer = String("%s",strServerInst.substr(0,sizetCMDFound_2).c_str());
-                        strPort = String("%s",strServerInst.substr(sizetCMDFound_2+1,strServerInst.length()).c_str());
+                        strServer = CString("%s",strServerInst.substr(0,sizetCMDFound_2).c_str());
+                        strPort = CString("%s",strServerInst.substr(sizetCMDFound_2+1,strServerInst.length()).c_str());
 
                         // Parse the command line
                         CSettings::ParseCommandLine(GetCommandLine());
@@ -238,7 +239,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         CVAR_SET_INTEGER("currentconnect_port",strPort.ToInteger());
                        
                         // Generate new commandline
-                        strNewCommandLine = String("%s -directconnect", lpCmdLine);
+                        strNewCommandLine = CString("%s -directconnect", lpCmdLine);
                 }
                 else // Something is wrong with our URI
                 {
@@ -272,7 +273,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         CSettings::Close();
 
         // Generate the command line
-        String strCommandLine("%s %s", strApplicationPath.Get(), strNewCommandLine.Get());
+        CString strCommandLine("%s %s", strApplicationPath.Get(), strNewCommandLine.Get());
 
         // Start LaunchGTAIV.exe
         STARTUPINFO siStartupInfo;
@@ -298,7 +299,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 TerminateProcess(piProcessInfo.hProcess, 0);
 
                 // Show the error message
-                String strError("Unknown error. Cannot launch IV: Multiplayer.");
+                CString strError("Unknown error. Cannot launch IV: Multiplayer.");
 
                 if(iReturn == 1)
                         strError = "Failed to write library path into remote process. Cannot launch IV: Multiplayer.";
