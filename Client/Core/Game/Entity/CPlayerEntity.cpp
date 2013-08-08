@@ -1251,6 +1251,7 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 			push tX
 			push uiPlayerIndex
 			call dwAddress
+			add esp, 18h
 		}
 	}
 }

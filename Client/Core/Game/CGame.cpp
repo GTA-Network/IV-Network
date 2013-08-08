@@ -275,20 +275,14 @@ void CGame::PrepareWorld()
 void CGame::OnClientReadyToGamePlay()
 {
 	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
-
+	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
 	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
 
-	CIVWeather::SetTime(8,0);
-
-	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
-
 	CIVHud::SetHudVisible(true);
-
 	CIVHud::SetRadarVisible(true);
-
 	CIVHud::SetAreaNamesEnabled(true);
-
 	CIVHud::SetPlayerNamesVisible(1);
+	CIVWeather::SetTime(8,0);
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

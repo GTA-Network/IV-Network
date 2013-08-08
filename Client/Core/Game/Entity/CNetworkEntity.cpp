@@ -91,6 +91,12 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 	{
 		// Get the latest position
 		pPlayer->GetPosition(m_vecPosition);
+
+		// Get the latest move speed
+		pPlayer->GetMoveSpeed(m_vecMoveSpeed);
+
+		// Get the latest turn speed
+		pPlayer->GetTurnSpeed(m_vecTurnSpeed);
 	}
 }
 

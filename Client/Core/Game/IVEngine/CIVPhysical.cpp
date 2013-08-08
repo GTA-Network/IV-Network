@@ -77,8 +77,8 @@ void CIVPhysical::SetTurnSpeed(const CVector3& vecTurnSpeed)
 		_asm
 		{
 			push pVecTurnSpeed
-				mov ecx, pPhysical
-				call COffsets::FUNC_CPhysical__SetTurnSpeed
+			mov ecx, pPhysical
+			call COffsets::FUNC_CPhysical__SetTurnSpeed
 		}
 	}
 }
@@ -93,8 +93,8 @@ void CIVPhysical::GetTurnSpeed(CVector3& vecTurnSpeed)
 		_asm
 		{
 			push pVecTurnSpeed
-				mov ecx, pPhysical
-				call COffsets::FUNC_CPhysical__GetTurnSpeed
+			mov ecx, pPhysical
+			call COffsets::FUNC_CPhysical__GetTurnSpeed
 		}
 	}
 }
