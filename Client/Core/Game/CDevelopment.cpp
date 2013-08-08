@@ -36,8 +36,17 @@ void CDevelopment::Process()
 	
 		fCurrentLine += 15;
 
+		CVector3 vecMoveSpeed;
+		CVector3 vecTurnSpeed;
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPosition(vecPosition);
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Current Position: %.2f, %.2f ,%.2f,", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetMoveSpeed(vecMoveSpeed);
+		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetTurnSpeed(vecTurnSpeed);
+
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+		fCurrentLine += 15;
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Move Speed: %.2f, %.2f ,%.2f,", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
+		fCurrentLine += 15;
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Turn Speed: %.2f, %.2f ,%.2f,", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
 	}
 
 	if(bDebugPlayerPresent)
@@ -50,8 +59,12 @@ void CDevelopment::Process()
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetTurnSpeed(vecTurnSpeed);
 		float fHeading = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetRotation();
 
-		fCurrentLine += 15;
+		fCurrentLine += 30;
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Debug Ped Position: %.2f, %.2f ,%.2f,", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+		fCurrentLine += 15;
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Debug Move Speed: %.2f, %.2f ,%.2f,", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
+		fCurrentLine += 15;
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Debug Turn Speed: %.2f, %.2f ,%.2f,", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
 
 		m_bStoreOnFootSwitch = false;
 		if(vecMoveSpeed.Length() < 0.75) {
@@ -65,17 +78,10 @@ void CDevelopment::Process()
 				_asm
 				{
 					push 17
-						push 0
-						push uiPlayerIndex
-						call dwAddress
+					push 0
+					push uiPlayerIndex
+					call dwAddress
 				}
-				/*dwAddress = (CGame::GetBase() + 0xB868E0);
-				_asm
-				{
-				push 1
-				push uiPlayerIndex
-				call dwAddress
-				}*/
 			}
 			m_pDebugPlayer->CPlayerEntity::SetMoveSpeed(vecMoveSpeed);
 			m_pDebugPlayer->CPlayerEntity::SetTurnSpeed(vecTurnSpeed);

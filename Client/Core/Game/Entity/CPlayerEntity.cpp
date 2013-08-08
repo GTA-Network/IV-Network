@@ -357,7 +357,10 @@ bool CPlayerEntity::Create()
 	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "Im_BATMAN", 255, 255, 255, 255);
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "Im_BATMAN", 255, 255, 255, 255);
+
+	// Unfreeze the player
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
 
 	// Mark as spawned
 	Spawn();
@@ -438,11 +441,24 @@ bool CPlayerEntity::Destroy()
 
 void CPlayerEntity::SetPosition(CVector3& vecPosition)
 {
+	// Are we spawned?
 	if(IsSpawned())
-		m_pPlayerPed->SetPosition(vecPosition);
-	else
-		m_vecPosition = vecPosition;
+	{
+		// Are we not in a vehicle and not entering a vehicle?
+		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
+		{
+			// Remove the player ped from the world
+			m_pPlayerPed->RemoveFromWorld();
 
+			// Set the position in the matrix
+			m_pPlayerPed->SetPosition(vecPosition);
+
+			// Re add the ped to the world to apply the matrix change
+			m_pPlayerPed->AddToWorld();
+		}
+	}
+
+	RemoveTargetPosition();
 	CNetworkEntity::SetPosition(vecPosition);
 }
 
@@ -462,6 +478,39 @@ void CPlayerEntity::Teleport(CVector3 vecPosition)
 	m_vecPosition = m_vecPosition;
 	CNetworkEntity::SetPosition(vecPosition);
 }
+
+void CPlayerEntity::SetMoveSpeed(const CVector3& vecMoveSpeed)
+{
+	if(IsSpawned())
+		m_pPlayerPed->SetMoveSpeed(vecMoveSpeed);
+
+	CNetworkEntity::SetMoveSpeed(vecMoveSpeed);
+}
+
+void CPlayerEntity::GetMoveSpeed(CVector3& vecMoveSpeed)
+{
+	if(IsSpawned())
+		m_pPlayerPed->GetMoveSpeed(vecMoveSpeed);
+	else
+		vecMoveSpeed = CVector3();
+}
+
+void CPlayerEntity::SetTurnSpeed(const CVector3& vecTurnSpeed)
+{
+	if(IsSpawned())
+		m_pPlayerPed->SetTurnSpeed(vecTurnSpeed);
+
+	CNetworkEntity::SetTurnSpeed(vecTurnSpeed);
+}
+
+void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
+{
+	if(IsSpawned())
+		m_pPlayerPed->GetTurnSpeed(vecTurnSpeed);
+	else
+		vecTurnSpeed = CVector3();
+}
+
 
 void CPlayerEntity::SetColor(unsigned uiColor)
 {
@@ -1191,15 +1240,6 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 		float tZ = (vecPos.fZ + (vecMove.fZ * 10));
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
-		// Destroy the task
-		/*DWORD dwAddress = (CGame::GetBase() + 0x8067A0);
-		_asm
-		{
-		push 17
-		push 0
-		push uiPlayerIndex
-		call dwAddress
-		}*/
 		// Create the task
 		DWORD dwAddress = (g_pCore->GetBase() + 0xB87480);
 		_asm
@@ -1212,28 +1252,6 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 			push uiPlayerIndex
 			call dwAddress
 		}
-
-		//Sleep(80);
-		/*
-		float tX = (vecPos.fX + (vecMove.fX * 10));
-		float tY = (vecPos.fY + (vecMove.fY * 10));
-		float tZ = (vecPos.fZ + (vecMove.fZ * 10));
-		unsigned int uiPlayerIndex = GetScriptingHandle();
-
-		// Create the car set ped in vehicle task
-		CIVTaskSimpleStartWalking * pTask = new CIVTaskSimpleStartWalking(uiPlayerIndex,tX, tY, tZ, iMoveType, TICK_RATE);
-
-		// Did the task create successfully?
-		if(pTask)
-		{
-		//pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_TEMP);
-		pTask->ProcessPed(m_pPlayerPed);
-
-		if(m_pOldTask)
-		m_pOldTask->Destroy();
-
-		m_pOldTask = pTask;
-		}*/
 	}
 }
 
@@ -1251,24 +1269,6 @@ void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
 {
 	if(IsSpawned())
 	{
-		/*
-		float fHeadingFinal;
-		if(fHeading > GetCurrentHeading())
-		fHeadingFinal = fHeading-GetCurrentHeading();
-		else if(GetCurrentHeading() > fHeading)
-		fHeadingFinal = GetCurrentHeading()-fHeading;
-
-		// Check if we have to turn us
-		if(fHeadingFinal > 0.0 && fHeadingFinal < 0.1 || fHeadingFinal < 0.0 && fHeadingFinal > -0.1)
-		return;
-
-		for(int i = 0; i < 10; i++)
-		{
-		if(fHeading > GetCurrentHeading())
-		m_pPlayerPed->SetCurrentHeading(GetCurrentHeading()+fHeadingFinal/10);
-		else if(GetCurrentHeading() > fHeading)
-		m_pPlayerPed->SetCurrentHeading(GetCurrentHeading()-fHeadingFinal/10);
-		}*/
 		// Check if the player has already the same pos
 		if(GetRotation() == fHeading)
 			return;
@@ -1280,12 +1280,6 @@ void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
 			m_pPlayerPed->SetHeading(fHeading);
 			m_pPlayerPed->SetCurrentHeading(fHeading);
 		}
-		/*else if(!m_currentControlState.IsSprinting())
-		{
-			m_pPlayerPed->SetCurrentHeading(fHeading);
-			Sleep(10);
-			m_pPlayerPed->SetCurrentHeading(fHeading);
-		}*/
 		else
 		{
 			float fHeadingFinal;

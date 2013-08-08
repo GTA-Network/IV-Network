@@ -21,14 +21,14 @@ private:
 	bool				m_bStoreOnFootSwitch;
 	int					m_iOldMoveStyle;
 public:
-				CDevelopment();
-				~CDevelopment();
+						CDevelopment();
+						~CDevelopment();
 
-	void		Process();
-	void		SetDebugView(bool bView) { bDebugView = bView; }
-	bool		GetDebugView() { return bDebugView; }
+	void				Process();
+	void				SetDebugView(bool bView) { bDebugView = bView; }
+	bool				GetDebugView() { return bDebugView; }
 
-	void		CreateDebugPlayer();
+	void				CreateDebugPlayer();
 };
 
 #endif // CDevelopment_h

@@ -103,6 +103,11 @@ public:
 	void				SetPosition(CVector3 &vecPosition);
 	void				GetPosition(CVector3 &vecPosition);
 	void				Teleport(CVector3 vecPosition);
+	void                SetMoveSpeed(const CVector3& vecMoveSpeed);
+	void                GetMoveSpeed(CVector3& vecMoveSpeed);
+
+	void                SetTurnSpeed(const CVector3& vecTurnSpeed);
+	void                GetTurnSpeed(CVector3& vecTurnSpeed);
 
 	void				SetNick(CString strNick) { m_strNick = strNick; }
 	CString				GetNick() { return m_strNick; }
