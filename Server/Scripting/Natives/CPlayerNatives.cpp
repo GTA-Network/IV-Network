@@ -8,9 +8,35 @@
 //==============================================================================
 
 #include "CPlayerNatives.h"
+#include <Scripting/CLuaVM.h>
+#include <Scripting/CSquirrelVM.h>
+#include "../../CServer.h"
 
+extern CServer * g_pServer;
 
-void CPlayerNatives::Register(CSquirrel * pVM)
+void CPlayerNatives::Register(CScriptVM * pVM)
 {
-	
+	pVM->RegisterFunction("createPlayer", Create);
+}
+
+
+int CPlayerNatives::Create(int * VM)
+{
+	CResource* pResource = g_pServer->GetResourceManager()->Get(VM);
+	if(pResource)
+	{
+		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
+		CScriptVM* pVM = pResource->GetVM();
+
+		CVector3 keks;
+		pVM->PopVector(keks);
+
+		// Create player kekse
+
+		pVM->PushBool(true);
+
+		pVM->ResetStackIndex();
+	}
+
+	return 0;
 }

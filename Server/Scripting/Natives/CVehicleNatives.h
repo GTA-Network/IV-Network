@@ -10,14 +10,14 @@
 #ifndef CVehicleNatives_h
 #define CVehicleNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CVehicleNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel * pVM);
+	static void Register(CScriptVM * pVM);
 };
 
 #endif // CVehicleNatives_h

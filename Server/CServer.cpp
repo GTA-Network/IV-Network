@@ -24,8 +24,6 @@ CServer::~CServer()
 {
 	SAFE_DELETE(m_pNetServer);
 
-	SAFE_DELETE(m_pEvents);
-
 	SAFE_DELETE(m_pPlayerManager);
 
 	SAFE_DELETE(m_pVehicleManager);
@@ -52,8 +50,6 @@ bool CServer::Startup()
 
 	// Set our rpc handler
 	m_pNetServer->SetRpcHandler(m_pRPCHandler);
-
-	m_pEvents = new CEvents();
 
 	// Create all the managers
 	m_pPlayerManager = new CPlayerManager();
@@ -160,7 +156,7 @@ bool CServer::Startup()
 
 		CLogFile::Print("");
 	}
-
+#if 0
 	m_pResourceManager = new CResourceManager("resources/");
 
 	// Loading resources
@@ -210,15 +206,13 @@ bool CServer::Startup()
         CLogFile::Print("====================================================================");
         CLogFile::Print("");
 #endif
-
+#endif
 	return true;
 }
 
 void CServer::Process()
 {
 	m_pNetServer->Process();
-
-	m_pResourceManager->Process(0);
 
 	// Pulse all managers
 	// Do not worry about that some managers dont need to be pulsed its just that its complete and all the same structure

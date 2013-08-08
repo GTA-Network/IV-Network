@@ -10,14 +10,14 @@
 #ifndef CCheckpointNatives_h
 #define CCheckpointNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CCheckpointNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // CCheckpointNatives_h

@@ -9,7 +9,7 @@
 
 #include "CVehicleNatives.h"
 
-void CVehicleNatives::Register(CSquirrel* pVM)
+void CVehicleNatives::Register(CScriptVM* pVM)
 {
 
 }

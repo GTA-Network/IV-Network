@@ -10,14 +10,14 @@
 #ifndef CPickupNatives_h
 #define CPickupNatives_h
 
-#include <Scripting/CSquirrel.h>
+#include <Scripting/CScriptVM.h>
 
 class CPickupNatives {
 
 private:
 
 public:
-	static void Register(CSquirrel* pVM);
+	static void Register(CScriptVM* pVM);
 };
 
 #endif // CPickupNatives_h

@@ -18,8 +18,7 @@
 
 #include <Network/CServerRPCHandler.h>
 
-#include <Scripting/CResourceManager.h>
-#include <Scripting/CEvents.h>
+#include <Scripting/ResourceSystem/CResourceManager.h>
 
 #include <Entity/CEntityManager.h>
 #include <Entity/Entities.h>
@@ -39,8 +38,8 @@ class CServer {
 private:
 	CNetworkServer				* m_pNetServer;
 	CServerRPCHandler			* m_pRPCHandler;
+
 	CResourceManager			* m_pResourceManager;
-	CEvents						* m_pEvents;
 
 	CPlayerManager				* m_pPlayerManager;
 	CVehicleManager				* m_pVehicleManager;
@@ -62,8 +61,8 @@ public:
 
 	CNetworkServer		*GetNetServer() { return m_pNetServer; }
 	CServerRPCHandler	*GetRPCHandler() { return m_pRPCHandler; }
-	CResourceManager	*GetResourceManager() { return m_pResourceManager; }
 
+	CResourceManager	*GetResourceManager() { return m_pResourceManager; }
 
 	CPlayerManager		*GetPlayerManager() { return m_pPlayerManager; }
 	CVehicleManager		*GetVehicleManager() { return m_pVehicleManager; }

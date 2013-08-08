@@ -9,7 +9,7 @@
 
 #include "CBlipNatives.h"
 
-void CBlipNatives::Register(CSquirrel* pVM)
+void CBlipNatives::Register(CScriptVM* pVM)
 {
 
 }

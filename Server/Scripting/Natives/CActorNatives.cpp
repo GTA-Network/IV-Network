@@ -9,7 +9,7 @@
 
 #include "CActorNatives.h"
 
-void CActorNatives::Register(CSquirrel* pVM)
+void CActorNatives::Register(CScriptVM* pVM)
 {
 
 }

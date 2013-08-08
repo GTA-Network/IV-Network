@@ -9,7 +9,7 @@
 
 #include "C3DLabelNatives.h"
 
-void C3DLabelNatives::Register(CSquirrel* pVM)
+void C3DLabelNatives::Register(CScriptVM* pVM)
 {
 
 }
