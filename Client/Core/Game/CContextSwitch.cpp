@@ -23,7 +23,7 @@ unsigned int g_uiLocalPlayerIndex = 0;
 IVPad        g_localPad;
 bool         g_bInLocalContext = true;
 extern CCore *g_pCore;
-IVPlayerInfo* g_pLocaPlayerInfo = NULL;
+IVPlayerInfo* g_pLocalPlayerInfo = NULL;
 
 void ContextSwitch(IVPed * pPed, bool bPost)
 {
@@ -62,7 +62,7 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 					// Store the local players pad
 					memcpy(&g_localPad, pPad->GetPad(), sizeof(IVPad));
 
-					g_pLocaPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(g_uiLocalPlayerIndex);
+					g_pLocalPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(g_uiLocalPlayerIndex);
 
 					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, pContextData->GetPlayerInfo()->GetPlayerInfo());
 
@@ -94,7 +94,7 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 					// Restore the local players pad
 					memcpy(pPad->GetPad(), &g_localPad, sizeof(IVPad));
 
-					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, g_pLocaPlayerInfo);
+					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, g_pLocalPlayerInfo);
 
 					// Flag ourselves as back in local context
 					g_bInLocalContext = true;
