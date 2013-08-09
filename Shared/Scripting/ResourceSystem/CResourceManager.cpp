@@ -12,6 +12,7 @@
 #include "../CSquirrelVM.h"
 #include <assert.h>
 #include <CLogFile.h>
+#include <algorithm>
 
 CResourceManager::CResourceManager()
 	: m_strResourceDirectory("resources/")
