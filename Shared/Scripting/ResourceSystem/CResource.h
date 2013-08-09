@@ -31,11 +31,19 @@ private:
 
 	eResourceScriptType				m_resourceScriptType;
 	bool							m_bLoaded;
+
+	CString							m_strResourceName;
 public:
 	CResource();
+	CResource(CString strAbsPath, CString strResourceName);
 	~CResource();
 
 	eResourceScriptType	GetResourceScriptType() { return m_resourceScriptType; }
+	bool				IsLoaded() { return m_bLoaded; }
+
+	CString		GetName() { return m_strResourceName; }
+
+	bool		HasChanged() { return false; }
 
 	CScriptVM*	GetVM() { return m_pVM; };
 	bool		CreateVM();

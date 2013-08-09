@@ -156,7 +156,7 @@ bool CServer::Startup()
 
 		CLogFile::Print("");
 	}
-#if 0
+#if 1
 	m_pResourceManager = new CResourceManager("resources/");
 
 	// Loading resources
@@ -183,13 +183,14 @@ bool CServer::Startup()
 		if(!strResource.IsEmpty())
 		{
 			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
-			if(!m_pResourceManager->Load(strResource))
+			if(CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()),strResource))
 			{
+				m_pResourceManager->StartResource(pResource);
+				iResourcesLoaded++;
+			} else {
 				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
 				iFailedResources++;
 			}
-			else
-				iResourcesLoaded++;
 		}
 	}
 

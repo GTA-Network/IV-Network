@@ -16,17 +16,29 @@
 class CResourceManager {
 
 private:
-	std::list<CResource*> m_resources;
+	CString					m_strResourceDirectory;
+	std::list<CResource*>	m_resources;
 public:
 	CResourceManager();
+	CResourceManager(CString strResourceDirectory);
 	~CResourceManager();
 
-	CResource	*Load(CString strAbsPath, CString strResourceName);
-	void		 Unload(CResource* pResource);
-	CResource	*GetResource(CString strResourceName);
-	std::list<CResource*> GetResources() { m_resources; }
+	CString		GetResourceDirectory() { return m_strResourceDirectory; }
 
-	CResource * Get(int * pVM);
+	CResource	*Load(CString strAbsPath, CString strResourceName);
+	void		Unload(CResource* pResource);
+
+	bool		StartResource(CResource* pResource, std::list<CResource*> * dependents = NULL, bool bStartedManually = false, bool bStartIncludedResources = true);
+	bool		Reload(CResource* pResource);
+	void		StopAllResources();
+
+	void		AddResource(CResource* pResource);
+	void		RemoveResource(CResource* pResource);
+
+	CResource				*GetResource(CString strResourceName);
+	std::list<CResource*>	GetResources() { m_resources; }
+
+	CResource *Get(int * pVM);
 };
 
 #endif // CResourceManager_h

@@ -10,8 +10,45 @@
 #include "CResourceManager.h"
 #include "../CLuaVM.h"
 #include "../CSquirrelVM.h"
+#include <assert.h>
+#include <CLogFile.h>
 
-CResource * CResourceManager::Get(int * pVM)
+CResourceManager::CResourceManager()
+	: m_strResourceDirectory("resources/")
+{
+
+}
+
+CResourceManager::CResourceManager(CString strResourceDirectory)
+	: m_strResourceDirectory(strResourceDirectory)
+{
+
+}
+
+CResourceManager::~CResourceManager()
+{
+
+}
+
+
+void CResourceManager::AddResource(CResource * pResource)
+{
+	assert(std::find(m_resources.begin(), m_resources.end(), pResource) == m_resources.end());
+	
+	m_resources.push_back(pResource);
+
+	CScriptVM* pVM = pResource->GetVM();
+	assert(!pVM);
+}
+
+void CResourceManager::RemoveResource(CResource * pResource)
+{
+
+	m_resources.remove(pResource);
+
+}
+
+CResource * CResourceManager::Get(int * pVM) // TODO: change to GetByVM
 { 
 	for(auto pResource : m_resources) 
 	{ 
@@ -24,5 +61,45 @@ CResource * CResourceManager::Get(int * pVM)
 				return pResource;
 		}
 	}
-	return NULL;
+	return 0;
+}
+
+
+bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*> * dependents, bool bStartedManually, bool bStartIncludedResources)
+{
+	CLogFile::Printf("Resource started");
+	return true;
+}
+
+CResource* CResourceManager::Load(CString strAbsPath, CString strResourceName)
+{
+	for(auto pResource : m_resources)
+	{
+		if(pResource->GetName() == strResourceName)
+		{
+			if(pResource->HasChanged())
+			{
+				pResource->Stop();
+				RemoveResource(pResource);
+				delete pResource;
+				break;
+			}
+			else
+				return pResource;
+		}
+	}
+
+
+	CResource* loadResource = new CResource(strAbsPath, strResourceName);
+	if(!loadResource->IsLoaded())
+    {
+        CLogFile::Printf("Loading of resource '%s' failed\n", strResourceName.Get());
+        SAFE_DELETE(loadResource);
+    } else {
+		CLogFile::Printf("Resource loaded (%s)", strResourceName.Get());
+		AddResource(loadResource);
+		return loadResource;
+	}
+
+	return 0;
 }

@@ -17,6 +17,16 @@ CResource::CResource()
 	: m_pVM(0)
 {
 
+
+	Load();
+}
+
+CResource::CResource(CString strAbsPath, CString strResourceName)
+	: m_pVM(0)
+{
+
+
+	Load();
 }
 
 CResource::~CResource()
@@ -27,6 +37,28 @@ CResource::~CResource()
 bool CResource::Load()
 {
 	m_bLoaded = true;
+
+	// READ META XML
+	// LOAD ALL INCLUDED SCRIPT
+	// LOADD EVERYTHING LIKE IMAGES etc.
+
+	return true;
+}
+
+bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, bool bStartIncludedResources)
+{
+	if(IsLoaded())
+	{
+		CreateVM();
+
+		return true;
+	}
+
+	return false;
+}
+
+bool CResource::Stop(bool bStopManually)
+{
 
 	return true;
 }
