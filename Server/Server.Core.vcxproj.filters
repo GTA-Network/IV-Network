@@ -357,6 +357,24 @@
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp">
       <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">

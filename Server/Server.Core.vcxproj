@@ -148,8 +148,14 @@
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientScript.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceFile.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
