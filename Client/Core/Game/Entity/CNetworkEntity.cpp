@@ -12,6 +12,8 @@
 #include <CLogFile.h>
 #include "CPlayerEntity.h"
 #include "CVehicleEntity.h"
+#include <CCore.h>
+extern CCore * g_pCore;
 
 CNetworkEntity::CNetworkEntity()
 	: m_vecPosition(CVector3()),
@@ -116,7 +118,7 @@ void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 void CNetworkEntity::Serialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
-	CBitStream * pBitStream = new CBitStream();
+	CBitStream * pBitStream = new CBitStream;
 
 	// Backup old sync
 	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
@@ -128,6 +130,7 @@ void CNetworkEntity::Serialize(ePackageType pType)
 	{
 	case PLAYER_ENTITY:
 		{
+			// If we already set data for our next sync packet, copy the data
 			sNetwork_Sync_Entity_Player * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
 
 			// Apply entity type to package
@@ -136,12 +139,16 @@ void CNetworkEntity::Serialize(ePackageType pType)
 			// Apply current 3D Position to the sync package
 			pSyncPacket->vecPosition = m_vecPosition;
 			
+			// Merge EntitySync packet with our packet
+			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
+
 			// Stop current case
 			break;
 
 		}
 	case VEHICLE_ENTITY:
 		{
+			// If we already set data for our next sync packet, copy the data
 			sNetwork_Sync_Entity_Vehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
 
 			// Apply entity type to package
@@ -149,6 +156,9 @@ void CNetworkEntity::Serialize(ePackageType pType)
 
 			// Apply current 3D Position to the sync package
 			pSyncPacket->vecPosition = m_vecPosition;
+
+			// Merge EntitySync packet with our packet
+			memcpy(&m_pEntitySync.pVehiclePacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Vehicle));
 
 			// Stop current case
 			break;
@@ -160,11 +170,11 @@ void CNetworkEntity::Serialize(ePackageType pType)
 		}
 	}
 
-	// Send package to network
-	;
+	// Write our Entity-Sync to the bitstream
+	pBitStream->Write((char *) &m_pEntitySync, sizeof(CNetworkEntitySync));
 
-	// Clear up memory and delete
-	//memset(&m_pEntitySync,NULL,sizeof(CNetworkEntitySync));
+	// Send package to network
+	g_pCore->GetNetworkManager()->Call(CString("0x69766D50_F%d", eRPCIdentifier::RPC_SYNC_PACKAGE).Get(), pBitStream, ePacketPriority::PRIORITY_HIGH, ePacketReliability::RELIABILITY_RELIABLE, ePacketChannels::PACKET_CHANNEL_DEFAULT, false);
 }
 
 void CNetworkEntity::Deserialize(ePackageType pType)

@@ -20,6 +20,7 @@ enum eRPCIdentifier : RPCIdentifier
 	RPC_START_GAME,
 	RPC_NEW_PLAYER,
 	RPC_DELETE_PLAYER,
+	RPC_SYNC_PACKAGE,
 };
 
 #endif // RPCIdentifier_h
