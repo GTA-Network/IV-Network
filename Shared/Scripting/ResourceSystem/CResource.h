@@ -14,17 +14,28 @@
 #include "CIncludedResource.h"
 #include "../CScriptVM.h"
 
+class CScriptVM;
 
 class CResource {
-
+public:
+	enum eResourceScriptType {
+		LUA_RESOURCE,
+		SQUIRREL_RESOURCE,
+		UNKNOWN,
+	};
 private:
 	CScriptVM	*m_pVM;
 
 	std::list<CResource*>			m_dependents;
 	std::list<CIncludedResource*>	m_includedResources;
+
+	eResourceScriptType				m_resourceScriptType;
+	bool							m_bLoaded;
 public:
 	CResource();
 	~CResource();
+
+	eResourceScriptType	GetResourceScriptType() { return m_resourceScriptType; }
 
 	CScriptVM*	GetVM() { return m_pVM; };
 	bool		CreateVM();
@@ -34,20 +45,20 @@ public:
 	bool		Unload();
 	void		Reload();
 
-	 bool		Start(std::list<CResource *> * dependents = NULL, bool bStartManually = false, bool bStartIncludedResources = true);
-	 bool		Stop(bool bStopManually = false);
+	bool		Start(std::list<CResource *> * dependents = NULL, bool bStartManually = false, bool bStartIncludedResources = true);
+	bool		Stop(bool bStopManually = false);
 
-	 std::list<CResource*> *		GetDependents() { return &m_dependents; }
-	 int							GetDependentCount() { return m_dependents.size(); }
-	 std::list<CIncludedResource*>*	GetIncludedResources() { return &m_includedResources; }
-	 int							GetIncludedResourcesCount() { return m_includedResources.size(); }
+	std::list<CResource*> *			GetDependents() { return &m_dependents; }
+	int								GetDependentCount() { return m_dependents.size(); }
+	std::list<CIncludedResource*>*	GetIncludedResources() { return &m_includedResources; }
+	int								GetIncludedResourcesCount() { return m_includedResources.size(); }
 
-	 void		AddDependent(CResource* pResource);
-	 void		RemoveDependet(CResource* pResource);
-	 bool		IsDependentResource(CResource* pResource);
-	 bool		IsDependentResource(const char* szResourceName);
-	 bool		IsDependentResourceRecursive(CResource* pResource);
-	 bool		IsDependentResourceRecursive(const char* szResourceName);
+	void		AddDependent(CResource* pResource);
+	void		RemoveDependet(CResource* pResource);
+	bool		IsDependentResource(CResource* pResource);
+	bool		IsDependentResource(const char* szResourceName);
+	bool		IsDependentResourceRecursive(CResource* pResource);
+	bool		IsDependentResourceRecursive(const char* szResourceName);
 };
 
 #endif // CResource_h

@@ -8,9 +8,11 @@
 //==============================================================================
 
 #include "CSquirrelVM.h"
+#include <CLogFile.h>
+#include <Squirrel/sqstdio.h>
 
-CSquirrelVM::CSquirrelVM()
-	: CScriptVM()
+CSquirrelVM::CSquirrelVM(CResource * pResource)
+	: CScriptVM(pResource)
 {
 	m_pVM = sq_open(1024);
 
@@ -36,14 +38,29 @@ CSquirrelVM::~CSquirrelVM()
 
 bool CSquirrelVM::LoadScript(CString script)
 {
-
-	return false;
+#if 0
+	CString scriptPath( "%s/%s", m_pResource->GetPath().Get(), script.Get());
+	if(SQ_FAILED(sqstd_dofile( m_pVM, scriptPath.Get(), SQFalse, SQTrue )))
+	{
+		CLogFile::Printf("[%s] Failed to load file %s.", m_pResource->GetName().Get(), script.Get());
+		return false;
+	}
+	CLogFile::Printf("\t[%s] Loaded file %s.", m_pResource->GetName().Get(), script.Get());
+	return true;
+#endif
+	return true;
 }
 
 bool CSquirrelVM::LoadScripts(std::list<CScript> scripts)
 {
+#if 0
+	for(auto strScript : scripts)
+		if(strScript.GetType() != CLIENT_SCRIPT)
+			if(!LoadScript(strScript.GetScriptFileName()))
+				return false;
+#endif
+	return true;
 
-	return false;
 }
 
 void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)

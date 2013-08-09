@@ -21,6 +21,11 @@ public:
 	CResourceManager();
 	~CResourceManager();
 
+	CResource	*Load(CString strAbsPath, CString strResourceName);
+	void		 Unload(CResource* pResource);
+	CResource	*GetResource(CString strResourceName);
+	std::list<CResource*> GetResources() { m_resources; }
+
 	CResource * Get(int * pVM);
 };
 

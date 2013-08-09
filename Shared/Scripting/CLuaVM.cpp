@@ -10,8 +10,8 @@
 #include "CLuaVM.h"
 #include <lua/lua.hpp>
 
-CLuaVM::CLuaVM()
-	: CScriptVM()
+CLuaVM::CLuaVM(CResource* pResource)
+	: CScriptVM(pResource)
 {
 	m_pVM = luaL_newstate();
 	luaL_openlibs(m_pVM);

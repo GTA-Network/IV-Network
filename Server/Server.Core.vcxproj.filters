@@ -354,6 +354,9 @@
     <ClCompile Include="..\Shared\Scripting\CScript.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">

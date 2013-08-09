@@ -20,7 +20,7 @@ private:
 	lua_State* m_pVM;
 	int m_iStackIndex;
 public:
-	CLuaVM();
+	CLuaVM(CResource* pResource);
 	~CLuaVM();
 
 	virtual eVMType GetVMType() { return LUA_VM; }

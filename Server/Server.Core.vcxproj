@@ -148,6 +148,7 @@
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />

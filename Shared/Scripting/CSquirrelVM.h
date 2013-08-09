@@ -19,7 +19,7 @@ private:
 	SQVM*		m_pVM;
 	int m_iStackIndex;
 public:
-	CSquirrelVM();
+	CSquirrelVM(CResource * pResource);
 	~CSquirrelVM();
 
 	virtual eVMType GetVMType() { return SQUIRREL_VM; }

@@ -15,6 +15,7 @@
 #include <list>
 
 #include "CScript.h"
+#include "ResourceSystem/CResource.h"
 
 enum eVMType
 {
@@ -23,15 +24,19 @@ enum eVMType
 	UNKNOWN_VM,
 };
 
+class CResource;
+
 class CScriptVM {
 
 private:
-	
+	CResource * m_pResource;
 public:
-	CScriptVM() {};
+	CScriptVM(CResource * pResource) { m_pResource = pResource; }
 	~CScriptVM() {};
 
 	typedef int (*scriptFunction)(int*);
+
+	CResource * GetResource() { return m_pResource; }
 
 	virtual eVMType GetVMType() { return UNKNOWN_VM; }
 

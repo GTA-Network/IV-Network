@@ -22,6 +22,7 @@ void CPlayerNatives::Register(CScriptVM * pVM)
 
 int CPlayerNatives::Create(int * VM)
 {
+	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
 	CResource* pResource = g_pServer->GetResourceManager()->Get(VM);
 	if(pResource)
 	{
