@@ -32,7 +32,12 @@ private:
 	eResourceScriptType				m_resourceScriptType;
 	bool							m_bLoaded;
 
+	unsigned int					m_uiVersionMajor;
+	unsigned int					m_uiVersionMinor;
+
 	CString							m_strResourceName;
+	CString							m_strAbsPath;
+	CString							m_strResourceDirectoryPath;
 public:
 	CResource();
 	CResource(CString strAbsPath, CString strResourceName);

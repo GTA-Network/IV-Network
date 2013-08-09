@@ -159,7 +159,7 @@ bool CServer::Startup()
 		CLogFile::Print("");
 	}
 #if 1
-	m_pResourceManager = new CResourceManager("resources/");
+	m_pResourceManager = new CResourceManager("resources");
 
 	// Loading resources
 #ifdef _WIN32
