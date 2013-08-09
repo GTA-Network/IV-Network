@@ -11,13 +11,15 @@ SOURCES+=$(wildcard ../Network/Core/RakNet/*.cpp)
 SOURCES+=$(wildcard ../Libraries/tinyxml/*.cpp)
 SOURCES+=$(wildcard ../Libraries/Squirrel/*.cpp)
 SOURCES+=$(wildcard ../Shared/Scripting/*.cpp)
+SOURCES+=$(wildcard ../Shared/Scripting/ResourceSystem/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
+LUA_OBJECTS=$(wildcard ../Libraries/lua/*.o)
 EXECUTABLE=../Binary/ivmp-svr
 
 all: $(SOURCES) dir $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) -m32 -lpthread -ldl -o $@
+	$(CC) $(OBJECTS) $(LUA_OBJECTS) -m32 -lpthread -ldl -o $@
 
 dir:
 	mkdir -p ../Binary
