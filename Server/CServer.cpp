@@ -13,6 +13,8 @@
 #include <SharedUtility.h>
 #include <CLogFile.h>
 
+CServer* CServer::s_pInstance = 0;
+
 CServer::CServer()
 {
 	m_pNetServer = new CNetworkServer();

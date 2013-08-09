@@ -36,6 +36,8 @@ typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 class CServer {
 
 private:
+	static CServer				* s_pInstance;
+
 	CNetworkServer				* m_pNetServer;
 	CServerRPCHandler			* m_pRPCHandler;
 
@@ -54,6 +56,8 @@ private:
 public:
 	CServer();
 	~CServer();
+
+	static CServer* GetInstance() { return s_pInstance; }
 
 	bool	Startup();
 	void	Process();
