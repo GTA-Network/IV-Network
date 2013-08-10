@@ -375,22 +375,31 @@ void CChat::ProcessInput()
 			}
 			else if(strCommand == "cv")
 			{
-				int iVehicleType = 90;
+				int iVehicleType = 91;
 
 				CVector3 vecCreatePos; 
 				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
+				vecCreatePos.fX += 4;
+				vecCreatePos.fY += 1;
 
 				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
 				if(pVehicle)
 				{
-					//pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+					// Add our vehicle
+					g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
+
+					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
 
 					pVehicle->Create();
 
 					pVehicle->SetPosition(vecCreatePos);
 					
-					//pVehicle->SetModel (CIVModelManager::GetModelIndexFromHash(iVehicleType));
+					//pVehicle->SetModel(CIVModelManager::GetModelIndexFromHash(iVehicleType));
 				}
+			}
+			else if(strCommand == "respawn")
+			{
+				g_pCore->GetGame()->GetLocalPlayer()->Respawn();
 			}
 			else if(strCommand == "debug")
 			{
@@ -420,6 +429,28 @@ void CChat::ProcessInput()
 				g_pCore->GetChat()->Output("Spawning local player ...",false);
 				g_pCore->GetGame()->OnClientReadyToGamePlay();
 				g_pCore->GetGame()->GetLocalPlayer()->SetModel(21);
+
+				int iVehicleType = 91;
+
+				CVector3 vecCreatePos; 
+				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
+				vecCreatePos.fX += 4;
+				vecCreatePos.fY += 1;
+
+				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
+				if(pVehicle)
+				{
+					// Add our vehicle
+					g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
+
+					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+
+					pVehicle->Create();
+
+					pVehicle->SetPosition(vecCreatePos);
+					
+					//pVehicle->SetModel(CIVModelManager::GetModelIndexFromHash(iVehicleType));
+				}
 			}
 			else if(strCommand == "chat-renderlines")
 			{

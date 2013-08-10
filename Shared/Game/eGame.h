@@ -110,6 +110,7 @@ struct sWeaponStructure
 
 struct sIVSynchronization
 {
+	BYTE			byteMoveStyle;
 	BYTE			byteOldMoveStyle;
 	bool			bStoreOnFootSwitch;
 };

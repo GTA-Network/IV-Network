@@ -1252,15 +1252,15 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 	if(!bHasWeaponData) {
 		m_pIVSync->bStoreOnFootSwitch = false;
 		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 1.0)
-			m_pIVSync->byteOldMoveStyle = 0;
+			m_pIVSync->byteMoveStyle = 0;
 		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
-			m_pIVSync->byteOldMoveStyle = 1;
+			m_pIVSync->byteMoveStyle = 1;
 		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 5.0 && m_pIVSyncHandle->vecMoveSpeed.Length() > 3.0)
-			m_pIVSync->byteOldMoveStyle = 2;
+			m_pIVSync->byteMoveStyle = 2;
 		else
-			m_pIVSync->byteOldMoveStyle = 3;
+			m_pIVSync->byteMoveStyle = 3;
 
-		switch(m_pIVSync->byteOldMoveStyle)
+		switch(m_pIVSync->byteMoveStyle)
 		{
 			case IVSYNC_ONFOOT_STANDSTILL:
 			{
@@ -1269,8 +1269,13 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 				if(m_pIVSync->byteOldMoveStyle != 0)  {
 					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
-
 					_asm	push 17;
+					_asm	push 0;
+					_asm	push uiPlayerIndex;
+					_asm	call dwAddress;
+					_asm	add esp, 0Ch;
+
+					_asm	push 36;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
@@ -1324,6 +1329,9 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 		CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
 	}
+
+	// Apply the move state
+	m_pIVSync->byteOldMoveStyle = m_pIVSync->byteMoveStyle;
 }
 void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
@@ -1385,7 +1393,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	}
 
 	// Fourth check if we have to update the duck state
-	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CNetworkEntity::GetPlayerHandle().bDuckState) != CNetworkEntity::GetPlayerHandle().bDuckState && m_bLocalPlayer)
+	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != CNetworkEntity::GetPlayerHandle().bDuckState)
 		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckingState);
 
 	// Fifth check if we have to apply the control states

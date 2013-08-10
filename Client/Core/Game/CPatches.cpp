@@ -102,7 +102,7 @@ void CPatches::Initialize()
     *(DWORD *)(g_pCore->GetBase() + 0xBAC1C0) = 0x90C301B0;
 
     // Fix vehicle crash -> 8 xrefs
-    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
+    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
 
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function
