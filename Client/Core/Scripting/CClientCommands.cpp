@@ -18,9 +18,9 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-bool CClientCommands::HandleUserInput(CString * strCommand, CString strParameters)
+bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
-	if(strCommand->Get() == "q"  || strCommand->Get() == "quit" || strCommand->Get() == "exit")
+	if(strCommand == "q"  || strCommand == "quit" || strCommand == "exit")
 	{
 		// Are we connected to the network?
 		if(g_pCore->GetNetworkManager()->IsConnected())
@@ -32,13 +32,13 @@ bool CClientCommands::HandleUserInput(CString * strCommand, CString strParameter
 		TerminateProcess(GetCurrentProcess(), 0);
 		return true;
 	}
-	else if(strCommand->Get() == "qq" || strCommand->Get() == "quickquit")
+	else if(strCommand == "qq" || strCommand == "quickquit")
 	{
 		TerminateProcess(GetCurrentProcess(), 0);
 		return true;
 	}
 
-	else if(strCommand->Get() == "cv")
+	else if(strCommand == "cv")
 	{
 		int iVehicleType = 91;
 
@@ -61,23 +61,23 @@ bool CClientCommands::HandleUserInput(CString * strCommand, CString strParameter
 		}
 		return true;
 	}
-	else if(strCommand->Get() == "respawn")
+	else if(strCommand == "respawn")
 	{
 		g_pCore->GetGame()->GetLocalPlayer()->Respawn();
 		return true;
 	}
-	else if(strCommand->Get() == "debug")
+	else if(strCommand == "debug")
 	{
 		g_pCore->GetDevelopmentInstance()->CreateDebugPlayer();
 		return true;
 	}
-	else if(strCommand->Get() == "weapon")
+	else if(strCommand == "weapon")
 	{
 		CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
 		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
 		return true;
 	}
-	else if(strCommand->Get() == "cp")
+	else if(strCommand == "cp")
 	{
 		CVector3 vecCreatePos; 
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
@@ -91,7 +91,7 @@ bool CClientCommands::HandleUserInput(CString * strCommand, CString strParameter
 		}
 		return true;
 	}
-	else if(strCommand->Get() == "spawn")
+	else if(strCommand == "spawn")
 	{
 		g_pCore->GetChat()->Output("Spawning local player ...",false);
 		g_pCore->GetGame()->OnClientReadyToGamePlay();
@@ -118,7 +118,7 @@ bool CClientCommands::HandleUserInput(CString * strCommand, CString strParameter
 		}
 		return true;
 	}
-	else if(strCommand->Get() == "engine")
+	else if(strCommand == "engine")
 	{
 		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
 			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(true);

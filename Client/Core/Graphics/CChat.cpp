@@ -380,7 +380,7 @@ void CChat::ProcessInput()
 			}
 
 			// If our command is defined as client command & exists, return and stop the function call
-			if(CClientCommands::HandleUserInput(&CString("%s",strCommand.c_str()), CString("%s",strParams.c_str())))
+			if(CClientCommands::HandleUserInput(strCommand, strParams))
 				return;
 		}
 

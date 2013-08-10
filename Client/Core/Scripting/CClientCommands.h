@@ -20,7 +20,7 @@ public:
 	CClientCommands() { };
 	~CClientCommands() { };
 
-	static bool		HandleUserInput(CString * strCommand, CString strParameters);
+	static bool		HandleUserInput(std::string strCommand, std::string strParameters);
 };
 
 #endif // CClientCommands_h
