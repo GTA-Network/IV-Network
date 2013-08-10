@@ -371,6 +371,10 @@ bool CPlayerEntity::Create()
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
 
+	// Disable head ik
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_BLOCK_CHAR_HEAD_IK, true);
+
+
 	// Set our player index
 	m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
 
@@ -1209,8 +1213,10 @@ void CPlayerEntity::Interpolate()
 		UpdateTargetPosition();
 }
 
-void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
+void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
+	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
+
 	// Copy data if our localplayer or copyplayer is avaiable
 	if(bCopyLocalPlayer || pCopy) {
 		pCopy->CNetworkEntity::GetPosition(m_pIVSyncHandle->vecPosition);
@@ -1242,14 +1248,12 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		this->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
 	}
 
-	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
-
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
 		m_pIVSync->bStoreOnFootSwitch = false;
-		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 0.75)
+		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 1.0)
 			m_pIVSync->byteOldMoveStyle = 0;
-		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMoveSpeed.Length() >= 0.75)
+		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
 			m_pIVSync->byteOldMoveStyle = 1;
 		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 5.0 && m_pIVSyncHandle->vecMoveSpeed.Length() > 3.0)
 			m_pIVSync->byteOldMoveStyle = 2;
@@ -1278,7 +1282,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 			}
 			case IVSYNC_ONFOOT_WALK:
 			{
-				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 2);
 				break;
 			}
@@ -1290,7 +1294,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 			}
 			case IVSYNC_ONFOOT_RUN:
 			{
-				SetTargetPosition(m_pIVSyncHandle->vecPosition, (IVSYNC_TICKRATE/2)*3);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
 				break;
 			}
@@ -1307,7 +1311,6 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 			_asm	call dwAddress;
 			_asm	add  esp, 0Ch;
 			
-			m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
 			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
@@ -1321,6 +1324,10 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 
 		CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
 	}
+}
+void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
+{
+	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
 
 	// Second check if we're jumping
 	if(!m_pIVSync->bStoreOnFootSwitch && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
@@ -1342,7 +1349,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	}
 	
 	// Second and a half, check if we have to delete the jump task
-	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-750 && m_pIVSyncHandle->uiJumpTime != 0)
+	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-1000 && m_pIVSyncHandle->uiJumpTime != 0) // Animation time(jump) needs ~1sec
 	{
 		m_pIVSyncHandle->uiJumpTime = 0;
 
@@ -1378,7 +1385,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	}
 
 	// Fourth check if we have to update the duck state
-	if(m_bLocalPlayer == true ? pCopy->CNetworkEntity::GetPlayerHandle().bDuckState : CNetworkEntity::GetPlayerHandle().bDuckState != m_pIVSyncHandle->bDuckingState && m_bLocalPlayer)
+	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CNetworkEntity::GetPlayerHandle().bDuckState) != CNetworkEntity::GetPlayerHandle().bDuckState && m_bLocalPlayer)
 		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckingState);
 
 	// Fifth check if we have to apply the control states

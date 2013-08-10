@@ -78,6 +78,7 @@ void CDevelopment::Process()
 		else
 			bHasAimSyncData = false;
 		
+		m_pDebugPlayer->PreStoreIVSynchronization(bHasAimSyncData,true,g_pCore->GetGame()->GetLocalPlayer());
 		m_pDebugPlayer->StoreIVSynchronization(bHasAimSyncData,true,g_pCore->GetGame()->GetLocalPlayer());
 	}
 }

@@ -133,6 +133,7 @@ public: // Handles call functions
 	unsigned						GetScriptingHandle();
 
 	void							Process();
+	void							PreStoreIVSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
 	void							StoreIVSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
 
 	bool							Create();
