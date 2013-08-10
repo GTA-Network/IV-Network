@@ -107,13 +107,12 @@ void CIVPed::SetDucking( bool bDucking )
 
 	if( pPed )
 	{
-		DWORD dwFunc = (g_pCore->GetBaseAddress() + 0x8A70C0);
 		int iDuck = (int)bDucking;
 
 		_asm	push -1;
 		_asm	push iDuck;
 		_asm	mov ecx, pPed;
-		_asm	call dwFunc;
+		_asm	call COffsets::FUNC_CPed__SetDucking;
 	}
 }
 
@@ -124,11 +123,10 @@ bool CIVPed::IsDucking( )
 
 	if( pPed )
 	{
-		DWORD dwFunc = (g_pCore->GetBaseAddress() + 0x89C780);
 		bool bDucking = false;
 
 		_asm	mov ecx, pPed;
-		_asm	call dwFunc;
+		_asm	call COffsets::FUNC_CPed__IsDucking;
 		_asm	mov bDucking, al;
 
 		return bDucking;

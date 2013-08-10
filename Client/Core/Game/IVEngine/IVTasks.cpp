@@ -16,7 +16,6 @@ CIVTaskComplexNewGetInVehicle::CIVTaskComplexNewGetInVehicle(CIVVehicle * pVehic
 {
 	if(pVehicle)
 	{
-
 		// Create the task
 		Create();
 
@@ -178,7 +177,6 @@ CIVTaskComplexPlayerOnFoot::CIVTaskComplexPlayerOnFoot()
 
 CIVTaskSimpleStartWalking::CIVTaskSimpleStartWalking(unsigned int playerIndex, float a1, float a2, float a3, int a4, int a5)
 {
-	 
 	// Create the task
 	Create();
 

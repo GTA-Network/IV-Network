@@ -380,21 +380,16 @@ void CIVVehicle::SetEngineStatus(bool bStatus, bool bUnknown)
 
 	if(pVehicle)
 	{
-		if(bStatus)
-		{
+		if(bStatus) {
 			bool bUnknownTrue = true;
-			DWORD CVehicle__TurnOnEngine = (g_pCore->GetBase() + 0x9D3600);
 
 			_asm	push bUnknownTrue;
 			_asm	mov ecx, pVehicle;
-			_asm	call CVehicle__TurnOnEngine;
+			_asm	call COffsets::FUNC_CVehicle__SetEngineOn;
 		}
-		else
-		{
-			DWORD CVehicle__TurnOffEngine = (g_pCore->GetBase() + 0x9C6710);
-			
+		else {
 			_asm mov ecx, pVehicle;
-			_asm call CVehicle__TurnOffEngine;
+			_asm call COffsets::FUNC_CVehicle__SetEngineOff;
 		}
 	}
 }
@@ -430,14 +425,13 @@ void CIVVehicle::SetComponentState(BYTE byteComponent, bool bState)
 
 		if((byteComponent - 1) <= 8)
 		{
-			DWORD dwFunc = (g_pCore->GetBase() + 0x9C65B0); // CVehicle::SetComponentDisabled(int iComponent, bool bDisabled)
 			bool _bState = !bState;
 			int _iComponent = (byteComponent + 88);
 
 			_asm	push _bState;
 			_asm	push _iComponent;
 			_asm	mov ecx, pVehicle;
-			_asm	call dwFunc;
+			_asm	call COffsets::FUNC_CVehicle__SetComponentDisabled;
 		}
 	}
 }
@@ -472,12 +466,11 @@ void CIVVehicle::SetTextureVariation(int iVariation)
 		{
 			DWORD dwTemp = (*(DWORD *)(pVehicle + 0x34) + 4);
 			*(DWORD *)(dwTemp + 0xD8) = iVariation;
-			DWORD dwFunc = (g_pCore->GetBase() + 0xCBA620);
 
-			_asm	push -1
-			_asm	push pVehicle
-			_asm	mov ecx, dwTemp
-			_asm	call dwFunc
+			_asm	push -1;
+			_asm	push pVehicle;
+			_asm	mov ecx, dwTemp;
+			_asm	call COffsets::FUNC_CVehicle__SetTextureVariation;
 		}
 	}
 }
@@ -549,11 +542,9 @@ void CIVVehicle::BurstCarTyre(int iTyre)
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
 	{
-		DWORD dwFunc = (g_pCore->GetBase() + 0x9C5510);
-
-		_asm	push iTyre
-		_asm	mov ecx, pVehicle
-		_asm	call dwFunc
+		_asm	push iTyre;
+		_asm	mov ecx, pVehicle;
+		_asm	call COffsets::FUNC_CVehicle__BurstCarTyre;
 	}
 }
 
@@ -611,11 +602,9 @@ void CIVVehicle::RemoveVehicleWindow(CIVScript::eVehicleWindow window)
 	IVVehicle *pVehicle = GetVehicle();
 	if(pVehicle)
 	{
-		DWORD CVehicle__RemoveVehicleWindow = (g_pCore->GetBase() + 0x9C6500);
-
 		_asm	push window;
 		_asm	mov ecx, pVehicle;
-		_asm	call CVehicle__RemoveVehicleWindow;
+		_asm	call COffsets::FUNC_CVehicle__RemoveVehicleWindow;
 	}
 }
 

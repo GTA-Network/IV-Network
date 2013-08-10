@@ -277,11 +277,31 @@ public:
 	DEF_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
 	DEF_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
 	DEF_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
-
+	
+	// Misc
 	DEF_OFF(CGame_Process__Sleep);
 	DEF_OFF(CGame_Process_InitialiseRageGame);
 	DEF_OFF(RAGE_LoadGame);
 	DEF_OFF(RAGE_StartNewGame);
+
+	DEF_OFF(FUNC_CVehicle__SetEngineOn);
+	DEF_OFF(FUNC_CVehicle__SetEngineOff);
+	DEF_OFF(FUNC_CVehicle__SetComponentDisabled);
+	DEF_OFF(FUNC_CVehicle__SetTextureVariation);
+	DEF_OFF(FUNC_CVehicle__BurstCarTyre);
+	DEF_OFF(FUNC_CVehicle__RemoveVehicleWindow);
+
+	DEF_OFF(FUNC_CWeapon__Initialize);
+
+	DEF_OFF(FUNC_CPedWeapon__SetCurrentWeapon);
+	DEF_OFF(FUNC_CPedWeapon__ShowWeapon);
+	DEF_OFF(FUNC_CPedWeapon__HideWeapon);
+	DEF_OFF(FUNC_CPedWeapon__SetAmmoByType);
+
+	DEF_OFF(FUNC_CPlayerInfo__Constructor);
+	DEF_OFF(FUNC_CPlayerInfo__SetPlayerInfo);
+
+	DEF_OFF(FUNC_IV_LOADWORLDATPOS_BYTE);
 };
 
 #endif

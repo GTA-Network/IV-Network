@@ -111,14 +111,13 @@ void CIVPedWeapons::SetCurrentWeaponBySlot(eWeaponSlot weaponSlot)
 			iUnknown = 19;
 
 		IVPed * pGamePed = m_pPed->GetPed();
-		DWORD dwFunc = (g_pCore->GetBase() + 0x9AA330); // CPedWeapons::SetCurrentWeapon
 
 		_asm	push pGamePed;
 		_asm	push 1;
 		_asm	push weaponSlot;
 		_asm	push iUnknown;
 		_asm	mov ecx, pPedWeapons;
-		_asm	call dwFunc;
+		_asm	call COffsets::FUNC_CPedWeapon__SetCurrentWeapon;
 	}
 }
 
@@ -154,7 +153,7 @@ void CIVPedWeapons::SetCurrentWeaponVisible(bool bVisible)
 			_asm	push -1;
 			_asm	push pGamePed;
 			_asm	mov ecx, pPedWeapons;
-			_asm	call dwFunc;
+			_asm	call COffsets::FUNC_CPedWeapon__ShowWeapon;
 		}
 		else
 		{
@@ -166,7 +165,7 @@ void CIVPedWeapons::SetCurrentWeaponVisible(bool bVisible)
 				_asm	push 0;
 				_asm	push pGamePed;
 				_asm	mov ecx, pPedWeapons;
-				_asm	call dwFunc;
+				_asm	call COffsets::FUNC_CPedWeapon__HideWeapon;
 			}
 		}
 	}
@@ -257,12 +256,10 @@ void CIVPedWeapons::SetAmmoByType(eWeaponType weaponType, DWORD dwAmmo)
 
 	if(pPedWeapons)
 	{
-		DWORD dwFunc = (g_pCore->GetBase() + 0x9A9D60); // CPedWeapons::SetAmmoByType
-
 		_asm	push dwAmmo;
 		_asm	push weaponType;
 		_asm	mov ecx, pPedWeapons;
-		_asm	call dwFunc;
+		_asm	call COffsets::FUNC_CPedWeapon__SetAmmoByType;
 	}
 }
 

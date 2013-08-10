@@ -94,7 +94,7 @@ int CIVStreaming::GetModelIndexFromHash(DWORD dwModelHash)
 
 void CIVStreaming::LoadWorldAtPosition(CVector3 vecPosition)
 {
-	BYTE * pByteUnknown = &(*(BYTE *)(g_pCore->GetBase() + 0x11DC444));
+	BYTE * pByteUnknown = &(*(BYTE *)COffsets::FUNC_IV_LOADWORLDATPOS_BYTE);
 	CVector3 * pVecPosition = &vecPosition;
 
 	_asm	push pVecPosition;
