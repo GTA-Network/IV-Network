@@ -31,6 +31,8 @@ private:
 	unsigned int		m_uiColor;
 	CString				m_strNick;
 	CVector3			m_vecPosition;
+	CVector3			m_vecMoveSpeed;
+	CVector3			m_vecTurnSpeed;
 
 	CIVPlayerPed		* m_pPlayerPed;
 	CIVPlayerInfo		* m_pPlayerInfo;

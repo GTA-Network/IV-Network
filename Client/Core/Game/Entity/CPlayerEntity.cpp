@@ -1202,7 +1202,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, vecShotTarget;
 	float fArmHeading, fArmDown, fHeading;
 	bool bDuckingState;
-	CControls *pControls;
+	CControls *pControls = NULL;
 	unsigned int uiPlayerIndex = GetScriptingHandle();
 	
 	// Copy data if our localplayer or copyplayer is avaiable
@@ -1220,10 +1220,19 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		pCopy->CPlayerEntity::GetControlState(pControls);
 	}
 	else { // Otherwise copy the data from our class instance
-		vecPosition = m_vecPosition;
-		vecMoveSpeed = m_vecMoveSpeed;
-		vecTurnSpeed = m_vecTurnSpeed;
+		this->m_vecPosition = CPlayerEntity::m_vecPosition;
+		this->m_vecMoveSpeed = CPlayerEntity::m_vecMoveSpeed;
+		this->m_vecTurnSpeed = CPlayerEntity::m_vecTurnSpeed;
+		this->m_pContextData->GetWeaponAimTarget(vecAimTarget);
+		this->m_pContextData->GetArmHeading(fArmHeading);
+		this->m_pContextData->GetArmUpDown(fArmDown);
+		this->m_pContextData->GetWeaponShotSource(vecShotSource);
+		this->m_pContextData->GetWeaponShotTarget(vecShotTarget);
+		this->CNetworkEntity::GetPlayerHandle().bDuckState;
+		fHeading = this->CPlayerEntity::GetRotation();
+		this->CPlayerEntity::GetControlState(pControls);
 	}
+
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
 		m_IVSync->bStoreOnFootSwitch = false;
@@ -1243,8 +1252,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 				SetTargetPosition(vecPosition,IVSYNC_TICKRATE*4);
 				SetCurrentSyncHeading(fHeading);
 
-				if(m_IVSync->byteOldMoveStyle != 0) 
-				{
+				if(m_IVSync->byteOldMoveStyle != 0)  {
 					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 
 					_asm	push 17;
