@@ -20,18 +20,6 @@
 #include <Network/CBitStream.h>
 #include <Game/eGame.h>
 
-enum eExitVehicleType
-{
-	EXIT_VEHICLE_NORMAL,
-	EXIT_VEHICLE_JACKED
-};
-
-struct sWeaponStructure
-{
-	CVector3		vecPosition;
-	bool			bSwitch;
-};
-
 class CVehicleEntity;
 class CPlayerEntity : public CNetworkEntity {
 private:
@@ -95,6 +83,7 @@ private:
 	CControlState         m_previousControlState;
     CControlState		  m_currentControlState;
 
+	sIVSynchronization	  *m_IVSync;
 public:
 
 	CPlayerEntity(bool bLocalPlayer = false);
@@ -148,7 +137,7 @@ public:
 	float				GetRotation();
 
 	void				Process();
-	void				StoreIVSynchronization();
+	void				StoreIVSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
 
 	bool				Create();
 	bool				Destroy();

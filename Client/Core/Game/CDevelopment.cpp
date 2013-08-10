@@ -29,15 +29,7 @@ CDevelopment::~CDevelopment()
 void CDevelopment::Process()
 {
 	float fCurrentLine = 325;
-	CVector3 vecPosition; 
-	CVector3 vecMoveSpeed;
-	CVector3 vecTurnSpeed;
-	CVector3 vecAimTarget;
-	CVector3 vecShotSource;
-	CVector3 vecShotTarget;
-	bool bCrouch;
-	float fArmHeading;
-	float fArmDown;
+	
 
 	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics())
 	{
@@ -104,73 +96,7 @@ void CDevelopment::Process()
 		else
 			bHasAimSyncData = false;
 
-		if(!bHasAimSyncData) {
-			//m_bStoreOnFootSwitch = false;
-			if(vecMoveSpeed.Length() < 0.75) {
-				m_pDebugPlayer->SetTargetPosition(vecPosition,100);
-				m_pDebugPlayer-> SetCurrentSyncHeading(fHeading);
-
-				if(m_iOldMoveStyle != 0) {
-					// Stop wakling, stand still and delete tasks
-					unsigned int uiPlayerIndex = m_pDebugPlayer->GetScriptingHandle();
-					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
-					_asm
-					{
-						push 17
-						push 0
-						push uiPlayerIndex
-						call dwAddress
-						add esp, 0Ch
-					}
-				}
-				m_pDebugPlayer->CPlayerEntity::SetMoveSpeed(vecMoveSpeed);
-				m_pDebugPlayer->CPlayerEntity::SetTurnSpeed(vecTurnSpeed);
-				m_iOldMoveStyle = 0;
-			}
-			else if(vecMoveSpeed.Length() < 3.0 && vecMoveSpeed.Length() >= 0.75) {
-				m_pDebugPlayer->SetTargetPosition(vecPosition,25);
-				m_pDebugPlayer->SetMoveToDirection(vecPosition, vecMoveSpeed, 2);
-				m_iOldMoveStyle = 1;
-			}
-			else if(vecMoveSpeed.Length() < 5.0 && vecMoveSpeed.Length() > 3.0) {
-				m_pDebugPlayer->SetTargetPosition(vecPosition,50);
-				m_pDebugPlayer->SetMoveToDirection(vecPosition, vecMoveSpeed, 3);
-				m_iOldMoveStyle = 2;
-			}
-			else {
-				m_pDebugPlayer->SetTargetPosition(vecPosition, (50/4)*3);
-				m_pDebugPlayer->SetMoveToDirection(vecPosition, vecMoveSpeed, 4);
-				m_iOldMoveStyle = 3;
-			}
-		} 
-		else {
-			if(!m_bStoreOnFootSwitch) {
-				m_bStoreOnFootSwitch = true;
-				unsigned int uiPlayerIndex = m_pDebugPlayer->GetScriptingHandle();
-				DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
-				_asm {
-					push 17
-					push 0
-					push uiPlayerIndex
-					call dwAddress
-					add  esp, 0Ch
-				}
-				uiPlayerIndex = m_pDebugPlayer->GetScriptingHandle();
-				dwAddress = (g_pCore->GetBase() + 0xB868E0);
-				_asm {
-					push 1
-					push uiPlayerIndex
-					call dwAddress
-					add	 esp, 8
-				}
-			}
-			m_pDebugPlayer->SetTargetPosition(vecPosition, 25);
-			m_pDebugPlayer->SetRotation(fHeading);
-			m_pDebugPlayer->SetMoveSpeed(vecMoveSpeed);
-			m_pDebugPlayer->SetTurnSpeed(vecTurnSpeed);
-
-			m_pDebugPlayer->CPlayerEntity::SetPosition(vecPosition);
-		}
+		
 
 		// Simulate Jmp
 		if(!m_bStoreOnFootSwitch && vecMoveSpeed.Length() > 1.0 && controlState.IsJumping()) {

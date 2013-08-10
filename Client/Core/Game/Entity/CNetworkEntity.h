@@ -205,7 +205,9 @@ public:
 	CNetworkEntitySync	GetOldestSyncPackage() { return m_pEntityLastSync; }
 
 	CNetworkEntitySubPlayer	GetPlayerHandle() { return m_pPlayerHandle; }
+	CNetworkEntitySubPlayer	*GetPlayerHandlePtr() { return &m_pPlayerHandle; }
 	CNetworkEntitySubVehicle GetVehicleHandle() { return m_pVehicleHandle; }
+	CNetworkEntitySubVehicle *GetVehicleHandlePtr() { return &m_pVehicleHandle; }
 };
 
 #endif // CNetworkEntity_h

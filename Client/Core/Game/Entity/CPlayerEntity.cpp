@@ -1197,6 +1197,113 @@ void CPlayerEntity::Interpolate()
 		UpdateTargetPosition();
 }
 
+void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
+{
+	// Grab latest stuff
+	CVector3 vecPosition; 
+	CVector3 vecMoveSpeed;
+	CVector3 vecTurnSpeed;
+	CVector3 vecAimTarget;
+	CVector3 vecShotSource;
+	CVector3 vecShotTarget;
+	bool bCrouch;
+	float fArmHeading;
+	float fArmDown;
+	float fHeading;
+
+	if(bCopyLocalPlayer) {
+		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPosition(vecPosition);
+		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetMoveSpeed(vecMoveSpeed);
+		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetTurnSpeed(vecTurnSpeed);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponAimTarget(vecAimTarget);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetArmHeading(fArmHeading);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetArmUpDown(fArmDown);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponShotSource(vecShotSource);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponShotTarget(vecShotTarget);
+		bCrouch = g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPlayerHandle().bDuckState;
+		fHeading = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetRotation();
+	}
+	if(!bHasWeaponData) {
+		m_IVSync->bStoreOnFootSwitch = false;
+		if(vecMoveSpeed.Length() < 0.75)
+			m_IVSync->byteOldMoveStyle = 0;
+		else if(vecMoveSpeed.Length() < 3.0 && vecMoveSpeed.Length() >= 0.75)
+			m_IVSync->byteOldMoveStyle = 1;
+		else if(vecMoveSpeed.Length() < 5.0 && vecMoveSpeed.Length() > 3.0)
+			m_IVSync->byteOldMoveStyle = 2;
+		else
+			m_IVSync->byteOldMoveStyle = 3;
+
+		switch(m_IVSync->byteOldMoveStyle)
+		{
+			case IVSYNC_ONFOOT_STANDSTILL:
+			{
+				SetTargetPosition(vecPosition,IVSYNC_TICKRATE*4);
+				SetCurrentSyncHeading(fHeading);
+
+				if(m_IVSync->byteOldMoveStyle != 0) 
+				{
+					unsigned int uiPlayerIndex = GetScriptingHandle();
+					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
+
+					_asm	push 17;
+					_asm	push 0;
+					_asm	push uiPlayerIndex;
+					_asm	call dwAddress;
+					_asm	add esp, 0Ch;
+				}
+				CPlayerEntity::SetMoveSpeed(vecMoveSpeed);
+				CPlayerEntity::SetTurnSpeed(vecTurnSpeed);
+				break;
+			}
+			case IVSYNC_ONFOOT_WALK:
+			{
+				SetTargetPosition(vecPosition,IVSYNC_TICKRATE);
+				SetMoveToDirection(vecPosition, vecMoveSpeed, 2);
+				break;
+			}
+			case IVSYNC_ONFOOT_RUN:
+			{
+				SetTargetPosition(vecPosition,IVSYNC_TICKRATE*2);
+				SetMoveToDirection(vecPosition, vecMoveSpeed, 3);
+				break;
+			}
+			case IVSYNC_ONFOOT_JUMP:
+			{
+				SetTargetPosition(vecPosition, ((IVSYNC_TICKRATE*2)/4)*3);
+				SetMoveToDirection(vecPosition, vecMoveSpeed, 4);
+				break;
+			}
+		}
+	} 
+	else {
+		if(!m_IVSync->bStoreOnFootSwitch) {
+			m_IVSync->bStoreOnFootSwitch = true;
+
+			unsigned int uiPlayerIndex = GetScriptingHandle();
+			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
+			_asm	push 17;
+			_asm	push 0;
+			_asm	push uiPlayerIndex;
+			_asm	call dwAddress;
+			_asm	add  esp, 0Ch;
+			
+			uiPlayerIndex = GetScriptingHandle();
+			dwAddress = (g_pCore->GetBase() + 0xB868E0);
+			_asm	push 1;
+			_asm	push uiPlayerIndex;
+			_asm	call dwAddress;
+			_asm	add	 esp, 8;
+		}
+		SetTargetPosition(vecPosition, IVSYNC_TICKRATE);
+		SetRotation(fHeading);
+		SetMoveSpeed(vecMoveSpeed);
+		SetTurnSpeed(vecTurnSpeed);
+
+		CPlayerEntity::SetPosition(vecPosition);
+	}
+}
+
 void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)
 {
 	// Are we spawned?
