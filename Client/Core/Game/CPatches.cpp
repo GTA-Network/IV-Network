@@ -34,32 +34,6 @@ void CPatches::Initialize()
 		
     // Always start a new game
     CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x5B0311), (g_pCore->GetBase() + 0x5B03BF));
-
-    // Disable parked cars
-    CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0xB3EDF0);
-
-    // Disable emergency services and garbage trucks
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x4215CF), 5);
-
-    // Disable vehicle entries
-    *(DWORD *)(g_pCore->GetBase() + 0x9B1ED0) = 0x0CC2C033;
-    *(BYTE *)(g_pCore->GetBase() + 0x9B1ED4) = 0x00;
-
-    // Disable vehicle exits
-    *(BYTE *)(g_pCore->GetBase() + 0x9BBBFC) = 0xEB;
-
-    // Disable random peds and vehicles
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x8ACD64), 5);
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x421610), 5);
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x81B22E), 5);
-
-    // Disable scenario peds
-    *(BYTE *)(g_pCore->GetBase() + 0x9F72C0) = 0xB8; // mov eax,
-    *(DWORD *)(g_pCore->GetBase() + 0x9F72C1) = 0x0; // 0
-    *(BYTE *)(g_pCore->GetBase() + 0x9F72C5) = 0xC3; // retn
-
-    // Disable fake cars
-    CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x9055D0);
 	
 	// Always start a new game
 	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);

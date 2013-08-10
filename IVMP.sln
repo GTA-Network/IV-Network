@@ -85,8 +85,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TinyXML", "TinyXML", "{4527
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{DCE885CE-3722-45BA-8426-EED2400A9ED6}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\Game\CTrafficLights.cpp = Shared\Game\CTrafficLights.cpp
+		Shared\Game\CTrafficLights.h = Shared\Game\CTrafficLights.h
+		Shared\Game\CTrafficLightsInterface.h = Shared\Game\CTrafficLightsInterface.h
 		Shared\Game\eGame.cpp = Shared\Game\eGame.cpp
 		Shared\Game\eGame.h = Shared\Game\eGame.h
+		Shared\Game\eInput.h = Shared\Game\eInput.h
+		Shared\Game\eIVGame.h = Shared\Game\eIVGame.h
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DirectXSDK", "DirectXSDK", "{35F133D7-2A89-4DF6-83CD-1D2DFB2260F4}"

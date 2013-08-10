@@ -683,6 +683,12 @@
     <ClCompile Include="Game\CWeaponHandler.cpp">
       <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CTrafficHandler.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp">
+      <Filter>Source Files\Game\IV</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1418,6 +1424,15 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\CWeaponHandler.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CTrafficHandler.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Game\CTrafficLights.h">
+      <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h">
       <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
   </ItemGroup>

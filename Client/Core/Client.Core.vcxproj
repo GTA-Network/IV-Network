@@ -199,6 +199,7 @@
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
+    <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp" />
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
@@ -218,6 +219,7 @@
     <ClCompile Include="Game\CPatches.cpp" />
     <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
+    <ClCompile Include="Game\CTrafficHandler.cpp" />
     <ClCompile Include="Game\CWeaponHandler.cpp" />
     <ClCompile Include="Game\Entity\C3DLabelEntity.cpp" />
     <ClCompile Include="Game\Entity\CActorEntity.cpp" />
@@ -431,6 +433,8 @@
     <ClInclude Include="..\..\Network\Core\RakNet\XBox360Includes.h" />
     <ClInclude Include="..\..\Network\Core\RakNet\_FindFirst.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
+    <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
+    <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
     <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
@@ -450,6 +454,7 @@
     <ClInclude Include="Game\CPatches.h" />
     <ClInclude Include="Game\CPools.h" />
     <ClInclude Include="Game\CTaskManager.h" />
+    <ClInclude Include="Game\CTrafficHandler.h" />
     <ClInclude Include="Game\CWeaponHandler.h" />
     <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
     <ClInclude Include="Game\Entity\CActorEntity.h" />

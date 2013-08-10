@@ -39,6 +39,8 @@
 #include "CGameFuncs.h"
 #include "CCharacterManager.h"
 #include "CContextSwitch.h"
+#include <Game/CTrafficLights.h>
+#include <Game/CTrafficHandler.h>
 
 typedef CEntityManager<CPlayerEntity, MAX_PLAYERS> CPlayerManager;
 typedef CEntityManager<CVehicleEntity, MAX_VEHICLES> CVehicleManager;
@@ -75,6 +77,7 @@ private:
 	static CBlipManager					*m_pBlipManager;
 	static CCheckpointManager			*m_pCheckpointManager;
 	static CCharacterManager			*m_pCharacterManager;
+	static CTrafficLights				*m_pTrafficLights;
 
 public:
 										CGame() { };
@@ -108,6 +111,7 @@ public:
 	CBlipManager						*GetBlipManager() { return m_pBlipManager; }
 	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
 	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
+	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
 };
 
 #endif // CGame_h

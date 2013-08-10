@@ -88,17 +88,11 @@ bool CCore::Initialise()
 	// Install the XLive hook
 	CXLiveHook::Install();
 
-	// Install the RAGEScriptThread hook..
-	CIVScriptingHook::InstallScriptHooks();
-
 	// Setup the game instance
 	m_pGame->Setup();
 
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);
-
-	// Setup the weapon handle hook
-	CWeaponHandler::InstallAimSyncHooks();
 
 	// Get loaded modules from our process
 	GetLoadedModulesList();

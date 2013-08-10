@@ -35,6 +35,7 @@ CCharacterManager			*CGame::m_pCharacterManager = 0;
 bool						CGame::m_LocalPlayerInitialised = 0;
 CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
 CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
+CTrafficLights				*CGame::m_pTrafficLights = 0;
 
 /*
 	==== Why WaitForGameStartup ====
@@ -65,8 +66,21 @@ void CGame::Setup()
 	// Create new pool instance
 	m_pPool = new CPools;
 
+	// Create new traffic lights instance
+	m_pTrafficLights = new CTrafficLights;
+
 	// Install our switches/patches
 	CContextSwitch::InstallKeySyncHooks();
+
+	// Install the RAGEScriptThread hook..
+	CIVScriptingHook::InstallScriptHooks();
+	
+	// Setup the weapon handle hook
+	CWeaponHandler::InstallAimSyncHooks();
+
+	// Setup the traffic handle hook
+	CTrafficHandler::InstallTrafficHook();
+	CTrafficHandler::InstallTrafficLightsHook();
 
 	// Initialise our model info array
 	for(int i = 0; i < NUM_ModelInfos; i++)
