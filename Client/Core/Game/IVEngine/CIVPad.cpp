@@ -38,13 +38,13 @@ CIVPad::CIVPad()
 	// Construct the pad
 	IVPad * pPad = m_pPad;
 	
-	_asm mov ecx, pPad;
-	_asm call COffsets::FUNC_CPad__Constructor;
+	_asm	mov ecx, pPad;
+	_asm	call COffsets::FUNC_CPad__Constructor;
 
 	// Initialise the pad
-	_asm push 0;
-	_asm mov ecx, pPad;
-	_asm call COffsets::FUNC_CPad__Initialize;
+	_asm	push 0;
+	_asm	mov ecx, pPad;
+	_asm	call COffsets::FUNC_CPad__Initialize;
 
 	// Initialise values
 	for(int i = 0; i < INPUT_COUNT; i++)
@@ -82,8 +82,8 @@ CIVPad::~CIVPad()
 		// Deconstruct the pad
 		IVPad * pPad = m_pPad;
 
-		_asm mov ecx, pPad;
-		_asm call COffsets::FUNC_CPad__Destructor;
+		_asm	mov ecx, pPad;
+		_asm	call COffsets::FUNC_CPad__Destructor;
 
 		// Delete the pad
 		SAFE_DELETE(m_pPad);

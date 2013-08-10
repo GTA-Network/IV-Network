@@ -240,277 +240,261 @@ _IVTask IVTaskNames[] =
 	{ TASK_COMPLEX_NM, "ComplexNM" }
 };
 
-const char * GetTaskName( int iTaskType )
+const char * GetTaskName(int iTaskType)
 {
 	for(int i = 0; i < ARRAY_LENGTH(IVTaskNames); i++)
 	{
-		if( IVTaskNames[i].iTaskType == iTaskType )
+		if(IVTaskNames[i].iTaskType == iTaskType)
 			return IVTaskNames[i].szTaskName;
 	}
 
 	return "Unknown Task";
 }
 
-CIVTask::CIVTask( )
+CIVTask::CIVTask()
 {
-	CLogFile::Printf( "CIVTask::CIVTask" );
+	CLogFile::Printf("CIVTask::CIVTask");
 	// Set the task
-	SetTask( NULL );
+	SetTask(NULL);
 }
 
-CIVTask::CIVTask( IVTask * pTask )
+CIVTask::CIVTask(IVTask * pTask)
 {
-	CLogFile::Printf( "CIVTask::CIVTask( 0x%p )", pTask );
+	CLogFile::Printf("CIVTask::CIVTask(0x%p)", pTask);
 	// Set the task
-	SetTask( pTask );
+	SetTask(pTask);
 }
 
-CIVTask::~CIVTask( )
+CIVTask::~CIVTask()
 {
-	CLogFile::Printf( "CIVTask::~CIVTask" );
+	CLogFile::Printf("CIVTask::~CIVTask");
 }
 
-void CIVTask::Create( )
+void CIVTask::Create()
 {
-	CLogFile::Printf( "CIVTask::Create" );
-	if( !m_pTask )
+	CLogFile::Printf("CIVTask::Create");
+	if(!m_pTask)
 	{
 		// Allocate the task
 		m_pTask = g_pCore->GetGame()->GetPools()->GetTaskPool()->Allocate();
 
 		// Add ourself to the client task manager
-		g_pCore->GetGame()->GetTaskManager()->AddTask( this );
+		g_pCore->GetGame()->GetTaskManager()->AddTask(this);
 	}
 }
 
-void CIVTask::Destroy( )
+void CIVTask::Destroy()
 {
-	if( m_pTask )
+	if(m_pTask)
 	{
 		IVTask * pTask = m_pTask;
 		DWORD dwFunc = pTask->m_pVFTable->ScalarDeletingDestructor;
-		_asm
-		{
-			push 1
-			mov ecx, pTask
-			call dwFunc
-		}
+
+		_asm	push 1;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
 	}
 }
 
-CIVTask * CIVTask::GetParent( )
+CIVTask * CIVTask::GetParent()
 {
-	if( m_pTask )
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( m_pTask->m_pParent );
+	if(m_pTask)
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pTask->m_pParent);
 
 	return NULL;
 }
 
-CIVTask * CIVTask::Clone( )
+CIVTask * CIVTask::Clone()
 {
-	if( m_pTask )
+	if(m_pTask)
 	{
 		IVTask * pTask = m_pTask;
 		IVTask * pCloneTask = NULL;
 		DWORD dwFunc = pTask->m_pVFTable->Clone;
-		_asm
-		{
-			mov ecx, pTask
-			call dwFunc
-			mov pCloneTask, eax
-		}
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( pCloneTask );
+
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
+		_asm	mov pCloneTask, eax;
+
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pCloneTask);
 	}
 
 	return NULL;
 }
 
-bool CIVTask::IsSimple( )
+bool CIVTask::IsSimple()
 {
 	bool bIsSimple = true;
 
-	if( m_pTask )
+	if(m_pTask)
 	{
 		IVTask * pTask = m_pTask;
 		DWORD dwFunc = pTask->m_pVFTable->IsSimple;
-		_asm
-		{
-			mov ecx, pTask
-			call dwFunc
-			mov bIsSimple, al
-		}
+
+		_asm	mov ecx, pTask
+		_asm	call dwFunc
+		_asm	mov bIsSimple, al
 	}
 
 	return bIsSimple;
 }
 
-int CIVTask::GetType( )
+int CIVTask::GetType()
 {
 	int iType = TASK_TYPE_NONE;
 
-	if( m_pTask )
+	if(m_pTask)
 	{
 		IVTask * pTask = m_pTask;
 		DWORD dwFunc = pTask->m_pVFTable->GetType;
-		_asm
-		{
-			mov ecx, pTask
-			call dwFunc
-			mov iType, eax
-		}
+
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
+		_asm	mov iType, eax;
 	}
 
 	return iType;
 }
 
-const char * CIVTask::GetName( )
+const char * CIVTask::GetName()
 {
-	return GetTaskName( GetType() );
+	return GetTaskName(GetType());
 }
 
-bool CIVTask::MakeAbortable( CIVPed * pPed, int iAbortPriority, void * pEvent )
+bool CIVTask::MakeAbortable(CIVPed * pPed, int iAbortPriority, void * pEvent)
 {
 	bool bReturn;
 
-	if( m_pTask )
+	if(m_pTask)
 	{
 		void * pGameEvent = NULL;
 		IVPed * pGamePed = pPed->GetPed();
 		IVTask * pTask = m_pTask;
 		DWORD dwFunc = pTask->m_pVFTable->MakeAbortable;
-		_asm
-		{
-			push pGameEvent
-			push iAbortPriority
-			push pGamePed
-			mov ecx, pTask
-			call dwFunc
-			mov bReturn, al
-		}
+
+		_asm	push pGameEvent;
+		_asm	push iAbortPriority;
+		_asm	push pGamePed;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc
+		_asm	mov bReturn, al;
 	}
 
 	return bReturn;
 }
 
-void CIVTask::SetAsPedTask( CIVPed * pPed, int iTaskPriority, bool bForceNewTask )
+void CIVTask::SetAsPedTask(CIVPed * pPed, int iTaskPriority, bool bForceNewTask)
 {
-	if( m_pTask )
+	if(m_pTask)
 	{
 		// Get the game task pointer
-		CIVTask * pClientTask = g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( m_pTask );
+		CIVTask * pClientTask = g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pTask);
 
 		// Set the task as the ped task
-		pPed->GetPedTaskManager()->SetTask( pClientTask, iTaskPriority, bForceNewTask );
+		pPed->GetPedTaskManager()->SetTask(pClientTask, iTaskPriority, bForceNewTask);
 	}
 }
 
-bool CIVTaskSimple::ProcessPed( CIVPed * pPed )
+bool CIVTaskSimple::ProcessPed(CIVPed * pPed)
 {
-	IVTaskSimple * pTask = (IVTaskSimple *)GetTask( );
+	IVTaskSimple * pTask = (IVTaskSimple *)GetTask();
 
-	if( pTask )
+	if(pTask)
 	{
 		IVPed * pGamePed = pPed->GetPed();
 		DWORD dwFunc = ((IVTaskSimpleVFTable *)pTask->m_pVFTable)->ProcessPed;
-		_asm
-		{
-			push pGamePed
-			mov ecx, pTask
-			call dwFunc
-		}
+
+		_asm	push pGamePed;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
 	}
 
 	return false;
 }
 
-CIVTask * CIVTaskComplex::GetSubTask( )
+CIVTask * CIVTaskComplex::GetSubTask()
 {
-	IVTaskComplex * pTask = (IVTaskComplex *)GetTask( );
+	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 
-	if( pTask )
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( pTask->m_pSubTask );
+	if(pTask)
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pTask->m_pSubTask);
 
 	return NULL;
 }
 
-void CIVTaskComplex::SetSubTask( CIVTask * pSubTask )
+void CIVTaskComplex::SetSubTask(CIVTask * pSubTask)
 {
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
-	if( pTask )
+	if(pTask)
 	{
 		IVTask * pGameSubTask = pSubTask->GetTask();
 		DWORD dwFunc = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->SetSubTask;
-		_asm
-		{
-			push pGameSubTask
-			mov ecx, pTask
-			call dwFunc
-		}
+
+		_asm	push pGameSubTask;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
 	}
 }
 
-CIVTask * CIVTaskComplex::CreateNextSubTask( CIVPed * pPed )
+CIVTask * CIVTaskComplex::CreateNextSubTask(CIVPed * pPed)
 {
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
-	if( pTask )
+	if(pTask)
 	{
 		IVPed * pGamePed = pPed->GetPed();
 		IVTask * pSubTask = NULL;
 		DWORD dwFunc = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->CreateNextSubTask;
-		_asm
-		{
-			push pGamePed
-			mov ecx, pTask
-			call dwFunc
-			mov pSubTask, eax
-		}
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( pSubTask );
+
+		_asm	push pGamePed;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
+		_asm	mov pSubTask, eax;
+
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
 	}
 
 	return NULL;
 }
 
-CIVTask * CIVTaskComplex::CreateFirstSubTask( CIVPed * pPed )
+CIVTask * CIVTaskComplex::CreateFirstSubTask(CIVPed * pPed)
 {
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
-	if( pTask )
+	if(pTask)
 	{
 		IVPed * pGamePed = pPed->GetPed();
 		IVTask * pSubTask = NULL;
 		DWORD dwFunc = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->CreateFirstSubTask;
-		_asm
-		{
-			push pGamePed
-			mov ecx, pTask
-			call dwFunc
-			mov pSubTask, eax
-		}
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( pSubTask );
+
+		_asm	push pGamePed;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
+		_asm	mov pSubTask, eax;
+
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
 	}
 
 	return NULL;
 }
 
-CIVTask * CIVTaskComplex::ControlSubTask( CIVPed * pPed )
+CIVTask * CIVTaskComplex::ControlSubTask(CIVPed * pPed)
 {
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
-	if( pTask )
+	if(pTask)
 	{
 		IVPed * pGamePed = pPed->GetPed();
 		IVTask * pSubTask = NULL;
 		DWORD dwFunc = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->ControlSubTask;
-		_asm
-		{
-			push pGamePed
-			mov ecx, pTask
-			call dwFunc
-			mov pSubTask, eax
-		}
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( pSubTask );
+
+		_asm	push pGamePed;
+		_asm	mov ecx, pTask;
+		_asm	call dwFunc;
+		_asm	mov pSubTask, eax;
+
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
 	}
 
 	return NULL;

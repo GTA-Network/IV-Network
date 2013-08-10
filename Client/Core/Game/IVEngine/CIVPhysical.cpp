@@ -42,12 +42,10 @@ void CIVPhysical::SetMoveSpeed(const CVector3& vecMoveSpeed)
 	if(pPhysical)
 	{
 		const CVector3 * pVecMoveSpeed = &vecMoveSpeed;
-		_asm
-		{
-			push pVecMoveSpeed
-				mov ecx, pPhysical
-				call COffsets::FUNC_CPhysical__SetMoveSpeed
-		}
+
+		_asm	push pVecMoveSpeed;
+		_asm	mov ecx, pPhysical;
+		_asm	call COffsets::FUNC_CPhysical__SetMoveSpeed;
 	}
 }
 
@@ -58,12 +56,10 @@ void CIVPhysical::GetMoveSpeed(CVector3& vecMoveSpeed)
 	if(pPhysical)
 	{
 		CVector3 * pVecMoveSpeed = &vecMoveSpeed;
-		_asm
-		{
-			push pVecMoveSpeed
-				mov ecx, pPhysical
-				call COffsets::FUNC_CPhysical__GetMoveSpeed
-		}
+
+		_asm	push pVecMoveSpeed;
+		_asm	mov ecx, pPhysical;
+		_asm	call COffsets::FUNC_CPhysical__GetMoveSpeed;
 	}
 }
 
@@ -74,12 +70,10 @@ void CIVPhysical::SetTurnSpeed(const CVector3& vecTurnSpeed)
 	if(pPhysical)
 	{
 		const CVector3 * pVecTurnSpeed = &vecTurnSpeed;
-		_asm
-		{
-			push pVecTurnSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__SetTurnSpeed
-		}
+
+		_asm	push pVecTurnSpeed;
+		_asm	mov ecx, pPhysical;
+		_asm	call COffsets::FUNC_CPhysical__SetTurnSpeed;
 	}
 }
 
@@ -90,12 +84,10 @@ void CIVPhysical::GetTurnSpeed(CVector3& vecTurnSpeed)
 	if(pPhysical)
 	{
 		CVector3 * pVecTurnSpeed = &vecTurnSpeed;
-		_asm
-		{
-			push pVecTurnSpeed
-			mov ecx, pPhysical
-			call COffsets::FUNC_CPhysical__GetTurnSpeed
-		}
+
+		_asm	push pVecTurnSpeed;
+		_asm	mov ecx, pPhysical;
+		_asm	call COffsets::FUNC_CPhysical__GetTurnSpeed;
 	}
 }
 
@@ -106,12 +98,10 @@ void CIVPhysical::SetLastDamageEntity(IVEntity * pLastDamageEntity)
 	if(pPhysical)
 	{
 		IVEntity * _pLastDamageEntity = pLastDamageEntity;
-		_asm
-		{
-			push _pLastDamageEntity
-				mov ecx, pPhysical
-				call COffsets::FUNC_CPhysical__SetLastDamageEntity
-		}
+
+		_asm	push _pLastDamageEntity;
+		_asm	mov ecx, pPhysical;
+		_asm	call COffsets::FUNC_CPhysical__SetLastDamageEntity;
 	}
 }
 

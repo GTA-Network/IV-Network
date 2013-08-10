@@ -27,14 +27,12 @@ void CIVWeapon::Initialize(eWeaponType weaponType, DWORD dwAmmo, bool bIsPedWeap
 {
 	IVWeapon * pWeapon = m_pWeapon;
 	DWORD dwFunc = (g_pCore->GetBase() + 0x976C20); // CWeapon::Initialize
-	_asm
-	{
-		push bIsPedWeapon
-		push dwAmmo
-		push weaponType
-		mov ecx, pWeapon
-		call dwFunc
-	}
+
+	_asm	push bIsPedWeapon;
+	_asm	push dwAmmo;
+	_asm	push weaponType;
+	_asm	mov ecx, pWeapon;
+	_asm	call dwFunc;
 }
 
 eWeaponType CIVWeapon::GetType()

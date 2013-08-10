@@ -147,13 +147,12 @@ bool CIVEntity::IsTouchingEntity(CIVEntity * pTouchingEntity)
 		IVEntity * pGameEntity = m_pEntity;
 		IVEntity * pTouchingGameEntity = pTouchingEntity->GetEntity();
 		bool bResult = false;
-		_asm
-		{
-			push pTouchingGameEntity
-			push pGameEntity
-			call COffsets::FUNC_CEntity__IsTouchingEntity
-			mov bResult, al
-		}
+
+		_asm	push pTouchingGameEntity;
+		_asm	push pGameEntity;
+		_asm	call COffsets::FUNC_CEntity__IsTouchingEntity;
+		_asm	mov bResult, al;
+		
 		return bResult;
 	}
 

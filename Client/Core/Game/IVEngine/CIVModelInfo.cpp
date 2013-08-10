@@ -45,12 +45,10 @@ BYTE CIVModelInfo::GetType( )
 	{
 		DWORD dwFunc = pModelInfo->m_VFTable->GetType;
 		BYTE byteType = 0;
-		_asm
-		{
-			mov ecx, pModelInfo
-			call dwFunc
-			mov byteType, al
-		}
+
+		_asm	mov ecx, pModelInfo;
+		_asm	call dwFunc;
+		_asm	mov byteType, al;
 
 		return byteType;
 	}

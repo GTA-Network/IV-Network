@@ -28,11 +28,9 @@ CIVPlayerInfo::CIVPlayerInfo( BYTE bytePlayerNumber )
 		CLogFile::Print( "ERROR: CIVPlayerInfo::CIVPlayerInfo - Alloc fail!" );
 
 	DWORD dwFunc = (g_pCore->GetBase() + 0x87AB70);
-	_asm
-	{
-		mov ecx, pPlayerInfo
-		call dwFunc
-	}
+
+	_asm	mov ecx, pPlayerInfo;
+	_asm	call dwFunc;
 
 	pPlayerInfo->m_bytePlayerNumber = bytePlayerNumber;
 	*(DWORD *)(pPlayerInfo + 0x15C) = 0;
@@ -66,11 +64,9 @@ void CIVPlayerInfo::SetPlayerInfo( IVPlayerInfo * pPlayerInfo )
 	{
 		IVPlayerInfo * pPlayerInfo = m_pPlayerInfo;
 		DWORD dwFunc = (g_pCore->GetBase() + 0x878AF0);
-		_asm
-		{
-			mov ecx, pPlayerInfo
-			call dwFunc
-		}
+
+		_asm	mov ecx, pPlayerInfo;
+		_asm	call dwFunc;
 
 		CGameFunction::Free( pPlayerInfo );
 	}

@@ -14,12 +14,9 @@ void CIVWeather::SetWeather( eWeather weather )
 {
 	if( weather >= WEATHER_EXTRA_SUNNY && weather <= WEATHER_SUNNY_WINDY_2 )
 	{
-		_asm
-		{
-			push weather
-			call COffsets::FUNC_SetWeather
-			add esp, 4
-		}
+		_asm	push weather;
+		_asm	call COffsets::FUNC_SetWeather;
+		_asm	add esp, 4;
 	}
 }
 
@@ -30,15 +27,13 @@ eWeather CIVWeather::GetWeather( void )
 
 void CIVWeather::SetTime( int uHour, int uMinute )
 {
-	_asm
-	{
-		push -1
-		push 0
-		push uMinute
-		push uHour
-		call COffsets::FUNC_SetTimeOfDay
-		add esp, 10h
-	}
+	_asm	push -1;
+	_asm	push 0;
+	_asm	push uMinute;
+	_asm	push uHour;
+	_asm	call COffsets::FUNC_SetTimeOfDay;
+	_asm	add esp, 10h;
+
 	*(DWORD *)(*(DWORD *)(COffsets::VAR_TimeOfDay) + 0x260) = 2;
 }
 

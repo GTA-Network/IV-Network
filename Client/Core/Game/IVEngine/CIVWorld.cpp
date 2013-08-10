@@ -13,23 +13,19 @@
 void CIVWorld::AddEntity( CIVEntity * pEntity )
 {
 	IVEntity * pGameEntity = pEntity->GetEntity();
-	_asm
-	{
-		push 0
-		push pGameEntity
-		call COffsets::FUNC_CWorld__AddEntity
-		add esp, 8
-	}
+
+	_asm	push 0;
+	_asm	push pGameEntity;
+	_asm	call COffsets::FUNC_CWorld__AddEntity;
+	_asm	add esp, 8;
 }
 
 void CIVWorld::RemoveEntity( CIVEntity * pEntity )
 {
 	IVEntity * pGameEntity = pEntity->GetEntity();
-	_asm
-	{
-		push 0
-		push pGameEntity
-		call COffsets::FUNC_CWorld__RemoveEntity
-		add esp, 8
-	}
+
+	_asm	push 0;
+	_asm	push pGameEntity;
+	_asm	call COffsets::FUNC_CWorld__RemoveEntity;
+	_asm	add esp, 8;
 }

@@ -42,13 +42,11 @@ void CIVVehicle::SetLoadCollision(bool bLoadCollision)
 	if(pVehicle)
 	{
 		bool _bLoadCollision = bLoadCollision;
-		_asm
-		{
-			push _bLoadCollision
-				push pVehicle
-				call COffsets::FUNC_CVehicle__SetLoadCollision
-				add esp, 8
-		}
+
+		_asm	push _bLoadCollision;
+		_asm	push pVehicle;
+		_asm	call COffsets::FUNC_CVehicle__SetLoadCollision;
+		_asm	add esp, 8;
 	}
 }
 
@@ -130,11 +128,8 @@ void CIVVehicle::SetColors(unsigned char ucColor1, unsigned char ucColor2, unsig
 		pVehicle->m_byteColors[2] = ucColor3;
 		pVehicle->m_byteColors[3] = ucColor4;
 
-		_asm
-		{
-			mov ecx, pVehicle
-				call COffsets::FUNC_CVehicle__RefreshColours
-		}
+		_asm	mov ecx, pVehicle;
+		_asm	call COffsets::FUNC_CVehicle__RefreshColours;
 	}
 }
 void CIVVehicle::GetColors(unsigned char * ucColor1, unsigned char * ucColor2, unsigned char * ucColor3, unsigned char * ucColor4)
@@ -389,21 +384,17 @@ void CIVVehicle::SetEngineStatus(bool bStatus, bool bUnknown)
 		{
 			bool bUnknownTrue = true;
 			DWORD CVehicle__TurnOnEngine = (g_pCore->GetBase() + 0x9D3600);
-			_asm
-			{
-				push bUnknownTrue
-					mov ecx, pVehicle
-					call CVehicle__TurnOnEngine
-			}
+
+			_asm	push bUnknownTrue;
+			_asm	mov ecx, pVehicle;
+			_asm	call CVehicle__TurnOnEngine;
 		}
 		else
 		{
 			DWORD CVehicle__TurnOffEngine = (g_pCore->GetBase() + 0x9C6710);
-			_asm
-			{
-				mov ecx, pVehicle
-					call CVehicle__TurnOffEngine
-			}
+			
+			_asm mov ecx, pVehicle;
+			_asm call CVehicle__TurnOffEngine;
 		}
 	}
 }
@@ -442,13 +433,11 @@ void CIVVehicle::SetComponentState(BYTE byteComponent, bool bState)
 			DWORD dwFunc = (g_pCore->GetBase() + 0x9C65B0); // CVehicle::SetComponentDisabled(int iComponent, bool bDisabled)
 			bool _bState = !bState;
 			int _iComponent = (byteComponent + 88);
-			_asm
-			{
-				push _bState
-					push _iComponent
-					mov ecx, pVehicle
-					call dwFunc
-			}
+
+			_asm	push _bState;
+			_asm	push _iComponent;
+			_asm	mov ecx, pVehicle;
+			_asm	call dwFunc;
 		}
 	}
 }
@@ -484,13 +473,11 @@ void CIVVehicle::SetTextureVariation(int iVariation)
 			DWORD dwTemp = (*(DWORD *)(pVehicle + 0x34) + 4);
 			*(DWORD *)(dwTemp + 0xD8) = iVariation;
 			DWORD dwFunc = (g_pCore->GetBase() + 0xCBA620);
-			_asm
-			{
-				push -1
-					push pVehicle
-					mov ecx, dwTemp
-					call dwFunc
-			}
+
+			_asm	push -1
+			_asm	push pVehicle
+			_asm	mov ecx, dwTemp
+			_asm	call dwFunc
 		}
 	}
 }
@@ -545,18 +532,14 @@ void CIVVehicle::SetGPSState(bool bState)
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-	{
 		*(bool*)(pVehicle + 0xB02) = bState;
-	}
 }
 
 bool CIVVehicle::GetGPSState()
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-	{
 		return *(bool*)(pVehicle + 0xB02);
-	}
 	return false;
 }
 
@@ -567,12 +550,10 @@ void CIVVehicle::BurstCarTyre(int iTyre)
 	if(pVehicle)
 	{
 		DWORD dwFunc = (g_pCore->GetBase() + 0x9C5510);
-		_asm
-		{
-			push iTyre
-				mov ecx, pVehicle
-				call dwFunc
-		}
+
+		_asm	push iTyre
+		_asm	mov ecx, pVehicle
+		_asm	call dwFunc
 	}
 }
 
@@ -580,9 +561,7 @@ void CIVVehicle::GetDeformation(CVector3& vecPos)
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-	{
-		//vecPos = pVehicle->m_pDamageManager->vecDamage;
-	}
+		; //vecPos = pVehicle->m_pDamageManager->vecDamage;
 }
 
 void CIVVehicle::SetCarCanBeDamaged(bool bDamage)
@@ -604,12 +583,10 @@ void CIVVehicle::RemoveCarWindow(int iWindow)
 	if(pVehicle)
 	{
 		DWORD dwFunc = (g_pCore->GetBase() + 0x9C6500);
-		_asm
-		{
-			push iWindow
-				mov ecx, pVehicle
-				call dwFunc
-		}
+
+		_asm	push iWindow;
+		_asm	mov ecx, pVehicle;
+		_asm	call dwFunc;
 	}
 }
 
@@ -624,9 +601,8 @@ int CIVVehicle::GetLightsState()
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-	{
 		return (*(WORD  *)(pVehicle + 0x1112)); // 4370(flag?)
-	}
+
 	return 0;
 }
 
@@ -636,12 +612,10 @@ void CIVVehicle::RemoveVehicleWindow(CIVScript::eVehicleWindow window)
 	if(pVehicle)
 	{
 		DWORD CVehicle__RemoveVehicleWindow = (g_pCore->GetBase() + 0x9C6500);
-		_asm
-		{
-			push window
-				mov ecx, pVehicle
-				call CVehicle__RemoveVehicleWindow
-		}
+
+		_asm	push window;
+		_asm	mov ecx, pVehicle;
+		_asm	call CVehicle__RemoveVehicleWindow;
 	}
 }
 
@@ -653,9 +627,9 @@ bool CIVVehicle::IsCarInWater()
 	if(pVehicle)
 	{
 		if( *(int *)(pVehicle + 0x1354) == 2 )
-		{
 			bInWater = *(BYTE *)(pVehicle + 0x1360) & 1;   
-		} else {
+		else 
+		{
 			if((*(BYTE *)(pVehicle + 0x118) & 1) || ((*(DWORD *)(pVehicle + 0x6C) != NULL) && *(BYTE *)(pVehicle + 0x141)))
 				bInWater = true;
 		}

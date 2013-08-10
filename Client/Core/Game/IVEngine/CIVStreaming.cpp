@@ -40,64 +40,55 @@ unsigned int CIVStreaming::GetResourceTypeIndex(eResourceType resourceType)
 void CIVStreaming::RequestResource(eResourceType resourceType, int iResourceIndex, DWORD dwFlags)
 {
 	unsigned int uiResourceTypeIndex = GetResourceTypeIndex(resourceType);
-	_asm
-	{
-		push dwFlags
-		push uiResourceTypeIndex
-		push iResourceIndex
-		call COffsets::FUNC_RequestResource
-		add esp, 0Ch
-	}
+
+	_asm	push dwFlags;
+	_asm	push uiResourceTypeIndex;
+	_asm	push iResourceIndex;
+	_asm	call COffsets::FUNC_RequestResource;
+	_asm	add esp, 0Ch;
 }
 
 void CIVStreaming::LoadAllResources(bool bUnknown)
 {
-	_asm
-	{
-		push bUnknown
-		call COffsets::FUNC_LoadAllResources
-		add esp, 4
-	}
+	_asm	push bUnknown;
+	_asm	call COffsets::FUNC_LoadAllResources;
+	_asm	add esp, 4;
 }
 
 bool CIVStreaming::HasResourceLoaded(eResourceType resourceType, int iResourceIndex)
 {
 	unsigned int uiResourceTypeIndex = GetResourceTypeIndex(resourceType);
 	bool bLoaded = false;
-	_asm
-	{
-		push uiResourceTypeIndex
-		push iResourceIndex
-		call COffsets::FUNC_HasResourceLoaded
-		add esp, 8
-		mov bLoaded, al
-	}
+
+	_asm	push uiResourceTypeIndex;
+	_asm	push iResourceIndex;
+	_asm	call COffsets::FUNC_HasResourceLoaded;
+	_asm	add esp, 8;
+	_asm	mov bLoaded, al;
+
 	return bLoaded;
 }
 
 void CIVStreaming::ReleaseResource(eResourceType resourceType, int iResourceIndex)
 {
 	unsigned int uiResourceTypeIndex = GetResourceTypeIndex(resourceType);
-	_asm
-	{
-		push uiResourceTypeIndex
-		push iResourceIndex
-		call COffsets::FUNC_ReleaseResource
-		add esp, 8
-	}
+
+	_asm	push uiResourceTypeIndex;
+	_asm	push iResourceIndex;
+	_asm	call COffsets::FUNC_ReleaseResource;
+	_asm	add esp, 8;
 }
 
 int CIVStreaming::GetModelIndexFromHash(DWORD dwModelHash)
 {
 	int iModelIndex = -1;
 	int * pModelIndex = &iModelIndex;
-	_asm
-	{
-		push pModelIndex
-		push dwModelHash
-		call COffsets::FUNC_GetModelIndexFromHash
-		add esp, 8
-	}
+
+	_asm	push pModelIndex;
+	_asm	push dwModelHash;
+	_asm	call COffsets::FUNC_GetModelIndexFromHash;
+	_asm	add esp, 8;
+
 	return iModelIndex;
 }
 
@@ -105,12 +96,11 @@ void CIVStreaming::LoadWorldAtPosition(CVector3 vecPosition)
 {
 	BYTE * pByteUnknown = &(*(BYTE *)(g_pCore->GetBase() + 0x11DC444));
 	CVector3 * pVecPosition = &vecPosition;
-	_asm
-	{
-		push pVecPosition
-		mov ecx, pByteUnknown
-		call COffsets::FUNC_LoadWorldAtPosition
-	}
+
+	_asm	push pVecPosition;
+	_asm	mov ecx, pByteUnknown;
+	_asm	call COffsets::FUNC_LoadWorldAtPosition;
+	_asm	add esp, 4;
 }
 
 int CIVStreaming::GetAnimIndexFromName(const char * szName)
@@ -121,12 +111,11 @@ int CIVStreaming::GetAnimIndexFromName(const char * szName)
 int CIVStreaming::GetAnimIndexFromHash(unsigned int uiHash)
 {
 	int iAnimIndex = -1;
-	_asm
-	{
-		push uiHash
-		call COffsets::FUNC_CAnimStore__GetIndexFromHash
-		mov iAnimIndex, eax
-		add esp, 4
-	}
+
+	_asm	push uiHash;
+	_asm	call COffsets::FUNC_CAnimStore__GetIndexFromHash;
+	_asm	mov iAnimIndex, eax;
+	_asm	add esp, 4;
+
 	return iAnimIndex;
 }

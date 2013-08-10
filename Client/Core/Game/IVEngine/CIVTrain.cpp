@@ -102,53 +102,44 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
 		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
-		_asm
-		{
-			pushf
-			pop ax
-			and ax, 0x100
-			mov [dwTemp], ax
-			push ax
-			popf
+
+		_asm	pushf;
+		_asm	pop ax;
+		_asm	and ax, 0x100;
+		_asm	mov [dwTemp], ax;
+		_asm	push ax;
+		_asm	popf;
+
+		if(!dwTemp)  {
+			_asm	jmp unkownLoc;
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
-		if(!dwTemp) 
-		{
-			_asm
-			{
-				jmp unkownLoc
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
+		else {
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
-		else
-		{
-			_asm
-			{
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
-		}
-		// Todo: Get result (mov wHandle, al)
+		// TODO: Get result (mov wHandle, al)
 	}
 	else if(trainRegisterId == 2)
 	{
@@ -178,49 +169,41 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
 		_asm
 		{
-			pushf
-			pop ax
-			and ax, 0x100
-			mov [dwTemp], ax
-			push ax
-			popf
+		_asm	pushf;
+		_asm	pop ax;
+		_asm	and ax, 0x100;
+		_asm	mov [dwTemp], ax;
+		_asm	push ax;
+		_asm	popf;
 		}
-		if(!dwTemp) 
-		{
-			_asm
-			{
-				jmp unkownLoc
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
+		if(!dwTemp) {
+			_asm	jmp unkownLoc;
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
-		else
-		{
-			_asm
-			{
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
+		else {
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
 		// Todo: Get result (mov wHandle, al)
 	}
@@ -249,51 +232,42 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
 		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
-		_asm
-		{
-			pushf
-			pop ax
-			and ax, 0x100
-			mov [dwTemp], ax
-			push ax
-			popf
+
+		_asm	pushf;
+		_asm	pop ax;
+		_asm	and ax, 0x100;
+		_asm	mov [dwTemp], ax;
+		_asm	push ax;
+		_asm	popf;
+
+		if(!dwTemp) {
+			_asm	jmp unkownLoc;
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
-		if(!dwTemp) 
-		{
-			_asm
-			{
-				jmp unkownLoc
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
-		}
-		else
-		{
-			_asm
-			{
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
+		else {
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
 		// Todo: Get result (mov wHandle, al)
 	}
@@ -322,51 +296,43 @@ void CIVTrain::SetTrainOffsetsAndCreate(EntityId trainRegisterId)
 		//NOTE: Assembler VS 2010 doesn't recognize jnz and jn... 
 		WORD dwTemp;
 		short unkownLoc = (g_pCore->GetBase() + 0x94A743);
-		_asm
-		{
-			pushf
-			pop ax
-			and ax, 0x100
-			mov [dwTemp], ax
-			push ax
-			popf
+
+		_asm	pushf;
+		_asm	pop ax;
+		_asm	and ax, 0x100;
+		_asm	mov [dwTemp], ax;
+		_asm	push ax;
+		_asm	popf;
+
+		if(!dwTemp) {
+
+			_asm	jmp unkownLoc;
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
-		if(!dwTemp) 
-		{
-			_asm
-			{
-				jmp unkownLoc
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
-		}
-		else
-		{
-			_asm
-			{
-				push szRoute
-				push dwPointer
-				push dwAddress7
-				push dwAddress6
-				push byteAddress1
-				push dwAddress5
-				push dwAddress4
-				push dwAddress3
-				push dwAddress2
-				push dwAddress1
-				call FUNC_CTrain__CreateTrain
-				add esp, 28h
-			}
+		else {
+			_asm	push szRoute;
+			_asm	push dwPointer;
+			_asm	push dwAddress7;
+			_asm	push dwAddress6;
+			_asm	push byteAddress1;
+			_asm	push dwAddress5;
+			_asm	push dwAddress4;
+			_asm	push dwAddress3;
+			_asm	push dwAddress2;
+			_asm	push dwAddress1;
+			_asm	call FUNC_CTrain__CreateTrain;
+			_asm	add esp, 28h;
 		}
 		// Todo: Get result (mov wHandle, al)
 	}

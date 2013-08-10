@@ -35,11 +35,11 @@ void CIVPedTaskManager::SetTask( CIVTask * pTask, int iType, bool bForceNewTask 
 	IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
 	int iForceNewTask = (int)bForceNewTask;
 
-	_asm push iForceNewTask;
-	_asm push iType;
-	_asm push pGameTask;
-	_asm mov ecx, pPedTaskManager;
-	_asm call COffsets::FUNC_CPedTaskManager__SetTaskPriority;
+	_asm	push iForceNewTask;
+	_asm	push iType;
+	_asm	push pGameTask;
+	_asm	mov ecx, pPedTaskManager;
+	_asm	call COffsets::FUNC_CPedTaskManager__SetTaskPriority;
 }
 
 void CIVPedTaskManager::RemoveTask( int iType )
@@ -86,10 +86,10 @@ void CIVPedTaskManager::SetSecondaryTask( CIVTask * pTask, int iType )
 	IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
 	IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
 	
-	_asm push iType;
-	_asm push pGameTask;
-	_asm mov ecx, pPedTaskManager;
-	_asm call COffsets::FUNC_CPedTaskManager__SetTaskSecondary;
+	_asm	push iType;
+	_asm	push pGameTask;
+	_asm	mov ecx, pPedTaskManager;
+	_asm	call COffsets::FUNC_CPedTaskManager__SetTaskSecondary;
 }
 
 void CIVPedTaskManager::RemoveSecondaryTask( int iType )
