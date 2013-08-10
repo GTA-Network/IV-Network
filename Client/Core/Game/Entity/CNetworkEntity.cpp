@@ -100,6 +100,9 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 		// Get the latest turn speed
 		pPlayer->GetTurnSpeed(m_vecTurnSpeed);
 
+		// GEt the latest rotation
+		m_pPlayerHandle.fHeading = pPlayer->GetRotation();
+
 		// Get the latest crouch state
 		m_pPlayerHandle.bDuckState = pPlayer->GetPlayerPed()->IsDucking();
 	}

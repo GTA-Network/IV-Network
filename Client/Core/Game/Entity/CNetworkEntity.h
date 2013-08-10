@@ -124,6 +124,7 @@ private:
 
 public:
 	bool						bDuckState;
+	float						fHeading;
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
 

@@ -139,9 +139,16 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	m_byteSeat = 0;
 	memset(&m_lastControlState, NULL, sizeof(CControls));
 	memset(&m_ControlState, NULL, sizeof(CControls));
-	ResetVehicleEnterExit();
-
 	CNetworkEntity::SetType(PLAYER_ENTITY);
+
+	// Initialise & Reset all stuff(classes,structs)
+	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
+	m_pInterpolationData = new sPlayerEntity_InterpolationData;
+	m_pIVSync = new sIVSynchronization;
+	m_pIVSyncHandle = new sPlayerEntity_StoreIVSynchronization;
+	m_pIVSyncHandle->pControls = new CControls;
+	m_pPlayerEntity = this;
+	ResetVehicleEnterExit();
 
 	// Is this the localplayer?
 	if(IsLocalPlayer())
@@ -172,6 +179,9 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		// Set our localplayer invincible during development mode
 		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), false);
 
+		// Set or local player index
+		m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
+
 		// Mark as spawned
 		m_bSpawned = true;
 
@@ -190,7 +200,6 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 
 		m_bytePlayerNumber = INVALID_PLAYER_PED;
     }
-
 }
 
 CPlayerEntity::~CPlayerEntity()
@@ -361,6 +370,9 @@ bool CPlayerEntity::Create()
 
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
+
+	// Set our player index
+	m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
 
 	// Mark as spawned
 	Spawn();
@@ -801,9 +813,9 @@ void CPlayerEntity::EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
 	}
 
 	// Mark as enter a vehicle
-	m_vehicleEnterExit.bEntering = true;
-	m_vehicleEnterExit.pVehicle = pVehicle;
-	m_vehicleEnterExit.byteSeat = byteSeat;
+	m_pVehicleEnterExit->bEntering = true;
+	m_pVehicleEnterExit->pVehicle = pVehicle;
+	m_pVehicleEnterExit->byteSeat = byteSeat;
 }
 
 void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
@@ -868,7 +880,7 @@ void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 	}
 
 	// Mark as exiting vehicle
-	m_vehicleEnterExit.bExiting = true;
+	m_pVehicleEnterExit->bExiting = true;
 }
 
 void CPlayerEntity::CheckVehicleEnterExit()
@@ -883,7 +895,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 			if(m_lastControlState.IsUsingEnterExitVehicle() || m_lastControlState.IsUsingHorn())
 			{
 				// Are we not already requesting an enter?
-				if(!m_vehicleEnterExit.bEntering)
+				if(!m_pVehicleEnterExit->bEntering)
 				{
 					CVehicleEntity * pVehicle = NULL;
 					BYTE byteSeat = 0;
@@ -906,7 +918,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 			if(m_lastControlState.IsUsingEnterExitVehicle())
 			{
 				// Are we not already requesting an exit?
-				if(!m_vehicleEnterExit.bExiting)
+				if(!m_pVehicleEnterExit->bExiting)
 				{
 					// Exit the vehicle
 					ExitVehicle(EXIT_VEHICLE_NORMAL);
@@ -1038,19 +1050,19 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 		if(InternalIsInVehicle())
 		{
 			// Are we flagged as entering a vehicle?
-			if(m_vehicleEnterExit.bEntering)
+			if(m_pVehicleEnterExit->bEntering)
 			{
 				// Has the enter vehicle task finished?
 				if(!IsGettingIntoAVehicle())
 				{
 					// Vehicle entry is complete
-					m_vehicleEnterExit.pVehicle->SetOccupant(m_vehicleEnterExit.byteSeat, this);
+					m_pVehicleEnterExit->pVehicle->SetOccupant(m_pVehicleEnterExit->byteSeat, this);
 
 					// Store the vehicle
-					m_pVehicle = m_vehicleEnterExit.pVehicle;
+					m_pVehicle = m_pVehicleEnterExit->pVehicle;
 
 					// Store the seat
-					m_byteSeat = m_vehicleEnterExit.byteSeat;
+					m_byteSeat = m_pVehicleEnterExit->byteSeat;
 
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
@@ -1064,7 +1076,7 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 		else
 		{
 			// Are we flagged as exiting?
-			if(m_vehicleEnterExit.bExiting)
+			if(m_pVehicleEnterExit->bExiting)
 			{
 				// Has the exit vehicle task finished?
 				if(!IsGettingOutOfAVehicle())
@@ -1093,11 +1105,11 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 void CPlayerEntity::ResetVehicleEnterExit()
 {
 	// Reset
-	m_vehicleEnterExit.bEntering = false;
-	m_vehicleEnterExit.pVehicle = NULL;
-	m_vehicleEnterExit.byteSeat = 0;
-	m_vehicleEnterExit.bExiting = false;
-	m_vehicleEnterExit.bRequesting = false;
+	m_pVehicleEnterExit->bEntering = false;
+	m_pVehicleEnterExit->pVehicle = NULL;
+	m_pVehicleEnterExit->byteSeat = 0;
+	m_pVehicleEnterExit->bExiting = false;
+	m_pVehicleEnterExit->bRequesting = false;
 
 	// Clear the vehicle entry task
 	//ClearVehicleEntryTask();
@@ -1158,31 +1170,31 @@ void CPlayerEntity::UpdateTargetPosition()
 
 		// Get the factor of time spent from the interpolation start
 		// to the current time.
-		float fAlpha = Math::Unlerp(m_interp.pos.ulStartTime, ulCurrentTime, m_interp.pos.ulFinishTime);
+		float fAlpha = Math::Unlerp(m_pInterpolationData->pPosition.ulStartTime, ulCurrentTime, m_pInterpolationData->pPosition.ulFinishTime);
 
 		// Don't let it overcompensate the error
 		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
 
 		// Get the current error portion to compensate
-		float fCurrentAlpha = (fAlpha - m_interp.pos.fLastAlpha);
-		m_interp.pos.fLastAlpha = fAlpha;
+		float fCurrentAlpha = (fAlpha - m_pInterpolationData->pPosition.fLastAlpha);
+		m_pInterpolationData->pPosition.fLastAlpha = fAlpha;
 
 		// Apply the error compensation
-		CVector3 vecCompensation = Math::Lerp(CVector3(), fCurrentAlpha, m_interp.pos.vecError);
+		CVector3 vecCompensation = Math::Lerp(CVector3(), fCurrentAlpha, m_pInterpolationData->pPosition.vecError);
 
 		// If we finished compensating the error, finish it for the next pulse
 		if(fAlpha == 1.0f)
-			m_interp.pos.ulFinishTime = 0;
+			m_pInterpolationData->pPosition.ulFinishTime = 0;
 
 		// Calculate the new position
 		CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
 
 		// Check if the distance to interpolate is too far
-		if((vecCurrentPosition - m_interp.pos.vecTarget).Length() > 5)
+		if((vecCurrentPosition - m_pInterpolationData->pPosition.vecTarget).Length() > 5)
 		{
 			// Abort all interpolation
-			m_interp.pos.ulFinishTime = 0;
-			vecNewPosition = m_interp.pos.vecTarget;
+			m_pInterpolationData->pPosition.ulFinishTime = 0;
+			vecNewPosition = m_pInterpolationData->pPosition.vecTarget;
 		}
 
 		// Set our new position
@@ -1199,60 +1211,54 @@ void CPlayerEntity::Interpolate()
 
 void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
-	CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, vecShotTarget;
-	float fArmHeading, fArmDown, fHeading;
-	bool bDuckingState;
-	CControls *pControls = NULL;
-	unsigned int uiPlayerIndex = GetScriptingHandle();
-	
 	// Copy data if our localplayer or copyplayer is avaiable
 	if(bCopyLocalPlayer || pCopy) {
-		pCopy->CNetworkEntity::GetPosition(vecPosition);
-		pCopy->CNetworkEntity::GetMoveSpeed(vecMoveSpeed);
-		pCopy->CNetworkEntity::GetTurnSpeed(vecTurnSpeed);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponAimTarget(vecAimTarget);
-		pCopy->CPlayerEntity::GetContextData()->GetArmHeading(fArmHeading);
-		pCopy->CPlayerEntity::GetContextData()->GetArmUpDown(fArmDown);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotSource(vecShotSource);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotTarget(vecShotTarget);
-		pCopy->CNetworkEntity::GetPlayerHandle().bDuckState;
-		pCopy->CPlayerEntity::GetRotation();
-		pCopy->CPlayerEntity::GetControlState(pControls);
+		pCopy->CNetworkEntity::GetPosition(m_pIVSyncHandle->vecPosition);
+		pCopy->CNetworkEntity::GetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
+		pCopy->CNetworkEntity::GetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+		pCopy->CPlayerEntity::GetContextData()->GetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
+		pCopy->CPlayerEntity::GetContextData()->GetArmHeading(m_pIVSyncHandle->fArmHeading);
+		pCopy->CPlayerEntity::GetContextData()->GetArmUpDown(m_pIVSyncHandle->fArmDown);
+		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotSource(m_pIVSyncHandle->vecShotSource);
+		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotTarget(m_pIVSyncHandle->vecShotTarget);
+		m_pIVSyncHandle->bDuckingState = pCopy->CNetworkEntity::GetPlayerHandle().bDuckState;
+		m_pIVSyncHandle->fHeading = pCopy->CPlayerEntity::GetRotation();
+		pCopy->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
 	}
 	else { // Otherwise copy the data from our class instance
-		this->m_vecPosition = CPlayerEntity::m_vecPosition;
-		this->m_vecMoveSpeed = CPlayerEntity::m_vecMoveSpeed;
-		this->m_vecTurnSpeed = CPlayerEntity::m_vecTurnSpeed;
-		this->m_pContextData->GetWeaponAimTarget(vecAimTarget);
-		this->m_pContextData->GetArmHeading(fArmHeading);
-		this->m_pContextData->GetArmUpDown(fArmDown);
-		this->m_pContextData->GetWeaponShotSource(vecShotSource);
-		this->m_pContextData->GetWeaponShotTarget(vecShotTarget);
-		this->CNetworkEntity::GetPlayerHandle().bDuckState;
-		fHeading = this->CPlayerEntity::GetRotation();
-		this->CPlayerEntity::GetControlState(pControls);
+		m_pIVSyncHandle->vecPosition = this->m_vecPosition;
+		m_pIVSyncHandle->vecMoveSpeed = this->m_vecMoveSpeed;
+		m_pIVSyncHandle->vecTurnSpeed = this->m_vecTurnSpeed;
+		this->m_pContextData->GetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
+		this->m_pContextData->GetArmHeading(m_pIVSyncHandle->fArmHeading);
+		this->m_pContextData->GetArmUpDown(m_pIVSyncHandle->fArmDown);
+		this->m_pContextData->GetWeaponShotSource(m_pIVSyncHandle->vecShotSource);
+		this->m_pContextData->GetWeaponShotTarget(m_pIVSyncHandle->vecShotTarget);
+		m_pIVSyncHandle->bDuckingState = this->CNetworkEntity::GetPlayerHandle().bDuckState;
+		m_pIVSyncHandle->fHeading = this->CPlayerEntity::GetRotation();
+		this->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
 	}
 
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
-		m_IVSync->bStoreOnFootSwitch = false;
-		if(vecMoveSpeed.Length() < 0.75)
-			m_IVSync->byteOldMoveStyle = 0;
-		else if(vecMoveSpeed.Length() < 3.0 && vecMoveSpeed.Length() >= 0.75)
-			m_IVSync->byteOldMoveStyle = 1;
-		else if(vecMoveSpeed.Length() < 5.0 && vecMoveSpeed.Length() > 3.0)
-			m_IVSync->byteOldMoveStyle = 2;
+		m_pIVSync->bStoreOnFootSwitch = false;
+		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 0.75)
+			m_pIVSync->byteOldMoveStyle = 0;
+		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMoveSpeed.Length() >= 0.75)
+			m_pIVSync->byteOldMoveStyle = 1;
+		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 5.0 && m_pIVSyncHandle->vecMoveSpeed.Length() > 3.0)
+			m_pIVSync->byteOldMoveStyle = 2;
 		else
-			m_IVSync->byteOldMoveStyle = 3;
+			m_pIVSync->byteOldMoveStyle = 3;
 
-		switch(m_IVSync->byteOldMoveStyle)
+		switch(m_pIVSync->byteOldMoveStyle)
 		{
 			case IVSYNC_ONFOOT_STANDSTILL:
 			{
-				SetTargetPosition(vecPosition,IVSYNC_TICKRATE*4);
-				SetCurrentSyncHeading(fHeading);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*4);
+				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
 
-				if(m_IVSync->byteOldMoveStyle != 0)  {
+				if(m_pIVSync->byteOldMoveStyle != 0)  {
 					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 
 					_asm	push 17;
@@ -1261,33 +1267,33 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 					_asm	call dwAddress;
 					_asm	add esp, 0Ch;
 				}
-				CPlayerEntity::SetMoveSpeed(vecMoveSpeed);
-				CPlayerEntity::SetTurnSpeed(vecTurnSpeed);
+				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
+				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
 				break;
 			}
 			case IVSYNC_ONFOOT_WALK:
 			{
-				SetTargetPosition(vecPosition,IVSYNC_TICKRATE);
-				SetMoveToDirection(vecPosition, vecMoveSpeed, 2);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
+				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 2);
 				break;
 			}
 			case IVSYNC_ONFOOT_RUN:
 			{
-				SetTargetPosition(vecPosition,IVSYNC_TICKRATE*2);
-				SetMoveToDirection(vecPosition, vecMoveSpeed, 3);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
+				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 3);
 				break;
 			}
 			case IVSYNC_ONFOOT_JUMP:
 			{
-				SetTargetPosition(vecPosition, ((IVSYNC_TICKRATE*2)/4)*3);
-				SetMoveToDirection(vecPosition, vecMoveSpeed, 4);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition, ((IVSYNC_TICKRATE*2)/4)*3);
+				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
 				break;
 			}
 		}
 	} 
 	else {
-		if(!m_IVSync->bStoreOnFootSwitch) {
-			m_IVSync->bStoreOnFootSwitch = true;
+		if(!m_pIVSync->bStoreOnFootSwitch) {
+			m_pIVSync->bStoreOnFootSwitch = true;
 
 			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 			_asm	push 17;
@@ -1296,23 +1302,23 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 			_asm	call dwAddress;
 			_asm	add  esp, 0Ch;
 			
-			uiPlayerIndex = GetScriptingHandle();
+			m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
 			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
 			_asm	add	 esp, 8;
 		}
-		SetTargetPosition(vecPosition, IVSYNC_TICKRATE);
-		SetRotation(fHeading);
-		SetMoveSpeed(vecMoveSpeed);
-		SetTurnSpeed(vecTurnSpeed);
+		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE);
+		SetRotation(m_pIVSyncHandle->fHeading);
+		SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
+		SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
 
-		CPlayerEntity::SetPosition(vecPosition);
+		CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
 	}
 
 	// Second check if we're jumping
-	if(!m_IVSync->bStoreOnFootSwitch && vecMoveSpeed.Length() > 1.0 && m_bLocalPlayer == 1 ? pControls->IsJumping() : m_ControlState.IsJumping()) {
+	if(!m_pIVSync->bStoreOnFootSwitch && m_pIVSyncHandle->vecMoveSpeed.Length() > 1.0 && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
 		char iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
 		DWORD dwAddress = (g_pCore->GetBase() + 0xB86A20);
 		_asm	push iJumpStyle;
@@ -1322,15 +1328,15 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 
 	// Third check if we're having any weapon data
 	if(bHasWeaponData) {
-		m_pContextData->SetWeaponAimTarget(vecAimTarget);
-		m_pContextData->SetArmHeading(fArmHeading);
-		m_pContextData->SetArmUpDown(fArmDown);
+		m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
+		m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
+		m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
 
-		if(m_bLocalPlayer == 1 ? pControls->IsFiring() : m_ControlState.IsFiring()) {
+		if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsFiring() : m_ControlState.IsFiring()) {
 			g_pCore->GetChat()->Output("Debug dummy is firing!",false);
 
-			m_pContextData->SetWeaponShotSource(vecShotSource);
-			m_pContextData->SetWeaponShotTarget(vecShotTarget);
+			m_pContextData->SetWeaponShotSource(m_pIVSyncHandle->vecShotSource);
+			m_pContextData->SetWeaponShotTarget(m_pIVSyncHandle->vecShotTarget);
 		}
 		else {
 			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
@@ -1343,12 +1349,15 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	}
 
 	// Fourth check if we have to update the duck state
-	if(CNetworkEntity::GetPlayerHandle().bDuckState != bDuckingState && m_bLocalPlayer)
-		CPlayerEntity::GetPlayerPed()->SetDucking(bDuckingState);
+	if(CNetworkEntity::GetPlayerHandle().bDuckState != m_pIVSyncHandle->bDuckingState && m_bLocalPlayer)
+		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckingState);
 
 	// Fifth check if we have to apply the control states
 	if(m_bLocalPlayer)
 		pCopy->GetControlState(&m_ControlState);
+
+	// Update local variables
+
 }
 
 void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)
@@ -1364,18 +1373,18 @@ void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long
 		GetPosition(vecCurrentPosition);
 
 		// Set the target position
-		m_interp.pos.vecTarget = vecPosition;
+		m_pInterpolationData->pPosition.vecTarget = vecPosition;
 
 		// Calculate the relative error
-		m_interp.pos.vecError = (vecPosition - vecCurrentPosition);
+		m_pInterpolationData->pPosition.vecError = (vecPosition - vecCurrentPosition);
 
 		// Get the interpolation interval
 		unsigned long ulTime = SharedUtility::GetTime();
-		m_interp.pos.ulStartTime = ulTime;
-		m_interp.pos.ulFinishTime = (ulTime + ulDelay);
+		m_pInterpolationData->pPosition.ulStartTime = ulTime;
+		m_pInterpolationData->pPosition.ulFinishTime = (ulTime + ulDelay);
 
 		// Initialize the interpolation
-		m_interp.pos.fLastAlpha = 0.0f;
+		m_pInterpolationData->pPosition.fLastAlpha = 0.0f;
 	}
 }
 
@@ -1406,7 +1415,7 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 
 void CPlayerEntity::RemoveTargetPosition()
 {
-	m_interp.pos.ulFinishTime = 0;
+	m_pInterpolationData->pPosition.ulFinishTime = 0;
 }
 
 void CPlayerEntity::ResetInterpolation()
@@ -1490,21 +1499,21 @@ void CPlayerEntity::UpdateTargetRotation()
 
 		// Get the factor of time spent from the interpolation start
 		// to the current time.
-		float fAlpha = Math::Unlerp(m_interp.rot.ulStartTime, ulCurrentTime, m_interp.rot.ulFinishTime);
+		float fAlpha = Math::Unlerp(m_pInterpolationData->pRotation.ulStartTime, ulCurrentTime, m_pInterpolationData->pRotation.ulFinishTime);
 
 		// Don't let it overcompensate the error
 		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
 
 		// Get the current error portion to compensate
-		float fCurrentAlpha = (fAlpha - m_interp.rot.fLastAlpha);
-		m_interp.rot.fLastAlpha = fAlpha;
+		float fCurrentAlpha = (fAlpha - m_pInterpolationData->pRotation.fLastAlpha);
+		m_pInterpolationData->pRotation.fLastAlpha = fAlpha;
 
 		// Apply the error compensation
-		float fCompensation = Math::Lerp(0.0f, fCurrentAlpha, m_interp.rot.fError);
+		float fCompensation = Math::Lerp(0.0f, fCurrentAlpha, m_pInterpolationData->pRotation.fError);
 
 		// If we finished compensating the error, finish it for the next pulse
 		if(fAlpha == 1.0f)
-			m_interp.rot.ulFinishTime = 0;
+			m_pInterpolationData->pRotation.ulFinishTime = 0;
 
 		// Get our rotation
 		float fCurrentHeading = GetRotation();

@@ -114,4 +114,52 @@ struct sIVSynchronization
 	bool			bStoreOnFootSwitch;
 };
 
+class CVehicleEntity;
+struct sPlayerEntity_VehicleData
+{
+	bool			bEntering;
+	CVehicleEntity	* pVehicle;
+	BYTE			byteSeat;
+	bool			bExiting;
+	bool			bRequesting;
+};
+
+struct sPlayerEntity_InterpolationData
+{
+	struct
+	{
+		CVector3      vecStart;
+		CVector3      vecTarget;
+		CVector3      vecError;
+		float         fLastAlpha;
+		unsigned long ulStartTime;
+		unsigned long ulFinishTime;
+	}				pPosition;
+	struct
+	{
+		float         fStart;
+		float         fTarget;
+		float         fError;
+		float         fLastAlpha;
+		unsigned long ulStartTime;
+		unsigned long ulFinishTime;
+	}				pRotation;
+};
+
+struct sPlayerEntity_StoreIVSynchronization
+{
+	CVector3		vecPosition;
+	CVector3		vecMoveSpeed;
+	CVector3		vecTurnSpeed;
+	CVector3		vecAimTarget;
+	CVector3		vecShotSource;
+	CVector3		vecShotTarget;
+	float			fArmHeading;
+	float			fArmDown;
+	float			fHeading;
+	bool			bDuckingState;
+	CControls		* pControls ;
+	unsigned		uiPlayerIndex;
+};
+
 #endif
