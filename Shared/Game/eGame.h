@@ -17,6 +17,7 @@
 #include "eIVGame.h"
 #include "eInput.h"
 #include <Network/CBitStream.h>
+#include <Math/CMaths.h>
 
 enum eGAMEStates
 {
