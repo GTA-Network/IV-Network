@@ -11,7 +11,7 @@
 #include "Game/CGameFuncs.h"
 #include <CCore.h>
 #include <IV/CIVScript.h>
-//include "KeySync.h"
+#include <Game/CGameFuncs.h>
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
@@ -61,6 +61,9 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 
 void CLocalPlayer::Respawn()
 {
+	// Get current day time so we don't have to set the time always..
+	DWORD m_dwRespawnTime = CGameFunction::GetTimeOfDay();
+
     // Set the local player state to respawning
     *(DWORD *)COffsets::VAR_LocalPlayerState = 5;
 }
@@ -70,10 +73,8 @@ void CLocalPlayer::HandleSpawn()
     // Flag us as alive
     m_bIsDead = false;
 
-	// Preload world position
-	/*CVector3 vecSpawnPosition;
-	GetSpawnPosition(&vecSpawnPosition);
-	CGameFunction::LoadWorldAtPosition(vecSpawnPosition);*/
+	// Set our current time
+	CGameFunction::SetTimeOfDayFormat(m_dwRespawnTime);
 }
 
 void CLocalPlayer::DoDeathCheck()

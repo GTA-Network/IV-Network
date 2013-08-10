@@ -29,6 +29,7 @@ private:
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
+		DWORD							m_dwRespawnTime;
 
 public:
 										CLocalPlayer();
