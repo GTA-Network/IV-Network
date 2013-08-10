@@ -452,6 +452,11 @@ void CChat::ProcessInput()
 					//pVehicle->SetModel(CIVModelManager::GetModelIndexFromHash(iVehicleType));
 				}
 			}
+			else if(strCommand == "engine")
+			{
+				if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
+					g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(true);
+			}
 			else if(strCommand == "chat-renderlines")
 			{
 				if(strParams.size() <= 0)

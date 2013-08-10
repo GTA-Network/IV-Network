@@ -148,6 +148,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	m_pIVSyncHandle = new sPlayerEntity_StoreIVSynchronization;
 	m_pIVSyncHandle->pControls = new CControls;
 	m_pPlayerEntity = this;
+	m_pVehicle = NULL;
 	ResetVehicleEnterExit();
 
 	// Is this the localplayer?

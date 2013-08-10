@@ -101,6 +101,7 @@ public: // Handles "GET" functions
 	CVehicleEntity					* InternalGetVehicle();
 	CIVPlayerPed					* GetPlayerPed() { return m_pPlayerPed; }
 	CIVPlayerInfo					* GetPlayerInfo() { return m_pPlayerInfo; }
+	CVehicleEntity					* GetVehicleEntity() { return m_pVehicle; }
 	
 	sWeaponStructure				GetAimData() { return m_aimData; }
 	sWeaponStructure				GetShotData() { return m_shotData; }

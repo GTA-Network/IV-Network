@@ -13,13 +13,18 @@
 
 extern	CCore				* g_pCore;
 
+_declspec(naked) void CTaskSimpleStartVehicle__Process()
+{
+	_asm xor eax, eax;
+	_asm retn 4;
+}
 void CPatches::Initialize()
 {
 	// Skip main menu
 	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitialiseRageGame);
 
     // Disable long sleep in CGame::Run
-   // *(DWORD *)(g_pCore->GetBase() + 0x401835) = 1;
+    // *(DWORD *)(g_pCore->GetBase() + 0x401835) = 1;
 
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	*(DWORD *)(g_pCore->GetBaseAddress() + 0x9849F0) = 0x900004C2;
@@ -41,6 +46,10 @@ void CPatches::Initialize()
 	// Disable startup.sco
 	*(BYTE *)(g_pCore->GetBaseAddress() + 0x809A8A) = 0x75;
 
+	// Disable automatic vehicle engine turn-on
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xA9F300), (DWORD)CTaskSimpleStartVehicle__Process);
+
+	// === RAGE %% RGSC Stuff
     // Don't initialize error reporting
     CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0xD356D0);
 
