@@ -100,6 +100,9 @@ bool CCore::Initialise()
 	// Setup the weapon handle hook
 	CWeaponHandler::InstallAimSyncHooks();
 
+	// Get loaded modules from our process
+	GetLoadedModulesList();
+
 	CLogFile::Printf("Done!");
 	return true;
 }
@@ -232,4 +235,69 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	//}
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);
+}
+
+void CCore::GetLoadedModulesList()
+{
+	DWORD aProcesses[1024]; 
+    DWORD cbNeeded; 
+    DWORD cProcesses;
+    unsigned int i;
+
+    if ( !EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ) )
+        return;
+
+    cProcesses = cbNeeded / sizeof(DWORD);
+
+    for ( i = 0; i < cProcesses; i++ )
+    {
+		if(aProcesses[i] == GetProcessId(GetCurrentProcess()))
+			GetLoadedModule( aProcesses[i] );
+    }
+}
+
+void CCore::GetLoadedModule(DWORD dwProcessId)
+{
+	HMODULE hMods[1024];
+    HANDLE hProcess;
+    DWORD cbNeeded;
+    unsigned int i;
+
+    hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
+                            PROCESS_VM_READ,
+                            FALSE, dwProcessId );
+    if (NULL == hProcess)
+        return;
+
+    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded))
+    {
+        for ( i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ )
+        {
+            TCHAR szModName[MAX_PATH];
+            if ( GetModuleFileNameExA( hProcess, hMods[i], szModName,
+                                      sizeof(szModName) / sizeof(TCHAR)))
+            {
+			  CString strModule;
+
+			  std::string strModulee;
+			  strModulee.append(szModName);
+			  std::size_t found = strModulee.find("SYSTEM32",10);
+			  std::size_t found2 = strModulee.find("system32",10);
+			  std::size_t found3 = strModulee.find("AppPatch",10);
+			  std::size_t found4 = strModulee.find("WinSxS", 10);
+
+			  if(found!=std::string::npos || found2!=std::string::npos || found3!=std::string::npos || found4!=std::string::npos)
+			  {
+				//strModule.AppendF("--> %s", szModName);
+				//CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] ); 
+			  }//;//strModule.AppendF("%i, %s",found, szModName);
+			  else {
+				strModule.AppendF("--> %s", szModName);
+				CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] );
+			  }
+            }
+        }
+    }
+    CloseHandle( hProcess );
+    return;
 }
