@@ -123,14 +123,13 @@ void CPatches::Initialize()
     //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (g_pCore->GetBase() + 0x625F1D));
     //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xB2B24D), (g_pCore->GetBase() + 0xB2B259));
 
-    // Disable weapon when entering vehicle
+    // Disable weapon when entering vehicle+
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x9C5994), 0x30);
 	
     // This needs to be disabled due to some crashes and to enable the blocked vehicles such as uranus, hellfury, etc.
-    /* INFO: crash occure exactly when accessing dword_13BEEE0 this is related to ZonesNames, but disabling this function dont destroy anything
-    TODO: find what this function does
-    this function checks some flags in modelInfos and loading some models they seems to be not needed
-    This seems to be associated to loading models but they are not used!?
+    /*	INFO: crash occure exactly when accessing dword_13BEEE0 this is related to ZonesNames, but disabling this function dont destroy anything
+		this function checks some flags in modelInfos and loading some models they seems to be not needed
+		This seems to be associated to loading models but they are not used!?
     */
     CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x8F2F40);
 

@@ -18,11 +18,18 @@
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVModelInfo.h>
 #include <Network/CBitStream.h>
+#include <Game/eGame.h>
 
 enum eExitVehicleType
 {
 	EXIT_VEHICLE_NORMAL,
 	EXIT_VEHICLE_JACKED
+};
+
+struct sWeaponStructure
+{
+	CVector3		vecPosition;
+	bool			bSwitch;
 };
 
 class CVehicleEntity;
@@ -71,7 +78,22 @@ private:
 			unsigned long ulStartTime;
 			unsigned long ulFinishTime;
 		} pos;
-	}					m_interp;
+		struct
+		{
+			float         fStart;
+			float         fTarget;
+			float         fError;
+			float         fLastAlpha;
+			unsigned long ulStartTime;
+			unsigned long ulFinishTime;
+		} rot;
+	}					  m_interp;
+
+	sWeaponStructure	  m_aimData;
+	sWeaponStructure	  m_shotData;
+
+	CControlState         m_previousControlState;
+    CControlState		  m_currentControlState;
 
 public:
 
@@ -126,6 +148,7 @@ public:
 	float				GetRotation();
 
 	void				Process();
+	void				StoreIVSynchronization();
 
 	bool				Create();
 	bool				Destroy();
@@ -172,11 +195,21 @@ public:
 
 	void                SetTargetPosition(const CVector3& vecPosition, unsigned long ulDelay);
 	void                SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
-
+	void				UpdateTargetRotation();
 	void                RemoveTargetPosition();
 
 	bool                HasTargetPosition() { return (m_interp.pos.ulFinishTime != 0); }
+	bool                HasTargetRotation() { return (m_interp.rot.ulFinishTime != 0); }
 	void				SetCurrentSyncHeading(float fHeading);
+
+	void				SetAimData(bool bSwitch, CVector3 vecPos);
+	void				SetShotData(bool bSwitch, CVector3 vecPos);
+
+	sWeaponStructure	GetAimData() { return m_aimData; }
+	sWeaponStructure	GetShotData() { return m_shotData; }
+
+	CContextData		*GetContextData() { return m_pContextData; }
+	
 };
 
 #endif // CPlayerEntity_h

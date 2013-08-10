@@ -97,6 +97,9 @@ bool CCore::Initialise()
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);
 
+	// Setup the weapon handle hook
+	CWeaponHandler::InstallAimSyncHooks();
+
 	CLogFile::Printf("Done!");
 	return true;
 }

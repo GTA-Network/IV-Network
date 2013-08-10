@@ -137,8 +137,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	m_vecPosition = CVector3();
 	m_pVehicle = NULL;
 	m_byteSeat = 0;
-	memset(&m_lastControlState, 0, sizeof(CControls));
-	memset(&m_ControlState, 0, sizeof(CControls));
+	memset(&m_lastControlState, NULL, sizeof(CControls));
+	memset(&m_ControlState, NULL, sizeof(CControls));
 	ResetVehicleEnterExit();
 
 	CNetworkEntity::SetType(PLAYER_ENTITY);
@@ -170,7 +170,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		SetNick(g_pCore->GetNick());
 
 		// Set our localplayer invincible during development mode
-		CIVScript_NativeInvoke::Invoke< unsigned int >(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), true);
+		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), false);
 
 		// Mark as spawned
 		m_bSpawned = true;
@@ -216,12 +216,6 @@ void CPlayerEntity::Process()
 	// Is the player spawned?
 	if(IsSpawned())
 	{
-		// Check vehicle enter/exit
-		//CheckVehicleEnterExit();
-
-		// Process vehicle enter/exit
-		//ProcessVehicleEnterExit();
-
 		// Is this the localplayer?
 		if(IsLocalPlayer())
 		{
@@ -230,6 +224,12 @@ void CPlayerEntity::Process()
 
 			// Update the current control state
 			g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
+
+			// Check vehicle enter/exit
+			CheckVehicleEnterExit();
+
+			// Process vehicle enter/exit
+			ProcessVehicleEnterExit();
 
 			// Are we on-foot?
 			if(IsOnFoot())
@@ -1056,11 +1056,8 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 					ResetVehicleEnterExit();
 
 					// Send to the server
-					CBitStream bitStream;
-					bitStream.WriteCompressed(m_pVehicle->GetId());
-					bitStream.Write(m_byteSeat);
 
-					//g_pClient->GetChat()->Output("VehicleEntryComplete()");
+					g_pCore->GetChat()->Output("VehicleEntryComplete()");
 				}
 			}
 		}
@@ -1073,9 +1070,6 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 				if(!IsGettingOutOfAVehicle())
 				{
 					// Send to the server
-					CBitStream bitStream;
-					bitStream.WriteCompressed(m_pVehicle->GetId());
-					bitStream.Write(m_byteSeat);
 
 					// Vehicle exit is complete
 					m_pVehicle->SetOccupant(m_byteSeat, NULL);
@@ -1089,7 +1083,7 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 					// Reset the seat
 					m_byteSeat = 0;
 
-					//g_pClient->GetChat()->Output("VehicleExitComplete()");
+					g_pCore->GetChat()->Output("VehicleExitComplete()");
 				}
 			}
 		}
@@ -1297,5 +1291,74 @@ void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
 					m_pPlayerPed->SetCurrentHeading(GetRotation()-fHeadingFinal/10);
 			}
 		}
+	}
+}
+
+void CPlayerEntity::SetAimData(bool bSwitch, CVector3 vecPosition)
+{
+	switch(bSwitch)
+	{
+	case true:
+		{
+			m_aimData.bSwitch = bSwitch;
+			memcpy(&m_aimData, &vecPosition, sizeof(CVector3));
+		}
+	case false:
+		{
+			m_aimData.bSwitch = bSwitch;
+			memcpy(&m_aimData, NULL, sizeof(CVector3));
+		}
+	}
+}
+
+void CPlayerEntity::SetShotData(bool bSwitch, CVector3 vecPosition)
+{
+	switch(bSwitch)
+	{
+	case true:
+		{
+			m_shotData.bSwitch = bSwitch;
+			memcpy(&m_shotData, &vecPosition, sizeof(CVector3));
+		}
+	case false:
+		{
+			m_shotData.bSwitch = bSwitch;
+			memcpy(&m_shotData, NULL, sizeof(CVector3));
+		}
+	}
+}
+
+void CPlayerEntity::UpdateTargetRotation()
+{
+	if(HasTargetRotation())
+	{
+		unsigned long ulCurrentTime = SharedUtility::GetTime();
+
+		// Get the factor of time spent from the interpolation start
+		// to the current time.
+		float fAlpha = Math::Unlerp(m_interp.rot.ulStartTime, ulCurrentTime, m_interp.rot.ulFinishTime);
+
+		// Don't let it overcompensate the error
+		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
+
+		// Get the current error portion to compensate
+		float fCurrentAlpha = (fAlpha - m_interp.rot.fLastAlpha);
+		m_interp.rot.fLastAlpha = fAlpha;
+
+		// Apply the error compensation
+		float fCompensation = Math::Lerp(0.0f, fCurrentAlpha, m_interp.rot.fError);
+
+		// If we finished compensating the error, finish it for the next pulse
+		if(fAlpha == 1.0f)
+			m_interp.rot.ulFinishTime = 0;
+
+		// Get our rotation
+		float fCurrentHeading = GetRotation();
+
+		// Calculate the new rotation
+		float fNewRotation = (fCurrentHeading + fCompensation);
+
+		// Set our new rotation
+		SetRotation(fNewRotation);
 	}
 }

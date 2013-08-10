@@ -11,6 +11,8 @@
 #include <CCore.h>
 #include <Game/IVEngine/CIVModelManager.h>
 #include <Game/IVEngine/CIVHud.h>
+#include <IV/CIVScript.h>
+#include <IV/CIVScriptEnums.h>
 
 extern CCore * g_pCore;
 
@@ -393,6 +395,12 @@ void CChat::ProcessInput()
 			else if(strCommand == "debug")
 			{
 				g_pCore->GetDevelopmentInstance()->CreateDebugPlayer();
+			}
+			else if(strCommand == "weapon")
+			{
+				CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+				CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+
 			}
 			else if(strCommand == "cp")
 			{

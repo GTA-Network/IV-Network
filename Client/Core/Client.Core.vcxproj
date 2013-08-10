@@ -218,6 +218,7 @@
     <ClCompile Include="Game\CPatches.cpp" />
     <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
+    <ClCompile Include="Game\CWeaponHandler.cpp" />
     <ClCompile Include="Game\Entity\C3DLabelEntity.cpp" />
     <ClCompile Include="Game\Entity\CActorEntity.cpp" />
     <ClCompile Include="Game\Entity\CBlipEntity.cpp" />
@@ -449,6 +450,7 @@
     <ClInclude Include="Game\CPatches.h" />
     <ClInclude Include="Game\CPools.h" />
     <ClInclude Include="Game\CTaskManager.h" />
+    <ClInclude Include="Game\CWeaponHandler.h" />
     <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
     <ClInclude Include="Game\Entity\CActorEntity.h" />
     <ClInclude Include="Game\Entity\CBlipEntity.h" />

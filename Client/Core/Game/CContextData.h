@@ -15,11 +15,22 @@
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVPad.h>
 
+struct sWeaponHandlerData
+{
+	CVector3	m_vecAimPosition;
+	float		m_ArmUp;
+	float		m_ArmDown;
+	CVector3	m_vecShotSource;
+	CVector3	m_vecShotTarget;
+};
+
 class CContextData {
 private:
 	CIVPlayerInfo			* m_pPlayerInfo;
 	CIVPlayerPed			* m_pPlayerPed;
 	CIVPad					* m_pPad;
+
+	sWeaponHandlerData		  m_WeaponHandle;
 
 public:
 
@@ -33,12 +44,18 @@ public:
 
 		// Create the pad
 		m_pPad = new CIVPad();
+
+		m_WeaponHandle.m_ArmUp = 0.0f;
+		m_WeaponHandle.m_ArmDown = 0.0f;
 	}
 
 	~CContextData()
 	{
 		// Delete the pad
 		SAFE_DELETE(m_pPad);
+
+		m_WeaponHandle.m_ArmUp = 0.0f;
+		m_WeaponHandle.m_ArmDown = 0.0f;
 	}
 
 	void              SetPlayerPed(CIVPlayerPed * pPlayerPed) { m_pPlayerPed = pPlayerPed; }
@@ -49,6 +66,17 @@ public:
 
 	CIVPad			* GetPad() { return m_pPad; }
 
+
+	void			SetWeaponAimTarget(const CVector3& vecAimTargetPosition) { m_WeaponHandle.m_vecAimPosition = vecAimTargetPosition; }
+	void			GetWeaponAimTarget(CVector3& vecAimTargetPosition) { vecAimTargetPosition = m_WeaponHandle.m_vecAimPosition; }
+	void            SetArmHeading(const float fArmHeading) { m_WeaponHandle.m_ArmUp = fArmHeading; }
+    void            GetArmHeading(float& fArmHeading) { fArmHeading = m_WeaponHandle.m_ArmUp; }
+    void            SetArmUpDown(const float fArmUpDown) { m_WeaponHandle.m_ArmDown = fArmUpDown; }
+    void            GetArmUpDown(float& fArmUpDown) { fArmUpDown = m_WeaponHandle.m_ArmUp; }
+	void            SetWeaponShotSource(const CVector3& vecWeaponShotSource) { m_WeaponHandle.m_vecShotSource = vecWeaponShotSource; }
+	void            GetWeaponShotSource(CVector3& vecWeaponShotSource) { vecWeaponShotSource = m_WeaponHandle.m_vecShotSource; }
+	void            SetWeaponShotTarget(const CVector3& vecWeaponShotTarget) { m_WeaponHandle.m_vecShotTarget = vecWeaponShotTarget; }
+	void            GetWeaponShotTarget(CVector3& vecWeaponShotTarget) { vecWeaponShotTarget = m_WeaponHandle.m_vecShotTarget; }
 };
 
 class CContextDataManager {

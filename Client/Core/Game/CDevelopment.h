@@ -29,6 +29,7 @@ public:
 	bool				GetDebugView() { return bDebugView; }
 
 	void				CreateDebugPlayer();
+	CPlayerEntity		*GetDebugPlayerPed() { return m_pDebugPlayer; }
 };
 
 #endif // CDevelopment_h

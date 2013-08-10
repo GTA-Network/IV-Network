@@ -37,6 +37,7 @@
 
 #include <Network/CNetworkManager.h>
 #include <Game/CDevelopment.h>
+#include <Game/CWeaponHandler.h>
 
 class CCore {
 private:

@@ -85,6 +85,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TinyXML", "TinyXML", "{4527
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{DCE885CE-3722-45BA-8426-EED2400A9ED6}"
 	ProjectSection(SolutionItems) = preProject
+		Shared\Game\eGame.cpp = Shared\Game\eGame.cpp
 		Shared\Game\eGame.h = Shared\Game\eGame.h
 	EndProjectSection
 EndProject

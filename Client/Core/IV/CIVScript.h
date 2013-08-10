@@ -74,6 +74,8 @@ namespace CIVScript
 	static void ControlCarDoor(unsigned int vehicle, eVehicleDoor door, unsigned int unknown_maybe_open, float angle) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CONTROL_CAR_DOOR, vehicle, door, unknown_maybe_open, angle); }
 	static void OpenCarDoor(unsigned int vehicle, eVehicleDoor door) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_OPEN_CAR_DOOR, vehicle, door); }
 	static void ShutCarDoor(unsigned int vehicle, eVehicleDoor door) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SHUT_CAR_DOOR, vehicle, door); }
+
+	static void GiveWeaponToChar(unsigned int ped, eWeapon weapon, unsigned int ammo, bool unknown0) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_WEAPON_TO_CHAR, ped, weapon, ammo, unknown0); }
 };
 
 #endif // CIVScript_h
