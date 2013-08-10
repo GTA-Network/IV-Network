@@ -1239,6 +1239,8 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		this->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
 	}
 
+	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
+
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
 		m_pIVSync->bStoreOnFootSwitch = false;
