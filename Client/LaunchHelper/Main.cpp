@@ -7,6 +7,8 @@
 //
 //==============================================================================
 
+// TODO: Replace with Hook function..
+
 #include "SharedUtility.h"
 #include <Patcher\CPatcher.h>
 #include <ShlObj.h>
@@ -26,7 +28,7 @@ enum
 	STATE_WAIT_FOR_SECOND_WINDOW,
 	STATE_STFU_RGSC_I_WANNA_PLAY_OFFLINE,
 	STATE_DONE
-} eSocialClubWindowState;
+}	eSocialClubWindowState;
 
 WNDPROC          oldWndProc;
 SetTimer_t       g_pfnSetTimer = NULL;
