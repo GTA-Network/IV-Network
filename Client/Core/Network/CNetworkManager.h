@@ -28,6 +28,7 @@ public:
 	virtual void				Process();
 	
 	virtual void				Startup();
+	virtual void				ShutDown();
 	virtual void				Connect();
 	virtual void				Disconnect();
 	virtual bool				IsConnected() { return (m_eState == NETSTATE_CONNECTED); }

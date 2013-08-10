@@ -689,6 +689,9 @@
     <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp">
       <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\CClientCommands.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1434,6 +1437,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h">
       <Filter>Header Files\Game\IV</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\CClientCommands.h">
+      <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

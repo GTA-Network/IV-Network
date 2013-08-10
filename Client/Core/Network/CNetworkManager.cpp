@@ -68,10 +68,13 @@ void CNetworkManager::Process()
 
 void CNetworkManager::Startup()
 {
-
 	SetNetworkState(NETSTATE_STARTED);
 }
 
+void CNetworkManager::ShutDown()
+{
+	SetNetworkState(NETSTATE_NONE);
+}
 void CNetworkManager::Connect()
 {
 	// Are we already connected?

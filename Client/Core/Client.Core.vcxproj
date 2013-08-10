@@ -272,6 +272,7 @@
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
+    <ClCompile Include="Scripting\CClientCommands.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\tinyxml\ticpp.h" />
@@ -520,6 +521,7 @@
     <ClInclude Include="IV\IVData.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
+    <ClInclude Include="Scripting\CClientCommands.h" />
     <ClInclude Include="StdInc.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
   </ItemGroup>

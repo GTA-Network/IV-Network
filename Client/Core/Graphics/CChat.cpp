@@ -9,10 +9,7 @@
 
 #include "CChat.h"
 #include <CCore.h>
-#include <Game/IVEngine/CIVModelManager.h>
-#include <Game/IVEngine/CIVHud.h>
-#include <IV/CIVScript.h>
-#include <IV/CIVScriptEnums.h>
+#include <Scripting/CClientCommands.h>
 
 extern CCore * g_pCore;
 
@@ -358,116 +355,18 @@ void CChat::ProcessInput()
 			}
 
 			AddToHistory();
-			if(strCommand == "q" 
-				|| strCommand == "quit" 
-				|| strCommand == "exit")
-			{
-				/*// Are we connected to the network?
-				if(g_pCore->GetNetworkModule()->IsConnected())
-				{
-					// Disconnect and shutdown RakNet
-					pCore->GetNetworkModule()->Shutdown(500, false);
-				}
-				*/
-				TerminateProcess(GetCurrentProcess(), 0);
-
-				return;
-			}
-			else if(strCommand == "cv")
-			{
-				int iVehicleType = 91;
-
-				CVector3 vecCreatePos; 
-				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-				vecCreatePos.fX += 4;
-				vecCreatePos.fY += 1;
-
-				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
-				if(pVehicle)
-				{
-					// Add our vehicle
-					g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-
-					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-
-					pVehicle->Create();
-
-					pVehicle->SetPosition(vecCreatePos);
-					
-					//pVehicle->SetModel(CIVModelManager::GetModelIndexFromHash(iVehicleType));
-				}
-			}
-			else if(strCommand == "respawn")
-			{
-				g_pCore->GetGame()->GetLocalPlayer()->Respawn();
-			}
-			else if(strCommand == "debug")
-			{
-				g_pCore->GetDevelopmentInstance()->CreateDebugPlayer();
-			}
-			else if(strCommand == "weapon")
-			{
-				CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
-				CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
-
-			}
-			else if(strCommand == "cp")
-			{
-				CVector3 vecCreatePos; 
-				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-
-				CPlayerEntity * pPlayer = new CPlayerEntity(false);
-				if(pPlayer)
-				{
-					pPlayer->Create();
-
-					pPlayer->Teleport(vecCreatePos);
-				}
-			}
-			else if(strCommand == "spawn")
-			{
-				g_pCore->GetChat()->Output("Spawning local player ...",false);
-				g_pCore->GetGame()->OnClientReadyToGamePlay();
-				g_pCore->GetGame()->GetLocalPlayer()->SetModel(21);
-
-				int iVehicleType = 91;
-
-				CVector3 vecCreatePos; 
-				g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-				vecCreatePos.fX += 4;
-				vecCreatePos.fY += 1;
-
-				CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
-				if(pVehicle)
-				{
-					// Add our vehicle
-					g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-
-					pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-
-					pVehicle->Create();
-
-					pVehicle->SetPosition(vecCreatePos);
-					
-					//pVehicle->SetModel(CIVModelManager::GetModelIndexFromHash(iVehicleType));
-				}
-			}
-			else if(strCommand == "engine")
-			{
-				if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
-					g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(true);
-			}
-			else if(strCommand == "chat-renderlines")
+			
+			if(strCommand == "chat-renderlines")
 			{
 				if(strParams.size() <= 0)
-					return Output("USE: /chat-renderlines [amount]", false);
+					return g_pCore->GetChat()->Output("USE: /chat-renderlines [amount]", false);
 
 				// Get the amount of lines to render
 				int iRenderLines = atoi(strParams.c_str());
 
 				if(iRenderLines <= 0 
 					|| iRenderLines > CHAT_RENDER_LINES)
-					return Output("USE: /chat-renderlines [amount]", false);
+					return g_pCore->GetChat()->Output("USE: /chat-renderlines [amount]", false);
 
 				// Set the render lines amount
 				CVAR_SET_INTEGER("chat-renderlines", iRenderLines);
@@ -479,6 +378,10 @@ void CChat::ProcessInput()
 				Outputf(false, " -> Chat render lines set to %d.", iRenderLines);
 				return;
 			}
+
+			// If our command is defined as client command & exists, return and stop the function call
+			if(CClientCommands::HandleUserInput(&CString("%s",strCommand.c_str()), CString("%s",strParams.c_str())))
+				return;
 		}
 
 		if(!bIsCommand)
