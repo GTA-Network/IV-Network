@@ -24,13 +24,13 @@ private:
 
 	static inline void Invoke(unsigned int uiHash, NativeContext * pNativeContext)
 	{
-		DWORD dwFunc = COffsets::FUNC_ScrVM__FindNativeAddress;
+		DWORD dwFunctionAddress = COffsets::FUNC_ScrVM__FindNativeAddress;
 		DWORD dwNativeFunc = NULL;
 		_asm
 		{
 			push esi
 			mov esi, uiHash
-			call dwFunc
+			call dwFunctionAddress
 			pop esi
 			mov dwNativeFunc, eax
 		}

@@ -313,7 +313,7 @@ bool CPlayerEntity::Create()
 		return false;
 
 	// Create the ped
-	DWORD dwFunc = (g_pCore->GetBase() + 0x9C1910);
+	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C1910);
 	unsigned int uiPlayerIndex = (unsigned int)m_bytePlayerNumber;
 	WORD wPlayerData = MAKEWORD(0, 1);
 	WORD * pwPlayerData = &wPlayerData;
@@ -322,10 +322,10 @@ bool CPlayerEntity::Create()
 	_asm push iModelIndex;
 	_asm push pwPlayerData;
 	_asm mov ecx, pPlayerPed;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 
 	// Setup the ped
-	dwFunc = (g_pCore->GetBase() + 0x43A6A0);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x43A6A0);
 	DWORD dwPedFactory = (g_pCore->GetBase() + 0x15E35A0);
 	Matrix34 * pMatrix = NULL;
 
@@ -333,7 +333,7 @@ bool CPlayerEntity::Create()
 	_asm push dwPedFactory;
 	_asm mov edi, pMatrix;
 	_asm mov esi, pPlayerPed;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
@@ -353,10 +353,10 @@ bool CPlayerEntity::Create()
 	m_pContextData->SetPlayerPed(m_pPlayerPed);
 
 	// Setup ped intelligence
-	dwFunc = (g_pCore->GetBase() + 0x89EC20);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x89EC20);
 	_asm push 2;
 	_asm mov ecx, pPlayerPed;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 
 	// Add to the world
 	m_pPlayerPed->AddToWorld();
@@ -398,12 +398,12 @@ bool CPlayerEntity::Destroy()
 	IVPlayerPed * pPlayerPed = m_pPlayerPed->GetPlayerPed();
 
 	// Deconstruct the ped intelligence
-	DWORD dwFunc = (g_pCore->GetBase() + 0x9C4DF0);
+	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C4DF0);
 	IVPedIntelligence * pPedIntelligence = pPlayerPed->m_pPedIntelligence;
 
 	_asm push 0;
 	_asm mov ecx, pPedIntelligence;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 
 	*(DWORD *)(pPlayerPed + 0x260) &= 0xFFFFFFFE;
 
@@ -411,11 +411,11 @@ bool CPlayerEntity::Destroy()
 	m_pPlayerPed->RemoveFromWorld();
 
 	// Delete the player ped
-	dwFunc = (g_pCore->GetBase() + 0x8ACAC0);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x8ACAC0);
 
 	_asm push 1;
 	_asm mov ecx, pPlayerPed;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 
 	// Remove the model reference
 	m_pModelInfo->RemoveReference();

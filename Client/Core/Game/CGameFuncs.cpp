@@ -191,11 +191,11 @@ void CGameFunction::ConvertEulerAnglesToRotationMatrix(CVector3 &vecRotation, Ma
 	matGameRotation.FromMatrix(&matRotation);
 	Matrix34 * pMatGameRotation = &matGameRotation;
 	CVector3 * pVecGameRotation = &vecRotation;
-	DWORD dwFunc = COffsets::FUNC_CMatrix__ConvertFromEulerAngles;
+	DWORD dwFunctionAddress = COffsets::FUNC_CMatrix__ConvertFromEulerAngles;
 
 	_asm push pVecGameRotation;;
 	_asm mov ecx, pMatGameRotation;
-	_asm call dwFunc;
+	_asm call dwFunctionAddress;
 	
 	matGameRotation.ToMatrix(&matRotation);
 }

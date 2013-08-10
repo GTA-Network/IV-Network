@@ -11,7 +11,7 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-DWORD      dwFunc = NULL;
+DWORD      dwFunctionAddress = NULL;
 IVPed    * g_pIKPed = NULL;
 float      g_fArmHeading = 0.0f;
 float      g_fArmUpDown = 0.0f;
@@ -116,7 +116,7 @@ void _declspec(naked) CIKManager__AimWeapon()
 	}
 
 	StoreAimTarget(g_pIKPed, g_vecAimTarget);
-	dwFunc = (g_pCore->GetBase() + 0x950D66);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x950D66);
 
 	_asm
 	{
@@ -124,7 +124,7 @@ void _declspec(naked) CIKManager__AimWeapon()
 		push ebp
 		mov ebp, esp
 		and esp, 0FFFFFFF0h
-		jmp dwFunc
+		jmp dwFunctionAddress
 	}
 }
 
@@ -146,7 +146,7 @@ void _declspec(naked) CIkManager__PointArms_Hook()
 
 	// Store our values
 	StoreArmHeadingUpDown(g_pIKPed, &g_fArmHeading, &g_fArmUpDown);
-	dwFunc = (g_pCore->GetBase() + 0x94E866);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x94E866);
 
 	_asm
 	{
@@ -159,7 +159,7 @@ void _declspec(naked) CIkManager__PointArms_Hook()
 		// Execute original code we overwrote for the hook
 		movss xmm0, [esp+4]
 		// Jump back to the original function
-		jmp dwFunc
+		jmp dwFunctionAddress
 	}
 }
 
@@ -184,7 +184,7 @@ void _declspec(naked) CWeapon__Fire_Hook()
 
 	// Store our values
 	StoreShotSourceTarget(g_pWeaponPed, g_vecWeaponShotSource, g_vecWeaponShotTarget);
-	dwFunc = (g_pCore->GetBase() + 0x97D7C6);
+	dwFunctionAddress = (g_pCore->GetBase() + 0x97D7C6);
 
 	_asm
 	{
@@ -194,7 +194,7 @@ void _declspec(naked) CWeapon__Fire_Hook()
 			mov ebp, esp
 			and esp, 0FFFFFFF0h
 			// Jump back to the original function
-			jmp dwFunc
+			jmp dwFunctionAddress
 	}
 }
 

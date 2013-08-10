@@ -398,7 +398,7 @@ _declspec(naked) void CGameProcessHook()
 
 		DWORD keks = *(DWORD *)(g_pCore->GetBase() + 0x10F8078); // keks copyright by xforce
 		DWORD g_rgsc = *(DWORD *)(g_pCore->GetBase() + 0x172427C);
-		DWORD dwFunc = g_pCore->GetBase() + 0x4205B0;
+		DWORD dwFunctionAddress = g_pCore->GetBase() + 0x4205B0;
 		int iTime = timeGetTime();
 		_asm
 		{   
@@ -408,7 +408,7 @@ _declspec(naked) void CGameProcessHook()
 			mov eax, keks
 			mov ecx, g_rgsc
 			mov edi, iTime
-			call dwFunc
+			call dwFunctionAddress
 			add esp, 0Ch
 		}
 	}

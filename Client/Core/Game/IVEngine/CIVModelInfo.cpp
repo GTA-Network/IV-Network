@@ -43,11 +43,11 @@ BYTE CIVModelInfo::GetType( )
 	IVBaseModelInfo * pModelInfo = GetModelInfo( );
 	if( pModelInfo )
 	{
-		DWORD dwFunc = pModelInfo->m_VFTable->GetType;
+		DWORD dwFunctionAddress = pModelInfo->m_VFTable->GetType;
 		BYTE byteType = 0;
 
 		_asm	mov ecx, pModelInfo;
-		_asm	call dwFunc;
+		_asm	call dwFunctionAddress;
 		_asm	mov byteType, al;
 
 		return byteType;

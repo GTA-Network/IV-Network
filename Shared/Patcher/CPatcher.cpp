@@ -220,10 +220,10 @@ BYTE CPatcher::InstallDetourPatchWithData(char * szLibrary, unsigned int uOrdina
 	return (pbyteTrampoline != NULL);
 }
 
-void CPatcher::InstallPushPatch(DWORD dwAddress, DWORD dwFunc) 
+void CPatcher::InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress) 
 { 
      ProtectionInfo protectionInfo = Unprotect(dwAddress, 5); 
      *(BYTE*)(dwAddress) = 0x68; 
-     *(DWORD*)(dwAddress+1) = dwFunc;  
+     *(DWORD*)(dwAddress+1) = dwFunctionAddress;  
      Reprotect(protectionInfo); 
 }

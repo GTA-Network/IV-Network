@@ -573,11 +573,11 @@ void CIVVehicle::RemoveCarWindow(int iWindow)
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
 	{
-		DWORD dwFunc = (g_pCore->GetBase() + 0x9C6500);
+		DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C6500);
 
 		_asm	push iWindow;
 		_asm	mov ecx, pVehicle;
-		_asm	call dwFunc;
+		_asm	call dwFunctionAddress;
 	}
 }
 
