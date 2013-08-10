@@ -99,8 +99,8 @@ enum eIVSynchronization
 {
 	IVSYNC_ONFOOT_STANDSTILL = 0,
 	IVSYNC_ONFOOT_WALK = 1,
-	IVSYNC_ONFOOT_RUN = 2,
-	IVSYNC_ONFOOT_JUMP = 3
+	IVSYNC_ONFOOT_SWITCHSTATE = 2,
+	IVSYNC_ONFOOT_RUN = 3
 };
 struct sWeaponStructure
 {
@@ -160,6 +160,8 @@ struct sPlayerEntity_StoreIVSynchronization
 	bool			bDuckingState;
 	CControls		* pControls ;
 	unsigned		uiPlayerIndex;
+
+	unsigned		uiJumpTime;
 };
 
 #endif

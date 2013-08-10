@@ -106,7 +106,10 @@ void CPatches::Initialize()
 
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function
-    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + /*0x5A932D*/0x5A8CB0), (g_pCore->GetBase() + 0x5A9361));
+
+#ifdef _DEBUG // Disable this function in our debug mode
+    CPatcher::InstallJmpPatch((g_pCore->GetBase() + /*0x5A932D*/0x5A8CB0), (g_pCore->GetBase() + 0x5A9361));
+#endif
 
     // Disable startup/runtime resource check
     *(BYTE*)(g_pCore->GetBase() + 0x119DB14) = 1;
