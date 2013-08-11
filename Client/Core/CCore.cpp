@@ -224,8 +224,20 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		if(m_pFPSCounter)
 			m_pFPSCounter->Pulse();
 
+		// Render our development instance
 		if(m_pDevelopment)
 			m_pDevelopment->Process();
+
+		// Check if our snap shot write failed
+		if(CSnapShot::IsDone())
+		{
+			if(CSnapShot::HasSucceeded())
+				m_pChat->Outputf(false, "Screen shot written (%s).", CSnapShot::GetWriteName().Get());
+			else
+				m_pChat->Outputf(false, "Screen shot write failed (%s).", CSnapShot::GetError().Get());
+
+			CSnapShot::Reset();
+		}
 	//}
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);

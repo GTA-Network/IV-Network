@@ -1,8 +1,8 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CPlayerEntity.cpp
 // Project: Client.Core
-// Author: xForce <xf0rc3.11@gmail.com>
+// Author: FRi <FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -154,7 +154,6 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	// Is this the localplayer?
 	if(IsLocalPlayer())
 	{
-
 		// Set the localplayer CIVScript handle
 		m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex();
 

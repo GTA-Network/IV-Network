@@ -110,38 +110,6 @@ CString GetKeyNameByCode(DWORD dwCode)
 	return strCode;
 }
 
-void StartGame()
-{
-	DWORD unk_10F8088 = g_pCore->GetBase() + 0x10F8088;
-	DWORD sub_5AF930 = g_pCore->GetBase() + 0x5AF930;
-	DWORD dword_10F8078 = g_pCore->GetBase() + 0x10F8078;
-	DWORD dword_10F805C = g_pCore->GetBase() + 0x10F805C;
-	int * v7 = new int(0);
-	_asm
-	{
-		push v7
-		mov ecx, unk_10F8088
-		call sub_5AF930
-	}
-	*(DWORD*)dword_10F8078 = *v7;
-	*(DWORD*)dword_10F805C = *v7;
-	if ( *v7 > 0 )
-	{
-		DWORD sub_7B2DF0 = g_pCore->GetBase() + 0x7B2DF0;
-		_asm
-		{
-		call sub_7B2DF0
-		}
-	}
-
-	DWORD sub_7870A0 = g_pCore->GetBase() + 0x7870A0;
-	_asm
-	{
-		push 6
-		call sub_7870A0
-		add     esp, 4
-	}
-}
 bool bToggle = true;
 LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -159,6 +127,19 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		{
 			//
 		}
+		// Is this a F8 key up?
+		if(uMsg == WM_SYSKEYUP && wParam == VK_F8)
+		{
+			// Take a screen shot
+			if(CSnapShot::Take())
+				g_pCore->GetChat()->Outputf(false, "Screen shot captured.");
+			else
+			{
+				g_pCore->GetChat()->Outputf(false, "Screen shot capture failed (%s).", CSnapShot::GetError().Get());
+				CSnapShot::Reset();
+			}
+		}
+
 		if(g_pCore->GetChat())
 			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);
 

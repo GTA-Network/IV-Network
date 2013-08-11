@@ -114,6 +114,21 @@
     <Filter Include="Header Files\Libraries\RakNet">
       <UniqueIdentifier>{3d8c7e5d-3ba1-44e7-abdd-5b012d5bf336}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Libraries\DirectX">
+      <UniqueIdentifier>{3f45167a-debb-4001-b911-80d8bdd97303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\LibPNG">
+      <UniqueIdentifier>{4493b913-257e-4e51-abd0-be17c30c77cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\Zlib">
+      <UniqueIdentifier>{d29abb51-0ce3-4a3d-9cd8-88e5e0982110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\ZLib">
+      <UniqueIdentifier>{6c219bf2-c921-44a9-897a-9027bbcfe0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\LibPNG">
+      <UniqueIdentifier>{aef79625-8d90-4195-a707-5340a3e588ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -691,6 +706,102 @@
     </ClCompile>
     <ClCompile Include="Scripting\CClientCommands.cpp">
       <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CSnapShot.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\png.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngerror.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngget.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngmem.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngpread.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngread.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngrio.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngrtran.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngrutil.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngset.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngtest.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngtrans.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngwio.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngwrite.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngwtran.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lpng142\pngwutil.c">
+      <Filter>Source Files\Libraries\LibPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\adler32.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\compress.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\crc32.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\deflate.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\gzclose.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\gzlib.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\gzread.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\gzwrite.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\infback.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\inffast.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\inflate.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\inftrees.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\trees.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\uncompr.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\zlib-1.2.5\zutil.c">
+      <Filter>Source Files\Libraries\ZLib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1441,5 +1552,235 @@
     <ClInclude Include="Scripting\CClientCommands.h">
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\CSnapShot.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lpng142\png.h">
+      <Filter>Header Files\Libraries\LibPNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lpng142\pngconf.h">
+      <Filter>Header Files\Libraries\LibPNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lpng142\pngpriv.h">
+      <Filter>Header Files\Libraries\LibPNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\crc32.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\deflate.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\gzguts.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\inffast.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\inffixed.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\inflate.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\inftrees.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\trees.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\zconf.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\zlib.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\zlib-1.2.5\zutil.h">
+      <Filter>Header Files\Libraries\Zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\audiodefs.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\comdecl.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3d9.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3d9caps.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3d9types.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3D10.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3D10_1.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3D10_1shader.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3D10effect.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3d10misc.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3d10sdklayers.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3D10shader.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9anim.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9core.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9effect.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9math.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9mesh.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9shader.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9shape.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9tex.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx9xof.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3DX10.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\d3dx10async.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3DX10core.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3DX10math.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3DX10mesh.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\D3DX10tex.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\ddraw.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dinput.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dinputd.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dsconf.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dsetup.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dsound.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dvp.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dxdiag.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\DxErr.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dxerr9.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dxfile.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\DXGI.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\DXGIType.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\dxsdkver.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\gameux.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\multimon.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\PIXPlugin.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\rmxfguid.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\rmxftmpl.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\rpcsal_old.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\X3DAudio.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xact3.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xact3d3.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xact3wb.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\XAPO.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\XAPOBase.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\XAPOFX.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xaudio2.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xaudio2fx.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\XInput.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\DXSDK\Include\xma2defs.h">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Libraries\DXSDK\Include\d3dx9math.inl">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </None>
+    <None Include="..\..\Libraries\DXSDK\Include\D3DX10math.inl">
+      <Filter>Header Files\Libraries\DirectX</Filter>
+    </None>
   </ItemGroup>
 </Project>
