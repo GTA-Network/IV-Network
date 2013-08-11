@@ -40,7 +40,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 
 	else if(strCommand == "cv")
 	{
-		int iVehicleType = 91;
+		int iVehicleType = atoi(strParameters.c_str());
 
 		CVector3 vecCreatePos; 
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
