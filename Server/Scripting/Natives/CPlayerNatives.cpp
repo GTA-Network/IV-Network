@@ -16,6 +16,8 @@
 void CPlayerNatives::Register(CScriptVM * pVM)
 {
 	pVM->RegisterFunction("createPlayer", Create);
+
+	pVM->RegisterFunction("print", Print); // TODO : move to antother natives class
 }
 
 
@@ -37,6 +39,26 @@ int CPlayerNatives::Create(int * VM)
 		// Create player kekse
 
 		//pVM->PushBool(true);
+
+		pVM->ResetStackIndex();
+	}
+
+	return 0;
+}
+
+
+int CPlayerNatives::Print(int * VM)
+{
+	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
+	CResource* pResource = CServer::GetInstance()->GetResourceManager()->Get(VM);
+	if(pResource)
+	{
+		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
+		CScriptVM* pVM = pResource->GetVM();
+		pVM->ResetStackIndex();
+		CString strPrint;
+		pVM->PopString(strPrint);
+		CLogFile::Printf(strPrint);
 
 		pVM->ResetStackIndex();
 	}

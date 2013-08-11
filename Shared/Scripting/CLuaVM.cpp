@@ -11,12 +11,15 @@
 #include <lua/lua.hpp>
 #include <SharedUtility.h>
 #include <CLogFile.h>
+#include "../../Server/Scripting/Natives/CPlayerNatives.h"
 
 CLuaVM::CLuaVM(CResource* pResource)
 	: CScriptVM(pResource)
 {
 	m_pVM = luaL_newstate();
 	luaL_openlibs(m_pVM);
+
+	CPlayerNatives::Register(this);
 }
 
 CLuaVM::~CLuaVM()
@@ -158,7 +161,8 @@ void CLuaVM::PopString(CString& str)
 	if(argType == LUA_TSTRING || argType == LUA_TNUMBER)
 	{
 		size_t length = 0;
-		str.Set(lua_tolstring(m_pVM, m_iStackIndex++, &length), length);
+		const char* szTmp = lua_tolstring(m_pVM, m_iStackIndex++, &length);
+		str = szTmp;
 		return;
 	}
 

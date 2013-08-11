@@ -17,6 +17,7 @@ class CPlayerNatives {
 
 private:
 	static int	Create(int* pVM);
+	static int	Print(int* pVM);
 public:
 	static void Register(CScriptVM* pVM);
 };
