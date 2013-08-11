@@ -78,8 +78,8 @@ public:
 class CChat
 {
 
-public:
-
+private:
+	
 	CChatLine				m_Lines[ CHAT_MAX_LINES ];
 	CChatInputLine			m_InputLine;
 
@@ -89,32 +89,36 @@ public:
 	float					m_fSmoothAllowAfter;
 	float					m_fSmoothScrollResetTime;
 
+	float					m_fX;
+	float					m_fY;
+
 	CString					m_strInputText;
 	CString					m_strCommand;
 
 	bool					m_bVisible;
+	bool					m_bInputBlocked;
 	bool					m_bInputVisible;
 	bool					m_bPaused;
 	bool					m_bMap;
 	bool					m_bOldState;
 
-	float					m_fX;
-	float					m_fY;
 
 	int						m_iRenderLines;
 	unsigned int			m_uiNumLines;
 	unsigned int			m_uiMostRecentLine;
 	unsigned int			m_uiCurrentPageScroll;
-
+	
 	CColor					m_Color;
 	CColor					m_TextColor;
 	CColor					m_InputTextColor;
+
 
 	int						m_iCurrentHistory;
 	int						m_iTotalHistory;
 	CString					m_strHistory[ CHAT_MAX_HISTORY ];
 	CString					m_strInputHistory;
 
+public:
 
 							CChat					(float fX, float fY);
 							~CChat					();
@@ -134,10 +138,10 @@ public:
 	void					SetInputPrefix			(CString strInputPrefix) { m_InputLine.m_Prefix.SetText(strInputPrefix); }
 	CString					GetInputPrefix			() { return m_InputLine.m_Prefix.GetText(); }
 
+	CColor					GetTextColor			() { return m_TextColor; }
+	CColor					GetInputTextColor		() { return m_InputTextColor; }
 
-
-
-
+	float					GetPosition				(bool bPositionType = false);
 
 	void					Output					(const char * szText, bool bColorCoded = false);
 	void					Outputf					(bool bColorCoded, const char * szFormat, ...);
