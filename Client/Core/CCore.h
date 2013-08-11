@@ -47,6 +47,7 @@ private:
 	bool							m_bInitialised;
 	bool							m_bGameLoaded;
 	unsigned						m_uiBaseAddress;
+	unsigned						m_uiGameInitializeTime;
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
@@ -103,6 +104,7 @@ public:
 	void							SetPass( CString strPass ) { m_strPass = strPass; }
 	CString							GetPass( ) { return m_strPass; }
 
+	unsigned						GetGameLoadInitializeTime() { return m_uiGameInitializeTime; }
 	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
 
 	void							GetLoadedModulesList();

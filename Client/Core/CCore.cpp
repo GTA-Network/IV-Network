@@ -134,6 +134,9 @@ void CCore::OnGameLoad()
 
 	// Connect to the network
 	m_pNetworkManager->Connect();
+
+	// Set the initialize time
+	m_uiGameInitializeTime = timeGetTime();
 }
 
 void CCore::OnGamePreLoad()
