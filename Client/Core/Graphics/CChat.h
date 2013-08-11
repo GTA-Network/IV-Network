@@ -89,6 +89,9 @@ private:
 	float					m_fSmoothAllowAfter;
 	float					m_fSmoothScrollResetTime;
 
+	float					m_fX;
+	float					m_fY;
+
 	CString					m_strInputText;
 	CString					m_strCommand;
 
@@ -104,6 +107,10 @@ private:
 	unsigned int			m_uiNumLines;
 	unsigned int			m_uiMostRecentLine;
 	unsigned int			m_uiCurrentPageScroll;
+	
+	CColor					m_Color;
+	CColor					m_TextColor;
+	CColor					m_InputTextColor;
 
 
 	int						m_iCurrentHistory;
@@ -112,13 +119,6 @@ private:
 	CString					m_strInputHistory;
 
 public:
-
-	float					m_fX;
-	float					m_fY;
-	
-	CColor					m_Color;
-	CColor					m_TextColor;
-	CColor					m_InputTextColor;
 
 							CChat					(float fX, float fY);
 							~CChat					();
@@ -138,10 +138,10 @@ public:
 	void					SetInputPrefix			(CString strInputPrefix) { m_InputLine.m_Prefix.SetText(strInputPrefix); }
 	CString					GetInputPrefix			() { return m_InputLine.m_Prefix.GetText(); }
 
+	CColor					GetTextColor			() { return m_TextColor; }
+	CColor					GetInputTextColor		() { return m_InputTextColor; }
 
-
-
-
+	float					GetPosition				(bool bPositionType = false);
 
 	void					Output					(const char * szText, bool bColorCoded = false);
 	void					Outputf					(bool bColorCoded, const char * szFormat, ...);

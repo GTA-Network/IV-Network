@@ -195,6 +195,14 @@ float CChat::GetCharacterWidth(int iChar)
 	return g_pCore->GetGraphics()->GetCharacterWidth((char)iChar, 1.0f);
 }
 
+float CChat::GetPosition(bool bPositionType)
+{
+	if (bPositionType)
+		return m_fY;
+	else
+		return m_fX;
+}
+
 void CChat::SetInputVisible(bool bVisible)
 {
 	m_bInputVisible = bVisible;
@@ -714,9 +722,9 @@ void CChatInputLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShado
 		m_Prefix.Draw(fX, fY, colPrefix.A, bShadow);
 
 	CChat * g_pChat = g_pCore->GetChat();
-	if(g_pChat->m_InputTextColor.A > 0 && m_Sections.size() > 0)
+	if(g_pChat->GetInputTextColor().A > 0 && m_Sections.size() > 0)
 	{
-		m_Sections[ 0 ].Draw(fX + m_Prefix.GetWidth(), fY, g_pChat->m_InputTextColor.A, bShadow);
+		m_Sections[ 0 ].Draw(fX + m_Prefix.GetWidth(), fY, g_pChat->GetInputTextColor().A, bShadow);
 
 		float fLineDifference = CChat::GetFontHeight();
 
@@ -725,7 +733,7 @@ void CChatInputLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShado
 		for(; iter != m_ExtraLines.end(); iter++)
 		{
 			fY += fLineDifference;
-			(*iter).Draw(fX, fY, g_pChat->m_InputTextColor.A, bShadow);
+			(*iter).Draw(fX, fY, g_pChat->GetInputTextColor().A, bShadow);
 		}
 	}
 }
@@ -768,7 +776,7 @@ void CChatLineSection::Draw(float fX, float fY, unsigned char ucAlpha, bool bSha
 
 float CChatLineSection::GetWidth()
 {
-	if (m_fCachedWidth < 0.0f || m_strText.size () != m_uiCachedLength || g_pCore->GetChat()->m_fX != m_fCachedOnScaleX)
+	if (m_fCachedWidth < 0.0f || m_strText.size () != m_uiCachedLength || g_pCore->GetChat()->GetPosition() != m_fCachedOnScaleX)
     {
         m_fCachedWidth = 0.0f;
         for (unsigned int i = 0; i < m_strText.size (); i++)
@@ -776,7 +784,7 @@ float CChatLineSection::GetWidth()
             m_fCachedWidth += CChat::GetCharacterWidth(m_strText[ i ]);            
         }
         m_uiCachedLength = m_strText.size ();
-		m_fCachedOnScaleX = g_pCore->GetChat()->m_fX;
+		m_fCachedOnScaleX = g_pCore->GetChat()->GetPosition();
     }
     return m_fCachedWidth;
 }
