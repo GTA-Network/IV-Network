@@ -17,6 +17,8 @@ CServer* CServer::s_pInstance = 0;
 
 CServer::CServer()
 {
+	s_pInstance = this;
+
 	m_pNetServer = new CNetworkServer();
 
 	m_pRPCHandler = new CServerRPCHandler();

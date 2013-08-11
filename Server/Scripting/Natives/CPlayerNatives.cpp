@@ -11,6 +11,7 @@
 #include <Scripting/CLuaVM.h>
 #include <Scripting/CSquirrelVM.h>
 #include "../../CServer.h"
+#include <CLogFile.h>
 
 void CPlayerNatives::Register(CScriptVM * pVM)
 {
@@ -27,12 +28,15 @@ int CPlayerNatives::Create(int * VM)
 		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
 		CScriptVM* pVM = pResource->GetVM();
 
+
+		CLogFile::Printf("Kekse ich mag");
+
 		CVector3 keks;
-		pVM->PopVector(keks);
+		//pVM->PopVector(keks);
 
 		// Create player kekse
 
-		pVM->PushBool(true);
+		//pVM->PushBool(true);
 
 		pVM->ResetStackIndex();
 	}

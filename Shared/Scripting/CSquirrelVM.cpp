@@ -12,6 +12,8 @@
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
 
+#include "../../Server/Scripting/Natives/CPlayerNatives.h"
+
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource)
 {
@@ -22,6 +24,8 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 
 	// Push the root table onto the stack
 	sq_pushroottable(m_pVM);
+
+	CPlayerNatives::Register(this);
 
 }
 
