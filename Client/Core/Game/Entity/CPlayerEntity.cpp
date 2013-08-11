@@ -165,10 +165,10 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		m_pPlayerInfo = new CIVPlayerInfo(g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0));
 
 		// Create a new context data instance with the local player info
-        m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
+		m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
 
-        // Set the context data player ped pointer
-        m_pContextData->SetPlayerPed(m_pPlayerPed);
+		// Set the context data player ped pointer
+		m_pContextData->SetPlayerPed(m_pPlayerPed);
 
 		// Add our model reference
 		m_pModelInfo->AddReference(false);
@@ -188,18 +188,18 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		CLogFile::Printf("LOCALPLAYER: m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
 	}
 	else
-    {
-        // Set the player ped instance to NULL
-        m_pPlayerPed = NULL;
+	{
+		// Set the player ped instance to NULL
+		m_pPlayerPed = NULL;
 
-        // Set the player info instance to NULL
-        m_pPlayerInfo = NULL;
-		
+		// Set the player info instance to NULL
+		m_pPlayerInfo = NULL;
+
 		// Set the context data instance to NULL
 		m_pContextData = NULL;
 
 		m_bytePlayerNumber = INVALID_PLAYER_PED;
-    }
+	}
 }
 
 CPlayerEntity::~CPlayerEntity()
@@ -262,14 +262,14 @@ void CPlayerEntity::Process()
 			}
 		}
 		else
-        {
+		{
 			// Are we not in a vehicle?
 			if(!IsInVehicle())
 			{
 				// Process interpolation
 				Interpolate();
 			}
-        }
+		}
 	}
 
 	CNetworkEntity::Pulse(this);
@@ -337,10 +337,10 @@ bool CPlayerEntity::Create()
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
-	
+
 	// Set the player state to spawned
 	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
-	
+
 	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
 
 	// Set our player info with the ped
@@ -583,35 +583,35 @@ float CPlayerEntity::GetRotation()
 
 void CPlayerEntity::SetModel(int iModelId)
 {
-    // Get the model hash from skin id
-    DWORD dwModelHash = SkinIdToModelHash(iModelId);
-         
-    // Get the model index
-    int iModelIndex = CIVModelManager::GetModelIndexFromHash( dwModelHash );
+	// Get the model hash from skin id
+	DWORD dwModelHash = SkinIdToModelHash(iModelId);
+
+	// Get the model index
+	int iModelIndex = CIVModelManager::GetModelIndexFromHash( dwModelHash );
 	/*
 	m_pModelInfo->RemoveReference();
 
-    // Get the model info
-    CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo( iModelIndex );
+	// Get the model info
+	CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo( iModelIndex );
 
-    // Add reference
-    pModelInfo->AddReference( true );
+	// Add reference
+	pModelInfo->AddReference( true );
 
-    // change the model from the player
-    CIVScript::ChangePlayerModel( GetScriptingHandle(),(CIVScript::eModel)dwModelHash );
+	// change the model from the player
+	CIVScript::ChangePlayerModel( GetScriptingHandle(),(CIVScript::eModel)dwModelHash );
 
 	m_pModelInfo = pModelInfo;
-  
+
 	// remove from world
 	//m_pPlayerPed->RemoveFromWorld();
 
-    // set the new ped
-    //m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+	// set the new ped
+	//m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
 
 	// re add to world
-   //m_pPlayerPed->AddToWorld();
+	//m_pPlayerPed->AddToWorld();
 
-   */
+	*/
 }
 
 void CPlayerEntity::SetControlState(CControls * pControlState)
@@ -701,13 +701,13 @@ bool CPlayerEntity::InternalIsInVehicle()
 	// Are we spawned?
 	if(IsSpawned())
 		return (m_pPlayerPed->IsInVehicle() && m_pPlayerPed->GetCurrentVehicle());
-	
+
 	return false;
 }
 
 CVehicleEntity * CPlayerEntity::InternalGetVehicle()
 {
-	
+
 	return NULL;
 }
 
@@ -853,14 +853,14 @@ void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 		{
 			switch(iModelId)
 			{
-				case 2: case 4: case 5: case 7: case 8: case 10: case 11:
-				case 31: case 32: case 49: case 50: case 51: case 52:
-				case 53: case 55: case 56: case 60: case 66: case 73:
-				case 85: case 86: case 94: case 104:
-					iExitMode = 0x40B;
+			case 2: case 4: case 5: case 7: case 8: case 10: case 11:
+			case 31: case 32: case 49: case 50: case 51: case 52:
+			case 53: case 55: case 56: case 60: case 66: case 73:
+			case 85: case 86: case 94: case 104:
+				iExitMode = 0x40B;
 				break;
 
-				default:
+			default:
 				{
 					if(iModelId != 12 && iModelId < 166)
 						iExitMode = 0x100E;
@@ -1262,7 +1262,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 		switch(m_pIVSync->byteMoveStyle)
 		{
-			case IVSYNC_ONFOOT_STANDSTILL:
+		case IVSYNC_ONFOOT_STANDSTILL:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*4);
 				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
@@ -1285,19 +1285,19 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
 				break;
 			}
-			case IVSYNC_ONFOOT_WALK:
+		case IVSYNC_ONFOOT_WALK:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 2);
 				break;
 			}
-			case IVSYNC_ONFOOT_SWITCHSTATE:
+		case IVSYNC_ONFOOT_SWITCHSTATE:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 3);
 				break;
 			}
-			case IVSYNC_ONFOOT_RUN:
+		case IVSYNC_ONFOOT_RUN:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
@@ -1315,7 +1315,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
 			_asm	add  esp, 0Ch;
-			
+
 			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
@@ -1339,7 +1339,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 
 	// Second check if we're jumping
 	if(!m_pIVSync->bStoreOnFootSwitch && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
-		
+
 		// Before checking which jump style should be selected, set to unkown(if we failed to get our state)
 		char iJumpStyle = 0;
 		m_pIVSyncHandle->uiJumpTime = timeGetTime();
@@ -1355,7 +1355,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		_asm	call dwAddress;
 		_asm	add esp, 8;
 	}
-	
+
 	// Second and a half, check if we have to delete the jump task
 	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-1000 && m_pIVSyncHandle->uiJumpTime != 0) // Animation time(jump) needs ~1sec
 	{
@@ -1443,13 +1443,13 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 		_asm
 		{
 			push 1000
-			push iMoveType
-			push tZ
-			push tY
-			push tX
-			push uiPlayerIndex
-			call dwAddress
-			add esp, 18h
+				push iMoveType
+				push tZ
+				push tY
+				push tX
+				push uiPlayerIndex
+				call dwAddress
+				add esp, 18h
 		}
 	}
 }
@@ -1565,4 +1565,154 @@ void CPlayerEntity::UpdateTargetRotation()
 		// Set our new rotation
 		SetRotation(fNewRotation);
 	}
+}
+
+void CPlayerEntity::KillPed(bool bInstantly)
+{
+	// Are we spawned and not already dead?
+	if(IsSpawned() && !IsDead())
+	{
+		// Are we getting killed instantly?
+		if(bInstantly) {
+
+			// Create the dead task
+			CIVTaskSimpleDead * pTask = new CIVTaskSimpleDead(CGameFunction::GetTimeOfDay(), 1, 0);
+
+			// Did the task create successfully?
+			if(pTask)
+				pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
+		}
+		else { // We are not getting killed instantly
+
+			// Are we already dying?
+			if(IsDying())
+				return;
+
+			// Create the death task
+			CIVTaskComplexDie * pTask = new CIVTaskComplexDie(0, 0, 44, 190, 4.0f, 0.0f, 1);
+
+			// Did the task create successfully?
+			if(pTask)
+				pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
+		}
+
+		// Reset ped health, armour etc. values
+		SetHealth(0);
+
+		// Reset the control state
+		CControls * controlState = new CControls;
+		SetControlState(controlState);
+		SAFE_DELETE(controlState);
+
+		// Reset vehicle entry/exit flags
+		ResetVehicleEnterExit();
+
+		// Reset interpolation
+		ResetInterpolation();
+	}
+}
+
+bool CPlayerEntity::IsDying()
+{
+	if(IsSpawned())
+	{
+		CLogFile::Print("Check IsDying");
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
+
+		if(pTask)
+		{
+			CLogFile::Printf("Task: %d",pTask->GetType());
+
+			if(pTask->GetType() == TASK_COMPLEX_DIE)
+				return true;
+		}
+	}
+
+	return false;
+}
+
+bool CPlayerEntity::IsDead()
+{
+	if(IsSpawned())
+		return IsDying();
+
+	return false;
+}
+
+IVEntity * CPlayerEntity::GetLastDamageEntity()
+{
+	if(IsSpawned())
+		return m_pPlayerPed->GetLastDamageEntity();
+
+	return NULL;
+}
+
+bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId)
+{
+	// Are we spawned?
+	if(IsSpawned())
+	{
+		// Reset player id and vehicle id
+		*playerId = INVALID_ENTITY_ID;
+		*vehicleId = INVALID_ENTITY_ID;
+		*weaponId = INVALID_ENTITY_ID;
+
+		// Loop through all players
+		for(EntityId i = 0; i < MAX_PLAYERS; i++)
+		{
+			// Is this player connected and spawned?
+			CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(i);
+
+			if(pPlayer && pPlayer->IsSpawned())
+			{
+				// Is this player the last damage entity?
+				if(GetLastDamageEntity() == (IVEntity *)pPlayer->GetPlayerPed()->GetPed())
+				{
+					// This player killed us
+					*playerId = i;
+					//*weaponId = pPlayer->();
+					break;
+				}
+				else
+				{
+					// Is this players vehicle the last damage entity?
+					if(pPlayer->IsInVehicle() && !pPlayer->IsPassenger() && 
+						(GetLastDamageEntity() == (IVEntity *)pPlayer->GetVehicleEntity()))
+					{
+						// This player killed us with their vehicle
+						*playerId = i;
+						//*weaponId = pPlayer->GetCurrentWeapon();
+						*vehicleId = i;
+						break;
+					}
+				}
+			}
+		}
+
+		// Have we not yet found a killer?
+		if(*playerId == INVALID_ENTITY_ID && *vehicleId == INVALID_ENTITY_ID)
+		{
+			// Loop through all players
+			for(EntityId i = 0; i < MAX_VEHICLES; i++)
+			{
+				// Is this player connected and spawned?
+				CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(i);
+
+				if(pVehicle && pVehicle->IsSpawned())
+				{
+					// Is this vehicle the last damage entity?
+					if(GetLastDamageEntity() == pVehicle->GetGameVehicle()->GetEntity())
+					{
+						// This vehicle killed us
+						*vehicleId = pVehicle->GetId();
+						break;
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	return false;
 }

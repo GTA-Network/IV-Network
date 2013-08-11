@@ -30,6 +30,7 @@ private:
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
 		DWORD							m_dwRespawnTime;
+		bool							m_bDead;
 
 public:
 										CLocalPlayer();
@@ -40,19 +41,18 @@ public:
         void							Pulse();
         void							HandleSpawn();
 
-		bool							IsDead();
         void							DoDeathCheck();
 
         void							SetSpawnLocation(CVector3 vecPosition, float fHeading);
         void							GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
-        float							GetSpawnRotation() { return m_fSpawnAngle; }
+        inline float					GetSpawnRotation() { return m_fSpawnAngle; }
 
-        bool							GetFirstSpawn() { return m_bFirstSpawn; }
+        inline bool						GetFirstSpawn() { return m_bFirstSpawn; }
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
-        bool							IsRadarVisible() { return m_bRadarVisible; }
+        inline bool						IsRadarVisible() { return m_bRadarVisible; }
 
 		void							SetControl(bool bControl) { m_bToggleControl = bControl; }
-		bool							GetControl() { return m_bToggleControl; }
+		inline bool						GetControl() { return m_bToggleControl; }
 		void							SetPlayerControlAdvanced(bool bControl, bool bCamera);
 
 		unsigned short					GetPing();

@@ -14,9 +14,10 @@
 #include <Math/CMaths.h>
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
-#include "CIVPed.h"
 
 static const char * GetTaskName(int iTaskType);
+
+class CIVPed;
 
 class IVTaskVFTable {
 public:

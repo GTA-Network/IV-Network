@@ -16,9 +16,8 @@
 #include <Game/eGame.h>
 #include "CIVPhysical.h"
 #include "CIVEntity.h"
+#include "CIVPedTaskManager.h"
 
-class IVPedTaskManager;
-class CIVPedTaskManager;
 enum ePedType
 {
 	PED_TYPE_PLAYER,
@@ -48,10 +47,51 @@ enum ePedType
 
 class IVPlayerInfo;
 class IVVehicle;
+
+class IVEventHandler
+{
+	PAD(IVEventHandler, pad0, 0x40); // 00-40
+};
+
+class IVEventScanner
+{
+	PAD(IVEventHandler, pad0, 0x130); // 000-130
+};
+
+
+class CIVPedTaskManager;
+class IVPedTaskManager;
+class IVTask;
+
 class IVPedIntelligence {
 public:
-	PAD(IVPedIntelligence, pad0, 0x44);
-	IVPedTaskManager * m_pPedTaskManager;
+	PAD(IVPedIntelligence, pad0, 0x40);   // 000-044
+	IVPedTaskManager m_pedTaskManager;    // 044-084
+	// 0x84 = CEventGroup m_eventGroup; (size is 0x48 or 0x4C) (4C probs extra CEventGlobalGroup member)
+	// 0xF0 = BYTE m_byteEventId;
+	// 0xF1 = BYTE m_byteEventPriority;
+	// 0xF4 = CVehicleScanner m_vehicleScanner; (CEntityScanner (Size 0x5C))
+	// 0x150 = CPedScanner m_pedScanner;
+	// 0x1AC = CObjectScanner m_objectScanner;
+	PAD(IVPedIntelligence, pad1, 0x26C);  // 084-2F0
+
+	virtual ~IVPedIntelligence();
+	virtual IVEventHandler*	GetEventScanner();
+	virtual IVEventHandler*	GetEventScanner0();
+	virtual IVTask*			CreateMedicTask(int a1); 
+	virtual IVTask*			CreateMedicTaskDrive(int a1); 
+	virtual IVTask*			Function5(int a1);
+	virtual bool			Function6(int a1, int a2);
+	virtual IVEventHandler*	GetEventHandler();
+	virtual IVEventHandler*	GetEventHandler0();
+};
+
+class IVPedIntelligenceNY : public IVPedIntelligence {
+public:
+	IVEventHandler m_eventHandler; // 2F0-330 (CEventHandlerNY)
+	IVEventScanner m_eventScanner; // 330-460 (CEventScannerNY)
+
+	virtual ~IVPedIntelligenceNY();
 };
 
 class IVPedBase {

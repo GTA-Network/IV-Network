@@ -265,7 +265,7 @@ void CGame::RenderRAGEScripts()
 
 	// If our local player exists, pulse him
 	if(m_pLocalPlayer)
-		m_pLocalPlayer->Process();
+		m_pLocalPlayer->Pulse();
 	
 }
 

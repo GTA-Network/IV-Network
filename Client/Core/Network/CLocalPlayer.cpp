@@ -71,7 +71,7 @@ void CLocalPlayer::Respawn()
 void CLocalPlayer::HandleSpawn()
 {
     // Flag us as alive
-    m_bIsDead = false;
+    CLocalPlayer::m_bIsDead = false;
 
 	// Set our current time
 	CGameFunction::SetTimeOfDayFormat(m_dwRespawnTime);
@@ -79,19 +79,41 @@ void CLocalPlayer::HandleSpawn()
 
 void CLocalPlayer::DoDeathCheck()
 {
-    // Have we not yet processed the death and is the local player dead?
-    if(!m_bIsDead && IsDead())
-    {
-        // Send the death notification to the server
+	// Have we not yet processed the death and is the local player dead?
+	if(!CLocalPlayer::m_bIsDead && IsDead())
+	{
+		// Get the kill info
+		EntityId playerId = INVALID_ENTITY_ID;
+		EntityId vehicleId = INVALID_ENTITY_ID;
+		EntityId weaponId = INVALID_ENTITY_ID;
+		GetKillInfo(&playerId, &vehicleId,&weaponId);
 
-        // Mark ourselves as dead
-        m_bIsDead = true;
-    }
+		CLogFile::Printf("HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
+		g_pCore->GetChat()->Outputf(false, "HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
+
+		// Send the death notification to the server
+		CBitStream bsSend;
+		bsSend.WriteCompressed(playerId);
+		bsSend.WriteCompressed(vehicleId);
+		bsSend.WriteCompressed(weaponId);
+		//g_pCore->GetNetworkManager()->Call(NULL, &bsSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, 0, false);
+
+		// Mark ourselves as dead
+		CLocalPlayer::m_bIsDead = true;
+
+		// Reset vehicle entry/exit flags
+		ResetVehicleEnterExit();
+	}
+
 }
 
 void CLocalPlayer::Pulse()
 {
 	CPlayerEntity::Process();
+
+	if(IsSpawned())
+		DoDeathCheck();
+
 	m_bSpawnMarked = true;
 }
 
@@ -108,11 +130,6 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 		CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 		CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 	}
-}
-
-bool CLocalPlayer::IsDead()
-{
-	return false;
 }
 
 unsigned short CLocalPlayer::GetPing()

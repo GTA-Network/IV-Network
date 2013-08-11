@@ -12,100 +12,100 @@
 #include "CIVPedTaskManager.h"
 extern CCore * g_pCore;
 
-CIVPed::CIVPed( ) : CIVPhysical( )
+CIVPed::CIVPed() : CIVPhysical()
 {
 
 }
 
-CIVPed::CIVPed( IVPed * pPed ) : CIVPhysical( pPed )
+CIVPed::CIVPed(IVPed * pPed) : CIVPhysical(pPed)
 {
 	// Reset the task manager
 	m_pPedTaskManager = NULL;
 
 	// Set the ped
-	SetPed( pPed );
+	SetPed(pPed);
 }
 
-CIVPed::~CIVPed( )
+CIVPed::~CIVPed()
 {
 	// Set the ped
-	SetPed( NULL );
+	SetPed(NULL);
 }
 
-void CIVPed::SetPed( IVPed * pPed )
+void CIVPed::SetPed(IVPed * pPed)
 {
-	SetPhysical( pPed );
+	SetPhysical(pPed);
 
 	// Do we have a valid task manager?
-	if( m_pPedTaskManager )
+	if(m_pPedTaskManager)
 	{
 		// Delete the ped task manager
-		SAFE_DELETE( m_pPedTaskManager );
+		SAFE_DELETE(m_pPedTaskManager);
 	}
 
 	// Do we have a valid ped pointer?
-	if( pPed )
+	if(pPed)
 	{
 		// Create the ped task manager
-		m_pPedTaskManager = new CIVPedTaskManager( (IVPedTaskManager *)&(pPed->m_pPedIntelligence->m_pPedTaskManager), this );
+		m_pPedTaskManager = new CIVPedTaskManager(&pPed->m_pPedIntelligence->m_pedTaskManager, this);
 	}
 }
 
-IVPed * CIVPed::GetPed( )
+IVPed * CIVPed::GetPed()
 {
-	return (IVPed *)GetPhysical( );
+	return (IVPed *)GetPhysical();
 }
 
-void CIVPed::SetPlayerInfo( IVPlayerInfo * pPlayerInfo )
+void CIVPed::SetPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Set the player info
-	if( pPed )
+	if(pPed)
 		pPed->m_pPlayerInfo = pPlayerInfo;
 }
 
-IVPlayerInfo * CIVPed::GetPlayerInfo( )
+IVPlayerInfo * CIVPed::GetPlayerInfo()
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Get the player info
-	if( pPed )
+	if(pPed)
 		return pPed->m_pPlayerInfo;
 
 	return NULL;
 }
 
-void CIVPed::SetCurrentHeading( float fCurrentHeading )
+void CIVPed::SetCurrentHeading(float fCurrentHeading)
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Set the current heading
-	if( pPed )
+	if(pPed)
 		pPed->m_fCurrentHeading = fCurrentHeading;
 }
 
-float CIVPed::GetCurrentHeading( )
+float CIVPed::GetCurrentHeading()
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Get the current heading
-	if( pPed )
+	if(pPed)
 		return pPed->m_fCurrentHeading;
 
 	return 0.0f;
 }
 
-void CIVPed::SetDucking( bool bDucking )
+void CIVPed::SetDucking(bool bDucking)
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
-	if( pPed )
+	if(pPed)
 	{
 		int iDuck = (int)bDucking;
 
@@ -116,12 +116,12 @@ void CIVPed::SetDucking( bool bDucking )
 	}
 }
 
-bool CIVPed::IsDucking( )
+bool CIVPed::IsDucking()
 {
 	// Get the ped
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
-	if( pPed )
+	if(pPed)
 	{
 		bool bDucking = false;
 
@@ -135,35 +135,35 @@ bool CIVPed::IsDucking( )
 	return false;
 }
 
-bool CIVPed::IsInVehicle( )
+bool CIVPed::IsInVehicle()
 {
 	// Get the ped pointer
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Is the ped pointer valid?
-	if( pPed )
+	if(pPed)
 		return ((pPed->m_byteUnknown & 4) != 0);
 
 	return false;
 }
 
-void CIVPed::SetCurrentVehicle( IVVehicle * pVehicle )
+void CIVPed::SetCurrentVehicle(IVVehicle * pVehicle)
 {
 	// Get the ped pointer
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Is the ped pointer valid?
-	if( pPed )
+	if(pPed)
 		pPed->m_pCurrentVehicle = pVehicle;
 }
 
-IVVehicle * CIVPed::GetCurrentVehicle( )	
+IVVehicle * CIVPed::GetCurrentVehicle()	
 {
 	// Get the ped pointer
-	IVPed * pPed = GetPed( );
+	IVPed * pPed = GetPed();
 
 	// Is the ped pointer valid?
-	if( pPed )
+	if(pPed)
 		return pPed->m_pCurrentVehicle;
 
 	return NULL;

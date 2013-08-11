@@ -64,9 +64,9 @@ private:
 
 public: // Handles "GET" functions
 
-	bool							IsLocalPlayer() { return m_bLocalPlayer; }
-	bool							IsNetworked() { return m_bNetworked; }
-	bool							IsSpawned() { return m_bSpawned; }
+	inline bool						IsLocalPlayer() { return m_bLocalPlayer; }
+	inline bool						IsNetworked() { return m_bNetworked; }
+	inline bool						IsSpawned() { return m_bSpawned; }
 	
 	bool							IsOnFoot() { return (m_pVehicle == NULL); }
 	bool							IsInVehicle() { return (m_pVehicle != NULL); }
@@ -165,6 +165,11 @@ public: // Handles call functions
 	void							SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
 	void							SetCurrentSyncHeading(float fHeading);
 
+	void							KillPed(bool bInstandly);
+	bool							IsDying();
+	bool							IsDead();
+	IVEntity						*GetLastDamageEntity();
+	bool							GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId);
 
 	void							SetAimData(bool bSwitch, CVector3 vecPos);
 	void							SetShotData(bool bSwitch, CVector3 vecPos);

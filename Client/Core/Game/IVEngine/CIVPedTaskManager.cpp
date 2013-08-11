@@ -12,144 +12,183 @@
 #include "CIVPed.h"
 extern CCore * g_pCore;
 
-CIVPedTaskManager::CIVPedTaskManager( IVPedTaskManager * pPedTaskManager, CIVPed * pPed )
+CIVPedTaskManager::CIVPedTaskManager(IVPedTaskManager * pPedTaskManager, CIVPed * pPed)
+	: m_pPedTaskManager(pPedTaskManager),
+	m_pPed(pPed)
 {
-	// Set the task manager
-	SetPedTaskManager( pPedTaskManager );
-
-	// Set the ped
-	SetPed( pPed );
 }
 
-void CIVPedTaskManager::SetTask( CIVTask * pTask, int iType, bool bForceNewTask )
+void CIVPedTaskManager::SetTask(CIVTask * pTask, int iType, bool bForceNewTask)
 {
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return;
-
-	// Is the task invalid?
-	if( iType >= TASK_PRIORITY_MAX )
-		return;
-
-	IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
-	IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
-	int iForceNewTask = (int)bForceNewTask;
-
-	_asm	push iForceNewTask;
-	_asm	push iType;
-	_asm	push pGameTask;
-	_asm	mov ecx, pPedTaskManager;
-	_asm	call COffsets::FUNC_CPedTaskManager__SetTaskPriority;
-}
-
-void CIVPedTaskManager::RemoveTask( int iType )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return;
-
-	// Is the task invalid?
-	if( iType >= TASK_PRIORITY_MAX )
-		return;
-
-	// Is the task the default task?
-	if( iType == TASK_PRIORITY_DEFAULT )
-		return;
-
-	// Set the task
-	SetTask( NULL, iType );
-}
-
-CIVTask * CIVPedTaskManager::GetTask( int iType )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return NULL;
-
-	// Is the task invalid?
-	if( iType >= TASK_PRIORITY_MAX )
-		return NULL;
-
-	return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( m_pPedTaskManager->m_pPrimaryTasks[iType] );
-}
-
-void CIVPedTaskManager::SetSecondaryTask( CIVTask * pTask, int iType )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return;
-
-	// Is the task invalid?
-	if( iType >= TASK_SECONDARY_MAX )
-		return;
-
-	IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
-	IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
-	
-	_asm	push iType;
-	_asm	push pGameTask;
-	_asm	mov ecx, pPedTaskManager;
-	_asm	call COffsets::FUNC_CPedTaskManager__SetTaskSecondary;
-}
-
-void CIVPedTaskManager::RemoveSecondaryTask( int iType )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return;
-
-	// Is the task invalid?
-	if( iType >= TASK_SECONDARY_MAX )
-		return;
-
-	// Set the task
-	SetSecondaryTask( NULL, iType );
-}
-
-CIVTask * CIVPedTaskManager::GetSecondaryTask( int iType )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return NULL;
-
-	// Is the task invalid?
-	if( iType >= TASK_SECONDARY_MAX )
-		return NULL;
-
-	return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask( m_pPedTaskManager->m_pSecondaryTasks[iType] );
-}
-
-void CIVPedTaskManager::ClearTask( int iAbortPriority )
-{
-	// Is the ped task manager invalid?
-	if( !m_pPedTaskManager )
-		return;
-
-	// Clear the primary tasks
-	for( int i = 0; i < TASK_PRIORITY_MAX; i++ )
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
 	{
-		// Get the task pointer
-		CIVTask * pTask = GetTask( i );
-
-		// Is the task pointer valid?
-		if( pTask )
+		// Ensure the task type is valid
+		if(iType < TASK_PRIORITY_MAX)
 		{
-			// Abort the task
-			pTask->MakeAbortable( m_pPed, iAbortPriority, NULL );
+			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
+			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
+
+			_asm	push bForceNewTask;
+			_asm	push iType;
+			_asm	push pGameTask;
+			_asm	mov ecx, pPedTaskManager;
+			_asm	call COffsets::FUNC_CPedTaskManager__SetTaskPriority;
+		}
+	}
+}
+
+void CIVPedTaskManager::RemoveTask(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_PRIORITY_MAX)
+		{
+			// Make sure its not the default task
+			if(iType != TASK_PRIORITY_DEFAULT)
+				SetTask(NULL, iType);
+		}
+	}
+}
+
+CIVTask * CIVPedTaskManager::GetTask(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_PRIORITY_MAX)
+			return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pPedTaskManager->m_pPrimaryTasks[iType]);
+	}
+
+	return NULL;
+}
+
+void CIVPedTaskManager::SetTaskSecondary(CIVTask * pTask, int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_SECONDARY_MAX)
+		{
+			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
+			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
+			_asm
+			{
+				push iType
+				push pGameTask
+				mov ecx, pPedTaskManager
+				call COffsets::FUNC_CPedTaskManager__SetTaskSecondary
+			}
+		}
+	}
+}
+
+void CIVPedTaskManager::RemoveTaskSecondary(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_SECONDARY_MAX)
+			SetTaskSecondary(NULL, iType);
+	}
+}
+
+CIVTask * CIVPedTaskManager::GetTaskSecondary(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_SECONDARY_MAX)
+			return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pPedTaskManager->m_pSecondaryTasks[iType]);
+	}
+
+	return NULL;
+}
+
+void CIVPedTaskManager::SetTaskMovement(CIVTask * pTask, int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_MOVEMENT_MAX)
+		{
+			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
+			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
+			_asm
+			{
+				push iType
+				push pGameTask
+				mov ecx, pPedTaskManager
+				call COffsets::FUNC_CPedTaskManager__SetTaskMovement
+			}
+		}
+	}
+}
+
+void CIVPedTaskManager::RemoveTaskMovment(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_MOVEMENT_MAX)
+			SetTaskMovement(NULL, iType);
+	}
+}
+
+CIVTask * CIVPedTaskManager::GetTaskMovement(int iType)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Ensure the task type is valid
+		if(iType < TASK_MOVEMENT_MAX)
+		{
+			if(g_pCore->GetGame()->GetTaskManager())
+				return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pPedTaskManager->m_pMovementTasks[iType]);
 		}
 	}
 
-	// Clear the secondary tasks
-	for( int i = 0; i < TASK_SECONDARY_MAX; i++ )
-	{
-		// Get the task pointer
-		CIVTask * pTask = GetSecondaryTask( i );
+	return NULL;
+}
 
-		// Is the task pointer valid?
-		if( pTask )
+void CIVPedTaskManager::ClearTasks(int iAbortPriority)
+{
+	// Do we have a valid ped task manager pointer?
+	if(m_pPedTaskManager)
+	{
+		// Clear priority tasks
+		for(int i = 0; i < TASK_PRIORITY_MAX; i++)
 		{
-			// Abort the task
-			pTask->MakeAbortable( m_pPed, iAbortPriority, NULL );
+			CIVTask * pTask = GetTask(i);
+
+			if(pTask)
+				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
+		}
+
+		// Clear secondary tasks
+		for(int i = 0; i < TASK_SECONDARY_MAX; i++)
+		{
+			CIVTask * pTask = GetTaskSecondary(i);
+
+			if(pTask)
+				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
+		}
+
+		// Clear movement tasks
+		for(int i = 0; i < TASK_MOVEMENT_MAX; i++)
+		{
+			CIVTask * pTask = GetTaskMovement(i);
+
+			if(pTask)
+				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
 		}
 	}
 }
