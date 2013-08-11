@@ -125,4 +125,5 @@ void CPatches::Initialize()
 	//CPatcher::InstallJmpPatch((g_pCore->GetBaseAddress() + 0x8589D3), (g_pCore->GetBaseAddress() + 0x859E25));
 
 	*(BYTE *)(g_pCore->GetBase() + 0x857133) = 0xE0;
+
 }
