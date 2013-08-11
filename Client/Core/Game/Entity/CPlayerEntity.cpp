@@ -895,6 +895,19 @@ void CPlayerEntity::CheckVehicleEnterExit()
 		// Are we not in a vehicle?
 		if(!InternalIsInVehicle())
 		{
+			if(m_pVehicleEnterExit->bEntering)
+			{
+				// Is the flag wrong (did the player cancel entering ?)
+				if (!IsGettingIntoAVehicle())
+				{
+					if (IsLocalPlayer())
+					{
+						g_pCore->GetChat()->Output("VehicleEntryAborted");
+						m_pVehicleEnterExit->bEntering = false;
+					}
+				}
+			}
+
 			// Has the enter/exit vehicle key been pressed?
 			if(m_lastControlState.IsUsingEnterExitVehicle() || m_lastControlState.IsUsingHorn())
 			{
