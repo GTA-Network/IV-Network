@@ -78,8 +78,8 @@ public:
 class CChat
 {
 
-public:
-
+private:
+	
 	CChatLine				m_Lines[ CHAT_MAX_LINES ];
 	CChatInputLine			m_InputLine;
 
@@ -93,28 +93,32 @@ public:
 	CString					m_strCommand;
 
 	bool					m_bVisible;
+	bool					m_bInputBlocked;
 	bool					m_bInputVisible;
 	bool					m_bPaused;
 	bool					m_bMap;
 	bool					m_bOldState;
 
-	float					m_fX;
-	float					m_fY;
 
 	int						m_iRenderLines;
 	unsigned int			m_uiNumLines;
 	unsigned int			m_uiMostRecentLine;
 	unsigned int			m_uiCurrentPageScroll;
 
-	CColor					m_Color;
-	CColor					m_TextColor;
-	CColor					m_InputTextColor;
 
 	int						m_iCurrentHistory;
 	int						m_iTotalHistory;
 	CString					m_strHistory[ CHAT_MAX_HISTORY ];
 	CString					m_strInputHistory;
 
+public:
+
+	float					m_fX;
+	float					m_fY;
+	
+	CColor					m_Color;
+	CColor					m_TextColor;
+	CColor					m_InputTextColor;
 
 							CChat					(float fX, float fY);
 							~CChat					();

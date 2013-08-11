@@ -22,6 +22,7 @@ CChat::CChat(float fX, float fY)
 	// Reset the variables
 	SetVisible(true);
 	m_bPaused = false;
+	m_bInputBlocked = false;
 	m_bMap = false;
 	m_bOldState = false;
 	m_uiNumLines = CHAT_MAX_LINES;
@@ -205,6 +206,21 @@ void CChat::SetInputVisible(bool bVisible)
 
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 {
+	if (!m_bInputBlocked)
+	{
+		// Enable the input after 2 seconds
+		unsigned uiTime = timeGetTime();
+
+		if ((uiTime - 2000) > g_pCore->GetGameLoadInitializeTime())
+		{
+			m_bInputBlocked = true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	if (!IsVisible() || g_pCore->GetClientState() != GAME_STATE_INGAME)
 		return false;
 
