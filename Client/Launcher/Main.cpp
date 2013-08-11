@@ -149,6 +149,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			return ShowMessageBox("LaunchGTAIV.exe is already running. Cannot launch IV: Multiplayer.");
 	}
 
+	// Check if we have the 'multiplayer' directory, if not: create it.
+	char szExecutablePath[MAX_PATH];
+	GetModuleFileName( NULL, szExecutablePath, MAX_PATH );
+
+	CString strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath = strMultiplayerPath.Substring (0, strMultiplayerPath.ReverseFind ("\\"));
+	strMultiplayerPath.AppendF ("\\multiplayer");
+
+	if (!SharedUtility::Exists(strMultiplayerPath.Get()))
+		SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
 	// TODO ADD WINDOW COMMANDLINE SUPPORT!
 
 	// Check if we have an server connect command
