@@ -36,7 +36,10 @@ void CPatches::Initialize()
 	// Make the game think we are not connected to the internet
     *(BYTE *)(g_pCore->GetBase() + 0x10F1390) = 0; // byteInternetConnectionState
     *(DWORD *)(g_pCore->GetBase() + 0x7AF1A0) = 0x90C3C032; // xor al, al; retn; nop
-		
+	
+	// Disable(resize to zero) help-message box
+	*(DWORD *)((g_pCore->GetBase() + 0xF1DC40) + 0x9B8) = 0;
+
     // Always start a new game
     CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x5B0311), (g_pCore->GetBase() + 0x5B03BF));
 	
