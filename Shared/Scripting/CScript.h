@@ -10,13 +10,25 @@
 #ifndef CScript_h
 #define CScript_h
 
+#include <Common.h>
+
+enum eScriptType {
+	CLIENT_SCRIPT,
+	SERVER_SCRIPT,
+	SHARED_SCRIPT,
+};
+
 class CScript {
-
 private:
-
+	eScriptType		m_ScriptType;
+	CString			m_strScriptFileName;
 public:
 	CScript();
 	~CScript();
+
+	eScriptType		GetType() { return m_ScriptType; }
+
+	CString			GetScriptFileName() { return m_strScriptFileName; }
 };
 
 #endif // CScript_h

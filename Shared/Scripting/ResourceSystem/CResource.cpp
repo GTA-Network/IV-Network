@@ -12,11 +12,18 @@
 #include <CLogFile.h>
 #include "../CLuaVM.h"
 #include "../CSquirrelVM.h"
+#include "CResourceServerScript.h"
+#include "CResourceClientScript.h"
 #include <SharedUtility.h>
 #include <CXML.h>
 
 CResource::CResource()
-	: m_pVM(0)
+	: m_pVM(0),
+	m_strAbsPath(""),
+	m_strResourceName(""),
+	m_bLoaded(false),
+	m_bActive(false),
+	m_resourceScriptType(eResourceScriptType::UNKNOWN)
 {
 
 
@@ -26,7 +33,10 @@ CResource::CResource()
 CResource::CResource(CString strAbsPath, CString strResourceName)
 	: m_pVM(0),
 	m_strAbsPath(strAbsPath),
-	m_strResourceName(strResourceName)
+	m_strResourceName(strResourceName),
+	m_bLoaded(false),
+	m_bActive(false),
+	m_resourceScriptType(eResourceScriptType::UNKNOWN)
 {
 
 	Load();
@@ -60,6 +70,7 @@ bool CResource::Load()
 	if(pMetaXML->findNode("info"))
 	{
 		// Not really important coming soon
+		// Well its important to specify the script type so you can use any file ending
 	}
 
 	// Reset to root
@@ -96,26 +107,40 @@ bool CResource::Load()
 				// Get the script name
 				CString strScript = pMetaXML->getAttribute("src");
 
-				// Make sure the name is valid and attempt to load the script
-				if(strScript && !strScript.IsEmpty())
+				if(!strScript.IsEmpty())
 				{
-#if 0
-					// TODO: rewirte this shit
-					script.SetScriptFilename(strScript);
+					if (m_resourceScriptType == eResourceScriptType::UNKNOWN)
+					{
+						// Try to detect the resource script type
+						if (strScript.EndsWith(".lua")) {
+							m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
+						} else if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
+							m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
+						} else {
+							CLogFile::Printf("Unknown script type");
+							return false;
+						}
+					}
+
+					
+					CLogFile::Printf("\t[TODO] Implement scripts");
+					//script.SetScriptFilename(strScript);
 
 					CString scriptType = pMetaXML->getAttribute("type");
 					if(scriptType == "client")
 					{
-						script.SetType(CLIENT_SCRIPT);
+						//script.SetType(CLIENT_SCRIPT);
+						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
 					} else if(scriptType == "server") {
-						script.SetType(SERVER_SCRIPT);
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						//script.SetType(SERVER_SCRIPT);
 					} else if(scriptType == "shared") {
-						script.SetType(SHARED_SCRIPT);
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						//script.SetType(SHARED_SCRIPT);
+					} else {
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
 					}
-
-					m_Scripts.push_back(script);
-#endif
-					CLogFile::Printf("\t[TODO] Implement scripts");
 				}
 			}
 			// Attempt to load the next script node (if any)
@@ -159,6 +184,15 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 		
 		CreateVM();
 
+		for(auto pResourceFile : m_resourceFiles)
+		{
+			if(!pResourceFile->Start())
+			{
+				return false;
+			}
+
+		}
+
 		return true;
 	}
 
@@ -177,9 +211,11 @@ bool CResource::CreateVM()
 	{
 		if(GetResourceScriptType() == LUA_RESOURCE)	{
 			m_pVM =  new CLuaVM(this);
+			CLogFile::Printf("LuaVM created");
 			return true;
 		} else if(GetResourceScriptType() == SQUIRREL_RESOURCE) {
 			m_pVM = new CSquirrelVM(this);
+			CLogFile::Printf("SquirrelVM created");
 			return true;
 		} else {
 			CLogFile::Printf("Failed to create VM => Invalid resource script type");

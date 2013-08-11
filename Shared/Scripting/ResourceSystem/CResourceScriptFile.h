@@ -10,13 +10,20 @@
 #ifndef CResourceScriptFile_h
 #define CResourceScriptFile_h
 
-class CResourceScriptFile {
+#include "CResourceFile.h"
+
+class CResource;
+
+class CResourceScriptFile : public CResourceFile {
 
 private:
 
 public:
-	CResourceScriptFile();
+	CResourceScriptFile(CResource * resource, const char * szShortName, const char * szResourceFileName);
 	~CResourceScriptFile();
+
+	virtual bool	Start() = 0;
+	virtual bool	Stop() = 0;
 };
 
 #endif // CResourceScriptFile_h

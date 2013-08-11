@@ -44,32 +44,72 @@ void CResourceManager::AddResource(CResource * pResource)
 
 void CResourceManager::RemoveResource(CResource * pResource)
 {
+	assert(std::find(m_resources.begin(), m_resources.end(), pResource) != m_resources.end());
 
 	m_resources.remove(pResource);
-
 }
 
-CResource * CResourceManager::Get(int * pVM) // TODO: change to GetByVM
+CResource * CResourceManager::Get(int * pVM) // TODO: change to GetResourceByVM
 { 
 	for(auto pResource : m_resources) 
 	{ 
-		if(pResource->GetVM()->GetVMType() == LUA_VM)
+		if(pResource)
 		{
-			if(((CLuaVM*)pResource->GetVM())->GetVM() == (lua_State*)pVM)
-				return pResource;
-		} else if(pResource->GetVM()->GetVMType() == SQUIRREL_VM) {
-			if(((CSquirrelVM*)pResource->GetVM())->GetVM() == (SQVM*)pVM)
-				return pResource;
+			if(pResource->GetVM()->GetVMType() == LUA_VM)
+			{
+				CLuaVM* pLuaVM = (CLuaVM*)pResource->GetVM();
+				if(pLuaVM && pLuaVM->GetVM() == (lua_State*)pVM) {
+					return pResource;
+				}
+			} 
+			else if(pResource->GetVM()->GetVMType() == SQUIRREL_VM) 
+			{
+				CSquirrelVM* pLuaVM = (CSquirrelVM*)pResource->GetVM();
+				if(pLuaVM && pLuaVM->GetVM() == (SQVM*)pVM) {
+					return pResource;
+				}
+			}
 		}
 	}
 	return 0;
 }
 
 
+bool CResourceManager::Reload(CResource* pResource)
+{
+	return true;
+}
+
 bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*> * dependents, bool bStartedManually, bool bStartIncludedResources)
 {
-	CLogFile::Printf("Resource started");
-	return true;
+	// Has resurce changed since load?
+	if(pResource->HasChanged())
+	{
+		// Attempt to reload it
+		if(Reload(pResource))
+		{
+			CLogFile::Printf("Resource started");
+			// Start the resource
+			return pResource->Start(NULL, bStartedManually, bStartIncludedResources);
+		}
+		else
+			return false;
+	}
+	else
+	{
+		// If it's not running yet
+		if(!pResource->IsActive())
+		{
+			CLogFile::Printf("Resource started");
+			// Start it
+			return pResource->Start(dependents, bStartedManually, bStartIncludedResources);
+		}
+		return false;
+	}
+
+	// Stop it again if it failed starting
+	pResource->Stop();
+	return false;
 }
 
 CResource* CResourceManager::Load(CString strAbsPath, CString strResourceName)

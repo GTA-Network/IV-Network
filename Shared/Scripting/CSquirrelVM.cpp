@@ -10,6 +10,7 @@
 #include "CSquirrelVM.h"
 #include <CLogFile.h>
 #include <Squirrel/sqstdio.h>
+#include <Squirrel/sqstdaux.h>
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource)
@@ -17,7 +18,7 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 	m_pVM = sq_open(1024);
 
 	// Register the default error handlers
-	//sqstd_seterrorhandlers(m_pVM);
+	sqstd_seterrorhandlers(m_pVM);
 
 	// Push the root table onto the stack
 	sq_pushroottable(m_pVM);
@@ -38,29 +39,24 @@ CSquirrelVM::~CSquirrelVM()
 
 bool CSquirrelVM::LoadScript(CString script)
 {
-#if 0
-	CString scriptPath( "%s/%s", m_pResource->GetPath().Get(), script.Get());
+	CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
 	if(SQ_FAILED(sqstd_dofile( m_pVM, scriptPath.Get(), SQFalse, SQTrue )))
 	{
-		CLogFile::Printf("[%s] Failed to load file %s.", m_pResource->GetName().Get(), script.Get());
+		CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
 		return false;
 	}
-	CLogFile::Printf("\t[%s] Loaded file %s.", m_pResource->GetName().Get(), script.Get());
-	return true;
-#endif
+	CLogFile::Printf("\t[%s] Loaded file %s.", GetResource()->GetName().Get(), script.Get());
 	return true;
 }
 
 bool CSquirrelVM::LoadScripts(std::list<CScript> scripts)
 {
-#if 0
-	for(auto strScript : scripts)
-		if(strScript.GetType() != CLIENT_SCRIPT)
-			if(!LoadScript(strScript.GetScriptFileName()))
+	for(auto Script : scripts)
+		if (Script.GetType() != CLIENT_SCRIPT)
+			if (!LoadScript(Script.GetScriptFileName()))
 				return false;
-#endif
+	
 	return true;
-
 }
 
 void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)

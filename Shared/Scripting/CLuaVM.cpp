@@ -140,7 +140,7 @@ void CLuaVM::PopString(CString& str)
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if(argType == LUA_TSTRING || argType == LUA_TNUMBER)
 	{
-		size_t length;
+		size_t length = 0;
 		str.Set(lua_tolstring(m_pVM, m_iStackIndex++, &length), length);
 		return;
 	}
@@ -154,7 +154,7 @@ void CLuaVM::PopString(CString& str, CString strDefaultValue)
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if(argType == LUA_TSTRING || argType == LUA_TNUMBER)
 	{
-		size_t length;
+		size_t length = 0;
 		str.Set(lua_tolstring(m_pVM, m_iStackIndex++, &length), length);
 		return;
 	} else {

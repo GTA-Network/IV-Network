@@ -11,7 +11,9 @@
 #define CServer_h
 
 #include <limits.h>
+#ifndef UINT_MAX
 #define UINT_MAX 4294967295
+#endif
 #include "Common.h"
 
 #include <CNetworkServer.h>

@@ -8,3 +8,15 @@
 //==============================================================================
 
 #include "CResourceScriptFile.h"
+
+
+CResourceScriptFile::CResourceScriptFile(CResource * resource, const char * szShortName, const char * szResourceFileName)
+	: CResourceFile(resource, szShortName, szResourceFileName)
+{
+
+}
+
+CResourceScriptFile::~CResourceScriptFile()
+{
+
+}

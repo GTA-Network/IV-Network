@@ -10,13 +10,20 @@
 #ifndef CResourceClientScript_h
 #define CResourceClientScript_h
 
-class CResourceClientScript {
+#include "CResourceScriptFile.h"
+
+class CResource;
+
+class CResourceClientScript : public CResourceScriptFile {
 
 private:
 
 public:
-	CResourceClientScript();
+	CResourceClientScript(CResource * resource, const char * szShortName, const char * szResourceFileName);
 	~CResourceClientScript();
+
+	bool	Start();
+	bool	Stop();
 };
 
 #endif // CResourceClientScript_h
