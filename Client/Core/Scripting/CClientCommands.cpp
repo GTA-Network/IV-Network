@@ -125,6 +125,45 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		
 		return true;
 	}
+	else if(strCommand == "saveposition")
+	{
+		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.txt"), "a");
+		if(!file)
+		{
+			g_pCore->GetChat()->Output("Failed to open 'SavedData.txt'");
+			return true;
+		}
+
+		CVector3 vecPosition;
+
+		// Get our local player
+		CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
+
+		if(pLocalPlayer->IsInVehicle())
+		{
+			CVehicleEntity * pVehicle = pLocalPlayer->GetVehicleEntity();
+
+			if(pVehicle)
+			{
+				pVehicle->GetPosition(vecPosition);
+				CVector3 vecRotation;
+				pVehicle->GetRotation(vecRotation);
+				BYTE byteColors[4];
+				pVehicle->GetColors(byteColors[0], byteColors[1], byteColors[2], byteColors[3]);
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, byteColors[0], byteColors[1], byteColors[2], byteColors[3], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+			}
+		}
+		else
+		{
+			pLocalPlayer->GetPosition(vecPosition);
+			int iModelId = pLocalPlayer->GetPlayerPed()->GetModelIndex();
+			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetRotation() ,strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+		}
+
+		fclose(file);
+		g_pCore->GetChat()->Output("Position data saved to 'SavePositions.log'");
+		return true;
+	}
 	
 	return false;
 }
