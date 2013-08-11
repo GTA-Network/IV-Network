@@ -16,49 +16,56 @@ bool                              CSettings::m_bOpen = false;
 bool                              CSettings::m_bSave = false;
 TiXmlDocument                     CSettings::m_XMLDocument;
 
-void CSettings::LoadDefaults()
+void CSettings::LoadDefaults(bool bClient)
 {
-	AddInteger("queryport", 10000, 1024, 65534);
-	AddInteger("port", 9999, 1024, 65535);
-	AddInteger("httpport", 9998, 80, 65535);
-	AddString("httpserver", "");
-	AddInteger("maxplayers", MAX_PLAYERS, 1, MAX_PLAYERS);
-	AddInteger("maxvehicles", MAX_VEHICLES, 0, MAX_VEHICLES);
-	AddString("password", "");
-	AddBool("query", true);
-	AddBool("listed", false);
-	AddBool("guinametags",false);
-	AddBool("vehicledamage", false);
-	AddBool("vehiclewaterdeath", true);
-	AddBool("headmovement",true);
-	AddBool("checkGTAFiles",true);
-	AddString("hostname", VERSION_IDENTIFIER_2 " Server");
-	AddString("hostaddress", "");
-	AddBool("frequentevents", false);
-	AddBool("kickoldplayers", true);
-	AddBool("paynspray", true);
-	AddBool("autoaim", true);
-	AddInteger("weather", 1, 1, 10);
-	AddFloat("wind",0.0,0.0,50.0);
-	AddBool("silent", false);
-	AddBool("timestamp", true);
-	AddList("script");
-	AddList("clientscript");
-	AddList("clientresource");
-	AddList("module");
-	AddList("config");
-	AddList("resource");
-	AddString("ip", "127.0.0.1");
-	AddString("nick", "player");
-	AddString("pass", "");
-	AddBool("windowed", false);
-	AddBool("fps", false);
-	AddString("chatfont", "tahoma-bold");
-	AddInteger("chatsize", 10, 1, 100);
-	AddInteger("chatbga", 0, 0, 255);
-	AddInteger("chatbgr", 0, 0, 255);
-	AddInteger("chatbgg", 0, 0, 255);
-	AddInteger("chatbgb", 0, 0, 255);
+	CLogFile::Printf("LoadDefaultSettings: %d",bClient);
+
+	if(!bClient) {
+		AddInteger("queryport", 10000, 1024, 65534);
+		AddInteger("port", 9999, 1024, 65535);
+		AddInteger("httpport", 9998, 80, 65535);
+		AddString("httpserver", "");
+		AddInteger("maxplayers", MAX_PLAYERS, 1, MAX_PLAYERS);
+		AddInteger("maxvehicles", MAX_VEHICLES, 0, MAX_VEHICLES);
+		AddString("password", "");
+		AddBool("query", true);
+		AddBool("listed", false);
+		AddBool("guinametags",false);
+		AddBool("vehicledamage", false);
+		AddBool("vehiclewaterdeath", true);
+		AddBool("headmovement",true);
+		AddBool("checkGTAFiles",true);
+		AddString("hostname", VERSION_IDENTIFIER_2 " Server");
+		AddString("hostaddress", "");
+		AddBool("frequentevents", false);
+		AddBool("kickoldplayers", true);
+		AddBool("paynspray", true);
+		AddBool("autoaim", true);
+		AddInteger("weather", 1, 1, 10);
+		AddFloat("wind",0.0,0.0,50.0);
+		AddBool("silent", false);
+		AddBool("timestamp", true);
+		AddList("script");
+		AddList("clientscript");
+		AddList("clientresource");
+		AddList("module");
+		AddList("config");
+		AddList("resource");
+	}
+	else {
+		// Load client settings
+		AddString("ip", "127.0.0.1");
+		AddString("nick", "player");
+		AddString("pass", "");
+		AddBool("windowed", false);
+		AddBool("fps", false);
+		AddString("chatfont", "tahoma-bold");
+		AddInteger("chatsize", 10, 1, 100);
+		AddInteger("chatbga", 0, 0, 255);
+		AddInteger("chatbgr", 0, 0, 255);
+		AddInteger("chatbgg", 0, 0, 255);
+		AddInteger("chatbgb", 0, 0, 255);
+	}
 }
 
 SettingsValue * CSettings::GetSetting(CString strSetting)
@@ -72,13 +79,13 @@ SettingsValue * CSettings::GetSetting(CString strSetting)
 	return NULL;
 }
 
-bool CSettings::Open(CString strPath, bool bCreate, bool bSave)
+bool CSettings::Open(CString strPath, bool bCreate, bool bSave, bool bClient)
 {
 	// Flag we are not allowed to save the file by default
 	m_bSave = false;
 
 	// Load the default settings
-	LoadDefaults();
+	LoadDefaults(bClient);
 
 	// Does the settings file not exist?
 	bool bExists = true;

@@ -50,7 +50,7 @@ bool CCore::Initialise()
 	m_uiBaseAddress -= 0x400000;
 
 	// Open the settings file
-	CSettings::Open( SharedUtility::GetAbsolutePath("IVMP-Client.xml"), true, false );
+	CSettings::Open(SharedUtility::GetAbsolutePath(CLIENT_SETTINGS_FILE), true, false, true);
 
 	// Parse the command line
 	CSettings::ParseCommandLine(GetCommandLine());

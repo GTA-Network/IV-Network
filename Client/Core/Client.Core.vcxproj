@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Binary\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>IVMultiplayer</TargetName>
     <IntDir>$(SolutionDir)\Binary\temp\build_clientcore\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

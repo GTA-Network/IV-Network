@@ -117,8 +117,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #endif
 
 // Library Names
-#define CLIENT_CORE_NAME "Client.Core"
-#define CLIENT_LAUNCH_HELPER_NAME "Client.LaunchHelper"
+#define CLIENT_CORE_NAME "IVMultiplayer"
+#define CLIENT_LAUNCH_HELPER_NAME "IVMultiplayerLaunchInjector"
 #define SERVER_CORE_NAME "Server.Core"
 #define NETWORK_MODULE_NAME "Network.Core"
 #define VFS_MODULE_NAME "Client.VFS"
@@ -157,7 +157,9 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define UNSET_BIT(a, b) a &= ~(b)
 
 // Logfile definitions
-#define CLIENT_LOG_FILE "IVMP-Client.log"
+#define CLIENT_LOG_FILE "multiplayer//IVMP-Client.log"
+#define CLIENT_CHATLOG_FILE "multiplayer//IVMP-Chat.log"
+#define CLIENT_SETTINGS_FILE "multiplayer//IVMP-Settings.xml"
 
 // Chat definitions
 #define	NUM_FONTS 2

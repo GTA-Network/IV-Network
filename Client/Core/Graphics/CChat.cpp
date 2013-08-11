@@ -141,7 +141,7 @@ void CChat::Output(const char * szText, bool bColorCoded)
 		{
 			// Add the message to the chatlog
 			CLogFile::Close();
-			CLogFile::Open("Chatlog.txt", true);
+			CLogFile::Open(CLIENT_CHATLOG_FILE, true);
 			CLogFile::Printf("%s", szRemainingText);
 			CLogFile::Close();
 			CLogFile::Open(CLIENT_LOG_FILE, true); // Reopen client logfile

@@ -69,7 +69,7 @@ private:
 	static bool                              m_bSave;
 	static TiXmlDocument                     m_XMLDocument;
 
-	static void                                LoadDefaults();
+	static void                                LoadDefaults(bool bClient = false);
 	static SettingsValue                     * GetSetting(CString strSetting);
 
 public:
@@ -77,7 +77,7 @@ public:
 	~CSettings();
 
 	static std::map<CString, SettingsValue *> * GetValues() { return &m_values; }
-	static bool                                Open(CString strPath, bool bCreate = true, bool bSave = true);
+	static bool                                Open(CString strPath, bool bCreate = true, bool bSave = true, bool bClient = false);
 	static bool                                Close();
 	static bool                                Save();
 

@@ -31,7 +31,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			DisableThreadLibraryCalls(hModule);
 
 			// Delete the chatlog
-			CLogFile::Open("Chatlog.txt");
+			CLogFile::Open(CLIENT_CHATLOG_FILE);
 			CLogFile::Close();
 			
 			// Open the log file

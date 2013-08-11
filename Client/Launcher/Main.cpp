@@ -184,7 +184,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	// Open default clientsettings
-	CSettings::Open(SharedUtility::GetAbsolutePath("clientsettings.xml"));
+	CSettings::Open(SharedUtility::GetAbsolutePath(CLIENT_SETTINGS_FILE), true, true, true);
 
 	// If we have found an direct connect force
 	if(bCommandFound)
