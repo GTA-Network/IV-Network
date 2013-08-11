@@ -30,6 +30,6 @@ bool CResourceServerScript::Start()
 
 bool CResourceServerScript::Stop()
 {
-
+	// Nothing can be done here
 	return true;
 }

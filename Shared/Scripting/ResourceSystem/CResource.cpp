@@ -188,9 +188,41 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 		{
 			if(!pResourceFile->Start())
 			{
+				// Stop all the resource items without any warnings
+				//StopAllResourceFiles();
+				DestroyVM();
+
+				m_bActive = false;
+				//m_bStarting = false;
 				return false;
 			}
 
+		}
+
+		if(bStartIncludedResources)
+		{
+			for(auto pIncludedResource : m_includedResources)
+			{
+				auto pResource = pIncludedResource->GetResource();
+				if(pResource)
+				{
+					if(pResource->HasChanged())
+                    {
+                        // Reload it if it's not already started
+                        if(!pResource->IsActive())
+                        {
+							pResource->Reload();
+                        }
+                        else
+                        {
+                            CLogFile::Printf("WARNING: Included resource %s has changed but unable to reload due to resource already being in use\n", pResource->GetName ().Get());
+                        }
+                    }
+
+                    // Make us dependant of it
+                    pResource->AddDependent(this);
+				}
+			}
 		}
 
 		return true;
@@ -203,6 +235,21 @@ bool CResource::Stop(bool bStopManually)
 {
 
 	return true;
+}
+
+bool CResource::Unload()
+{
+	Stop(true);
+
+	m_bLoaded = false;
+
+	return false;
+}
+
+void CResource::Reload()
+{
+	Unload();
+	Load();
 }
 
 bool CResource::CreateVM()
@@ -226,3 +273,13 @@ bool CResource::CreateVM()
 	return false;
 }
 
+void CResource::DestroyVM()
+{
+
+}
+
+void CResource::AddDependent(CResource* pResource)
+{
+	if(std::find(m_dependents.begin(), m_dependents.end(), pResource) != m_dependents.end())
+		m_dependents.push_back(pResource);
+}

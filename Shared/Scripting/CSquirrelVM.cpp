@@ -36,11 +36,13 @@ CSquirrelVM::~CSquirrelVM()
 	m_pVM = NULL;
 }
 
+#include <SharedUtility.h>
 
 bool CSquirrelVM::LoadScript(CString script)
 {
 	CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
-	if(SQ_FAILED(sqstd_dofile( m_pVM, scriptPath.Get(), SQFalse, SQTrue )))
+	
+	if(!SharedUtility::Exists(script.Get()) && SQ_FAILED(sqstd_dofile( m_pVM, scriptPath.Get(), SQFalse, SQTrue )))
 	{
 		CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
 		return false;

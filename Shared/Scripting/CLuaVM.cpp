@@ -9,6 +9,8 @@
 
 #include "CLuaVM.h"
 #include <lua/lua.hpp>
+#include <SharedUtility.h>
+#include <CLogFile.h>
 
 CLuaVM::CLuaVM(CResource* pResource)
 	: CScriptVM(pResource)
@@ -26,14 +28,29 @@ CLuaVM::~CLuaVM()
 
 bool CLuaVM::LoadScript(CString script)
 {
-
+		CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
+	
+	if(!SharedUtility::Exists(script.Get()) && luaL_loadfile(m_pVM, scriptPath.Get()) != 0)
+	{
+		CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
+		return false;
+	} else {
+		if(lua_pcall(m_pVM, 0, LUA_MULTRET, 0) == 0)
+			CLogFile::Printf("\t[%s] Loaded file %s.", GetResource()->GetName().Get(), script.Get());
+		return true;
+	}
+	CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
 	return false;
 }
 
 bool CLuaVM::LoadScripts(std::list<CScript> scripts)
 {
+	for(auto Script : scripts)
+		if (Script.GetType() != CLIENT_SCRIPT)
+			if (!LoadScript(Script.GetScriptFileName()))
+				return false;
 
-	return false;
+	return true;
 }
 
 void CLuaVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)

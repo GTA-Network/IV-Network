@@ -16,6 +16,7 @@
 #include "CResourceFile.h"
 
 class CScriptVM;
+class CIncludedResource;
 
 enum eResourceScriptType {
 	LUA_RESOURCE,

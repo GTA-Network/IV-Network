@@ -8,3 +8,14 @@
 //==============================================================================
 
 #include "CResourceClientFile.h"
+
+
+CResourceClientFile::CResourceClientFile()
+{
+
+}
+
+CResourceClientFile::~CResourceClientFile()
+{
+
+}
