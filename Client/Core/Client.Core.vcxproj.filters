@@ -129,6 +129,12 @@
     <Filter Include="Source Files\Libraries\LibPNG">
       <UniqueIdentifier>{aef79625-8d90-4195-a707-5340a3e588ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Hooks\CWin32MouseHook">
+      <UniqueIdentifier>{48a9aec6-ea59-4631-83d9-d620322d6175}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Hooks\CWin32MouseHook">
+      <UniqueIdentifier>{3d37df47-b8f2-401b-bf5e-8bbe13bf9232}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -802,6 +808,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Libraries\zlib-1.2.5\zutil.c">
       <Filter>Source Files\Libraries\ZLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\CWin32MouseHook.cpp">
+      <Filter>Source Files\Hooks\CWin32MouseHook</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1773,6 +1782,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Libraries\DXSDK\Include\xma2defs.h">
       <Filter>Header Files\Libraries\DirectX</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\CWin32MouseHook.h">
+      <Filter>Header Files\Hooks\CWin32MouseHook</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

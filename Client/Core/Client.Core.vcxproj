@@ -298,6 +298,7 @@
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
     <ClCompile Include="Graphics\Input.cpp" />
+    <ClCompile Include="Hooks\CWin32MouseHook.cpp" />
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -616,6 +617,7 @@
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
     <ClInclude Include="Graphics\Input.h" />
     <ClInclude Include="Graphics\StdDXInc.h" />
+    <ClInclude Include="Hooks\CWin32MouseHook.h" />
     <ClInclude Include="Hooks\CXLive.h" />
     <ClInclude Include="IV\CIVScript.h" />
     <ClInclude Include="IV\CIVScriptEnums.h" />

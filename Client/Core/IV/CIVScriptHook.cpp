@@ -57,7 +57,6 @@ void CRageThread_Script_Process()
 		_asm mov uiPlayerIndex, eax;*/
 		CIVScript::CreatePlayer(0, 0.0f, 0.0f, 0.0f, &uiPlayerIndex);
 
-		g_pCore->SetLocalPlayerIndex(uiPlayerIndex);
 		g_pCore->SetClientState(GAME_STATE_INGAME);
 	}
 	else

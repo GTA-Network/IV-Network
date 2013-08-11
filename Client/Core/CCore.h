@@ -22,6 +22,7 @@
 #include <IV/CIVScriptHook.h>
 
 #include <Hooks/CXLive.h>
+#include <Hooks/CWin32MouseHook.h>
 
 #include "Game/CGame.h"
 #include "Graphics/CGraphics.h"
@@ -46,7 +47,6 @@ private:
 	bool							m_bInitialised;
 	bool							m_bGameLoaded;
 	unsigned						m_uiBaseAddress;
-	unsigned						m_uiLocalPlayerIndex;
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
@@ -93,9 +93,6 @@ public:
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
-
-	void							SetLocalPlayerIndex(unsigned iIndex) { m_uiLocalPlayerIndex = iIndex; }
-	unsigned						GetLocalPlayerIndex() { return m_uiLocalPlayerIndex; }
 
 	void							SetNick( CString strNick ) { m_strNick = strNick; }
 	CString							GetNick( ) { return m_strNick; }
