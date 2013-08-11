@@ -1616,16 +1616,11 @@ bool CPlayerEntity::IsDying()
 {
 	if(IsSpawned())
 	{
-		CLogFile::Print("Check IsDying");
 		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
 
 		if(pTask)
-		{
-			CLogFile::Printf("Task: %d",pTask->GetType());
-
 			if(pTask->GetType() == TASK_COMPLEX_DIE)
 				return true;
-		}
 	}
 
 	return false;
