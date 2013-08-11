@@ -125,18 +125,23 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 
 		if(uMsg == WM_KEYUP && wParam == VK_F12)
 		{
-			//
-		}
-		// Is this a F8 key up?
-		if(uMsg == WM_SYSKEYUP && wParam == VK_F8)
-		{
-			// Take a screen shot
-			if(CSnapShot::Take())
-				g_pCore->GetChat()->Outputf(false, "Screen shot captured.");
-			else
+			switch(wParam)
 			{
-				g_pCore->GetChat()->Outputf(false, "Screen shot capture failed (%s).", CSnapShot::GetError().Get());
-				CSnapShot::Reset();
+				case VK_F12:
+				{
+					TerminateProcess(GetCurrentProcess(), 0);
+				}
+				case VK_F8:
+				{
+					// Take a screen shot
+					if(CSnapShot::Take())
+						g_pCore->GetChat()->Outputf(false, "Screen shot captured.");
+					else
+					{
+						g_pCore->GetChat()->Outputf(false, "Screen shot capture failed (%s).", CSnapShot::GetError().Get());
+						CSnapShot::Reset();
+					}
+				}
 			}
 		}
 
