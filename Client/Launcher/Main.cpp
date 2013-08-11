@@ -95,6 +95,63 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 
+	// Check for eflc dir
+	char szEFLCDirectory[MAX_PATH];
+	bool bFoundCustomEFLCDirectory = false;
+	char szUsingEFLC[MAX_PATH];
+	bool bUsingEFLC;
+
+	if (!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", szUsingEFLC, sizeof(szUsingEFLC)))
+	{
+		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", 1);
+		bUsingEFLC = 1;
+	}
+	else
+	{
+		bUsingEFLC = atoi(szUsingEFLC);
+	}
+
+	if(bUsingEFLC)
+	{
+		if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, "Software\\Rockstar Games\\EFLC",
+			"InstallFolder", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) ||
+			!SharedUtility::Exists(szEFLCDirectory)) {
+
+			if(!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL,
+				szEFLCDirectory, sizeof(szEFLCDirectory)) ||
+				!SharedUtility::Exists(szEFLCDirectory)) {
+
+				if(ShowMessageBox("Failed to retrieve GTA IV: EFLC install directory from registry. Specify your GTA IV: EFLC path now? If you do not have EFLC installed, just click No.",
+					(MB_ICONEXCLAMATION | MB_OKCANCEL)) == IDOK)  {
+				
+					// Taken from http://vcfaq.mvps.org/sdk/20.htm
+					BROWSEINFO browseInfo = { 0 };
+					browseInfo.lpszTitle = "Pick a Directory";
+					ITEMIDLIST * pItemIdList = SHBrowseForFolder(&browseInfo);
+
+					if(pItemIdList != NULL) {
+						// Get the name of the selected folder
+						if(SHGetPathFromIDList(pItemIdList, szEFLCDirectory))
+						{
+							bFoundCustomEFLCDirectory = true;
+							SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", 1);
+						}
+
+						// Free any memory used
+						IMalloc * pIMalloc = 0;
+						if(SUCCEEDED(SHGetMalloc(&pIMalloc))) {
+							pIMalloc->Free(pItemIdList);
+							pIMalloc->Release();
+						}
+					}
+				}
+
+				if (!bFoundCustomEFLCDirectory)
+					SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "0", 1);
+			}
+		}
+	}
+
 	// Get the full path to LaunchGTAIV.exe
 	CString strApplicationPath("%s\\LaunchGTAIV.exe", szInstallDirectory);
 
@@ -105,6 +162,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// If we have a custom directory save it
 	if(bFoundCustomDirectory)
 		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", szInstallDirectory, strlen(szInstallDirectory));
+
+	if(bFoundCustomEFLCDirectory)
+		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", szEFLCDirectory, strlen(szEFLCDirectory));
 
 	// Get the full path of the client core
 	CString strClientCore(SharedUtility::GetAbsolutePath(CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
