@@ -160,6 +160,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 		}
 	}
+	if(SharedUtility::Exists(szEFLCDirectory))
+	{
+		CString strTbogtVehicles("%s/TBoGT/pc/models/cdimages/vehicles.img", szEFLCDirectory);
+		CString strTbogtVehiclesTarget("%s/pc/models/cdimages/vehicles_tbogt.img", szInstallDirectory);
+		CopyFile(strTbogtVehicles.Get(), strTbogtVehiclesTarget.Get(), true);
+
+		CString strTladVehicles("%s/TLAD/pc/models/cdimages/vehicles.img", szEFLCDirectory);
+		CString strTladVehiclesTarget("%s/pc/models/cdimages/vehicles_tlad.img", szInstallDirectory);
+		CopyFile(strTladVehicles.Get(), strTladVehiclesTarget.Get(), true);
+	}
 
 	// Get the full path to LaunchGTAIV.exe
 	CString strApplicationPath("%s\\LaunchGTAIV.exe", szInstallDirectory);
