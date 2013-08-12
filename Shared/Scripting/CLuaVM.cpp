@@ -11,15 +11,13 @@
 #include <lua/lua.hpp>
 #include <SharedUtility.h>
 #include <CLogFile.h>
-#include "../../Server/Scripting/Natives/CPlayerNatives.h"
 
 CLuaVM::CLuaVM(CResource* pResource)
-	: CScriptVM(pResource)
+	: CScriptVM(pResource),
+	m_bRegisterClass(false)
 {
 	m_pVM = luaL_newstate();
 	luaL_openlibs(m_pVM);
-
-	CPlayerNatives::Register(this);
 }
 
 CLuaVM::~CLuaVM()
@@ -58,7 +56,70 @@ bool CLuaVM::LoadScripts(std::list<CScript> scripts)
 
 void CLuaVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)
 {
-	lua_register(m_pVM, szFunctionName, (lua_CFunction)pfnFunction);
+	if(!m_bRegisterClass)
+	{
+		lua_register(m_pVM, szFunctionName, (lua_CFunction)pfnFunction);
+	}
+	else
+	{
+		lua_pushstring(m_pVM, "__class");
+        lua_rawget(m_pVM, -2);
+
+        lua_pushstring(m_pVM, szFunctionName);
+        lua_pushstring(m_pVM, szFunctionName);
+        lua_pushcclosure(m_pVM, (lua_CFunction)pfnFunction, 1);
+        lua_rawset(m_pVM, -3);
+
+        lua_pop(m_pVM, 1);
+	}
+}
+
+void CLuaVM::RegisterClassStart(const char* className, const char* baseClass)
+{
+	m_strClassName = className;
+	lua_pushstring(m_pVM, "mt");
+    lua_newtable(m_pVM);
+    lua_rawset(m_pVM, LUA_REGISTRYINDEX);
+
+    lua_pushstring(m_pVM, "ud");
+    lua_newtable(m_pVM );
+    lua_rawset(m_pVM, LUA_REGISTRYINDEX);
+
+	lua_newtable ( m_pVM );
+
+    lua_pushstring(m_pVM, "__class");
+    lua_newtable( m_pVM);
+    lua_rawset(m_pVM, -3);
+
+    lua_pushstring(m_pVM, "__get");
+    lua_newtable(m_pVM);
+    lua_rawset(m_pVM, -3);
+
+    lua_pushstring(m_pVM, "__set");
+    lua_newtable(m_pVM);
+    lua_rawset(m_pVM, -3);
+
+	m_bRegisterClass = true;
+}
+
+void CLuaVM::RegisterClassFinish()
+{
+	lua_pushstring(m_pVM, "mt");
+	lua_rawget(m_pVM, LUA_REGISTRYINDEX);
+
+	// store in registry
+	lua_pushvalue(m_pVM, -2);
+	lua_setfield(m_pVM, -2, m_strClassName.Get());
+
+	lua_pop(m_pVM, 1);
+
+	// register with environment
+	lua_getfield(m_pVM, -1, "__class");
+	lua_setglobal(m_pVM, m_strClassName.Get());
+
+	lua_pop(m_pVM, 1);
+
+	m_bRegisterClass = false;
 }
 
 void CLuaVM::PopBool(bool& b)

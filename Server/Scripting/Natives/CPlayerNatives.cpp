@@ -10,7 +10,7 @@
 #include "CPlayerNatives.h"
 #include <Scripting/CLuaVM.h>
 #include <Scripting/CSquirrelVM.h>
-#include "../../CServer.h"
+#include <Scripting/ResourceSystem/CResourceManager.h>
 #include <CLogFile.h>
 
 void CPlayerNatives::Register(CScriptVM * pVM)
@@ -24,7 +24,7 @@ void CPlayerNatives::Register(CScriptVM * pVM)
 int CPlayerNatives::Create(int * VM)
 {
 	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
-	CResource* pResource = CServer::GetInstance()->GetResourceManager()->Get(VM);
+	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
 	if(pResource)
 	{
 		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
@@ -50,7 +50,7 @@ int CPlayerNatives::Create(int * VM)
 int CPlayerNatives::Print(int * VM)
 {
 	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
-	CResource* pResource = CServer::GetInstance()->GetResourceManager()->Get(VM);
+	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
 	if(pResource)
 	{
 		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods

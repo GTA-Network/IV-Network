@@ -12,8 +12,6 @@
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
 
-#include "../../Server/Scripting/Natives/CPlayerNatives.h"
-
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource)
 {
@@ -24,9 +22,6 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 
 	// Push the root table onto the stack
 	sq_pushroottable(m_pVM);
-
-	CPlayerNatives::Register(this);
-
 }
 
 
@@ -85,9 +80,35 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 
 		sq_setparamscheck(m_pVM, (iParameterCount + 1), strTypeMask.Get());
 	}
-
+	sq_setnativeclosurename(m_pVM, -1, szFunctionName);
 	// Create a new slot
 	sq_createslot(m_pVM, -3);
+}
+
+void CSquirrelVM::RegisterClassStart(const char* className, const char* baseClass)
+{
+	int n = 0;
+	int oldtop = sq_gettop(m_pVM);
+	sq_pushroottable(m_pVM);
+	sq_pushstring(m_pVM, className, -1);
+
+	if(baseClass) {
+		sq_pushstring(m_pVM, baseClass, -1);
+		if(SQ_FAILED(sq_get(m_pVM, -3))) { // make sure base exists
+			sq_settop(m_pVM, oldtop);
+			return;
+		}
+	}
+	if(SQ_FAILED(sq_newclass(m_pVM, baseClass ? 1 : 0))) {
+		sq_settop(m_pVM, oldtop);
+		return;
+	}
+}
+
+void CSquirrelVM::RegisterClassFinish()
+{
+	sq_createslot(m_pVM, -3);
+	sq_pop(m_pVM, 1);
 }
 
 void CSquirrelVM::PopBool(bool& b)

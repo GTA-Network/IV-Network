@@ -153,6 +153,8 @@
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
+    <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
+    <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp" />
@@ -225,6 +227,9 @@
     <ClInclude Include="..\Shared\Scripting\CScriptArguments.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptVM.h" />
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h" />
+    <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h" />
+    <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h" />
+    <ClInclude Include="..\Shared\Scripting\Natives\Natives.h" />
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.h" />
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResource.h" />
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.h" />

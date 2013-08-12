@@ -16,6 +16,12 @@
 #include "CResourceClientScript.h"
 #include <SharedUtility.h>
 #include <CXML.h>
+#include <Scripting/Natives/Natives.h>
+
+#ifdef _CLIENT
+#else
+#include "../../Server/Scripting/Natives/Natives.h"
+#endif
 
 CResource::CResource()
 	: m_pVM(0),
@@ -49,8 +55,6 @@ CResource::~CResource()
 
 bool CResource::Load()
 {
-	m_bLoaded = true;
-	
 	m_strResourceDirectoryPath = m_strAbsPath + "/" + m_strResourceName;
 
 	CString strMetaFile = m_strResourceDirectoryPath + "/" + "meta.xml";
@@ -71,6 +75,13 @@ bool CResource::Load()
 	{
 		// Not really important coming soon
 		// Well its important to specify the script type so you can use any file ending
+		CString strScriptType = pMetaXML->getAttribute("scriptType");
+		if(strScriptType == "Lua")
+			m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
+		else if(strScriptType == "Squirrel")
+			m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
+		else 
+			m_resourceScriptType = eResourceScriptType::UNKNOWN;
 	}
 
 	// Reset to root
@@ -82,10 +93,13 @@ bool CResource::Load()
 		{
 			if(!strcmp(pMetaXML->nodeName(),"include"))
 			{
-				const char* szIncludeResource = pMetaXML->getAttribute("resource");
+				CLogFile::Printf("\t[WIP] Implement includes");
 
-				// TODO implement includes
-				CLogFile::Printf("\t[TODO] Implement includes");
+				CString strIncludedResource = pMetaXML->getAttribute("resource");
+				if(!strIncludedResource.IsEmpty())
+					m_includedResources.push_back(new CIncludedResource()); // TODO PARAMS
+				else
+					CLogFile::Printf("[WARNING] Emtpy 'resource' attribute from 'include' node of 'meta.xml' for resource %s", m_strResourceName.Get());
 			}
 			// Attempt to load the next include node (if any)
 			if(!pMetaXML->nextNode())
@@ -117,27 +131,19 @@ bool CResource::Load()
 						} else if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
 							m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
 						} else {
-							CLogFile::Printf("Unknown script type");
+							CLogFile::Printf("Unknown script type! Please specify the script type you use!");
 							return false;
 						}
 					}
 
-					
-					CLogFile::Printf("\t[TODO] Implement scripts");
-					//script.SetScriptFilename(strScript);
-
 					CString scriptType = pMetaXML->getAttribute("type");
-					if(scriptType == "client")
-					{
-						//script.SetType(CLIENT_SCRIPT);
+					if(scriptType == "client") {
 						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
 					} else if(scriptType == "server") {
 						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
-						//script.SetType(SERVER_SCRIPT);
 					} else if(scriptType == "shared") {
 						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
 						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
-						//script.SetType(SHARED_SCRIPT);
 					} else {
 						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
 					}
@@ -173,7 +179,7 @@ bool CResource::Load()
 
 	// LOAD ALL INCLUDED SCRIPT
 	// LOADD EVERYTHING LIKE IMAGES etc.
-	
+	m_bLoaded = true;
 	return true;
 }
 
@@ -233,7 +239,7 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 
 bool CResource::Stop(bool bStopManually)
 {
-
+	CLogFile::Printf("[TODO] Implement %s", __FUNCTION__);
 	return true;
 }
 
@@ -258,16 +264,17 @@ bool CResource::CreateVM()
 	{
 		if(GetResourceScriptType() == LUA_RESOURCE)	{
 			m_pVM =  new CLuaVM(this);
-			CLogFile::Printf("LuaVM created");
-			return true;
 		} else if(GetResourceScriptType() == SQUIRREL_RESOURCE) {
 			m_pVM = new CSquirrelVM(this);
-			CLogFile::Printf("SquirrelVM created");
-			return true;
 		} else {
 			CLogFile::Printf("Failed to create VM => Invalid resource script type");
 			return false;
 		}
+		
+		CPlayerNatives::Register(m_pVM);
+		CEventNatives::Register(m_pVM);
+		CSystemNatives::Register(m_pVM);
+		return true;
 	}
 	CLogFile::Printf("Failed to create VM => %s", m_bLoaded ? "VM already created" : "Resource is not loaded");
 	return false;
@@ -275,7 +282,7 @@ bool CResource::CreateVM()
 
 void CResource::DestroyVM()
 {
-
+	CLogFile::Printf("[TODO] Implement %s", __FUNCTION__);
 }
 
 void CResource::AddDependent(CResource* pResource)

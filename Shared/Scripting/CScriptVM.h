@@ -63,6 +63,9 @@ public:
 
 	virtual void ResetStackIndex() {}
 	virtual void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false) {}
+
+	virtual void RegisterClassStart(const char* className, const char* baseClass = 0) {}
+	virtual void RegisterClassFinish() {}
 };
 
 #endif // CScriptVM_h

@@ -11,6 +11,7 @@
 #define CLuaVM_h
 
 #include <lua/lua.hpp>
+#include <Common.h>
 #include "CScriptVM.h"
 
 
@@ -19,6 +20,8 @@ class CLuaVM : public CScriptVM {
 private:
 	lua_State* m_pVM;
 	int m_iStackIndex;
+	bool m_bRegisterClass;
+	CString m_strClassName;
 public:
 	CLuaVM(CResource* pResource);
 	~CLuaVM();
@@ -50,6 +53,8 @@ public:
 	void ResetStackIndex() { m_iStackIndex = 0; }
 
 	void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
+	void RegisterClassStart(const char* className, const char* baseClass);
+	void RegisterClassFinish();
 };
 
 #endif // CLuaVM_h

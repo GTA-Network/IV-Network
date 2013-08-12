@@ -14,16 +14,18 @@
 #include <CLogFile.h>
 #include <algorithm>
 
+CResourceManager* CResourceManager::s_pInstance = NULL;
+
 CResourceManager::CResourceManager()
 	: m_strResourceDirectory("resources/")
 {
-
+	s_pInstance = this;
 }
 
 CResourceManager::CResourceManager(CString strResourceDirectory)
 	: m_strResourceDirectory(strResourceDirectory)
 {
-
+	s_pInstance = this;
 }
 
 CResourceManager::~CResourceManager()
@@ -77,6 +79,14 @@ CResource * CResourceManager::Get(int * pVM) // TODO: change to GetResourceByVM
 
 bool CResourceManager::Reload(CResource* pResource)
 {
+	pResource->Reload();
+
+	// Was it loaded successfully?
+	if(!pResource->IsLoaded())
+	{
+		CLogFile::Printf("Loading of resource '%s' failed\n", pResource->GetName().Get());
+		return false;
+	}
 	return true;
 }
 
@@ -88,7 +98,7 @@ bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*
 		// Attempt to reload it
 		if(Reload(pResource))
 		{
-			CLogFile::Printf("Resource started");
+			CLogFile::Printf("Resource reloaded");
 			// Start the resource
 			return pResource->Start(NULL, bStartedManually, bStartIncludedResources);
 		}

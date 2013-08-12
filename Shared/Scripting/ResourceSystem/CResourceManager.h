@@ -18,10 +18,13 @@ class CResourceManager {
 private:
 	CString					m_strResourceDirectory;
 	std::list<CResource*>	m_resources;
+	static CResourceManager*s_pInstance;
 public:
 	CResourceManager();
 	CResourceManager(CString strResourceDirectory);
 	~CResourceManager();
+
+	static CResourceManager * GetInstance() { return s_pInstance; }
 
 	CString		GetResourceDirectory() { return m_strResourceDirectory; }
 

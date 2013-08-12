@@ -68,7 +68,7 @@ public:
 	CNetworkServer		*GetNetServer() { return m_pNetServer; }
 	CServerRPCHandler	*GetRPCHandler() { return m_pRPCHandler; }
 
-	CResourceManager	*GetResourceManager() { return m_pResourceManager; }
+	CResourceManager	*GetResourceManager() { return CResourceManager::GetInstance(); }
 
 	CPlayerManager		*GetPlayerManager() { return m_pPlayerManager; }
 	CVehicleManager		*GetVehicleManager() { return m_pVehicleManager; }

@@ -49,6 +49,8 @@ public:
 	void ResetStackIndex() { m_iStackIndex = 1; }
 
 	void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
+	void RegisterClassStart(const char* className, const char* baseClass = 0);
+	void RegisterClassFinish();
 };
 
 #endif // CSquirrelVM_h

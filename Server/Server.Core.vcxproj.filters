@@ -76,6 +76,12 @@
     <Filter Include="Libraries\lua">
       <UniqueIdentifier>{e83b612e-94b3-42d3-9b83-9659fe2534b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{400c18e6-82f2-468d-91e4-7bebee13869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{3ea42e43-390e-4c30-beec-db4e4b50f43a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -375,6 +381,12 @@
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp">
       <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -586,6 +598,15 @@
     </ClInclude>
     <ClInclude Include="..\Libraries\lua\lzio.h">
       <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\Natives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

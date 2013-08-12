@@ -8,3 +8,13 @@
 //==============================================================================
 
 #include "CIncludedResource.h"
+
+CIncludedResource::CIncludedResource()
+{
+
+}
+
+CIncludedResource::~CIncludedResource()
+{
+
+}
