@@ -101,26 +101,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	char szUsingEFLC[MAX_PATH];
 	bool bUsingEFLC;
 
-	if (!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", szUsingEFLC, sizeof(szUsingEFLC)))
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", szUsingEFLC, sizeof(szUsingEFLC)))
 	{
 		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", 1);
-		bUsingEFLC = 1;
+		bUsingEFLC = true;
 	}
 	else
-	{
-		bUsingEFLC = atoi(szUsingEFLC);
+		bUsingEFLC = 0;
+
+	if(!bUsingEFLC) {
+		if(ShowMessageBox("Do you want to use EFCL import map function?", MB_ICONQUESTION | MB_YESNO ) == IDYES) {
+			bUsingEFLC = true;
+			SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", 1);
+		}
 	}
 
 	if(bUsingEFLC)
 	{
-		if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, "Software\\Rockstar Games\\EFLC",
-			"InstallFolder", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) ||
-			!SharedUtility::Exists(szEFLCDirectory)) {
+			if(!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) 
+				|| !SharedUtility::Exists(szEFLCDirectory)) {
+					
+				if(SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, "Software\\Rockstar Games\\EFLC", "InstallFolder", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) 
+						|| SharedUtility::Exists(szEFLCDirectory)) {
+							
+					bFoundCustomEFLCDirectory = true;
+				}
 
-			if(!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL,
-				szEFLCDirectory, sizeof(szEFLCDirectory)) ||
-				!SharedUtility::Exists(szEFLCDirectory)) {
-
+				if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, "Software\\Rockstar Games\\EFLC", "InstallFolder", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) 
+						|| !SharedUtility::Exists(szEFLCDirectory)) {
+		
 				if(ShowMessageBox("Failed to retrieve GTA IV: EFLC install directory from registry. Specify your GTA IV: EFLC path now? If you do not have EFLC installed, just click No.",
 					(MB_ICONEXCLAMATION | MB_OKCANCEL)) == IDOK)  {
 				
