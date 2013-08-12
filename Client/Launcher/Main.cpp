@@ -169,6 +169,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		CString strTladVehicles("%s/TLAD/pc/models/cdimages/vehicles.img", szEFLCDirectory);
 		CString strTladVehiclesTarget("%s/pc/models/cdimages/vehicles_tlad.img", szInstallDirectory);
 		CopyFile(strTladVehicles.Get(), strTladVehiclesTarget.Get(), true);
+
+		CString strTbogtpedprops("%s/TBoGT/pc/models/cdimages/pedprops.img", szEFLCDirectory);
+		CString strTbogtpedpropsTarget("%s/pc/models/cdimages/pedprops_tbogt.img", szInstallDirectory);
+		CopyFile(strTbogtpedprops.Get(), strTbogtpedpropsTarget.Get(), true);
+
+		CString strTladpedprops("%s/TLAD/pc/models/cdimages/pedprops.img", szEFLCDirectory);
+		CString strTladpedpropsTarget("%s/pc/models/cdimages/pedprops_tlad.img", szInstallDirectory);
+		CopyFile(strTladpedprops.Get(), strTladpedpropsTarget.Get(), true);
+
+		CString strTbogtweapons("%s/TBoGT/pc/models/cdimages/weapons_e2.img", szEFLCDirectory);
+		CString strTbogtweaponsTarget("%s/pc/models/cdimages/weapons_tbogt.img", szInstallDirectory);
+		CopyFile(strTbogtweapons.Get(), strTbogtweaponsTarget.Get(), true);
+
+		CString strTladweapons("%s/TLAD/pc/models/cdimages/weapons_e1.img", szEFLCDirectory);
+		CString strTladweaponsTarget("%s/pc/models/cdimages/weapons_tlad.img", szInstallDirectory);
+		CopyFile(strTladweapons.Get(), strTladweaponsTarget.Get(), true);
 	}
 
 	// Get the full path to LaunchGTAIV.exe
