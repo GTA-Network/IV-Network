@@ -54,12 +54,12 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 	// Temporary spawn position for development
 	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
 
-    // Patch to override spawn position and let the game call HandleSpawn
-    CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
-    CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
+    	// Patch to override spawn position and let the game call HandleSpawn
+    	CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
+    	CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
 	
 	// Patch death loading screen slow motion :D
-	CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x874EF7),0x18);
+	CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x874EF7),0x10);
 }
 
 void CLocalPlayer::Respawn()
