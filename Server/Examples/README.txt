@@ -1,0 +1,1 @@
+After compiling the server copy all files and directories to Binary
