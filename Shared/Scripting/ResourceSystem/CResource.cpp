@@ -17,6 +17,7 @@
 #include <SharedUtility.h>
 #include <CXML.h>
 #include <Scripting/Natives/Natives.h>
+#include <algorithm>
 
 #ifdef _CLIENT
 #else
