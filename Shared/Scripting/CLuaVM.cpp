@@ -56,10 +56,7 @@ bool CLuaVM::LoadScripts(std::list<CScript> scripts)
 int iFuncIndex = 1;
 void CLuaVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)
 {
-	if(!m_bRegisterClass)
-	{
-		lua_register(m_pVM, szFunctionName, (lua_CFunction)pfnFunction);
-	}
+	lua_register(m_pVM, szFunctionName, (lua_CFunction)pfnFunction);
 }
 
 static int gc_obj(lua_State *L) {
@@ -80,7 +77,6 @@ void CLuaVM::RegisterScriptClass(const char* className, scriptFunction pfnFuncti
 	lua_settable(m_pVM, -3);
 
 	iFuncIndex = 0;
-	m_bRegisterClass = true;
 }
 
 void CLuaVM::SetClassInstance(const char* szClassName, void * pInstance)
