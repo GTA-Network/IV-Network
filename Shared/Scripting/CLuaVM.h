@@ -20,7 +20,6 @@ class CLuaVM : public CScriptVM {
 private:
 	lua_State* m_pVM;
 	int m_iStackIndex;
-	bool m_bRegisterClass;
 	CString m_strClassName;
 public:
 	CLuaVM(CResource* pResource);
@@ -50,11 +49,13 @@ public:
 	virtual void PushString(const CString& str);
 	virtual void PushVector(const CVector3& vec);
 
-	void ResetStackIndex() { m_iStackIndex = 0; }
+	void		 ResetStackIndex() { m_iStackIndex = 1; }
 
-	void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
-	void RegisterClassStart(const char* className, const char* baseClass);
-	void RegisterClassFinish();
+	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);
+	virtual void RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
+	virtual void SetClassInstance(const char* szClassName, void * pInstance);
+	void		*GetClassInstance(const char* szClassName);
+	void		 RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
 };
 
 #endif // CLuaVM_h

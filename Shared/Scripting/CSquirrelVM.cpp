@@ -13,7 +13,8 @@
 #include <Squirrel/sqstdaux.h>
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
-	: CScriptVM(pResource)
+	: CScriptVM(pResource),
+	m_iStackIndex(1)
 {
 	m_pVM = sq_open(1024);
 
@@ -85,7 +86,7 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 	sq_createslot(m_pVM, -3);
 }
 
-void CSquirrelVM::RegisterClassStart(const char* className, const char* baseClass)
+void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
 	int n = 0;
 	int oldtop = sq_gettop(m_pVM);
@@ -103,12 +104,52 @@ void CSquirrelVM::RegisterClassStart(const char* className, const char* baseClas
 		sq_settop(m_pVM, oldtop);
 		return;
 	}
+
+	sq_pushstring(m_pVM, _SC("constructor"), -1);
+	sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
+	sq_newslot(m_pVM, -3, false); // Add the constructor method
+
+	sq_newslot(m_pVM, -3, SQFalse); // Add the class
+
+	sq_pop(m_pVM, 2);
 }
 
-void CSquirrelVM::RegisterClassFinish()
+SQInteger deleteClassInstance(SQUserPointer ptr, SQInteger size)
 {
-	sq_createslot(m_pVM, -3);
-	sq_pop(m_pVM, 1);
+    int *p = static_cast<int *>(ptr);
+    delete p;
+
+    return 0;
+}
+
+void CSquirrelVM::SetClassInstance(const char* szClassName, void * pInstance)
+{
+	HSQOBJECT instance;
+	sq_resetobject(&instance);
+	sq_getstackobj(m_pVM, -1, &instance);
+
+	sq_pushroottable(m_pVM);
+	sq_pushstring(m_pVM, szClassName, -1);
+	sq_get(m_pVM, -2);
+	sq_setinstanceup(m_pVM, -1, (SQUserPointer *)pInstance);
+	sq_setreleasehook(m_pVM, -1, deleteClassInstance);
+}
+
+void* CSquirrelVM::GetClassInstance(const char* szClassName)
+{
+	SQUserPointer pInstance = NULL;
+
+	if(SQ_FAILED(sq_getinstanceup(m_pVM, -1, &pInstance, NULL)))
+		pInstance = NULL;
+
+	return pInstance;
+}
+
+void CSquirrelVM::RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate)
+{
+	sq_pushstring(m_pVM, szFunctionName, -1);
+	sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
+	sq_newslot(m_pVM, -3, SQFalse);
 }
 
 void CSquirrelVM::PopBool(bool& b)
