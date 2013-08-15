@@ -88,6 +88,7 @@ void CLuaVM::SetClassInstance(const char* szClassName, void * pInstance)
 	luaL_getmetatable(m_pVM, szClassName);
 	lua_setmetatable(m_pVM, -2);
 	lua_settable(m_pVM, -3); // table[0] = obj;
+	iFuncIndex = 0;
 }
 
 void * CLuaVM::GetClassInstance(const char* szClassName)
@@ -96,7 +97,7 @@ void * CLuaVM::GetClassInstance(const char* szClassName)
 	lua_pushnumber(m_pVM, 0);
 	lua_gettable(m_pVM, 1);
 	m_iStackIndex++;
-	return (void*)*(int**)luaL_checkudata(m_pVM, -1, szClassName);
+	return (void*)*(int**)lua_touserdata(m_pVM, -1);//luaL_checkudata(m_pVM, -1, szClassName);
 }
 
 void CLuaVM::RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate)

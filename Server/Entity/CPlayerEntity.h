@@ -18,6 +18,9 @@ private:
 public:
 	CPlayerEntity();
 	~CPlayerEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CPlayerEntity_h

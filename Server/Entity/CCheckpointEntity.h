@@ -18,6 +18,9 @@ private:
 public:
 	CCheckpointEntity();
 	~CCheckpointEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CCheckpointEntity_h

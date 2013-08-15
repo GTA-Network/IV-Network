@@ -17,7 +17,7 @@ class CBlipNatives {
 private:
 
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(CScriptVM * pVM);
 };
 
 #endif // CBlipNatives_h

@@ -10,13 +10,21 @@
 #ifndef CEvents_h
 #define CEvents_h
 
+#include <Common.h>
+
 class CEvents {
 
 private:
-
+	static CEvents* s_pInstance;
 public:
 	CEvents();
 	~CEvents();
+
+
+	bool Add(CString strName);
+
+
+	static CEvents* GetInstance() { return s_pInstance; }
 };
 
 #endif // CEvents_h

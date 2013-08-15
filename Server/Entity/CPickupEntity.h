@@ -18,6 +18,9 @@ private:
 public:
 	CPickupEntity();
 	~CPickupEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CPickupEntity_h

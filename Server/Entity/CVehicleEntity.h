@@ -19,6 +19,9 @@ private:
 public:
 	CVehicleEntity();
 	~CVehicleEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CVehicleEntity_h

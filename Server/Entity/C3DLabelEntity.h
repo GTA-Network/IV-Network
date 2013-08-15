@@ -18,6 +18,9 @@ private:
 public:
 	C3DLabelEntity();
 	~C3DLabelEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // C3DLabelEntity_h

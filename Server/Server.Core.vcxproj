@@ -150,6 +150,7 @@
     <ClCompile Include="..\Shared\CString.cpp" />
     <ClCompile Include="..\Shared\CXML.cpp" />
     <ClCompile Include="..\Shared\Network\CBitStream.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
@@ -184,9 +185,11 @@
     <ClCompile Include="Scripting\Natives\CActorNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CCheckpointNatives.cpp" />
+    <ClCompile Include="Scripting\Natives\CEntityNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CObjectNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CPickupNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp" />
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp" />
     <ClCompile Include="Scripting\Natives\CServerNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CVehicleNatives.cpp" />
   </ItemGroup>
@@ -257,9 +260,11 @@
     <ClInclude Include="Scripting\Natives\CActorNatives.h" />
     <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
     <ClInclude Include="Scripting\Natives\CCheckpointNatives.h" />
+    <ClInclude Include="Scripting\Natives\CEntityNatives.h" />
     <ClInclude Include="Scripting\Natives\CObjectNatives.h" />
     <ClInclude Include="Scripting\Natives\CPickupNatives.h" />
     <ClInclude Include="Scripting\Natives\CPlayerNatives.h" />
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h" />
     <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
     <ClInclude Include="Scripting\Natives\CServerNatives.h" />
     <ClInclude Include="Scripting\Natives\CVehicleNatives.h" />

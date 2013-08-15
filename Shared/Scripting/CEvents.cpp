@@ -1,15 +1,12 @@
 //============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
 //
-// File: CVehicleNatives.cpp
-// Project: Server.Core
-// Author: xForce
+// File: CEvents.cpp
+// Project: Shared
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
-#include "CVehicleNatives.h"
+#include "CEvents.h"
 
-void CVehicleNatives::Register(CScriptVM* pVM)
-{
-	// All vehicle specific natives here
-}
+CEvents* CEvents::s_pInstance = 0;

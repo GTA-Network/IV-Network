@@ -18,6 +18,9 @@ private:
 public:
 	CActorEntity();
 	~CActorEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CActorEntity_h

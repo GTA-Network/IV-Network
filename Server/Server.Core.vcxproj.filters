@@ -387,6 +387,15 @@
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp">
       <Filter>Source Files\Shared\Scripting\Natives</Filter>
     </ClCompile>
+    <ClCompile Include="Scripting\Natives\CEntityNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -607,6 +616,12 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h">
       <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CEntityNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

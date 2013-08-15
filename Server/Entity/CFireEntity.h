@@ -18,6 +18,9 @@ private:
 public:
 	CFireEntity();
 	~CFireEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CFireEntity_h

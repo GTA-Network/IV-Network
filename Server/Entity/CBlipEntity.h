@@ -18,6 +18,9 @@ private:
 public:
 	CBlipEntity();
 	~CBlipEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CBlipEntity_h

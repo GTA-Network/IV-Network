@@ -18,7 +18,7 @@
 					   CScriptVM * pVM = pResource->GetVM();
 
 #define DEPRECATED(x) CLogFile::Printf("%s is deprecated", x);
-#define NOT_IMPLEMENTED(x) CLogFile::Printf("%s is yet not implemented", x);
+#define NOT_IMPLEMENTED(x) CLogFile::Printf("%s is not implemented", x);
 
 void CEventNatives::Register(CScriptVM * pVM)
 {

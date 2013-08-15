@@ -168,7 +168,7 @@ bool CResource::Load()
 			{
 				CString strFile = pMetaXML->getAttribute("src");
 
-				CLogFile::Printf("\t[TODO] Implement client file manager which handles resource client files");
+				CLogFile::Printf("\t[TODO] Implement client file manager which handles resource client files and then the loading stuff");
 			}
 			if(!pMetaXML->nextNode())
 				break;
@@ -272,9 +272,13 @@ bool CResource::CreateVM()
 			return false;
 		}
 		
-		CPlayerNatives::Register(m_pVM);
+#ifdef _SERVER
+		CScriptClasses::Register(m_pVM);
+#endif
+
 		CEventNatives::Register(m_pVM);
 		CSystemNatives::Register(m_pVM);
+
 		return true;
 	}
 	CLogFile::Printf("Failed to create VM => %s", m_bLoaded ? "VM already created" : "Resource is not loaded");

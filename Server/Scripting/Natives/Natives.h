@@ -28,4 +28,8 @@
 
 #include "C3DLabelNatives.h"
 
+#include "CEntityNatives.h"
+
+#include "CScriptClasses.h"
+
 #endif // NativesServer_h

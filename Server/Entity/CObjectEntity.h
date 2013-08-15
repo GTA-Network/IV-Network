@@ -18,6 +18,9 @@ private:
 public:
 	CObjectEntity();
 	~CObjectEntity();
+
+	bool Create() {return true;}
+	bool Destroy() {return true;}
 };
 
 #endif // CObjectEntity_h
