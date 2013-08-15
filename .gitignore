@@ -17,3 +17,6 @@
 /Binary/temp
 /Binary
 *.o
+*.vcxproj.user
+*.suo
+ipch/
