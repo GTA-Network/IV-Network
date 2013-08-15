@@ -46,7 +46,7 @@ public:
 	virtual void PushString(const CString& str);
 	virtual void PushVector(const CVector3& vec);
 
-	void		 ResetStackIndex() { m_iStackIndex = 1; }
+	void		 ResetStackIndex() { m_iStackIndex = 2; }
 
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);
 	virtual void RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);

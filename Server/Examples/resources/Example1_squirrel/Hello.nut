@@ -1,6 +1,9 @@
-local inst = testClass();
-inst.setPosition(1.0, 1.0, 1.0);
-inst.setPosition(2.0, 2.0, 2.0);
-inst.setPosition3(3.0, 3.0, 3.0);
-inst = null;
-collectgarbage();
+function wantEventCallback()
+{
+	print("I want COOKIES!");
+}
+addGlobalEvent("wantEvent", wantEventCallback);
+
+// calls event in Hello.lua
+triggerGlobalEvent("testEvent");
+

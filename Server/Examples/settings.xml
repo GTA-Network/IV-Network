@@ -1,4 +1,4 @@
 <settings>
 	<resource>Example1_lua</resource> <!-- Lua example -->
-	<!-- <resource>Example1_squirrel</resource> <!-- Squirrel example -->
+	<resource>Example1_squirrel</resource> <!-- Squirrel example -->
 </settings>

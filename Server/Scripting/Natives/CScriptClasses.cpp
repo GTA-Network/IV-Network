@@ -40,7 +40,6 @@ int CScriptClasses::CreateEntity(int * VM)
 		CScriptVM* pVM = pResource->GetVM();
 		
 		CString strEntity;
-		pVM->ResetStackIndex();
 		pVM->PopString(strEntity);
 		pVM->ResetStackIndex();
 		if(strEntity == "3DLABEL")

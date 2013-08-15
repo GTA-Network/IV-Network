@@ -14,7 +14,7 @@
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource),
-	m_iStackIndex(1)
+	m_iStackIndex(2)
 {
 	m_pVM = sq_open(1024);
 
@@ -85,7 +85,8 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 	// Create a new slot
 	sq_createslot(m_pVM, -3);
 }
-
+#include <assert.h>
+#include <Squirrel/sqvm.h>
 void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
 	int n = 0;
@@ -111,7 +112,7 @@ void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnF
 
 	sq_newslot(m_pVM, -3, SQFalse); // Add the class
 
-	sq_pop(m_pVM, 2);
+	sq_pop(m_pVM, m_pVM->_top-oldtop);
 }
 
 SQInteger deleteClassInstance(SQUserPointer ptr, SQInteger size)
@@ -154,11 +155,11 @@ void CSquirrelVM::RegisterClassFunction(const char* szFunctionName, scriptFuncti
 
 void CSquirrelVM::PopBool(bool& b)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_BOOL)
 	{
 		SQBool sqB;
-		sq_getbool(m_pVM, -m_iStackIndex++, &sqB);
+		sq_getbool(m_pVM, m_iStackIndex++, &sqB);
 		b = sqB ? true : false;
 		return;
 	}
@@ -169,11 +170,11 @@ void CSquirrelVM::PopBool(bool& b)
 
 void CSquirrelVM::PopBool(bool& b, bool bDefaultValue)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_BOOL)
 	{
 		SQBool sqB;
-		sq_getbool(m_pVM, -m_iStackIndex++, &sqB);
+		sq_getbool(m_pVM, m_iStackIndex++, &sqB);
 		b = sqB ? true : false;
 		return;
 	} else {
@@ -190,10 +191,10 @@ void CSquirrelVM::PopBool(bool& b, bool bDefaultValue)
 
 void CSquirrelVM::PopInteger(int& i)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_INTEGER)
 	{
-		sq_getinteger(m_pVM, -m_iStackIndex++, &i);
+		sq_getinteger(m_pVM, m_iStackIndex++, &i);
 		return;
 	}
 
@@ -203,10 +204,10 @@ void CSquirrelVM::PopInteger(int& i)
 
 void CSquirrelVM::PopInteger(int& i, int iDefaultValue)
 {
-		SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+		SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_INTEGER)
 	{
-		sq_getinteger(m_pVM, -m_iStackIndex++, &i);
+		sq_getinteger(m_pVM, m_iStackIndex++, &i);
 		return;
 	}else {
 		if(argType == OT_NULL)
@@ -223,10 +224,10 @@ void CSquirrelVM::PopInteger(int& i, int iDefaultValue)
 
 void CSquirrelVM::PopFloat(float& f)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_FLOAT)
 	{
-		sq_getfloat(m_pVM, -m_iStackIndex++, &f);
+		sq_getfloat(m_pVM, m_iStackIndex++, &f);
 		return;
 	}
 
@@ -236,10 +237,10 @@ void CSquirrelVM::PopFloat(float& f)
 
 void CSquirrelVM::PopFloat(float& f, float fDefaultValue)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_FLOAT)
 	{
-		sq_getfloat(m_pVM, -m_iStackIndex++, &f);
+		sq_getfloat(m_pVM, m_iStackIndex++, &f);
 		return;
 	} else {
 		if(argType == OT_NULL) {
@@ -255,26 +256,26 @@ void CSquirrelVM::PopFloat(float& f, float fDefaultValue)
 
 void CSquirrelVM::PopString(CString& str)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_STRING)
 	{
 		const char* c = NULL;
-		sq_getstring(m_pVM, -m_iStackIndex++, &c);
+		sq_getstring(m_pVM, m_iStackIndex++, &c);
 		str = c;
 		return;
 	}
-
+	
 	str = "";
 	m_iStackIndex++;
 }
 
 void CSquirrelVM::PopString(CString& str, CString strDefaultValue)
 {
-	SQObjectType argType = sq_gettype(m_pVM, -m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_STRING)
 	{
 		const char* c = NULL;
-		sq_getstring(m_pVM, -m_iStackIndex++, &c);
+		sq_getstring(m_pVM, m_iStackIndex++, &c);
 		str = c;
 		return;
 	} else {

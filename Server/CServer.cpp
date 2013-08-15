@@ -47,11 +47,13 @@ CServer::~CServer()
 	SAFE_DELETE(m_pCheckpointManager);
 }
 
+#include <Scripting/CEvents.h>
+
 bool CServer::Startup()
 {
 	// Register our RPCs before set the NetServer´s rpc handler
 	m_pRPCHandler->RegisterRPCs();
-
+	CEvents* pEvents = new CEvents();
 	// Set our rpc handler
 	m_pNetServer->SetRpcHandler(m_pRPCHandler);
 
