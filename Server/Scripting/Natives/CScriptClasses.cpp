@@ -14,6 +14,7 @@
 #include <Scripting/ResourceSystem/CResourceManager.h>
 #include "../../../Server/Scripting/Natives/Natives.h"
 #include "Entity/Entities.h"
+#include <CServer.h>
 
 void CScriptClasses::Register(CScriptVM * pVM)
 {
@@ -67,7 +68,7 @@ int CScriptClasses::CreateEntity(int * VM)
 			CFireEntity* pFire = new CFireEntity();
 			pVM->SetClassInstance("CFireEntity", (void*)pFire);
 			CEntityNatives::Register(pVM);
-			//CFireNatives::Register(pVM);
+			CFireNatives::Register(pVM);
 		} else if(strEntity == "OBJECT") {
 			CObjectEntity* pObject = new CObjectEntity();
 			pVM->SetClassInstance("CObjectEntity", (void*)pObject);
@@ -85,9 +86,24 @@ int CScriptClasses::CreateEntity(int * VM)
 			CPlayerNatives::Register(pVM);
 		} else if(strEntity == "VEHICLE") {
 			CVehicleEntity* pVehicle = new CVehicleEntity();
+
+			/* now read the additional params for vehicle spawning */
+
+			// Memo: add params count check in VM Pop methods
+			// Merge the pop events so we use only Pop instead of PopVector
+			CVector3 vecPos;
+			CVector3 vecRot;
+			pVM->PopVector(vecPos);
+			pVM->PopVector(vecRot);
+
+			// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
+			pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));
+			
 			pVM->SetClassInstance("CVehicleEntity", (void*)pVehicle);
 			CEntityNatives::Register(pVM);
 			CVehicleNatives::Register(pVM);
+
+			//pVehicle->Spawn();
 		}
 	}
 	return 1;

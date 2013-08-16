@@ -10,10 +10,21 @@
 #ifndef CScriptArgument_h
 #define CScriptArgument_h
 
+#include <Common.h>
+#include <Lua/lua.hpp>
+#include "CScriptArguments.h"
+
 class CScriptArgument {
 
 private:
-
+	union
+	{
+		int i;
+		bool b;
+		float f;
+		CString * str;
+		CScriptArguments * pArray;
+	} data;
 public:
 	CScriptArgument();
 	~CScriptArgument();

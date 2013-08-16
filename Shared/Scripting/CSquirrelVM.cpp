@@ -9,8 +9,12 @@
 
 #include "CSquirrelVM.h"
 #include <CLogFile.h>
+#include <SharedUtility.h>
+#include <assert.h>
+#include <Squirrel/sqvm.h>
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
+
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource),
@@ -36,7 +40,6 @@ CSquirrelVM::~CSquirrelVM()
 	m_pVM = NULL;
 }
 
-#include <SharedUtility.h>
 
 bool CSquirrelVM::LoadScript(CString script)
 {
@@ -85,8 +88,7 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 	// Create a new slot
 	sq_createslot(m_pVM, -3);
 }
-#include <assert.h>
-#include <Squirrel/sqvm.h>
+
 void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
 	int n = 0;

@@ -35,16 +35,20 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 
 void CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
 {
-	for(auto pEvent : m_Events.find(strName)->second)
+	auto itEvent = m_Events.find(strName);
+	if(itEvent != m_Events.end())
 	{
-		if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
-			&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT)
-			pEvent->Call(0);
-		else if(EventType == CEventHandler::eEventType::RESOURCE_EVENT
-			&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
-			&& pEvent->GetVM() == pVM)
+		for(auto pEvent : itEvent->second)
 		{
-			pEvent->Call(0);
+			if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
+				&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT)
+				pEvent->Call(pArguments);
+			else if(EventType == CEventHandler::eEventType::RESOURCE_EVENT
+				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
+				&& pEvent->GetVM() == pVM)
+			{
+				pEvent->Call(pArguments);
+			}
 		}
 	}
 }

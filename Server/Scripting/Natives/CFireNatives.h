@@ -1,18 +1,18 @@
 //========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
-// File: C3DLabelNatives.h
+// File: CFireNatives.h
 // Project: Server.Core
 // Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
-#ifndef C3DLabelNatives_h
-#define C3DLabelNatives_h
+#ifndef CFireNatives_h
+#define CFireNatives_h
 
 #include <Scripting/CScriptVM.h>
 
-class C3DLabelNatives {
+class CFireNatives {
 
 private:
 
@@ -20,4 +20,4 @@ public:
 	static void Register(CScriptVM* pVM);
 };
 
-#endif // C3DLabelNatives_h
+#endif // CFireNatives_h

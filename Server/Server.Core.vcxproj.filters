@@ -390,11 +390,14 @@
     <ClCompile Include="Scripting\Natives\CEntityNatives.cpp">
       <Filter>Source Files\Scripting\Natives</Filter>
     </ClCompile>
-    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp">
-      <Filter>Source Files\Shared\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Shared\Scripting\CEvents.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CFireNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -621,6 +624,9 @@
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
     <ClInclude Include="Scripting\Natives\CScriptClasses.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CFireNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>

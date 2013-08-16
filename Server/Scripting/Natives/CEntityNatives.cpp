@@ -57,7 +57,18 @@ int	CEntityNatives::GetPosition(int * VM)
 
 int	CEntityNatives::SetRotation(int * VM)
 {
-
+	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
+	
+	if(pResource)
+	{
+		CScriptVM * pVM = pResource->GetVM();
+		CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance("");
+		
+		CVector3 vecRot;
+		pVM->PopVector(vecRot);
+		pEntity->SetRotation(vecRot);
+		pVM->ResetStackIndex();
+	}
 	return 1;
 }
 
@@ -70,7 +81,18 @@ int	CEntityNatives::GetRotation(int * VM)
 
 int	CEntityNatives::SetMoveSpeed(int * VM)
 {
-
+	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
+	
+	if(pResource)
+	{
+		CScriptVM * pVM = pResource->GetVM();
+		CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance("");
+		
+		CVector3 vecMoveSpeed;
+		pVM->PopVector(vecMoveSpeed);
+		pEntity->SetMoveSpeed(vecMoveSpeed);
+		pVM->ResetStackIndex();
+	}
 	return 1;
 }
 
@@ -83,7 +105,18 @@ int	CEntityNatives::GetMoveSpeed(int * VM)
 
 int	CEntityNatives::SetTurnSpeed(int * VM)
 {
-
+	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
+	
+	if(pResource)
+	{
+		CScriptVM * pVM = pResource->GetVM();
+		CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance("");
+		
+		CVector3 vecTurnSpeed;
+		pVM->PopVector(vecTurnSpeed);
+		pEntity->SetMoveSpeed(vecTurnSpeed);
+		pVM->ResetStackIndex();
+	}
 	return 1;
 }
 

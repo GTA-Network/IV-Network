@@ -16,11 +16,9 @@
 #include <Squirrel/squirrel.h>
 #include <Squirrel/sqstate.h>
 #include <Squirrel/sqvm.h>
+#include "CScriptArguments.h"
 #include "CSquirrelVM.h"
 #include "CLuaVM.h"
-class CScriptArguments {
-	
-};
 
 class CEventHandler {
 public:
