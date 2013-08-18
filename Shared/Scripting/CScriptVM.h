@@ -17,6 +17,10 @@
 #include "CScript.h"
 #include "ResourceSystem/CResource.h"
 
+// Helper macro to get the vm in scripting native;
+#define GET_SCRIPT_VM_SAFE 	CResource* pResource = CResourceManager::GetInstance()->Get(VM); if(!pResource)return 0; CScriptVM* pVM = pResource->GetVM();if(!pVM) return 0;
+#define GET_ENTITY_SAFE CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance(""); if(!pEntity) return 0;
+
 enum eVMType
 {
 	LUA_VM,

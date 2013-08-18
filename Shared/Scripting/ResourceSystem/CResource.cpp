@@ -274,6 +274,7 @@ bool CResource::CreateVM()
 		
 #ifdef _SERVER
 		CScriptClasses::Register(m_pVM);
+		CServerNatives::Register(m_pVM);
 #endif
 
 		CEventNatives::Register(m_pVM);

@@ -22,18 +22,13 @@ void CSystemNatives::Register(CScriptVM * pVM)
 int CSystemNatives::Print(int * VM)
 {
 	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
-	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
-	
-	if(pResource)
-	{
-		// We do not have to split it here because our CScriptVM class provides the necessary push and pop/get methods
-		CScriptVM* pVM = pResource->GetVM();
-		CString strPrint;
-		pVM->PopString(strPrint);
-		CLogFile::Printf(strPrint);
+	GET_SCRIPT_VM_SAFE;
 
-		pVM->ResetStackIndex();
-	}
+	CString strPrint;
+	pVM->PopString(strPrint);
+	CLogFile::Printf(strPrint);
+
+	pVM->ResetStackIndex();
 
 	return 1;
 }

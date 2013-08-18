@@ -53,7 +53,7 @@ int CScriptClasses::CreateEntity(int * VM)
 			CActorEntity* pActor = new CActorEntity();
 			pVM->SetClassInstance("CActorEntity", (void*)pActor);
 			CEntityNatives::Register(pVM);
-			CPlayerNatives::Register(pVM);
+			CActorNatives::Register(pVM);
 		} else if(strEntity == "BLIP") {
 			CBlipEntity * pBlip = new CBlipEntity();
 			pVM->SetClassInstance("CBlipEntity", (void*)pBlip);
