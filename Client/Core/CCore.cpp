@@ -79,12 +79,6 @@ bool CCore::Initialise()
 	// Intialize the offsets instance
 	COffsets::Initialize(m_uiBaseAddress);
 
-	// Apply hook's to game
-	CHooks::Intialize();
-
-	// Patch game addresses
-	CPatches::Initialize();
-
 	// Install the XLive hook
 	CXLiveHook::Install();
 
@@ -93,6 +87,12 @@ bool CCore::Initialise()
 
 	// Setup the game instance
 	m_pGame->Setup();
+
+	// Apply hook's to game
+	CHooks::Intialize();
+
+	// Patch game addresses
+	CPatches::Initialize();
 
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);

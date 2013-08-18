@@ -13,6 +13,8 @@
 #include <Game/IVEngine/CIVHud.h>
 #include <Game/IVEngine/CIVWeather.h>
 #include <Game/IVEngine/CIVModelInfo.h>
+#include <Game/CEFLCSupport.h>
+#include <General/CException.h>
 
 extern	CCore				* g_pCore;
 extern bool					  g_bInvalidIndex;
@@ -36,7 +38,8 @@ bool						CGame::m_LocalPlayerInitialised = 0;
 CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
 CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
 CTrafficLights				*CGame::m_pTrafficLights = 0;
-
+CString						CGame::m_strEFLCDirectory = 0;
+HWND						CGame::m_hwndGameWindow = 0;
 /*
 	==== Why WaitForGameStartup ====
 	We can load/start the game in the background and request all resources while the player is in the main menu.
@@ -95,6 +98,27 @@ void CGame::Setup()
 
 	// Hide the chat
 	g_pCore->GetChat()->SetVisible(false);
+
+	// Check Episodes from Liberty City content
+	char szInstallDirectory[MAX_PATH];
+	char szUsingDirectory[MAX_PATH];
+	bool bUsingEFLC = false;
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", NULL, szUsingDirectory, sizeof(szUsingDirectory)) || SharedUtility::Exists(szUsingDirectory)) {
+		if(strcmp(szUsingDirectory,"0") != 0)
+			bUsingEFLC = false;
+		else 
+			bUsingEFLC = true;
+	}
+
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
+		m_strEFLCDirectory.AppendF("%s",szInstallDirectory);
+	}
+
+	// Setup the EFLC support
+	CEFLCSupport::InstallSupport();
+
+	// Unpack our game files
+	//CGameFiles::CheckFiles();
 }
 
 void CGame::Initialise()
@@ -277,9 +301,9 @@ void CGame::PrepareWorld()
 	CIVHud::SetPlayerNamesVisible(0);
 
 	CIVWeather::SetWeather(WEATHER_SUNNY);
-	CIVWeather::SetTime(0, 0);
+	CIVWeather::SetTime(6, 45);
 
-	CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
+	//CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 
@@ -349,3 +373,9 @@ bool CGame::CheckInstances(bool bInitialised)
 
 	return true;
 }
+/*
+HWND CGame::GetWindow()
+{
+	return (*(HWND *)(g_pCore->GetBase() + 0x1849DD4));
+}
+*/

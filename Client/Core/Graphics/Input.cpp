@@ -123,7 +123,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			return true;
 		}
 
-		if(uMsg == WM_KEYUP && wParam == VK_F12)
+		if(uMsg == WM_KEYUP)
 		{
 			switch(wParam)
 			{

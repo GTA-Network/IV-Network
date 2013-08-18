@@ -111,7 +111,10 @@ HMONITOR STDMETHODCALLTYPE IDirect3D9Proxy::GetAdapterMonitor(UINT Adapter)
 HRESULT STDMETHODCALLTYPE IDirect3D9Proxy::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, DWORD BehaviorFlags, D3DPRESENT_PARAMETERS * pPresentationParameters, IDirect3DDevice9 ** ppReturnedDeviceInterface)
 {
 	// Set the window text
-	SetWindowText( hFocusWindow, MOD_NAME" " );
+	SetWindowText(hFocusWindow, !g_pCore->GetGame()->IsUsingEFLCContent() ? MOD_NAME" " : MOD_NAME" ft. Episodes from Liberty City");
+
+	// notify the game
+	g_pCore->GetGame()->SetWindow(hFocusWindow);
 
 	// Create the device
 	HRESULT hr = m_pD3D->CreateDevice(Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
@@ -124,7 +127,7 @@ HRESULT STDMETHODCALLTYPE IDirect3D9Proxy::CreateDevice(UINT Adapter, D3DDEVTYPE
 	if(SUCCEEDED(hr))
 	{
 		// Initialise the graphics
-		g_pCore->GetGraphics()->Initialise( *ppReturnedDeviceInterface );
+		g_pCore->GetGraphics()->Initialise(*ppReturnedDeviceInterface);
 
 		//
 		*ppReturnedDeviceInterface = new IDirect3DDevice9Proxy(*ppReturnedDeviceInterface);

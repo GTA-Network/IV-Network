@@ -13,6 +13,7 @@
 #include <Game/IVEngine/CIVHud.h>
 #include <IV/CIVScript.h>
 #include <IV/CIVScriptEnums.h>
+#include <Game/IVEngine/CIVWeather.h>
 
 #include <Common.h>
 #include <CCore.h>
@@ -73,7 +74,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "weapon")
 	{
-		CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+		if(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed())
+			CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+		
 		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
 		return true;
 	}
@@ -97,7 +100,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->OnClientReadyToGamePlay();
 		g_pCore->GetGame()->GetLocalPlayer()->SetModel(21);
 
-		int iVehicleType = 91;
+		int iVehicleType = 91; //g_pCore->GetGame()->IsUsingEFLCContent() ? 128 : 91;
 
 		CVector3 vecCreatePos; 
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
@@ -163,6 +166,35 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		fclose(file);
 		g_pCore->GetChat()->Output("Position data saved to 'SavePositions.log'");
 		return true;
+	}
+	else if(strCommand == "giveweapon")
+	{
+		int iWeapon = atoi(strParameters.c_str());
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon, 100, true);
+		return true;
+	}
+	else if(strCommand == "xaxis")
+	{
+		CVector3 vecPositon;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
+
+		vecPositon.fX += atoi(strParameters.c_str());
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
+		return true;
+	}
+	else if(strCommand == "time")
+	{
+		CIVWeather::SetTime(atoi(strParameters.c_str()),0);
+		return true;
+	}
+	else if(strCommand == "setmodel")
+	{
+		g_pCore->GetGame()->GetLocalPlayer()->SetModel(atoi(strParameters.c_str()));
+		return true;
+	}
+	else if(strCommand == "testweapon")
+	{
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),CIVScript::WEAPON_EPISODIC_11,99,false);
 	}
 	
 	return false;

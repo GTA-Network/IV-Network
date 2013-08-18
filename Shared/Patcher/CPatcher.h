@@ -43,6 +43,7 @@ public:
 	static BYTE			  InstallDetourPatchWithData(char * szLibrary, unsigned int uOrdinal, DWORD dwFunctionAddress);
 	static void           UninstallDetourPatch(void * pTrampoline, DWORD dwFunctionAddress);
 	static void			  InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress);
+	static void			  InstallHookCall(DWORD dwAddr, DWORD dwFunc);
 };
 
 #endif // CPatcher_h

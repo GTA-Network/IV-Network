@@ -9,7 +9,7 @@
 
 #include	"CZlib.h"
 #include	<assert.h>
-#include	<zlib.h>
+#include	<Libraries/zlib-1.2.5/zlib.h>
 
 #if defined(MSDOS) || defined(OS2) || defined(_WIN32) || defined(__CYGWIN__)
 #  include <fcntl.h>
@@ -87,7 +87,7 @@ int CZlib::Inflate(FILE * pSource, FILE * pDestination)
     return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
 }
 
-int CZlib::Decompress(String strFileName, String strOutput)
+int CZlib::Decompress(CString strFileName, CString strOutput)
 {
 	// Open the files
 	FILE * in = fopen(strFileName.Get(), "r");

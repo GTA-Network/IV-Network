@@ -13,6 +13,7 @@
 #include <Game/IVEngine/CIVModelManager.h>
 #include <Game/Entity/CVehicleEntity.h>
 #include <IV/CIVScript.h>
+#include <Game/CCharacterManager.h>
 
 #include <CCore.h>
 extern CCore * g_pCore;

@@ -227,3 +227,17 @@ void CPatcher::InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress)
      *(DWORD*)(dwAddress+1) = dwFunctionAddress;  
      Reprotect(protectionInfo); 
 }
+
+void CPatcher::InstallHookCall(DWORD dwAddr, DWORD dwFunc)
+{
+	DWORD dwHookFunc = (dwFunc - (dwAddr + 5));
+
+	// Unprotect the address
+	Unprotect(dwAddr, 5);
+
+	// Make the call
+	*(BYTE*)(dwAddr) = 0xE8;
+
+	// Make the call address
+	*(DWORD*)(dwAddr+1) = (DWORD)dwHookFunc;
+}

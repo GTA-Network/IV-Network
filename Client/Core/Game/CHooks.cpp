@@ -13,6 +13,7 @@
 #include	<Patcher\CPatcher.h>
 #include	<Game/IVEngine/CIVPlayerInfo.h>
 #include	"CContextData.h"
+#include	<SharedUtility.h>
 
 extern	CCore	* g_pCore;
 IVTask       * ___pTask = NULL;
@@ -119,22 +120,32 @@ void StartGame_Loading()
 
 void RemoveInitialLoadingScreens()
 {
+	StartGame_Loading();
+
 	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
 	int iLoadScreenType = (g_pCore->GetBase() + 0x18A8F48);
 	int iLoadScreenDuration = (g_pCore->GetBase() + 0x18A8F40);
 
 	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
-		if(i < 5)
+		if(i < 4)
 		{
 			*(DWORD *)(iLoadScreenType + i * 400) = 0;
 			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
+		
+		if(g_pCore->GetGame() && g_pCore->GetGame()->IsUsingEFLCContent()) {
 
-		if(i > 4)
-			*(DWORD *)(iLoadScreenType + i * 400) = 7;
+		if(i == 1) {
+			*(DWORD *)(iLoadScreenDuration + i * 400) = 1500;
+			*(DWORD *)(iLoadScreenType + i * 400) = 0;
+		}
+
+		if(i == 4)
+			*(DWORD *)(iLoadScreenDuration + i * 400) = 4500;
+		}
+
 	}
-	StartGame_Loading();
 }
 
 
@@ -431,14 +442,14 @@ void CHooks::Intialize()
 	// Hook CTask::~CTask to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD)CTask__Destructor_Hook);
 
-	// Disable initial loading screens
+	// Hook initial loading screens
 	CPatcher::InstallCallPatch(COffsets::FUNC_RemoveInitialLoadingScreens, (DWORD)RemoveInitialLoadingScreens);
 
 	// Always draw vehicle hazzard lights
 	CPatcher::InstallNopPatch(COffsets::PATCH_CVehicle__HazzardLightsOn, 2);
 
 	// Disable loading music
-	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
+	//CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
 	// Hook texture select/generate function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);

@@ -47,7 +47,8 @@ void CPatches::Initialize()
 	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
 
 	// Disable startup.sco
-	*(BYTE *)(g_pCore->GetBaseAddress() + 0x809A8A) = 0x75;
+	//*(BYTE *)(g_pCore->GetBaseAddress() + 0x809A8A) = 0x75;
+	CPatcher::InstallNopPatch((g_pCore->GetBaseAddress() + 0x809A8A), 2);
 
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xA9F300), (DWORD)CTaskSimpleStartVehicle__Process);
@@ -112,7 +113,7 @@ void CPatches::Initialize()
     //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (g_pCore->GetBase() + 0x625F1D));
     //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xB2B24D), (g_pCore->GetBase() + 0xB2B259));
 
-    // Disable weapon when entering vehicle+
+    // Disable weapon when entering vehicle
     CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x9C5994), 0x30);
 	
     // This needs to be disabled due to some crashes and to enable the blocked vehicles such as uranus, hellfury, etc.
@@ -125,5 +126,4 @@ void CPatches::Initialize()
 	//CPatcher::InstallJmpPatch((g_pCore->GetBaseAddress() + 0x8589D3), (g_pCore->GetBaseAddress() + 0x859E25));
 
 	*(BYTE *)(g_pCore->GetBase() + 0x857133) = 0xE0;
-
 }

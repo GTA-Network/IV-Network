@@ -14,8 +14,8 @@
 
 class CCharacterManager {
 public:
-    DWORD VehicleIdToModelHash(int iModelId);
-    int ModelHashToVehicleId(DWORD dwModelHash);
+    static DWORD VehicleIdToModelHash(int iModelId);
+    static int ModelHashToVehicleId(DWORD dwModelHash);
 };
 
 #endif // CCharacterManager_h

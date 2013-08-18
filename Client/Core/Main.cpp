@@ -17,6 +17,7 @@
 
 CCore		*g_pCore = NULL;
 HMODULE		g_hModule = NULL;
+extern		void InstallException();
 
 BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 {
@@ -39,6 +40,9 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 
 			// Create the core instance
 			g_pCore = new CCore;
+
+			// Call install
+			InstallException();
 
 			// Did the core fail to create or initialsie?
 			if(!g_pCore || !g_pCore->Initialise())

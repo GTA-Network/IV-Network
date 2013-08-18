@@ -153,7 +153,7 @@ public:
 
 	}
 
-	bool Calculate(String strFile)
+	bool Calculate(CString strFile)
 	{
 		// Reset
 		Reset();

@@ -16,8 +16,8 @@
 class CZlib {
 public:
 
-	static	int			Inflate( FILE * pSource, FILE * pDestination );
-	static	int			Decompress( String strFileName, String strOutput );
+	static	int			Inflate(FILE * pSource, FILE * pDestination);
+	static	int			Decompress(CString strFileName, CString strOutput);
 
 };
 

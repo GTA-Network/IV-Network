@@ -109,7 +109,49 @@ DWORD dwPlayerModelHashes[] =
 	CIVScript::MODEL_M_Y_SHADY_02, CIVScript::MODEL_M_Y_SKATEBIKE_01, CIVScript::MODEL_M_Y_SOHO_01, CIVScript::MODEL_M_Y_STREET_01,
 	CIVScript::MODEL_M_Y_STREET_03, CIVScript::MODEL_M_Y_STREET_04, CIVScript::MODEL_M_Y_STREETBLK_02, CIVScript::MODEL_M_Y_STREETBLK_03,
 	CIVScript::MODEL_M_Y_STREETPUNK_02, CIVScript::MODEL_M_Y_STREETPUNK_04, CIVScript::MODEL_M_Y_STREETPUNK_05, CIVScript::MODEL_M_Y_TOUGH_05,
-	CIVScript::MODEL_M_Y_TOURIST_02,
+	CIVScript::MODEL_M_Y_TOURIST_02, CIVScript::F_Y_BIKESTRIPPER_01, CIVScript::F_Y_BUSIASIAN, CIVScript::F_Y_EMIDTOWN_01, 
+	CIVScript::F_Y_GANGELS_01, CIVScript::F_Y_GANGELS_02, CIVScript::F_Y_GANGELS_03, CIVScript::F_Y_GLOST_01,
+	CIVScript::F_Y_GLOST_02, CIVScript::F_Y_GLOST_03, CIVScript::F_Y_GLOST_04, CIVScript::F_Y_GRYDERS_01, 
+	CIVScript::F_Y_UPTOWN_01, CIVScript::F_Y_UPTOWN_CS, CIVScript::IG_ASHLEYA, CIVScript::IG_BILLY,
+	CIVScript::IG_BILLYPRISON, CIVScript::IG_BRIANJ, CIVScript::IG_CLAY, CIVScript::IG_DAVE_GROSSMAN,
+	CIVScript::IG_DESEAN, CIVScript::IG_EVAN, CIVScript::IG_JASON_M, CIVScript::IG_JIM_FITZ,
+	CIVScript::IG_LOSTGIRL, CIVScript::IG_MALC, CIVScript::IG_MARTA, CIVScript::IG_MATTHEWS, 
+	CIVScript::IG_MCCORNISH, CIVScript::IG_NIKO, CIVScript::IG_PGIRL_01, CIVScript::IG_PGIRL_02,
+	CIVScript::IG_ROMAN_E1, CIVScript::IG_STROOPER, CIVScript::IG_TERRY, CIVScript::LOSTBUDDY_01,
+	CIVScript::LOSTBUDDY_02, CIVScript::LOSTBUDDY_03, CIVScript::LOSTBUDDY_04, CIVScript::LOSTBUDDY_05,
+	CIVScript::LOSTBUDDY_06, CIVScript::LOSTBUDDY_07, CIVScript::LOSTBUDDY_08, CIVScript::LOSTBUDDY_09,
+	CIVScript::LOSTBUDDY_10, CIVScript::LOSTBUDDY_11, CIVScript::LOSTBUDDY_12, CIVScript::LOSTBUDDY_13,
+	CIVScript::M_M_SMARTBLACK, CIVScript::M_M_SPRETZER, CIVScript::M_M_UPEAST_01, CIVScript::M_M_UPTOWN_01,
+	CIVScript::M_O_HISPANIC_01, CIVScript::M_Y_BIKEMECH, CIVScript::M_Y_BUSIASIAN, CIVScript::M_Y_BUSIMIDEAST,
+	CIVScript::M_Y_CIADLC_01, CIVScript::M_Y_CIADLC_02, CIVScript::M_Y_DOORMAN_01, CIVScript::M_Y_GANGELS_02,
+	CIVScript::M_Y_GANGELS_03, CIVScript::M_Y_GANGELS_04, CIVScript::M_Y_GANGELS_05, CIVScript::M_Y_GANGELS_06,
+	CIVScript::M_Y_GAYGANG_01, CIVScript::M_Y_GLOST_01, CIVScript::M_Y_GLOST_02, CIVScript::M_Y_GLOST_03,
+	CIVScript::M_Y_GLOST_04, CIVScript::M_Y_GLOST_05, CIVScript::M_Y_GLOST_06, CIVScript::M_Y_GRYDERS_01,
+	CIVScript::M_Y_GRYDERS_02, CIVScript::M_Y_GTRI_02, CIVScript::M_Y_GTRIAD_HI_01, CIVScript::M_Y_HIP_02,
+	CIVScript::M_Y_HIPMALE_01, CIVScript::M_Y_HISPANIC_01, CIVScript::M_Y_PRISONBLACK, CIVScript::M_Y_PRISONDLC_01,
+	CIVScript::M_Y_PRISONGUARD, CIVScript::F_Y_ASIANCLUB_01, CIVScript::F_Y_ASIANCLUB_02, CIVScript::F_Y_CLOEPARKER,
+	CIVScript::F_Y_CLUBEURO_01, CIVScript::F_Y_DANCER_01, CIVScript::F_Y_DOMGIRL_01, CIVScript::F_Y_EMIDTOWN_02,
+	CIVScript::F_Y_HOSTESS, CIVScript::F_Y_HOTCHICK_01, CIVScript::F_Y_HOTCHICK_02, CIVScript::F_Y_HOTCHICK_03,
+	CIVScript::F_Y_JONI, CIVScript::F_Y_PGIRL_01, CIVScript::F_Y_PGIRL_02, CIVScript::F_Y_SMID_01, 
+	CIVScript::F_Y_TRENDY_01, CIVScript::IG_AHMAD, CIVScript::IG_ARMANDO, CIVScript::IG_ARMSDEALER,
+	CIVScript::IG_ARNAUD, CIVScript::IG_BANKER, CIVScript::IG_BLUEBROS, CIVScript::IG_BRUCIE2,
+	CIVScript::IG_BULGARIN2, CIVScript::IG_DAISY, CIVScript::IG_DEEJAY, CIVScript::IG_DESSIE,
+	CIVScript::IG_GRACIE2, CIVScript::IG_HENRIQUE, CIVScript::IG_ISSAC2, CIVScript::IG_JACKSON,
+	CIVScript::IG_JOHNNY2, CIVScript::IG_LUIS2, CIVScript::IG_MARGOT, CIVScript::IG_MORI_K,
+	CIVScript::IG_MR_SANTOS, CIVScript::IG_NAPOLI, CIVScript::IG_OYVEY, CIVScript::IG_ROCCO,
+	CIVScript::IG_ROYAL, CIVScript::IG_SPADE, CIVScript::IG_TAHIR, CIVScript::IG_TIMUR,
+	CIVScript::IG_TONY, CIVScript::IG_TRAMP2, CIVScript::IG_TRIAD, CIVScript::IG_TROY,
+	CIVScript::IG_VIC, CIVScript::IG_VICGIRL, CIVScript::IG_VINCE, CIVScript::IG_YUSEF,
+	CIVScript::M_M_E2MAF_01, CIVScript::M_M_E2MAF_02, CIVScript::M_M_MAFUNION, CIVScript::M_Y_AMIRGUARD_01,
+	CIVScript::M_Y_BARMAISON, CIVScript::M_Y_BATHROOM, CIVScript::M_Y_CELEBBLOG, CIVScript::M_Y_CLUBBLACK_01, 
+	CIVScript::M_Y_CLUBEURO_01, CIVScript::M_Y_CLUBEURO_02, CIVScript::M_Y_CLUBEURO_03, CIVScript::M_Y_CLUBWHITE_01,
+	CIVScript::M_Y_DOMDRUG_01, CIVScript::M_Y_DOMGUY_01, CIVScript::M_Y_DOMGUY_02, CIVScript::M_Y_DOORMAN_02,
+	CIVScript::M_Y_E2RUSSIAN_01, CIVScript::M_Y_E2RUSSIAN_02, CIVScript::M_Y_E2RUSSIAN_03, CIVScript::M_Y_EXSPORTS,
+	CIVScript::M_Y_FIGHTCLUB_01, CIVScript::M_Y_FIGHTCLUB_02, CIVScript::M_Y_FIGHTCLUB_03, CIVScript::M_Y_FIGHTCLUB_04,
+	CIVScript::M_Y_FIGHTCLUB_05, CIVScript::M_Y_FIGHTCLUB_06, CIVScript::M_Y_FIGHTCLUB_07, CIVScript::M_Y_FIGHTCLUB_08,
+	CIVScript::M_Y_GAYBLACK_01, CIVScript::M_Y_GAYDANCER, CIVScript::M_Y_GAYGENERAL_01, CIVScript::M_Y_GAYWHITE_01,
+	CIVScript::M_Y_GUIDO_01, CIVScript::M_Y_GUIDO_02, CIVScript::M_Y_MIDEAST_01, CIVScript::M_Y_MOBPARTY,
+	CIVScript::M_Y_PAPARAZZI_01, CIVScript::M_Y_UPTOWN_01
 };
 
 DWORD SkinIdToModelHash(int modelid)
@@ -374,7 +416,6 @@ bool CPlayerEntity::Create()
 	// Disable head ik
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_BLOCK_CHAR_HEAD_IK, true);
 
-
 	// Set our player index
 	m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
 
@@ -587,31 +628,24 @@ void CPlayerEntity::SetModel(int iModelId)
 	DWORD dwModelHash = SkinIdToModelHash(iModelId);
 
 	// Get the model index
-	int iModelIndex = CIVModelManager::GetModelIndexFromHash( dwModelHash );
-	/*
-	m_pModelInfo->RemoveReference();
+	int iModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
 
 	// Get the model info
-	CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo( iModelIndex );
-
-	// Add reference
-	pModelInfo->AddReference( true );
-
-	// change the model from the player
-	CIVScript::ChangePlayerModel( GetScriptingHandle(),(CIVScript::eModel)dwModelHash );
-
+	CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
+	
+	m_pModelInfo->RemoveReference();
 	m_pModelInfo = pModelInfo;
 
-	// remove from world
-	//m_pPlayerPed->RemoveFromWorld();
+	if(IsSpawned())
+	{
+		// Add reference
+		m_pModelInfo->AddReference(true);
 
-	// set the new ped
-	//m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+		// change the model from the player
+		CIVScript::ChangePlayerModel(m_bytePlayerNumber,(CIVScript::eModel)dwModelHash);
 
-	// re add to world
-	//m_pPlayerPed->AddToWorld();
-
-	*/
+		m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+	}
 }
 
 void CPlayerEntity::SetControlState(CControls * pControlState)

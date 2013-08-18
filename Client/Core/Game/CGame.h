@@ -79,6 +79,9 @@ private:
 	static CCharacterManager			*m_pCharacterManager;
 	static CTrafficLights				*m_pTrafficLights;
 
+	static CString						m_strEFLCDirectory;
+	bool								m_bUsingEFLCContent;
+	static HWND							m_hwndGameWindow;
 public:
 										CGame() { };
 										~CGame() { };
@@ -112,6 +115,15 @@ public:
 	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
 	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
 	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
+
+	CString								GetEFLCDirectory() { return m_strEFLCDirectory; }
+	inline bool							IsUsingEFLCContent()
+	{
+		return m_bUsingEFLCContent;
+	}
+
+	HWND								GetWindow() { return m_hwndGameWindow; };
+	void								SetWindow(HWND hWindow) { m_hwndGameWindow = hWindow; };
 };
 
 #endif // CGame_h
