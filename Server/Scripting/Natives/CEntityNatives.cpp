@@ -37,7 +37,7 @@ int	CEntityNatives::SetPosition(int * VM)
 	GET_ENTITY_SAFE;
 		
 	CVector3 vecPos;
-	pVM->PopVector(vecPos);
+	pVM->Pop(vecPos);
 	pEntity->SetPosition(vecPos);
 	pVM->ResetStackIndex();
 	
@@ -57,7 +57,7 @@ int	CEntityNatives::SetRotation(int * VM)
 	GET_ENTITY_SAFE;
 
 	CVector3 vecRot;
-	pVM->PopVector(vecRot);
+	pVM->Pop(vecRot);
 	pEntity->SetRotation(vecRot);
 	pVM->ResetStackIndex();
 	return 1;
@@ -76,7 +76,7 @@ int	CEntityNatives::SetMoveSpeed(int * VM)
 	GET_ENTITY_SAFE;
 
 	CVector3 vecMoveSpeed;
-	pVM->PopVector(vecMoveSpeed);
+	pVM->Pop(vecMoveSpeed);
 	pEntity->SetMoveSpeed(vecMoveSpeed);
 	pVM->ResetStackIndex();
 	return 1;
@@ -95,7 +95,7 @@ int	CEntityNatives::SetTurnSpeed(int * VM)
 	GET_ENTITY_SAFE;
 
 	CVector3 vecTurnSpeed;
-	pVM->PopVector(vecTurnSpeed);
+	pVM->Pop(vecTurnSpeed);
 	pEntity->SetMoveSpeed(vecTurnSpeed);
 	pVM->ResetStackIndex();
 	return 1;

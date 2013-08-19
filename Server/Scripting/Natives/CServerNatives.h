@@ -15,7 +15,7 @@
 class CServerNatives {
 
 private:
-
+	static int	GetConfig(int * pVM);
 public:
 	static void Register(CScriptVM* pVM);
 };

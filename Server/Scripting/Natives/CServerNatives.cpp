@@ -8,8 +8,67 @@
 //==============================================================================
 
 #include "CServerNatives.h"
+#include <CSettings.h>
+#include <Scripting/ResourceSystem/CResourceManager.h> 
 
 void CServerNatives::Register(CScriptVM* pVM)
 {
+	pVM->RegisterFunction("getConfig", GetConfig);
+}
 
+
+int CServerNatives::GetConfig(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	CScriptArguments settingsTable;
+	for(std::map<CString, SettingsValue *>::iterator iter = CSettings::GetValues()->begin(); iter != CSettings::GetValues()->end(); iter++)
+	{
+		// Get the setting
+		SettingsValue * setting = iter->second;
+		
+		// Push the setting name onto the stack
+		
+		// Push the value onto the stack
+		if(setting->IsBool())
+		{
+			settingsTable.push(iter->first.Get());
+			settingsTable.push(setting->bValue);
+		}
+		else if(setting->IsInteger())
+		{
+			settingsTable.push(iter->first.Get());
+			settingsTable.push(setting->iValue);
+		}
+		else if(setting->IsFloat())
+		{
+			settingsTable.push(iter->first.Get());
+			settingsTable.push(setting->fValue);
+		}
+		else if(setting->IsString())
+		{
+			settingsTable.push(iter->first.Get());
+			settingsTable.push(CString(setting->strValue));
+		}
+		else if(setting->IsList())
+		{
+			settingsTable.push(iter->first.Get());
+			// Create a new array
+			CScriptArguments settingsArray;
+
+			for(std::list<CString>::iterator iter2 = setting->listValue.begin(); iter2 != setting->listValue.end(); iter2++)
+			{
+				// Push the list value onto the stack
+				settingsArray.push(CString((*iter2).Get()));
+			}
+
+			settingsTable.push(settingsArray, true);
+		}
+	}
+
+	pVM->PushTable(settingsTable);
+
+	pVM->ResetStackIndex();
+
+	return 1;
 }

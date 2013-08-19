@@ -41,7 +41,7 @@ int CScriptClasses::CreateEntity(int * VM)
 		CScriptVM* pVM = pResource->GetVM();
 		
 		CString strEntity;
-		pVM->PopString(strEntity);
+		pVM->Pop(strEntity);
 		pVM->ResetStackIndex();
 		if(strEntity == "3DLABEL")
 		{
@@ -93,8 +93,8 @@ int CScriptClasses::CreateEntity(int * VM)
 			// Merge the pop events so we use only Pop instead of PopVector
 			CVector3 vecPos;
 			CVector3 vecRot;
-			pVM->PopVector(vecPos);
-			pVM->PopVector(vecRot);
+			pVM->Pop(vecPos);
+			pVM->Pop(vecRot);
 
 			// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 			pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));

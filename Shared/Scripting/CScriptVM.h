@@ -16,6 +16,7 @@
 
 #include "CScript.h"
 #include "ResourceSystem/CResource.h"
+#include "CScriptArguments.h"
 
 // Helper macro to get the vm in scripting native;
 #define GET_SCRIPT_VM_SAFE 	CResource* pResource = CResourceManager::GetInstance()->Get(VM); if(!pResource)return 0; CScriptVM* pVM = pResource->GetVM();if(!pVM) return 0;
@@ -47,23 +48,27 @@ public:
 	virtual bool LoadScript(CString script) { return false; }		// Replace string with script
 	virtual bool LoadScripts(std::list<CScript> scripts) { return false; }
 
-	virtual void PopBool(bool& b) {}
-	virtual void PopInteger(int& i) {}
-	virtual void PopFloat(float& f) {}
-	virtual void PopString(CString& str) {}
-	virtual void PopVector(CVector3& vec) {}
+	virtual void Pop(bool& b) {}
+	virtual void Pop(int& i) {}
+	virtual void Pop(float& f) {}
+	virtual void Pop(CString& str) {}
+	virtual void Pop(CVector3& vec) {}
 
-	virtual void PopBool(bool& b, bool bDefaultValue) {}
-	virtual void PopInteger(int& i, int iDefaultValue) {}
-	virtual void PopFloat(float& f, float fDefaultValue) {}
-	virtual void PopString(CString& str, CString strDefaultValue) {}
-	virtual void PopVector(CVector3& vec, CVector3 vecDefaultValue) {}
+	virtual void Pop(bool& b, bool bDefaultValue) {}
+	virtual void Pop(int& i, int iDefaultValue) {}
+	virtual void Pop(float& f, float fDefaultValue) {}
+	virtual void Pop(CString& str, CString strDefaultValue) {}
+	virtual void Pop(CVector3& vec, CVector3 vecDefaultValue) {}
+	virtual void PopArray(CScriptArguments &array) {}
+	virtual void PopTable(CScriptArguments &table) {}
 
-	virtual void PushBool(const bool& b) {}
-	virtual void PushInteger(const int& i) {}
-	virtual void PushFloat(const float& f) {}
-	virtual void PushString(const CString& str) {}
-	virtual void PushVector(const CVector3& vec) {}
+	virtual void Push(const bool& b) {}
+	virtual void Push(const int& i) {}
+	virtual void Push(const float& f) {}
+	virtual void Push(const CString& str) {}
+	virtual void Push(const CVector3& vec) {}
+	virtual void PushArray(const CScriptArguments &array) {}
+	virtual void PushTable(const CScriptArguments &table) {}
 
 	virtual void ResetStackIndex() {}
 	virtual void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false) {}

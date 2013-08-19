@@ -25,7 +25,7 @@ int CSystemNatives::Print(int * VM)
 	GET_SCRIPT_VM_SAFE;
 
 	CString strPrint;
-	pVM->PopString(strPrint);
+	pVM->Pop(strPrint);
 	CLogFile::Printf(strPrint);
 
 	pVM->ResetStackIndex();

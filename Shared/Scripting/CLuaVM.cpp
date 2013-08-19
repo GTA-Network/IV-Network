@@ -11,6 +11,7 @@
 #include <lua/lua.hpp>
 #include <SharedUtility.h>
 #include <CLogFile.h>
+#include "CScriptArgument.h"
 
 CLuaVM::CLuaVM(CResource* pResource)
 	: CScriptVM(pResource),
@@ -108,7 +109,7 @@ void CLuaVM::RegisterClassFunction(const char* szFunctionName, scriptFunction pf
 	lua_settable(m_pVM, -3);
 }
 
-void CLuaVM::PopBool(bool& b)
+void CLuaVM::Pop(bool& b)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TBOOLEAN)
@@ -121,7 +122,7 @@ void CLuaVM::PopBool(bool& b)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopBool(bool& b, bool bDefaultValue)
+void CLuaVM::Pop(bool& b, bool bDefaultValue)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TBOOLEAN)
@@ -140,7 +141,7 @@ void CLuaVM::PopBool(bool& b, bool bDefaultValue)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopInteger(int& i)
+void CLuaVM::Pop(int& i)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TBOOLEAN)
@@ -153,7 +154,7 @@ void CLuaVM::PopInteger(int& i)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopInteger(int& i, int iDefaultValue)
+void CLuaVM::Pop(int& i, int iDefaultValue)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
@@ -171,7 +172,7 @@ void CLuaVM::PopInteger(int& i, int iDefaultValue)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopFloat(float& f)
+void CLuaVM::Pop(float& f)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
@@ -184,7 +185,7 @@ void CLuaVM::PopFloat(float& f)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopFloat(float& f, float fDefaultValue)
+void CLuaVM::Pop(float& f, float fDefaultValue)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
@@ -202,7 +203,7 @@ void CLuaVM::PopFloat(float& f, float fDefaultValue)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopString(CString& str)
+void CLuaVM::Pop(CString& str)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if(argType == LUA_TSTRING || argType == LUA_TNUMBER)
@@ -217,7 +218,7 @@ void CLuaVM::PopString(CString& str)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopString(CString& str, CString strDefaultValue)
+void CLuaVM::Pop(CString& str, CString strDefaultValue)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
 	if(argType == LUA_TSTRING || argType == LUA_TNUMBER)
@@ -238,43 +239,70 @@ void CLuaVM::PopString(CString& str, CString strDefaultValue)
 	m_iStackIndex++;
 }
 
-void CLuaVM::PopVector(CVector3& vec)
+void CLuaVM::Pop(CVector3& vec)
 {
-	PopFloat(vec.fX);
-	PopFloat(vec.fY);
-	PopFloat(vec.fZ);
+	Pop(vec.fX);
+	Pop(vec.fY);
+	Pop(vec.fZ);
 }
 
-void CLuaVM::PopVector(CVector3& vec, CVector3 vecDefaultValue)
+void CLuaVM::Pop(CVector3& vec, CVector3 vecDefaultValue)
 {
-	PopFloat(vec.fX, vecDefaultValue.fX);
-	PopFloat(vec.fY, vecDefaultValue.fY);
-	PopFloat(vec.fZ, vecDefaultValue.fZ);
+	Pop(vec.fX, vecDefaultValue.fX);
+	Pop(vec.fY, vecDefaultValue.fY);
+	Pop(vec.fZ, vecDefaultValue.fZ);
 }
 
-void CLuaVM::PushBool(const bool& b)
+void CLuaVM::Push(const bool& b)
 {
 	lua_pushboolean(m_pVM, b);
 }
 
-void CLuaVM::PushInteger(const int& i)
+void CLuaVM::Push(const int& i)
 {
 	lua_pushinteger(m_pVM, i);
 }
 
-void CLuaVM::PushFloat(const float& f)
+void CLuaVM::Push(const float& f)
 {
 	lua_pushnumber(m_pVM, f);
 }
 
-void CLuaVM::PushString(const CString& str)
+void CLuaVM::Push(const CString& str)
 {
 	lua_pushstring(m_pVM, str.Get());
 }
 
-void CLuaVM::PushVector(const CVector3& vec)
+void CLuaVM::Push(const CVector3& vec)
 {
-	PushFloat(vec.fX);
-	PushFloat(vec.fY);
-	PushFloat(vec.fZ);
+	Push(vec.fX);
+	Push(vec.fY);
+	Push(vec.fZ);
+}
+
+void CLuaVM::PushArray(const CScriptArguments &array)
+{
+	int index = 0;
+	lua_newtable(m_pVM); 
+	for(auto pArgument : array.m_Arguments)
+	{
+		lua_pushnumber(m_pVM, index);
+		pArgument->Push(this);
+		lua_settable(m_pVM, -3);
+		index++;
+	}
+}
+
+
+void CLuaVM::PushTable(const CScriptArguments &table)
+{
+	int index = 0;
+	lua_newtable(m_pVM); 
+	for(auto iter = table.m_Arguments.begin(); iter != table.m_Arguments.end(); iter++)
+	{
+		(*iter)->Push(this);
+		++iter;
+		(*iter)->Push(this);
+		lua_settable(m_pVM, -3);
+	}
 }

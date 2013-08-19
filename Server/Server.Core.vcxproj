@@ -153,6 +153,8 @@
     <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp" />

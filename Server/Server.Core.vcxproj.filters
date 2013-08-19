@@ -399,6 +399,12 @@
     <ClCompile Include="Scripting\Natives\CFireNatives.cpp">
       <Filter>Source Files\Scripting\Natives</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -501,9 +507,6 @@
       <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CLuaVM.h">
-      <Filter>Header Files\Shared\Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h">
@@ -628,6 +631,9 @@
     </ClInclude>
     <ClInclude Include="Scripting\Natives\CFireNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
