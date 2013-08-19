@@ -10,7 +10,7 @@
 #ifndef CVector3_h
 #define CVector3_h
 
-#ifndef _WIN32
+#ifdef _WIN32
 #include <math.h>
 #endif
 

@@ -55,9 +55,6 @@ public:
 		if(m_nArgCount == MaxNativeParams)
 		{
 			// We can only store 16 arguments
-#ifdef IVMP_DEBUG
-			CLogFile::Printf("NativeContext::Push argument count reached");
-#endif
 			return;
 		}
 
@@ -65,9 +62,6 @@ public:
 		if(sizeof(T) > ArgSize)
 		{
 			// We only accept 4 byte or less arguments
-#ifdef IVMP_DEBUG
-			CLogFile::Printf("NativeContext::Push argument is too big");
-#endif
 			return;
 		}
 		else if(sizeof(T) < ArgSize) // Is the argument too small?

@@ -20,6 +20,8 @@
 #include <Game/IVEngine/CIVStreaming.h>
 
 #include <Ptrs.h>
+#pragma warning(disable:4305)
+
 bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
 	if(strCommand == "q"  || strCommand == "quit" || strCommand == "exit")

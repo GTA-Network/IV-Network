@@ -100,6 +100,9 @@ bool CCore::Initialise()
 	// Get loaded modules from our process
 	GetLoadedModulesList();
 
+	// Register module manager
+	CModuleManager::FetchModules();
+
 	CLogFile::Printf("Done!");
 	return true;
 }
@@ -189,62 +192,37 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
-#if 0
+	// Print our IVMultiplayer "Identifier" in the left upper corner
 	if(!g_pCore->GetGame()->GetLocalPlayer())
-	{
-		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
-
-		m_pGraphics->GetSprite()->Begin(0);
-
-		D3DXVECTOR2 spriteCentre = D3DXVECTOR2(960.0f, 540.0f);
-	    D3DXVECTOR2 trans=D3DXVECTOR2(0.0f,0.0f);
-		
-		D3DXMATRIX mat;
-		D3DXVECTOR2 scaling2((1920.0f/1440.0f)/2,(1080.0f/900.0f)/3);
-		float rotation=0.0f;
-		D3DXMatrixTransformation2D(&mat,NULL,0.0,&scaling2,&spriteCentre,rotation,&trans);
-
-		m_pGraphics->GetSprite()->SetTransform(&mat);
-		m_pGraphics->GetSprite()->Draw(m_pGraphics->pLoadingScreenTexture,NULL, NULL,&D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255,255,255,255));
-
-		m_pGraphics->GetSprite()->Flush();
-		m_pGraphics->GetSprite()->End();
-	}
+		m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
 	else
-	{
-#endif
-		// Print our IVMultiplayer "Identifier" in the left upper corner
-		if(!g_pCore->GetGame()->GetLocalPlayer())
-			m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
-		else
-			m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
+		m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
 		
-		// Render our chat instance
-		if(m_pChat && m_pChat->IsVisible())
-			m_pChat->Render();
+	// Render our chat instance
+	if(m_pChat && m_pChat->IsVisible())
+		m_pChat->Render();
 
-		// Before rendering FPS-Counter instance, update FPS display
-		m_pGraphics->DrawText(5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
+	// Before rendering FPS-Counter instance, update FPS display
+	m_pGraphics->DrawText(5.0f, 25.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
-		// Render our FPS-Counter instance
-		if(m_pFPSCounter)
-			m_pFPSCounter->Pulse();
+	// Render our FPS-Counter instance
+	if(m_pFPSCounter)
+		m_pFPSCounter->Pulse();
 
-		// Render our development instance
-		if(m_pDevelopment)
-			m_pDevelopment->Process();
+	// Render our development instance
+	if(m_pDevelopment)
+		m_pDevelopment->Process();
 
-		// Check if our snap shot write failed
-		if(CSnapShot::IsDone())
-		{
-			if(CSnapShot::HasSucceeded())
-				m_pChat->Outputf(false, "Screen shot written (%s).", CSnapShot::GetWriteName().Get());
-			else
-				m_pChat->Outputf(false, "Screen shot write failed (%s).", CSnapShot::GetError().Get());
+	// Check if our snap shot write failed
+	if(CSnapShot::IsDone())
+	{
+		if(CSnapShot::HasSucceeded())
+			m_pChat->Outputf(false, "Screen shot written (%s).", CSnapShot::GetWriteName().Get());
+		else
+			m_pChat->Outputf(false, "Screen shot write failed (%s).", CSnapShot::GetError().Get());
 
-			CSnapShot::Reset();
-		}
-	//}
+		CSnapShot::Reset();
+	}
 	
 	pDevice->Present(NULL,NULL,NULL,NULL);
 }
@@ -304,7 +282,7 @@ void CCore::GetLoadedModule(DWORD dwProcessId)
 				//CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] ); 
 			  }//;//strModule.AppendF("%i, %s",found, szModName);
 			  else {
-				strModule.AppendF("--> %s", szModName);
+				strModule.AppendF("--> IVModules: %s", szModName);
 				CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] );
 			  }
             }

@@ -10,21 +10,34 @@
 #ifndef CIVScript_FunctionInvoke_h
 #define CIVScript_FunctionInvoke_h
 
+#include <Common.h>
 #include "CIVScript_FunctionContext.h"
+
+#ifdef _CLIENT
 #include <CCore.h>
 #include <CLogFile.h>
+#endif
 
 // Log native calls(detect crash scripting functions)
 //#define NATIVE_LOG 1
 
 class CIVScript_NativeInvoke
 {
+public:
+	static void				InitialiseOffset(DWORD dwOffset2) { dwInvokeOffset = dwOffset2; }
 private:
+	static DWORD			dwInvokeOffset;
+
 	typedef void (_cdecl * NativeCall)(IVNativeCallContext * pNativeContext);
 
 	static inline void Invoke(unsigned int uiHash, NativeContext * pNativeContext)
 	{
+#ifdef _CLIENT
 		DWORD dwFunctionAddress = COffsets::FUNC_ScrVM__FindNativeAddress;
+#else
+		DWORD dwFunctionAddress = dwInvokeOffset;
+#endif
+
 		DWORD dwNativeFunc = NULL;
 		_asm
 		{
@@ -38,8 +51,11 @@ private:
 		if(dwNativeFunc != NULL)
 			((NativeCall)dwNativeFunc)(pNativeContext);
 		else
+		{
+#ifdef _CLIENT
 			CLogFile::PrintDebugf("Failed to find native address of hash 0x%p", uiHash);
-
+#endif
+		}
 		#ifdef NATIVE_LOG
 				CLogFile::PrintDebugf("Finished invoke native %x/%p",uiHash,uiHash);
 				CLogFile::PrintDebugf(" ");

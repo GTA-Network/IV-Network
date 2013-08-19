@@ -177,7 +177,7 @@ namespace CIVScript
 	static bool IsCarInAirProper(unsigned int vehicle) { return CIVScript_NativeInvoke::Invoke<bool>(NATIVE_IS_CAR_IN_AIR_PROPER, vehicle); }
 
 	// Sound
-	static bool RequestAmbientAudioBank(const char* szAudio) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REQUEST_AMBIENT_AUDIO_BANK, szAudio); }
+	static unsigned int RequestAmbientAudioBank(const char* szAudio) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REQUEST_AMBIENT_AUDIO_BANK, szAudio); }
 	static void StopSound(unsigned int sound) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_STOP_SOUND, sound); }
 	static void ReleaseSoundId(unsigned int sound) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_RELEASE_SOUND_ID, sound); }
 	static void PlaySoundFromPed(unsigned int ped, eSound sound, unsigned int unknown) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_PLAY_SOUND_FROM_PED, ped, sound, unknown); }

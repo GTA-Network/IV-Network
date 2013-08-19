@@ -41,6 +41,8 @@
 #include <Game/CWeaponHandler.h>
 #include <Graphics/CSnapShot.h>
 
+#include <General/CModuleManager.h>
+
 class CCore {
 private:
 

@@ -33,7 +33,7 @@ CSnapShot::CSnapShot()
 CString CSnapShot::GetScreenShotPath()
 {
 	// Get the screen shot directory
-	CString strPath(SharedUtility::GetAbsolutePath("snapshots"));
+	CString strPath(SharedUtility::GetAbsolutePath("multiplayer\\snapshots"));
 
 	// Ensure the screen shot directory exists
 	if(!SharedUtility::Exists(strPath))

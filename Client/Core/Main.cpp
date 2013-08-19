@@ -10,6 +10,8 @@
 #include "CCore.h"
 #include <WinSock2.h>
 #include <Windows.h>
+#include "IV/ScriptExport.h"
+#include "IV/CIVExternalScriptCall.h"
 
 #ifndef _CLIENT
 #define _CLIENT
@@ -41,7 +43,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			// Create the core instance
 			g_pCore = new CCore;
 
-			// Call install
+			// Call install exception function
 			//InstallException();
 
 			// Did the core fail to create or initialsie?
@@ -52,6 +54,7 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 				// Terminate the process
 				TerminateProcess(GetCurrentProcess(), 0);
 			}
+
 			break;
 		}
 

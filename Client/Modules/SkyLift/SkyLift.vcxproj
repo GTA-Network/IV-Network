@@ -11,13 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FAE2902E-34E5-40A9-ACA7-4C01518EF4CC}</ProjectGuid>
-    <RootNamespace>ClientCompressor1</RootNamespace>
-    <ProjectName>Client.Compressor</ProjectName>
+    <ProjectGuid>{FF4F5243-FD9D-444B-AA96-21B7A5BC3215}</ProjectGuid>
+    <RootNamespace>SkyLift</RootNamespace>
+    <ProjectName>IV_Skylift</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -40,15 +40,17 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Binary\</OutDir>
-    <IntDir>$(SolutionDir)\Binary\temp\build_clientcompressor\</IntDir>
-    <TargetName>IVCompressor</TargetName>
+    <TargetExt>.dll</TargetExt>
+    <OutDir>$(SolutionDir)Binary\multiplayer\modules\</OutDir>
+    <IntDir>$(SolutionDir)\Binary\temp\build_clienttestmodule\</IntDir>
+    <TargetName>IVSkyLift</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
