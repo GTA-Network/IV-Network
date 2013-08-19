@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -304,6 +304,9 @@
     <ClCompile Include="Hooks\CWin32MouseHook.cpp" />
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
+    <ClCompile Include="IV\IVParachute_AI.cpp" />
+    <ClCompile Include="IV\IVParachute_Manager.cpp" />
+    <ClCompile Include="IV\IVParachute_Process.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
@@ -611,6 +614,7 @@
     <ClInclude Include="Game\IVEngine\CIVWorld.h" />
     <ClInclude Include="Game\IVEngine\IVTasks.h" />
     <ClInclude Include="General\CException.h" />
+    <ClInclude Include="General\Ptrs.h" />
     <ClInclude Include="Graphics\CChat.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
@@ -633,6 +637,10 @@
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
+    <ClInclude Include="IV\IVParachuteData.h" />
+    <ClInclude Include="IV\IVParachute_AI.h" />
+    <ClInclude Include="IV\IVParachute_Manager.h" />
+    <ClInclude Include="IV\IVParachute_Process.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />

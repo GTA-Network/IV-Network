@@ -29,10 +29,6 @@ void CPatches::Initialize()
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	*(DWORD *)(g_pCore->GetBaseAddress() + 0x9849F0) = 0x900004C2;
 
-	// Disable some startup functions (gtaiv internal)
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xD549DC), (g_pCore->GetBase() + 0xD549C0));
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xD549EC), (g_pCore->GetBase() + 0xD549D0));
-
 	// Make the game think we are not connected to the internet
     *(BYTE *)(g_pCore->GetBase() + 0x10F1390) = 0; // byteInternetConnectionState
     *(DWORD *)(g_pCore->GetBase() + 0x7AF1A0) = 0x90C3C032; // xor al, al; retn; nop

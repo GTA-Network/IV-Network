@@ -352,13 +352,11 @@ void CEFLCSupport::InstallSupport()
 	char *szParachuteScript = "parachute_player";
 	//CPatcher::InstallPushPatch((g_pCore->GetBaseAddress() + 0x809A8C), (DWORD)szParachuteScript);
 	
-	/*
 	// Activate parachute(register model hash)
-	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0xD3E780);
-	_asm call dwFunctionAddress;
-	dwFunctionAddress = (g_pCore->GetBase() + 0xD3E790);
-	_asm call dwFunctionAddress;
-	*/
+	//DWORD dwFunctionAddress = (g_pCore->GetBase() + 0xD3E780);
+	//_asm call dwFunctionAddress;
+	//dwFunctionAddress = (g_pCore->GetBase() + 0xD3E790);
+	//_asm call dwFunctionAddress;
 
 	// 8A7D70
 }

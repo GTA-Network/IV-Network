@@ -32,6 +32,7 @@
 #include <Game/IVEngine/CIVPool.h>
 #include <Game/IVEngine/CIVCam.h>
 #include <Game/IVEngine/CIVWeaponInfo.h>
+#include <Game/IVEngine/CIVStreaming.h>
 
 #include "CTaskManager.h"
 #include "CPools.h"
@@ -65,6 +66,7 @@ private:
 	static CCamera						*m_pCamera;
 	static CIVModelInfo					m_modelInfos[NUM_ModelInfos];
 	static CIVWeaponInfo				m_weaponInfos[NUM_WeaponInfos];
+	static CIVStreaming					*m_pStream;
 	static bool							m_LocalPlayerInitialised;
 
 	static CPlayerManager				*m_pPlayerManager;
@@ -115,6 +117,7 @@ public:
 	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
 	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
 	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
+	CIVStreaming						*GetStreaming() { return m_pStream; }
 
 	CString								GetEFLCDirectory() { return m_strEFLCDirectory; }
 	inline bool							IsUsingEFLCContent()
