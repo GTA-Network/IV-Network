@@ -25,17 +25,55 @@ enum eEFLCStruct {
 	TBOGT_PAD_XML_WEAPONS = 0xC,
 	TBOGT_PAD_IDE_WEAPONS = 0xD,
 	TBOGT_PAD_XML_RPC = 0xE,
-	TBOGT_PAD_EXTRA_MAP = 0x20,
+	TBOGT_PAD_EXTRA_MAP = 0xF,
 };
-class CEFLCSupport {
 
+class CEFLCSupport {
 private:
+	static bool		m_bVehicles;
+	inline void		InstallVehicles()
+	{
+		m_bVehicles = true;
+	}
+
+	static bool		m_bPeds;
+	static void		InstallPeds()
+	{
+		m_bPeds = true;
+	}
+
+	static bool		m_bWeapons;
+	static void		InstallWeapons()
+	{
+		m_bWeapons = true;
+	}
+
+	static bool		m_bMaps;
+	static void		InstallMaps()
+	{
+		m_bMaps = true;
+	}
+
+	static bool		m_bParachute;
+	static void		InstallParachute()
+	{
+		m_bParachute = true;
+	}
 
 public:
-					CEFLCSupport();
-					~CEFLCSupport();
+	static void		SpecificSupport(bool bVehicles, bool bPeds, bool bWeapons, bool bMaps, bool bParachute)
+	{
+		m_bVehicles = bVehicles;
+		m_bPeds = bPeds;
+		m_bWeapons = bWeapons;
+		m_bMaps = bMaps;
+		m_bParachute = bParachute;
+	}
 
 	static void		InstallSupport();
+	static bool		OpenFile_Decision(char* j);
+
+	static void		InstallPreGameLoad();
 };
 
 #endif // CEFLCSupport_h

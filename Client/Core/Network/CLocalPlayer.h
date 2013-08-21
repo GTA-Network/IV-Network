@@ -29,8 +29,13 @@ private:
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
-		DWORD							m_dwRespawnTime;
+		DWORD							m_dwRespawnTime[2];
 		bool							m_bDead;
+		bool							m_bAdvancedControlState;
+		bool							m_bAdvancedCameraState;
+		bool							m_bParachuteCheck;
+		bool							m_bParachuteIntitialised;
+		unsigned						m_pObj;
 
 public:
 										CLocalPlayer();
@@ -54,6 +59,8 @@ public:
 		void							SetControl(bool bControl) { m_bToggleControl = bControl; }
 		inline bool						GetControl() { return m_bToggleControl; }
 		void							SetPlayerControlAdvanced(bool bControl, bool bCamera);
+		inline bool						GetAdvancedControlState() { return m_bAdvancedControlState; }
+		inline bool						GetAdvancedCameraState() { return m_bAdvancedCameraState; }
 
 		unsigned short					GetPing();
 };

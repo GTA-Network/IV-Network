@@ -125,12 +125,6 @@ void RemoveInitialLoadingScreens()
 	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
 	int iLoadScreenType = (g_pCore->GetBase() + 0x18A8F48);
 	int iLoadScreenDuration = (g_pCore->GetBase() + 0x18A8F40);
-	
-	if(g_pCore->GetGame() && g_pCore->GetGame()->IsUsingEFLCContent()) {
-		*(DWORD *)(iLoadScreenDuration + 400) = 1500;
-		*(DWORD *)(iLoadScreenType + 400) = 0;
-		*(DWORD *)(iLoadScreenDuration + 1600) = 4500;
-	}
 
 	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
@@ -139,6 +133,12 @@ void RemoveInitialLoadingScreens()
 			*(DWORD *)(iLoadScreenType + i * 400) = 0;
 			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
+	}
+	
+	if(g_pCore->GetGame() && g_pCore->GetGame()->IsUsingEFLCContent()) {
+		*(DWORD *)(iLoadScreenDuration + 400) = 1500; // load directx
+		*(DWORD *)(iLoadScreenType + 400) = 0;
+		*(DWORD *)(iLoadScreenDuration + 1600) = 4500; // logo screen
 	}
 }
 

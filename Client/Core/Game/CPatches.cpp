@@ -43,7 +43,6 @@ void CPatches::Initialize()
 	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
 
 	// Disable startup.sco
-	//*(BYTE *)(g_pCore->GetBaseAddress() + 0x809A8A) = 0x75;
 	CPatcher::InstallNopPatch((g_pCore->GetBaseAddress() + 0x809A8A), 2);
 
 	// Disable automatic vehicle engine turn-on

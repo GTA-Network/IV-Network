@@ -168,8 +168,8 @@
 #define FREEZE_OBJECT_POSITION CIVScript::FreezeObjectPosition
 #define GET_OBJECT_ANIM_CURRENT_TIME CIVScript::GetObjectAnimCurrentTime
 #define IS_SCREEN_FADED_OUT CIVScript::IsScreenFadedOut
-#define GET_CHAR_DRAWABLE_VARIATION CIVScript::GetCharDrawableVariation
-#define SET_CHAR_COMPONENT_VARIATION CIVScript::SetCharComponentVariation
+#define GET_CHAR_DRAWABLE_VARIATION __noop
+#define SET_CHAR_COMPONENT_VARIATION __noop
 #define REQUEST_MODEL CIVScript::RequestModel
 #define REQUEST_ANIMS CIVScript::RequestAnims
 #define MARK_MODEL_AS_NO_LONGER_NEEDED CIVScript::MarkModelAsNoLongerNeeded

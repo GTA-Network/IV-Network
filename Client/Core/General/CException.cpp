@@ -208,7 +208,11 @@ LONG WINAPI apiExceptionHandler(_EXCEPTION_POINTERS * apiExceptionInf)
 	HINSTANCE hInst = (HINSTANCE)g_hModule;
 	DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), NULL, ExceptionProc);
 
-	return EXCEPTION_EXECUTE_HANDLER;;
+#ifdef _DEBUG
+	return EXCEPTION_CONTINUE_SEARCH;
+#else
+	return EXCEPTION_EXECUTE_HANDLER;
+#endif
 }
 
 void InstallException()

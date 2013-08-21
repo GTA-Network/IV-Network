@@ -119,6 +119,7 @@ void CGame::Setup()
 	}
 
 	// Setup the EFLC support
+	CEFLCSupport::SpecificSupport(true, true, true, true, true);
 	CEFLCSupport::InstallSupport();
 
 	// Unpack our game files
@@ -175,7 +176,7 @@ void CGame::Initialise()
 		m_pCheckpointManager = new CCheckpointManager;
 
 	// Show the chat
-	g_pCore->GetChat()->SetVisible (true);
+	g_pCore->GetChat()->SetVisible(true);
 	
 	OnEnvironmentStartUp(false);
 
@@ -192,8 +193,7 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	else
 		_pPlayerPed = NULL;
 
-	if(!g_bInvalidIndex || m_pPool->GetLocalPlayerIndex() == -1)
-	{
+	if(!g_bInvalidIndex || m_pPool->GetLocalPlayerIndex() == -1) {
 		if(!bForce)
 			return;
 	}
@@ -325,6 +325,11 @@ void CGame::OnClientReadyToGamePlay()
 	CIVHud::SetAreaNamesEnabled(true);
 	CIVHud::SetPlayerNamesVisible(1);
 	CIVWeather::SetTime(8,0);
+}
+
+void CGame::OnClientPastGameJoin()
+{
+	CEFLCSupport::InstallPreGameLoad();
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

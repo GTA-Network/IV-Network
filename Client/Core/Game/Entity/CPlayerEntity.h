@@ -155,6 +155,7 @@ public: // Handles call functions
 	void							ResetVehicleEnterExit();
 	void							ClearVehicleEntryTask();
 	void							ClearVehicleExitTask();
+	void							SetExitFlag(bool bFlag) { m_pVehicleEnterExit->bExiting = true; }
 	
 	void							Interpolate();
 	void							ResetInterpolation();

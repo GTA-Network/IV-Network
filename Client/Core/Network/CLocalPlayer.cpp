@@ -49,7 +49,11 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
         m_bFirstSpawn(false),
         m_bFinishedInitialize(false),
         m_bSpawnMarked(false),
-        m_bRadarVisible(true)
+        m_bRadarVisible(true),
+		m_bAdvancedControlState(true),
+		m_bAdvancedCameraState(true),
+		m_bParachuteCheck(false),
+		m_bParachuteIntitialised(false)
 {
 	// Temporary spawn position for development
 	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
@@ -65,7 +69,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 void CLocalPlayer::Respawn()
 {
 	// Get current day time so we don't have to set the time always..
-	DWORD m_dwRespawnTime = CGameFunction::GetTimeOfDay();
+	CGameFunction::GetTime((int *)m_dwRespawnTime[0], (int *)m_dwRespawnTime[1]);
 
     // Set the local player state to respawning
     *(DWORD *)COffsets::VAR_LocalPlayerState = 5;
@@ -77,10 +81,13 @@ void CLocalPlayer::HandleSpawn()
     CLocalPlayer::m_bIsDead = false;
 
 	// Set our current time
-	CGameFunction::SetTimeOfDayFormat(m_dwRespawnTime);
+	CGameFunction::SetTimeOfDay(m_dwRespawnTime[0],m_dwRespawnTime[1]);
 
 	// Reset vehicle enter/exit
 	ResetVehicleEnterExit();
+
+	// Reset parachute
+	m_bParachuteCheck = false;
 }
 
 void CLocalPlayer::DoDeathCheck()
@@ -107,7 +114,11 @@ void CLocalPlayer::DoDeathCheck()
 		// Mark ourselves as dead
 		CLocalPlayer::m_bIsDead = true;
 
+		// Delete the object
+		CIVScript::DeleteObject(&m_pObj);
+
 		// Reset vehicle entry/exit flags
+		SetExitFlag(true);
 		ResetVehicleEnterExit();
 	}
 
@@ -117,9 +128,33 @@ void CLocalPlayer::Pulse()
 {
 	CPlayerEntity::Process();
 
-	if(IsSpawned())
+	if(IsSpawned()) {
 		DoDeathCheck();
+		
+		if(!m_bParachuteCheck) {
 
+			// Create "simulated" parachute
+			CIVScript::GiveWeaponToChar(GetScriptingHandle(), 41, 1, false);
+			DWORD dwParachute = 0x4C19FE43; //0x402B7648;
+			CVector3 vecCurrPos;
+			GetPosition(vecCurrPos);
+
+			CIVScript::CreateObject(dwParachute, vecCurrPos.fX, vecCurrPos.fY, -25.0 , &m_pObj, 1);
+			CIVScript::SetObjectDynamic(m_pObj, 1);
+			CIVScript::SetObjectCollision(m_pObj, 1);
+			CIVScript::SetObjectVisible(m_pObj, 0);
+			CIVScript::SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(m_pObj, 1);
+			CIVScript::AttachObjectToPed(m_pObj, GetScriptingHandle(), 1202, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1);
+
+			m_bParachuteCheck = true;
+		}
+
+		if(!m_bParachuteIntitialised)
+		{
+			//g_pCore->GetGame()->OnClientPastGameJoin();
+			m_bParachuteIntitialised = true;
+		}
+	}
 	m_bSpawnMarked = true;
 }
 
@@ -133,8 +168,19 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 {
 	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
 	{
-		CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
-		CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+		// Toggle controls
+		if(bControl != m_bAdvancedControlState)
+		{
+			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
+			m_bAdvancedControlState = bControl;
+		}
+		
+		// Toggle camera
+		if(bCamera != m_bAdvancedCameraState)
+		{
+			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+			m_bAdvancedCameraState = bCamera;
+		}
 	}
 }
 

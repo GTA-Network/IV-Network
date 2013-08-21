@@ -924,7 +924,7 @@ void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 void CPlayerEntity::CheckVehicleEnterExit()
 {
 	// Are we spawned?
-	if(IsSpawned())
+	if(IsSpawned() && g_pCore->GetGame()->GetLocalPlayer()->GetAdvancedControlState())
 	{
 		// Are we not in a vehicle?
 		if(!InternalIsInVehicle())
@@ -1134,17 +1134,8 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 				{
 					// Send to the server
 
-					// Vehicle exit is complete
-					m_pVehicle->SetOccupant(m_byteSeat, NULL);
-
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
-
-					// Reset the vehicle
-					m_pVehicle = NULL;
-
-					// Reset the seat
-					m_byteSeat = 0;
 
 					g_pCore->GetChat()->Output("VehicleExitComplete()");
 				}
@@ -1155,6 +1146,17 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 
 void CPlayerEntity::ResetVehicleEnterExit()
 {
+	// If player was exiting vehicle, process to proper reset first
+	if(m_pVehicle && m_pVehicleEnterExit->bExiting)
+	{
+		// Reset the seat
+		m_pVehicle->SetOccupant(m_byteSeat, NULL);
+		m_byteSeat = 0;
+
+		// Reset the vehicle
+		m_pVehicle = NULL;
+	}
+
 	// Reset
 	m_pVehicleEnterExit->bEntering = false;
 	m_pVehicleEnterExit->pVehicle = NULL;
@@ -1163,10 +1165,10 @@ void CPlayerEntity::ResetVehicleEnterExit()
 	m_pVehicleEnterExit->bRequesting = false;
 
 	// Clear the vehicle entry task
-	//ClearVehicleEntryTask();
+	ClearVehicleEntryTask();
 
 	// Clear the vehicle exit task
-	//ClearVehicleExitTask();
+	ClearVehicleExitTask();
 }
 
 bool CPlayerEntity::IsGettingIntoAVehicle()
@@ -1487,17 +1489,14 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 
 		// Create the task
 		DWORD dwAddress = (g_pCore->GetBase() + 0xB87480);
-		_asm
-		{
-			push 1000
-				push iMoveType
-				push tZ
-				push tY
-				push tX
-				push uiPlayerIndex
-				call dwAddress
-				add esp, 18h
-		}
+		_asm	push 1000;
+		_asm	push iMoveType;
+		_asm	push tZ;
+		_asm	push tY;
+		_asm	push tX;
+		_asm	push uiPlayerIndex;
+		_asm	call dwAddress;
+		_asm	add esp, 18h;
 	}
 }
 
@@ -1652,6 +1651,7 @@ void CPlayerEntity::KillPed(bool bInstantly)
 		SAFE_DELETE(controlState);
 
 		// Reset vehicle entry/exit flags
+		m_pVehicleEnterExit->bExiting = true;
 		ResetVehicleEnterExit();
 
 		// Reset interpolation

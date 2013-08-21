@@ -18,9 +18,11 @@
 #include <Game/IVEngine/CIVWeather.h>
 #include <IV/CIVScript_FunctionInvoke.h>
 #include <Game/IVEngine/CIVStreaming.h>
-
 #include <Ptrs.h>
-#pragma warning(disable:4305)
+#include <Game/CEFLCSupport.h>
+
+extern unsigned int l_U40;
+unsigned int pObj;
 
 bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
@@ -122,21 +124,23 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 
 			pVehicle->SetPosition(vecCreatePos);
 		}
+
+		PTR_CHAT->Output("Type \"/ready\" and seconds later \"/parachute\" to create a parachute!",false);
 		return true;
 	}
 	else if(strCommand == "engine")
 	{
 		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
-			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(true);
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(!g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetEngineState());
 		
 		return true;
 	}
 	else if(strCommand == "saveposition")
 	{
-		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.txt"), "a");
+		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if(!file)
 		{
-			g_pCore->GetChat()->Output("Failed to open 'SavedData.txt'");
+			g_pCore->GetChat()->Output("Failed to open 'SavedData.log'");
 			return true;
 		}
 
@@ -198,57 +202,53 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	else if(strCommand == "testweapon")
 	{
 		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),CIVScript::WEAPON_EPISODIC_11,99,false);
+		return true;
 	}
-	else if(strCommand == "request")
+	else if(strCommand == "ready")
 	{
-		int iAnimIndex = g_pCore->GetGame()->GetStreaming()->GetAnimIndexFromName("PARACHUTE");
-		g_pCore->GetGame()->GetStreaming()->RequestResource(RESOURCE_TYPE_WAD, iAnimIndex);
-		PTR_CHAT->Output("Requested!");
+		PTR_CHAT->Output("Installing prachute...");
+		CEFLCSupport::InstallPreGameLoad();
+		return true;
 	}
 	else if(strCommand == "parachute")
 	{
+		PTR_CHAT->Output("Adding prachute...");
+
 		CVector3 vecPosition;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
-
-		/*
-		static void CreateObject(eModel model, float x, float y, float z, unsigned int *pObj, bool unknownTrue) 
-		
-		{ NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_OBJECT, model, x, y, z, pObj, unknownTrue); }
-		*/
-		unsigned int pObj;
 		unsigned int uiPlayerIndex = g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle();
 
 		DWORD dwParachute = 0x58D6A0A0;
-		CIVScript::GiveWeaponToChar(uiPlayerIndex, 41, 1, false);
-		CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, vecPosition.fZ + 2, &pObj, 1);
-		CIVScript::AttachObjectToPed(pObj, uiPlayerIndex, (CIVScript::ePedBone)0, 0.02500000, -0.12500000, 5.45000000, 0.00000000, 0.00000000, 0.00000000, 1);
-			
-		dwParachute = 0x4C19FE43; //0x402B7648;
-		CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, vecPosition.fZ + 2, &pObj, 1);
-		CIVScript::AttachObjectToPed(pObj, uiPlayerIndex, (CIVScript::ePedBone)0, -0.010000000, -0.07400000, 0.29000000, 0.25000000, 0.00000000, 0.00000000, false);
 		
-		//CIVScript::RequestScript("carwash");
-		//CIVScript::StartNewScript("carwash", 512);
+		//CIVScript::GiveWeaponToChar(uiPlayerIndex, 41, 1, false);
+		//CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, vecPosition.fZ + 2, &pObj, 1);
+		//CIVScript::AttachObjectToPed(pObj, uiPlayerIndex, 0, 0.02500000, -0.12500000, 5.45000000, 0.00000000, 0.00000000, 0.00000000, 1);
 
-		//TASK_PLAY_ANIM_NON_INTERRUPTABLE( sub_658(), "Hang_Idle", "PARACHUTE", 1000.00000000, 1, 1, 1, 0, 0 );
-		//CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_TASK_PLAY_ANIM_NON_INTERRUPTABLE, uiPlayerIndex, "Hang_Idle", "PARACHUTE", 1000.000000, 1, 1, 1, 0, 0);
-		/*
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_OBJECT_DYNAMIC, pObj, 1);
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_OBJECT_COLLISION, pObj, 1);
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_OBJECT_VISIBLE, pObj, 1);
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_ATTACH_OBJECT_TO_PED, pObj, uiPlayerIndex, 1202, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1);
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_PLAY_OBJECT_ANIM, pObj, "obj_chute_off", "PARACHUTE", 1000.00000000, 0, 1);
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_TASK_PLAY_ANIM_WITH_FLAGS, uiPlayerIndex, "chute_off", "PARACHUTE", 3.00000000, 0, 1280);
-		*/
-		//AttachObjectToPedPhysic
-		/*( 1490460832, uVar9._fU0, uVar9._fU4, uVar9._fU8 + 2.00000000, ref l_U21, 1 );
-        ATTACH_OBJECT_TO_PED( l_U21, sub_658(), 0, 0.02500000, -0.12500000, 5.45000000, 0.00000000, 0.00000000, 0.00000000, 1 );*/
+		if(pObj != NULL)
+			CIVScript::DeleteObject(&pObj);
+
+		dwParachute = 0x4C19FE43; //0x402B7648;
+		CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, -25.0 , &pObj, 1);
+		l_U40 = pObj;
+
+		CIVScript::SetObjectDynamic(pObj, 0);
+		CIVScript::SetObjectCollision(pObj, 0);
+		CIVScript::SetObjectVisible(pObj, 0);
+		CIVScript::SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(pObj, 1);
+
+		CIVScript::SetObjectDynamic( pObj, 1 );
+        CIVScript::SetObjectCollision( pObj, 1 );
+        CIVScript::SetObjectVisible( pObj, 1 );
+		CIVScript::AttachObjectToPed( pObj, uiPlayerIndex, 1202, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1 );
+		CIVScript::PlayObjectAnim( pObj, "obj_chute_off", "PARACHUTE", 1000.00000000, 0, 1 );
+		CIVScript::TaskPlayAnimWithFlags( uiPlayerIndex, "chute_off", "PARACHUTE", 3.00000000, 0, 1280 );
+		return true;
 	}
-	else if(strCommand == "initpara")
+	else if(strCommand == "bahama")
 	{
-		CIVParachuteManager::InitialiseParachuteManager();
-		CIVParachuteProcess::InitialiseParachuteLocal();
-		PTR_CHAT->Output("INITIALIZED!",false);
+		CVector3 vecPos = CVector3(-15.9453f, -13.5865f, -11.7456f);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::Teleport(vecPos);
+		return true;
 	}
 	return false;
 }

@@ -304,7 +304,6 @@
     <ClCompile Include="Graphics\Input.cpp" />
     <ClCompile Include="Hooks\CWin32MouseHook.cpp" />
     <ClCompile Include="Hooks\CXLive.cpp" />
-    <ClCompile Include="IV\CIVExternalScriptCall.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp" />
     <ClCompile Include="IV\IVParachute_AI.cpp" />
@@ -656,6 +655,10 @@
   <ItemGroup>
     <None Include="..\..\Libraries\DXSDK\Include\D3DX10math.inl" />
     <None Include="..\..\Libraries\DXSDK\Include\d3dx9math.inl" />
+    <None Include="res\exceptbox.aps" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\exceptbox.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

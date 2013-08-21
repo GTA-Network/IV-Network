@@ -7,8 +7,6 @@
 //
 //==============================================================================
 
-// TODO: move to a thread!
-
 #include "IVParachute_Process.h"
 #include "IVParachuteData.h"
 #include <CCore.h>
@@ -1049,7 +1047,7 @@ void sub_9868()
     {
         iVar12 = 1;
     }
-    if (NOT g_U2692[0]._fU64)
+    if (true)
     {
         if (l_U23 < 0)
         {

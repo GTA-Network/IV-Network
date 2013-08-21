@@ -10,8 +10,6 @@
 #include "CCore.h"
 #include <WinSock2.h>
 #include <Windows.h>
-#include "IV/ScriptExport.h"
-#include "IV/CIVExternalScriptCall.h"
 
 #ifndef _CLIENT
 #define _CLIENT
@@ -44,7 +42,9 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			g_pCore = new CCore;
 
 			// Call install exception function
-			//InstallException();
+#ifndef _DEBUG
+			InstallException();
+#endif
 
 			// Did the core fail to create or initialsie?
 			if(!g_pCore || !g_pCore->Initialise())

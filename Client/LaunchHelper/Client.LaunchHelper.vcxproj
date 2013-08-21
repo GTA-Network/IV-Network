@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4257EAF3-7A0B-4E2D-A45D-78E4FBCF67F2}</ProjectGuid>
     <RootNamespace>ClientLaunchHelper</RootNamespace>
+    <ProjectName>Client.LaunchInjector</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

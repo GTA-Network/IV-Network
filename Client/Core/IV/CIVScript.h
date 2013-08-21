@@ -56,7 +56,7 @@ namespace CIVScript
 	static void GiveWeaponToChar(unsigned int ped, unsigned int weapon, unsigned int ammo, bool unknown0) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_WEAPON_TO_CHAR, ped, weapon, ammo, unknown0); }
 	static void GetCharCoordinates(unsigned int ped, float *pX, float *pY, float *pZ) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_CHAR_COORDINATES, ped, pX, pY, pZ); }
 
-	static bool IsCharInjured(unsigned int ped) { return CIVScript_NativeInvoke::Invoke<bool>(NATIVE_IS_CHAR_INJURED, ped); }
+	static bool IsCharInjured(unsigned int ped) { return false; }
 	static bool IsCharInAnyCar(unsigned int ped) { return CIVScript_NativeInvoke::Invoke<bool>(NATIVE_IS_CHAR_IN_ANY_CAR, ped); }
 	static void BlockPedWeaponSwitching(unsigned int ped, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_BLOCK_PED_WEAPON_SWITCHING, ped, value); }
 	static void UnlockRagdoll(unsigned int ped, bool value) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_UNLOCK_RAGDOLL, ped, value); }

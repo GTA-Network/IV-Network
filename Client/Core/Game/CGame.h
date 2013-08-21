@@ -92,6 +92,7 @@ public:
 	void								PrepareWorld();
 	static void							OnEnvironmentStartUp(bool bForce = false);
 	static void							OnClientReadyToGamePlay();
+	static void							OnClientPastGameJoin();
 	static void							Setup();
 	static void							RenderRAGEScripts();
 	static void							UnprotectMemory();

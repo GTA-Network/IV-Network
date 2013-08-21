@@ -219,8 +219,16 @@ int main(int argc, char **argv)
 	CompressFile("multiplayer\\original\\images.txt", "multiplayer\\datafiles\\9.ivmp");
 	CompressFile("multiplayer\\original\\vehicles.ide", "multiplayer\\datafiles\\10.ivmp");
 	CompressFile("multiplayer\\original\\vehicleseflc.ide", "multiplayer\\datafiles\\11.ivmp");
-
-
+	CompressFile("multiplayer\\original\\gta_ep2.wpfl", "multiplayer\\datafiles\\12.ivmp");
+	CompressFile("multiplayer\\original\\ivmp.dat", "multiplayer\\datafiles\\13.ivmp");
+	CompressFile("multiplayer\\original\\vehicleseflc.ide", "multiplayer\\datafiles\\14.ivmp");
+	CompressFile("multiplayer\\original\\ped.dat", "multiplayer\\datafiles\\15.ivmp");
+	CompressFile("multiplayer\\original\\pedgrp.dat", "multiplayer\\datafiles\\16.ivmp");
+	CompressFile("multiplayer\\original\\pedpersonality.dat", "multiplayer\\datafiles\\17.ivmp");
+	CompressFile("multiplayer\\original\\pedpopulation.dat", "multiplayer\\datafiles\\18.ivmp");
+	CompressFile("multiplayer\\original\\pedProps.dat", "multiplayer\\datafiles\\19.ivmp");
+	CompressFile("multiplayer\\original\\peds.ide", "multiplayer\\datafiles\\20.ivmp");
+	CompressFile("multiplayer\\original\\pedVariations.dat", "multiplayer\\datafiles\\21.ivmp");
 	printf("FINISHED, type any key to exit...");
 	getchar();
 	return 1;

@@ -45,9 +45,6 @@
     <Filter Include="Source Files\Shared">
       <UniqueIdentifier>{29601084-a050-43f5-ba36-13c00a1d89e8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Game\Entity">
-      <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libraries\TinyXML">
       <UniqueIdentifier>{ea52250c-f438-49bf-a887-9dbe9d425185}</UniqueIdentifier>
     </Filter>
@@ -138,8 +135,14 @@
     <Filter Include="Header Files\General">
       <UniqueIdentifier>{7462d777-5630-4513-9b77-bc61bcf4f07f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Game\Entity">
+    <Filter Include="Source Files\Network\Entity">
+      <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Network\Entity">
       <UniqueIdentifier>{af954cd9-5ad4-473c-88b7-8e73dc096e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{9285ac95-9db2-4bc3-bbec-141a7ad0787d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,10 +153,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CNetworkEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\CGame.cpp">
       <Filter>Source Files\Game</Filter>
@@ -306,28 +309,28 @@
       <Filter>Source Files\Network\Shared</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CActorEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CObjectEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CFireEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CPickupEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\C3DLabelEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CBlipEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Game\Entity\CCheckpointEntity.cpp">
-      <Filter>Source Files\Game\Entity</Filter>
+      <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Network\CNetworkManager.cpp">
       <Filter>Source Files\Network</Filter>
@@ -836,9 +839,6 @@
     <ClCompile Include="IV\IVParachute_AI.cpp">
       <Filter>Source Files\Game\IV</Filter>
     </ClCompile>
-    <ClCompile Include="IV\CIVExternalScriptCall.cpp">
-      <Filter>Source Files\Game\IV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
@@ -854,37 +854,37 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\C3DLabelEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CActorEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CBlipEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CCheckpointEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CEntityManager.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CFireEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CNetworkEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CObjectEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CPickupEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CPlayerEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CVehicleEntity.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\CGame.h">
       <Filter>Header Files\Game</Filter>
@@ -1100,7 +1100,7 @@
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Game\Entity\CEntitiesManager.h">
-      <Filter>Header Files\Game\Entity</Filter>
+      <Filter>Header Files\Network\Entity</Filter>
     </ClInclude>
     <ClInclude Include="Game\CCamera.h">
       <Filter>Header Files\Game\IV</Filter>
@@ -1860,5 +1860,13 @@
     <None Include="..\..\Libraries\DXSDK\Include\D3DX10math.inl">
       <Filter>Header Files\Libraries\DirectX</Filter>
     </None>
+    <None Include="res\exceptbox.aps">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\exceptbox.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
