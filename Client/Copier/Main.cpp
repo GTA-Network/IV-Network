@@ -572,6 +572,8 @@ void CopyThread()
 							comFileSize += (fileSize/1024);
 						}
 
+						SharedUtility::CreateDirectoryA(CString("%s%s", szInstallDirectory, "\\pc\\data\\eflc\\").Get());
+
 						for(int n = 0; n < sizeof(szCopyFile) / sizeof(szCopyFile[0]); n++)
 						{
 							std::string source = szCopyFile[n];
