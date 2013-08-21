@@ -136,30 +136,30 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 const char * szCopyFile[] = {
-	{ "%s/TBoGT/pc/models/cdimages/vehicles.img" },
-	{ "%s/TLAD/pc/models/cdimages/vehicles.img" },
-	{ "%s/TBoGT/pc/models/cdimages/pedprops.img" },
-	{ "%s/TLAD/pc/models/cdimages/pedprops.img" },
-	{ "%s/TBoGT/pc/models/cdimages/weapons_e2.img" },
-	{ "%s/TLAD/pc/models/cdimages/weapons_e1.img" },
+	{ "%s\\TBoGT\\pc\\models\\cdimages\\vehicles.img" },
+	{ "%s\\TLAD\\pc\\models\\cdimages\\vehicles.img" },
+	{ "%s\\TBoGT\\pc\\models\\cdimages\\pedprops.img" },
+	{ "%s\\TLAD\\pc\\models\\cdimages\\pedprops.img" },
+	{ "%s\\TBoGT\\pc\\models\\cdimages\\weapons_e2.img" },
+	{ "%s\\TLAD\\pc\\models\\cdimages\\weapons_e1.img" },
 
-	{ "%s/TBoGT/common/data/default.ide" },
-	{ "%s/TBoGT/common/data/WeaponInfo.xml" },
+	{ "%s\\TBoGT\\common\\data\\default.ide" },
+	{ "%s\\TBoGT\\common\\data\\WeaponInfo.xml" },
 
-	{ "%s/TLAD/common/data/default.ide" },
-	{ "%s/TLAD/common/data/WeaponInfo.xml" },
+	{ "%s\\TLAD\\common\\data\\default.ide" },
+	{ "%s\\TLAD\\common\\data\\WeaponInfo.xml" },
 
-	{ "%s/TBoGT/pc/anim/anim.img" },
-	{ "%s/TBoGT/pc/models/cdimages/componentpeds.img" },
+	{ "%s\\TBoGT\\pc\\anim\\anim.img" },
+	{ "%s\\TBoGT\\pc\\models\\cdimages\\componentpeds.img" },
 
-	{ "%s/TLAD/pc/anim/anim.img" },
-	{ "%s/TLAD/pc/models/cdimages/componentpeds.img" },
+	{ "%s\\TLAD\\pc\\anim\\anim.img" },
+	{ "%s\\TLAD\\pc\\models\\cdimages\\componentpeds.img" },
 
-	{ "%s/TBoGT/common/data/peds.ide" },
-	{ "%s/TBoGT/common/data/pedVariations.dat" },
+	{ "%s\\TBoGT\\common\\data\\peds.ide" },
+	{ "%s\\TBoGT\\common\\data\\pedVariations.dat" },
 
-	{ "%s/TLAD/common/data/peds.ide" },
-	{ "%s/TLAD/common/data/pedVariations.dat" },
+	{ "%s\\TLAD\\common\\data\\peds.ide" },
+	{ "%s\\TLAD\\common\\data\\pedVariations.dat" },
 
 
 	// copy to gtaiv/pc/data/eflc
@@ -327,30 +327,30 @@ const char * szCopyFile[] = {
 
 
 const char * szCopyFileDest[] = {
-	{ "%s/pc/data/eflc/vehicles_tbogt.img" },
-	{ "%s/pc/data/eflc/vehicles_tlad.img" },
-	{ "%s/pc/data/eflc/pedprops_tbogt.img" },
-	{ "%s/pc/data/eflc/pedprops_tlad.img" },
-	{ "%s/pc/data/eflc/weapons_tbogt.img" },
-	{ "%s/pc/data/eflc/weapons_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\vehicles_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\vehicles_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\pedprops_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\pedprops_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\weapons_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\weapons_tlad.img" },
 
-	{ "%s/common/data/default.ide" },
-	{ "%s/pc/data/eflc/WeaponInfo_tbogt.xml" },
+	{ "%s\\common\\data\\default.ide" },
+	{ "%s\\pc\\data\\eflc\\WeaponInfo_tbogt.xml" },
 
-	{ "%s/pc/data/eflc/default_tlad.ide" },
-	{ "%s/pc/data/eflc/WeaponInfo_tlad.xml" },
+	{ "%s\\pc\\data\\eflc\\default_tlad.ide" },
+	{ "%s\\pc\\data\\eflc\\WeaponInfo_tlad.xml" },
 
-	{ "%s/pc/data/eflc/anim_tbogt.img" },
-	{ "%s/pc/data/eflc/componentpeds_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\anim_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\componentpeds_tbogt.img" },
 
-	{ "%s/pc/data/eflc/anim_tlad.img" },
-	{ "%s/pc/data/eflc/componentpeds_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\anim_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\componentpeds_tlad.img" },
 
-	{ "%s/pc/data/eflc/peds_tbogt.ide" },
-	{ "%s/pc/data/eflc/pedVariations_tbogt.dat" },
+	{ "%s\\pc\\data\\eflc\\peds_tbogt.ide" },
+	{ "%s\\pc\\data\\eflc\\pedVariations_tbogt.dat" },
 
-	{ "%s/pc/data/eflc/peds_tlad.ide" },
-	{ "%s/pc/data/eflc/pedVariations_tlad.dat" },
+	{ "%s\\pc\\data\\eflc\\peds_tlad.ide" },
+	{ "%s\\pc\\data\\eflc\\pedVariations_tlad.dat" },
 
 
 	// copy to gtaiv/pc/data/eflc
@@ -575,23 +575,28 @@ void CopyThread()
 						for(int n = 0; n < sizeof(szCopyFile) / sizeof(szCopyFile[0]); n++)
 						{
 							std::string source = szCopyFile[n];
-							szCopyText = source.substr(source.find_last_of("/")+1).c_str();
+							szCopyText = source.substr(source.find_last_of("\\")+1).c_str();
 							szCopyText2 = CString("%i/%i", n, sizeof(szCopyFile) / sizeof(szCopyFile[0]));
-							InvalidateRect(hwnd, 0, true);
+							InvalidateRect(hwnd, 0, true);				
 
-							if(CString(szCopyFile[n]).Find("multiplayer\\pc\\data\\eflc\\") != std::string::npos) {
-								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/pc/data/elfc/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\data\\eflc\\") != std::string::npos && szCopyFile[n][0] != '%') {
+								CString file(SharedUtility::GetAppPath());
+								file.AppendF(szCopyFile[n]);
+								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							} 
-							else if(CString(szCopyFile[n]).Find("multiplayer\\common\\data\\") != std::string::npos) {
-								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/common/data/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\") != std::string::npos && szCopyFile[n][0] != '%') {
+								CString file(SharedUtility::GetAppPath());
+								file.AppendF(szCopyFile[n]);
+								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							}
-							else if(CString(szCopyFile[n]).Find("multiplayer\\pc\\textures\\") != std::string::npos) {
-								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/pc/textures/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							else if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\textures\\") != std::string::npos && szCopyFile[n][0] != '%') {
+								CString file(SharedUtility::GetAppPath());
+								file.AppendF(szCopyFile[n]);
+								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							} 
 							else {
 								CopyFileEx(CString(szCopyFile[n], szEFLCDirectory).Get(), CString(szCopyFileDest[n], szInstallDirectory).Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							}
-							Sleep(100);
 						}
 						szCopyText = "Complete";
 						szCopyText2 = CString("%i/%i", sizeof(szCopyFile) / sizeof(szCopyFile[0]), sizeof(szCopyFile) / sizeof(szCopyFile[0]));
