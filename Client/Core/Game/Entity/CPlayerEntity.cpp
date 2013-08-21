@@ -1322,13 +1322,13 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
-					//_asm	add esp, 0Ch;
+					_asm	add esp, 0Ch;
 
-					/*_asm	push 36;
+					_asm	push 36;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
-					_asm	add esp, 0Ch;*/
+					_asm	add esp, 0Ch;
 				}
 				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
 				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
@@ -1348,7 +1348,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			}
 			case IVSYNC_ONFOOT_RUN:
 			{
-				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
+				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*3);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
 				break;
 			}
@@ -1363,13 +1363,13 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
-			//_asm	add  esp, 0Ch;
+			_asm	add  esp, 0Ch;
 
 			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
-			//_asm	add	 esp, 8;
+			_asm	add	 esp, 8;
 		}
 		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE);
 		SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
@@ -1482,14 +1482,18 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 {
 	if(IsSpawned()) {
 
-		float tX = (vecPos.fX + (vecMove.fX * 10));
-		float tY = (vecPos.fY + (vecMove.fY * 10));
-		float tZ = (vecPos.fZ + (vecMove.fZ * 10));
+		float tX = (vecPos.fX + (vecMove.fX * (iMoveType == 3 ? 10 : 10)));
+		float tY = (vecPos.fY + (vecMove.fY * (iMoveType == 3 ? 10 : 10)));
+		float tZ = (vecPos.fZ + (vecMove.fZ * (iMoveType == 3 ? 10 : 10)));
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
 		// Create the task
 		DWORD dwAddress = (g_pCore->GetBase() + 0xB87480);
-		_asm	push 1000;
+		if(iMoveType == 3)
+			_asm push 500;
+		else
+			_asm push 1000;
+
 		_asm	push iMoveType;
 		_asm	push tZ;
 		_asm	push tY;

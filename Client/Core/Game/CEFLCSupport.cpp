@@ -99,8 +99,6 @@ sImportItem ImportItems[] = {
 	{"common/data/hudColor.dat","hudColor.dat",false,(eEFLCStruct)DEFAULT_FILE_HOOK},					// TheBalladOfGayTony - hudColor.dat
 };
 
-
-
 bool CEFLCSupport::OpenFile_Decision(char* j)
 {
 	for(size_t i = 0; i < (sizeof(ImportItems) / sizeof(sImportItem)); i++) {
@@ -194,8 +192,6 @@ _declspec(naked) void _stdcall RAGE_AssetManager__OpenFile()
 
 	dwJmp2 = (g_pCore->GetBase() + 0x5B2796);
 	sub_5B4F60 = (g_pCore->GetBase() + 0x5B4F60);
-
-	CLogFile::Printf("OPEN %s",file_ptr);
 
 	if(CEFLCSupport::OpenFile_Decision(file_ptr)) {
 		_asm	mov eax, file;
