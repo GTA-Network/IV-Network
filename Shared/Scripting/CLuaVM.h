@@ -31,23 +31,25 @@ public:
 	virtual bool LoadScript(CString script);		// Replace string with script
 	virtual bool LoadScripts(std::list<CScript> scripts);
 
-	virtual void PopBool(bool& b);
-	virtual void PopInteger(int& i);
-	virtual void PopFloat(float& f);
-	virtual void PopString(CString& str);
-	virtual void PopVector(CVector3& vec);
+	virtual void Pop(bool& b);
+	virtual void Pop(int& i);
+	virtual void Pop(float& f);
+	virtual void Pop(CString& str);
+	virtual void Pop(CVector3& vec);
 
-	virtual void PopBool(bool& b, bool bDefaultValue);
-	virtual void PopInteger(int& i, int iDefaultValue);
-	virtual void PopFloat(float& f, float fDefaultValue);
-	virtual void PopString(CString& str, CString strDefaultValue);
-	virtual void PopVector(CVector3& vec, CVector3 vecDefaultValue);
+	virtual void Pop(bool& b, bool bDefaultValue);
+	virtual void Pop(int& i, int iDefaultValue);
+	virtual void Pop(float& f, float fDefaultValue);
+	virtual void Pop(CString& str, CString strDefaultValue);
+	virtual void Pop(CVector3& vec, CVector3 vecDefaultValue);
 
-	virtual void PushBool(const bool& b);
-	virtual void PushInteger(const int& i);
-	virtual void PushFloat(const float& f);
-	virtual void PushString(const CString& str);
-	virtual void PushVector(const CVector3& vec);
+	virtual void Push(const bool& b);
+	virtual void Push(const int& i);
+	virtual void Push(const float& f);
+	virtual void Push(const CString& str);
+	virtual void Push(const CVector3& vec);
+	virtual void PushArray(const CScriptArguments &array);
+	virtual void PushTable(const CScriptArguments &table);
 
 	void		 ResetStackIndex() { m_iStackIndex = 1; }
 

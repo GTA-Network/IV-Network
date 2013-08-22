@@ -153,6 +153,8 @@
     <ClCompile Include="..\Shared\Scripting\CEvents.cpp" />
     <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp" />
@@ -186,6 +188,7 @@
     <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CCheckpointNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CEntityNatives.cpp" />
+    <ClCompile Include="Scripting\Natives\CFireNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CObjectNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CPickupNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp" />
@@ -261,6 +264,7 @@
     <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
     <ClInclude Include="Scripting\Natives\CCheckpointNatives.h" />
     <ClInclude Include="Scripting\Natives\CEntityNatives.h" />
+    <ClInclude Include="Scripting\Natives\CFireNatives.h" />
     <ClInclude Include="Scripting\Natives\CObjectNatives.h" />
     <ClInclude Include="Scripting\Natives\CPickupNatives.h" />
     <ClInclude Include="Scripting\Natives\CPlayerNatives.h" />

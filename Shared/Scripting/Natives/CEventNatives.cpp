@@ -40,7 +40,7 @@ int CEventNatives::AddEvent(int * VM)
 	GET_VM_UNKNOWN;
 	CString strName;
 	pVM->ResetStackIndex();
-	pVM->PopString(strName);
+	pVM->Pop(strName);
 	int ref = -1;
 	SQObjectPtr pFunction;
 	if(pVM->GetVMType() == LUA_VM)
@@ -66,7 +66,7 @@ int CEventNatives::AddGlobalEvent(int * VM)
 	
 	CString strName;
 	pVM->ResetStackIndex();
-	pVM->PopString(strName);
+	pVM->Pop(strName);
 	int ref = -1;
 	SQObjectPtr pFunction;
 	if(pVM->GetVMType() == LUA_VM)
@@ -98,7 +98,7 @@ int CEventNatives::TriggerEvent(int * VM)
 	GET_VM_UNKNOWN;
 
 	CString strName;
-	pVM->PopString(strName);
+	pVM->Pop(strName);
 	pVM->ResetStackIndex();
 	CEvents::GetInstance()->Call(strName, 0, CEventHandler::RESOURCE_EVENT, pVM);
 
@@ -110,7 +110,7 @@ int CEventNatives::TriggerGlobalEvent(int * VM)
 	GET_VM_UNKNOWN;
 
 	CString strName;
-	pVM->PopString(strName);
+	pVM->Pop(strName);
 	pVM->ResetStackIndex();
 	CEvents::GetInstance()->Call(strName, 0, CEventHandler::GLOBAL_EVENT, 0);
 

@@ -30,6 +30,8 @@
 
 #include "CEntityNatives.h"
 
+#include "CFireNatives.h"
+
 #include "CScriptClasses.h"
 
 #endif // NativesServer_h

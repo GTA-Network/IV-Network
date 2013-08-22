@@ -15,53 +15,130 @@
 
 void CPlayerNatives::Register(CScriptVM * pVM)
 {
-	pVM->RegisterFunction("createPlayer", Create);
+	pVM->RegisterClassFunction("setArmour", SetArmour);
+	pVM->RegisterClassFunction("getArmour", GetArmour);
 
-	pVM->RegisterFunction("print", Print); // TODO : move to antother natives class
+	pVM->RegisterClassFunction("getClothes", GetClothes);
+	pVM->RegisterClassFunction("setClothes", SetClothes);
+
+	pVM->RegisterClassFunction("getColor", GetColor);
+	pVM->RegisterClassFunction("setColor", SetColor);
+
+	pVM->RegisterClassFunction("getDimension", GetDimension);
+	pVM->RegisterClassFunction("setDimension", SetDimension);
+
+	pVM->RegisterClassFunction("getHeading", GetHeading);
+	pVM->RegisterClassFunction("setHeading", SetHeading);
+
+	pVM->RegisterClassFunction("getHealth", GetHealth);
+	pVM->RegisterClassFunction("setHealth", SetHealth);
+
+	pVM->RegisterClassFunction("getModel", GetModel);
+	pVM->RegisterClassFunction("setModel", SetModel);
+
+	pVM->RegisterClassFunction("getName", GetName);
+	pVM->RegisterClassFunction("setName", SetName);
+}
+
+int CPlayerNatives::GetArmour(int * VM)
+{
+
+	return 1;
+}
+
+int CPlayerNatives::SetArmour(int * VM)
+{
+
+	return 1;
 }
 
 
-int CPlayerNatives::Create(int * VM)
+int CPlayerNatives::GetClothes(int * VM)
 {
-	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
-	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
-	if(pResource)
-	{
-		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
-		CScriptVM* pVM = pResource->GetVM();
 
+	return 1;
+}
 
-		CLogFile::Printf("Kekse ich mag");
+int CPlayerNatives::SetClothes(int * VM)
+{
 
-		CVector3 keks;
-		//pVM->PopVector(keks);
-
-		// Create player kekse
-
-		//pVM->PushBool(true);
-
-		pVM->ResetStackIndex();
-	}
-
-	return 0;
+	return 1;
 }
 
 
-int CPlayerNatives::Print(int * VM)
+int CPlayerNatives::GetColor(int * VM)
 {
-	// Just an example how the new scripting works with a lua or a squirrel vm its not needed to create a native for every language
-	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
-	if(pResource)
-	{
-		// We do not have to split it here cause our CScriptVM class provides the nessessary push and pop/get methods
-		CScriptVM* pVM = pResource->GetVM();
-		pVM->ResetStackIndex();
-		CString strPrint;
-		pVM->PopString(strPrint);
-		CLogFile::Printf(strPrint);
 
-		pVM->ResetStackIndex();
-	}
+	return 1;
+}
 
-	return 0;
+int CPlayerNatives::SetColor(int * VM)
+{
+
+	return 1;
+}
+
+
+int CPlayerNatives::GetDimension(int * VM)
+{
+
+	return 1;
+}
+
+int CPlayerNatives::SetDimension(int * VM)
+{
+
+	return 1;
+}
+
+
+int CPlayerNatives::GetHeading(int * VM)
+{
+
+	return 1;
+}
+
+int CPlayerNatives::SetHeading(int * VM)
+{
+
+	return 1;
+}
+
+
+int CPlayerNatives::GetHealth(int * VM)
+{
+
+	return 1;
+}
+
+int CPlayerNatives::SetHealth(int * VM)
+{
+
+	return 1;
+}
+
+
+int CPlayerNatives::GetModel(int * VM)
+{
+	
+	return 1;
+}
+
+int CPlayerNatives::SetModel(int * VM)
+{
+
+	return 1;
+}
+
+
+int CPlayerNatives::GetName(int * VM)
+{
+
+	return 1;
+}
+
+int CPlayerNatives::SetName(int * VM)
+{
+
+	return 1;
 }

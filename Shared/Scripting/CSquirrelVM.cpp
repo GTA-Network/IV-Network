@@ -9,8 +9,13 @@
 
 #include "CSquirrelVM.h"
 #include <CLogFile.h>
+#include <SharedUtility.h>
+#include <assert.h>
+#include <Squirrel/sqvm.h>
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
+#include "CScriptArgument.h"
+
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource),
@@ -36,7 +41,6 @@ CSquirrelVM::~CSquirrelVM()
 	m_pVM = NULL;
 }
 
-#include <SharedUtility.h>
 
 bool CSquirrelVM::LoadScript(CString script)
 {
@@ -85,8 +89,7 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 	// Create a new slot
 	sq_createslot(m_pVM, -3);
 }
-#include <assert.h>
-#include <Squirrel/sqvm.h>
+
 void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
 	int n = 0;
@@ -153,7 +156,7 @@ void CSquirrelVM::RegisterClassFunction(const char* szFunctionName, scriptFuncti
 	sq_newslot(m_pVM, -3, SQFalse);
 }
 
-void CSquirrelVM::PopBool(bool& b)
+void CSquirrelVM::Pop(bool& b)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_BOOL)
@@ -168,7 +171,7 @@ void CSquirrelVM::PopBool(bool& b)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopBool(bool& b, bool bDefaultValue)
+void CSquirrelVM::Pop(bool& b, bool bDefaultValue)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_BOOL)
@@ -189,7 +192,7 @@ void CSquirrelVM::PopBool(bool& b, bool bDefaultValue)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopInteger(int& i)
+void CSquirrelVM::Pop(int& i)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_INTEGER)
@@ -202,7 +205,7 @@ void CSquirrelVM::PopInteger(int& i)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopInteger(int& i, int iDefaultValue)
+void CSquirrelVM::Pop(int& i, int iDefaultValue)
 {
 		SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_INTEGER)
@@ -222,7 +225,7 @@ void CSquirrelVM::PopInteger(int& i, int iDefaultValue)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopFloat(float& f)
+void CSquirrelVM::Pop(float& f)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_FLOAT)
@@ -235,7 +238,7 @@ void CSquirrelVM::PopFloat(float& f)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopFloat(float& f, float fDefaultValue)
+void CSquirrelVM::Pop(float& f, float fDefaultValue)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_FLOAT)
@@ -254,7 +257,7 @@ void CSquirrelVM::PopFloat(float& f, float fDefaultValue)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopString(CString& str)
+void CSquirrelVM::Pop(CString& str)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_STRING)
@@ -269,7 +272,7 @@ void CSquirrelVM::PopString(CString& str)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopString(CString& str, CString strDefaultValue)
+void CSquirrelVM::Pop(CString& str, CString strDefaultValue)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_STRING)
@@ -288,45 +291,69 @@ void CSquirrelVM::PopString(CString& str, CString strDefaultValue)
 	m_iStackIndex++;
 }
 
-void CSquirrelVM::PopVector(CVector3& vec)
+void CSquirrelVM::Pop(CVector3& vec)
 {
-	PopFloat(vec.fX);
-	PopFloat(vec.fY);
-	PopFloat(vec.fZ);
+	Pop(vec.fX);
+	Pop(vec.fY);
+	Pop(vec.fZ);
 }
 
 
-void CSquirrelVM::PopVector(CVector3& vec, CVector3 vecDefaultValue)
+void CSquirrelVM::Pop(CVector3& vec, CVector3 vecDefaultValue)
 {
-	PopFloat(vec.fX, vecDefaultValue.fX);
-	PopFloat(vec.fY, vecDefaultValue.fY);
-	PopFloat(vec.fZ, vecDefaultValue.fZ);
+	Pop(vec.fX, vecDefaultValue.fX);
+	Pop(vec.fY, vecDefaultValue.fY);
+	Pop(vec.fZ, vecDefaultValue.fZ);
 }
 
 
-void CSquirrelVM::PushBool(const bool& b)
+void CSquirrelVM::Push(const bool& b)
 {
 	sq_pushbool(m_pVM, b);
 }
 
-void CSquirrelVM::PushInteger(const int& i)
+void CSquirrelVM::Push(const int& i)
 {
 	sq_pushinteger(m_pVM, i);
 }
 
-void CSquirrelVM::PushFloat(const float& f)
+void CSquirrelVM::Push(const float& f)
 {
 	sq_pushfloat(m_pVM, f);
 }
 
-void CSquirrelVM::PushString(const CString& str)
+void CSquirrelVM::Push(const CString& str)
 {
 	sq_pushstring(m_pVM, str.Get(), str.GetLength());
 }
 
-void CSquirrelVM::PushVector(const CVector3& vec)
+void CSquirrelVM::Push(const CVector3& vec)
 {
-	PushFloat(vec.fX);
-	PushFloat(vec.fY);
-	PushFloat(vec.fZ);
+	Push(vec.fX);
+	Push(vec.fY);
+	Push(vec.fZ);
+}
+
+void CSquirrelVM::PushArray(const CScriptArguments &array)
+{
+	sq_newarray(m_pVM, 0);
+	for(auto pArgument : array.m_Arguments)
+	{
+		pArgument->Push(this);
+
+		sq_arrayappend(m_pVM, -2);
+	}
+}
+
+
+void CSquirrelVM::PushTable(const CScriptArguments &table)
+{
+	sq_newtable(m_pVM);
+	for(auto iter = table.m_Arguments.begin(); iter != table.m_Arguments.end(); iter++)
+	{
+		(*iter)->Push(this);
+		++iter;
+		(*iter)->Push(this);
+		sq_createslot(m_pVM, -3);
+	}
 }

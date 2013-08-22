@@ -33,18 +33,14 @@ void CEntityNatives::Register(CScriptVM* pVM)
 
 int	CEntityNatives::SetPosition(int * VM)
 {
-	CResource* pResource = CResourceManager::GetInstance()->Get(VM);
-	
-	if(pResource)
-	{
-		CScriptVM * pVM = pResource->GetVM();
-		CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance("");
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 		
-		CVector3 vecPos;
-		pVM->PopVector(vecPos);
-		pEntity->SetPosition(vecPos);
-		pVM->ResetStackIndex();
-	}
+	CVector3 vecPos;
+	pVM->Pop(vecPos);
+	pEntity->SetPosition(vecPos);
+	pVM->ResetStackIndex();
+	
 	return 1;
 }
 
@@ -57,7 +53,13 @@ int	CEntityNatives::GetPosition(int * VM)
 
 int	CEntityNatives::SetRotation(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecRot;
+	pVM->Pop(vecRot);
+	pEntity->SetRotation(vecRot);
+	pVM->ResetStackIndex();
 	return 1;
 }
 
@@ -70,7 +72,13 @@ int	CEntityNatives::GetRotation(int * VM)
 
 int	CEntityNatives::SetMoveSpeed(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecMoveSpeed;
+	pVM->Pop(vecMoveSpeed);
+	pEntity->SetMoveSpeed(vecMoveSpeed);
+	pVM->ResetStackIndex();
 	return 1;
 }
 
@@ -83,7 +91,13 @@ int	CEntityNatives::GetMoveSpeed(int * VM)
 
 int	CEntityNatives::SetTurnSpeed(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecTurnSpeed;
+	pVM->Pop(vecTurnSpeed);
+	pEntity->SetMoveSpeed(vecTurnSpeed);
+	pVM->ResetStackIndex();
 	return 1;
 }
 
