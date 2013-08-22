@@ -10,9 +10,7 @@
 #ifndef CVector3_h
 #define CVector3_h
 
-#ifdef _WIN32
 #include <math.h>
-#endif
 
 class CVector3
 {

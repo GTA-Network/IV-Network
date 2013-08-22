@@ -11,8 +11,9 @@
 #define CScriptArgument_h
 
 #include <Common.h>
-#include <Lua/lua.hpp>
+#include <lua/lua.hpp>
 #include "CScriptArguments.h"
+
 class CScriptVM;
 class CScriptArguments;
 
