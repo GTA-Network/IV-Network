@@ -91,9 +91,9 @@ void CDevelopment::CreateDebugPlayer()
 	m_pDebugPlayer = new CPlayerEntity(false);
 	if(m_pDebugPlayer)
 	{
+		m_pDebugPlayer->SetModel(7);
 		m_pDebugPlayer->Create();
 		m_pDebugPlayer->Teleport(vecCreatePos);
-		m_pDebugPlayer->SetModel(21);
 	}
 
 	bDebugPlayerPresent = true;

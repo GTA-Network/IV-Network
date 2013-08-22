@@ -1311,7 +1311,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 		switch(m_pIVSync->byteMoveStyle)
 		{
-		case IVSYNC_ONFOOT_STANDSTILL:
+			case IVSYNC_ONFOOT_STANDSTILL:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*4);
 				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
@@ -1322,31 +1322,31 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
-					_asm	add esp, 0Ch;
+					//_asm	add esp, 0Ch;
 
-					_asm	push 36;
+					/*_asm	push 36;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
-					_asm	add esp, 0Ch;
+					_asm	add esp, 0Ch;*/
 				}
 				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
 				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
 				break;
 			}
-		case IVSYNC_ONFOOT_WALK:
+			case IVSYNC_ONFOOT_WALK:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 2);
 				break;
 			}
-		case IVSYNC_ONFOOT_SWITCHSTATE:
+			case IVSYNC_ONFOOT_SWITCHSTATE:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 3);
 				break;
 			}
-		case IVSYNC_ONFOOT_RUN:
+			case IVSYNC_ONFOOT_RUN:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
@@ -1363,13 +1363,13 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
-			_asm	add  esp, 0Ch;
+			//_asm	add  esp, 0Ch;
 
 			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
-			_asm	add	 esp, 8;
+			//_asm	add	 esp, 8;
 		}
 		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE);
 		SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
