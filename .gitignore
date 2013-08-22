@@ -15,7 +15,6 @@
 /Network/Core/Release
 /Server/Release
 /Binary/temp
-/Binary
 *.o
 *.vcxproj.user
 *.suo
