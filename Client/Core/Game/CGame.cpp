@@ -124,7 +124,7 @@ void CGame::Setup()
 	CEFLCSupport::InstallSupport();
 
 	// Unpack our game files
-	CGameFiles::CheckFiles();
+	//CGameFiles::CheckFiles();
 }
 
 void CGame::Initialise()

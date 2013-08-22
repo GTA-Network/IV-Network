@@ -68,7 +68,7 @@ gameFiles [] =
 	// copy to gtaiv/common/data
 	{0xAE2D4AF2, "multiplayer\\datafiles\\31.ivmp", true, "multiplayer\\common\\data\\default.ide", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\32.ivmp", true, "multiplayer\\common\\data\\default_eflc.ide", true},
-	{0xAE2D4AF2, "multiplayer\\datafiles\\33.ivmp", true, "multiplayer\\common\\data\\hudColor.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\33.ivmp", true, "multiplayer\\common\\data\\hudColor.dat", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\34.ivmp", true, "multiplayer\\common\\data\\loadingscreens_eflc.dat", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\35.ivmp", true, "multiplayer\\common\\data\\loadingscreens_eflc_pc.dat", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\36.ivmp", true, "multiplayer\\common\\data\\radiohud.dat", true},

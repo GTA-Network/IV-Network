@@ -161,20 +161,21 @@ const char * szCopyFile[] = {
 	{ "%s\\TLAD\\common\\data\\peds.ide" },
 	{ "%s\\TLAD\\common\\data\\pedVariations.dat" },
 
+	{ "%s\\TBOGT\\pc\\data\\maps\\props\\e2_xref.img" },
 
 	// copy to gtaiv/pc/data/eflc
 	{ "multiplayer\\pc\\data\\eflc\\animgrp_eflc.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\default_eflc.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\e2_xref.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\explosionFx.dat" },
-	{ "multiplayer\\pc\\data\\eflc\\oadingscreens_eflc.dat" },
+	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.wtd" },
 	{ "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf" },
 
 	// copy to gtaiv/common/data
 	{ "multiplayer\\common\\data\\default.ide" },
 	{ "multiplayer\\common\\data\\default_eflc.ide" },
-	{ "multiplayer\\common\\data\\hudColor.ide" },
+	{ "multiplayer\\common\\data\\hudColor.dat" },
 	{ "multiplayer\\common\\data\\loadingscreens_eflc.dat" },
 	{ "multiplayer\\common\\data\\loadingscreens_eflc_pc.dat" },
 	{ "multiplayer\\common\\data\\radiohud.dat" },
@@ -334,16 +335,16 @@ const char * szCopyFileDest[] = {
 	{ "%s\\pc\\models\\cdimages\\weapons_tbogt.img" },
 	{ "%s\\pc\\models\\cdimages\\weapons_tlad.img" },
 
-	{ "%s\\common\\data\\default.ide" },
+	{ "%s\\common\\data\\default_tbogt.ide" },
 	{ "%s\\pc\\data\\eflc\\WeaponInfo_tbogt.xml" },
 
-	{ "%s\\pc\\data\\eflc\\default_tlad.ide" },
 	{ "%s\\pc\\data\\eflc\\WeaponInfo_tlad.xml" },
+	{ "%s\\pc\\data\\eflc\\default_tlad.ide" },
 
-	{ "%s\\pc\\data\\eflc\\anim_tbogt.img" },
+	{ "%s\\pc\\data\\eflc\\anim_eflc.img" },
 	{ "%s\\pc\\data\\eflc\\componentpeds_tbogt.img" },
 
-	{ "%s\\pc\\data\\eflc\\anim_tlad.img" },
+	{ "%s\\pc\\data\\eflc\\anim_eflc_2.img" },
 	{ "%s\\pc\\data\\eflc\\componentpeds_tlad.img" },
 
 	{ "%s\\pc\\data\\eflc\\peds_tbogt.ide" },
@@ -352,6 +353,7 @@ const char * szCopyFileDest[] = {
 	{ "%s\\pc\\data\\eflc\\peds_tlad.ide" },
 	{ "%s\\pc\\data\\eflc\\pedVariations_tlad.dat" },
 
+	{ "%s\\pc\\data\\eflc\\e2_xref.img" },
 
 	// copy to gtaiv/pc/data/eflc
 	{  "%s%sanimgrp_eflc.dat" },
@@ -365,7 +367,7 @@ const char * szCopyFileDest[] = {
 	// copy to gtaiv/common/data
 	{ "%s%sdefault.ide" },
 	{ "%s%sdefault_eflc.ide" },
-	{ "%s%shudColor.ide" },
+	{ "%s%shudColor.dat" },
 	{ "%s%sloadingscreens_eflc.dat" },
 	{ "%s%sloadingscreens_eflc_pc.dat" },
 	{ "%s%sradiohud.dat" },
@@ -376,7 +378,7 @@ const char * szCopyFileDest[] = {
 	{ "%s%sWeaponInfo_EFLC_C.xml" },
 
 	{ "%s%sradio_hud_noncolored.wtd" },
-	{  "%s%sloadingscreens_eflc.wtd" },
+	{ "%s%sloadingscreens_eflc.wtd" },
 
 #if 0 // Not needed atm
 	{ "%s/pc/data/maps/rep_public_3.img" },
@@ -559,6 +561,7 @@ void CopyThread()
 			char szInstallDirectory[MAX_PATH];
 			if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) 
 				|| SharedUtility::Exists(szEFLCDirectory)) {
+
 					if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", NULL,
 						szInstallDirectory, sizeof(szInstallDirectory)) &&
 						SharedUtility::Exists(szInstallDirectory))
@@ -579,24 +582,32 @@ void CopyThread()
 							std::string source = szCopyFile[n];
 							szCopyText = source.substr(source.find_last_of("\\")+1).c_str();
 							szCopyText2 = CString("%i/%i", n, sizeof(szCopyFile) / sizeof(szCopyFile[0]));
-							InvalidateRect(hwnd, 0, true);				
+							InvalidateRect(hwnd, 0, true);    
 
 							if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\data\\eflc\\") != std::string::npos && szCopyFile[n][0] != '%') {
 								CString file(SharedUtility::GetAppPath());
 								file.AppendF(szCopyFile[n]);
+								if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get()))
+									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							} 
 							else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\") != std::string::npos && szCopyFile[n][0] != '%') {
 								CString file(SharedUtility::GetAppPath());
 								file.AppendF(szCopyFile[n]);
+								if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get()))
+									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							}
 							else if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\textures\\") != std::string::npos && szCopyFile[n][0] != '%') {
 								CString file(SharedUtility::GetAppPath());
 								file.AppendF(szCopyFile[n]);
+								if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get()))
+									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							} 
 							else {
+								if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory).Get()))
+									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory).Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory).Get()) & ~FILE_ATTRIBUTE_READONLY);
 								CopyFileEx(CString(szCopyFile[n], szEFLCDirectory).Get(), CString(szCopyFileDest[n], szInstallDirectory).Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							}
 						}
@@ -611,7 +622,6 @@ void CopyThread()
 
 
 }
-
 int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
 {
 	return MessageBox(NULL, szText, "IV:Multiplayer", uType);

@@ -232,7 +232,7 @@ int main(int argc, char **argv)
 
 	// copy to gtaiv/pc/data/eflc
 	CompressFile("multiplayer\\original\\animgrp_eflc.dat", "multiplayer\\datafiles\\22.ivmp");
-	CompressFile("multiplayer\\original\\default_eflc.ide", "multiplayer\\datafiles\\23.ivmp");
+	CompressFile("multiplayer\\original\\default_eflc.ide", "multiplayer\\datafiles\\23.ivmp"); 
 	CompressFile("multiplayer\\original\\e2_xref.ide", "multiplayer\\datafiles\\24.ivmp");
 	CompressFile("multiplayer\\original\\explosionFx.dat", "multiplayer\\datafiles\\25.ivmp");
 	CompressFile("multiplayer\\original\\loadingscreens_eflc.dat", "multiplayer\\datafiles\\26.ivmp");
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 	CompressFile("multiplayer\\original\\WeaponInfo_EFLC.xml", "multiplayer\\datafiles\\40.ivmp");
 	CompressFile("multiplayer\\original\\WeaponInfo_EFLC_C.xml", "multiplayer\\datafiles\\41.ivmp");
 	CompressFile("multiplayer\\pc\\textures\\radio_hud_noncolored.wtd", "multiplayer\\datafiles\\42.ivmp");
-
+	
 	printf("FINISHED, type any key to exit...");
 	getchar();
 	return 1;
