@@ -7,12 +7,19 @@
 //
 //==========================================================================================
 
-#include "SharedUtility.h"
-#include "CString.h"
+#include <Common.h>
 #include <ShlObj.h>
 #include <mmsystem.h>
-#include <Windows.h>
 #include <CSettings.h>
+
+// temp
+#include <SharedUtility.h>
+#include <CLogFile.h>
+#include <CZlib.h>
+#include <CZlib.cpp>
+#include <zlib-1.2.5/zlib.h>
+#include <../Client/Core/Game/CGameFiles.h>
+#include <../Client/Core/Game/CGameFiles.cpp>
 
 int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
 {
@@ -95,6 +102,42 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 	}
 
+	// Check if we have the 'multiplayer' directory, if not: create it.
+	char szExecutablePath[MAX_PATH];
+	sprintf_s(szExecutablePath,SharedUtility::GetAbsolutePath("").Get(),sizeof(MAX_PATH));
+
+	CString strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer");
+
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\common");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\pc");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\pc\\data");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\common\\data");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\pc\\textures");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\pc\\data\\eflc");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	Sleep(500);
+
 	// Check for eflc dir
 	char szEFLCDirectory[MAX_PATH];
 	bool bFoundCustomEFLCDirectory = false;
@@ -160,33 +203,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 		}
 	}
-	if(SharedUtility::Exists(szEFLCDirectory))
+
+	if(bUsingEFLC)
 	{
-		CString strTbogtVehicles("%s/TBoGT/pc/models/cdimages/vehicles.img", szEFLCDirectory);
-		CString strTbogtVehiclesTarget("%s/pc/models/cdimages/vehicles_tbogt.img", szInstallDirectory);
-		CopyFile(strTbogtVehicles.Get(), strTbogtVehiclesTarget.Get(), true);
+		CGameFiles::CheckFiles();
 
-		CString strTladVehicles("%s/TLAD/pc/models/cdimages/vehicles.img", szEFLCDirectory);
-		CString strTladVehiclesTarget("%s/pc/models/cdimages/vehicles_tlad.img", szInstallDirectory);
-		CopyFile(strTladVehicles.Get(), strTladVehiclesTarget.Get(), true);
+		PROCESS_INFORMATION ProcessInfo = PROCESS_INFORMATION();
+		STARTUPINFO StartupInfo;
+		ZeroMemory(&StartupInfo, sizeof(StartupInfo));
+		StartupInfo.cb = sizeof StartupInfo;
 
-		CString strTbogtpedprops("%s/TBoGT/pc/models/cdimages/pedprops.img", szEFLCDirectory);
-		CString strTbogtpedpropsTarget("%s/pc/models/cdimages/pedprops_tbogt.img", szInstallDirectory);
-		CopyFile(strTbogtpedprops.Get(), strTbogtpedpropsTarget.Get(), true);
+		char * szPath = new char[MAX_PATH];
+		sprintf(szPath,CString("%s",SharedUtility::GetAbsolutePath("\\IVGameReady.exe").Get()).Get());
 
-		CString strTladpedprops("%s/TLAD/pc/models/cdimages/pedprops.img", szEFLCDirectory);
-		CString strTladpedpropsTarget("%s/pc/models/cdimages/pedprops_tlad.img", szInstallDirectory);
-		CopyFile(strTladpedprops.Get(), strTladpedpropsTarget.Get(), true);
-
-		CString strTbogtweapons("%s/TBoGT/pc/models/cdimages/weapons_e2.img", szEFLCDirectory);
-		CString strTbogtweaponsTarget("%s/pc/models/cdimages/weapons_tbogt.img", szInstallDirectory);
-		CopyFile(strTbogtweapons.Get(), strTbogtweaponsTarget.Get(), true);
-
-		CString strTladweapons("%s/TLAD/pc/models/cdimages/weapons_e1.img", szEFLCDirectory);
-		CString strTladweaponsTarget("%s/pc/models/cdimages/weapons_tlad.img", szInstallDirectory);
-		CopyFile(strTladweapons.Get(), strTladweaponsTarget.Get(), true);
+		CreateProcess(szPath, NULL,NULL,NULL, FALSE, NULL, NULL, NULL, &StartupInfo, &ProcessInfo);
+		WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
 	}
-
 	// Get the full path to LaunchGTAIV.exe
 	CString strApplicationPath("%s\\LaunchGTAIV.exe", szInstallDirectory);
 
@@ -243,17 +275,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		else
 			return ShowMessageBox("LaunchGTAIV.exe is already running. Cannot launch IV: Multiplayer.");
 	}
-
-	// Check if we have the 'multiplayer' directory, if not: create it.
-	char szExecutablePath[MAX_PATH];
-	GetModuleFileName( NULL, szExecutablePath, MAX_PATH );
-
-	CString strMultiplayerPath = szExecutablePath;
-	strMultiplayerPath = strMultiplayerPath.Substring (0, strMultiplayerPath.ReverseFind ("\\"));
-	strMultiplayerPath.AppendF ("\\multiplayer");
-
-	if (!SharedUtility::Exists(strMultiplayerPath.Get()))
-		SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
 
 	// TODO ADD WINDOW COMMANDLINE SUPPORT!
 

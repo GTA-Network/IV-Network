@@ -15,6 +15,7 @@
 #include <Game/IVEngine/CIVModelInfo.h>
 #include <Game/CEFLCSupport.h>
 #include <General/CException.h>
+#include <Game/CGameFiles.h>
 
 extern	CCore				* g_pCore;
 extern bool					  g_bInvalidIndex;
@@ -123,7 +124,7 @@ void CGame::Setup()
 	CEFLCSupport::InstallSupport();
 
 	// Unpack our game files
-	//CGameFiles::CheckFiles();
+	CGameFiles::CheckFiles();
 }
 
 void CGame::Initialise()

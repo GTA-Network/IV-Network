@@ -7,14 +7,15 @@
 //
 //==========================================================================================
 
-#if 0
 #include	"CGameFiles.h"
 #include	<CRC.h>
 #include	<zlib-1.2.5/zlib.h>
 #include	<CZlib.h>
-#include	<CCore.h>
 
+#ifdef _CLIENT
+#include	<CCore.h>
 extern	CCore				* g_pCore;
+#endif
 
 CString					CGameFiles::m_strError;
 std::list< CString >	CGameFiles::m_deleteFiles;
@@ -30,6 +31,7 @@ struct GameFile
 
 gameFiles [] =
 {
+	// multiplayer includes
 	{0x1B8184BB, "multiplayer\\datafiles\\1.ivmp", true, "multiplayer\\common\\data\\carcols.dat", true},
 	{0x7D1B7010, "multiplayer\\datafiles\\2.ivmp", true, "multiplayer\\common\\data\\cargrp.dat", true},
 	{0x2B2524F3, "multiplayer\\datafiles\\3.ivmp", true, "multiplayer\\common\\data\\default.dat", true},
@@ -41,6 +43,42 @@ gameFiles [] =
 	{0xAE2D4AF2, "multiplayer\\datafiles\\9.ivmp", true, "multiplayer\\common\\data\\images.txt", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\10.ivmp", true, "multiplayer\\common\\data\\vehicles.ide", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\11.ivmp", true, "multiplayer\\common\\data\\vehicleseflc.ide", true},
+
+	{0xAE2D4AF2, "multiplayer\\datafiles\\12.ivmp", true, "multiplayer\\pc\\data\\gta_ep2.wpfl", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\13.ivmp", true, "multiplayer\\common\\data\\ivmp.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\14.ivmp", true, "multiplayer\\common\\data\\vehicleseflc.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\15.ivmp", true, "multiplayer\\common\\data\\ped.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\16.ivmp", true, "multiplayer\\common\\data\\pedgrp.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\17.ivmp", true, "multiplayer\\common\\data\\pedpersonality.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\18.ivmp", true, "multiplayer\\common\\data\\pedpopulation.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\19.ivmp", true, "multiplayer\\common\\data\\pedProps.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\20.ivmp", true, "multiplayer\\common\\data\\peds.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\21.ivmp", true, "multiplayer\\common\\data\\pedVariations.dat", true},
+
+	// copy to gtaiv/pc/data/eflc
+	{0xAE2D4AF2, "multiplayer\\datafiles\\22.ivmp", true, "multiplayer\\pc\\data\\eflc\\animgrp_eflc.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\23.ivmp", true, "multiplayer\\pc\\data\\eflc\\default_eflc.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\24.ivmp", true, "multiplayer\\pc\\data\\eflc\\e2_xref.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\25.ivmp", true, "multiplayer\\pc\\data\\eflc\\explosionFx.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\26.ivmp", true, "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\28.ivmp", true, "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.wtd", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\29.ivmp", true, "multiplayer\\pc\\data\\eflc\\peds_eflc.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\30.ivmp", true, "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf", true},
+
+	// copy to gtaiv/common/data
+	{0xAE2D4AF2, "multiplayer\\datafiles\\31.ivmp", true, "multiplayer\\common\\data\\default.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\32.ivmp", true, "multiplayer\\common\\data\\default_eflc.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\33.ivmp", true, "multiplayer\\common\\data\\hudColor.ide", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\34.ivmp", true, "multiplayer\\common\\data\\loadingscreens_eflc.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\35.ivmp", true, "multiplayer\\common\\data\\loadingscreens_eflc_pc.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\36.ivmp", true, "multiplayer\\common\\data\\radiohud.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\37.ivmp", true, "multiplayer\\common\\data\\RadioLogo.dat", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\38.ivmp", true, "multiplayer\\common\\data\\vehOff.csv", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\39.ivmp", true, "multiplayer\\common\\data\\WeaponInfo.xml", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\40.ivmp", true, "multiplayer\\common\\data\\WeaponInfo_EFLC.xml", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\41.ivmp", true, "multiplayer\\common\\data\\WeaponInfo_EFLC_C.xml", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\42.ivmp", true, "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd", true},
+
 };
 
 bool CGameFiles::CheckFiles()
@@ -122,5 +160,4 @@ void CGameFiles::SetLastError(CString strError)
 CString CGameFiles::GetLastError(void)
 {
 	return m_strError;
-}  
-#endif // 0
+} 

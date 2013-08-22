@@ -162,6 +162,31 @@ const char * szCopyFile[] = {
 	{ "%s/TLAD/common/data/pedVariations.dat" },
 
 
+	// copy to gtaiv/pc/data/eflc
+	{ "multiplayer\\pc\\data\\eflc\\animgrp_eflc.dat" },
+	{ "multiplayer\\pc\\data\\eflc\\default_eflc.ide" },
+	{ "multiplayer\\pc\\data\\eflc\\e2_xref.ide" },
+	{ "multiplayer\\pc\\data\\eflc\\explosionFx.dat" },
+	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat" },
+	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.wtd" },
+	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.wtd" },
+	{ "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf" },
+
+	// copy to gtaiv/common/data
+	{ "multiplayer\\common\\data\\default.ide" },
+	{ "multiplayer\\common\\data\\default_eflc.ide" },
+	{ "multiplayer\\common\\data\\hudColor.ide" },
+	{ "multiplayer\\common\\data\\loadingscreens_eflc.dat" },
+	{ "multiplayer\\common\\data\\loadingscreens_eflc_pc.dat" },
+	{ "multiplayer\\common\\data\\radiohud.dat" },
+	{ "multiplayer\\common\\data\\RadioLogo.dat" },
+	{ "multiplayer\\common\\data\\vehOff.csv" },
+	{ "multiplayer\\common\\data\\WeaponInfo.xml" },
+	{ "multiplayer\\common\\data\\WeaponInfo_EFLC.xml" },
+	{ "multiplayer\\common\\data\\WeaponInfo_EFLC_C.xml" },
+	
+	{ "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd" },
+
 #if 0 // Not needed atm
 	{ "%s/TBoGT/pc/data/maps/interiors/rep_public_3.img" },
 
@@ -309,7 +334,7 @@ const char * szCopyFileDest[] = {
 	{ "%s/pc/data/eflc/weapons_tbogt.img" },
 	{ "%s/pc/data/eflc/weapons_tlad.img" },
 
-	{ "%s/pc/data/eflc/default_tbogt.ide" },
+	{ "%s/common/data/default.ide" },
 	{ "%s/pc/data/eflc/WeaponInfo_tbogt.xml" },
 
 	{ "%s/pc/data/eflc/default_tlad.ide" },
@@ -326,6 +351,32 @@ const char * szCopyFileDest[] = {
 
 	{ "%s/pc/data/eflc/peds_tlad.ide" },
 	{ "%s/pc/data/eflc/pedVariations_tlad.dat" },
+
+
+	// copy to gtaiv/pc/data/eflc
+	{  "%s%sanimgrp_eflc.dat" },
+	{  "%s%sdefault_eflc.ide" },
+	{  "%s%se2_xref.ide" },
+	{  "%s%sexplosionFx.dat" },
+	{  "%s%sloadingscreens_eflc.dat" },
+	{  "%s%sloadingscreens_eflc.wtd" },
+	{  "%s%speds_eflc.wtd" },
+	{  "%s%splayerped_eflc.rpf" },
+
+	// copy to gtaiv/common/data
+	{ "%s%sdefault.ide" },
+	{ "%s%sdefault_eflc.ide" },
+	{ "%s%shudColor.ide" },
+	{ "%s%sloadingscreens_eflc.dat" },
+	{ "%s%sloadingscreens_eflc_pc.dat" },
+	{ "%s%sradiohud.dat" },
+	{ "%s%sRadioLogo.dat" },
+	{ "%s%svehOff.csv" },
+	{ "%s%sWeaponInfo.xml" },
+	{ "%s%sWeaponInfo_EFLC.xml" },
+	{ "%s%sWeaponInfo_EFLC_C.xml" },
+
+	{ "%s%sradio_hud_noncolored.wtd" },
 
 #if 0 // Not needed atm
 	{ "%s/pc/data/maps/rep_public_3.img" },
@@ -527,16 +578,29 @@ void CopyThread()
 							szCopyText = source.substr(source.find_last_of("/")+1).c_str();
 							szCopyText2 = CString("%i/%i", n, sizeof(szCopyFile) / sizeof(szCopyFile[0]));
 							InvalidateRect(hwnd, 0, true);
-							CopyFileEx(CString(szCopyFile[n], szEFLCDirectory).Get(), CString(szCopyFileDest[n], szInstallDirectory).Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+
+							if(CString(szCopyFile[n]).Find("multiplayer\\pc\\data\\eflc\\") != std::string::npos) {
+								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/pc/data/elfc/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							} 
+							else if(CString(szCopyFile[n]).Find("multiplayer\\common\\data\\") != std::string::npos) {
+								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/common/data/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							}
+							else if(CString(szCopyFile[n]).Find("multiplayer\\pc\\textures\\") != std::string::npos) {
+								CopyFileEx(CString(szCopyFile[n]).Get(), CString(szCopyFileDest[n], szInstallDirectory, "/pc/textures/").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							} 
+							else {
+								CopyFileEx(CString(szCopyFile[n], szEFLCDirectory).Get(), CString(szCopyFileDest[n], szInstallDirectory).Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							}
+							Sleep(100);
 						}
 						szCopyText = "Complete";
 						szCopyText2 = CString("%i/%i", sizeof(szCopyFile) / sizeof(szCopyFile[0]), sizeof(szCopyFile) / sizeof(szCopyFile[0]));
 						InvalidateRect(hwnd, 0, true);
+						TerminateProcess(GetCurrentProcess(),0);
 					}
 			}
 		}
 	}
-
 
 
 }
@@ -567,8 +631,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			SendMessage(pgCurrentFile, PBM_SETRANGE, 0, MAKELPARAM(0, 220));
 			if(ShowMessageBox("Do you want to copy EFLC files?", MB_ICONEXCLAMATION | MB_YESNO) == IDYES)
 				CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)CopyThread, NULL, NULL, NULL);
-
-			// TODO Launch GTA IV
+			else
+			{
+				SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "0", 1);
+				DestroyWindow(pgCurrentFile);
+			}
 		}
 		break;
 	case WM_COMMAND:
