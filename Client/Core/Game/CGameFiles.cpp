@@ -61,7 +61,7 @@ gameFiles [] =
 	{0xAE2D4AF2, "multiplayer\\datafiles\\24.ivmp", true, "multiplayer\\pc\\data\\eflc\\e2_xref.ide", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\25.ivmp", true, "multiplayer\\pc\\data\\eflc\\explosionFx.dat", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\26.ivmp", true, "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat", true},
-	{0xAE2D4AF2, "multiplayer\\datafiles\\28.ivmp", true, "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.wtd", true},
+	{0xAE2D4AF2, "multiplayer\\datafiles\\28.ivmp", true, "multiplayer\\pc\\textures\\loadingscreens_eflc.wtd", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\29.ivmp", true, "multiplayer\\pc\\data\\eflc\\peds_eflc.ide", true},
 	{0xAE2D4AF2, "multiplayer\\datafiles\\30.ivmp", true, "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf", true},
 

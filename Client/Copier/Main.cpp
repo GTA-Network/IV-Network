@@ -167,8 +167,7 @@ const char * szCopyFile[] = {
 	{ "multiplayer\\pc\\data\\eflc\\default_eflc.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\e2_xref.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\explosionFx.dat" },
-	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat" },
-	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.wtd" },
+	{ "multiplayer\\pc\\data\\eflc\\oadingscreens_eflc.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.wtd" },
 	{ "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf" },
 
@@ -186,6 +185,7 @@ const char * szCopyFile[] = {
 	{ "multiplayer\\common\\data\\WeaponInfo_EFLC_C.xml" },
 	
 	{ "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd" },
+	{ "multiplayer\\pc\\textures\\loadingscreens_eflc.wtd" },
 
 #if 0 // Not needed atm
 	{ "%s/TBoGT/pc/data/maps/interiors/rep_public_3.img" },
@@ -327,12 +327,12 @@ const char * szCopyFile[] = {
 
 
 const char * szCopyFileDest[] = {
-	{ "%s\\pc\\data\\eflc\\vehicles_tbogt.img" },
-	{ "%s\\pc\\data\\eflc\\vehicles_tlad.img" },
-	{ "%s\\pc\\data\\eflc\\pedprops_tbogt.img" },
-	{ "%s\\pc\\data\\eflc\\pedprops_tlad.img" },
-	{ "%s\\pc\\data\\eflc\\weapons_tbogt.img" },
-	{ "%s\\pc\\data\\eflc\\weapons_tlad.img" },
+	{ "%s\\pc\\models\\cdimages\\vehicles_tbogt.img" },
+	{ "%s\\pc\\models\\cdimages\\vehicles_tlad.img" },
+	{ "%s\\pc\\models\\cdimages\\pedprops_tbogt.img" },
+	{ "%s\\pc\\models\\cdimages\\pedprops_tlad.img" },
+	{ "%s\\pc\\models\\cdimages\\weapons_tbogt.img" },
+	{ "%s\\pc\\models\\cdimages\\weapons_tlad.img" },
 
 	{ "%s\\common\\data\\default.ide" },
 	{ "%s\\pc\\data\\eflc\\WeaponInfo_tbogt.xml" },
@@ -359,7 +359,6 @@ const char * szCopyFileDest[] = {
 	{  "%s%se2_xref.ide" },
 	{  "%s%sexplosionFx.dat" },
 	{  "%s%sloadingscreens_eflc.dat" },
-	{  "%s%sloadingscreens_eflc.wtd" },
 	{  "%s%speds_eflc.wtd" },
 	{  "%s%splayerped_eflc.rpf" },
 
@@ -377,6 +376,7 @@ const char * szCopyFileDest[] = {
 	{ "%s%sWeaponInfo_EFLC_C.xml" },
 
 	{ "%s%sradio_hud_noncolored.wtd" },
+	{  "%s%sloadingscreens_eflc.wtd" },
 
 #if 0 // Not needed atm
 	{ "%s/pc/data/maps/rep_public_3.img" },
