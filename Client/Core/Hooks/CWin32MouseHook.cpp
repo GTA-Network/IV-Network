@@ -31,9 +31,7 @@ int WINAPI CCursorHook::ShowCursor_Hook(BOOL bShow)
 	}*/
 
 	SetCursor(NULL);
-	return m_pShowCursor(false);
-
-	return 0;
+	return m_pShowCursor(true);
 }
 
 void CCursorHook::Install()
