@@ -82,6 +82,9 @@
     <Filter Include="Header Files\Shared\Scripting\Natives">
       <UniqueIdentifier>{3ea42e43-390e-4c30-beec-db4e4b50f43a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Libraries\SQLite">
+      <UniqueIdentifier>{1aaec118-aff2-4a1b-b3e4-7652306705c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -405,6 +408,12 @@
     <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Sqlite\sqlite3.c">
+      <Filter>Libraries\SQLite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -633,6 +642,9 @@
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,6 +17,16 @@
 #include "CScriptArgument.h"
 
 
+void PrintFunction(SQVM * pVM, const char * szFormat, ...)
+{
+        va_list args;
+        char szBuffer[512];
+        va_start(args, szFormat);
+        vsnprintf(szBuffer, sizeof(szBuffer), szFormat, args);
+        va_end(args);
+        CLogFile::Print(szBuffer);
+}
+
 CSquirrelVM::CSquirrelVM(CResource * pResource)
 	: CScriptVM(pResource),
 	m_iStackIndex(2)
@@ -28,6 +38,8 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 
 	// Push the root table onto the stack
 	sq_pushroottable(m_pVM);
+
+	sq_setprintfunc(m_pVM, PrintFunction, PrintFunction);
 }
 
 

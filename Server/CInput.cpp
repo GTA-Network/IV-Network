@@ -9,6 +9,7 @@
 
 #include "CInput.h"
 #include <CLogFile.h>
+#include <Scripting/CEvents.h>
 
 extern bool g_bClose;
 

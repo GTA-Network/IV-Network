@@ -34,10 +34,8 @@ void CNetworkEntity::GetPosition(CVector3& vecPos)
 
 void CNetworkEntity::SetPosition(const CVector3& vecPos)
 {
-	CLogFile::Printf(__FUNCTION__);
 	m_vecPosition = vecPos;
 }
-
 
 void CNetworkEntity::GetRotation(CVector3& vecRot)
 {
