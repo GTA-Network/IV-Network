@@ -51,6 +51,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../Core;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
