@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>LaunchIVMultiplayer</TargetName>
-    <IntDir>$(SolutionDir)\Binary\temp\build_clientlauncher\</IntDir>
+    <IntDir>$(SolutionDir)\Build\temp\build_clientlauncher\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Binary\temp\build_clientlauncher\</IntDir>
+    <IntDir>$(SolutionDir)\Build\temp\build_clientlauncher\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -63,6 +63,9 @@
       <AdditionalDependencies>winmm.lib;ws2_32.lib;zlib_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>Libraries/zlib-1.2.5/projects/Debug;../Libraries/zlib-1.2.5/projects/Debug;../../Libraries/zlib-1.2.5/projects/Debug</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)LaunchIVMultiplayer.exe" "$(SolutionDir)Files\LaunchIVMultiplayer.exe"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

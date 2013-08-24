@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>IVMultiplayer</TargetName>
-    <IntDir>$(SolutionDir)\Binary\temp\build_clientcore\</IntDir>
+    <IntDir>$(SolutionDir)\Build\temp\build_clientcore\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Binary\</OutDir>
+    <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Binary\temp\build_clientcore\</IntDir>
+    <IntDir>$(SolutionDir)\Build\temp\build_clientcore\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -64,6 +64,9 @@
       <AdditionalDependencies>winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)IVMultiplayer.dll" "$(SolutionDir)Files\IVMultiplayer.dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

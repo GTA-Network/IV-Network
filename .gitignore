@@ -19,3 +19,4 @@
 *.vcxproj.user
 *.suo
 ipch/
+/Libraries/zlib-1.2.5/projects/Debug
