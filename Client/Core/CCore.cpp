@@ -71,7 +71,7 @@ bool CCore::Initialise()
 	m_pDevelopment = new CDevelopment;
 
 	// Create the chat instance
-	m_pChat = new CChat(30, 30);
+	m_pChat = new CChat(30, 50);
 
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();

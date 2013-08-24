@@ -207,3 +207,67 @@ CIVTaskSimpleStopWalking::CIVTaskSimpleStopWalking(unsigned int uiPlayerIndex, c
 	_asm	mov ecx, pTask;
 	_asm	call COffsets::FUNC_CTaskSimpleStopWalking__Constructor;
 }
+
+CIVTaskComplexGun::CIVTaskComplexGun(char a2, int a3, int a4, int a5, float fX, float fY, float fZ, int a9, int a10) : CIVTaskComplex()
+{
+	Create();
+
+	IVTask *pTask = GetTask();
+
+	_asm	push a10;
+	_asm	push a9;
+	_asm	push fY;
+	_asm	push fX;
+	_asm	push fX;
+	_asm	push a5;
+	_asm	push a4;
+	_asm	push a3;
+	_asm	push a2;
+	_asm	mov ecx, pTask;
+	_asm	call COffsets::FUNC_CTaskComplexGun__Constructor;
+}
+
+CIVTaskSimpleFireGun::CIVTaskSimpleFireGun(float fX, float fY, float fZ, int a5, int a6, int a7) : CIVTaskSimple()
+{
+	Create();
+
+	IVTask *pTask = GetTask();
+
+	_asm	push a7;
+	_asm	push a6;
+	_asm	push a5;
+	_asm	push fZ;
+	_asm	push fY;
+	_asm	push fX;
+	_asm	mov ecx, pTask;
+	_asm	call COffsets::FUNC_CTaskSimpleFireGun__Counstructor; 
+}
+
+CIVTaskSimpleAimGun::CIVTaskSimpleAimGun(float fX, float fY, float fZ, int a5, int a6, int a7) : CIVTaskSimple()
+{
+	Create();
+
+	IVTask *pTask = GetTask();
+
+	_asm	push a7;
+	_asm	push a6;
+	_asm	push a5;
+	_asm	push fZ;
+	_asm	push fY;
+	_asm	push fX;
+	_asm	mov ecx, pTask;
+	_asm	call COffsets::FUNC_CTaskSimpleAimGun__Constructor;
+}
+
+CIVTaskSimpleReloadGun::CIVTaskSimpleReloadGun(unsigned int a2, int a3, int a4) : CIVTaskSimple()
+{ 
+	Create();
+
+	IVTask *pTask = GetTask();
+
+	_asm	push a4
+	_asm	push a3
+	_asm	push a2
+	_asm	mov ecx, pTask
+	_asm	call COffsets::FUNC_CTaskSimpleReloadGun__Constructor
+}

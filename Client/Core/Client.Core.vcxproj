@@ -645,7 +645,6 @@
     <ClInclude Include="IV\IVParachute_AI.h" />
     <ClInclude Include="IV\IVParachute_Manager.h" />
     <ClInclude Include="IV\IVParachute_Process.h" />
-    <ClInclude Include="IV\ScriptExport.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />

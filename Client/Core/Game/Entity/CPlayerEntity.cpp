@@ -19,9 +19,7 @@
 #include <Game/IVEngine/IVTasks.h>
 #include <Game/IVEngine/CIVPedTaskManager.h>
 #include <Math/CMaths.h>
-
-#include <CCore.h>
-extern CCore * g_pCore;
+#include <Ptrs.h>
 
 DWORD dwPlayerModelHashes[] = 
 {
@@ -343,7 +341,7 @@ bool CPlayerEntity::Create()
 	m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
 
 	// Set the game player info pointer
-	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
+	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
 	// Allocate the player ped
 	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
@@ -356,26 +354,26 @@ bool CPlayerEntity::Create()
 
 	// Create the ped
 	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C1910);
-	unsigned int uiPlayerIndex = (unsigned int)m_bytePlayerNumber;
+	unsigned int uiPlayerIndex = (unsigned)m_bytePlayerNumber;
 	WORD wPlayerData = MAKEWORD(0, 1);
 	WORD * pwPlayerData = &wPlayerData;
 
-	_asm push uiPlayerIndex;
-	_asm push iModelIndex;
-	_asm push pwPlayerData;
-	_asm mov ecx, pPlayerPed;
-	_asm call dwFunctionAddress;
+	_asm	push uiPlayerIndex;
+	_asm	push iModelIndex;
+	_asm	push pwPlayerData;
+	_asm	mov ecx, pPlayerPed;
+	_asm	call dwFunctionAddress;
 
 	// Setup the ped
 	dwFunctionAddress = (g_pCore->GetBase() + 0x43A6A0);
 	DWORD dwPedFactory = (g_pCore->GetBase() + 0x15E35A0);
 	Matrix34 * pMatrix = NULL;
 
-	_asm push iModelIndex;
-	_asm push dwPedFactory;
-	_asm mov edi, pMatrix;
-	_asm mov esi, pPlayerPed;
-	_asm call dwFunctionAddress;
+	_asm	push iModelIndex;
+	_asm	push dwPedFactory;
+	_asm	mov edi, pMatrix;
+	_asm	mov esi, pPlayerPed;
+	_asm	call dwFunctionAddress;
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
@@ -396,25 +394,28 @@ bool CPlayerEntity::Create()
 
 	// Setup ped intelligence
 	dwFunctionAddress = (g_pCore->GetBase() + 0x89EC20);
-	_asm push 2;
-	_asm mov ecx, pPlayerPed;
-	_asm call dwFunctionAddress;
+	_asm	push 2;
+	_asm	mov ecx, pPlayerPed;
+	_asm	call dwFunctionAddress;
 
 	// Add to the world
 	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
 	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "Im_BATMAN");
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "DummyPed");
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "Im_BATMAN", 255, 255, 255, 255);
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "DummyPed", 255, 255, 255, 255);
 
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
 
 	// Disable head ik
-	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_BLOCK_CHAR_HEAD_IK, true);
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_BLOCK_CHAR_HEAD_IK, GetScriptingHandle(), true);
+
+	// Disable shot los
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
 
 	// Set our player index
 	m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
@@ -1318,13 +1319,22 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 				if(m_pIVSync->byteOldMoveStyle != 0)  {
 					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
+					// Delete any task lol
 					_asm	push 17;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
 					_asm	add esp, 0Ch;
 
+					// Deltete shot at coord task if the player stop moving or the state has changed
 					_asm	push 36;
+					_asm	push 0;
+					_asm	push uiPlayerIndex;
+					_asm	call dwAddress;
+					_asm	add esp, 0Ch;
+
+					// Delete aim at coord task if the player stops moving or the state has changed
+					_asm	push 35;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
 					_asm	call dwAddress;
@@ -1349,7 +1359,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			case IVSYNC_ONFOOT_RUN:
 			{
 				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*3);
-				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMoveSpeed, 4);
+				SetMoveToDirection(m_pIVSyncHandle->vecPosition, CVector3(m_pIVSyncHandle->vecMoveSpeed.fX * 1.1, m_pIVSyncHandle->vecMoveSpeed.fY * 1.1, m_pIVSyncHandle->vecMoveSpeed.fZ), 4);
 				break;
 			}
 		}
@@ -1381,46 +1391,19 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 	// Apply the move state
 	m_pIVSync->byteOldMoveStyle = m_pIVSync->byteMoveStyle;
+	
+	// Now store context data
+	StoreIVContextSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
 }
-void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
+
+void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
 	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
 
-	// Second check if we're jumping
-	if(!m_pIVSync->bStoreOnFootSwitch && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
-
-		// Before checking which jump style should be selected, set to unkown(if we failed to get our state)
-		char iJumpStyle = 0;
-		m_pIVSyncHandle->uiJumpTime = timeGetTime();
-
-		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 1.0)
-			iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-		else if(m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
-			iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
-
-		DWORD dwAddress = (g_pCore->GetBase() + 0xB86A20);
-		_asm	push iJumpStyle;
-		_asm	push uiPlayerIndex;
-		_asm	call dwAddress;
-		_asm	add esp, 8;
-	}
-
-	// Second and a half, check if we have to delete the jump task
-	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-1000 && m_pIVSyncHandle->uiJumpTime != 0) // Animation time(jump) needs ~1sec
-	{
-		m_pIVSyncHandle->uiJumpTime = 0;
-
-		// Delete the task(animation will be still displayed)
-		DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
-		_asm	push 3;
-		_asm	push 0;
-		_asm	push uiPlayerIndex;
-		_asm	call dwAddress;
-		_asm	add esp, 0Ch;
-	}
-
-	// Third check if we're having any weapon data
+	// First check if we're having any weapon data
 	if(bHasWeaponData) {
+		PTR_CHAT->Output("Settings weapon handling..");
+		
 		m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
 		m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
 		m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
@@ -1441,13 +1424,55 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		}
 	}
 
-	// Fourth check if we have to update the duck state
-	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != CNetworkEntity::GetPlayerHandle().bDuckState)
-		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckingState);
 
-	// Fifth check if we have to apply the control states
+	// Second check if we have to apply the control states
 	if(m_bLocalPlayer)
 		pCopy->GetControlState(&m_ControlState);
+
+	// Now store the normal ivsync data
+	StoreIVSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
+}
+
+void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
+{
+	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
+
+	// Third check if we're jumping
+	if(!m_pIVSync->bStoreOnFootSwitch && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
+
+		// Before checking which jump style should be selected, set to unkown(if we failed to get our state)
+		char iJumpStyle = 0;
+		m_pIVSyncHandle->uiJumpTime = timeGetTime();
+
+		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 1.0)
+			iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
+		else if(m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
+			iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
+
+		DWORD dwAddress = (g_pCore->GetBase() + 0xB86A20);
+		_asm	push iJumpStyle;
+		_asm	push uiPlayerIndex;
+		_asm	call dwAddress;
+		_asm	add esp, 8;
+	}
+
+	// Fourth and a half, check if we have to delete the jump task
+	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-1250 && m_pIVSyncHandle->uiJumpTime != 0) // Animation time(jump) needs ~1sec
+	{
+		m_pIVSyncHandle->uiJumpTime = 0;
+
+		// Delete the task(animation will be still displayed)
+		DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
+		_asm	push 3;
+		_asm	push 0;
+		_asm	push uiPlayerIndex;
+		_asm	call dwAddress;
+		_asm	add esp, 0Ch;
+	}
+
+	// Fifth check if we have to update the duck state
+	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != CNetworkEntity::GetPlayerHandle().bDuckState)
+		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckingState);
 }
 
 void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)

@@ -83,15 +83,11 @@ bool CVehicleEntity::Create()
     // Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(uiVehicleHandle));
 
-	// Disable damage
-	//m_pVehicle->SetCarCanBeDamaged(false);
-	//m_pVehicle->SetCanBeVisiblyDamaged(false);
-
-	// Reset Indicators
-	SetIndicatorState(false,false,false,false);
-
 	// Mark as spawned
 	m_bSpawned = true;
+
+	// Reset the vehicle
+	Reset();
 
 	CLogFile::Printf("Created vehicle! (Id: %d, Handle: %d)", m_vehicleId, m_uiVehicleHandle);
 	return true;
@@ -116,6 +112,24 @@ bool CVehicleEntity::Destroy()
 	m_bSpawned = false;
 
 	return true;
+}
+
+void CVehicleEntity::Reset()
+{
+	// Check vehicle iv ptr
+	if(!m_pVehicle)
+		return;
+
+	// Turn the engine off
+	SetEngineState(false);
+	
+	// Reset Indicators
+	SetIndicatorState(false,false,false,false);
+
+	// Disable damage
+	//m_pVehicle->SetCarCanBeDamaged(false);
+	//m_pVehicle->SetCanBeVisiblyDamaged(false);
+
 }
 
 bool CVehicleEntity::IsMoving()
@@ -896,11 +910,12 @@ float CVehicleEntity::GetSteeringAngle()
 void CVehicleEntity::SetEngineState(bool bState)
 {
     // Are we spawned?
-    if(IsSpawned())
-    {
+    if(IsSpawned()) {
         m_pVehicle->SetEngineStatus(bState, 1);
         m_bEngineStatus = bState;
     }
+	else
+		 m_bEngineStatus = bState;
 }
 
 bool CVehicleEntity::GetEngineState()

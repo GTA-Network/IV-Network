@@ -81,4 +81,28 @@ public:
  	CIVTaskSimpleStartWalking(unsigned int playerIndex, float a1, float a2, float a3, int a4, int a5);
 };
 
+class CIVTaskComplexGun : public CIVTaskComplex
+{
+public:
+	CIVTaskComplexGun(char a2, int a3, int a4, int a5, float fX, float fY, float fZ, int a9, int a10);
+};
+
+class CIVTaskSimpleFireGun : public CIVTaskSimple
+{
+public:
+	CIVTaskSimpleFireGun(float fX, float fY, float fZ, int a5, int a6, int a7);
+};
+
+class CIVTaskSimpleAimGun : public CIVTaskSimple
+{
+public:
+	CIVTaskSimpleAimGun(float fX, float fY, float fZ, int a5, int a6, int a7);
+};
+
+class CIVTaskSimpleReloadGun : public CIVTaskSimple
+{
+public:
+	CIVTaskSimpleReloadGun(unsigned int a2, int a3, int a4);
+};
+
 #endif // IVTasks_h

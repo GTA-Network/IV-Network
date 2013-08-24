@@ -81,6 +81,7 @@ public:
 	EntityId							GetId() { return m_vehicleId; }
 
 	virtual bool						IsSpawned() { return m_bSpawned; }
+	virtual void						Reset();
 
 	unsigned							GetScriptingHandle();
 

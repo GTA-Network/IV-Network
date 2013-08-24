@@ -337,36 +337,36 @@ _declspec(naked) void CFunctionRetnPatch()
 
 _declspec(naked) void CRASH_625F15_HOOK()
 {
-        _asm
-        {
-                test    eax, eax
-                jz              keks
-                cmp     eax, 100000h
-                jl              keks
-                mov     edx, [eax]
-                push    1
-                mov     ecx, edi
-                call    edx
+	_asm
+	{
+		test    eax, eax
+		jz              keks
+		cmp     eax, 100000h
+		jl              keks
+		mov     edx, [eax]
+		push    1
+		mov     ecx, edi
+		call    edx
 
 keks_patch:
-                mov     al, 1
-                pop     edi
-                pop     esi
-                pop     ebp
-                pop     ebx
-                add     esp, 0Ch
-                retn    4
+		mov     al, 1
+		pop     edi
+		pop     esi
+		pop     ebp
+		pop     ebx
+		add     esp, 0Ch
+		retn    4
 keks:
-                pushad
-        }
+		pushad
+	}
 
-		g_pCore->GetChat()->Output("Prevent crash at 0x625F15");
+	g_pCore->GetChat()->Output("Prevent crash at 0x625F15");
 
-        _asm
-        {
-                popad
-                jmp keks_patch
-        }
+	_asm
+	{
+		popad
+			jmp keks_patch
+	}
 }
 
 _declspec(naked) void CGameProcessHook()

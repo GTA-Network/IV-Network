@@ -1846,9 +1846,6 @@
     <ClInclude Include="IV\CIVExternalScriptCall.h">
       <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
-    <ClInclude Include="IV\ScriptExport.h">
-      <Filter>Header Files\Game\IV\Script</Filter>
-    </ClInclude>
     <ClInclude Include="General\CModuleManager.h">
       <Filter>Header Files\General</Filter>
     </ClInclude>

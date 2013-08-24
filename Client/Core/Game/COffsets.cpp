@@ -220,6 +220,10 @@ INIT_OFF(FUNC_CTaskSimpleStopWalking__Constructor);
 INIT_OFF(FUNC_CTaskComplexJump__Constructor);
 INIT_OFF(FUNC_CTaskSimpleTriggerLookAt__Constructor);
 INIT_OFF(FUNC_CTaskComplexPlayerOnFoot__Constructor);
+INIT_OFF(FUNC_CTaskComplexGun__Constructor);
+INIT_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
+INIT_OFF(FUNC_CTaskSimpleAimGun__Constructor);
+INIT_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
 
 // Weapons
 INIT_OFF(FUNC_CPedWeapons__RemoveWeapon);
@@ -241,11 +245,6 @@ INIT_OFF(FUNC_IVGAME_TOGGLELAZLOW_2);
 INIT_OFF(FUNC_IVGAME_INITCUTSCENE);
 INIT_OFF(FUNC_IVGAME_STOPCUTSCENE);
 INIT_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
-
-INIT_OFF(FUNC_CTaskComplexGun__Constructor);
-INIT_OFF(FUNC_CTaskSimpleFireGun__Counstructor);
-INIT_OFF(FUNC_CTaskSimpleAimGun__Constructor); 
-INIT_OFF(FUNC_CTaskSimpleReloadGun__Constructor);
 
 INIT_OFF(CGame_Process__Sleep);
 INIT_OFF(CGame_Process_InitialiseRageGame);
@@ -531,6 +530,10 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskComplexJump__Constructor, 0xAB4D90);
 			SET_OFF(FUNC_CTaskSimpleTriggerLookAt__Constructor, 0xA20FF0);
 			SET_OFF(FUNC_CTaskComplexPlayerOnFoot__Constructor, 0x9AD950);
+			SET_OFF(FUNC_CTaskComplexGun__Constructor, 0xA5FD80);
+			SET_OFF(FUNC_CTaskSimpleFireGun__Counstructor, 0xCC7400);
+			SET_OFF(FUNC_CTaskSimpleAimGun__Constructor, 0xCC87F0);
+			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor, 0xCCAD20);
 
 			//Weapons
 			SET_OFF(FUNC_CPedWeapons__RemoveWeapon, 0x9ABFD0);
