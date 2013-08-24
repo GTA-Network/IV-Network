@@ -15,6 +15,7 @@ public:
 					CHooks() { };
 					~CHooks() { };
 
+	static void		IncreasePoolSizes(int multi);
 	static void		Intialize();
 };
 

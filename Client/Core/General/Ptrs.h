@@ -15,5 +15,6 @@
 extern CCore * g_pCore;
 
 #define PTR_CHAT g_pCore->GetChat()
+#define PTR_LOCALPLAYER g_pCore->GetGame()->GetLocalPlayer()
 
 #endif // Ptrs_h

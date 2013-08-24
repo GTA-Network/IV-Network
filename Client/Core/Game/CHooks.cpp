@@ -14,6 +14,7 @@
 #include	<Game/IVEngine/CIVPlayerInfo.h>
 #include	"CContextData.h"
 #include	<SharedUtility.h>
+#include "CGameFuncs.h"
 
 extern	CCore	* g_pCore;
 IVTask       * ___pTask = NULL;
@@ -103,8 +104,8 @@ void StartGame_Loading()
 	_asm
 	{
 		push v7
-		mov ecx, unk_10F8088
-		call sub_5AF930
+			mov ecx, unk_10F8088
+			call sub_5AF930
 	}
 	*(DWORD*)dword_10F8078 = *v7;
 	*(DWORD*)dword_10F805C = *v7;
@@ -134,7 +135,7 @@ void RemoveInitialLoadingScreens()
 			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
 		}
 	}
-	
+
 	if(g_pCore->GetGame() && g_pCore->GetGame()->IsUsingEFLCContent()) {
 		*(DWORD *)(iLoadScreenDuration + 400) = 1500; // load directx
 		*(DWORD *)(iLoadScreenType + 400) = 0;
@@ -218,7 +219,7 @@ IVPlayerPed * GetLocalPlayerPed()
 			g_bInvalidIndex = false;
 		}
 	}
-	
+
 	return _pPlayerPed;
 }
 
@@ -289,15 +290,14 @@ _declspec(naked) void sub_788F30()
 	_asm
 	{
 		sub     esp, 0Ch
-		pushad
+			pushad
 	}
-	
-	CLogFile::Printf("CALL sub_788F30");
+
 	dwSub7Jmp = (g_pCore->GetBase() + 0x788F33);
 	_asm
 	{
 		popad
-		jmp dwSub7Jmp;
+			jmp dwSub7Jmp;
 	}
 }
 
@@ -311,7 +311,7 @@ _declspec(naked) void Sub_7B2740() //7B27A0
 
 		mov eax, [ebp+4]
 		mov szFile, eax
-		
+
 		pushad
 	}
 
@@ -321,8 +321,8 @@ _declspec(naked) void Sub_7B2740() //7B27A0
 	_asm
 	{
 		popad
-		pop ebp
-		jmp [dwSub7BJmp]
+			pop ebp
+			jmp [dwSub7BJmp]
 	}
 }
 
@@ -331,7 +331,7 @@ _declspec(naked) void CFunctionRetnPatch()
 	_asm
 	{
 		xor eax, eax
-		retn
+			retn
 	}
 }
 
@@ -340,22 +340,22 @@ _declspec(naked) void CRASH_625F15_HOOK()
 	_asm
 	{
 		test    eax, eax
-		jz              keks
-		cmp     eax, 100000h
-		jl              keks
-		mov     edx, [eax]
+			jz              keks
+			cmp     eax, 100000h
+			jl              keks
+			mov     edx, [eax]
 		push    1
-		mov     ecx, edi
-		call    edx
+			mov     ecx, edi
+			call    edx
 
 keks_patch:
 		mov     al, 1
-		pop     edi
-		pop     esi
-		pop     ebp
-		pop     ebx
-		add     esp, 0Ch
-		retn    4
+			pop     edi
+			pop     esi
+			pop     ebp
+			pop     ebx
+			add     esp, 0Ch
+			retn    4
 keks:
 		pushad
 	}
@@ -375,11 +375,8 @@ _declspec(naked) void CGameProcessHook()
 	{
 		iFrameCalls++;
 		dwJumpGame = (g_pCore->GetBase() + 0x402B03);
-		_asm
-		{
-			mov ebp, esp
-			jmp dwJumpGame
-		}
+		_asm	mov ebp, esp;
+		_asm	jmp dwJumpGame;
 	}
 	else
 	{
@@ -388,39 +385,241 @@ _declspec(naked) void CGameProcessHook()
 
 		// Don't process game this time, just start it(works ram usage increases up to ~1,2GB)
 		dwJumpGame = (g_pCore->GetBase() + 0x402BD3);
-		_asm
-		{
-			mov ebp, esp
-			jmp dwJumpGame
-		}
+
+		_asm	mov ebp, esp;
+		_asm	jmp dwJumpGame;
 
 		BYTE b1 = *(BYTE*)(g_pCore->GetBase() + 0x10C74E1) = 0;
 		BYTE b2 = *(BYTE*)(g_pCore->GetBase() + 0x10C79E4) = 1;
 		BYTE b3 = *(BYTE*)(g_pCore->GetBase() + 0x119EB14) = 0;
-		
+
 		*(DWORD*)(g_pCore->GetBase()+0x10C7854) = 50;
-		
+
 
 		DWORD keks = *(DWORD *)(g_pCore->GetBase() + 0x10F8078); // keks copyright by xforce
 		DWORD g_rgsc = *(DWORD *)(g_pCore->GetBase() + 0x172427C);
 		DWORD dwFunctionAddress = g_pCore->GetBase() + 0x4205B0;
 		int iTime = timeGetTime();
-		_asm
-		{   
-			push 0
-			push 1
-			push 0
-			mov eax, keks
-			mov ecx, g_rgsc
-			mov edi, iTime
-			call dwFunctionAddress
-			add esp, 0Ch
+
+		_asm	push 0;
+		_asm	push 1;
+		_asm	push 0;
+		_asm	mov eax, keks;
+		_asm	mov ecx, g_rgsc;
+		_asm	mov edi, iTime;
+		_asm	call dwFunctionAddress;
+		_asm	add esp, 0Ch;
+	}
+}
+
+
+static int mulPoolSize = 1;
+int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, int entrySize);
+__declspec(naked) void __stdcall CPool_hook()
+{
+	_asm	pop eax
+	_asm	push ecx
+	_asm	push eax
+	_asm	jmp CPool_hook_chunk
+}
+
+int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, int entrySize)
+{
+	IVPool *pPool = (IVPool*)this_;
+
+	if(pPool)
+	{
+
+		if(!strcmp("PtrNode Double", (const char*)Name)
+			|| !strcmp("EntryInfoNodes", Name)
+			|| !strcmp("PtrNode Single", Name)
+			|| !strcmp("Vehicles", (const char*)Name)
+			|| !strcmp("VehicleStruct", Name))
+		{
+			CLogFile::Printf("Increaing %sPool from %i Objects to %i Objects", Name, maxObjects, maxObjects*mulPoolSize);
+			maxObjects *= mulPoolSize;
+
+			pPool->m_dwEntrySize = entrySize;
+			pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
+			pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+
+			pPool->m_bAllocated = 1;
+			pPool->m_dwCount = maxObjects;
+			pPool->m_nTop = -1;
+
+			int n = 0;
+			char flag;
+			int v5 = 0;
+			BYTE* v8;
+			BYTE v7;
+			BYTE* v6;
+			for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+			{
+				*(pPool->m_pFlags + v5) |= 0x80;
+				v6 = pPool->m_pFlags;
+				v7 = *(v6 + v5);
+				v8 = v5++ +v6;
+			}
+
+			CLogFile::Printf("Increased %sPool to %i Objects", Name, maxObjects);
 		}
+		else
+		{
+			pPool->m_dwEntrySize = entrySize;
+			pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
+			pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+
+			pPool->m_bAllocated = 1;
+			pPool->m_dwCount = maxObjects;
+			pPool->m_nTop = -1;
+
+			int n = 0;
+			char flag;
+			int v5 = 0;
+			BYTE* v8;
+			BYTE v7;
+			BYTE* v6;
+			for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+			{
+				*(pPool->m_pFlags + v5) |= 0x80;
+				v6 = pPool->m_pFlags;
+				v7 = *(v6 + v5);
+				v8 = v5++ +v6;
+			}
+		}
+		return (int)pPool;
+	}
+
+	return 0;
+}
+
+_declspec(naked) void __stdcall SetupPool_Hook()
+{
+	IVPool *pPool;
+
+	_asm	mov pPool, esi;
+	_asm	pushad;
+
+	int entrySize;
+	int maxObjects;
+	maxObjects = pPool->m_dwCount;
+	entrySize = pPool->m_dwEntrySize;
+	maxObjects *= mulPoolSize;
+
+	pPool->m_dwEntrySize = entrySize;
+
+	CGameFunction::Free(pPool->m_pObjects);
+	CGameFunction::Free(pPool->m_pFlags);
+
+	pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
+	pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+
+	pPool->m_bAllocated = 1;
+	pPool->m_dwCount = maxObjects;
+	pPool->m_nTop = -1;
+
+	int n;
+	n = 0;
+	char flag;
+	int v5;
+	v5 = 0;
+	BYTE* v8;
+	BYTE v7;
+	BYTE* v6;
+
+	for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+	{
+		*(pPool->m_pFlags + v5) |= 0x80;
+		v6 = pPool->m_pFlags;
+		v7 = *(v6 + v5);
+		v8 = v5++ +v6;
+	}
+
+	_asm	popad;
+	_asm	mov eax, pPool;
+	_asm	retn;
+}
+
+
+/*
+This will multiply the size of the given pools by the value in multi [default: 4]
+*/
+void CHooks::IncreasePoolSizes(int multi)
+{
+	mulPoolSize = multi;
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xC72F10, (DWORD)CPool_hook);
+}
+
+DWORD PhysicsEAXHandle;
+DWORD IV_GTAPhysicsUpdate;
+__declspec(naked) void __stdcall GTAPhysicsUpdate()
+{
+	_asm mov PhysicsEAXHandle, eax;
+	_asm pushad;
+
+	// Check PhysicsUpdate
+	if(PhysicsEAXHandle == NULL || (DWORD *)PhysicsEAXHandle == NULL) {
+		
+		// Failed to get any eax value, exit.
+		_asm popad;
+		_asm mov eax, [ecx+4];
+		_asm push ebx;
+		_asm mov ebx, [eax+14h];
+		_asm mov PhysicsEAXHandle, ebx;
+		_asm pop ebx;
+		_asm pushad;
+
+		if(PhysicsEAXHandle == NULL || (WORD)PhysicsEAXHandle == NULL)
+		{
+			_asm popad;
+			_asm push ebx;
+			_asm push ebp;
+			_asm mov edi, [eax+4];
+			_asm mov eax, [ecx+0Ch];
+			_asm mov edx, eax;
+			_asm mov ebx, esi;
+			_asm mov ecx, ebp
+			_asm add eax, 50h
+			_asm add edx, 40h;
+			_asm add edi, 4;
+			_asm add ebp, 1
+			_asm pop edi;
+			_asm pop esi;
+			_asm pop esp;
+			_asm pop ebx;
+			_asm xor eax, eax;
+			_asm retn 8;
+		}
+		else {
+			IV_GTAPhysicsUpdate = (g_pCore->GetBase() + 0x0063DD40);
+
+			_asm popad;
+			_asm mov eax, [ecx+14h];
+			_asm mov edx, [ecx+8];
+			_asm push eax;
+			_asm push edx;
+			_asm call IV_GTAPhysicsUpdate;
+			_asm retn;
+		}
+	}
+	else {
+		IV_GTAPhysicsUpdate = (g_pCore->GetBase() + 0x0063DD40);
+
+		_asm popad;
+		_asm mov eax, [ecx+14h];
+		_asm mov edx, [ecx+8];
+		_asm push eax;
+		_asm push edx;
+		_asm call IV_GTAPhysicsUpdate;
+		_asm retn;
 	}
 }
 
 void CHooks::Intialize()
 {
+	// Hook physics update
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x63DD30), (DWORD)IV_GTAPhysicsUpdate, 3);
+
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
 
@@ -451,6 +650,6 @@ void CHooks::Intialize()
 	// This disables some calculate for modelinfo but it seems this is not necessary
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
 
-    // this disables a call to a destructor of a member in rageResourceCache [field_244] 
-    CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (DWORD)CRASH_625F15_HOOK /*(GetBase() + 0x625F1D)*/);
+	// this disables a call to a destructor of a member in rageResourceCache [field_244] 
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (DWORD)CRASH_625F15_HOOK /*(GetBase() + 0x625F1D)*/);
 }

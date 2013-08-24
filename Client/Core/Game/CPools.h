@@ -37,12 +37,8 @@ private:
 	// Game pools
 	CIVPool<IVPed>                * m_pPedPool;
 	CIVPool<IVVehicle>            * m_pVehiclePool; // Size: 140
-	//#define VAR_BuildingPool_7 0x168FED0
-	//#define VAR_ObjectPool_7 0x1350CE0
 	CIVPool<IVTask>               * m_pTaskPool; // Size: 1200
-	//#define VAR_EventPool_7 0x152F4B4 // Size: 300
 	CIVPool<IVCam>                * m_pCamPool;
-	//#define VAR_TaskInfoPool_7 0x1618040
 	CIVPool<IVPedMoveBlendOnFoot> * m_pPedMoveBlendPool;
 
 	// Custom checkpoint array

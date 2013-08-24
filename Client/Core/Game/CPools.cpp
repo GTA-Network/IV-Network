@@ -67,7 +67,13 @@ void CPools::SetPedPoolLimit(BYTE byteLimit)
 
 void CPools::SetVehiclePoolLimit(DWORD dwLimit)
 {
-	*(DWORD *)(g_pCore->GetBase() + 0x9D43B9) = dwLimit;
+	ProtectionInfo protectionInfo = CPatcher::Unprotect(g_pCore->GetBase() + 0x9D43B8, 5); 
+    *(BYTE*)(g_pCore->GetBase() + 0x9D43B8) = 0x68; 
+    *(DWORD*)(g_pCore->GetBase() + 0x9D43B8+1) = dwLimit;  
+
+	protectionInfo = CPatcher::Unprotect(g_pCore->GetBase() + 0x9D43B8, 5);
+    *(BYTE*)(g_pCore->GetBase() + 0x9D43B8) = 0x68; 
+    *(DWORD*)(g_pCore->GetBase() + 0x9D43B8+1) = (dwLimit*60); // Entry size  
 }
 
 void CPools::SetVehicleStructPoolLimit(BYTE byteLimit)
