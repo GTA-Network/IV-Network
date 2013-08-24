@@ -19,9 +19,8 @@ private:
 	static	bool			m_bRegistered;
 
 public:
-	static	void			RegisterRPCs(CRPCHandler * pRPC);
-	static	void			UnregisterRPCs(CRPCHandler * pRPC);
-	static  CString			GetRPCCodex(eRPCIdentifier pRPC) { return CString("IVMP0xF%dF",int(pRPC)).Get(); }
+	static	void			Register(RakNet::RPC4 * pRPC);
+	static	void			Unregister(RakNet::RPC4 * pRPC);
 };
 
 #endif

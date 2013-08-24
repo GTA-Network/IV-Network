@@ -293,7 +293,7 @@ void CGame::RenderRAGEScripts()
 
 	// If our network manager exists process it
 	if(g_pCore->GetNetworkManager())
-		g_pCore->GetNetworkManager()->Process();
+		g_pCore->GetNetworkManager()->Pulse();
 
 	// If our local player exists, pulse him
 	if(m_pLocalPlayer)

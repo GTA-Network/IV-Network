@@ -82,6 +82,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 // define
 #define MOD_NAME "IV:Multiplayer"
 #define INVALID_ENTITY_ID ((EntityId)0xFFFF)
+#define NETWORK_VERSION 0x1
 
 // Mod version string
 #define MOD_VERSION_STRING "1.0.0 DEV"
@@ -187,5 +188,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 // Camera defs
 #define CVEC_TO_D3DVEC(vec) &D3DXVECTOR3(vec.fX, vec.fY, vec.fZ)
 #define D3DVEC_TO_CVEC(vec) &CVector3(vec.x, vec.y, vec.z)
+
+// Macros
+#define GET_RPC_CODEX(x) CString("IVMP0xF%dF", int(x)).Get()
 
 #endif // Common_h

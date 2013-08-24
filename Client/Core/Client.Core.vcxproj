@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\Libraries\lpng142\pngwrite.c" />
     <ClCompile Include="..\..\Libraries\lpng142\pngwtran.c" />
     <ClCompile Include="..\..\Libraries\lpng142\pngwutil.c" />
+    <ClCompile Include="..\..\Libraries\md5\md5.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\ticpp.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\tinyxml.cpp" />
@@ -227,6 +228,7 @@
     <ClCompile Include="..\..\Network\Core\RakNet\VitaIncludes.cpp" />
     <ClCompile Include="..\..\Network\Core\RakNet\WSAStartupSingleton.cpp" />
     <ClCompile Include="..\..\Network\Core\RakNet\_FindFirst.cpp" />
+    <ClCompile Include="..\..\Shared\CLibrary.cpp" />
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
@@ -290,6 +292,7 @@
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
     <ClCompile Include="General\CException.cpp" />
+    <ClCompile Include="General\CModule.cpp" />
     <ClCompile Include="General\CModuleManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
@@ -378,6 +381,7 @@
     <ClInclude Include="..\..\Libraries\lpng142\png.h" />
     <ClInclude Include="..\..\Libraries\lpng142\pngconf.h" />
     <ClInclude Include="..\..\Libraries\lpng142\pngpriv.h" />
+    <ClInclude Include="..\..\Libraries\md5\md5.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\ticpp.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\ticpprc.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\tinystr.h" />
@@ -547,6 +551,7 @@
     <ClInclude Include="..\..\Network\Core\RakNet\WSAStartupSingleton.h" />
     <ClInclude Include="..\..\Network\Core\RakNet\XBox360Includes.h" />
     <ClInclude Include="..\..\Network\Core\RakNet\_FindFirst.h" />
+    <ClInclude Include="..\..\Shared\CLibrary.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\CZlib.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
@@ -616,6 +621,7 @@
     <ClInclude Include="Game\IVEngine\CIVWorld.h" />
     <ClInclude Include="Game\IVEngine\IVTasks.h" />
     <ClInclude Include="General\CException.h" />
+    <ClInclude Include="General\CModule.h" />
     <ClInclude Include="General\CModuleManager.h" />
     <ClInclude Include="General\Ptrs.h" />
     <ClInclude Include="Graphics\CChat.h" />

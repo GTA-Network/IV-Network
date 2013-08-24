@@ -130,6 +130,8 @@ public:
     void								Interpolate();
     void								ResetInterpolation();
 
+	void								Pulse() { };
+
     void								UpdateInterior(bool bHasDriver = false);
 
     void								Process();

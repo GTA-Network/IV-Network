@@ -32,7 +32,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		if(g_pCore->GetNetworkManager()->IsConnected())
 		{
 			// Disconnect and shutdown RakNet
-			g_pCore->GetNetworkManager()->ShutDown();
+			g_pCore->GetNetworkManager()->Shutdown(500, true);
 		}
 		
 		TerminateProcess(GetCurrentProcess(), 0);

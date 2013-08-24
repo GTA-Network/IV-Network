@@ -14,28 +14,41 @@
 
 class CNetworkManager {
 private:
-	unsigned					m_uiLastConnectionTry;
-	bool						m_bConnecting;
-	eNetworkState				m_eState;
-	
-	void						UpdateNetwork();
-	void						ConnectionAccepted(NetPacket * pPacket);
+	RakNet::RakPeerInterface				* m_pRakPeer;
+	static RakNet::RPC4						* m_pRPC;
+
+	eNetworkState							m_eNetworkState;
+	unsigned int							m_uiLastConnectionTry;
+
+	CString									m_strIp;
+	unsigned short							m_usPort;
+	CString									m_strPass;
+
+	void									UpdateNetwork();
+	void									ConnectionAccepted(RakNet::Packet * pPacket);
 
 public:
-								CNetworkManager();
-								~CNetworkManager();
+											CNetworkManager();
+											~CNetworkManager();
 
-	virtual void				Process();
-	
-	virtual void				Startup();
-	virtual void				ShutDown();
-	virtual void				Connect();
-	virtual void				Disconnect();
-	virtual bool				IsConnected() { return (m_eState == NETSTATE_CONNECTED); }
-	virtual void				Call(const char * szUnique, CBitStream * pBitStream, ePacketPriority priority, ePacketReliability reliability, char orderingChannel, bool bBroadcast );
-	
-	virtual void 				SetNetworkState(eNetworkState pState) { m_eState = pState; }
-	virtual eNetworkState		GetNetworkState() { return m_eState; }
+	bool									Startup();
+	void									Connect(CString strIp, unsigned short usPort, CString strPass = "");
+	void									Disconnect(bool bShowMessage = true);
+	bool									IsConnected() { return (m_eNetworkState == NETSTATE_CONNECTED || m_eNetworkState == NETSTATE_CONNECTING); }
+	void									Shutdown(int iBlockDuration, bool bShowMessage);
+
+	void									SetNetworkState(eNetworkState netState) { m_eNetworkState = netState; }
+	eNetworkState							GetNetworkState() { return m_eNetworkState; }
+
+	void									SetLastConnection(CString strIp, unsigned short usPort, CString strPass) { m_strIp = strIp; m_usPort = usPort; m_strPass = strPass; }
+
+	void									Pulse();
+
+	void									Call(const char * szIdentifier, RakNet::BitStream * pBitStream, PacketPriority priority, PacketReliability reliability, bool bBroadCast);
+
+	RakNet::RakPeerInterface				* GetRakPeer() { return m_pRakPeer; }
+	static RakNet::RPC4						* GetRPC() { return m_pRPC; }
+
 };
 
 #endif // CNetworkManager_h

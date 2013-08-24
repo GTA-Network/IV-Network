@@ -144,6 +144,12 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{9285ac95-9db2-4bc3-bbec-141a7ad0787d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Libraries\md5">
+      <UniqueIdentifier>{3ced2430-7826-44cd-a67c-b979ed7a32a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\md5">
+      <UniqueIdentifier>{1335a3e3-5167-4395-aecd-6226fa580870}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -844,6 +850,15 @@
     </ClCompile>
     <ClCompile Include="General\CModuleManager.cpp">
       <Filter>Source Files\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\md5\md5.cpp">
+      <Filter>Source Files\Libraries\md5</Filter>
+    </ClCompile>
+    <ClCompile Include="General\CModule.cpp">
+      <Filter>Source Files\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\CLibrary.cpp">
+      <Filter>Source Files\Shared</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1848,6 +1863,15 @@
     </ClInclude>
     <ClInclude Include="General\CModuleManager.h">
       <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\md5\md5.h">
+      <Filter>Header Files\Libraries\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="General\CModule.h">
+      <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\CLibrary.h">
+      <Filter>Header Files\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -121,7 +121,7 @@ void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 void CNetworkEntity::Serialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
-	CBitStream * pBitStream = new CBitStream;
+	RakNet::BitStream * pBitStream = new BitStream;
 
 	// Backup old sync
 	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
@@ -177,7 +177,7 @@ void CNetworkEntity::Serialize(ePackageType pType)
 	pBitStream->Write((char *) &m_pEntitySync, sizeof(CNetworkEntitySync));
 
 	// Send package to network
-	g_pCore->GetNetworkManager()->Call(CString("0x69766D50_F%d", eRPCIdentifier::RPC_SYNC_PACKAGE).Get(), pBitStream, ePacketPriority::PRIORITY_HIGH, ePacketReliability::RELIABILITY_RELIABLE, ePacketChannels::PACKET_CHANNEL_DEFAULT, false);
+	g_pCore->GetNetworkManager()->Call(CString("0x69766D50_F%d", eRPCIdentifier::RPC_SYNC_PACKAGE).Get(), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
 }
 
 void CNetworkEntity::Deserialize(ePackageType pType)

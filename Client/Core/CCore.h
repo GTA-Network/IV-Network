@@ -83,6 +83,9 @@ public:
 	void							OnDeviceReset(IDirect3DDevice9 * pDevice);
 	void							OnDevicePreRender();
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
+	
+	void							OnNetworkShutDown();
+	void							OnNetworkTimeout();
 
 	unsigned						GetBase() { return m_uiBaseAddress; }
 	unsigned						GetBaseAddress() { return m_uiBaseAddress; }

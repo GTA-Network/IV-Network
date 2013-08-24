@@ -21,6 +21,7 @@
 #include <direct.h>
 #include <WS2tcpip.h>
 #include <tlhelp32.h>
+#include <../Libraries/md5/md5.h>
 #else
 #define stricmp strcasecmp
 #define vsprintf_s vsprintf
@@ -622,4 +623,37 @@ namespace SharedUtility
 		int iDays          = (iDaysPassed % 24);
 		return CString("%d day(s), %d hour(s), %d minute(s) and %d second(s)", iDays, iHours, iMinutes, iSeconds);
 	}
+#ifdef _CLIENT
+	DWORD GetSerial()
+	{
+		// Get the C: serial
+		DWORD dwSerial;
+		GetVolumeInformation( "C:\\", NULL, 0, &dwSerial, NULL, NULL, NULL, 0 );
+
+		return dwSerial;
+	}
+
+	CString GetSerialHash()
+	{
+		// Get the serial
+		DWORD dwSerial = GetSerial( );
+
+		char szSerialMask[] = "0000-0000";
+		int i = 8;
+
+		while( dwSerial > 0 && i >= 0 )
+		{
+			int v = ( dwSerial & 0xF );
+			char ch = ( v < 10 ) ? '0' + v : 'A' + ( v + 10 );
+			szSerialMask[i--] = ch;
+
+			if( i == 4 )
+				i--;
+
+			dwSerial >>= 4;
+		}
+
+		return CString( "%s", md5( szSerialMask ).c_str() ).ToUpper();
+	}
+#endif
 };

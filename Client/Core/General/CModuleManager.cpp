@@ -42,14 +42,11 @@ void CModuleManager::FetchModules()
 			{
 				sTempPath = CString("%smultiplayer\\modules\\",sOrigPath.Get()).Get();
 				sTempPath.AppendF("%s",FindFileData.cFileName);
-				if(sTempPath.EndsWith(".dll"))
+				if(sTempPath.EndsWith(".eIVM"))
 				{
-					CModule * pModule = new CModule;
-					pModule->strModuleName = new CString;
-					pModule->strModulePath = new CString;
+					CModule * pModule = new CModule(CString("%s",FindFileData.cFileName));
+					pModule->SetPath(sTempPath);
 
-					pModule->strModuleName->AppendF("%s",FindFileData.cFileName);
-					pModule->strModulePath = &sTempPath;
 					m_pModules.push_back(pModule);
 					CLogFile::Printf("  --> Modulemanager: Fetched module %s",FindFileData.cFileName);
 				}
@@ -66,7 +63,7 @@ CString *CModuleManager::GetModules()
 	CString * strModules = new CString;
 	for(auto pModule:m_pModules)
 	{
-		strModules->AppendF("%s\n",pModule->strModuleName->Get());
+		strModules->AppendF("%s\n",pModule->GetName().Get());
 	}
 	return strModules;
 }
@@ -80,9 +77,9 @@ CString *CModuleManager::GetModulePath(CString *strModule)
 	{
 		for(auto pModule:m_pModules)
 		{
-			if(pModule->strModuleName->Find(strModule->Get()) != std::string::npos)
+			if(pModule->GetName().Find(strModule->Get()) != std::string::npos)
 			{
-				strRetn->AppendF("%s",pModule->strModulePath->Get());
+				strRetn->AppendF("%s",pModule->GetPath().Get());
 				break;
 			}
 		}
@@ -92,34 +89,20 @@ CString *CModuleManager::GetModulePath(CString *strModule)
 
 void CModuleManager::LoadModule(CString *strModule, CString *strModulePath, bool bForce)
 {
-	// Load the test module
+	// Load the module
 	if(strModulePath->GetLength() < 1)
 	{
 		for(auto pModule:m_pModules)
 		{
-			if(pModule->strModuleName->Find(strModule->Get()) != std::string::npos)
+			if(pModule->GetName().Find(strModule->Get()) != std::string::npos)
 			{
-				strModulePath->AppendF("%s",pModule->strModulePath->Get());
-				break;
+				// Update path
+				strModulePath->AppendF("%s",pModule->GetPath().Get());
+
+				// Load module
+				pModule->Load();
 			}
 		}
 	}
-
-	// Check if we have found any modules
-	if(strModulePath->GetLength() < 1)
-		return;
-
-	CString strModuleToLoad = CString("%s",strModulePath->Get());
-
-	// Load it
-	HMODULE hModule = LoadLibraryA(strModuleToLoad.Get());
-	if(hModule != NULL)
-	{
-		typedef void (*SetScriptHandler)(DWORD);
-		SetScriptHandler pScriptHandler;
-		pScriptHandler = (SetScriptHandler)GetProcAddress(hModule,"SetOffset");
-				
-		if(pScriptHandler != NULL)
-			pScriptHandler(0xFFFFFFF);
-	}
+	return;
 }

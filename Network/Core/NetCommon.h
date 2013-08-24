@@ -200,6 +200,7 @@ enum ePacketReliability
 };
 
 // Enumerates possible packet priorities
+#ifndef _CLIENT
 enum ePacketPriority
 {
 	// The highest possible priority. These message trigger sends immediately, and are generally not buffered or aggregated into a single datagram.
@@ -220,6 +221,7 @@ enum ePacketPriority
 	// Number of packet priorities
 	PRIORITY_COUNT
 };
+#endif
 
 // Packet channels
 enum ePacketChannels

@@ -16,7 +16,7 @@
 extern CCore * g_pCore;
 bool   CNetworkRPC::m_bRegistered = false;
 
-void StartGame(CBitStream * pBitStream, NetPacket * pPacket)
+void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
 	pBitStream->ReadCompressed(playerId);
@@ -41,7 +41,7 @@ void StartGame(CBitStream * pBitStream, NetPacket * pPacket)
 	CIVWeather::SetDayOfWeek(iDay);
 }
 
-void PlayerJoin(CBitStream * pBitStream, NetPacket * pPacket)
+void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
 	EntityId playerId;
@@ -52,7 +52,7 @@ void PlayerJoin(CBitStream * pBitStream, NetPacket * pPacket)
 	pBitStream->Read(strPlayerName);
 }
 
-void PlayerLeave(CBitStream * pBitStream, NetPacket * pPacket)
+void PlayerLeave(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
 	EntityId playerId;
@@ -60,30 +60,30 @@ void PlayerLeave(CBitStream * pBitStream, NetPacket * pPacket)
 }
 
 
-void CNetworkRPC::RegisterRPCs(CRPCHandler * pRPC)
+void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
 	if(!m_bRegistered)
 	{
 		// Register the RPCs
-		pRPC->AddFunction(RPC_START_GAME, (RPCFunction_t)StartGame);
-		pRPC->AddFunction(RPC_NEW_PLAYER, (RPCFunction_t)PlayerJoin);
-		pRPC->AddFunction(RPC_DELETE_PLAYER, (RPCFunction_t)PlayerLeave);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
 		
 		// Mark as registered
 		m_bRegistered = true;
 	}
 }
 
-void CNetworkRPC::UnregisterRPCs(CRPCHandler * pRPC)
+void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 {
 	// Are we registered?
 	if(m_bRegistered)
 	{
 		// Unregister the RPCs
-		pRPC->RemoveFunction(RPC_START_GAME);
-		pRPC->RemoveFunction(RPC_NEW_PLAYER);
-		pRPC->RemoveFunction(RPC_DELETE_PLAYER);
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_START_GAME));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
 		
 		// Mark as not registered
 		m_bRegistered = false;

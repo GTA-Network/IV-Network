@@ -135,7 +135,7 @@ void CLocalPlayer::DoDeathCheck()
 
 void CLocalPlayer::Pulse()
 {
-	CPlayerEntity::Process();
+	CPlayerEntity::Pulse();
 
 	if(IsSpawned()) {
 		DoDeathCheck();

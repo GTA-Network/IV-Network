@@ -260,7 +260,7 @@ unsigned short CPlayerEntity::GetPing()
 		return m_usPing;
 }
 
-void CPlayerEntity::Process()
+void CPlayerEntity::Pulse()
 {
 	// Is the player spawned?
 	if(IsSpawned())

@@ -136,7 +136,7 @@ void CCore::OnGameLoad()
 	m_pNetworkManager->Startup();
 
 	// Connect to the network
-	m_pNetworkManager->Connect();
+	m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime();
@@ -179,15 +179,14 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
 
 void CCore::OnDevicePreRender()
 {
-	// Is the scripting manager active?
-	if(true)
-	{
-		// Call the script event
-	}
+	;
 }
 
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
+	// Prerender devices
+	OnDevicePreRender();
+
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
@@ -290,4 +289,16 @@ void CCore::GetLoadedModule(DWORD dwProcessId)
     }
     CloseHandle( hProcess );
     return;
+}
+
+void CCore::OnNetworkShutDown()
+{
+	// Call destructor of cgame
+	g_pCore->GetGame()->~CGame();
+}
+
+void CCore::OnNetworkTimeout()
+{
+	// Call reinitialise cgame
+	g_pCore->GetGame()->Reset();
 }

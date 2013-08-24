@@ -12,13 +12,7 @@
 
 #include <Common.h>
 #include <list>
-
-class CModule {
-public:
-	CString	* strModulePath;
-	CString * strModuleName;
-	bool	  m_bLoaded;
-};
+#include <CModule.h>
 
 class CModuleManager {
 private:
