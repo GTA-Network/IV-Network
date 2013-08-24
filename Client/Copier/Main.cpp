@@ -167,7 +167,7 @@ const char * szCopyFile[] = {
 	{ "multiplayer\\pc\\data\\eflc\\animgrp_eflc.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\default_eflc.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\e2_xref.ide" },
-	{ "multiplayer\\pc\\data\\eflc\\explosionFx.dat" },
+	{ "multiplayer\\common\\data\\effects\\explosionFx.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.wtd" },
 	{ "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf" },
@@ -591,6 +591,13 @@ void CopyThread()
 									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 							} 
+							else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\effects\\") != std::string::npos && szCopyFile[n][0] != '%') {
+								CString file(SharedUtility::GetAppPath());
+								file.AppendF(szCopyFile[n]);
+								if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\").Get()))
+									SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
+								CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+							}
 							else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\") != std::string::npos && szCopyFile[n][0] != '%') {
 								CString file(SharedUtility::GetAppPath());
 								file.AppendF(szCopyFile[n]);

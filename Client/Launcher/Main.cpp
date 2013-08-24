@@ -129,6 +129,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
 
 	strMultiplayerPath = szExecutablePath;
+	strMultiplayerPath.AppendF ("multiplayer\\common\\data\\effects");
+	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
+
+	strMultiplayerPath = szExecutablePath;
 	strMultiplayerPath.AppendF ("multiplayer\\pc\\textures");
 	SharedUtility::CreateDirectoryA(strMultiplayerPath.Get());
 

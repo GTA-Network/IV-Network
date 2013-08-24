@@ -88,6 +88,14 @@ void CLocalPlayer::HandleSpawn()
 
 	// Reset parachute
 	m_bParachuteCheck = false;
+
+	if(m_bFirstSpawn) {
+		// Fade screen in
+		CIVScript::DoScreenFadeIn(1000);
+	}
+
+	// Set first spawn
+	m_bFirstSpawn = true;
 }
 
 void CLocalPlayer::DoDeathCheck()
