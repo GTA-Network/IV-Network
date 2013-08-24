@@ -1212,6 +1212,7 @@ bool CPlayerEntity::IsGettingOutOfAVehicle()
 	return false;
 }
 
+
 void CPlayerEntity::UpdateTargetPosition()
 {
 	if(HasTargetPosition())
@@ -1381,12 +1382,12 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 			_asm	call dwAddress;
 			_asm	add	 esp, 8;
 		}
-		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE);
-		SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
-		SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
-		SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
+		SetRotation(m_pIVSyncHandle->fHeading);
+		SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecMoveSpeed : CVector3());
+		SetTurnSpeed(m_pIVSyncHandle->vecMoveSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecTurnSpeed : CVector3());
 
-		CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
+		//CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
 	}
 
 	// Apply the move state
@@ -1402,21 +1403,34 @@ void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCop
 
 	// First check if we're having any weapon data
 	if(bHasWeaponData) {
-		PTR_CHAT->Output("Settings weapon handling..");
 		
-		m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
-		m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
-		m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
-
-		if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsFiring() : m_ControlState.IsFiring()) {
-			g_pCore->GetChat()->Output("Debug dummy is firing!",false);
+		if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsAiming() : m_ControlState.IsAiming()
+			&& m_bLocalPlayer == 1 ? !m_pIVSyncHandle->pControls->IsFiring() : !m_ControlState.IsFiring()) {
+			PTR_CHAT->Output("Settings weapon aim..");
+			//SetWeaponAimAtTask(m_pIVSyncHandle->vecAimTarget);
+			
+			m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
+			m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
+			m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
+		}
+		else if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsFiring() : m_ControlState.IsFiring()) {
+			PTR_CHAT->Output("Settings weapon shot..");
 
 			m_pContextData->SetWeaponShotSource(m_pIVSyncHandle->vecShotSource);
 			m_pContextData->SetWeaponShotTarget(m_pIVSyncHandle->vecShotTarget);
 		}
 		else {
 			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
+
+			// Destroy shotat task
 			_asm	push 36;
+			_asm	push 0;
+			_asm	push uiPlayerIndex;
+			_asm	call dwAddress;
+			_asm	add esp, 0Ch;
+
+			// Destroy aimat task
+			_asm	push 35;
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
 			_asm	call dwAddress;
@@ -1786,4 +1800,23 @@ bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, Entit
 	}
 
 	return false;
+}
+
+void CPlayerEntity::SetWeaponAimAtTask(CVector3 vecAimAt)
+{
+	if(IsSpawned())
+	{
+		// Create the death task
+		CIVTaskSimpleFireGun * pTask = new CIVTaskSimpleFireGun(vecAimAt.fX, vecAimAt.fY, vecAimAt.fZ, 10000, 4, -4);
+
+		// Was the task created?
+		if(pTask)
+		{
+			// Process the ped
+			pTask->ProcessPed(m_pPlayerPed);
+
+			// Destroy the task
+			pTask->Destroy();
+		}
+	}
 }

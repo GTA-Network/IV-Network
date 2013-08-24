@@ -167,6 +167,11 @@ public: // Handles call functions
 	void							SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
 	void							SetCurrentSyncHeading(float fHeading);
 
+	void							ClearWeaponAimAtTask();
+	void							ClearWeaponShotAtTask();
+	void							SetWeaponAimAtTask(CVector3 vecAimAt);
+	void							SetWeaponShotAtTask(CVector3 vecShotAt);
+
 	void							KillPed(bool bInstandly);
 	bool							IsDying();
 	bool							IsDead();
