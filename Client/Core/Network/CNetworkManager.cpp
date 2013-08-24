@@ -127,9 +127,6 @@ void CNetworkManager::Disconnect(bool bShowMessage)
 	// Should we output a message?
 	if(bShowMessage)
 		g_pCore->GetChat()->Outputf(true, "#1874CDThe server connection closed.");
-
-	// Reset default server info
-	g_pCore->SetHost("M2-MP Server");
 }
 
 void CNetworkManager::Shutdown(int iBlockDuration, bool bShowMessage)
