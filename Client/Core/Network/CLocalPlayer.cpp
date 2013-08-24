@@ -69,7 +69,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 void CLocalPlayer::Respawn()
 {
 	// Get current day time so we don't have to set the time always..
-	CGameFunction::GetTime((int *)m_dwRespawnTime[0], (int *)m_dwRespawnTime[1]);
+	CGameFunction::GetTime(&m_iRespawnTime[0], &m_iRespawnTime[1]);
 
     // Set the local player state to respawning
     *(DWORD *)COffsets::VAR_LocalPlayerState = 5;
@@ -81,18 +81,17 @@ void CLocalPlayer::HandleSpawn()
     CLocalPlayer::m_bIsDead = false;
 
 	// Set our current time
-	CGameFunction::SetTimeOfDay(m_dwRespawnTime[0],m_dwRespawnTime[1]);
+	CGameFunction::SetTimeOfDay(m_iRespawnTime[0],m_iRespawnTime[1]);
 
 	// Reset vehicle enter/exit
 	ResetVehicleEnterExit();
 
 	// Reset parachute
 	m_bParachuteCheck = false;
-
-	if(m_bFirstSpawn) {
-		// Fade screen in
+	
+	// Fade screen in
+	if(m_bFirstSpawn)
 		CIVScript::DoScreenFadeIn(1000);
-	}
 
 	// Set first spawn
 	m_bFirstSpawn = true;
@@ -128,8 +127,10 @@ void CLocalPlayer::DoDeathCheck()
 		// Reset vehicle entry/exit flags
 		SetExitFlag(true);
 		ResetVehicleEnterExit();
-	}
 
+		// Get current day time so we don't have to set the time always..
+		CGameFunction::GetTime(&m_iRespawnTime[0], &m_iRespawnTime[1]);
+	}
 }
 
 void CLocalPlayer::Pulse()

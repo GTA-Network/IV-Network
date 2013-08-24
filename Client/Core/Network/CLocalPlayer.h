@@ -29,7 +29,7 @@ private:
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
-		DWORD							m_dwRespawnTime[2];
+		int								m_iRespawnTime[2];
 		bool							m_bDead;
 		bool							m_bAdvancedControlState;
 		bool							m_bAdvancedCameraState;
