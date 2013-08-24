@@ -25,6 +25,8 @@ private:
 
 	static int	SetTurnSpeed(int * VM);
 	static int	GetTurnSpeed(int * VM);
+
+	static int	Destroy(int * VM);
 public:
 	static void Register(CScriptVM * pVM);
 };

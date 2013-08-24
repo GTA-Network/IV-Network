@@ -120,6 +120,7 @@
     <ClCompile Include="..\Libraries\lua\lundump.c" />
     <ClCompile Include="..\Libraries\lua\lvm.c" />
     <ClCompile Include="..\Libraries\lua\lzio.c" />
+    <ClCompile Include="..\Libraries\Sqlite\sqlite3.c" />
     <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp" />
     <ClCompile Include="..\Libraries\Squirrel\sqbaselib.cpp" />
     <ClCompile Include="..\Libraries\Squirrel\sqclass.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp" />
+    <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp" />
@@ -232,6 +234,7 @@
     <ClInclude Include="..\Shared\Scripting\CScriptArgument.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptArguments.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptVM.h" />
+    <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h" />
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h" />

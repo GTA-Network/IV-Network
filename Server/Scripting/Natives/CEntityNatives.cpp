@@ -28,6 +28,8 @@ void CEntityNatives::Register(CScriptVM* pVM)
 
 	pVM->RegisterClassFunction("setTurnSpeed", SetTurnSpeed);
 	pVM->RegisterClassFunction("getTurnSpeed", GetTurnSpeed);
+
+	pVM->RegisterClassFunction("destroy", Destroy);
 }
 
 
@@ -46,7 +48,15 @@ int	CEntityNatives::SetPosition(int * VM)
 
 int	CEntityNatives::GetPosition(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecPosition;
+	pEntity->GetPosition(vecPosition);
+
+	CScriptArguments arg;
+	arg.pushVector3(vecPosition);
+	pVM->PushArray(arg);
 	return 1;
 }
 
@@ -65,7 +75,15 @@ int	CEntityNatives::SetRotation(int * VM)
 
 int	CEntityNatives::GetRotation(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecRotation;
+	pEntity->GetRotation(vecRotation);
+
+	CScriptArguments arg;
+	arg.pushVector3(vecRotation);
+	pVM->PushArray(arg);
 	return 1;
 }
 
@@ -84,7 +102,15 @@ int	CEntityNatives::SetMoveSpeed(int * VM)
 
 int	CEntityNatives::GetMoveSpeed(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecMoveSpeed;
+	pEntity->GetMoveSpeed(vecMoveSpeed);
+
+	CScriptArguments arg;
+	arg.pushVector3(vecMoveSpeed);
+	pVM->PushArray(arg);
 	return 1;
 }
 
@@ -103,6 +129,19 @@ int	CEntityNatives::SetTurnSpeed(int * VM)
 
 int	CEntityNatives::GetTurnSpeed(int * VM)
 {
+	GET_SCRIPT_VM_SAFE;
+	GET_ENTITY_SAFE;
 
+	CVector3 vecTurnSpeed;
+	pEntity->GetTurnSpeed(vecTurnSpeed);
+
+	CScriptArguments arg;
+	arg.pushVector3(vecTurnSpeed);
+	pVM->PushArray(arg);
+	return 1;
+}
+
+int CEntityNatives::Destroy(int * VM)
+{
 	return 1;
 }
