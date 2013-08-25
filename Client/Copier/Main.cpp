@@ -17,6 +17,7 @@
 #include <memory.h>
 #include <tchar.h>
 #include <commctrl.h>
+#include <CRC.h>
 
 #pragma warning(disable:4244)
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -169,7 +170,7 @@ const char * szCopyFile[] = {
 	{ "multiplayer\\pc\\data\\eflc\\e2_xref.ide" },
 	{ "multiplayer\\common\\data\\effects\\explosionFx.dat" },
 	{ "multiplayer\\pc\\data\\eflc\\loadingscreens_eflc.dat" },
-	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.wtd" },
+	{ "multiplayer\\pc\\data\\eflc\\peds_eflc.ide" },
 	{ "multiplayer\\pc\\data\\eflc\\playerped_eflc.rpf" },
 
 	// copy to gtaiv/common/data
@@ -361,7 +362,7 @@ const char * szCopyFileDest[] = {
 	{  "%s%se2_xref.ide" },
 	{  "%s%sexplosionFx.dat" },
 	{  "%s%sloadingscreens_eflc.dat" },
-	{  "%s%speds_eflc.wtd" },
+	{  "%s%speds_eflc.ide" },
 	{  "%s%splayerped_eflc.rpf" },
 
 	// copy to gtaiv/common/data
@@ -634,6 +635,159 @@ int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK
 	return MessageBox(NULL, szText, "IV:Multiplayer", uType);
 }
 
+
+DWORD fileCheckSums[] = 
+{
+{ 0x3175E84F },
+{ 0x88AA62D5 },
+{ 0xC7257F30 },
+{ 0x0974DF13 },
+{ 0x96737F63 },
+{ 0xCA8EAD99 },
+{ 0xCD532FF8 },
+{ 0x5D1F7B30 },
+{ 0x775B6CEB },
+{ 0x5A6CC518 },
+{ 0x05FD423B },
+{ 0x8CD032B5 },
+{ 0xCEC63CDF },
+{ 0xC899DB01 },
+{ 0x4B44CA0B },
+{ 0x1A618D9A },
+{ 0xDA50CE9C },
+{ 0x83ADBE92 },
+{ 0xD6AA6540 },
+{ 0xA86ED170 },
+{ 0xCD532FF8 },
+{ 0x6E82490C },
+{ 0xADC4A8C1 },
+{ 0x79B0A9C8 },
+{ 0x4B44CA0B },
+{ 0x9CED190F },
+{ 0x10807984 },
+{ 0xCD532FF8 },
+{ 0xDD8EDFF0 },
+{ 0x79B0A9C8 },
+{ 0xDFC84ECF },
+{ 0xFA03FBA1 },
+{ 0xE97D78AA },
+{ 0x026CDA1B },
+{ 0xEB28897E },
+{ 0x5D1F7B30 },
+{ 0xEB28897E },
+{ 0xD14FBE66 },
+{ 0x4D735136 },
+};
+
+#include <iostream>
+#include <fstream>
+
+bool CheckForModification()
+{
+	//std::ofstream outputFile("keks.txt");
+	char szUsingEFLC[3];
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "1", szUsingEFLC, sizeof(szUsingEFLC)))
+	{
+		if(CString(szUsingEFLC) == "1")
+		{
+			char szEFLCDirectory[MAX_PATH];
+			char szInstallDirectory[MAX_PATH];
+			if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szEFLCDirectory, sizeof(szEFLCDirectory)) 
+				|| SharedUtility::Exists(szEFLCDirectory)) 
+			{
+
+				if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", NULL,
+					szInstallDirectory, sizeof(szInstallDirectory)) &&
+					SharedUtility::Exists(szInstallDirectory))
+				{
+					SharedUtility::CreateDirectoryA(CString("%s/eflc", szEFLCDirectory).Get());
+					for(int n = 0; n < sizeof(szCopyFile) / sizeof(szCopyFile[0]); n++)
+					{
+						DWORD fileSize;
+						FILE* pFile = fopen(CString(szCopyFile[n], szEFLCDirectory).Get(), "rb");
+						GetFileSize(pFile, &fileSize);
+						comFileSize += (fileSize/1024);
+					}
+					
+					// outputFile << CString("{ 0x%p },\n", checkSum.GetChecksum()).Get();
+
+					for(int n = 0; n < sizeof(szCopyFile) / sizeof(szCopyFile[0]); n++)
+					{
+						if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\data\\eflc\\") != std::string::npos && szCopyFile[n][0] != '%') {
+							CString file(SharedUtility::GetAppPath());
+							file.AppendF(szCopyFile[n]);
+							if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\").Get()))
+							{
+								CFileChecksum checkSum;
+								checkSum.Calculate(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\data\\eflc\\"));
+								
+								if(checkSum.GetChecksum() != fileCheckSums[n])
+									return true;
+							}
+							else
+								return true;
+						} 
+						else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\effects\\") != std::string::npos && szCopyFile[n][0] != '%') {
+							CString file(SharedUtility::GetAppPath());
+							file.AppendF(szCopyFile[n]);
+							if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\").Get()))
+							{
+								CFileChecksum checkSum;
+								checkSum.Calculate(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\effects\\"));
+								if(checkSum.GetChecksum() != fileCheckSums[n])
+									return true;
+							}
+							else
+								return true;
+						}
+						else if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\") != std::string::npos && szCopyFile[n][0] != '%') {
+							CString file(SharedUtility::GetAppPath());
+							file.AppendF(szCopyFile[n]);
+
+							if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get()))
+							{
+								CFileChecksum checkSum;
+								checkSum.Calculate(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\"));
+								if(checkSum.GetChecksum() != fileCheckSums[n])
+									return true;
+							}
+							else
+								return true;
+						}
+						else if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\textures\\") != std::string::npos && szCopyFile[n][0] != '%') {
+							CString file(SharedUtility::GetAppPath());
+							file.AppendF(szCopyFile[n]);
+
+							if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get()))
+							{
+								CFileChecksum checkSum;
+								checkSum.Calculate(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\"));
+								if(checkSum.GetChecksum() != fileCheckSums[n])
+									return true;
+							}
+							else
+								return true;
+						} 
+						else {
+							if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory).Get()))
+							{
+								CFileChecksum checkSum;
+								checkSum.Calculate(CString(szCopyFileDest[n], szInstallDirectory));
+								if(checkSum.GetChecksum() != fileCheckSums[n])
+									return true;
+							}
+							else
+								return true;
+						}
+					}
+				}
+			}
+		}
+	}
+	//outputFile.close();
+	return false;
+}
+
 HFONT font;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -650,15 +804,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				WS_CHILD | WS_VISIBLE | PBS_SMOOTH,
 				20, 40, 345, 17,
 				hWnd, NULL, hInst, NULL);
-
-			font = CreateFont(18, 0, 0, 0, 300, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial");
-			SendMessage(pgCurrentFile, PBM_SETRANGE, 0, MAKELPARAM(0, 220));
-			if(ShowMessageBox("Do you want to copy EFLC files?", MB_ICONEXCLAMATION | MB_YESNO) == IDYES)
-				CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)CopyThread, NULL, NULL, NULL);
+	
+			if(CheckForModification())
+			{
+				font = CreateFont(18, 0, 0, 0, 300, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial");
+				SendMessage(pgCurrentFile, PBM_SETRANGE, 0, MAKELPARAM(0, 220));
+				if(ShowMessageBox("Do you want to copy EFLC files?", MB_ICONEXCLAMATION | MB_YESNO) == IDYES)
+					CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)CopyThread, NULL, NULL, NULL);
+				else
+				{
+					SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "0", 1);
+					DestroyWindow(pgCurrentFile);
+					TerminateProcess(GetCurrentProcess(),0);
+				}
+			}
 			else
 			{
-				SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "0", 1);
-				DestroyWindow(pgCurrentFile);
 				TerminateProcess(GetCurrentProcess(),0);
 			}
 		}

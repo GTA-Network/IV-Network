@@ -14,6 +14,7 @@
 #include <list>
 
 class CScriptArgument;
+class CScriptVM;
 
 class CScriptArguments {
 

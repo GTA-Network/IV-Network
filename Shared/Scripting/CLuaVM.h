@@ -14,6 +14,7 @@
 #include <Common.h>
 #include "CScriptVM.h"
 
+#include "CScriptArgument.h"
 
 class CLuaVM : public CScriptVM {
 
@@ -51,6 +52,9 @@ public:
 	virtual void PushArray(const CScriptArguments &array);
 	virtual void PushTable(const CScriptArguments &table);
 
+	virtual CScriptArgument::ArgumentType GetType(int idx);
+
+	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 1; }
 
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);

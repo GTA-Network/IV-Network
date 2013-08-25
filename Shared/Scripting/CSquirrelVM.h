@@ -13,6 +13,8 @@
 #include "CScriptVM.h"
 #include <Squirrel/squirrel.h>
 
+#include "CScriptArgument.h"
+
 class CSquirrelVM : public CScriptVM {
 
 private:
@@ -48,6 +50,10 @@ public:
 	virtual void PushArray(const CScriptArguments &array);
 	virtual void PushTable(const CScriptArguments &table);
 
+	virtual CScriptArgument::ArgumentType GetType(int idx);
+
+
+	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 2; }
 
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);

@@ -293,7 +293,6 @@ void CLuaVM::PushArray(const CScriptArguments &array)
 	}
 }
 
-
 void CLuaVM::PushTable(const CScriptArguments &table)
 {
 	int index = 0;
@@ -304,5 +303,36 @@ void CLuaVM::PushTable(const CScriptArguments &table)
 		++iter;
 		(*iter)->Push(this);
 		lua_settable(m_pVM, -3);
+	}
+}
+
+CScriptArgument::ArgumentType CLuaVM::GetType(int idx)
+{
+	lua_State* VM = reinterpret_cast<CLuaVM*>(this)->GetVM();
+	int lua_t = lua_type(VM, idx);
+	switch(lua_t)
+	{
+	case LUA_TNUMBER:
+		{
+			if(lua_isnumber(VM, idx))
+				return CScriptArgument::ArgumentType::ST_FLOAT;
+			else
+				return CScriptArgument::ArgumentType::ST_INTEGER;
+		}
+	case LUA_TBOOLEAN:
+		{
+			return CScriptArgument::ArgumentType::ST_BOOL;
+		}
+	case LUA_TSTRING:
+		{
+			return CScriptArgument::ArgumentType::ST_STRING;
+		}
+	case LUA_TTABLE:
+		{
+			return CScriptArgument::ArgumentType::ST_TABLE;
+		}	
+	case LUA_TNIL:
+	default:
+		return CScriptArgument::ArgumentType::ST_INVALID;
 	}
 }

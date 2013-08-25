@@ -22,6 +22,8 @@ CServer::CServer()
 	m_pNetServer = new CNetworkServer();
 
 	m_pRPCHandler = new CServerRPCHandler();
+
+	m_pNetworkModule = new CNetworkModule();
 }
 
 CServer::~CServer()
@@ -162,7 +164,6 @@ bool CServer::Startup()
 
 		CLogFile::Print("");
 	}
-#if 1
 	m_pResourceManager = new CResourceManager("resources");
 
 	// Loading resources
@@ -213,7 +214,9 @@ bool CServer::Startup()
         CLogFile::Print("====================================================================");
         CLogFile::Print("");
 #endif
-#endif
+
+	m_pNetworkModule->Startup();
+
 	return true;
 }
 
@@ -247,6 +250,7 @@ void CServer::Shutdown()
 	m_pNetServer->EnsureStopped();
 
 	// TODO: clear events
+	CEvents::GetInstance()->Clear();
 
 	m_pPlayerManager->Reset();
 
