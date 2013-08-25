@@ -353,7 +353,6 @@ bool CPlayerEntity::Create()
 		return false;
 
 	// Create the ped
-	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C1910);
 	unsigned int uiPlayerIndex = (unsigned)m_bytePlayerNumber;
 	WORD wPlayerData = MAKEWORD(0, 1);
 	WORD * pwPlayerData = &wPlayerData;
@@ -362,18 +361,16 @@ bool CPlayerEntity::Create()
 	_asm	push iModelIndex;
 	_asm	push pwPlayerData;
 	_asm	mov ecx, pPlayerPed;
-	_asm	call dwFunctionAddress;
+	_asm	call COffsets::IV_Func__CreatePed;
 
 	// Setup the ped
-	dwFunctionAddress = (g_pCore->GetBase() + 0x43A6A0);
-	DWORD dwPedFactory = (g_pCore->GetBase() + 0x15E35A0);
 	Matrix34 * pMatrix = NULL;
 
 	_asm	push iModelIndex;
-	_asm	push dwPedFactory;
+	_asm	push COffsets::IV_Var__PedFactory;
 	_asm	mov edi, pMatrix;
 	_asm	mov esi, pPlayerPed;
-	_asm	call dwFunctionAddress;
+	_asm	call COffsets::IV_Func__SetupPed;
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
@@ -393,10 +390,9 @@ bool CPlayerEntity::Create()
 	m_pContextData->SetPlayerPed(m_pPlayerPed);
 
 	// Setup ped intelligence
-	dwFunctionAddress = (g_pCore->GetBase() + 0x89EC20);
 	_asm	push 2;
 	_asm	mov ecx, pPlayerPed;
-	_asm	call dwFunctionAddress;
+	_asm	call COffsets::IV_Func__SetupPedIntelligence;
 
 	// Add to the world
 	m_pPlayerPed->AddToWorld();
@@ -440,12 +436,11 @@ bool CPlayerEntity::Destroy()
 	IVPlayerPed * pPlayerPed = m_pPlayerPed->GetPlayerPed();
 
 	// Deconstruct the ped intelligence
-	DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9C4DF0);
 	IVPedIntelligence * pPedIntelligence = pPlayerPed->m_pPedIntelligence;
 
 	_asm push 0;
 	_asm mov ecx, pPedIntelligence;
-	_asm call dwFunctionAddress;
+	_asm call COffsets::IV_Func__ShutdownPedIntelligence;
 
 	*(DWORD *)(pPlayerPed + 0x260) &= 0xFFFFFFFE;
 
@@ -453,11 +448,9 @@ bool CPlayerEntity::Destroy()
 	m_pPlayerPed->RemoveFromWorld();
 
 	// Delete the player ped
-	dwFunctionAddress = (g_pCore->GetBase() + 0x8ACAC0);
-
 	_asm push 1;
 	_asm mov ecx, pPlayerPed;
-	_asm call dwFunctionAddress;
+	_asm call COffsets::IV_Func__DeletePed;
 
 	// Remove the model reference
 	m_pModelInfo->RemoveReference();
@@ -1331,26 +1324,25 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
 
 				if(m_pIVSync->byteOldMoveStyle != 0)  {
-					DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 					// Delete any task lol
 					_asm	push 17;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
-					_asm	call dwAddress;
+					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
 
 					// Deltete shot at coord task if the player stop moving or the state has changed
 					_asm	push 36;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
-					_asm	call dwAddress;
+					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
 
 					// Delete aim at coord task if the player stops moving or the state has changed
 					_asm	push 35;
 					_asm	push 0;
 					_asm	push uiPlayerIndex;
-					_asm	call dwAddress;
+					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
 				}
 				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
@@ -1381,17 +1373,15 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 		if(!m_pIVSync->bStoreOnFootSwitch) {
 			m_pIVSync->bStoreOnFootSwitch = true;
 
-			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 			_asm	push 17;
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
-			_asm	call dwAddress;
+			_asm	call COffsets::IV_Func__DeletePedTaskID;
 			_asm	add  esp, 0Ch;
 
-			dwAddress = (g_pCore->GetBase() + 0xB868E0);
 			_asm	push 1;
 			_asm	push uiPlayerIndex;
-			_asm	call dwAddress;
+			_asm	call COffsets::IV_Func__DeletePedTaskJump;
 			_asm	add	 esp, 8;
 		}
 		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
@@ -1432,20 +1422,18 @@ void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCop
 			m_pContextData->SetWeaponShotTarget(m_pIVSyncHandle->vecShotTarget);
 		}
 		else {
-			DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
-
 			// Destroy shotat task
 			_asm	push 36;
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
-			_asm	call dwAddress;
+			_asm	call COffsets::IV_Func__DeletePedTaskID;
 			_asm	add esp, 0Ch;
 
 			// Destroy aimat task
 			_asm	push 35;
 			_asm	push 0;
 			_asm	push uiPlayerIndex;
-			_asm	call dwAddress;
+			_asm	call COffsets::IV_Func__DeletePedTaskID;
 			_asm	add esp, 0Ch;
 		}
 	}
@@ -1475,10 +1463,9 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		else if(m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
 			iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
 
-		DWORD dwAddress = (g_pCore->GetBase() + 0xB86A20);
 		_asm	push iJumpStyle;
 		_asm	push uiPlayerIndex;
-		_asm	call dwAddress;
+		_asm	call COffsets::IV_FUNC__TaskPedJump;
 		_asm	add esp, 8;
 	}
 
@@ -1488,11 +1475,10 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 		m_pIVSyncHandle->uiJumpTime = 0;
 
 		// Delete the task(animation will be still displayed)
-		DWORD dwAddress = (g_pCore->GetBase() + 0x8067A0);
 		_asm	push 3;
 		_asm	push 0;
 		_asm	push uiPlayerIndex;
-		_asm	call dwAddress;
+		_asm	call COffsets::IV_Func__DeletePedTaskJump;
 		_asm	add esp, 0Ch;
 	}
 
@@ -1539,7 +1525,6 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
 		// Create the task
-		DWORD dwAddress = (g_pCore->GetBase() + 0xB87480);
 		if(iMoveType == 3)
 			_asm push 500;
 		else
@@ -1550,7 +1535,7 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 		_asm	push tY;
 		_asm	push tX;
 		_asm	push uiPlayerIndex;
-		_asm	call dwAddress;
+		_asm	call COffsets::IV_Func__MovePedToPositionInterpolated;
 		_asm	add esp, 18h;
 	}
 }

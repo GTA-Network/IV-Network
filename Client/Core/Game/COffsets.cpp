@@ -383,6 +383,20 @@ INIT_OFF(IV_Hook__PatchWeaponGiveWhenEnterVehicle);
 INIT_OFF(IV_Hook__PatchEnableAndFixVehicleModels);
 INIT_OFF(IV_Hook__PatchUnkownByte1);
 
+INIT_OFF(IV_Hook__PatchDeathLoadingScreen);
+INIT_OFF(IV_Func__CreatePed);
+INIT_OFF(IV_Func__SetupPed);
+INIT_OFF(IV_Var__PedFactory);
+INIT_OFF(IV_Func__SetupPedIntelligence);
+INIT_OFF(IV_Func__ShutdownPedIntelligence);
+INIT_OFF(IV_Func__DeletePed);
+
+INIT_OFF(IV_Func__DeletePedTaskID);
+INIT_OFF(IV_Func__DeletePedTaskJump);
+INIT_OFF(IV_FUNC__TaskPedJump);
+INIT_OFF(IV_Func__MovePedToPositionInterpolated);
+
+
 enum ePATCH_SIG
 {
 	IV_101 = 0x831F7518,
@@ -785,6 +799,19 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x9C5994);
 			SET_OFF(IV_Hook__PatchEnableAndFixVehicleModels, 0x8F2F40);
 			SET_OFF(IV_Hook__PatchUnkownByte1, 0x857133);
+
+			SET_OFF(IV_Hook__PatchDeathLoadingScreen, 0x874EF7);
+			SET_OFF(IV_Func__CreatePed, 0x9C1910);
+			SET_OFF(IV_Func__SetupPed, 0x43A6A0);
+			SET_OFF(IV_Var__PedFactory, 0x15E35A0);
+			SET_OFF(IV_Func__SetupPedIntelligence, 0x89EC20);
+			SET_OFF(IV_Func__ShutdownPedIntelligence, 0x9C4DF0);
+			SET_OFF(IV_Func__DeletePed, 0x8ACAC0);
+
+			SET_OFF(IV_Func__DeletePedTaskID, 0x8067A0);
+			SET_OFF(IV_Func__DeletePedTaskJump, 0xB868E0);
+			SET_OFF(IV_FUNC__TaskPedJump, 0xB86A20);
+			SET_OFF(IV_Func__MovePedToPositionInterpolated, 0xB87480);
 
 			break;
 		default:

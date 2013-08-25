@@ -63,7 +63,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
     CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
 	
 	// Patch death loading screen slow motion :D
-	CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x874EF7),0x18);
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchDeathLoadingScreen,0x18);
 }
 
 void CLocalPlayer::Respawn()

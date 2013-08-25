@@ -94,18 +94,13 @@ void CPatches::Initialize()
 
     // Disable startup/runtime resource check
     *(BYTE*)COffsets::IV_Hook__DisableStartupResourceCheck_1 = 1;
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_2, (g_pCore->GetBase() + 0x9E2FFB));
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_3, (g_pCore->GetBase() + 0xCA79C9));
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (g_pCore->GetBase() + 0x446AFF));
+    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_2, (COffsets::IV_Hook__DisableStartupResourceCheck_2 + 0x1CB));
+    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_3, (COffsets::IV_Hook__DisableStartupResourceCheck_3 + 0x2E9));
+    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (COffsets::IV_Hook__DisableStartupResourceCheck_4 + 0x18F));
 
     // Disable automatic radar turn-on(in vehicle)
     CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)
     CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_2, 5); // from init blip gtaiv func(startup)
-        
-    // Prevent crashes on player connect(associated with ped intelligence)
-    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x815380), (g_pCore->GetBase() + 0x8153D4));
-    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (g_pCore->GetBase() + 0x625F1D));
-    //CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xB2B24D), (g_pCore->GetBase() + 0xB2B259));
 
     // Disable weapon when entering vehicle
     CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x30);

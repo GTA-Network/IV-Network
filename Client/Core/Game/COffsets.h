@@ -413,6 +413,19 @@ public:
 	DEF_OFF(IV_Hook__PatchWeaponGiveWhenEnterVehicle);
 	DEF_OFF(IV_Hook__PatchEnableAndFixVehicleModels);
 	DEF_OFF(IV_Hook__PatchUnkownByte1);
+
+	DEF_OFF(IV_Hook__PatchDeathLoadingScreen);
+	DEF_OFF(IV_Func__CreatePed);
+	DEF_OFF(IV_Func__SetupPed);
+	DEF_OFF(IV_Var__PedFactory);
+	DEF_OFF(IV_Func__SetupPedIntelligence);
+	DEF_OFF(IV_Func__ShutdownPedIntelligence);
+	DEF_OFF(IV_Func__DeletePed);
+
+	DEF_OFF(IV_Func__DeletePedTaskID);
+	DEF_OFF(IV_Func__DeletePedTaskJump);
+	DEF_OFF(IV_FUNC__TaskPedJump);
+	DEF_OFF(IV_Func__MovePedToPositionInterpolated);
 };
 
 #endif
