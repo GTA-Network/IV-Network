@@ -279,6 +279,7 @@ bool CResource::CreateVM()
 
 		CEventNatives::Register(m_pVM);
 		CSystemNatives::Register(m_pVM);
+		CMathNatives::Register(m_pVM); 
 
 		return true;
 	}
