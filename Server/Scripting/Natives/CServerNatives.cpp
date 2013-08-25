@@ -10,10 +10,17 @@
 #include "CServerNatives.h"
 #include <CSettings.h>
 #include <Scripting/ResourceSystem/CResourceManager.h> 
+#include <Scripting/CLuaVM.h>
+#include <Scripting/CSquirrelVM.h>
+#include <CLogFile.h>
+#include <SharedUtility.h>
+#include <CInput.h>
 
 void CServerNatives::Register(CScriptVM* pVM)
 {
 	pVM->RegisterFunction("getConfig", GetConfig);
+	pVM->RegisterFunction("getTickCount", GetTickCount);
+	pVM->RegisterFunction("sendConsoleInput", SendConsoleInput);
 }
 
 
@@ -67,6 +74,42 @@ int CServerNatives::GetConfig(int * VM)
 	}
 
 	pVM->PushTable(settingsTable);
+
+	pVM->ResetStackIndex();
+
+	return 1;
+}
+
+int CServerNatives::Shutdown(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	extern bool g_bClose;
+	g_bClose = true;
+
+	pVM->ResetStackIndex();
+
+	return 1;
+}
+
+int CServerNatives::GetTickCount(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->Push((int)SharedUtility::GetTime());
+
+	pVM->ResetStackIndex();
+
+	return 1;
+}
+
+int CServerNatives::SendConsoleInput(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	CString strPrint;
+	pVM->Pop(strPrint);
+	CInput::ProcessInput(strPrint);
 
 	pVM->ResetStackIndex();
 
