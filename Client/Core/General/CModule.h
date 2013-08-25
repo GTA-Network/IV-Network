@@ -19,11 +19,11 @@ static void * FunctionContainer[] = {
 
 static	void	* InterfacesContainer[2];
 
-typedef void (* SetupFunctions_t)( void * );
-typedef void (* SetupInterfaces_t)( void * );
-typedef void (* SetupNewInterfaces_t)( void * );
-typedef bool (* InitialiseModule_t)( char * );
-typedef void (* Pulse_t)( void );
+typedef void (* SetupFunctions_t)(void *);
+typedef void (* SetupInterfaces_t)(void *);
+typedef void (* SetupNewInterfaces_t)(void *);
+typedef bool (* InitialiseModule_t)(char *);
+typedef void (* Pulse_t)(void);
 
 struct SModuleFunctions
 {
@@ -45,7 +45,7 @@ private:
 
 public:
 
-									CModule( CString strName );
+									CModule(CString strName);
 									~CModule();
 
 	bool							IsValid();
