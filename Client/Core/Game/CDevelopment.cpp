@@ -11,6 +11,11 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
+float fCurrentLine = 325;
+CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, vecShotTarget;
+float fArmHeading, fArmDown, fHeading;
+bool bDuckingState;
+
 CDevelopment::CDevelopment()
 {
 	bDebugView = false;
@@ -21,20 +26,9 @@ CDevelopment::CDevelopment()
 	m_iOldMoveStyle = 0;
 }
 
-CDevelopment::~CDevelopment()
-{
-
-}
-
 void CDevelopment::Process()
 {
-	float fCurrentLine = 325;
-	CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, vecShotTarget;
-	float fArmHeading, fArmDown, fHeading;
-	bool bDuckingState;
-
-	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics())
-	{
+	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics()) {
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("LocalPlayer Debug:").Get());
 
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPosition(vecPosition);
@@ -67,33 +61,31 @@ void CDevelopment::Process()
 		
 	}
 
-	if(bDebugPlayerPresent)
-	{
-		CControls controlState;
-		g_pCore->GetGame()->GetPad()->GetCurrentControlState(controlState);
+	CHECK_PTR_VOID(bDebugPlayerPresent);
 
-		m_pDebugPlayer->SetControlState(&controlState);
-		if(controlState.IsAiming() || controlState.IsFiring())
-			bHasAimSyncData = true;
-		else
-			bHasAimSyncData = false;
+	CControls controlState;
+	g_pCore->GetGame()->GetPad()->GetCurrentControlState(controlState);
+
+	m_pDebugPlayer->SetControlState(&controlState);
+	if(controlState.IsAiming() || controlState.IsFiring())
+		bHasAimSyncData = true;
+	else
+		bHasAimSyncData = false;
 		
-		m_pDebugPlayer->PreStoreIVSynchronization(bHasAimSyncData,true,g_pCore->GetGame()->GetLocalPlayer());
-	}
+	m_pDebugPlayer->PreStoreIVSynchronization(bHasAimSyncData,true,g_pCore->GetGame()->GetLocalPlayer());
 }
 
 void CDevelopment::CreateDebugPlayer()
 {
-	CVector3 vecCreatePos; 
-	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-
+	CVector3 vecCreatePos = g_pCore->GetGame()->GetLocalPlayer()->GetPosition();
 	m_pDebugPlayer = new CPlayerEntity(false);
-	if(m_pDebugPlayer)
-	{
-		m_pDebugPlayer->SetModel(7);
-		m_pDebugPlayer->Create();
-		m_pDebugPlayer->Teleport(vecCreatePos);
-	}
+
+	// Check the ptr
+	CHECK_PTR_VOID(m_pDebugPlayer);
+
+	m_pDebugPlayer->SetModel(7);
+	m_pDebugPlayer->Create();
+	m_pDebugPlayer->Teleport(vecCreatePos);
 
 	bDebugPlayerPresent = true;
 }

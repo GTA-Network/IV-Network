@@ -88,6 +88,7 @@ public: // Handles "GET" functions
 	
 	void							GetMoveSpeed(CVector3& vecMoveSpeed);
 	void							GetPosition(CVector3 &vecPosition);
+	CVector3						GetPosition();
 	void							GetTurnSpeed(CVector3& vecTurnSpeed);
 	
 	BYTE							GetPlayerGameNumber() { return m_bytePlayerNumber; }

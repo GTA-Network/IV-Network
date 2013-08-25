@@ -53,8 +53,6 @@ typedef CEntityManager<C3DLabelEntity, 0xFFFE> C3DLabelManager;
 typedef CEntityManager<CBlipEntity, MAX_BLIPS> CBlipManager;
 typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 
-#define CHECK_PTR(ptr) if(!ptr) return false;
-
 class CLocalPlayer;
 
 class CGame {
@@ -126,7 +124,7 @@ public:
 		return m_bUsingEFLCContent;
 	}
 
-	HWND								GetWindow() { return m_hwndGameWindow; };
+	inline HWND							GetWindow() { return m_hwndGameWindow; };
 	void								SetWindow(HWND hWindow) { m_hwndGameWindow = hWindow; };
 };
 

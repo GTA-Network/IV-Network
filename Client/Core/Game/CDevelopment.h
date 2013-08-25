@@ -22,7 +22,7 @@ private:
 	int					m_iOldMoveStyle;
 public:
 						CDevelopment();
-						~CDevelopment();
+						~CDevelopment() { };
 
 	void				Process();
 	void				SetDebugView(bool bView) { bDebugView = bView; }

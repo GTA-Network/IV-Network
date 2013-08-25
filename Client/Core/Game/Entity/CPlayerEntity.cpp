@@ -528,6 +528,18 @@ void CPlayerEntity::GetPosition(CVector3& vecPosition)
 		vecPosition = m_vecPosition;
 }
 
+CVector3 CPlayerEntity::GetPosition()
+{
+	CVector3 vecPosition;
+
+	if(IsSpawned())
+		m_pPlayerPed->GetPosition(vecPosition);
+	else
+		vecPosition = m_vecPosition;
+
+	return vecPosition;
+}
+
 void CPlayerEntity::Teleport(CVector3 vecPosition)
 {
 	CIVScript::SetCharCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);

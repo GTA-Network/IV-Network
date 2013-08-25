@@ -191,5 +191,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 // Macros
 #define GET_RPC_CODEX(x) CString("IVMP0xF%dF", int(x)).Get()
+#define CHECK_PTR(x) if(!x) return false;
+#define CHECK_PTR_VOID(x) if(!x) return;
 
 #endif // Common_h

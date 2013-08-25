@@ -42,7 +42,7 @@ bool CCore::Initialise()
 	CLogFile::Printf("CCore::Initialize");
 
 	// Get the application base address
-	m_uiBaseAddress = (unsigned int)GetModuleHandle(NULL);
+	m_uiBaseAddress = reinterpret_cast<unsigned int>(GetModuleHandle(NULL));
 
 	CLogFile::Printf("Game Base: 0x%p (0x%p)", m_uiBaseAddress, (m_uiBaseAddress - 0x400000));
 
