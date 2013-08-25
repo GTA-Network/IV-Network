@@ -112,14 +112,16 @@ void CGame::Setup()
 	char szUsingDirectory[MAX_PATH];
 	bool bUsingEFLC = false;
 	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", NULL, szUsingDirectory, sizeof(szUsingDirectory)) || SharedUtility::Exists(szUsingDirectory)) {
-		if(strcmp(szUsingDirectory,"0") != 0)
+		if(strcmp(szUsingDirectory,"0") == 0)
 			bUsingEFLC = false;
 		else 
 			bUsingEFLC = true;
 	}
-
-	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
-		m_strEFLCDirectory.AppendF("%s",szInstallDirectory);
+	
+	if(bUsingEFLC) {
+		if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "eflcdir", NULL, szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
+			m_strEFLCDirectory.AppendF("%s",szInstallDirectory);
+		}
 	}
 
 	// Setup the EFLC support

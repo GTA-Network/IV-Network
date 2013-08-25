@@ -659,6 +659,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "usingeflc", "0", 1);
 				DestroyWindow(pgCurrentFile);
+				TerminateProcess(GetCurrentProcess(),0);
 			}
 		}
 		break;

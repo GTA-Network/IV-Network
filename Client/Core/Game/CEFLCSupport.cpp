@@ -258,6 +258,10 @@ void CEFLCSupport::InstallSupport()
 
 void CEFLCSupport::InstallPreGameLoad()
 {
+	// If our user wants to load the EFLC map, don't hook the function
+	if(!g_pCore->GetGame()->IsUsingEFLCContent())
+		return;
+
 	// Install parachute if needed
 	if(m_bParachute) {
 		int iAnimIndex = g_pCore->GetGame()->GetStreaming()->GetAnimIndexFromName("PARACHUTE");
