@@ -28,6 +28,8 @@ CDevelopment::CDevelopment()
 
 void CDevelopment::Process()
 {
+	fCurrentLine = 325;
+
 	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics()) {
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("LocalPlayer Debug:").Get());
 

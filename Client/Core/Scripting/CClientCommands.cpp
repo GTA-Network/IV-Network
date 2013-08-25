@@ -270,6 +270,17 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 				pVehicle->SetPosition(vecPos);
 			}
 		}
+		return true;
+	}
+	else if(strCommand == "getvehpos")
+	{
+		int iVehicle = atoi(strParameters.c_str());
+
+		if(g_pCore->GetGame()->GetVehicleManager()->DoesExists(iVehicle)) {
+			CVector3 vecPosition;
+			g_pCore->GetGame()->GetVehicleManager()->GetAt(iVehicle)->GetPosition(vecPosition);
+			PTR_CHAT->Outputf(false,"Position of vehicle %d: %f, %f,%f",iVehicle, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+		}
 	}
 	return true;
 }
