@@ -369,3 +369,39 @@ void CSquirrelVM::PushTable(const CScriptArguments &table)
 		sq_createslot(m_pVM, -3);
 	}
 }
+
+CScriptArgument::ArgumentType CSquirrelVM::GetType(int idx)
+{
+	SQVM* VM = reinterpret_cast<CSquirrelVM*>(this)->GetVM();
+	SQObjectPtr obj = stack_get(VM, idx);
+	switch(obj._type)
+	{
+	case OT_FLOAT:
+		{
+				return CScriptArgument::ArgumentType::ST_FLOAT;
+		}
+	case OT_INTEGER:
+		{
+				return CScriptArgument::ArgumentType::ST_INTEGER;
+		}
+	case OT_BOOL:
+		{
+			return CScriptArgument::ArgumentType::ST_BOOL;
+		}
+	case OT_STRING:
+		{
+			return CScriptArgument::ArgumentType::ST_STRING;
+		}
+	case OT_TABLE:
+		{
+			return CScriptArgument::ArgumentType::ST_TABLE;
+		}	
+	case OT_ARRAY:
+		{
+			return CScriptArgument::ArgumentType::ST_ARRAY;
+		}
+	case OT_NULL:
+	default:
+		return CScriptArgument::ArgumentType::ST_INVALID;
+	}
+}

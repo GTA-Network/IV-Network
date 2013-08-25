@@ -99,3 +99,61 @@ void CScriptArgument::set(CScriptArgument& p)
 		break;
 	}
 }
+
+
+
+bool CScriptArgument::pushFromStack(CScriptVM * pVM, int idx)
+{
+	pVM->SetStackIndex(idx);
+	switch(pVM->GetType(idx))
+	{
+	case CScriptArgument::ArgumentType::ST_FLOAT:
+		{
+			pVM->Pop(data.f);
+			m_eType = CScriptArgument::ArgumentType::ST_FLOAT;
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_INTEGER:
+		{
+			pVM->Pop(data.i);
+			m_eType = CScriptArgument::ArgumentType::ST_INTEGER;
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_BOOL:
+		{
+			pVM->Pop(data.b);
+			m_eType = CScriptArgument::ArgumentType::ST_BOOL;
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_STRING:
+		{
+			CString str;
+			pVM->Pop(str);
+			SetString(str);
+			m_eType = CScriptArgument::ArgumentType::ST_STRING;
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_TABLE:
+		{
+			CScriptArguments table;
+			pVM->PopTable(table);
+			SetTable(&table);
+			m_eType = CScriptArgument::ArgumentType::ST_TABLE;
+		}	
+		break;
+	case CScriptArgument::ArgumentType::ST_ARRAY:
+		{
+			m_eType = CScriptArgument::ArgumentType::ST_ARRAY;
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_INVALID:
+	default:
+		{
+			pVM->ResetStackIndex();
+			reset();
+			return false;
+		}
+	}
+	pVM->ResetStackIndex();
+	return true;
+}

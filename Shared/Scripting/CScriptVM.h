@@ -17,7 +17,7 @@
 #include "CScript.h"
 #include "ResourceSystem/CResource.h"
 #include "CScriptArguments.h"
-
+#include "CScriptArgument.h"
 // Helper macro to get the vm in scripting native;
 #define GET_SCRIPT_VM_SAFE 	CResource* pResource = CResourceManager::GetInstance()->Get(VM); if(!pResource)return 0; CScriptVM* pVM = pResource->GetVM();if(!pVM) return 0;
 #define GET_ENTITY_SAFE CNetworkEntity* pEntity = (CNetworkEntity*)pVM->GetClassInstance(""); if(!pEntity) return 0;
@@ -70,6 +70,9 @@ public:
 	virtual void PushArray(const CScriptArguments &array) {}
 	virtual void PushTable(const CScriptArguments &table) {}
 
+	virtual CScriptArgument::ArgumentType GetType(int idx) { return CScriptArgument::ArgumentType::ST_INVALID; }
+
+	virtual void SetStackIndex(int iStackIndex) { }
 	virtual void ResetStackIndex() {}
 	virtual void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false) {}
 

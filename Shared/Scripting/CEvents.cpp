@@ -33,7 +33,7 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 	return true;
 }
 
-void CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
+CScriptArgument CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
 {
 	auto itEvent = m_Events.find(strName);
 	if(itEvent != m_Events.end())
@@ -42,15 +42,23 @@ void CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler:
 		{
 			if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
 				&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT)
-				pEvent->Call(pArguments);
+			{
+				CScriptArgument ret;
+				pEvent->Call(pArguments, &ret);
+				return ret;
+			}
 			else if(EventType == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
 				&& pEvent->GetVM() == pVM)
 			{
-				pEvent->Call(pArguments);
+				CScriptArgument ret;
+				pEvent->Call(pArguments, &ret);
+				return ret;
 			}
 		}
 	}
+
+	return CScriptArgument(false);
 }
 
 bool CEvents::Remove(CString strName, CEventHandler* pEventHandler)
@@ -72,4 +80,17 @@ bool CEvents::Remove(CString strName, CEventHandler* pEventHandler)
 		}
 	}
 	return false;
+}
+
+void CEvents::Clear()
+{
+	for(auto pEvent : m_Events)
+	{
+		for(auto event : pEvent.second)
+		{
+			SAFE_DELETE(event);
+		}
+		pEvent.second.clear();
+	}
+	m_Events.clear();
 }

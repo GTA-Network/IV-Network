@@ -73,6 +73,8 @@ public:
 	const char         * GetString()  const { return (m_eType == ST_STRING)  ? data.str->Get() : NULL; }
 	CScriptArguments   * GetTable() const { return (m_eType == ST_TABLE) ? data.pArray : NULL; }
 	CScriptArguments   * GetArray() const { return (m_eType == ST_ARRAY) ? data.pArray : NULL; }
+
+	bool pushFromStack(CScriptVM * pVM, int idx);
 };
 
 #endif // CScriptArgument_h

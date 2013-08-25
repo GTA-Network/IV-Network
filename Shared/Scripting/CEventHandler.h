@@ -40,7 +40,10 @@ public:
 		m_iRef = ref;
 		m_func = func;
 	}
-	~CEventHandler();
+	~CEventHandler()
+	{
+
+	}
 	
 	virtual CScriptVM* GetVM() { return m_pVM; }
 
@@ -48,16 +51,23 @@ public:
 	int GetRef() { return m_iRef; }
 
 	eEventType GetType() { return m_EventType; }
-	void Call(CScriptArguments* pArguments)
+	void Call(CScriptArguments* pArguments, CScriptArgument * pReturn = 0)
 	{
 		if(m_pVM->GetVMType() == LUA_VM)
 		{
 			lua_rawgeti(((CLuaVM*)m_pVM)->GetVM(), LUA_REGISTRYINDEX, m_iRef);
 			lua_pcall(((CLuaVM*)m_pVM)->GetVM(), 0, LUA_MULTRET, NULL);
+			lua_settop(((CLuaVM*)m_pVM)->GetVM(), 0);
 		} else {
 			SQObjectPtr res;
 			int iTop = sq_gettop(((CSquirrelVM*)m_pVM)->GetVM());
-			((CSquirrelVM*)m_pVM)->GetVM()->Call(m_func, 1, ((CSquirrelVM*)m_pVM)->GetVM()->_top-1, res, true);
+			if(((CSquirrelVM*)m_pVM)->GetVM()->Call(m_func, 1, ((CSquirrelVM*)m_pVM)->GetVM()->_top-1, res, true))
+			{
+				if(pReturn)
+				{
+					pReturn->pushFromStack(m_pVM, -1);
+				}
+			}
 			sq_settop(((CSquirrelVM*)m_pVM)->GetVM(), iTop);
 		}
 	}

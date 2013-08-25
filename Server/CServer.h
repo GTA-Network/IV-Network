@@ -24,6 +24,7 @@
 
 #include <Entity/CEntityManager.h>
 #include <Entity/Entities.h>
+#include "Network/CNetworkModule.h"
 
 typedef CEntityManager<CPlayerEntity, MAX_PLAYERS> CPlayerManager;
 typedef CEntityManager<CVehicleEntity, MAX_VEHICLES> CVehicleManager;
@@ -55,6 +56,8 @@ private:
 	CBlipManager				* m_pBlipManager;
 	CCheckpointManager			* m_pCheckpointManager;
 
+	CNetworkModule				* m_pNetworkModule;
+
 public:
 	CServer();
 	~CServer();
@@ -79,6 +82,8 @@ public:
 	C3DLabelManager		*Get3DLabelManager() { return m_p3DLabelManager; }
 	CBlipManager		*GetBlipManager() { return m_pBlipManager; }
 	CCheckpointManager	*GetCheckpointManager() { return m_pCheckpointManager; }
+
+	CNetworkModule		*GetNetworkModule() { return m_pNetworkModule; }
 };
 
 #endif // CServer_h

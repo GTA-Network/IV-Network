@@ -414,6 +414,12 @@
     <ClCompile Include="..\Libraries\Sqlite\sqlite3.c">
       <Filter>Libraries\SQLite</Filter>
     </ClCompile>
+    <ClCompile Include="Network\CNetworkModule.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CNetworkRPC.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -646,6 +652,12 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h">
       <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CNetworkModule.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CNetworkRPC.h">
+      <Filter>Header Files\Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
