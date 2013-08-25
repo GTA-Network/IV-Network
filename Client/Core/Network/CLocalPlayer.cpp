@@ -193,8 +193,7 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 
 unsigned short CLocalPlayer::GetPing()
 {
-	//return (unsigned short)g_pCore->GetNetworkManager()->GetNetClient()->GetLastPing();
-	return 0;
+	return static_cast<unsigned short>((unsigned short)g_pCore->GetNetworkManager()->GetRakPeer()->GetLastPing(g_pCore->GetNetworkManager()->GetRakPeer()->GetMyGUID()));
 }
 
 void CLocalPlayer::Reset()
