@@ -52,6 +52,17 @@ enum ePackageEntityDefinition
 struct sNetwork_Sync_Entity_Player
 {
 	CVector3 vecPosition;
+	CVector3 vecMovementSpeed;
+	CVector3 vecTurnSpeed;
+
+	bool	 bDuckState;
+	float	 fHeading;
+
+	struct {
+		CVector3 vecAimTarget;
+		float	 vecAimSpecific[2];
+		CVector3 vecShotTarget;
+	}		 sWeaponData;
 };
 
 struct sNetwork_Sync_Entity_Vehicle

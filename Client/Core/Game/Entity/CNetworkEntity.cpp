@@ -86,6 +86,10 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
+/*
+ * @ This function handles the current packages from the network entity
+ * @ So it stores the current values, which are used in the sync package
+*/
 void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 {
 	// Check if our player ptr
@@ -108,6 +112,10 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 	}
 }
 
+/*
+ * @ This function handles the current packages from the network entity
+ * @ So it stores the current values, which are used in the sync package
+*/
 void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 {
 	// Check if our player ptr
@@ -118,6 +126,9 @@ void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 	}
 }
 
+/*
+ * @ This function fetches the data and creates the packages, which gets send to the server
+*/
 void CNetworkEntity::Serialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
@@ -131,16 +142,28 @@ void CNetworkEntity::Serialize(ePackageType pType)
 
 	switch(m_eType)
 	{
-	case PLAYER_ENTITY:
+		case PLAYER_ENTITY:
 		{
 			// If we already set data for our next sync packet, copy the data
 			sNetwork_Sync_Entity_Player * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
 
 			// Apply entity type to package
-			m_pEntityLastSync.pEntityType = PLAYER_ENTITY;
+			m_pEntitySync.pEntityType = PLAYER_ENTITY;
 
 			// Apply current 3D Position to the sync package
 			pSyncPacket->vecPosition = m_vecPosition;
+
+			// Apply current 3D Movement to the sync package
+			pSyncPacket->vecMovementSpeed = m_vecMoveSpeed;
+
+			// Apply current 3D Turnspeed to the sync package
+			pSyncPacket->vecTurnSpeed = m_vecTurnSpeed;
+
+			// Apply current duckstate to the sync package
+			m_pEntitySync.pPlayerPacket.bDuckState = m_pPlayerHandle.bDuckState;
+
+			// Apply current heading to the sync package
+			m_pEntitySync.pPlayerPacket.fHeading = m_pPlayerHandle.fHeading;
 			
 			// Merge EntitySync packet with our packet
 			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
@@ -149,13 +172,14 @@ void CNetworkEntity::Serialize(ePackageType pType)
 			break;
 
 		}
-	case VEHICLE_ENTITY:
+
+		case VEHICLE_ENTITY:
 		{
 			// If we already set data for our next sync packet, copy the data
 			sNetwork_Sync_Entity_Vehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
 
 			// Apply entity type to package
-			m_pEntityLastSync.pEntityType = VEHICLE_ENTITY;
+			m_pEntitySync.pEntityType = VEHICLE_ENTITY;
 
 			// Apply current 3D Position to the sync package
 			pSyncPacket->vecPosition = m_vecPosition;
@@ -166,7 +190,8 @@ void CNetworkEntity::Serialize(ePackageType pType)
 			// Stop current case
 			break;
 		}
-	default:
+
+		default:
 		{
 			CLogFile::Print("Failed to get entity type from current entitiy. Sync canceled..");
 			break;
@@ -174,7 +199,7 @@ void CNetworkEntity::Serialize(ePackageType pType)
 	}
 
 	// Write our Entity-Sync to the bitstream
-	pBitStream->Write((char *) &m_pEntitySync, sizeof(CNetworkEntitySync));
+	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
 
 	// Send package to network
 	g_pCore->GetNetworkManager()->Call(CString("0x69766D50_F%d", eRPCIdentifier::RPC_SYNC_PACKAGE).Get(), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
@@ -185,4 +210,6 @@ void CNetworkEntity::Deserialize(ePackageType pType)
 	// Get Sync package here and recieve it to the server
 	CBitStream * pBitStream = new CBitStream();
 	pBitStream->Write0();
+
+	// TODO: apply the data from the syncpackage to the vehicles/peds
 }

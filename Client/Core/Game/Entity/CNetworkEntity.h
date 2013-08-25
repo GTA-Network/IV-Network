@@ -119,16 +119,23 @@ public:
 	}
 };
 
+// Handles data between client ped and network sync(stores the values)
 class CNetworkEntitySubPlayer {
 private:
 
 public:
 	bool						bDuckState;
 	float						fHeading;
+
+	struct {
+		CVector3 vecAimTarget;
+		float	 vecAimSpecific[2];
+		CVector3 vecShotTarget;
+	}							sWeaponData;
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
 
-
+// Handles data between client ped and network sync(stores the values)
 class CNetworkEntitySubVehicle {
 private:
 
