@@ -178,15 +178,13 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
 	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
 	{
 		// Toggle controls
-		if(bControl != m_bAdvancedControlState)
-		{
+		if(bControl != m_bAdvancedControlState && GetVehicleEntity() && GetVehicleEntity()->GetDriver() != reinterpret_cast<CPlayerEntity*>(this)) {
 			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 			m_bAdvancedControlState = bControl;
 		}
 		
 		// Toggle camera
-		if(bCamera != m_bAdvancedCameraState)
-		{
+		if(bCamera != m_bAdvancedCameraState) {
 			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 			m_bAdvancedCameraState = bCamera;
 		}
