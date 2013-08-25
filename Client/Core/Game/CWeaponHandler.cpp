@@ -101,111 +101,90 @@ void StoreShotSourceTarget(IVPed * pPed, CVector3 * pWeaponSource, CVector3 * pW
 	}
 }
 
-void _declspec(naked) CIKManager__AimWeapon()
+_declspec(naked) void CIKManager__AimWeapon()
 {
-	_asm
-	{
-		push ebp
-		mov ebp, esp
-		mov eax, [ecx+40h] // CIKManager + 0x40 = CPed * pPed
-		mov g_pIKPed, eax
-		mov eax, [ebp+8]
-		mov g_vecAimTarget, eax
-		pop ebp
-		pushad
-	}
+	_asm	push ebp;
+	_asm	mov ebp, esp;
+	_asm	mov eax, [ecx+40h]; // CIKManager + 0x40 = CPed * pPed
+	_asm	mov g_pIKPed, eax;
+	_asm	mov eax, [ebp+8];
+	_asm	mov g_vecAimTarget, eax;
+	_asm	pop ebp;
+	_asm	pushad;
 
 	StoreAimTarget(g_pIKPed, g_vecAimTarget);
-	dwFunctionAddress = (g_pCore->GetBase() + 0x950D66);
 
-	_asm
-	{
-		popad
-		push ebp
-		mov ebp, esp
-		and esp, 0FFFFFFF0h
-		jmp dwFunctionAddress
-	}
+	_asm	popad;
+	_asm	push ebp;
+	_asm	mov ebp, esp;
+	_asm	and esp, 0FFFFFFF0h;
+	_asm	jmp COffsets::IV_Hook__CIKManager_AimWeapon__JmpBack;
 }
 
 // Hook for CIkManager::PointArms func to sync the arm heading and up/down for aim sync
-void _declspec(naked) CIkManager__PointArms_Hook()
+_declspec(naked) void CIkManager__PointArms_Hook()
 {
-	_asm
-	{
-		// Get the ped pointer from the ik manager
-		mov eax, [ecx+40h] // CIkManager + 0x40 = CPed * pPed
-		mov g_pIKPed, eax
-		// Get the function arguments
-		mov eax, [esp+4]
-		mov g_fArmHeading, eax
-		mov eax, [esp+8]
-		mov g_fArmUpDown, eax
-		pushad
-	}
+	// Get the ped pointer from the ik manager
+	_asm	mov eax, [ecx+40h] // CIkManager + 0x40 = CPed * pPed
+	_asm	mov g_pIKPed, eax
+	// Get the function arguments
+	_asm	mov eax, [esp+4];
+	_asm	mov g_fArmHeading, eax;
+	_asm	mov eax, [esp+8];
+	_asm	mov g_fArmUpDown, eax;
+	_asm	pushad;
 
 	// Store our values
 	StoreArmHeadingUpDown(g_pIKPed, &g_fArmHeading, &g_fArmUpDown);
-	dwFunctionAddress = (g_pCore->GetBase() + 0x94E866);
 
-	_asm
-	{
-		popad
-		// Store our values in case they have been changed
-		mov eax, g_fArmHeading
-		mov [esp+4], eax
-		mov eax, g_fArmUpDown
-		mov [esp+8], eax
-		// Execute original code we overwrote for the hook
-		movss xmm0, [esp+4]
-		// Jump back to the original function
-		jmp dwFunctionAddress
-	}
+	_asm	popad
+	// Store our values in case they have been changed
+	_asm	mov eax, g_fArmHeading;
+	_asm	mov [esp+4], eax;
+	_asm	mov eax, g_fArmUpDown;
+	_asm	mov [esp+8], eax;
+	// Execute original code we overwrote for the hook
+	_asm	movss xmm0, [esp+4];
+	// Jump back to the original function
+	_asm	jmp COffsets::IV_Hook__CIKManager_PointArms__JmpBack;
 }
 
 // Hook for CWeapon::Fire func to sync the shot source and target vectors for shot sync
-void _declspec(naked) CWeapon__Fire_Hook()
+_declspec(naked) void CWeapon__Fire_Hook()
 {
-	_asm
-	{
-		push ebp
-			mov ebp, esp
-			// Get the ped pointer and other function arguments
-			mov eax, [ebp+8h]
-		mov g_pWeaponPed, eax
-			// [ebp+0Ch] = pSourceMatrix (Matrix34 *)
-			mov eax, [ebp+10h]
-		mov g_vecWeaponShotSource, eax
-			mov eax, [ebp+14h]
-		mov g_vecWeaponShotTarget, eax
-			pop ebp
-			pushad
-	}
+	_asm	push ebp;
+	_asm	mov ebp, esp;
+	// Get the ped pointer and other function arguments
+	_asm	mov eax, [ebp+8h];
+	_asm	mov g_pWeaponPed, eax;
+	// [ebp+0Ch] = pSourceMatrix (Matrix34 *)
+	_asm	mov eax, [ebp+10h];
+	_asm	mov g_vecWeaponShotSource, eax;
+	_asm	mov eax, [ebp+14h];
+	_asm	mov g_vecWeaponShotTarget, eax;
+	_asm	pop ebp;
+	_asm	pushad;
 
 	// Store our values
 	StoreShotSourceTarget(g_pWeaponPed, g_vecWeaponShotSource, g_vecWeaponShotTarget);
-	dwFunctionAddress = (g_pCore->GetBase() + 0x97D7C6);
 
-	_asm
-	{
-		popad
-			// Execute original code we overwrote for the hook
-			push ebp
-			mov ebp, esp
-			and esp, 0FFFFFFF0h
-			// Jump back to the original function
-			jmp dwFunctionAddress
-	}
+	_asm	popad;
+	// Execute original code we overwrote for the hook
+	_asm	push ebp;
+	_asm	mov ebp, esp;
+	_asm	and esp, 0FFFFFFF0h;
+	// Jump back to the original function
+	_asm	jmp COffsets::IV_Hook__CIKManager_FireWeapon__JmpBack;
 }
 
 void CWeaponHandler::InstallAimSyncHooks()
 {
 	// Hook for the CIkManager::PointArms function
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x94E860), (DWORD)CIkManager__PointArms_Hook);
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__CIKManager_AimWeapon, (DWORD)CIkManager__PointArms_Hook);
 
 	// Hook for the CWeapon::Fire function
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x97D7C0), (DWORD)CWeapon__Fire_Hook);
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__CIKManager_PointArms, (DWORD)CWeapon__Fire_Hook);
 
 	// Hook for the CIkManager::AimCoords function
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x950D60), (DWORD)CIKManager__AimWeapon);
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__CIKManager_FireWeapon, (DWORD)CIKManager__AimWeapon);
 }

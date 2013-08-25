@@ -113,23 +113,17 @@ bool CGameFunction::IsHudVisible()
 void CGameFunction::LoadHUD(CString strPath)
 {
 	const char * szPath = strPath.C_String();
-	*(DWORD *)(g_pCore->GetBase() + 0x84841A) = (DWORD)szPath;
-
-	DWORD FUNC_LoadHUD (g_pCore->GetBase()+ 0x848390);
-	_asm call FUNC_LoadHUD;
-
-	*(DWORD *)(g_pCore->GetBase() + 0x84841A) = (DWORD)(g_pCore->GetBase() + 0xD5DCF4);
+	*(DWORD *)COffsets::IV_Hook__LoadHUD = (DWORD)szPath;
+	_asm call COffsets::IV_Hook__LoadInternalHud;
+	*(DWORD *)COffsets::IV_Hook__LoadHUD = (DWORD)COffsets::IV_Hook__LoadHudHook;
 }
 
 void CGameFunction::LoadRadioLogo(CString strPath)
 {
 	const char * szPath = strPath.C_String();
-	*(DWORD *)(g_pCore->GetBase() + 0x822E76) = (DWORD)szPath;
-
-	DWORD FUNC_LoadRadioLogo = (g_pCore->GetBase() + 0x822E30);
-	_asm call FUNC_LoadRadioLogo
-
-	*(DWORD *)(g_pCore->GetBase() + 0x822E76) = (DWORD)(g_pCore->GetBase() + 0xD5B7B8);
+	*(DWORD *)COffsets::IV_Hook__LoadRadioLogo = (DWORD)szPath;
+	_asm call COffsets::IV_Hook__LoadInternalRadioLogo;
+	*(DWORD *)COffsets::IV_Hook__LoadRadioLogo = (DWORD)COffsets::IV_Hook__LoadRadioLogoHook;
 }
 
 void CGameFunction::SetRadarVisible(bool bVisible)
@@ -372,7 +366,7 @@ DWORD CGameFunction::GetNativeAddress(DWORD dwNative)
 
 void CGameFunction::LoadWorldAtPosition(CVector3& vecPosition)
 {
-	BYTE * pByteUnknown = &(*(BYTE *)(g_pCore->GetBase() + 0x11DC444));
+	BYTE * pByteUnknown = &(*(BYTE *)COffsets::IV_Hook__LoadWorldAtPosition);
 	CVector3 * pVecPosition = &vecPosition;
 
 	_asm	push pVecPosition;

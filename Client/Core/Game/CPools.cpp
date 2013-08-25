@@ -44,41 +44,35 @@ CPools::~CPools()
 
 void CPools::SetPtrNodeSinglePoolLimit(DWORD dwLimit)
 {
-	*(DWORD *)(g_pCore->GetBase() + 0xB534B6) = dwLimit;
+	*(DWORD *)(COffsets::IV_Pool__SetPtrSinglePoolLimit) = dwLimit;
 }
 
 void CPools::SetPtrNodeDoublePoolLimit(DWORD dwLimit)
 {
-	*(DWORD *)(g_pCore->GetBase() + 0xB534F6) = dwLimit;
+	*(DWORD *)(COffsets::IV_Pool__SetPtrNodeDoublePoolLimit) = dwLimit;
 }
 
 void CPools::SetEntryInfoNodePoolLimit(DWORD dwLimit)
 {
-	*(DWORD *)(g_pCore->GetBase() + 0xC796D6) = dwLimit;
+	*(DWORD *)(COffsets::IV_Pool__SetEntryInfoNodePoolLimit) = dwLimit;
 }
 
 void CPools::SetPedPoolLimit(BYTE byteLimit)
 {
-	*(DWORD *)(g_pCore->GetBase() + 0x43A9FC) = (byteLimit * 0xF00); // sizeof(CPed) // for object memory chunk
-	*(BYTE *)(g_pCore->GetBase() + 0x43AA1A) = byteLimit; // for flag memory chunk
-	*(BYTE *)(g_pCore->GetBase() + 0x43AA27) = byteLimit; // for pool object count
-	*(BYTE *)(g_pCore->GetBase() + 0x43AA5C) = byteLimit; // for constructor init loop
+	*(DWORD *)(COffsets::IV_Pool__SetPedPoolLimit_1) = (byteLimit * 0xF00); // sizeof(CPed) // for object memory chunk
+	*(BYTE *)(COffsets::IV_Pool__SetPedPoolLimit_2) = byteLimit; // for flag memory chunk
+	*(BYTE *)(COffsets::IV_Pool__SetPedPoolLimit_3) = byteLimit; // for pool object count
+	*(BYTE *)(COffsets::IV_Pool__SetPedPoolLimit_4) = byteLimit; // for constructor init loop
 }
 
 void CPools::SetVehiclePoolLimit(DWORD dwLimit)
 {
-	ProtectionInfo protectionInfo = CPatcher::Unprotect(g_pCore->GetBase() + 0x9D43B8, 5); 
-    *(BYTE*)(g_pCore->GetBase() + 0x9D43B8) = 0x68; 
-    *(DWORD*)(g_pCore->GetBase() + 0x9D43B8+1) = dwLimit;  
-
-	protectionInfo = CPatcher::Unprotect(g_pCore->GetBase() + 0x9D43B8, 5);
-    *(BYTE*)(g_pCore->GetBase() + 0x9D43B8) = 0x68; 
-    *(DWORD*)(g_pCore->GetBase() + 0x9D43B8+1) = (dwLimit*60); // Entry size  
+    *(DWORD*)(COffsets::IV_Pool__SetVehiclePoolLimit) = dwLimit;  
 }
 
 void CPools::SetVehicleStructPoolLimit(BYTE byteLimit)
 {
-	*(BYTE *)(g_pCore->GetBase() + 0xBEA871) = byteLimit;
+	*(BYTE *)(COffsets::IV_Pool__SetVehicleStructPoolLimit) = byteLimit;
 }
 
 void CPools::Initialize()

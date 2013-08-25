@@ -55,14 +55,12 @@ _declspec(naked) void TextureSelect_Hook()
 	else    
 		;//CLogFile::Printf("TextureSelect_Hook: (Pointer)%p/(File/Type)%s", hFile2, iTexture);
 
-	dwJump = (g_pCore->GetBase() + 0x639715);
-
 	_asm	popad;
 	_asm	push ebx;
 	_asm	push esi;
 	_asm	push edi;
 	_asm	mov edi, ecx;
-	_asm	jmp dwJump;
+	_asm	jmp COffsets::IV_Hook__TextureSelect__JmpBack;
 }
 
 
@@ -96,36 +94,26 @@ _declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 
 void StartGame_Loading()
 {
-	DWORD unk_10F8088 = g_pCore->GetBase() + 0x10F8088;
-	DWORD sub_5AF930 = g_pCore->GetBase() + 0x5AF930;
-	DWORD dword_10F8078 = g_pCore->GetBase() + 0x10F8078;
-	DWORD dword_10F805C = g_pCore->GetBase() + 0x10F805C;
 	int * v7 = new int(0);
 	_asm
 	{
 		push v7
-			mov ecx, unk_10F8088
-			call sub_5AF930
+		mov ecx, COffsets::IV_Hook__StartGameLoading_1
+		call COffsets::IV_Hook__StartGameLoading_2
 	}
-	*(DWORD*)dword_10F8078 = *v7;
-	*(DWORD*)dword_10F805C = *v7;
+	*(DWORD*)COffsets::IV_Hook__StartGameLoading_3 = *v7;
+	*(DWORD*)COffsets::IV_Hook__StartGameLoading_4 = *v7;
 	if ( *v7 > 0 )
-	{
-		DWORD sub_7B2DF0 = g_pCore->GetBase() + 0x7B2DF0;
-		_asm
-		{
-			call sub_7B2DF0
-		}
-	}
+		_asm call COffsets::IV_Hook__StartGameLoading_5;
 }
 
 void RemoveInitialLoadingScreens()
 {
 	StartGame_Loading();
 
-	int iLoadScreens = (g_pCore->GetBase() + 0x18A8258);
-	int iLoadScreenType = (g_pCore->GetBase() + 0x18A8F48);
-	int iLoadScreenDuration = (g_pCore->GetBase() + 0x18A8F40);
+	int iLoadScreens = COffsets::VAR_NumLoadingScreens;
+	int iLoadScreenType = COffsets::VAR_FirstLoadingScreenType;
+	int iLoadScreenDuration = COffsets::VAR_FirstLoadingScreenDuration;
 
 	for(int i = 0; i < *(int *)iLoadScreens; ++i)
 	{
@@ -285,47 +273,6 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 	_asm	retn;
 }
 
-_declspec(naked) void sub_788F30()
-{
-	_asm
-	{
-		sub     esp, 0Ch
-			pushad
-	}
-
-	dwSub7Jmp = (g_pCore->GetBase() + 0x788F33);
-	_asm
-	{
-		popad
-			jmp dwSub7Jmp;
-	}
-}
-
-_declspec(naked) void Sub_7B2740() //7B27A0
-{
-	dwSub7BCall = (g_pCore->GetBase() + 0x7B27A0);
-
-	_asm
-	{
-		call dwSub7BCall
-
-		mov eax, [ebp+4]
-		mov szFile, eax
-
-		pushad
-	}
-
-	dwSub7BJmp = (g_pCore->GetBase() + 0x7B27A6);
-	CLogFile::Printf("GTA_FOPEN: %s",szFile);
-
-	_asm
-	{
-		popad
-			pop ebp
-			jmp [dwSub7BJmp]
-	}
-}
-
 _declspec(naked) void CFunctionRetnPatch()
 {
 	_asm
@@ -374,9 +321,8 @@ _declspec(naked) void CGameProcessHook()
 	if(!bInitialiseGame && iFrameCalls != 300)
 	{
 		iFrameCalls++;
-		dwJumpGame = (g_pCore->GetBase() + 0x402B03);
 		_asm	mov ebp, esp;
-		_asm	jmp dwJumpGame;
+		_asm	jmp COffsets::IV_Hook__GameProcess_1;
 	}
 	else
 	{
@@ -384,21 +330,18 @@ _declspec(naked) void CGameProcessHook()
 		bInitialiseGame = false;
 
 		// Don't process game this time, just start it(works ram usage increases up to ~1,2GB)
-		dwJumpGame = (g_pCore->GetBase() + 0x402BD3);
-
 		_asm	mov ebp, esp;
-		_asm	jmp dwJumpGame;
+		_asm	jmp COffsets::IV_Hook__GameProcess_2;
 
-		BYTE b1 = *(BYTE*)(g_pCore->GetBase() + 0x10C74E1) = 0;
-		BYTE b2 = *(BYTE*)(g_pCore->GetBase() + 0x10C79E4) = 1;
-		BYTE b3 = *(BYTE*)(g_pCore->GetBase() + 0x119EB14) = 0;
+		BYTE b1 = *(BYTE*)COffsets::IV_Hook__GameProcess_3 = 0;
+		BYTE b2 = *(BYTE*)COffsets::IV_Hook__GameProcess_4 = 1;
+		BYTE b3 = *(BYTE*)COffsets::IV_Hook__GameProcess_5 = 0;
 
 		*(DWORD*)(g_pCore->GetBase()+0x10C7854) = 50;
 
 
-		DWORD keks = *(DWORD *)(g_pCore->GetBase() + 0x10F8078); // keks copyright by xforce
-		DWORD g_rgsc = *(DWORD *)(g_pCore->GetBase() + 0x172427C);
-		DWORD dwFunctionAddress = g_pCore->GetBase() + 0x4205B0;
+		DWORD keks = *(DWORD *)COffsets::IV_Hook__GameProcess_6; // keks copyright by xforce
+		DWORD g_rgsc = *(DWORD *)COffsets::IV_Hook__GameProcess_7;
 		int iTime = timeGetTime();
 
 		_asm	push 0;
@@ -407,7 +350,7 @@ _declspec(naked) void CGameProcessHook()
 		_asm	mov eax, keks;
 		_asm	mov ecx, g_rgsc;
 		_asm	mov edi, iTime;
-		_asm	call dwFunctionAddress;
+		_asm	call COffsets::IV_Hook__GameProcess_8;
 		_asm	add esp, 0Ch;
 	}
 }
@@ -547,7 +490,7 @@ This will multiply the size of the given pools by the value in multi [default: 4
 void CHooks::IncreasePoolSizes(int multi)
 {
 	mulPoolSize = multi;
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xC72F10, (DWORD)CPool_hook);
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, (DWORD)CPool_hook);
 }
 
 DWORD PhysicsEAXHandle;
@@ -618,7 +561,7 @@ __declspec(naked) void __stdcall GTAPhysicsUpdate()
 void CHooks::Intialize()
 {
 	// Hook physics update
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x63DD30), (DWORD)IV_GTAPhysicsUpdate, 3);
+	//CPatcher::InstallJmpPatch((g_pCore->)63DD30), (DWORD)IV_GTAPhysicsUpdate, 3);
 
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
@@ -648,8 +591,8 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
 
 	// This disables some calculate for modelinfo but it seems this is not necessary
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xCBA1F0), (g_pCore->GetBase() + 0xCBA230));
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch1, (COffsets::IV_Hook__UnkownPatch1 + 0x40));
 
 	// this disables a call to a destructor of a member in rageResourceCache [field_244] 
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x625F15), (DWORD)CRASH_625F15_HOOK /*(GetBase() + 0x625F1D)*/);
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch2, (DWORD)CRASH_625F15_HOOK);
 }

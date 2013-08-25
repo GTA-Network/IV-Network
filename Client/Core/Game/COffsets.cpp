@@ -270,6 +270,119 @@ INIT_OFF(FUNC_CPlayerInfo__SetPlayerInfo);
 
 INIT_OFF(FUNC_IV_LOADWORLDATPOS_BYTE);
 
+// New
+INIT_OFF(RAGE_Camera__UnkownVoidPtr);
+INIT_OFF(IV_CamPool);
+INIT_OFF(FUNC_IV__CreateCamera);
+INIT_OFF(RAGE_AssetManager__OpenFile);
+INIT_OFF(RAGE_AssetManager__OpenFileJmpBack);
+INIT_OFF(RAGE_OpenFile);
+INIT_OFF(RAGE_OpenFileHook);
+
+INIT_OFF(IV_HookLoadingFiles);
+INIT_OFF(IV_HookLoadingScreen__DAT);
+INIT_OFF(IV_HookLoadingScreen__WTD);
+INIT_OFF(IV_HookLoadingTune);
+
+INIT_OFF(IV_Pool__SetPtrSinglePoolLimit);
+INIT_OFF(IV_Pool__SetPtrNodeDoublePoolLimit);
+INIT_OFF(IV_Pool__SetEntryInfoNodePoolLimit);
+INIT_OFF(IV_Pool__SetPedPoolLimit_1);
+INIT_OFF(IV_Pool__SetPedPoolLimit_2);
+INIT_OFF(IV_Pool__SetPedPoolLimit_3);
+INIT_OFF(IV_Pool__SetPedPoolLimit_4);
+
+INIT_OFF(IV_Pool__SetVehiclePoolLimit);
+INIT_OFF(IV_Pool__SetVehicleStructPoolLimit);
+
+INIT_OFF(IV_Hook__DisableParkedCars);
+INIT_OFF(IV_Hook__DisableEmergencyAndGarbageTrucks);
+INIT_OFF(IV_Hook__DisableVehicleEntries);
+INIT_OFF(IV_Hook__DisableVehicleExists);
+INIT_OFF(IV_Hook__DisableRandomPedsAndVehicles_1);
+INIT_OFF(IV_Hook__DisableRandomPedsAndVehicles_2);
+INIT_OFF(IV_Hook__DisableRandomPedsAndVehicles_3);
+INIT_OFF(IV_Hook__DisableScenarioPeds);
+INIT_OFF(IV_Hook__DisableFakeCars);
+
+INIT_OFF(IV_Hook__CIKManager_AimWeapon__JmpBack);
+INIT_OFF(IV_Hook__CIKManager_PointArms__JmpBack);
+INIT_OFF(IV_Hook__CIKManager_FireWeapon__JmpBack);
+INIT_OFF(IV_Hook__CIKManager_AimWeapon);
+INIT_OFF(IV_Hook__CIKManager_PointArms);
+INIT_OFF(IV_Hook__CIKManager_FireWeapon);
+
+INIT_OFF(IV_Hook__LoadHUD);
+INIT_OFF(IV_Hook__LoadInternalHud);
+INIT_OFF(IV_Hook__LoadHudHook);
+
+INIT_OFF(IV_Hook__LoadRadioLogo);
+INIT_OFF(IV_Hook__LoadInternalRadioLogo);
+INIT_OFF(IV_Hook__LoadRadioLogoHook);
+
+INIT_OFF(IV_Hook__LoadWorldAtPosition);
+
+INIT_OFF(IV_Hook__TextureSelect__JmpBack);
+
+INIT_OFF(IV_Hook__StartGameLoading_1);
+INIT_OFF(IV_Hook__StartGameLoading_2);
+INIT_OFF(IV_Hook__StartGameLoading_3);
+INIT_OFF(IV_Hook__StartGameLoading_4);
+INIT_OFF(IV_Hook__StartGameLoading_5);
+INIT_OFF(IV_Hook__StartGameLoading_6);
+INIT_OFF(IV_Hook__StartGameLoading_7);
+INIT_OFF(IV_Hook__StartGameLoading_8);
+
+INIT_OFF(IV_Hook__GameProcess_1);
+INIT_OFF(IV_Hook__GameProcess_2);
+INIT_OFF(IV_Hook__GameProcess_3);
+INIT_OFF(IV_Hook__GameProcess_4);
+INIT_OFF(IV_Hook__GameProcess_5);
+INIT_OFF(IV_Hook__GameProcess_6);
+INIT_OFF(IV_Hook__GameProcess_7);
+INIT_OFF(IV_Hook__GameProcess_8);
+
+INIT_OFF(IV_Hook__IncreasePoolSizes);
+
+INIT_OFF(IV_Hook__UnkownPatch1);
+INIT_OFF(IV_Hook__UnkownPatch2);
+
+INIT_OFF(IV_Hook__PatchRandomTasks);
+INIT_OFF(IV_Hook__PatchInternet_1);
+INIT_OFF(IV_Hook__PatchInternet_2);
+INIT_OFF(IV_Hook__PatchHelpMessageBox);
+INIT_OFF(IV_Hook__PatchStartNewGame);
+INIT_OFF(IV_Hook__PatchStartupDOTsco);
+INIT_OFF(IV_Hook__PatchVehicleDriverProcess);
+INIT_OFF(IV_Hook__PatchErrorReporting);
+INIT_OFF(IV_Hook__PatchCertificatesCheck);
+INIT_OFF(IV_Hook__PatchRGSCObject);
+INIT_OFF(IV_Hook__PatchRGSCEFCChecks);
+INIT_OFF(IV_Hook__PatchFakeRGSCObject);
+INIT_OFF(IV_Hook__PatchVDS102);
+INIT_OFF(IV_Hook__PatchRGSCInitCheck);
+INIT_OFF(IV_Hook__PatchMissingTests1);
+INIT_OFF(IV_Hook__PatchMissingTests2);
+
+INIT_OFF(IV_Hook__PatchUnkownAddress1);
+INIT_OFF(IV_Hook__PatchUnkownAddress2);
+
+INIT_OFF(IV_Hook__PatchSecuromCheck);
+INIT_OFF(IV_Hook__PatchPreventVehicleCrash);
+INIT_OFF(IV_Hook__PatchErrorMessageBoxes);
+
+INIT_OFF(IV_Hook__DisableStartupResourceCheck_1);
+INIT_OFF(IV_Hook__DisableStartupResourceCheck_2);
+INIT_OFF(IV_Hook__DisableStartupResourceCheck_3);
+INIT_OFF(IV_Hook__DisableStartupResourceCheck_4);
+
+INIT_OFF(IV_Hook__DisableAutomaticRadarTurnon_1);
+INIT_OFF(IV_Hook__DisableAutomaticRadarTurnon_2);
+
+INIT_OFF(IV_Hook__PatchWeaponGiveWhenEnterVehicle);
+INIT_OFF(IV_Hook__PatchEnableAndFixVehicleModels);
+INIT_OFF(IV_Hook__PatchUnkownByte1);
+
 enum ePATCH_SIG
 {
 	IV_101 = 0x831F7518,
@@ -559,6 +672,119 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(CGame_Process_InitialiseRageGame, 0x402C07);
 			SET_OFF(RAGE_LoadGame, 0x5B0311);
 			SET_OFF(RAGE_StartNewGame, 0x5B03BF);
+
+			// New
+			SET_OFF(RAGE_Camera__UnkownVoidPtr, 0xF21A6C);
+			SET_OFF(IV_CamPool, 0x1618020);
+			SET_OFF(FUNC_IV__CreateCamera, 0x447230);
+			SET_OFF(RAGE_AssetManager__OpenFile, 0x5B2796);
+			SET_OFF(RAGE_AssetManager__OpenFileJmpBack, 0x5B4F60);
+			SET_OFF(RAGE_OpenFile, 0x7B2740);
+			SET_OFF(RAGE_OpenFileHook, 0x424301);
+
+			SET_OFF(IV_HookLoadingFiles, 0x5B278A);
+			SET_OFF(IV_HookLoadingScreen__DAT,0x424301);
+			SET_OFF(IV_HookLoadingScreen__WTD,0x423F04);
+			SET_OFF(IV_HookLoadingTune, 0x7B99C8);
+
+			SET_OFF(IV_Pool__SetPtrSinglePoolLimit, 0xB534B6);
+			SET_OFF(IV_Pool__SetPtrNodeDoublePoolLimit, 0xB534F6);
+			SET_OFF(IV_Pool__SetEntryInfoNodePoolLimit, 0xC796D6);
+			SET_OFF(IV_Pool__SetPedPoolLimit_1, 0x43A9FC); 
+			SET_OFF(IV_Pool__SetPedPoolLimit_2, 0x43AA1A);
+			SET_OFF(IV_Pool__SetPedPoolLimit_3, 0x43AA27);
+			SET_OFF(IV_Pool__SetPedPoolLimit_4, 0x43AA5C);
+
+			SET_OFF(IV_Pool__SetVehiclePoolLimit, 0x9D43B8);
+			SET_OFF(IV_Pool__SetVehicleStructPoolLimit, 0xBEA871);
+
+			SET_OFF(IV_Hook__DisableParkedCars, 0xB3EDF0);
+			SET_OFF(IV_Hook__DisableEmergencyAndGarbageTrucks, 0x4215CF);
+			SET_OFF(IV_Hook__DisableVehicleEntries, 0x9B1ED0);
+			SET_OFF(IV_Hook__DisableVehicleExists, 0x9BBBFC);
+			SET_OFF(IV_Hook__DisableRandomPedsAndVehicles_1,0x8ACD64);
+			SET_OFF(IV_Hook__DisableRandomPedsAndVehicles_2,0x421610);
+			SET_OFF(IV_Hook__DisableRandomPedsAndVehicles_3,0x81B22E);
+			SET_OFF(IV_Hook__DisableScenarioPeds, 0x9F72C0);
+			SET_OFF(IV_Hook__DisableFakeCars, 0x9055D0);
+
+			SET_OFF(IV_Hook__CIKManager_AimWeapon__JmpBack, 0x950D66);
+			SET_OFF(IV_Hook__CIKManager_PointArms__JmpBack, 0x94E866);
+			SET_OFF(IV_Hook__CIKManager_FireWeapon__JmpBack, 0x97D7C6);
+			SET_OFF(IV_Hook__CIKManager_AimWeapon, 0x94E860);
+			SET_OFF(IV_Hook__CIKManager_PointArms, 0x97D7C0);
+			SET_OFF(IV_Hook__CIKManager_FireWeapon, 0x950D60);
+
+			SET_OFF(IV_Hook__LoadHUD, 0x8A841A);
+			SET_OFF(IV_Hook__LoadInternalHud, 0x848390);
+			SET_OFF(IV_Hook__LoadHudHook, 0xD5DCF4);
+
+			SET_OFF(IV_Hook__LoadRadioLogo, 0x822E76);
+			SET_OFF(IV_Hook__LoadInternalRadioLogo, 0x822E30);
+			SET_OFF(IV_Hook__LoadRadioLogoHook, 0xD5B7B8);
+
+			SET_OFF(IV_Hook__LoadWorldAtPosition, 0x11DC444);
+
+			SET_OFF(IV_Hook__TextureSelect__JmpBack, 0x639715);
+
+			SET_OFF(IV_Hook__StartGameLoading_1, 0x10F8088);
+			SET_OFF(IV_Hook__StartGameLoading_2, 0x5AF930);
+			SET_OFF(IV_Hook__StartGameLoading_3, 0x10F8078);
+			SET_OFF(IV_Hook__StartGameLoading_4, 0x10F805C);
+			SET_OFF(IV_Hook__StartGameLoading_5, 0x7B2DF0);
+			SET_OFF(IV_Hook__StartGameLoading_6, 0x18A8258);
+			SET_OFF(IV_Hook__StartGameLoading_7, 0x18A8F48);
+			SET_OFF(IV_Hook__StartGameLoading_8, 0x18A8F40);
+
+			SET_OFF(IV_Hook__GameProcess_1, 0x402B03);
+			SET_OFF(IV_Hook__GameProcess_2, 0x402BD3);
+			SET_OFF(IV_Hook__GameProcess_3, 0x10C74E1);
+			SET_OFF(IV_Hook__GameProcess_4, 0x10C79E4);
+			SET_OFF(IV_Hook__GameProcess_5, 0x119EB14);
+			SET_OFF(IV_Hook__GameProcess_6, 0x10F8078);
+			SET_OFF(IV_Hook__GameProcess_7, 0x172427C);
+			SET_OFF(IV_Hook__GameProcess_8, 0x4205B0);
+
+			SET_OFF(IV_Hook__IncreasePoolSizes, 0xC72F10);
+
+			SET_OFF(IV_Hook__UnkownPatch1, 0xCBA1F0);
+			SET_OFF(IV_Hook__UnkownPatch2, 0x625F15);
+
+			SET_OFF(IV_Hook__PatchRandomTasks, 0x9849F0);
+			SET_OFF(IV_Hook__PatchInternet_1, 0x10F1390);
+			SET_OFF(IV_Hook__PatchInternet_2, 0x7AF1A0);
+			SET_OFF(IV_Hook__PatchHelpMessageBox, 0xF1DC40);
+			SET_OFF(IV_Hook__PatchStartNewGame, 0x5B0311);
+			SET_OFF(IV_Hook__PatchStartupDOTsco, 0x809A8A);
+			SET_OFF(IV_Hook__PatchVehicleDriverProcess, 0xA9F300);
+			SET_OFF(IV_Hook__PatchErrorReporting, 0xD356D0);
+			SET_OFF(IV_Hook__PatchCertificatesCheck, 0x403F10);
+			SET_OFF(IV_Hook__PatchRGSCObject, 0x40262D);
+			SET_OFF(IV_Hook__PatchRGSCEFCChecks, 0x402631);
+			SET_OFF(IV_Hook__PatchFakeRGSCObject, 0x402883);
+			SET_OFF(IV_Hook__PatchVDS102, 0x4028ED);
+			SET_OFF(IV_Hook__PatchRGSCInitCheck, 0x40291D);
+			SET_OFF(IV_Hook__PatchMissingTests1, 0x402B12);
+			SET_OFF(IV_Hook__PatchMissingTests2, 0x402D17);
+
+			SET_OFF(IV_Hook__PatchUnkownAddress1, 0x403870);
+			SET_OFF(IV_Hook__PatchUnkownAddress2, 0x404250);
+
+			SET_OFF(IV_Hook__PatchSecuromCheck, 0xBAC160);
+			SET_OFF(IV_Hook__PatchPreventVehicleCrash, 0xCBA1F0);
+			SET_OFF(IV_Hook__PatchErrorMessageBoxes, 0x5A8CB0);
+
+			SET_OFF(IV_Hook__DisableStartupResourceCheck_1, 0x119DB14);
+			SET_OFF(IV_Hook__DisableStartupResourceCheck_2, 0x9E2E30);
+			SET_OFF(IV_Hook__DisableStartupResourceCheck_3, 0xCA76E0);
+			SET_OFF(IV_Hook__DisableStartupResourceCheck_4, 0x446970);
+
+			SET_OFF(IV_Hook__DisableAutomaticRadarTurnon_1, 0x42D3D1);
+			SET_OFF(IV_Hook__DisableAutomaticRadarTurnon_2, 0x811B6E);
+
+			SET_OFF(IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x9C5994);
+			SET_OFF(IV_Hook__PatchEnableAndFixVehicleModels, 0x8F2F40);
+			SET_OFF(IV_Hook__PatchUnkownByte1, 0x857133);
 
 			break;
 		default:

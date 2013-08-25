@@ -147,7 +147,7 @@ void CIVPedWeapons::SetCurrentWeaponVisible(bool bVisible)
 
 		if(bVisible)
 		{
-			DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9AC110); // CPedWeapons::ShowWeapon
+			DWORD dwFunctionAddress = COffsets::FUNC_CPedWeapon__ShowWeapon;
 
 			_asm	push 0;
 			_asm	push -1;
@@ -159,7 +159,7 @@ void CIVPedWeapons::SetCurrentWeaponVisible(bool bVisible)
 		{
 			if(pPedWeapons->m_pWeaponObject)
 			{
-				DWORD dwFunctionAddress = (g_pCore->GetBase() + 0x9ABF00); // CPedWeapons::HideWeapon
+				DWORD dwFunctionAddress = COffsets::FUNC_CPedWeapon__HideWeapon;
 
 				_asm	push 0;
 				_asm	push 0;

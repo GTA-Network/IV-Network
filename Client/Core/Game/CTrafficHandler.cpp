@@ -55,28 +55,28 @@ void CTrafficHandler::InstallTrafficLightsHook()
 void CTrafficHandler::InstallTrafficHook()
 {
 	// Disable parked cars
-    CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0xB3EDF0);
+    CPatcher::InstallRetnPatch(COffsets::IV_Hook__DisableParkedCars);
 
     // Disable emergency services and garbage trucks
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x4215CF), 5);
+    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableEmergencyAndGarbageTrucks, 5);
 
     // Disable vehicle entries
-    *(DWORD *)(g_pCore->GetBase() + 0x9B1ED0) = 0x0CC2C033;
-    *(BYTE *)(g_pCore->GetBase() + 0x9B1ED4) = 0x00;
+    *(DWORD *)(COffsets::IV_Hook__DisableVehicleEntries) = 0x0CC2C033;
+    *(BYTE *)(COffsets::IV_Hook__DisableVehicleEntries + 0x4) = 0x00;
 
     // Disable vehicle exits
-    *(BYTE *)(g_pCore->GetBase() + 0x9BBBFC) = 0xEB;
+    *(BYTE *)(COffsets::IV_Hook__DisableVehicleExists) = 0xEB;
 
     // Disable random peds and vehicles
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x8ACD64), 5);
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x421610), 5);
-    CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x81B22E), 5);
+    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_1, 5);
+    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_2, 5);
+    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_3, 5);
 
     // Disable scenario peds
-    *(BYTE *)(g_pCore->GetBase() + 0x9F72C0) = 0xB8; // mov eax,
-    *(DWORD *)(g_pCore->GetBase() + 0x9F72C1) = 0x0; // 0
-    *(BYTE *)(g_pCore->GetBase() + 0x9F72C5) = 0xC3; // retn
+    *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
+    *(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds + 0x1) = 0x0; // 0
+    *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds + 0x5) = 0xC3; // retn
 
     // Disable fake cars
-    CPatcher::InstallRetnPatch(g_pCore->GetBase() + 0x9055D0);
+    CPatcher::InstallRetnPatch(COffsets::IV_Hook__DisableFakeCars);
 }

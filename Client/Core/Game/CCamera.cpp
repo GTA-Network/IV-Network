@@ -11,40 +11,33 @@
 
 #include "CCamera.h"
 #include "IV/CIVScript.h"
-#include <CCore.h>
-
-extern CCore * g_pCore;
+#include <Ptrs.h>
 
 CCamera::CCamera()
 {
 	// Grab camera pointer.
 	IVCam *pCamera = NULL;
-	void * pUnknow = (void **)(g_pCore->GetBase() + 0xF21A6C);
-	_asm
-	{
-		mov ecx, pUnknow
-        mov eax, [ecx+0Ch]
-		mov pCamera, eax
-	}
+	void * pUnknow = (void **)COffsets::RAGE_Camera__UnkownVoidPtr;
+	_asm	mov ecx, pUnknow;
+    _asm	mov eax, [ecx+0Ch];
+	_asm	mov pCamera, eax;
 
-	IVCamPool *pPool = *(IVCamPool **)(g_pCore->GetBase() + 0x1618020);
-	DWORD dwAddress = (g_pCore->GetBase() + 0x447230);
+	IVCamPool *pPool = *(IVCamPool **)COffsets::IV_CamPool;
+	DWORD dwFunctionAddress = COffsets::FUNC_IV__CreateCamera;
 	unsigned int uiHandle = 0;
-	_asm
-	{
-		push pCamera
-		mov ecx, pPool
-		call dwAddress
-		mov uiHandle, eax
-	}
+
+	_asm	push pCamera;
+	_asm	mov ecx, pPool;
+	_asm	call dwFunctionAddress;
+	_asm	mov uiHandle, eax;
 	m_uiGameCamIndex = uiHandle;
 
 	m_pGameCam = new CIVCam();
 	m_pGameCam->SetCam(pCamera);
 
 	// Create scripting camera
-	CIVScript::CreateCam( 14, &m_uiScriptingIndex );
-	CIVScript::SetCamPropagate( m_uiScriptingIndex, true );
+	CIVScript::CreateCam(14, &m_uiScriptingIndex);
+	CIVScript::SetCamPropagate(m_uiScriptingIndex, true);
 
 	m_bUsingScriptingCam = false;
 }
@@ -58,63 +51,63 @@ void CCamera::SetCameraPosition(CVector3 &vecPosition)
 {
 	if(!m_bUsingScriptingCam)
 	{
-		CIVScript::SetCamActive( m_uiScriptingIndex, true );
-		CIVScript::ActivateScriptedCams( true, true );
-		CIVScript::SetCamActive( m_uiGameCamIndex, false );
+		CIVScript::SetCamActive(m_uiScriptingIndex, true);
+		CIVScript::ActivateScriptedCams(true, true);
+		CIVScript::SetCamActive(m_uiGameCamIndex, false);
 		m_bUsingScriptingCam = true;
 	}
 
-	CIVScript::SetCamPos( m_uiScriptingIndex, vecPosition.fX, vecPosition.fY, vecPosition.fZ );
+	CIVScript::SetCamPos(m_uiScriptingIndex, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 }
 
 void CCamera::GetCameraPosition(CVector3 &vecPosition)
 {
 	if(!m_bUsingScriptingCam)
 	{
-		CIVScript::SetCamActive( m_uiScriptingIndex, true );
-		CIVScript::ActivateScriptedCams( true, true );
-		CIVScript::SetCamActive( m_uiGameCamIndex, false );
+		CIVScript::SetCamActive(m_uiScriptingIndex, true);
+		CIVScript::ActivateScriptedCams(true, true);
+		CIVScript::SetCamActive(m_uiGameCamIndex, false);
 		m_bUsingScriptingCam = true;
 	}
 
-	CIVScript::GetCamPos( m_uiScriptingIndex, &vecPosition.fX, &vecPosition.fY, &vecPosition.fZ );
+	CIVScript::GetCamPos(m_uiScriptingIndex, &vecPosition.fX, &vecPosition.fY, &vecPosition.fZ);
 }
 
 void CCamera::SetLookAtPosition(CVector3 &vecPosition)
 {
 	if(!m_bUsingScriptingCam)
 	{
-		CIVScript::SetCamActive( m_uiScriptingIndex, true );
-		CIVScript::ActivateScriptedCams( true, true );
-		CIVScript::SetCamActive( m_uiGameCamIndex, false );
+		CIVScript::SetCamActive(m_uiScriptingIndex, true);
+		CIVScript::ActivateScriptedCams(true, true);
+		CIVScript::SetCamActive(m_uiGameCamIndex, false);
 		m_bUsingScriptingCam = true;
 	}
 
 	CGameFunction::LoadWorldAtPosition(vecPosition);
 
-	CIVScript::PointCamAtCoord( m_uiScriptingIndex, vecPosition.fX, vecPosition.fY, vecPosition.fZ );
+	CIVScript::PointCamAtCoord(m_uiScriptingIndex, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 }
 
 void CCamera::SetCamBehindPed(unsigned int uiPed)
 {
 	if(m_bUsingScriptingCam)
 	{
-		CIVScript::SetCamActive( m_uiScriptingIndex, false );
-		CIVScript::ActivateScriptedCams( false, false );
-		CIVScript::SetCamActive( m_uiGameCamIndex, true );
+		CIVScript::SetCamActive(m_uiScriptingIndex, false);
+		CIVScript::ActivateScriptedCams(false, false);
+		CIVScript::SetCamActive(m_uiGameCamIndex, true);
 		m_bUsingScriptingCam = false;
 	}
 
-	CIVScript::SetCamBehindPed( uiPed );
+	CIVScript::SetCamBehindPed(uiPed);
 }
 
 void CCamera::GetAimPosition(CVector3 *vecPosition)
 {
 	if(m_bUsingScriptingCam)
 	{
-		CIVScript::SetCamActive( m_uiScriptingIndex, false );
-		CIVScript::ActivateScriptedCams( false, false );
-		CIVScript::SetCamActive( m_uiGameCamIndex, true );
+		CIVScript::SetCamActive(m_uiScriptingIndex, false);
+		CIVScript::ActivateScriptedCams(false, false);
+		CIVScript::SetCamActive(m_uiGameCamIndex, true);
 		m_bUsingScriptingCam = false;
 	}
 
@@ -130,9 +123,9 @@ void CCamera::GetAimPosition(CVector3 *vecPosition)
 
 	// Scale calc.
 	float fScale = 10.0f;
-	vecPosition->fX = (vecCamPosition.fX + ( vecCamForward.fX * fScale ));
-	vecPosition->fY = (vecCamPosition.fY + ( vecCamForward.fY * fScale ));
-	vecPosition->fZ = (vecCamPosition.fZ + ( vecCamForward.fZ * fScale ));
+	vecPosition->fX = (vecCamPosition.fX + (vecCamForward.fX * fScale));
+	vecPosition->fY = (vecCamPosition.fY + (vecCamForward.fY * fScale));
+	vecPosition->fZ = (vecCamPosition.fZ + (vecCamForward.fZ * fScale));
 }
 
 bool CCamera::IsOnScreen(const CVector3& vecPosition)
@@ -161,5 +154,5 @@ bool CCamera::IsOnScreen(const CVector3& vecPosition)
     D3DXVECTOR3 vecSPos;
     D3DXVec3Project(&vecSPos, CVEC_TO_D3DVEC(vecPosition), &viewport, &matProj, &matView, &matWorld);
 
-    return ( vecSPos.z < 1.f );
+    return (vecSPos.z < 1.f);
 }

@@ -190,9 +190,8 @@ _declspec(naked) void _stdcall RAGE_AssetManager__OpenFile()
 	_asm	mov file_ptr, edx;
 	_asm	pushad;
 
-	dwJmp2 = (g_pCore->GetBase() + 0x5B2796);
-	sub_5B4F60 = (g_pCore->GetBase() + 0x5B4F60);
-	CLogFile::Printf("%s",file_ptr);
+	dwJmp2 = COffsets::RAGE_AssetManager__OpenFile;
+	sub_5B4F60 = COffsets::RAGE_AssetManager__OpenFileJmpBack;
 
 	if(CEFLCSupport::OpenFile_Decision(file_ptr)) {
 		_asm	mov eax, file;
@@ -224,7 +223,7 @@ void _declspec(naked) RAGE_OpenFile()
 	_asm	pushad;
 
 	strcpy((char *)hFile, "common/data/loadingscreens_eflc_pc.dat");
-	dwRFile = (g_pCore->GetBase() + 0x7B2740);
+	dwRFile = COffsets::RAGE_OpenFile;
 
 	_asm	popad;
 	_asm	push lpBuffer;
@@ -241,16 +240,16 @@ void CEFLCSupport::InstallSupport()
 		return;
 
 	// Hook loading files
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x5B278A, (DWORD)RAGE_AssetManager__OpenFile);
+	CPatcher::InstallJmpPatch((COffsets::RAGE_AssetManager__OpenFile - 0xC), (DWORD)RAGE_AssetManager__OpenFile);
 
 	// Hook loading screen
-	CPatcher::InstallHookCall((g_pCore->GetBase() + 0x424301), (DWORD)RAGE_OpenFile);
+	CPatcher::InstallHookCall(COffsets::IV_HookLoadingScreen__DAT, (DWORD)RAGE_OpenFile);
 	char *szTxt = "platform:/textures/loadingscreens_eflc";
-	CPatcher::InstallPushPatch((g_pCore->GetBase() + 0x423F04), (DWORD)szTxt);
+	CPatcher::InstallPushPatch(COffsets::IV_HookLoadingScreen__WTD, (DWORD)szTxt);
 
 	// Hook loading tune
 	char *szLoadingTune = "DISCOINFERNO";
-	CPatcher::InstallPushPatch((g_pCore->GetBase() + 0x7B99C8), (DWORD)szLoadingTune);
+	CPatcher::InstallPushPatch(COffsets::IV_HookLoadingTune, (DWORD)szLoadingTune);
 
 	char *szParachuteScript = "parachute_player";
 	//CPatcher::InstallPushPatch((g_pCore->GetBaseAddress() + 0x809A8C), (DWORD)szParachuteScript);
