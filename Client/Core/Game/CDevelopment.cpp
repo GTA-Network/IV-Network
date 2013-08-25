@@ -8,8 +8,7 @@
 //==============================================================================
 
 #include "CDevelopment.h"
-#include <CCore.h>
-extern CCore * g_pCore;
+#include <Ptrs.h>
 
 float fCurrentLine = 325;
 CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, vecShotTarget;
@@ -49,7 +48,20 @@ void CDevelopment::Process()
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Move Speed: %.2f, %.2f ,%.2f,", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
 		fCurrentLine += 15;
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Turn Speed: %.2f, %.2f ,%.2f,", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
-		
+
+		if(PTR_LOCALPLAYER->IsInVehicle()) {
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetPosition(vecPosition);
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetMoveSpeed(vecMoveSpeed);
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetTurnSpeed(vecTurnSpeed);
+
+			fCurrentLine += 30;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Vehicle Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Vehicle Move Speed: %.2f, %.2f ,%.2f,", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Vehicle Turn Speed: %.2f, %.2f ,%.2f,", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
+		}
+
 		fCurrentLine += 30;
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("Aim Coords: %.2f, %.2f ,%.2f,", vecAimTarget.fX, vecAimTarget.fY, vecAimTarget.fZ).Get());
 		fCurrentLine += 15;

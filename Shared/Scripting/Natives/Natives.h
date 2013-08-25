@@ -14,4 +14,6 @@
 
 #include "CSystemNatives.h"
 
+#include "CMathNatives.h"
+
 #endif // Natives_h

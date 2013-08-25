@@ -162,6 +162,7 @@
     <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
+    <ClCompile Include="..\Shared\Scripting\Natives\CMathNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp" />

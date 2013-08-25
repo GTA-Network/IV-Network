@@ -126,7 +126,7 @@ void CCore::OnGameLoad()
 
 	// Mark chat as visible & print welcome message
 	m_pChat->SetVisible(true);
-	m_pChat->Outputf(false, "%s %s started!", MOD_NAME, MOD_VERSION_STRING );
+	m_pChat->Outputf(true, "#ffffff%s  #ff6600%s #ffffffstarted!", MOD_NAME, MOD_VERSION_STRING );
 
 	m_strHost = "127.0.0.1";
 	m_usPort = 9999;

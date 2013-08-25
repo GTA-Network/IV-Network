@@ -17,6 +17,8 @@
 void CSystemNatives::Register(CScriptVM * pVM)
 {
 	pVM->RegisterFunction("print", Print);
+	pVM->RegisterFunction("log", Print);
+		pVM->RegisterFunction("logf", Logf);
 }
 
 int CSystemNatives::Print(int * VM)
@@ -27,6 +29,19 @@ int CSystemNatives::Print(int * VM)
 	CString strPrint;
 	pVM->Pop(strPrint);
 	CLogFile::Printf(strPrint);
+
+	pVM->ResetStackIndex();
+
+	return 1;
+}
+
+int CSystemNatives::Logf(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	CString strPrint;
+	pVM->Pop(strPrint);
+	CLogFile::PrintToFile(strPrint);
 
 	pVM->ResetStackIndex();
 

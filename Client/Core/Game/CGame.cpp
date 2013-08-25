@@ -394,3 +394,9 @@ HWND CGame::GetWindow()
 	return (*(HWND *)(g_pCore->GetBase() + 0x1849DD4));
 }
 */
+
+void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
+{
+	if(g_pCore->GetChat())
+		g_pCore->GetChat()->Outputf(true, "Warning: Exception 0x%p at 0x%p",dwExceptionType, dwAddress);
+}
