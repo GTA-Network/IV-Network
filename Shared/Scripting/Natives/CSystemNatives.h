@@ -16,6 +16,7 @@ class CSystemNatives {
 
 private:
 	static int	Print(int * pVM);
+	static int  Logf(int * pVM); 
 	static int	CreateEntity(int * pVM);
 public:
 	static void Register(CScriptVM* pVM);
