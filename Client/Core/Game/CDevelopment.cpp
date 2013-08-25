@@ -16,14 +16,13 @@ CVector3 vecPosition, vecMoveSpeed, vecTurnSpeed, vecAimTarget, vecShotSource, v
 float fArmHeading, fArmDown, fHeading;
 bool bDuckingState;
 
-CDevelopment::CDevelopment()
+CDevelopment::CDevelopment() : bDebugView(false),
+	bDebugPlayerPresent(false),
+	bHasAimSyncData(false),
+	m_bStoreOnFootSwitch(false),
+	m_iOldMoveStyle(0)
 {
-	bDebugView = false;
-	bDebugPlayerPresent = false;
-	bHasAimSyncData = false;
 
-	m_bStoreOnFootSwitch = false;
-	m_iOldMoveStyle = 0;
 }
 
 void CDevelopment::Process()

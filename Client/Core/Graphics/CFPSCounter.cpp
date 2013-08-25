@@ -12,9 +12,7 @@
 
 CFPSCounter::CFPSCounter()
 {
-	m_ulLastTime = 0;
-	m_uiCurrentFrames = 0;
-	m_uiFramesPerSecond = 0;
+	Reset();
 }
 
 void CFPSCounter::Pulse()
@@ -37,4 +35,11 @@ void CFPSCounter::Pulse()
 		// Set the last time
 		m_ulLastTime = ulCurrentTime;
 	}
+}
+
+void CFPSCounter::Reset()
+{
+	m_ulLastTime = 0;
+	m_uiCurrentFrames = 0;
+	m_uiFramesPerSecond = 0;
 }

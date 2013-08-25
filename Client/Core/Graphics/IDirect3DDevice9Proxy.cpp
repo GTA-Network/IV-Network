@@ -12,8 +12,9 @@
 extern CCore * g_pCore;
 
 IDirect3DDevice9Proxy::IDirect3DDevice9Proxy(IDirect3DDevice9 *pDevice)
+	: m_pDevice(pDevice)
 {
-	m_pDevice = pDevice;
+
 }
 
 HRESULT __stdcall IDirect3DDevice9Proxy::Present ( CONST RECT* pSourceRect, CONST RECT* pDestRect, HWND hDestWindowOverride, CONST RGNDATA* pDirtyRegion)

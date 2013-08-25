@@ -124,6 +124,7 @@ public:
 							~CChat					();
 
 	void					Setup					(D3DPRESENT_PARAMETERS * pPresentParameters);
+	void					Reset					();
 	void					Render					(void);
 
 	void					SetVisible				(bool bVisible) { m_bVisible = bVisible; }

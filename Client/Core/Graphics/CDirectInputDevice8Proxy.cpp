@@ -12,11 +12,9 @@
 extern CCore * g_pCore;
 
 CDirectInputDevice8Proxy::CDirectInputDevice8Proxy(IDirectInputDevice8 * pDevice, eDIDeviceType DeviceType)
+	: m_pDevice(pDevice),
+	m_DeviceType(DeviceType)
 {
-	// Initialize our device member variable
-	m_pDevice	= pDevice;
-
-	m_DeviceType = DeviceType;
 	m_Cursor.x = 0;
 	m_Cursor.y = 0;
 	memset(m_bMouseButtons, 0, sizeof(m_bMouseButtons));

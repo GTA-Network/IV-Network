@@ -19,8 +19,9 @@ extern CCore * g_pCore;
 extern WNDPROC m_wWndProc;
 
 IDirect3D9Proxy::IDirect3D9Proxy(IDirect3D9 * pD3D)
+	: m_pD3D(pD3D)
 {
-	m_pD3D = pD3D;
+
 }
 
 HRESULT STDMETHODCALLTYPE IDirect3D9Proxy::QueryInterface(REFIID riid, void ** ppvObj)

@@ -21,6 +21,7 @@ public:
 						~CFPSCounter() { };
 
 	void				Pulse();
+	void				Reset();
 
 	unsigned			GetFPS() { return m_uiFramesPerSecond; }
 

@@ -13,12 +13,39 @@
 
 extern CCore * g_pCore;
 
-CChat::CChat(float fX, float fY)
+CChat::CChat(float fX, float fY) : m_fX(fX),
+	m_fY(fY)
 {
-	// Store the chat window screen position
+	Reset();
+}
+
+CChat::~CChat()
+{
+	Clear();
+	ClearInput();
+}
+
+void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
+{
+	// Get the chat x, y position from the settings
+	float fX = 50.0f;
+	float fY = 50.0f;
+
+	// Work out the maximum coordinates
+	float fMaxX = (1920.0f - CHAT_WIDTH); // Or should we use already 2500 ?
+	float fMaxY = (1080.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
+
+	// Clamp the coordinates
+	fX = Math::Clamp(0.0f, fX, fMaxX);
+	fY = Math::Clamp(0.0f, fY, fMaxY);
+
+	// Store the chat position
 	m_fX = fX;
 	m_fY = fY;
+}
 
+void CChat::Reset()
+{
 	// Reset the variables
 	SetVisible(true);
 	m_bPaused = false;
@@ -45,31 +72,6 @@ CChat::CChat(float fX, float fY)
 	// Input
 	SetInputVisible(false);
 	SetInputPrefix("> Say: ");
-}
-
-CChat::~CChat()
-{
-	Clear();
-	ClearInput();
-}
-
-void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
-{
-	// Get the chat x, y position from the settings
-	float fX = 50.0f;
-	float fY = 50.0f;
-
-	// Work out the maximum coordinates
-	float fMaxX = (1920.0f - CHAT_WIDTH); // Or should we use already 2500 ?
-	float fMaxY = (1080.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
-
-	// Clamp the coordinates
-	fX = Math::Clamp(0.0f, fX, fMaxX);
-	fY = Math::Clamp(0.0f, fY, fMaxY);
-
-	// Store the chat position
-	m_fX = fX;
-	m_fY = fY;
 }
 
 void CChat::Render()
@@ -690,12 +692,11 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 void CChatLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShadow)
 {
 	float fOffsetX = fX;
-	std::vector< CChatLineSection >::iterator iter = m_Sections.begin();
 
-	for(; iter != m_Sections.end(); iter++)
+	for(auto pChatLine:m_Sections)
 	{
-		(*iter).Draw(fOffsetX, fY, ucAlpha, bShadow);
-		fOffsetX += (*iter).GetWidth();
+		pChatLine.Draw(fOffsetX, fY, ucAlpha, bShadow);
+		fOffsetX += pChatLine.GetWidth();
 	}
 }
 
@@ -705,10 +706,9 @@ float CChatLine::GetWidth()
 		return 0.0f;
 
 	float fWidth = 0.0f;
-    std::vector < CChatLineSection >::iterator it;
-    for (it = m_Sections.begin (); it != m_Sections.end(); it++)
+    for (auto pChatLine:m_Sections)
     {
-        fWidth += (*it).GetWidth ();
+        fWidth += pChatLine.GetWidth ();
     }
     return fWidth;
 }
@@ -724,16 +724,14 @@ void CChatInputLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShado
 	CChat * g_pChat = g_pCore->GetChat();
 	if(g_pChat->GetInputTextColor().A > 0 && m_Sections.size() > 0)
 	{
-		m_Sections[ 0 ].Draw(fX + m_Prefix.GetWidth(), fY, g_pChat->GetInputTextColor().A, bShadow);
+		m_Sections[0].Draw(fX + m_Prefix.GetWidth(), fY, g_pChat->GetInputTextColor().A, bShadow);
 
 		float fLineDifference = CChat::GetFontHeight();
 
-		std::vector< CChatLine >::iterator iter = m_ExtraLines.begin();
-
-		for(; iter != m_ExtraLines.end(); iter++)
+		for(auto pExtraLine:m_ExtraLines)
 		{
 			fY += fLineDifference;
-			(*iter).Draw(fX, fY, g_pChat->GetInputTextColor().A, bShadow);
+			pExtraLine.Draw(fX, fY, g_pChat->GetInputTextColor().A, bShadow);
 		}
 	}
 }

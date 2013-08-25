@@ -11,8 +11,8 @@
 #include "CDirectInputDevice8Proxy.h"
 
 CDirectInput8Proxy::CDirectInput8Proxy(IDirectInput8 * dinput)
+	: m_pDevice(dinput)
 {
-	m_pDevice = dinput;
 }
 
 HRESULT STDMETHODCALLTYPE CDirectInput8Proxy::QueryInterface(REFIID riid, LPVOID * ppvObj)
