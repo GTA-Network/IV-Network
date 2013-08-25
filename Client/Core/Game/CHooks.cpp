@@ -51,10 +51,8 @@ _declspec(naked) void TextureSelect_Hook()
 	_asm	pushad;
 
 	if(hFile2 < 10000000) 
-		CLogFile::Printf("WARNING! TextureSelect has an invalid pointer((Pointer)%p/(File/Type)%s!", hFile2, iTexture);
-	else    
-		;//CLogFile::Printf("TextureSelect_Hook: (Pointer)%p/(File/Type)%s", hFile2, iTexture);
-
+		g_pCore->GetGame()->ThrowInternalException(COffsets::FUNC_GENERATETEXTURE, 0xC0000005);
+	
 	_asm	popad;
 	_asm	push ebx;
 	_asm	push esi;
