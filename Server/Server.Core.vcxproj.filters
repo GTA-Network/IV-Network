@@ -420,6 +420,9 @@
     <ClCompile Include="Network\CNetworkRPC.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CMathNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
