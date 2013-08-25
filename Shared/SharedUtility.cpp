@@ -623,6 +623,7 @@ namespace SharedUtility
 		int iDays          = (iDaysPassed % 24);
 		return CString("%d day(s), %d hour(s), %d minute(s) and %d second(s)", iDays, iHours, iMinutes, iSeconds);
 	}
+
 #ifdef _CLIENT
 	DWORD GetSerial()
 	{
