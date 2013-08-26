@@ -135,7 +135,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		
 		return true;
 	}
-	else if(strCommand == "saveposition" || strCommand = "save")
+	else if(strCommand == "saveposition" || strCommand == "save")
 	{
 		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if(!file)
@@ -287,6 +287,6 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		PTR_CHAT->Output(false, "List of Default IV:MP Commands...");
 		PTR_CHAT->Output(false, "** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
 		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
-		return 1;
+		return true;
 	}	
 }
