@@ -26,7 +26,7 @@ unsigned int pObj;
 
 bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
-	if(strCommand == "q"  || strCommand == "quit" || strCommand == "exit")
+	if(strCommand == "q"  || strCommand == "quit")
 	{
 		// Are we connected to the network?
 		if(g_pCore->GetNetworkManager()->IsConnected())
@@ -128,14 +128,14 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		PTR_CHAT->Output("Type \"/ready\" and seconds later \"/parachute\" to create a parachute!",false);
 		return true;
 	}
-	else if(strCommand == "engine")
+	else if(strCommand == "engine") 
 	{
 		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
 			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(!g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetEngineState());
 		
 		return true;
 	}
-	else if(strCommand == "saveposition")
+	else if(strCommand == "saveposition" || strCommand = "save")
 	{
 		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if(!file)
@@ -282,5 +282,11 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 			PTR_CHAT->Outputf(false,"Position of vehicle %d: %f, %f,%f",iVehicle, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 		}
 	}
-	return true;
+	else if(strCommand == "ivhelp")
+	{
+		PTR_CHAT->Output(false, "List of Default IV:MP Commands...");
+		PTR_CHAT->Output(false, "** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
+		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
+		return 1;
+	}	
 }
