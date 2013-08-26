@@ -617,7 +617,6 @@ const char * CChatLine::RemoveColorCodes(const char * szText)
 {
 	bool bLastChar = false;
 
-	int idx = 0;
 	CString strStrippedText = "";
 	CString strText = szText;
 
