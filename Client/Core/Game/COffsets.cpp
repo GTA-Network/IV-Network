@@ -449,8 +449,8 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CPed__ScalarDeletingDestructor, 0x8F6AC0); // done
 
 			//Game
-			SET_OFF(VAR_MenuActive_1, 0x10C7F80);
-			SET_OFF(VAR_MenuActive_2, 0x10C7F6F);
+			SET_OFF(VAR_MenuActive_1, 0x104E130); // done
+			SET_OFF(VAR_MenuActive_2, 0x104E11F); // done
 
 			//Script
 			SET_OFF(FUNC_GetRunningScriptThread, 0x4CCD20); // done 
@@ -466,7 +466,7 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			//Time
 			SET_OFF(FUNC_SetTimeOfDay, 0x846970); // done
-			SET_OFF(VAR_TimeOfDay, 0x11E8F0C);//PoorNaming(CouldbesomememberofCClock)
+			SET_OFF(VAR_TimeOfDay, 0x10A4EA8); // done //PoorNaming(CouldbesomememberofCClock)
 			SET_OFF(VAR_CClock__Hour, 0x10C9398); // done
 			SET_OFF(VAR_CClock__Minute, 0x10C9394); // done
 			SET_OFF(VAR_CClock__LockedHour, 0x10C93A0); // done
@@ -474,10 +474,10 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_CClock__DayOfWeek, 0x10C93A8); // done
 
 			//HUD
-			SET_OFF(VAR_HudEnabled, 0x118034C);
-			SET_OFF(VAR_RadarVisible, 0x118034F);
-			SET_OFF(VAR_PlayerNamesVisible, 0x1967DD8);
-			SET_OFF(VAR_AreaNamesDisabled, 0x118F0D2);
+			SET_OFF(VAR_HudEnabled, 0x010A53DF); // done
+			SET_OFF(VAR_RadarVisible, 0x010A53DC); // done
+			SET_OFF(VAR_PlayerNamesVisible, 0x1906FB8); // done
+			SET_OFF(VAR_AreaNamesDisabled, 0x151D5D5); // done
 
 			//World
 			SET_OFF(FUNC_CWorld__AddEntity, 0x86C0B0); // done
@@ -520,8 +520,8 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_SpawnPlayer, 0x7D5220); // done
 			SET_OFF(FUNC_GetTrafficLightState1, 0x9B27A0); // done
 			SET_OFF(FUNC_GetTrafficLightState2, 0x9B2800); // done
-			SET_OFF(VAR_CurrentAreaName, 0x11DE0DE); // unable to find
-			SET_OFF(VAR_CurrentStreetName, 0x11DE260); // unable to find
+			SET_OFF(VAR_CurrentAreaName, 0x1107606); // done
+			SET_OFF(VAR_CurrentStreetName, 0x1107600 + 0x188); // done
 			SET_OFF(VAR_NumLoadingScreens, 0x1821964); // done
 			SET_OFF(VAR_FirstLoadingScreenDuration, 0x18480E8); // done
 			SET_OFF(VAR_FirstLoadingScreenType, 0x18480F0); // done
@@ -551,8 +551,8 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CPlane__ProcessInput, 0xA61DA0); // done
 
 			//Checkpoints
-			SET_OFF(VAR_RenderCheckpoints_FirstCP, 0x855966);
-			SET_OFF(VAR_RenderCheckpoints_LastCP, 0x856705);
+			SET_OFF(VAR_RenderCheckpoints_FirstCP, 0x825FB5); // done
+			SET_OFF(VAR_RenderCheckpoints_LastCP, 0x826D50); // done
 
 			//Pools
 			SET_OFF(VAR_PedPool, 0x18219EC); // done
@@ -583,18 +583,18 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_ExplosionTypePool, 0x1697170); // done
 			SET_OFF(VAR_PedMoveBlendPool, 0x18219F4); // done
 			SET_OFF(VAR_ParticleSystemPool, 0x162E080); // done
-			SET_OFF(VAR_VehicleStructPool, 0x16D6594);
-			SET_OFF(VAR_PedBasePool, 0x18A82B8);
-			SET_OFF(VAR_TaskInfoPool, 0x1618040);
-			SET_OFF(VAR_PedAttractorPool, 0x17168BC);
-			SET_OFF(VAR_TargettingPool, 0x1711134);
+			SET_OFF(VAR_VehicleStructPool, 0x1606B44); // done
+			SET_OFF(VAR_PedBasePool, 0x18219F8); // done
+			SET_OFF(VAR_TaskInfoPool, 0x15C33C4); // done
+			SET_OFF(VAR_PedAttractorPool, 0x169C82C); // done
+			SET_OFF(VAR_TargettingPool, 0x1695C94); // done
 			SET_OFF(FUNC_CPool__Allocate, 0x4AAF70); // done
 			SET_OFF(FUNC_CPool__Release, 0x4B7DD0); // done
 			SET_OFF(FUNC_CPool__AtHandle, 0x497750); // done
 			SET_OFF(FUNC_CPool__HandleOf, 0x4B47D0); // done
 			SET_OFF(FUNC_CPlayer__GetPlayerByNumber, 0x86CC80); // done
-			SET_OFF(VAR_PlayerInfoArray, 0x11A7008);
-			SET_OFF(VAR_LocalPlayerId, 0xF1CC68);
+			SET_OFF(VAR_PlayerInfoArray, 0x10D9458); // done
+			SET_OFF(VAR_LocalPlayerId, 0xF16134); // done
 
 			//Physical
 			SET_OFF(FUNC_CPhysical__SetMoveSpeed, 0xA7C040); // done
@@ -605,17 +605,17 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			//Streaming
 			SET_OFF(VAR_ResourceTypeWdrIndex, 0x157D300); // done
-			SET_OFF(VAR_ResourceTypeWadIndex, 0xF27324);
-			SET_OFF(VAR_ResourceTypeScoIndex, 0xF3E28C);
-			SET_OFF(VAR_ResourceTypeWtdIndex, 0xF1CD84);
-			SET_OFF(VAR_ResourceTypeCutIndex, 0xF1EFC0);
-			SET_OFF(VAR_ResourceTypeWddIndex, 0xF272E4);
-			SET_OFF(VAR_ResourceTypeWnvIndex, 0xF2A0C4);
-			SET_OFF(VAR_ResourceTypeRrrIndex, 0x15DAEB0);
-			SET_OFF(VAR_ResourceTypeWbdIndex, 0xF2AAA0);
-			SET_OFF(VAR_ResourceTypeIplIndex, 0xF3BE40);
-			SET_OFF(VAR_ResourceTypeWbnIndex, 0xF3F224);
-			SET_OFF(VAR_ResourceTypeWbsIndex, 0xF412E0);
+			SET_OFF(VAR_ResourceTypeWadIndex, 0xF1DD6C); // done
+			SET_OFF(VAR_ResourceTypeScoIndex, 0xF3AC94); // done
+			SET_OFF(VAR_ResourceTypeWtdIndex, 0xF16124); // done
+			SET_OFF(VAR_ResourceTypeCutIndex, 0xF16190); // done
+			SET_OFF(VAR_ResourceTypeWddIndex, 0xF1D5B8); // done
+			SET_OFF(VAR_ResourceTypeWnvIndex, 0xF27ED4); // done
+			SET_OFF(VAR_ResourceTypeRrrIndex, 0x11B8F30); // done
+			SET_OFF(VAR_ResourceTypeWbdIndex, 0xF1E858); // done
+			SET_OFF(VAR_ResourceTypeIplIndex, 0xF36D58); // done
+			SET_OFF(VAR_ResourceTypeWbnIndex, 0xF36D7C); // done
+			SET_OFF(VAR_ResourceTypeWbsIndex, 0xF3D220); // done
 			SET_OFF(FUNC_RequestResource, 0x8978E0); // done
 			SET_OFF(FUNC_LoadAllResources, 0x8978C0); // done
 			SET_OFF(FUNC_HasResourceLoaded, 0x897A70); // done
@@ -671,8 +671,8 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_IVGAME_FREEMEMORY, 0x401210); // done
 			SET_OFF(FUNC_IVGAME_ALLOCMEMORY, 0x4011D0); // done
 			SET_OFF(FUNC_IVGAME_GETSCREENCOORDSFROM3DCOORDS, 0xAF94C0); // done
-			SET_OFF(FUNC_IVGAME_TOGGLELAZLOW_1, 0xF38728); // byte value not func noob
-			SET_OFF(FUNC_IVGAME_TOGGLELAZLOW_2, 0x166805C); // byte value not func noob
+			SET_OFF(FUNC_IVGAME_TOGGLELAZLOW_1, 0xF36F44); // done
+			SET_OFF(FUNC_IVGAME_TOGGLELAZLOW_2, 0x160719C); // done
 			SET_OFF(FUNC_IVGAME_INITCUTSCENE, 0x879660); // done
 			SET_OFF(FUNC_IVGAME_STOPCUTSCENE, 0x878AF0); // done
 			SET_OFF(FUNC_IVGAME_LOADWORLDATPOSITION, 0xB8CE40); // done
@@ -684,16 +684,16 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor, 0xCFFAF0); // done
 
 			SET_OFF(CGame_Process__Sleep, 0x47342C); // done
-			SET_OFF(CGame_Process_InitialiseRageGame, 0x402C07);
+			SET_OFF(CGame_Process_InitialiseRageGame, 0x105A471); // done
 			SET_OFF(RAGE_LoadGame, 0x6DECB1); // done
 			SET_OFF(RAGE_StartNewGame, 0x6DED5F); // done !NO PATTERN  [TODO]!
  
 			// New
-			SET_OFF(RAGE_Camera__UnkownVoidPtr, 0xF21A6C);
+			SET_OFF(RAGE_Camera__UnkownVoidPtr, 0xF21B5C); // done
 			SET_OFF(IV_CamPool, 0x15A056C); // done
 			SET_OFF(FUNC_IV__CreateCamera, 0x4B47D0); // done
-			SET_OFF(RAGE_AssetManager__OpenFile, 0x5B2796);
-			SET_OFF(RAGE_AssetManager__OpenFileJmpBack, 0x5B4F60);
+			SET_OFF(RAGE_AssetManager__OpenFile, 0x45B016); // done
+			SET_OFF(RAGE_AssetManager__OpenFileJmpBack, 0x45DA50); // done
 			SET_OFF(RAGE_OpenFile, 0x7CB1C0); // done
 			SET_OFF(RAGE_OpenFileHook, 0x491991); // done
 
@@ -702,16 +702,16 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_HookLoadingScreen__WTD,0x491594); // done
 			SET_OFF(IV_HookLoadingTune, 0x7FB908); // done
 
-			SET_OFF(IV_Pool__SetPtrSinglePoolLimit, 0xC4C326);
-			SET_OFF(IV_Pool__SetPtrNodeDoublePoolLimit, 0xB534F6);
-			SET_OFF(IV_Pool__SetEntryInfoNodePoolLimit, 0xC796D6);
-			SET_OFF(IV_Pool__SetPedPoolLimit_1, 0x43A9FC); 
-			SET_OFF(IV_Pool__SetPedPoolLimit_2, 0x43AA1A);
-			SET_OFF(IV_Pool__SetPedPoolLimit_3, 0x43AA27);
-			SET_OFF(IV_Pool__SetPedPoolLimit_4, 0x43AA5C);
+			SET_OFF(IV_Pool__SetPtrSinglePoolLimit, 0xFFFFFF); // fuck you
+			SET_OFF(IV_Pool__SetPtrNodeDoublePoolLimit, 0xC4C366); // done
+			SET_OFF(IV_Pool__SetEntryInfoNodePoolLimit, 0xCC79F6); // done
+			SET_OFF(IV_Pool__SetPedPoolLimit_1, 0xFFFFFF); 
+			SET_OFF(IV_Pool__SetPedPoolLimit_2, 0xFFFFFF);
+			SET_OFF(IV_Pool__SetPedPoolLimit_3, 0xFFFFFF);
+			SET_OFF(IV_Pool__SetPedPoolLimit_4, 0xFFFFFF);
 
-			SET_OFF(IV_Pool__SetVehiclePoolLimit, 0x9D43B8);
-			SET_OFF(IV_Pool__SetVehicleStructPoolLimit, 0xBEA871);
+			SET_OFF(IV_Pool__SetVehiclePoolLimit, 0xFFFFFF);
+			SET_OFF(IV_Pool__SetVehicleStructPoolLimit, 0xFFFFFF);
 
 			SET_OFF(IV_Hook__DisableParkedCars, 0xAF5E50); // done
 			SET_OFF(IV_Hook__DisableEmergencyAndGarbageTrucks, 0x49454F); // done
@@ -760,7 +760,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_Hook__GameProcess_7, 0x16EA6D4); // done
 			SET_OFF(IV_Hook__GameProcess_8, 0x493530); // done no pattern function changed
 
-			SET_OFF(IV_Hook__IncreasePoolSizes, 0xC72F10);
+			SET_OFF(IV_Hook__IncreasePoolSizes, 0x86B650); // done
 
 			SET_OFF(IV_Hook__UnkownPatch1, 0x9C34A0); // done
 			SET_OFF(IV_Hook__UnkownPatch2, 0x40D6B5); // done
@@ -789,7 +789,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_Hook__PatchPreventVehicleCrash, 0x9C34A0); // done
 			SET_OFF(IV_Hook__PatchErrorMessageBoxes, 0x452700); // done
 
-			SET_OFF(IV_Hook__DisableStartupResourceCheck_1, 0x119DB14); // unable to find something
+			SET_OFF(IV_Hook__DisableStartupResourceCheck_1, 0x10C2C64); // done
 			SET_OFF(IV_Hook__DisableStartupResourceCheck_2, 0x9CFDF0); // done
 			SET_OFF(IV_Hook__DisableStartupResourceCheck_3, 0xCCF2D0); // done
 			SET_OFF(IV_Hook__DisableStartupResourceCheck_4, 0x4B3EE0); // done
