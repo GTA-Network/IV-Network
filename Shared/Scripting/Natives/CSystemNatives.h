@@ -18,6 +18,7 @@ private:
 	static int	Print(int * pVM);
 	static int  Logf(int * pVM); 
 	static int	CreateEntity(int * pVM);
+	static int  Date(int * pVM); 
 public:
 	static void Register(CScriptVM* pVM);
 };

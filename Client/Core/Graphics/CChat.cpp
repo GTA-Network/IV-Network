@@ -142,10 +142,11 @@ void CChat::Output(const char * szText, bool bColorCoded)
 		
 		if(pLine)
 		{
+
 			// Add the message to the chatlog
 			CLogFile::Close();
 			CLogFile::Open(CLIENT_CHATLOG_FILE, true);
-			CLogFile::Printf("%s", szRemainingText);
+			CLogFile::Printf("%s", pLine->RemoveColorCodes(szRemainingText));
 			CLogFile::Close();
 			CLogFile::Open(CLIENT_LOG_FILE, true); // Reopen client logfile
 
@@ -610,6 +611,33 @@ bool CChatLine::IsColorCode(const char * szColorCode)
 	}
 
 	return bValid;
+}
+
+const char * CChatLine::RemoveColorCodes(const char * szText)
+{
+	bool bLastChar = false;
+
+	int idx = 0;
+	CString strStrippedText = "";
+	CString strText = szText;
+
+	for (int idx = 0; idx < strText.GetDataSize(); idx++)
+	{
+		if (idx > 6)
+		{
+			if (!IsColorCode(strText.Substring(idx, 7)))
+			{
+				if (idx == 7)
+					strStrippedText.Append(strText.Substring(idx, 7));
+				else
+					strStrippedText.Append(strText.GetChar(idx));
+			}
+			else
+				idx += 6;
+		}
+	}
+
+	return strStrippedText.Get();
 }
 
 const char * CChatLine::Format(const char * szText, float fWidth, CColor& color, bool bColorCoded)
