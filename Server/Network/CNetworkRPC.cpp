@@ -56,6 +56,9 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Add the player to the manager
 	// TODO: add to player manager
+	CPlayerEntity * pPlayer = new CPlayerEntity();
+	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
+	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
 
 	// Add everyone else connected for this player
 	// TODO: handle client join

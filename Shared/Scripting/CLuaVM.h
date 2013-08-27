@@ -57,6 +57,8 @@ public:
 	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 1; }
 
+	int			 GetArgumentCount() { return lua_gettop(m_pVM); }
+
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);
 	virtual void RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	virtual void SetClassInstance(const char* szClassName, void * pInstance);

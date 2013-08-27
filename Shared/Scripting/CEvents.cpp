@@ -57,8 +57,9 @@ CScriptArgument CEvents::Call(CString strName, CScriptArguments* pArguments, CEv
 			}
 		}
 	}
-
-	return CScriptArgument(false);
+	CScriptArgument ret;
+	ret.SetBool(false);
+	return ret;
 }
 
 bool CEvents::Remove(CString strName, CEventHandler* pEventHandler)

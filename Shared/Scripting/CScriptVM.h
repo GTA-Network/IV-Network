@@ -74,6 +74,9 @@ public:
 
 	virtual void SetStackIndex(int iStackIndex) { }
 	virtual void ResetStackIndex() {}
+
+	virtual int	 GetArgumentCount() { return 0; }
+
 	virtual void RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false) {}
 
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0) {}
