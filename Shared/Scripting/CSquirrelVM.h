@@ -52,6 +52,7 @@ public:
 
 	virtual CScriptArgument::ArgumentType GetType(int idx);
 
+	int			 GetArgumentCount() { return sq_gettop(m_pVM); }
 
 	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 2; }
