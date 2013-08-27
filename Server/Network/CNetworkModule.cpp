@@ -58,7 +58,7 @@ bool CNetworkModule::Startup(void)
 	RakNet::SocketDescriptor socketDescriptor(CVAR_GET_INTEGER("port"), CVAR_GET_STRING("hostaddress").Get());
 
 	// Attempt to startup raknet
-	bool bReturn = (m_pRakPeer->Startup(CVAR_GET_INTEGER("maxplayers"), &socketDescriptor, 1, THREAD_PRIORITY_NORMAL) == RakNet::RAKNET_STARTED);
+	bool bReturn = (m_pRakPeer->Startup(CVAR_GET_INTEGER("maxplayers"), &socketDescriptor, 1, 0) == RakNet::RAKNET_STARTED);
 
 	// Did it start?
 	if(bReturn)
