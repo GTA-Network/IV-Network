@@ -432,7 +432,7 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			SET_OFF(FUNC_CEpisodes__IsEpisodeAvaliable,  __noop); // removed
 			SET_OFF(FUNC_GetPlayerInfoFromIndex,  0x86CC80); // done
-			SET_OFF(FUNC_GetIndexFromPlayerInfo,  0x817DC0);
+			SET_OFF(FUNC_GetIndexFromPlayerInfo,  0x86CB20); // done
 			SET_OFF(FUNC_GetLocalPlayerPed,  0x86CCA0); // done
 			SET_OFF(FUNC_CTask__Destructor,  0xA2AD20); // done
 			SET_OFF(FUNC_RemoveInitialLoadingScreens,  0x4921B6); // done
@@ -454,7 +454,7 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			//Script
 			SET_OFF(FUNC_GetRunningScriptThread, 0x4CCD20); // done 
-			SET_OFF(CALL_CScriptVM__Process, 0x80A092); 
+			SET_OFF(CALL_CScriptVM__Process, 0x8346A2); // done
 			SET_OFF(VAR_ScrVM__ThreadPool, 0x186595C); // done
 			SET_OFF(VAR_ScrVM__ActiveThread, 0x16EAD50); // done
 			SET_OFF(FUNC_ScrVM__FindNativeAddress, 0x4CF760); // done
@@ -541,7 +541,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_CBoat__VFTable, 0xD9E974); // done
 			SET_OFF(VAR_CTrain__VFTable, 0xD7D354); // done
 			SET_OFF(VAR_CHeli__VFTable, 0xD6F0A4); // done
-			SET_OFF(VAR_CPlane__VFTable, 0xD86104); // done
+			SET_OFF(VAR_CPlane__VFTable, 0xD8BB1C); // done
 			SET_OFF(FUNC_CPlayerPed__ProcessInput, 0xA17820); // done
 			SET_OFF(FUNC_CAutomobile__ProcessInput, 0xC44780); // done
 			SET_OFF(FUNC_CBike__ProcessInput, 0xB45490); // done
@@ -552,7 +552,7 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			//Checkpoints
 			SET_OFF(VAR_RenderCheckpoints_FirstCP, 0x825FB5); // done
-			SET_OFF(VAR_RenderCheckpoints_LastCP, 0x826D50); // done
+			SET_OFF(VAR_RenderCheckpoints_LastCP, 0x826D55); // done
 
 			//Pools
 			SET_OFF(VAR_PedPool, 0x18219EC); // done
@@ -684,7 +684,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor, 0xCFFAF0); // done
 
 			SET_OFF(CGame_Process__Sleep, 0x47342C); // done
-			SET_OFF(CGame_Process_InitialiseRageGame, 0x105A471); // done
+			SET_OFF(CGame_Process_InitialiseRageGame, 0x4734F7); // done
 			SET_OFF(RAGE_LoadGame, 0x6DECB1); // done
 			SET_OFF(RAGE_StartNewGame, 0x6DED5F); // done !NO PATTERN  [TODO]!
  
