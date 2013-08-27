@@ -60,8 +60,14 @@ int CSystemNatives::Date(int * VM)
 	int iCustomTime = 0;
 	CString strTimeType("l");
 
-	pVM->Pop(strTimeType);
-	pVM->Pop(iCustomTime);
+	if (pVM->GetArgumentCount() > 1)
+	{
+		pVM->Pop(strTimeType);
+		if (pVM->GetArgumentCount() > 2)
+			pVM->Pop(iCustomTime);
+	}
+
+	CLogFile::Printf("%d", pVM->GetArgumentCount());
 
 	if (iCustomTime != 0)
 		tTime = iCustomTime;
