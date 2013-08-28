@@ -13,6 +13,12 @@
 
 extern CCore * g_pCore;
 
+int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
+{
+	return MessageBox(NULL, szText, "IV:Multiplayer", uType);
+}
+
+
 CChat::CChat(float fX, float fY) : m_fX(fX),
 	m_fY(fY)
 {
@@ -142,11 +148,10 @@ void CChat::Output(const char * szText, bool bColorCoded)
 		
 		if(pLine)
 		{
-
 			// Add the message to the chatlog
 			CLogFile::Close();
 			CLogFile::Open(CLIENT_CHATLOG_FILE, true);
-			CLogFile::Printf("%s", pLine->RemoveColorCodes(szRemainingText));
+			CLogFile::Printf("%s", pLine->RemoveColorCodes(szRemainingText).Get());
 			CLogFile::Close();
 			CLogFile::Open(CLIENT_LOG_FILE, true); // Reopen client logfile
 
@@ -154,7 +159,7 @@ void CChat::Output(const char * szText, bool bColorCoded)
 			
 			pLine->SetActive(true);
 
-		}
+		}	
 	}
 	while(szRemainingText);
 }
@@ -613,30 +618,23 @@ bool CChatLine::IsColorCode(const char * szColorCode)
 	return bValid;
 }
 
-const char * CChatLine::RemoveColorCodes(const char * szText)
+CString CChatLine::RemoveColorCodes(const char * szText)
 {
 	bool bLastChar = false;
 
-	CString strStrippedText = "";
-	CString strText = szText;
+	CString strStrippedText = CString("");
+	CString strText = CString(szText);
 
-	for (int idx = 0; idx < strText.GetDataSize(); idx++)
+	for (int idx = 0; idx < strlen(szText); idx++)
 	{
-		if (idx > 6)
+		if (IsColorCode(strText.Substring(idx, 7).Get()))
 		{
-			if (!IsColorCode(strText.Substring(idx, 7)))
-			{
-				if (idx == 7)
-					strStrippedText.Append(strText.Substring(idx, 7));
-				else
-					strStrippedText.Append(strText.GetChar(idx));
-			}
-			else
-				idx += 6;
+			idx += 6; // Skip the code
 		}
+		else
+			strStrippedText.Append(strText.Substring(idx, 1).Get());
 	}
-
-	return strStrippedText.Get();
+	return strStrippedText;
 }
 
 const char * CChatLine::Format(const char * szText, float fWidth, CColor& color, bool bColorCoded)

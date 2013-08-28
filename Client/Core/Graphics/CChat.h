@@ -52,7 +52,7 @@ public:
 							~CChatLine				() { };
 
 	bool					IsColorCode				(const char * szColorCode);
-	const char				* RemoveColorCodes		(const char * szText);
+	CString					RemoveColorCodes		(const char * szText);
 	const char				* Format				(const char * szText, float fWidth, CColor& color, bool bColorCoded);
 	void					Draw					(float fX, float fY, unsigned char ucAlpha, bool bShadow);
 
