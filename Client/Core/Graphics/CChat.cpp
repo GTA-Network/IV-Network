@@ -13,12 +13,6 @@
 
 extern CCore * g_pCore;
 
-int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
-{
-	return MessageBox(NULL, szText, "IV:Multiplayer", uType);
-}
-
-
 CChat::CChat(float fX, float fY) : m_fX(fX),
 	m_fY(fY)
 {
