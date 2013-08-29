@@ -33,8 +33,9 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 	return true;
 }
 
-CScriptArgument CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
+CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
 {
+	CScriptArguments returnArguments;
 	auto itEvent = m_Events.find(strName);
 	if(itEvent != m_Events.end())
 	{
@@ -45,7 +46,7 @@ CScriptArgument CEvents::Call(CString strName, CScriptArguments* pArguments, CEv
 			{
 				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
-				return ret;
+				returnArguments.push(ret);
 			}
 			else if(EventType == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
@@ -53,13 +54,12 @@ CScriptArgument CEvents::Call(CString strName, CScriptArguments* pArguments, CEv
 			{
 				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
-				return ret;
+				returnArguments.push(ret);
 			}
 		}
 	}
-	CScriptArgument ret;
-	ret.SetBool(false);
-	return ret;
+
+	return returnArguments;
 }
 
 bool CEvents::Remove(CString strName, CEventHandler* pEventHandler)

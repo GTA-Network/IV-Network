@@ -39,7 +39,7 @@ public:
 
 	void Clear();
 
-	CScriptArgument Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM);
+	CScriptArguments Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM);
 };
 
 #endif // CEvents_h
