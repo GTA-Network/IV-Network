@@ -14,6 +14,7 @@
 #include "Threading/CMutex.h"
 #include <stdio.h>
 
+#define PRINT_FUNCTION ; //CLogFile::Print(__FUNCTION__);
 typedef void (* LogFileCallback_t)(const char * szBuffer);
 
 class CLogFile

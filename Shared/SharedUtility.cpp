@@ -657,4 +657,31 @@ namespace SharedUtility
 		return CString( "%s", md5( szSerialMask ).c_str() ).ToUpper();
 	}
 #endif
+
+	void SharedUtility::CheckGameDirectoryExists()
+	{
+
+	}
+
+	void SharedUtility::DefineGameRegistryEntires() 
+	{
+
+	}
+
+	void SharedUtility::CreateBasicMPDirectories()
+	{
+		// Check if we have the 'multiplayer' directory, if not: create it.
+		char szExecutablePath[MAX_PATH];
+		sprintf_s(szExecutablePath,GetAbsolutePath("").Get(),sizeof(MAX_PATH));
+
+		CString strDirectories[] = {"multiplayer", "multiplayer\\common", "multiplayer\\pc", "multiplayer\\pc\\data", "multiplayer\\common\\data", 
+				"multiplayer\\common\\data\\effects", "multiplayer\\pc\\textures"};
+
+		for(size_t i = 0; i < ARRAY_LENGTH(strDirectories); i++) {
+			CString strMultiplayerPath = szExecutablePath;
+
+			strMultiplayerPath.AppendF(strDirectories[i]);
+			CreateDirectoryA(strMultiplayerPath.Get());
+		}
+	}
 };

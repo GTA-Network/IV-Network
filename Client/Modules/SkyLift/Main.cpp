@@ -15,13 +15,13 @@
 DWORD dwFunctionInvokeOffset;
 
 // HACKY
-#include "../../Core/IV/CIVScript.h"
-#include "../../Core/IV/CIVScript_FunctionContext.h"
-#include "../../Core/IV/CIVScript_FunctionInvoke.h"
-#include "../../Core/IV/CIVScript_FunctionInvoke.cpp"
-#include "../../Core/IV/CIVScript_FunctionList.h"
-#include "../../Core/IV/CIVScriptEnums.h"
-#include "../../Core/IV/CIVScriptHook.h"
+#include "../../IVCore/IV/CIVScript.h"
+#include "../../IVCore/IV/CIVScript_FunctionContext.h"
+#include "../../IVCore/IV/CIVScript_FunctionInvoke.h"
+#include "../../IVCore/IV/CIVScript_FunctionInvoke.cpp"
+#include "../../IVCore/IV/CIVScript_FunctionList.h"
+#include "../../IVCore/IV/CIVScriptEnums.h"
+#include "../../IVCore/IV/CIVScriptHook.h"
 
 #endif // _MODULE
 

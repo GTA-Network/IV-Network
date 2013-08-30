@@ -128,6 +128,11 @@ namespace SharedUtility
 	DWORD				GetSerial();
 	CString				GetSerialHash();
 #endif
+
+	// Define registrys
+	void DefineGameRegistryEntires();
+	void CheckGameDirectoryExists();
+	void CreateBasicMPDirectories();
 }
 
 #endif

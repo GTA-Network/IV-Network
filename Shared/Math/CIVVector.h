@@ -19,10 +19,10 @@ struct CVECTOR
 
 struct CIVVector
 {
-	VECTOR	bodyHeading;		// 0x0 | 0
-	VECTOR	visionHeading;		// 0x10 | 16
-	VECTOR	unkVector;			// 0x20 | 32
-	VECTOR	position;			// 0x30 | 48
+	CVECTOR	bodyHeading;		// 0x0 | 0
+	CVECTOR	visionHeading;		// 0x10 | 16
+	CVECTOR	unkVector;			// 0x20 | 32
+	CVECTOR	position;			// 0x30 | 48
 };
 
 #endif // CIVVector_h

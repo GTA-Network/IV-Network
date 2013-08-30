@@ -79,13 +79,11 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define DEBUG_IDENTIFIER
 #endif
 
-// define
-#define MOD_NAME "IV:Multiplayer"
 #define INVALID_ENTITY_ID ((EntityId)0xFFFF)
 #define NETWORK_VERSION 0x1
 
 // Mod version string
-#define MOD_VERSION_STRING "1.0.0 DEV"
+#define MOD_VERSION_STRING "1.0.0 DEV ft. Episodes from Liberty City"
 
 // Version identifiers
 #define VERSION_IDENTIFIER MOD_NAME " " MOD_VERSION_STRING DEBUG_IDENTIFIER " [" __DATE__ ", " __TIME__ "]"
@@ -117,12 +115,26 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define LIBRARY_EXTENSION ".so"
 #endif
 
-// Library Names
+// Basic Names
+#define MOD_NAME "IV:Multiplayer"
+#define MOD_SHORT_NAME "IVMP"
+#define MOD_SHORT_NAME_ILLEGAL "IV:MP"
 #define CLIENT_CORE_NAME "IVMultiplayer"
 #define CLIENT_LAUNCH_HELPER_NAME "IVMultiplayerLaunchInjector"
 #define SERVER_CORE_NAME "Server.Core"
 #define NETWORK_MODULE_NAME "Network.Core"
-#define VFS_MODULE_NAME "Client.VFS"
+#define REGISTRY_AREA "Software\\IVMultiplayer"
+#define GAME_DIRECTORY "GrandTheftAutoDirectory"
+#define MP_START_EXECUTABLE "LaunchIVMultiplayer.exe"
+#define MP_GET_GAME_READY_EXECUTABLE "IVGameReady.exe"
+#define GAME_START_EXECUTABLE "LaunchEFLC.exe"
+#define GAME_DEFAULT_EXECUTABLE "EFLC.exe"
+#define SHORT_URI_LAUNCH_1 "ivmp://"
+#define SHORT_URI_LAUNCH_2 "ivmultiplayer://"
+#define SHORT_URI_LAUNCH_3 "ivmp"
+#define SHORT_URI_LAUNCH_4 "ivmultiplayer"
+#define SHORT_COMMANDLINE_LAUNCH_1 "-ivmp"
+#define DEFAULT_REGISTRY_GAME_DIRECTORY "Software\\Rockstar Games\\EFLC"
 
 // Library Exports
 #ifdef EXPORT
@@ -150,7 +162,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define	SAFE_RELEASE(p)	{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
 #define SAFE_DELETE_ARRAY(memory) if(memory) { delete [] memory; memory = NULL; }
 #define SAFE_FREE(memory) if(memory) { free(memory); memory = NULL; }
-#define	PAD(prefix, name, size) BYTE prefix##_##name##[size]
+#define	PAD(prefix, name, size) unsigned char prefix##_##name##[size]
 
 // Bit manipulation macros
 #define SET_BIT(a, b) a |= b
