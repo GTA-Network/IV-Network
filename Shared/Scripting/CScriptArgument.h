@@ -46,7 +46,7 @@ public:
 	CScriptArgument(int i) { m_eType = ST_INTEGER; data.i = i; }
 	CScriptArgument(bool b) { m_eType = ST_BOOL; data.b = b; }
 	CScriptArgument(float f) { m_eType = ST_FLOAT; data.f = f; }
-	CScriptArgument(CScriptArgument& p);
+	CScriptArgument(const CScriptArgument& p);
 	CScriptArgument(CString str) { m_eType = ST_STRING; data.str = new CString(str); }
 	CScriptArgument(const CScriptArguments& array, bool isArray = true) { m_eType = (isArray ? ST_ARRAY : ST_TABLE); data.pArray = new CScriptArguments(array); }
 	~CScriptArgument();
@@ -57,7 +57,7 @@ public:
 
 	void				 Push(CScriptVM* pVM);
 
-	void                 set(CScriptArgument& p);
+	void                 set(const CScriptArgument& p);
 
 	void                 SetNull()                 { reset(); m_eType = ST_INVALID; }
 	void                 SetInteger(int i)         { reset(); m_eType = ST_INTEGER; data.i = i; }

@@ -35,6 +35,11 @@ CScriptArguments::CScriptArguments(const CScriptArguments& p)
 		m_Arguments.push_back(new CScriptArgument(*pArgument));
 }
 
+void CScriptArguments::push(const CScriptArgument &arg)
+{
+	m_Arguments.push_back(new CScriptArgument(arg));
+}
+
 void CScriptArguments::push(int i)
 {
 	m_Arguments.push_back(new CScriptArgument(i));
