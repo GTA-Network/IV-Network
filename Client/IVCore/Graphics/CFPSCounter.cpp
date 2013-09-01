@@ -32,7 +32,7 @@ void CFPSCounter::Pulse()
 		// Reset the current frame count
 		m_uiCurrentFrames = 0;
 
-		// Set the last time
+		// Set the last time 
 		m_ulLastTime = ulCurrentTime;
 	}
 }
