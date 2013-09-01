@@ -97,6 +97,9 @@ public:
 
 	void				SetScore(int iScore);
 	int					GetScore();
+
+	void				SetDisplayScore(int iScore);
+	int					GetDisplayScore();
 };
 
 #endif // CIVPlayerInfo_h

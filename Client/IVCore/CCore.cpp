@@ -83,6 +83,9 @@ bool CCore::Initialise()
 
 	// Create the game instance
 	m_pGame = new CGame;
+
+	// Create the time instance
+	m_pTimeManagement = new CTime;
 	
 	// Create the graphics instance
 	m_pGraphics = new CGraphics;
@@ -219,16 +222,16 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 	// Print our IVMultiplayer "Identifier" in the left upper corner
 	if(!g_pCore->GetGame()->GetLocalPlayer())
-		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
+		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
 	else
-		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
+		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
 		
 	// Render our chat instance
 	if(m_pChat && m_pChat->IsVisible())
 		m_pChat->Render();
 
 	// Before rendering FPS-Counter instance, update FPS display
-	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 1, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
+	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
 	// Render our FPS-Counter instance
 	if(m_pFPSCounter)
@@ -237,6 +240,12 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render our development instance
 	if(m_pDevelopment)
 		m_pDevelopment->Process();
+
+	// Render our time management
+	m_pTimeManagement->Pulse();
+
+	// Render ingame environment
+	m_pGame->ProcessEnvironment();
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
@@ -323,4 +332,12 @@ void CCore::OnNetworkTimeout()
 {
 	// Call reinitialise cgame
 	g_pCore->GetGame()->Reset();
+}
+
+void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
+{
+	CLogFile::Printf("Dumping Virtual Function Table at 0x%p...",dwAddress);
+
+	for(int i = 0; i < iFunctionCount; i++)
+		CLogFile::Printf("VFTable Offset: %d, Function: 0x%p (At Address: 0x%p)", (i * 4), *(PDWORD)(dwAddress + (i * 4)), (dwAddress + (i * 4)));
 }

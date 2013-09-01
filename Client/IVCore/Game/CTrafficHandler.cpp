@@ -9,8 +9,8 @@
 
 #include "CTrafficHandler.h"
 #include <Patcher/CPatcher.h>
-#include <CCore.h>
-extern CCore * g_pCore;
+#include <IV/CIVScript.h>
+#include <Ptrs.h>
 
 CTrafficLights::eGTATrafficLightState dwTrafficLightState;
 
@@ -74,7 +74,7 @@ void CTrafficHandler::InstallTrafficHook()
 
     // Disable scenario peds
     *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
-    *(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds + 0x1) = 0x0; // 0
+	*(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds + 0x1) = 0x0; // 0
     *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds + 0x5) = 0xC3; // retn
 
     // Disable fake cars

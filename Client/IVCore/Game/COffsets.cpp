@@ -426,9 +426,9 @@ void COffsets::Initialize(unsigned int uiBase)
 
 			SET_OFF(VAR_IPedDataNY, 0xE9B124); // done
 			SET_OFF(FUNC_CPedMoveBlendOnFoot__Constructor, 0xA24D90); // done
-			SET_OFF(FUNC_NEW_CPedData, 0x43A960); // not needed
+			SET_OFF(FUNC_NEW_CPedData, __noop); // not needed
 			SET_OFF(CALL_StartLoadingTune, 0x492D20); // DONE
-			SET_OFF(VAR_NumberOfParkedCars, 0xF1D964); // not needed
+			SET_OFF(VAR_NumberOfParkedCars, __noop); // not needed
 
 			SET_OFF(FUNC_CEpisodes__IsEpisodeAvaliable,  __noop); // removed
 			SET_OFF(FUNC_GetPlayerInfoFromIndex,  0x86CC80); // done
@@ -474,8 +474,8 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_CClock__DayOfWeek, 0x10C93A8); // done
 
 			//HUD
-			SET_OFF(VAR_HudEnabled, 0x010A53DF); // done
-			SET_OFF(VAR_RadarVisible, 0x010A53DC); // done
+			SET_OFF(VAR_HudEnabled, 0x010A53DC); // done
+			SET_OFF(VAR_RadarVisible, 0x010A53DF); // done
 			SET_OFF(VAR_PlayerNamesVisible, 0x1906FB8); // done
 			SET_OFF(VAR_AreaNamesDisabled, 0x151D5D5); // done
 
@@ -599,7 +599,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			//Physical
 			SET_OFF(FUNC_CPhysical__SetMoveSpeed, 0xA7C040); // done
 			SET_OFF(FUNC_CPhysical__GetMoveSpeed, 0xA7C0E0); // done
-			SET_OFF(FUNC_CPhysical__SetTurnSpeed, 0xA7C040); // done
+			SET_OFF(FUNC_CPhysical__SetTurnSpeed, 0xA7C130); // done
 			SET_OFF(FUNC_CPhysical__GetTurnSpeed, 0xA7C1D0); // done
 			SET_OFF(FUNC_CPhysical__SetLastDamageEntity, 0xA7C280); // done
 
@@ -609,6 +609,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_ResourceTypeScoIndex, 0xF3AC94); // done
 			SET_OFF(VAR_ResourceTypeWtdIndex, 0xF16124); // done
 			SET_OFF(VAR_ResourceTypeCutIndex, 0xF16190); // done
+
 			SET_OFF(VAR_ResourceTypeWddIndex, 0xF1D5B8); // done
 			SET_OFF(VAR_ResourceTypeWnvIndex, 0xF27ED4); // done
 			SET_OFF(VAR_ResourceTypeRrrIndex, 0x11B8F30); // done
@@ -636,13 +637,13 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CPedWeapon__HideWeapon, 0x9DF8C0); // done
 			SET_OFF(FUNC_CPedWeapon__SetAmmoByType, 0x9DD6D0); // done
 
-			SET_OFF(FUNC_CPlayerInfo__Constructor,  0x0849140); // done
+			SET_OFF(FUNC_CPlayerInfo__Constructor,  0x849140); // done
 			SET_OFF(FUNC_CPlayerInfo__SetPlayerInfo,  0x8470C0); // done
 
 			SET_OFF(FUNC_IV_LOADWORLDATPOS_BYTE,  0x110DFAC); // done
 
 			//Tasks
-			SET_OFF(FUNC_CPedTaskManager__SetTaskPriority, 0x9E3220); // done
+			SET_OFF(FUNC_CPedTaskManager__SetTaskPriority, 0x9E3220); // done // TBC
 			SET_OFF(FUNC_CPedTaskManager__SetTaskSecondary, 0x9E3430); // done
 			SET_OFF(FUNC_CPedTaskManager__SetTaskMovement, 0x9E3790); // done
 			SET_OFF(VAR_CTask__VFTable, 0xD87ECC);	// done

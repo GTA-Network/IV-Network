@@ -373,3 +373,18 @@ void CGameFunction::LoadWorldAtPosition(CVector3& vecPosition)
 	_asm	mov ecx, pByteUnknown;
 	_asm	call COffsets::FUNC_IVGAME_LOADWORLDATPOSITION;
 }
+
+uint32_t CGameFunction::HashToString(char *key, size_t len)
+{
+   uint32_t hash, i;
+   for(hash = i = 0; i < len; ++i)
+   {
+       hash += key[i];
+       hash += (hash << 10);
+       hash ^= (hash >> 6);
+   }
+   hash += (hash << 3);
+   hash ^= (hash >> 11);
+   hash += (hash << 15);
+   return hash;
+}

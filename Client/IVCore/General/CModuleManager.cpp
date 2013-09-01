@@ -10,6 +10,7 @@
 #include "CModuleManager.h"
 #include <SharedUtility.h>
 #include <CLogFile.h>
+#include <Game/CGameFuncs.h>
 
 std::list<CModule *>		CModuleManager::m_pModules;
 void CModuleManager::FetchModules()
@@ -42,7 +43,7 @@ void CModuleManager::FetchModules()
 			{
 				sTempPath = CString("%smultiplayer\\modules\\",sOrigPath.Get()).Get();
 				sTempPath.AppendF("%s",FindFileData.cFileName);
-				if(sTempPath.EndsWith(".eIVM"))
+				if(sTempPath.EndsWith(".dll"))
 				{
 					CModule * pModule = new CModule(CString("%s",FindFileData.cFileName));
 					pModule->SetPath(sTempPath);

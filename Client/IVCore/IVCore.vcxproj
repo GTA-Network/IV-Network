@@ -236,6 +236,7 @@
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
     <ClCompile Include="..\..\Shared\CZlib.cpp" />
+    <ClCompile Include="..\..\Shared\Game\CTime.cpp" />
     <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp" />
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
@@ -557,6 +558,7 @@
     <ClInclude Include="..\..\Shared\CLibrary.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\CZlib.h" />
+    <ClInclude Include="..\..\Shared\Game\CTime.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />

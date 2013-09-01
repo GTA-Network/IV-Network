@@ -104,6 +104,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetChat()->Output("Spawning local player ...",false);
 		g_pCore->GetGame()->OnClientReadyToGamePlay();
 		g_pCore->GetGame()->GetLocalPlayer()->SetModel(7);
+		g_pCore->GetGame()->GetLocalPlayer()->SetMoney(10000);
 
 		int iVehicleType = 91;
 
@@ -191,7 +192,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "time")
 	{
+		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.c_str()),0);
 		CIVWeather::SetTime(atoi(strParameters.c_str()),0);
+		PTR_CHAT->Output("SET time succ!",false);
 		return true;
 	}
 	else if(strCommand == "setmodel")
@@ -296,6 +299,20 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
 		return true;
 	}	
+	else if(strCommand == "startscript1")
+	{
+		PTR_CHAT->Outputf(false,"Starting Script");
+
+		CIVScript::RequestScript("golf_launcher");
+		CIVScript::StartNewScript("golf_launcher",1024);
+	}
+	else if(strCommand == "startscript2")
+	{
+		PTR_CHAT->Outputf(false,"Starting Script \"%s\" ",strParameters.c_str());
+
+		CIVScript::RequestScript(strParameters.c_str());
+		CIVScript::StartNewScript(strParameters.c_str(),512);
+	}
 
 	return false;
 }

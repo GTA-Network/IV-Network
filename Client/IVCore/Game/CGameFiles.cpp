@@ -35,6 +35,7 @@ gameFiles [] =
 	{0x1B8184BB, "multiplayer\\datafiles\\1.ivmp", true, "multiplayer\\pc\\textures\\loadingscreens.wtd", true},
 	{0x1B8184BB, "multiplayer\\datafiles\\2.ivmp", true, "multiplayer\\common\\data\\loadingscreens_pc_eflc_v2.dat", true},
 	{0x1B8184BB, "multiplayer\\datafiles\\3.ivmp", true, "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd", true},
+	{0x1B8184BB, "multiplayer\\datafiles\\4.ivmp", true, "multiplayer\\common\\data\\hud_eflc.dat", true},
 };
 
 bool CGameFiles::CheckFiles()

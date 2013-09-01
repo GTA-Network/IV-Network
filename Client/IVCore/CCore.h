@@ -42,6 +42,7 @@
 #include <Graphics/CSnapShot.h>
 
 #include <General/CModuleManager.h>
+#include <Game/CTime.h>
 
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
@@ -60,6 +61,7 @@ private:
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
 	CDevelopment					* m_pDevelopment;
+						
 
 	eGAMEStates						m_eGameState;
 
@@ -71,6 +73,7 @@ private:
 	CLibrary						*m_pRAGELibrary;
 	GetInterface_t					m_pEngine;
 	RAGEEngineInterface				*m_pInterface;
+	CTime							*m_pTimeManagement;
 
 	bool							m_hwndFocused;
 
@@ -104,6 +107,7 @@ public:
 	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
+	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
 
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
@@ -130,6 +134,7 @@ public:
 		m_hwndFocused = bFocus;
 	}
 	bool							GetHWND() { return m_hwndFocused; }
+	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
 };
 
 #endif // CCore_h

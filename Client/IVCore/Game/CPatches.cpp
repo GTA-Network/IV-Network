@@ -113,6 +113,21 @@ void CPatches::Initialize()
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD)CTaskSimpleStartVehicle__Process);
 
+	// Replace I Luv "L.C." with "IVMP"
+	CPatcher::Unprotect((g_pCore->GetBase() + 0x19DB0E9),4);
+	*(BYTE *)(g_pCore->GetBase() + 0x19DB0E6) = 0x49; // L -> I
+	*(BYTE *)(g_pCore->GetBase() + 0x19DB0E7) = 0x56; // . -> V
+	*(BYTE *)(g_pCore->GetBase() + 0x19DB0E8) = 0x4D; // C -> M
+	*(BYTE *)(g_pCore->GetBase() + 0x19DB0E9) = 0x50; // . -> P
+
+	// Replace the "loading..." crap with "Busy, hold on...";
+	char *szLoadingText = "BUSY.. HOLD ON";
+	*(DWORD *)(g_pCore->GetBase() + (0x7E2DF2 + 0x1)) = (DWORD)szLoadingText; // Replace for chargment...
+ 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DE3 + 0x1)) = (DWORD)szLoadingText; // Replace for beladung...
+	*(DWORD *)(g_pCore->GetBase() + (0x7E2DD4 + 0x1)) = (DWORD)szLoadingText; // Replace for caricamento...
+	*(DWORD *)(g_pCore->GetBase() + (0x7E2DC5 + 0x1)) = (DWORD)szLoadingText; // Replace for carga...
+	*(DWORD *)(g_pCore->GetBase() + (0x7E2DB6 + 0x1)) = (DWORD)szLoadingText; // Replace for loading...
+
 	// === RAGE %% RGSC Stuff
     // Don't initialize error reporting
     CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchErrorReporting);

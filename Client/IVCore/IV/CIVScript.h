@@ -270,6 +270,14 @@ namespace CIVScript
 	static void ClearSequenceTask(unsigned int taskSequence) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CLEAR_SEQUENCE_TASK, taskSequence); }
 	static void ClearCharTasks(unsigned int ped) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CLEAR_CHAR_TASKS, ped); }
 
+	static void AddScore(unsigned int playerIndex, int score) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_SCORE, playerIndex, score); }
+	static void AllowPlayerToCarryNonMissionObjects(unsigned int playerIndex, bool allow) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ALLOW_PLAYER_TO_CARRY_NON_MISSION_OBJECTS, playerIndex, allow); }
+
+	// 
+	static void AllocateScriptToObject(const char* p0, unsigned int p1, unsigned int p2, float p3, int p4) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ALLOCATE_SCRIPT_TO_OBJECT, p0, p1, p2, p3, p4); }
+    static void AllocateScriptToRandomPed(const char* p0, unsigned int p1, int p2, int p3) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ALLOCATE_SCRIPT_TO_RANDOM_PED, p0, p1, p2, p3); }
+	static void RegisterWorldPointScriptBrain(const char* p0, float p1) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REGISTER_WORLD_POINT_SCRIPT_BRAIN, p0, p1); }
+
 };
 
 #endif // CIVScript_h

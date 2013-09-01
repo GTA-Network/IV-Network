@@ -115,7 +115,11 @@ bool CGraphics::LoadFonts()
 	static const sFontInfo fontInfos[] =
 	{
 		{ "default",		15,		FW_NORMAL },
-		{ "default-bold",	15,		FW_BOLD }
+		{ "default-bold",	15,		FW_BOLD },
+		{ "tahoma",			15,		FW_NORMAL },
+		{ "tahoma-bold",	15,		FW_BOLD },
+		{ "verdana",		15,		FW_NORMAL },
+		{ "arial",			15,		FW_NORMAL }
 	};
 
 	bool bSuccess = true;

@@ -26,24 +26,24 @@ struct ProtectionInfo
 
 class CPatcher {
 public:
-	static ProtectionInfo Unprotect(DWORD dwAddress, int iSize);
-	static void           Reprotect(ProtectionInfo protectionInfo);
-	static void           InstallNopPatch(DWORD dwAddress, int iSize = 1);
-	static void         * InstallDetourPatchInternal(DWORD dwAddress, DWORD dwDetourAddress, BYTE byteType, int iSize = 5);
-	static void           UninstallDetourPatchInternal(DWORD dwAddress, void * pTrampoline, int iSize = 5);
-	static void         * InstallJmpPatch(DWORD dwAddress, DWORD dwJmpAddress, int iSize = 5);
-	static void         * InstallCallPatch(DWORD dwAddress, DWORD dwCallAddress, int iSize = 5);
-	static void           InstallRetnPatch(DWORD dwAddress);
-	static void           InstallStringPatch(DWORD dwAddress, char * szString, int iSize);
-	static void           InstallMethodPatch(DWORD dwHookAddress, DWORD dwFunctionAddress);
-	static DWORD          GetFunctionAddress(char * szLibrary, char * szFunction);
-	static DWORD          GetFunctionAddress(char * szLibrary, unsigned int uOrdinal);
-	static void         * InstallDetourPatch(char * szLibrary, char * szFunction, DWORD dwFunctionAddress);
-	static void         * InstallDetourPatch(char * szLibrary, unsigned int uOrdinal, DWORD dwFunctionAddress);
-	static BYTE			  InstallDetourPatchWithData(char * szLibrary, unsigned int uOrdinal, DWORD dwFunctionAddress);
-	static void           UninstallDetourPatch(void * pTrampoline, DWORD dwFunctionAddress);
-	static void			  InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress);
-	static void			  InstallHookCall(DWORD dwAddr, DWORD dwFunc);
-};
+	static ProtectionInfo	Unprotect(DWORD dwAddress, int iSize);
+	static void				Reprotect(ProtectionInfo protectionInfo);
+	static void				InstallNopPatch(DWORD dwAddress, int iSize = 1);
+	static void				* InstallDetourPatchInternal(DWORD dwAddress, DWORD dwDetourAddress, BYTE byteType, int iSize = 5);
+	static void				UninstallDetourPatchInternal(DWORD dwAddress, void * pTrampoline, int iSize = 5);
+	static void				* InstallJmpPatch(DWORD dwAddress, DWORD dwJmpAddress, int iSize = 5);
+	static void				* InstallCallPatch(DWORD dwAddress, DWORD dwCallAddress, int iSize = 5);
+	static void				InstallRetnPatch(DWORD dwAddress);
+	static void				InstallStringPatch(DWORD dwAddress, char * szString, int iSize);
+	static void				InstallMethodPatch(DWORD dwHookAddress, DWORD dwFunctionAddress);
+	static DWORD			GetFunctionAddress(char * szLibrary, char * szFunction);
+	static DWORD			GetFunctionAddress(char * szLibrary, unsigned int uOrdinal);
+	static void				* InstallDetourPatch(char * szLibrary, char * szFunction, DWORD dwFunctionAddress);
+	static void				* InstallDetourPatch(char * szLibrary, unsigned int uOrdinal, DWORD dwFunctionAddress);
+	static BYTE				InstallDetourPatchWithData(char * szLibrary, unsigned int uOrdinal, DWORD dwFunctionAddress);
+	static void				UninstallDetourPatch(void * pTrampoline, DWORD dwFunctionAddress);
+	static void				InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress);
+	static void				InstallHookCall(DWORD dwAddr, DWORD dwFunc);
+};	
 
 #endif // CPatcher_h

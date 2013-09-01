@@ -399,8 +399,8 @@ bool CIVVehicle::GetEngineStatus()
 	// Do we have a valid vehicle pointer?
 	IVVehicle * pVehicle = GetVehicle();
 
-	if(pVehicle)
-		return *(bool *)( pVehicle + 0x1344 );
+	if(IS_BIT_SET(pVehicle->m_byteFlags1, 8))
+		return true;
 
 	return false;
 }
@@ -581,18 +581,18 @@ void CIVVehicle::RemoveCarWindow(int iWindow)
 	}
 }
 
-void CIVVehicle::SetLightsState(int iState) // 0(on),1(aways off),2(always on) // doesn't work - i know why wait
+void CIVVehicle::SetLightsState(int iState)
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-		*(WORD *)(pVehicle + 0x1112) ^= ((char)iState ^ *(WORD *)(pVehicle + 0x1112)) & 3; // 4370
+		iState == 2 ? pVehicle->m_byteLightState ^= (2 ^ pVehicle->m_byteLightState) & 3 : pVehicle->m_byteLightState ^= (1 ^ pVehicle->m_byteLightState) & 3;
 }
 
 int CIVVehicle::GetLightsState()
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-		return (*(WORD  *)(pVehicle + 0x1112)); // 4370(flag?)
+		return ((int)(pVehicle->m_byteLightState) & 3);
 
 	return 0;
 }
@@ -645,4 +645,20 @@ bool CIVVehicle::GetCarCanBurstTyres()
 		return ((*(BYTE *)(pVehicle + 0xF67) & 0xEFu) != NULL);
 
 	return false;
+}
+
+void CIVVehicle::SetHeadlights(bool bSwitch)
+{
+	IVVehicle * pVehicle = GetVehicle();
+	if(pVehicle)
+		bSwitch ? SET_BIT(pVehicle->m_byteFlags6, 2) : UNSET_BIT(pVehicle->m_byteFlags6, 2);
+}
+
+bool CIVVehicle::GetHeadlights()
+{
+	IVVehicle * pVehicle = GetVehicle();
+	if(pVehicle)
+		return IS_BIT_SET(pVehicle->m_byteFlags6, 2);
+
+	return 0;
 }

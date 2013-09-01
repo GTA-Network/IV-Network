@@ -118,7 +118,7 @@ void CLogFile::PrintToFile(const char * szString)
 	{
 		// Log the message
 		if(m_bUseTimeStamp)
-			fprintf(m_fLogFile, "[%s] %s\n", SharedUtility::GetTimeString(), szString);
+			fprintf(m_fLogFile, "%s\n", szString);
 		else
 			fprintf(m_fLogFile, "%s\n", szString);
 

@@ -54,7 +54,7 @@ struct sSRCThread_Content
 
 class sSRCThread
 {
-protected:	
+public:	
 	DWORD m_dwVFTable;              // 00-04 _vmt        dd ?
 	sSRCThread_Content m_Context;		// 04-58 m_Context   scrThreadContext ?
 	void * m_pStack;					// 58-5C m_pStack    dd ?
@@ -67,7 +67,7 @@ protected:
 
 class sRAGETHREAD : public sSRCThread
 {
-protected:
+public:
 	char m_szProgramName[24];					// 70-88 m_szProgramName db 24 dup(?)
 	unsigned int _f88;							// 88-8C field_88    dd ?
 	unsigned int _f8C;							// 8C-90 field_8C    dd ?

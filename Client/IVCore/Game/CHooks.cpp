@@ -122,11 +122,35 @@ void RemoveInitialLoadingScreens()
 		}
 	}
 
-	if(g_pCore->GetGame() && g_pCore->GetGame()->IsUsingEFLCContent()) {
-		*(DWORD *)(iLoadScreenDuration + 400) = 6500; // load directx
-		//*(DWORD *)(iLoadScreenType + 400) = 0;
-		*(DWORD *)(iLoadScreenDuration + 1600) = 6500; // logo screen
-	}
+	*(DWORD *)(iLoadScreenDuration + 400) = 5000; // load directx
+	*(DWORD *)(iLoadScreenDuration + 1600) = 5000; // logo screen
+
+	/*
+	(0)0x0 - 5B - [ - 0xE37048
+	(1)0x1 - 31 - 1
+	(2)0x2 - 36 - 6
+	(3)0x3 - 3A - :
+	(4)0x4 - 39 - 9
+	(5)0x5 - 5D - ]
+	(6)0x6 - 00 - placeholder
+	(7)0x7 - 00 - placeholder
+	(8)0x8 - 5B - [
+	(9)0x9 - 31 - 1
+	(10)0xA - 36 - 6
+	(11)0xB - 3A - :
+	(12)0xC - 39 - 9
+	(13)0xD - 5D - ]
+	(14)0xE - 00 - placeholder
+	(15)0xF - 00 - placeholder
+	*/
+
+	/*
+	CPatcher::Unprotect(g_pCore->GetBase() + 0xE37048,15);
+	*(DWORD *)(g_pCore->GetBase() + (0xE37048 + 0x1)) = 0x31363A39; // 16:9
+	*(DWORD *)(g_pCore->GetBase() + (0xE37048 + 0x5)) = 0x5D00005B; // ]*PAD**PAD*[
+	*(DWORD *)(g_pCore->GetBase() + (0xE37048 + 0x9)) = 0x31363A39; // 16:9
+	*(WORD *)(g_pCore->GetBase() + (0xE37048 + 0x13)) = 0x5D00; // ]*PAD*
+	*/
 }
 
 
@@ -556,43 +580,146 @@ __declspec(naked) void __stdcall GTAPhysicsUpdate()
 	}
 }
 
+int Thread_a1;
+int Thread_a2;
+signed int Thread_ThreadId;
+int Thread_iPriority;
+char *Thread_a5;
+char *Thread_a6;
+signed int GTA_CreateThreadHook(int a1, int a2, signed int ThreadId, int iPriority, const char *a5, char a6)
+{
+	signed int v6; // edi@1
+	LPVOID v7; // esi@5
+	void *v8; // eax@5
+	HANDLE v9; // eax@5
+	void *v10; // edi@5
+	signed int result; // eax@6
+
+	DWORD dwThreadPatchAdd;
+	char * hThreadName;
+	DWORD dwThreadJmpBack;
+	LPVOID lpParameter = *(LPVOID *)(g_pCore->GetBase() + 0x16A9A3C);
+	DWORD dword_16A9774 = (g_pCore->GetBase() + 0x16A9774);
+	DWORD sub_452030 = (g_pCore->GetBase() + 0x452030);
+	void* sub_452350 = *(VOID **)(g_pCore->GetBase() + 0x452350);
+	DWORD dword_16A9A38 = (g_pCore->GetBase() + 0x16A9A38);
+	void* sub_452170 = *(VOID **)(g_pCore->GetBase() + 0x452170);
+
+
+	v6 = ThreadId;
+	if((unsigned int)ThreadId < 0x4000)
+		v6 = 16384;
+
+	_asm push dword_16A9774;
+	_asm call sub_452030;
+
+	if(!dword_16A9774)
+		*(void **)(sub_452350);
+
+	v7 = lpParameter;
+
+	v8 = *(void **)lpParameter;
+	--dword_16A9A38;
+	
+	lpParameter = v8;
+	dword_16A9774 = 0;
+
+	*(DWORD *)v7 = a1;
+	*((DWORD *)v7 + 1) = a2;
+	*((DWORD *)v7 + 2) = *(DWORD *)(*(DWORD *)__readfsdword(44) + 8);
+
+	ThreadId = 0;
+	v9 = CreateThread(0, v6, (LPTHREAD_START_ROUTINE)sub_452170, v7, 4u, (LPDWORD)&ThreadId);
+
+	v10 = v9;
+	
+	if(v9) {
+		SetThreadPriority(v9, iPriority);
+		SetThreadPriorityBoost(v10, 1);
+
+		if(a6)
+			ResumeThread(v10);
+		result = (signed int)v10;
+	}
+	else
+	{
+		*(DWORD *)v7 = (DWORD)lpParameter;
+		++dword_16A9A38;
+		lpParameter = v7;
+		result = -1;
+	}
+	return result;
+}
+
+signed int uiResult;
+_declspec(naked) signed int GTA_CreateThread()
+{
+	// Grab function paramenters
+	_asm push ebp;
+	_asm mov ebp, esp;
+	_asm push esi;
+	_asm push edi;
+	_asm mov eax, [ebp+4];
+	_asm mov Thread_a1, eax;
+	_asm mov eax, [ebp+8];
+	_asm mov Thread_a2, eax;
+	_asm mov eax, [ebp+0Ch];
+	_asm mov Thread_ThreadId, eax;
+	_asm mov eax, [ebp+10h];
+	_asm mov Thread_iPriority, eax;
+	_asm mov eax, [ebp+18h];
+	_asm mov Thread_a5, eax;
+	_asm mov eax, [ebp+14h];
+	_asm mov Thread_a6, eax;
+
+	CLogFile::Printf("GTA_CreateThread: %d, %d, %d, %d, %s, %s",Thread_a1, Thread_a2, Thread_ThreadId, Thread_iPriority, Thread_a5, Thread_a6);
+
+	uiResult = GTA_CreateThreadHook(Thread_a1, Thread_a2, Thread_ThreadId, Thread_iPriority, Thread_a5, *Thread_a6);
+	
+	_asm mov eax, uiResult;
+	_asm pop esi;
+	_asm pop edi;
+	_asm retn;
+}
+
 void CHooks::Intialize()
 {
-	CLogFile::Print("BLABAL");
 	// Hook physics update
 	//CPatcher::InstallJmpPatch((g_pCore->)63DD30), (DWORD)IV_GTAPhysicsUpdate, 3);
-	CLogFile::Print("BLABAL");
+	
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	//CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// Hook GetPlayerInfoFromIndex to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GetPlayerInfoFromIndex, (DWORD)GetPlayerInfoFromIndex_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// Hook GetIndexFromPlayerInfo to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GetIndexFromPlayerInfo, (DWORD)GetIndexFromPlayerInfo_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// Hook GetLocalPlayerPed to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GetLocalPlayerPed, (DWORD)GetLocalPlayerPed_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// Hook CTask::~CTask to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD)CTask__Destructor_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// Hook initial loading screens
 	CPatcher::InstallCallPatch(COffsets::FUNC_RemoveInitialLoadingScreens, (DWORD)RemoveInitialLoadingScreens);
-	CLogFile::Print("BLABAL");
+	
 	// Always draw vehicle hazzard lights
 	CPatcher::InstallNopPatch(COffsets::PATCH_CVehicle__HazzardLightsOn, 2);
-	CLogFile::Print("BLABAL");
+	
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
-	CLogFile::Print("BLABAL");
+	
 	// Hook texture select/generate function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
-	CLogFile::Print("BLABAL");
+	
 	// This disables some calculate for modelinfo but it seems this is not necessary
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch1, (COffsets::IV_Hook__UnkownPatch1 + 0x40));
-	CLogFile::Print("BLABAL");
+	
 	// this disables a call to a destructor of a member in rageResourceCache [field_244] 
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch2, (DWORD)CRASH_625F15_HOOK);
-	CLogFile::Print("BLABAL");
+
+	// Hook gta_createthread to use our own function 
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x452210),(DWORD)GTA_CreateThread,1);
 }

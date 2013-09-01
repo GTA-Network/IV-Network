@@ -1058,6 +1058,49 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 	return false;
 }
 
+void CPlayerEntity::GiveMoney(int iAmount)
+{
+	if(IsSpawned())
+	{
+		// this shows +/-$12345
+		CIVScript::AddScore(m_bytePlayerNumber, iAmount);
+
+		// would take forever
+		if(iAmount < -1000000 || iAmount > 1000000)
+			m_pPlayerInfo->SetDisplayScore(m_pPlayerInfo->GetScore());
+	}
+}
+void CPlayerEntity::SetMoney(int iAmount)
+{
+	if(IsSpawned())
+	{
+		m_pPlayerInfo->SetScore(iAmount);
+
+		// would take forever
+		int iDiff = (iAmount - m_pPlayerInfo->GetDisplayScore());
+
+		if(iDiff < -1000000 || iDiff > 1000000)
+			m_pPlayerInfo->SetDisplayScore(iAmount);
+	}
+}
+
+void CPlayerEntity::ResetMoney()
+{
+	if(IsSpawned())
+	{
+		m_pPlayerInfo->SetScore(0);
+		m_pPlayerInfo->SetDisplayScore(0);
+	}
+}
+
+int CPlayerEntity::GetMoney()
+{
+	if(IsSpawned())
+		return m_pPlayerInfo->GetScore();
+
+	return 0;
+}
+
 void CPlayerEntity::ClearVehicleEntryTask()
 {
 	// Are we spawned?

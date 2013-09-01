@@ -93,6 +93,7 @@ public:
 	static void							OnClientPastGameJoin();
 	static void							Setup();
 	static void							RenderRAGEScripts();
+	static void							ProcessEnvironment();
 	static void							UnprotectMemory();
 	static bool							CheckInstances(bool bInitialised = false);
 	void								Reset();
@@ -124,6 +125,7 @@ public:
 		return m_bUsingEFLCContent;
 	}
 
+	HWND								GetGameWindow();
 	inline HWND							GetWindow() { return m_hwndGameWindow; };
 	void								SetWindow(HWND hWindow) { m_hwndGameWindow = hWindow; };
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);

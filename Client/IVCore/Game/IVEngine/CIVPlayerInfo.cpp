@@ -11,21 +11,21 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CIVPlayerInfo::CIVPlayerInfo( )
+CIVPlayerInfo::CIVPlayerInfo()
 {
 	// Mark as not created by us
 	m_bCreatedByUs = false;
 
 	// Set the player info
-	SetPlayerInfo( NULL );
+	SetPlayerInfo(NULL);
 }
 
-CIVPlayerInfo::CIVPlayerInfo( BYTE bytePlayerNumber )
+CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber)
 {
 	IVPlayerInfo * pPlayerInfo = (IVPlayerInfo *)CGameFunction::Alloc(sizeof(IVPlayerInfo));
 
-	if( !pPlayerInfo )
-		CLogFile::Print( "ERROR: CIVPlayerInfo::CIVPlayerInfo - Alloc fail!" );
+	if(!pPlayerInfo)
+		CLogFile::Print("ERROR: CIVPlayerInfo::CIVPlayerInfo - Alloc fail!");
 
 	_asm	mov ecx, pPlayerInfo;
 	_asm	call COffsets::FUNC_CPlayerInfo__Constructor;
@@ -40,109 +40,131 @@ CIVPlayerInfo::CIVPlayerInfo( BYTE bytePlayerNumber )
 	m_pPlayerInfo = pPlayerInfo;
 }
 
-CIVPlayerInfo::CIVPlayerInfo( IVPlayerInfo * pPlayerInfo )
+CIVPlayerInfo::CIVPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Mark as not created by us
 	m_bCreatedByUs = false;
 
 	// Set the player info
-	SetPlayerInfo( pPlayerInfo );
+	SetPlayerInfo(pPlayerInfo);
 }
 
-CIVPlayerInfo::~CIVPlayerInfo( )
+CIVPlayerInfo::~CIVPlayerInfo()
 {
 	// Set the player info
-	SetPlayerInfo( NULL );
+	SetPlayerInfo(NULL);
 }
 
-void CIVPlayerInfo::SetPlayerInfo( IVPlayerInfo * pPlayerInfo )
+void CIVPlayerInfo::SetPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Was this created by us?
-	if( m_bCreatedByUs )
+	if(m_bCreatedByUs)
 	{
 		IVPlayerInfo * pPlayerInfo = m_pPlayerInfo;
 
 		_asm	mov ecx, pPlayerInfo;
 		_asm	call COffsets::FUNC_CPlayerInfo__SetPlayerInfo;
 
-		CGameFunction::Free( pPlayerInfo );
+		CGameFunction::Free(pPlayerInfo);
 	}
 
 	// Copy the player info
 	m_pPlayerInfo = pPlayerInfo;
 }
 
-IVPlayerInfo * CIVPlayerInfo::GetPlayerInfo( )
+IVPlayerInfo * CIVPlayerInfo::GetPlayerInfo()
 {
 	return m_pPlayerInfo;
 }
 
-void CIVPlayerInfo::SetPlayerNumber( BYTE bytePlayerNumber )
+void CIVPlayerInfo::SetPlayerNumber(BYTE bytePlayerNumber)
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		m_pPlayerInfo->m_bytePlayerNumber = bytePlayerNumber;
 }
 
-BYTE CIVPlayerInfo::GetPlayerNumber( )
+BYTE CIVPlayerInfo::GetPlayerNumber()
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_bytePlayerNumber;
 
 	return INVALID_PLAYER_PED;
 }
 
-void CIVPlayerInfo::SetPlayerPed( IVPlayerPed * pPlayerPed )
+void CIVPlayerInfo::SetPlayerPed(IVPlayerPed * pPlayerPed)
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		m_pPlayerInfo->m_pPlayerPed = pPlayerPed;
 }
 
-IVPlayerPed * CIVPlayerInfo::GetPlayerPed( )
+IVPlayerPed * CIVPlayerInfo::GetPlayerPed()
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_pPlayerPed;
 
 	return NULL;
 }
 
-void CIVPlayerInfo::SetName( char * szName )
+void CIVPlayerInfo::SetName(char * szName)
 {
-	if( m_pPlayerInfo )
-		strncpy( m_pPlayerInfo->m_szName, szName, 20 );
+	if(m_pPlayerInfo)
+		strncpy(m_pPlayerInfo->m_szName, szName, 20);
 }
 
-char * CIVPlayerInfo::GetName( )
+char * CIVPlayerInfo::GetName()
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_szName;
 
 	return 0;
 }
 
-void CIVPlayerInfo::SetColour( DWORD dwColour )
+void CIVPlayerInfo::SetColour(DWORD dwColour)
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		m_pPlayerInfo->m_dwColour = dwColour;
 }
 
-DWORD CIVPlayerInfo::GetColour( )
+DWORD CIVPlayerInfo::GetColour()
 {
-	if( m_pPlayerInfo )
+	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_dwColour;
 
 	return 0;
 }
 
-void CIVPlayerInfo::SetScore( int iScore )
+void CIVPlayerInfo::SetScore(int iScore)
 {
-	if( m_pPlayerInfo )
-	{
-
-	}
+	if(m_pPlayerInfo)
+		XLivePBufferSetDWORD((FakeProtectedBuffer *)m_pPlayerInfo->m_pScore, 0, (DWORD)iScore);
 }
 
-int CIVPlayerInfo::GetScore( )
+int CIVPlayerInfo::GetScore()
 {
+	if(m_pPlayerInfo)
+	{
+		int iScore;
+		XLivePBufferGetDWORD((FakeProtectedBuffer *)m_pPlayerInfo->m_pScore, 0, (DWORD *)&iScore);
+		return iScore;
+	}
 
 	return 0;
+}
+
+int CIVPlayerInfo::GetDisplayScore()
+{
+	if(m_pPlayerInfo)
+	{
+		int iScore;
+		XLivePBufferGetDWORD((FakeProtectedBuffer *)m_pPlayerInfo->m_pDisplayScore, 0, (DWORD *)&iScore);
+		return iScore;
+	}
+
+	return 0;
+}
+
+void CIVPlayerInfo::SetDisplayScore(int iScore)
+{
+	if(m_pPlayerInfo)
+		XLivePBufferSetDWORD((FakeProtectedBuffer *)m_pPlayerInfo->m_pDisplayScore, 0, (DWORD)iScore);
 }

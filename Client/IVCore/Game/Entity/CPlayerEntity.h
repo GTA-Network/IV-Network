@@ -82,6 +82,11 @@ public: // Handles "GET" functions
 	bool							IsGettingIntoAVehicle();
 	bool							IsGettingOutOfAVehicle();
 
+	void							GiveMoney(int iAmount);
+    void							SetMoney(int iAmount);
+    void							ResetMoney();
+    int								GetMoney();
+		
 	unsigned short					GetPing();
 	EntityId						GetPlayerId() { return CNetworkEntity::GetId(); }
 	float							GetRotation();

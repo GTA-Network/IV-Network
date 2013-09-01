@@ -644,13 +644,12 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 
 	while(!bLastSection)
 	{ 
-		m_Sections.resize(m_Sections.size() + 1);
+		CChatLineSection section;
 
-		CChatLineSection& section = (m_Sections.back());
 		section.SetColor(color);
 
-		if(m_Sections.size() > 1 && bColorCoded)
-			szSectionEnd += 7;
+		//if((m_Sections.size() +1) > 1 && bColorCoded)
+		//	szSectionEnd += 7;
 		 
 		szSectionStart = szSectionEnd;
 		szLastWrapPoint = szSectionStart;
@@ -668,6 +667,7 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 				unsigned long ulColor = 0;
 				sscanf_s(szSectionEnd + 1, "%06x", &ulColor);
 				color = CColor(((ulColor >> 16) & 0xFF), ((ulColor >> 8) & 0xFF), (ulColor & 0xFF), 255);
+				
 				break;
 			} 
 			if(isspace((unsigned char) *szSectionEnd) || ispunct((unsigned char) *szSectionEnd))
@@ -680,6 +680,17 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 		}
 		 
 		section.m_strText.assign(szSectionStart, szSectionEnd - szSectionStart);
+
+		if(bColorCoded && IsColorCode(szSectionEnd))
+			szSectionEnd += 7;
+
+		if(section.m_strText != "")
+			m_Sections.push_back(section);
+
+		if(m_Sections.size() > CHAT_MAX_LINES)
+		{
+			m_Sections.pop_front();
+		}
 	}
 
 	if(*szSectionEnd == '\0')
@@ -711,23 +722,19 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 void CChatLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShadow)
 {
 	float fOffsetX = fX;
-
-	for(auto pChatLine:m_Sections)
+	if(m_Sections.size() == 1)
+	{
+		auto section = *m_Sections.begin();
+		section.Draw(fOffsetX, fY, ucAlpha, bShadow);
+		fOffsetX += section.GetWidth();
+	}
+	else
+	for(auto pChatLine : m_Sections)
 	{
 		pChatLine.Draw(fOffsetX, fY, ucAlpha, bShadow);
 		fOffsetX += pChatLine.GetWidth();
 	}
-
-	// Cleanup lines 
-	if(m_Sections.size() > CHAT_MAX_LINES) {
-		int iCount = 0;
-		for(auto pLine:m_Sections) {
-			iCount++;
-
-			if(iCount > CHAT_MAX_LINES)
-				m_Sections.remove(pLine);
-		}
-	}
+//	}
 }
 
 float CChatLine::GetWidth()
@@ -740,6 +747,7 @@ float CChatLine::GetWidth()
     {
         fWidth += pChatLine.GetWidth ();
     }
+
     return fWidth;
 }
 
@@ -758,11 +766,24 @@ void CChatInputLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShado
 
 		float fLineDifference = CChat::GetFontHeight();
 
-		for(auto pExtraLine:m_ExtraLines)
-		{
-			fY += fLineDifference;
-			pExtraLine.Draw(fX, fY, g_pChat->GetInputTextColor().A, bShadow);
-		}
+		//for(auto pExtraLine:m_ExtraLines)
+		//{
+		//	fY += fLineDifference;
+		//	pExtraLine.Draw(fX, fY, g_pChat->GetInputTextColor().A, bShadow);
+		//}
+
+		// Cleanup lines 
+
+
+		//if(m_Sections.size() > CHAT_MAX_LINES) {
+		//	int iCount = 0;
+		//	for(auto pLine : m_Sections) {
+		//		iCount++;
+
+		//		if(iCount > CHAT_MAX_LINES)
+		//			m_Sections.remove(pLine);
+		//	}
+		//}
 	}
 }
 

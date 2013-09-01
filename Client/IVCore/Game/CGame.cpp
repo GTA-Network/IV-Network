@@ -43,12 +43,14 @@ CIVStreaming				*CGame::m_pStream = 0;
 CTrafficLights				*CGame::m_pTrafficLights = 0;
 CString						CGame::m_strEFLCDirectory = 0;
 HWND						CGame::m_hwndGameWindow = 0;
+
 /*
 	==== Why WaitForGameStartup ====
 	We can load/start the game in the background and request all resources while the player is in the main menu.
 	So GTA IV loads all resources and when our player connects to a server, we have check if the game(resources are) is ready.
 	If the Wrapperlist is ready, we can spawn the localplayer
 */
+
 DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
 {
 	return 1;
@@ -58,6 +60,7 @@ void CGame::Setup()
 {
 	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Destroy Thread?(after he has finished)
 	
+	// Mark client-state as world-game loading
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 	
 	// Create new civpad instance
@@ -172,27 +175,33 @@ void CGame::Initialise()
 
 void CGame::OnEnvironmentStartUp(bool bForce)
 {
+	// Grab the PlayerInfo array index 0 from the PedPool
 	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
 	IVPlayerPed  * _pPlayerPed = NULL;
 
+	// Check if we got an index from PedPool - index 0
 	if(pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
 	else
 		_pPlayerPed = NULL;
 
+	// If no index was found and the param bForce isn't given, return
 	if(!g_bInvalidIndex || m_pPool->GetLocalPlayerIndex() == -1) {
 		if(!bForce)
 			return;
 	}
 
+	// We should force to create the localplayer so continue.. Setting initialise pointer to opposit value(false->true)
 	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
 
 	CLogFile::Printf("[%s] GetLocalPlayerPed returns %d -> Valid -> Patching...", __FUNCTION__, g_bInvalidIndex);
 	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
 
+	// Check if our local player class not existing, otherwise create it
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 	
+	// Call basic initialasion functions from the localplayer class
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(CVector3(DEVELOPMENT_SPAWN_POSITION),0.0f);
 	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
@@ -254,20 +263,24 @@ void CGame::Reset()
 
 void CGame::UnprotectMemory()
 {
-	BYTE * pImageBase = (BYTE *)(g_pCore->GetBase() + 0x400000);
-	PIMAGE_DOS_HEADER   pDosHeader = (PIMAGE_DOS_HEADER)pImageBase;
-	PIMAGE_NT_HEADERS   pNtHeader  = (PIMAGE_NT_HEADERS)(pImageBase + pDosHeader->e_lfanew);
-	PIMAGE_SECTION_HEADER pSection = IMAGE_FIRST_SECTION(pNtHeader);
+	BYTE								   *pImageBase = (BYTE *)(g_pCore->GetBase() + 0x400000);
+	PIMAGE_DOS_HEADER						pDosHeader = (PIMAGE_DOS_HEADER)pImageBase;
+	PIMAGE_NT_HEADERS						pNtHeader  = (PIMAGE_NT_HEADERS)(pImageBase + pDosHeader->e_lfanew);
+	PIMAGE_SECTION_HEADER					pSection = IMAGE_FIRST_SECTION(pNtHeader);
+	char								   *pszSectionName; 
 
-	for(int iSection = 0; iSection < pNtHeader->FileHeader.NumberOfSections; iSection++, pSection++)
-	{
-		char * pszSectionName = (char *)pSection->Name;
+	for(int iSection = 0; iSection < pNtHeader->FileHeader.NumberOfSections; iSection++, pSection++) {
+		// Set value for compare
+		pszSectionName = (char *)pSection->Name;
 
+		// Compare and check if the given memory segment identifier compares with our given segments
 		if(!strcmp(pszSectionName, ".text") || !strcmp(pszSectionName, ".rdata"))
-		{
 			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
-		}
 	}
+	
+	// Delete and remove the ptr from memory
+	//SAFE_DELETE(pszSectionName);
+
 }
 
 void CGame::RenderRAGEScripts()
@@ -288,13 +301,16 @@ void CGame::RenderRAGEScripts()
 
 void CGame::PrepareWorld()
 {
+	// Disable(hide) UI elements to be visible
 	CIVHud::SetHudVisible(false);
 	CIVHud::SetRadarVisible(false);
 	CIVHud::SetAreaNamesEnabled(false);
 	CIVHud::SetPlayerNamesVisible(0);
 
+	// Update environment settings and set default
 	CIVWeather::SetWeather(WEATHER_SUNNY);
-	CIVWeather::SetTime(6, 45);
+	g_pCore->GetTimeManagementInstance()->SetTime(6,45);
+	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
 
 	//CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
@@ -305,24 +321,31 @@ void CGame::PrepareWorld()
 
 void CGame::OnClientReadyToGamePlay()
 {
+	// Make our local player ready to port to the default spawn position
 	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
 	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
 	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
 
+	// Enable UI elements to be visible
 	CIVHud::SetHudVisible(true);
 	CIVHud::SetRadarVisible(true);
 	CIVHud::SetAreaNamesEnabled(true);
-	CIVHud::SetPlayerNamesVisible(1);
-	CIVWeather::SetTime(8,0);
+	CIVHud::SetPlayerNamesVisible(true);
+
+	// Update our environment settings and set default timemanagement data
+	g_pCore->GetTimeManagementInstance()->SetTime(7,0);
+	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
 }
 
 void CGame::OnClientPastGameJoin()
 {
+	// Preload world stuff
 	CEFLCSupport::InstallPreGameLoad();
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 {
+	// Loop through all ModelInfo array indexes and return if a match was found
 	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())
 		return &m_modelInfos[iModelIndex];
 
@@ -339,7 +362,7 @@ CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
 
 bool CGame::CheckInstances(bool bInitialised)
 {
-	// Check Pools
+	// Check private class pointers to be valid(prevent game crashes)
 	if(!bInitialised)
 	{
 		CHECK_PTR(m_pPool);
@@ -371,15 +394,43 @@ bool CGame::CheckInstances(bool bInitialised)
 
 	return true;
 }
-/*
-HWND CGame::GetWindow()
+
+HWND CGame::GetGameWindow()
 {
 	return (*(HWND *)(g_pCore->GetBase() + 0x1849DD4));
 }
-*/
 
 void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
 {
 	if(g_pCore->GetChat())
 		g_pCore->GetChat()->Outputf(true, "#E3170D Warning: Exception 0x%p at 0x%p",dwExceptionType, dwAddress);
+}
+
+void CGame::ProcessEnvironment()
+{
+	if(!g_pCore->GetGame()->GetLocalPlayer())
+		return;
+
+	unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
+	int uGameHour = 0, uGameMinute = 0; // deleted by jmpback from func
+
+	// Grab the latest time from our time interface
+	g_pCore->GetTimeManagementInstance()->GetTime(&ucHour, &ucMinute);
+
+	// Check if our time has changed
+	CGameFunction::GetTime(&uGameHour, &uGameMinute);
+
+	// Check if the game time is not the same as the given CTime
+	if(uGameHour-ucHour < -1 || uGameMinute-ucMinute < -10) {
+		// Force game to update the time to the latest given data
+		CGameFunction::SetTimeOfDay(ucHour, ucMinute);
+	}
+	else if(uGameHour == ucHour || uGameMinute == ucHour) {
+		// Update time to latest
+		CGameFunction::SetTimeOfDay(uGameHour, uGameMinute);
+	}
+	else {
+		// Let the game render the time by itself(so it's not so buggy when updating the time)
+		;
+	}
 }

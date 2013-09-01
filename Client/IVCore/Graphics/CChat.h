@@ -22,6 +22,7 @@ public:
 	float					m_fCachedWidth;
 	unsigned int			m_uiCachedLength;
 	float					m_fCachedOnScaleX;
+	std::string				m_strTimestamp;
 							
 							CChatLineSection		();
 							CChatLineSection		(const CChatLineSection& other);

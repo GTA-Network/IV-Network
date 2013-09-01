@@ -16,11 +16,6 @@
 // temp
 #include <SharedUtility.h>
 #include <CLogFile.h>
-#include <CZlib.h>
-#include <CZlib.cpp>
-#include <zlib-1.2.5/zlib.h>
-#include <../Client/IVCore/Game/CGameFiles.h>
-#include <../Client/IVCore/Game/CGameFiles.cpp>
 
 int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
 {
@@ -34,16 +29,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	bool bFoundCustomDirectory = false, bRenewProtocol = false;
 	std::string strReNewEntries = lpCmdLine;
 
-	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL,
-		szInstallDirectory, sizeof(szInstallDirectory)) ||
-		!SharedUtility::Exists(szInstallDirectory))
-	{
-		char szProtocolDirectory[MAX_PATH];
-		CString strCommand = CString("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath(MP_START_EXECUTABLE));
+	char szProtocolDirectory[MAX_PATH];
+	CString strCommand = CString("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath(MP_START_EXECUTABLE));
 
-		if(strcmp(szProtocolDirectory, strCommand.Get()))
-			bRenewProtocol = true;
-	}
+	if(strcmp(szProtocolDirectory, strCommand.Get()))
+		bRenewProtocol = true;
 
 	// Check if protocol 'ivmp' and 'ivmultiplayer' is avaiable in registry
 	if(!SharedUtility::ReadRegistryString(HKEY_CLASSES_ROOT, SHORT_URI_LAUNCH_3, NULL, "", NULL, NULL)
@@ -55,12 +45,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		CString strcommand = CString("\"%s\" \"%%1\"",SharedUtility::GetAbsolutePath(MP_START_EXECUTABLE));
 
 		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_3 ,"Url Protocol","",0);
-		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_3"\\shell\\open\\command\\","",strcommand.GetData(),strcommand.GetLength());
-		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_3"\\DefaultIcon","", CString(MP_START_EXECUTABLE",1").GetData(),strlen(MP_START_EXECUTABLE",1"));
+		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_3"\\shell\\open\\command\\","",CString("%s",strcommand.Get()).GetData(),strcommand.GetLength());
+		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_3"\\DefaultIcon","", CString(MP_START_EXECUTABLE" ,1").GetData(),strlen(MP_START_EXECUTABLE" ,1"));
 
 		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_4,"Url Protocol","",0);
-		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_4"\\shell\\open\\command\\","",strcommand.GetData(),strcommand.GetLength());
-		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_4"\\DefaultIcon","", CString(MP_START_EXECUTABLE",1").GetData(),strlen(MP_START_EXECUTABLE",1"));
+		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_4"\\shell\\open\\command\\","",CString("%s",strcommand.Get()).GetData(),strcommand.GetLength());
+		SharedUtility::WriteRegistryString(HKEY_CLASSES_ROOT,SHORT_URI_LAUNCH_4"\\DefaultIcon","", CString(MP_START_EXECUTABLE" ,1").GetData(),strlen(MP_START_EXECUTABLE" ,1"));
 	}
 
 	if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, DEFAULT_REGISTRY_GAME_DIRECTORY,
@@ -93,7 +83,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 
 			if(!bFoundCustomDirectory) {
-				ShowMessageBox("Failed to retrieve the install directory from registry or browser window. Cannot launch "MOD_NAME" .");
+				ShowMessageBox("Failed to retrieve the install directory from registry or browser window. Cannot launch "MOD_NAME".");
 				return 1;
 			}
 		}
@@ -105,9 +95,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Wait a half second ;)
 	Sleep(500);
 
-	// Unpack the game files
-	CGameFiles::CheckFiles();
-
 	// Create game-ready process
 	PROCESS_INFORMATION ProcessInfo = PROCESS_INFORMATION();
 	STARTUPINFO StartupInfo;
@@ -115,17 +102,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	StartupInfo.cb = sizeof StartupInfo;
 
 	char * szPath = new char[MAX_PATH];
-	sprintf(szPath,CString("%s",SharedUtility::GetAbsolutePath("\\%s",MP_GET_GAME_READY_EXECUTABLE)).Get());
+	sprintf(szPath,CString("%s"MP_GET_GAME_READY_EXECUTABLE,SharedUtility::GetExePath()));
 
-	//CreateProcess(szPath, NULL,NULL,NULL, FALSE, NULL, NULL, NULL, &StartupInfo, &ProcessInfo);
-	//WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
+	// Check if IVGameReady.exe exists
+	if(!SharedUtility::Exists(SharedUtility::GetAbsolutePath(MP_GET_GAME_READY_EXECUTABLE).Get()))
+		return ShowMessageBox("Failed to find "MP_GET_GAME_READY_EXECUTABLE". Cannot launch "MOD_NAME".");
+
+	if(!CreateProcess(szPath, NULL, NULL, NULL, FALSE, 0, NULL, FALSE, &StartupInfo, &ProcessInfo))
+		return ShowMessageBox("Failed to start "MP_GET_GAME_READY_EXECUTABLE". Cannot launch "MOD_NAME".");
+
+	// Wait for the process
+	WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
 
 	// Get the full path to LaunchGTAIV.exe
 	CString strApplicationPath("%s\\"GAME_START_EXECUTABLE, szInstallDirectory);
 
 	// Check if LaunchGTAIV.exe exists
 	if(!SharedUtility::Exists(strApplicationPath.Get()))
-		return ShowMessageBox("Failed to find "GAME_START_EXECUTABLE". Cannot launch "MOD_NAME" .");
+		return ShowMessageBox("Failed to find "GAME_START_EXECUTABLE". Cannot launch "MOD_NAME".");
 
 	// If we have a custom directory save it
 	if(bFoundCustomDirectory)
@@ -136,24 +130,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// Check if the client core exists
 	if(!SharedUtility::Exists(strClientCore.Get()))
-		return ShowMessageBox("Failed to find " CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION ". Cannot launch "MOD_NAME" .");
+		return ShowMessageBox("Failed to find " CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION ". Cannot launch "MOD_NAME".");
 
 	// Get the full path of the launch helper
 	CString strLaunchHelper(SharedUtility::GetAbsolutePath(CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
 
 	// Check if the launch helper exists
 	if(!SharedUtility::Exists(strLaunchHelper.Get()))
-		return ShowMessageBox("Failed to find " CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME" .");
+		return ShowMessageBox("Failed to find " CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME".");
 
 	// Check if GTAIV is already running
 	if(SharedUtility::IsProcessRunning(GAME_DEFAULT_EXECUTABLE)) {
 		if(ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running and needs to be terminated before "MOD_NAME" can be started. Do you want to do that now?",
 			MB_ICONQUESTION | MB_YESNO ) == IDYES) {
 			if(!SharedUtility::_TerminateProcess(GAME_DEFAULT_EXECUTABLE))
-				return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME" .");
+				return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME".");
 		}
 		else
-			return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running. Cannot launch "MOD_NAME" .");
+			return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running. Cannot launch "MOD_NAME".");
 	}
 
 	// Check if LaunchGTAIV.exe is already running
@@ -166,12 +160,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				Sleep(3000);
 				if(SharedUtility::IsProcessRunning(GAME_START_EXECUTABLE)) {
 					if(!SharedUtility::_TerminateProcess(GAME_START_EXECUTABLE))
-						return ShowMessageBox(GAME_START_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME" .");
+						return ShowMessageBox(GAME_START_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME".");
 				}
 			}
 		}
 		else
-			return ShowMessageBox(GAME_START_EXECUTABLE" is already running. Cannot launch "MOD_NAME" .");
+			return ShowMessageBox(GAME_START_EXECUTABLE" is already running. Cannot launch "MOD_NAME".");
 	}
 
 	// TODO ADD WINDOW COMMANDLINE SUPPORT!
@@ -273,7 +267,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	if(!CreateProcess(strApplicationPath.Get(), (char *)strCommandLine.Get(), NULL, NULL, TRUE, CREATE_SUSPENDED, NULL,
 		SharedUtility::GetAppPath(), &siStartupInfo, &piProcessInfo)) {
-		ShowMessageBox("Failed to start "MP_START_EXECUTABLE". Cannot launch "MOD_NAME" .");
+		ShowMessageBox("Failed to start "MP_START_EXECUTABLE". Cannot launch "MOD_NAME".");
 		return 1;
 	}
 
@@ -286,14 +280,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		TerminateProcess(piProcessInfo.hProcess, 0);
 
 		// Show the error message
-		CString strError("Unknown error. Cannot launch "MOD_NAME" .");
+		CString strError("Unknown error. Cannot launch "MOD_NAME".");
 
 		if(iReturn == 1)
-			strError = "Failed to write library path into remote process. Cannot launch "MOD_NAME" .";
+			strError = "Failed to write library path into remote process. Cannot launch "MOD_NAME".";
 		else if(iReturn == 2)
-			strError = "Failed to create remote thread in remote process. Cannot launch "MOD_NAME" .";
+			strError = "Failed to create remote thread in remote process. Cannot launch "MOD_NAME".";
 		else if(iReturn == 3)
-			strError = "Failed to open the remote process, Cannot launch "MOD_NAME" .";
+			strError = "Failed to open the remote process, Cannot launch "MOD_NAME".";
 
 		ShowMessageBox(strError.Get());
 		return 1;

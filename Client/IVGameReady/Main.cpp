@@ -19,6 +19,17 @@
 #include <commctrl.h>
 #include <CRC.h>
 
+// temp
+#include <SharedUtility.h>
+#include <CLogFile.h>
+#include <CZlib.h>
+#include <CZlib.cpp>
+#include <list>
+#include <CLogFile.h>
+#include <zlib-1.2.5/zlib.h>
+#include <../Client/IVCore/Game/CGameFiles.h>
+#include <../Client/IVCore/Game/CGameFiles.cpp>
+
 #pragma warning(disable:4244)
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -139,7 +150,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 const char * szCopyFile[] = {
 	{ "multiplayer\\pc\\textures\\loadingscreens.wtd" },
 	{ "multiplayer\\common\\data\\loadingscreens_pc_eflc_v2.dat" },
-	{ "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd" }
+	{ "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd" },
+	{ "multiplayer\\common\\data\\hud_eflc.dat" }
 };
 
 
@@ -147,6 +159,7 @@ const char * szCopyFileDest[] = {
 	{ "%s%sloadingscreens.wtd" },
 	{ "%s%sloadingscreens_pc_eflc_v2.dat" },
 	{ "%s%sradio_hud_noncolored.wtd" },
+	{ "%s%shud_eflc.dat" },
 };
 
 HWND hwnd; 
@@ -204,15 +217,18 @@ void CopyThread()
 				if(CString(szCopyFile[n]).Find("ultiplayer\\common\\data\\") != std::string::npos && szCopyFile[n][0] != '%') {
 					CString file(SharedUtility::GetAppPath());
 					file.AppendF(szCopyFile[n]);
+
 					if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get()))
-						SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\common\\data\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
-					CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
+						SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
+					
+					if(!CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0))
+						MessageBoxA(NULL,szCopyFile[n],"FAILED",MB_OK);
 				}
 				else if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\textures\\") != std::string::npos && szCopyFile[n][0] != '%') {
 					CString file(SharedUtility::GetAppPath());
 					file.AppendF(szCopyFile[n]);
 					if(SharedUtility::Exists(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\pc\\textures\\").Get()))
-						SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\pc\\textures\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\pc\\textures\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
+						SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\pc\\textures\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\pc\\textures\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 					CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\pc\\textures\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0);
 				} 
 				else {
@@ -225,8 +241,11 @@ void CopyThread()
 			szCopyText2 = CString("%i/%i", sizeof(szCopyFile) / sizeof(szCopyFile[0]), sizeof(szCopyFile) / sizeof(szCopyFile[0]));
 			InvalidateRect(hwnd, 0, true);
 			TerminateProcess(GetCurrentProcess(),0);
+			return;
 		}
 	}
+	TerminateProcess(GetCurrentProcess(),0);
+	return;
 }
 
 int ShowMessageBox(const char * szText, UINT uType = (MB_ICONEXCLAMATION | MB_OK))
@@ -253,10 +272,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			
 			font = CreateFont(18, 0, 0, 0, 300, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial");
 			SendMessage(pgCurrentFile, PBM_SETRANGE, 0, MAKELPARAM(0, 220));
-			HANDLE hThread = CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)CopyThread, NULL, NULL, NULL);
-			WaitForSingleObject(hThread, INFINITE);
-			TerminateProcess(GetCurrentProcess(),0);
+			CGameFiles::CheckFiles();
 
+			CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)CopyThread, NULL, NULL, NULL);
 		}
 		break;
 	case WM_COMMAND:

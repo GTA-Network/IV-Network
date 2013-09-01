@@ -208,10 +208,11 @@ void DecompressFile(const char * szFileName, const char * szOutputName)
 int main(int argc, char **argv)
 {
 	// Compress
-	CompressFile("multiplayer\\original\\loadingscreens.wtd", "multiplayer\\datafiles\\1.ivmp");
-	CompressFile("multiplayer\\original\\loadingscreens_pc_eflc_v2.dat", "multiplayer\\datafiles\\2.ivmp");
-	CompressFile("multiplayer\\original\\radio_hud_noncolored.wtd", "multiplayer\\datafiles\\3.ivmp");
-	
+	//CompressFile("multiplayer\\original\\loadingscreens.wtd", "multiplayer\\datafiles\\1.ivmp");
+	//CompressFile("multiplayer\\original\\loadingscreens_pc_eflc_v2.dat", "multiplayer\\datafiles\\2.ivmp");
+	//CompressFile("multiplayer\\original\\radio_hud_noncolored.wtd", "multiplayer\\datafiles\\3.ivmp");
+	CompressFile("multiplayer\\original\\hud_eflc.dat", "multiplayer\\datafiles\\4.ivmp");
+
 	printf("FINISHED, type any key to exit...");
 	getchar();
 	return 1;

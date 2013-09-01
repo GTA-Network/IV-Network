@@ -863,6 +863,9 @@
     <ClCompile Include="Graphics\Input.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Shared\Game\CTime.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1878,6 +1881,9 @@
     </ClInclude>
     <ClInclude Include="..\RAGEEngine\RAGEInterface.h">
       <Filter>Header Files\RAGEEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Game\CTime.h">
+      <Filter>Header Files\Shared\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

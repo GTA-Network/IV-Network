@@ -175,7 +175,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define CLIENT_SETTINGS_FILE "multiplayer//IVMP-Settings.xml"
 
 // Chat definitions
-#define	NUM_FONTS 2
+#define	NUM_FONTS 6
 
 #define	CHAT_TEXT_COLOR CColor(255, 255, 255, 255)
 #define	CHAT_WIDTH 480

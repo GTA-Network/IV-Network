@@ -34,13 +34,17 @@ public:
         BYTE m_byteFlags3;            // 0F66-0F67 // 1 - Takes Less Damage
         BYTE m_byteFlags4;            // 0F67-0F68 // 1 - Part Of Convoy, 8 - Is Drowning
         BYTE m_byteFlags5;            // 0F68-0F69 // 64 - Can Be Targeted
-        PAD(IVVehicle, pad3, 0x3);    // 0F69-0F6C
-        BYTE m_byteFlags6;            // 0F6C-0F6D // 2 - Hazard Lights Flashing, 4 - Hazard Lights Constant, 16 - Interior Lights
-        BYTE m_byteFlags7;            // 0F6D-0F6E // 64 - Pretend Occupants
-        PAD(IVVehicle, pad4, 0x1);    // 0F6E-0F6F
-        BYTE m_byteFlags8;            // 0F6F-0F70 // 32 - Is Police Vehicle
-        BYTE m_byteFlags9;            // 0F70-0F71 // 4 - Can Be Visibly Damaged
-        PAD(IVVehicle, pad5, 0x3);    // 0F71-0F74
+		BYTE m_byteFlags6;			  // 0F6A-0F6B // [value = 1 headlights off | 3 - headlights on] 2 - Hazard Lights Flashing, 4 - Hazard Lights Constant, 16 - Interior Lights SET_BIT(m_byteFlags6, 2) == on UNSET_BIT(m_byteFlags6, 2) == off
+		BYTE m_byteFlags7;			  // 0F6C-0F6D
+		BYTE m_byteFlags8;			  // 0F6D-0F6E // 64 - Pretend Occupants
+        BYTE m_byteFlags9;			  // 0F6E-0F6F // 
+        BYTE m_byteFlags10;
+		BYTE m_byteFlags11;
+        BYTE m_byteFlags12;            // 0F6F-0F70 // 32 - Is Police Vehicle
+        BYTE m_byteFlags13;            // 0F70-0F71 // 4 - Can Be Visibly Damaged
+		BYTE m_byteFlags14;  
+		BYTE m_byteFlags15;  
+		BYTE m_byteFlags16;  
         DWORD m_dwTimeOfCreation2;    // 0F74-0F78
         PAD(IVVehicle, pad6, 0x20);   // 0F78-0F98
         WORD m_wAlarm;                // 0F98-0F9A
@@ -62,7 +66,9 @@ public:
         float m_fEngineHealth;        // 10FC-1100
         PAD(IVVehicle, pad13, 0x8);   // 1100-1108
         BYTE m_byteCreatedBy;         // 1108-1109
-        PAD(IVVehicle, pad14, 0xF);   // 1109-1118
+        PAD(IVVehicle, pad14, 0x9);   // 1109-1112
+		BYTE m_byteLightState;		  // 1112-1113
+		BYTE unknownPad311313[5];	  // 1113-1118
         float m_fDirtLevel;           // 1118-111C
         PAD(IVVehicle, pad15, 0x4);   // 111C-1120
         BYTE m_byteSirenHealth[8];    // 1120-1128
@@ -92,22 +98,22 @@ public:
         // 1120-12DC Damage
 
         //virtual                       ~IVVehicle();
-        virtual void            Function72();                                   // m120
-        virtual void            Function73(); // something with release model
-        virtual void            IsPretendOccupants();                   // m128
-        virtual void            Function75();                                   // m12C
-        virtual bool            Function76(bool);                               // m130
-        virtual bool            Function77(bool, bool, int);    // m134
-        virtual bool            Function78(int);                                // m138
-        virtual bool            Function79();                                   // m13C
-        virtual bool            Function80();                                   // m140 returns 1 updates field_210[3340] this +0x0F1Ch
-        virtual bool            Function81();                                   // m144
-        virtual bool            Function82();                                   // m148
-        virtual bool            Function83();                                   // m14C
-        virtual void            Function84(int);                                // m150
-        virtual signed int      Function85(); // nullsub                // m154
+        virtual void			Function72();                                   // m120
+        virtual void			Function73(); // something with release model
+        virtual void			IsPretendOccupants();                   // m128
+        virtual void			Function75();                                   // m12C
+        virtual bool			Function76(bool);                               // m130
+        virtual bool			Function77(bool, bool, int);    // m134
+        virtual bool			Function78(int);                                // m138
+        virtual bool			Function79();                                   // m13C
+        virtual bool			Function80();                                   // m140 returns 1 updates field_210[3340] this +0x0F1Ch
+        virtual bool			Function81();                                   // m144
+        virtual bool			Function82();                                   // m148
+        virtual bool			Function83();                                   // m14C
+        virtual void			Function84(int);                                // m150
+        virtual signed int		Function85(); // nullsub                // m154
         virtual void            Function86(int); // nullsub
-        virtual int                     Function87(int id, int id2, char *format, ...); // nullsub
+        virtual int				Function87(int id, int id2, char *format, ...); // nullsub
         virtual void            Function88(int); // return 0
         virtual void            Function89();
         virtual void            Function90(int id, int id2, char *format, ...);
@@ -193,6 +199,8 @@ public:
         bool				IsCarInWater();
         void				SetCarCanBurstTyres(bool bState);
         bool				GetCarCanBurstTyres();
+		void				SetHeadlights(bool bSwitch);
+		bool				GetHeadlights();
 };
 
 #endif // CIVVehicle_h

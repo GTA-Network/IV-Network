@@ -7,8 +7,6 @@
 //
 //==============================================================================
 
-// TODO: Replace with Hook function..
-
 #include "SharedUtility.h"
 #include <Patcher\CPatcher.h>
 #include <ShlObj.h>
@@ -47,7 +45,7 @@ UINT_PTR WINAPI SetTimer_Hook(HWND hWnd, UINT_PTR nIDEvent, UINT uElapse, TIMERP
 
 BOOL WINAPI CreateProcessW_Hook(LPCWSTR lpApplicationName, LPWSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCWSTR lpCurrentDirectory, LPSTARTUPINFOA lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation)
 {
-	// If this is not a call to start the 'GTAIV.exe' process then just call the original CreateProcessW
+	// If this is not a call to start the 'EFLC.exe' process then just call the original CreateProcessW
 	if(wcscmp(lpApplicationName, L"EFLC.exe"))
 		return g_pfnCreateProcessW(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation);
 
@@ -57,16 +55,16 @@ BOOL WINAPI CreateProcessW_Hook(LPCWSTR lpApplicationName, LPWSTR lpCommandLine,
 	// Get the GTA IV install directory from the registry
 	char szInstallDirectory[MAX_PATH];
 	bool bFoundCustomDirectory = false;
+	
+	if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, DEFAULT_REGISTRY_GAME_DIRECTORY,
+		"InstallFolder", NULL, szInstallDirectory, sizeof(szInstallDirectory)) ||
+		!SharedUtility::Exists(szInstallDirectory)) {
 
-	if(!SharedUtility::ReadRegistryString(HKEY_LOCAL_MACHINE, "Software\\Rockstar Games\\Grand Theft Auto IV", 
-										  "InstallFolder", NULL, szInstallDirectory, sizeof(szInstallDirectory)) || 
-	   !SharedUtility::Exists(szInstallDirectory))
-	{
-		if(!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", NULL, 
-											  szInstallDirectory, sizeof(szInstallDirectory)) || 
-		   !SharedUtility::Exists(szInstallDirectory))
-		{
-			if(ShowMessageBox("Failed to retrieve GTA IV install directory from registry. Specify your GTA IV path now?", 
+		if(!SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL,
+			szInstallDirectory, sizeof(szInstallDirectory)) ||
+			!SharedUtility::Exists(szInstallDirectory)) {
+
+			if(ShowMessageBox("Failed to retrieve the install directory from "GAME_DEFAULT_EXECUTABLE"'s registry. Specify your game path now?",
 				(MB_ICONEXCLAMATION | MB_OKCANCEL)) == IDOK)
 			{
 				// Taken from http://vcfaq.mvps.org/sdk/20.htm
@@ -92,7 +90,7 @@ BOOL WINAPI CreateProcessW_Hook(LPCWSTR lpApplicationName, LPWSTR lpCommandLine,
 
 			if(!bFoundCustomDirectory)
 			{
-				ShowMessageBox("Failed to retrieve GTA IV install directory from registry. Cannot launch IV: Multiplayer.");
+				ShowMessageBox("Failed to retrieve the install directory from registry or browser window. Cannot launch "MOD_NAME".");
 				return FALSE;
 			}
 		}
@@ -103,14 +101,11 @@ BOOL WINAPI CreateProcessW_Hook(LPCWSTR lpApplicationName, LPWSTR lpCommandLine,
 
 	// Make sure the GTAIV.exe path is valid
 	if(!SharedUtility::Exists(strApplicationPath.Get()))
-	{
-		ShowMessageBox("Failed to find EFLC.exe. Cannot launch IV: Multiplayer.");
-		return FALSE;
-	}
+		return ShowMessageBox("Failed to find "GAME_START_EXECUTABLE". Cannot launch "MOD_NAME".");
 
 	// If we have a custom directory save it
 	if(bFoundCustomDirectory)
-		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", szInstallDirectory, strlen(szInstallDirectory));
+		SharedUtility::WriteRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, szInstallDirectory, strlen(szInstallDirectory));
 
 	// Convert the install directory to unicode
 	wchar_t wszInstallDirectory[MAX_PATH];
@@ -136,22 +131,21 @@ BOOL WINAPI CreateProcessW_Hook(LPCWSTR lpApplicationName, LPWSTR lpCommandLine,
 		// Did the injection fail?
 		if(iReturn > 0)
 		{
-			// Terminate the process
-			TerminateProcess(lpProcessInformation->hProcess, 0);
-			CString strError("Unknown error. Cannot launch IV: Multiplayer.");
+			// Show the error message
+			CString strError("Unknown error. Cannot launch "MOD_NAME".");
 
 			if(iReturn == 1)
-				strError = "Failed to write library path into remote process. Cannot launch IV: Multiplayer.";
+				strError = "Failed to write library path into remote process. Cannot launch "MOD_NAME".";
 			else if(iReturn == 2)
-				strError = "Failed to create remote thread in remote process. Cannot launch IV: Multiplayer";
+				strError = "Failed to create remote thread in remote process. Cannot launch "MOD_NAME".";
 			else if(iReturn == 3)
-				strError = "Failed to open the remote process, Cannot launch IV: Multiplayer.";
+				strError = "Failed to open the remote process, Cannot launch "MOD_NAME".";
 
 			ShowMessageBox(strError.Get());
 			return FALSE;
 		}
 
-		// Resume the GTAIV.exe thread
+		// Resume the thread
 		ResumeThread(lpProcessInformation->hThread);
 	}
 

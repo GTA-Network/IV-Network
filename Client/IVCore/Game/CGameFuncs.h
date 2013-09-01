@@ -14,6 +14,10 @@
 #include <Math\CMaths.h>
 #include <IV\IVCommon.h>
 
+#ifndef uint32_t
+typedef unsigned __int32    uint32_t;
+#endif
+
 class CGameFunction {
 public:
 
@@ -56,6 +60,7 @@ public:
 	static void				StopCutscene(char * szCutsceneName);
 	static DWORD            GetNativeAddress(DWORD dwNative);
 	static void				LoadWorldAtPosition(CVector3& vecPosition);
+	static uint32_t			HashToString(char *szKey, size_t strlength);
 };
 
 #endif // CGameFuncs_h
