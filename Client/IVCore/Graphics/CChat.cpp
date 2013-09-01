@@ -819,7 +819,7 @@ void CChatLineSection::Draw(float fX, float fY, unsigned char ucAlpha, bool bSha
 {
 	if(!m_strText.empty() && ucAlpha > 0)
 	{
-		g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(ucAlpha, m_Color.R, m_Color.G, m_Color.B), 1.0f, 1, DT_NOCLIP, bShadow, m_strText.c_str());
+		g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(ucAlpha, m_Color.R, m_Color.G, m_Color.B), 1.0f, 5, DT_NOCLIP, bShadow, m_strText.c_str());
 	}
 }
 
