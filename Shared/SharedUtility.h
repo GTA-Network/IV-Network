@@ -133,6 +133,8 @@ namespace SharedUtility
 	void DefineGameRegistryEntires();
 	void CheckGameDirectoryExists();
 	void CreateBasicMPDirectories();
+
+	CString	DiconnectReasonToString( unsigned int uiReason );
 }
 
 #endif

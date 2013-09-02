@@ -19,11 +19,11 @@ class CPlayerEntity;
 class CVehicleEntity : public CNetworkEntity {
 private:
 
+	unsigned int						m_uiVehicleHandle;
 	CIVVehicle							*m_pVehicle;
 	EntityId							m_vehicleId;
 	CIVModelInfo						*m_pModelInfo;
 	bool								m_bSpawned;
-	unsigned int						m_uiVehicleHandle;
 	CVector3							m_vecSpawnPosition;
 	CVector3							m_vecPosition;
 	CVector3							m_vecRotation;

@@ -129,6 +129,7 @@ public:
 	inline HWND							GetWindow() { return m_hwndGameWindow; };
 	void								SetWindow(HWND hWindow) { m_hwndGameWindow = hWindow; };
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);
+	static void							SetupGame();
 };
 
 #endif // CGame_h

@@ -592,7 +592,7 @@ int CIVVehicle::GetLightsState()
 {
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
-		return ((int)(pVehicle->m_byteLightState) & 3);
+		return (int)pVehicle->m_byteLightState;
 
 	return 0;
 }
@@ -659,6 +659,22 @@ bool CIVVehicle::GetHeadlights()
 	IVVehicle * pVehicle = GetVehicle();
 	if(pVehicle)
 		return IS_BIT_SET(pVehicle->m_byteFlags6, 2);
+
+	return 0;
+}
+
+void CIVVehicle::SetRadioStation(BYTE byteRadioStation)
+{
+	IVVehicle * pVehicle = GetVehicle();
+	if(pVehicle)
+		pVehicle->m_byteRadioStation = byteRadioStation;
+}
+
+BYTE CIVVehicle::GetRadioStation()
+{
+	IVVehicle * pVehicle = GetVehicle();
+	if(pVehicle)
+		return pVehicle->m_byteRadioStation;
 
 	return 0;
 }

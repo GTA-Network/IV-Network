@@ -121,6 +121,79 @@ public:
 	void          Allocate(size_t sSize);
 	void          Resize(size_t sSize);
 	void          Free();
+	static CString		DecimalToString( unsigned int uiDecimal )
+	{
+		CString strReturn( "%p", uiDecimal );
+		strReturn.Erase( (strReturn.GetLength() - 2), 2 );
+		return strReturn;
+	}
+
+	static CString		DecimalToStringNoErase( unsigned int uiDecimal )
+	{
+		return CString( "%p", uiDecimal );
+	}
+
+	static unsigned long	HexToInt( CString hex )
+	{
+		/*std::stringstream ss( hex.Get() );
+		unsigned long ulResult = 0;
+		ss >> std::hex >> ulResult;
+		return ulResult;*/
+		return 0;
+	}
+
+	int convertFromHex()
+    {
+		int value = 0;
+
+        int a = 0;
+		int b = (m_stdStr.length() - 1);
+
+		for( ; b >= 0; a++, b-- )
+        {
+			if( m_stdStr[b] >= '0' && m_stdStr[b] <= '9' )
+			{
+				value += (m_stdStr[b] - '0') * (1 << (a * 4));
+            }
+            else
+            {
+				switch( m_stdStr[b] )
+				{
+                case 'A':
+                case 'a':
+                    value += 10 * (1 << (a * 4));
+                    break;
+                    
+                case 'B':
+                case 'b':
+                    value += 11 * (1 << (a * 4));
+                    break;
+
+                case 'C':
+                case 'c':
+                    value += 12 * (1 << (a * 4));
+                    break;
+                    
+                case 'D':
+                case 'd':
+                    value += 13 * (1 << (a * 4));
+                    break;
+                    
+                case 'E':
+                case 'e':
+                    value += 14 * (1 << (a * 4));
+                    break;
+                    
+                case 'F':
+                case 'f':
+                    value += 15 * (1 << (a * 4));
+                    break;
+				}
+			}
+		}
+					
+		return value;
+	}
 };
 
 #endif // CString_h

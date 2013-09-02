@@ -35,25 +35,25 @@ private:
 
 	eNetworkState							m_eNetworkState;
 
-	void									UpdateNetwork( void );
+	void									UpdateNetwork(void );
 
 public:
 
-	CNetworkModule( void );
-	~CNetworkModule( void );
+	CNetworkModule(void );
+	~CNetworkModule(void );
 
-	bool									Startup( void );
+	bool									Startup(void );
 
-	void									SetNetworkState( eNetworkState netState ) { m_eNetworkState = netState; }
-	eNetworkState							GetNetworkState( void ) { return m_eNetworkState; }
+	void									SetNetworkState(eNetworkState netState ) { m_eNetworkState = netState; }
+	eNetworkState							GetNetworkState(void ) { return m_eNetworkState; }
 
-	void									Pulse( void );
+	void									Pulse(void );
 
-	void									Call( const char * szIdentifier, RakNet::BitStream * pBitStream, PacketPriority priority, PacketReliability reliability, EntityId playerId, bool bBroadCast );
-	int										GetPlayerPing( EntityId playerId );
+	void									Call(const char * szIdentifier, RakNet::BitStream * pBitStream, PacketPriority priority, PacketReliability reliability, EntityId playerId, bool bBroadCast );
+	int										GetPlayerPing(EntityId playerId );
 
-	RakNet::RakPeerInterface				* GetRakPeer( void ) { return m_pRakPeer; }
-	static RakNet::RPC4						* GetRPC( void ) { return m_pRPC; }
+	RakNet::RakPeerInterface				* GetRakPeer(void ) { return m_pRakPeer; }
+	static RakNet::RPC4						* GetRPC(void ) { return m_pRPC; }
 
 };
 

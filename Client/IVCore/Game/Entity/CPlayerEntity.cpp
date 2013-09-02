@@ -1860,3 +1860,44 @@ void CPlayerEntity::SetWeaponAimAtTask(CVector3 vecAimAt)
 		}
 	}
 }
+
+void CPlayerEntity::SetPedClothes(unsigned short ucBodyLocation, unsigned  char ucClothes)
+{
+	// Check if the bodylocation is out of our index
+	if(ucBodyLocation > 10)
+		return;
+
+	if(IsSpawned()) {
+		unsigned char ucClothesIdx = 0;
+		unsigned uiDrawableVariations = m_pPlayerPed->GetNumberOfCharDrawableVariations(ucBodyLocation);
+
+		for(unsigned uiDrawable = 0; uiDrawable < uiDrawableVariations; ++uiDrawable) {
+			unsigned uiTextureVariations = m_pPlayerPed->GetNumberOfCharTextureVariations(ucBodyLocation, uiDrawable);
+
+			for(unsigned uiTexture = 0; uiTexture < uiTextureVariations; ++uiTexture) {
+
+				if(ucClothesIdx == ucClothes) {
+					m_pPlayerPed->SetClothes(ucBodyLocation, uiDrawable, uiTexture);
+					SetClothesValue(ucBodyLocation, ucClothes);
+					return;
+				}
+
+				++ucClothesIdx;
+			}
+		}
+
+		m_pPlayerPed->SetClothes(ucBodyLocation, 0, 0);
+		SetClothesValue(ucBodyLocation, 0);
+	}
+	else
+		SetClothesValue(ucBodyLocation, ucClothes);
+}
+
+unsigned char CPlayerEntity::GetPedClothes(unsigned short ucBodyLocation)
+{
+	// Check if the bodylocation is out of our index
+	if(ucBodyLocation > 10)
+		return 0;
+
+	return GetClothesValueFromSlot(ucBodyLocation);
+}

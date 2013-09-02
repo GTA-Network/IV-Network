@@ -201,6 +201,8 @@ public:
         bool				GetCarCanBurstTyres();
 		void				SetHeadlights(bool bSwitch);
 		bool				GetHeadlights();
+		BYTE				GetRadioStation();
+		void				SetRadioStation(BYTE byteRadioIndex);
 };
 
 #endif // CIVVehicle_h

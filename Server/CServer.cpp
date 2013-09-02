@@ -19,8 +19,6 @@ CServer::CServer()
 {
 	s_pInstance = this;
 
-	m_pNetServer = new CNetworkServer();
-
 	m_pRPCHandler = new CServerRPCHandler();
 
 	m_pNetworkModule = new CNetworkModule();
@@ -56,8 +54,6 @@ bool CServer::Startup()
 	// Register our RPCs before set the NetServer´s rpc handler
 	m_pRPCHandler->RegisterRPCs();
 	CEvents* pEvents = new CEvents();
-	// Set our rpc handler
-	m_pNetServer->SetRpcHandler(m_pRPCHandler);
 
 	// Create all the managers
 	m_pPlayerManager = new CPlayerManager();
@@ -125,16 +121,6 @@ bool CServer::Startup()
 #else
         CLogFile::Print("====================================================================");
 #endif
-
-
-	RakNet::StartupResult startResult;
-	startResult = m_pNetServer->Start(CVAR_GET_INTEGER("port"), CVAR_GET_INTEGER("maxplayers"), CVAR_GET_STRING("hostaddress"));
-	if(PEER_IS_STARTED(startResult) == false)
-	{
-		CLogFile::Print("Failed to initialize network component.");
-		CLogFile::Print(Network::GetErrorMessage(startResult));
-		return false;
-	}
 	
 	// Load modules
 	// Note: modules not implemented yet coming soon
@@ -222,7 +208,8 @@ bool CServer::Startup()
 
 void CServer::Process()
 {
-	m_pNetServer->Process();
+
+	m_pNetworkModule->Pulse();
 
 	// Pulse all managers
 	// Do not worry about that some managers dont need to be pulsed its just that its complete and all the same structure

@@ -95,6 +95,24 @@ void CLocalPlayer::HandleSpawn()
 
 	// Set first spawn
 	m_bFirstSpawn = true;
+
+	// Force to draw components on slot 8(parachute etc.)
+	int iResult;
+    switch (CIVScript::GetCharDrawableVariation(GetScriptingHandle(), 1))
+    {
+        case 0: iResult = 1; break;
+        case 1: iResult = 2; break;
+        case 2: iResult = 2; break;
+        case 3: iResult = 1; break;
+        case 4: iResult = 1; break;
+		default: break;
+    }
+
+	CIVScript::SetDrawPlayerComponent(8, 1); // special 3
+	CIVScript::SetCharComponentVariation(GetScriptingHandle(), 8, iResult, 0);
+
+	// Notify the server 
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 }
 
 void CLocalPlayer::DoDeathCheck()
@@ -112,11 +130,11 @@ void CLocalPlayer::DoDeathCheck()
 		g_pCore->GetChat()->Outputf(false, "HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
 
 		// Send the death notification to the server
-		CBitStream bsSend;
+		BitStream bsSend;
 		bsSend.WriteCompressed(playerId);
 		bsSend.WriteCompressed(vehicleId);
 		bsSend.WriteCompressed(weaponId);
-		//g_pCore->GetNetworkManager()->Call(NULL, &bsSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, 0, false);
+		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_DEATH), &bsSend, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 		// Mark ourselves as dead
 		CLocalPlayer::m_bIsDead = true;
@@ -158,11 +176,20 @@ void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
     m_fSpawnAngle = fHeading;
 }
 
-void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera)
+void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bForce)
 {
 	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
 	{
 		// Toggle controls
+		if(bForce) {
+			// Apply current controls
+			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
+			m_bAdvancedControlState = bControl;
+			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+			m_bAdvancedCameraState = bCamera;
+			return;
+		}
+
 		if(bControl != m_bAdvancedControlState) {
 
 			// Check if our player is driver of a vehicle

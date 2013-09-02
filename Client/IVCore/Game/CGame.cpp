@@ -277,9 +277,6 @@ void CGame::UnprotectMemory()
 		if(!strcmp(pszSectionName, ".text") || !strcmp(pszSectionName, ".rdata"))
 			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
 	}
-	
-	// Delete and remove the ptr from memory
-	//SAFE_DELETE(pszSectionName);
 
 }
 
@@ -311,20 +308,19 @@ void CGame::PrepareWorld()
 	CIVWeather::SetWeather(WEATHER_SUNNY);
 	g_pCore->GetTimeManagementInstance()->SetTime(6,45);
 	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
+	m_pTrafficLights->Reset();
 
-	//CGameFunction::LoadWorldAtPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
-
-	g_pCore->GetChat()->Output("Enter \"/spawn\" to spawn your local player ...",false);
 }
 
 void CGame::OnClientReadyToGamePlay()
 {
 	// Make our local player ready to port to the default spawn position
 	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
-	m_pLocalPlayer->SetPlayerControlAdvanced(true, true);
+	//m_pLocalPlayer->Respawn();
 	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
+	m_pLocalPlayer->SetPlayerControlAdvanced(true, true, true);
 
 	// Enable UI elements to be visible
 	CIVHud::SetHudVisible(true);
@@ -402,8 +398,7 @@ HWND CGame::GetGameWindow()
 
 void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
 {
-	if(g_pCore->GetChat())
-		g_pCore->GetChat()->Outputf(true, "#E3170D Warning: Exception 0x%p at 0x%p",dwExceptionType, dwAddress);
+	CLogFile::Printf("Warning: Exception 0x%p at 0x%p",dwExceptionType, dwAddress);
 }
 
 void CGame::ProcessEnvironment()
@@ -421,7 +416,7 @@ void CGame::ProcessEnvironment()
 	CGameFunction::GetTime(&uGameHour, &uGameMinute);
 
 	// Check if the game time is not the same as the given CTime
-	if(uGameHour-ucHour < -1 || uGameMinute-ucMinute < -10) {
+	if((uGameHour-ucHour < -1 || ucHour-uGameHour < -1)|| (uGameMinute-ucMinute < -10 || ucMinute-uGameHour < -10)) {
 		// Force game to update the time to the latest given data
 		CGameFunction::SetTimeOfDay(ucHour, ucMinute);
 	}
@@ -433,4 +428,29 @@ void CGame::ProcessEnvironment()
 		// Let the game render the time by itself(so it's not so buggy when updating the time)
 		;
 	}
+}
+
+void CGame::SetupGame()
+{
+	g_pCore->GetGame()->OnClientReadyToGamePlay();
+	g_pCore->GetGame()->GetLocalPlayer()->SetModel(0);
+	g_pCore->GetGame()->GetLocalPlayer()->SetMoney(10000);
+
+	int iVehicleType = 141;
+
+	CVector3 vecCreatePos; 
+	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
+	vecCreatePos.fX += 4;
+	vecCreatePos.fY += 1;
+
+	CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
+	
+	CHECK_PTR_VOID(pVehicle);
+
+	// Add our vehicle
+	g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
+	pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+	pVehicle->Create();
+	pVehicle->SetPosition(vecCreatePos);
+
 }

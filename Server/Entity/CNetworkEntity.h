@@ -12,6 +12,7 @@
 
 #include <Common.h>
 #include <Math/CMaths.h>
+#include <NetCommon.h>
 
 enum eEntityType
 {
@@ -68,8 +69,8 @@ public:
 	virtual	bool		IsMoving();
 	virtual void		StopMoving();
 
-	virtual void		Serialize(ePackageType pType);
-	virtual void		Deserialize(ePackageType pType);
+	virtual void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
+	virtual void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
 
 	virtual void		AddToWorld() { /* Nothing can be done here */ };
 	virtual void		RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };

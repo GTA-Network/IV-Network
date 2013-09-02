@@ -177,6 +177,11 @@ public:
 
 	void				SetCurrentVehicle(IVVehicle * pVehicle);
 	IVVehicle			* GetCurrentVehicle();
+
+	unsigned int		GetNumberOfCharDrawableVariations(unsigned int ucBodyLocation);
+	unsigned int		GetNumberOfCharTextureVariations(unsigned int ucBodyLocation, unsigned int uiPart);
+	void				SetClothes(unsigned int ucBodyLocation, unsigned int uiVariation, unsigned int uiTexture);
+
 };
 
 #endif // CIVPed_h

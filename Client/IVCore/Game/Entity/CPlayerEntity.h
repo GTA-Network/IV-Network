@@ -62,6 +62,59 @@ private:
 	sPlayerEntity_StoreIVSynchronization	* m_pIVSyncHandle;
 	CPlayerEntity							* m_pPlayerEntity;
 
+	struct 
+	{
+		unsigned char	ucHead;
+		unsigned char	ucUpperBody; // e.g. shirt
+		unsigned char	ucLowerBody; // e.g. pants, skirts
+		unsigned char	ucSpecial1;
+		unsigned char	ucHand;
+		unsigned char	ucFeet; // e.g. shoes
+		unsigned char	ucJacket;
+		unsigned char	ucHair;
+		unsigned char	ucSpecial2;
+		unsigned char	ucSpecial3;
+		unsigned char	ucFace;
+	}										m_sClothes;
+
+	BYTE									GetClothesValueFromSlot(BYTE bodyPart)
+	{
+		switch(bodyPart)
+		{
+			case 0: return m_sClothes.ucHead;
+			case 1: return m_sClothes.ucUpperBody;
+			case 2: return m_sClothes.ucLowerBody;
+			case 3: return m_sClothes.ucSpecial1;
+			case 4: return m_sClothes.ucHand;
+			case 5: return m_sClothes.ucFeet;
+			case 6: return m_sClothes.ucJacket;
+			case 7: return m_sClothes.ucHair;
+			case 8: return m_sClothes.ucSpecial2;
+			case 9: return m_sClothes.ucSpecial3;
+			case 10: return m_sClothes.ucFace;
+			default: return 0;
+		}
+	}
+
+	void									SetClothesValue(BYTE bodyPart, BYTE byteValue)
+	{
+		switch(bodyPart)
+		{
+			case 0: m_sClothes.ucHead = byteValue; break;
+			case 1: m_sClothes.ucUpperBody = byteValue; break;
+			case 2: m_sClothes.ucLowerBody = byteValue; break;
+			case 3: m_sClothes.ucSpecial1 = byteValue; break;
+			case 4: m_sClothes.ucHand = byteValue; break;
+			case 5: m_sClothes.ucFeet = byteValue; break;
+			case 6: m_sClothes.ucJacket = byteValue; break;
+			case 7: m_sClothes.ucHair = byteValue; break;
+			case 8: m_sClothes.ucSpecial2 = byteValue; break;
+			case 9: m_sClothes.ucSpecial3 = byteValue; break;
+			case 10: m_sClothes.ucFace = byteValue; break;
+			default: break;
+		}
+	}
+
 public: // Handles "GET" functions
 
 	inline bool						IsLocalPlayer() { return m_bLocalPlayer; }
@@ -110,7 +163,7 @@ public: // Handles "GET" functions
 	CVehicleEntity					* GetVehicleEntity() { return m_pVehicle; }
 	
 	sWeaponStructure				GetAimData() { return m_aimData; }
-	sWeaponStructure				GetShotData() { return m_shotData; }
+	sWeaponStructure				GetShotData() { return m_shotData; }					
 
 public: // Handles call functions
 									CPlayerEntity(bool bLocalPlayer = false);
@@ -191,6 +244,9 @@ public: // Handles call functions
 
 	void							SetAimData(bool bSwitch, CVector3 vecPos);
 	void							SetShotData(bool bSwitch, CVector3 vecPos);
+
+	void							SetPedClothes(unsigned short ucBodyLocation, unsigned  char ucClothes);
+	unsigned char					GetPedClothes(unsigned short ucBodyLocation);
 
 };
 

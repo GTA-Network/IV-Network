@@ -202,56 +202,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->SetModel(atoi(strParameters.c_str()));
 		return true;
 	}
-	else if(strCommand == "testweapon")
+	else if(strCommand == "setclothes")
 	{
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),CIVScript::WEAPON_EPISODIC_11,99,false);
-		return true;
-	}
-	else if(strCommand == "ready")
-	{
-		PTR_CHAT->Output("Installing prachute...");
-		CEFLCSupport::InstallPreGameLoad();
-		return true;
-	}
-	else if(strCommand == "parachute")
-	{
-		PTR_CHAT->Output("Adding prachute...");
-		
-		CIVScript::RequestScript("parachutelauncher");
-		CIVScript::StartNewScript("parachutelauncher",512);
-
-
-		/*
-		CVector3 vecPosition;
-		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
-		unsigned int uiPlayerIndex = g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle();
-
-		DWORD dwParachute = 0x58D6A0A0;
-		
-		//CIVScript::GiveWeaponToChar(uiPlayerIndex, 41, 1, false);
-		//CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, vecPosition.fZ + 2, &pObj, 1);
-		//CIVScript::AttachObjectToPed(pObj, uiPlayerIndex, 0, 0.02500000, -0.12500000, 5.45000000, 0.00000000, 0.00000000, 0.00000000, 1);
-
-		if(pObj != NULL)
-			CIVScript::DeleteObject(&pObj);
-
-		dwParachute = 0x4C19FE43; //0x402B7648;
-		CIVScript::CreateObject(dwParachute, vecPosition.fX, vecPosition.fY, -25.0 , &pObj, 1);
-		l_U40 = pObj;
-
-		CIVScript::SetObjectDynamic(pObj, 0);
-		CIVScript::SetObjectCollision(pObj, 0);
-		CIVScript::SetObjectVisible(pObj, 0);
-		CIVScript::SetActivateObjectPhysicsAsSoonAsItIsUnfrozen(pObj, 1);
-
-		CIVScript::SetObjectDynamic( pObj, 1 );
-        CIVScript::SetObjectCollision( pObj, 1 );
-        CIVScript::SetObjectVisible( pObj, 1 );
-		CIVScript::AttachObjectToPed( pObj, uiPlayerIndex, 1202, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 0.00000000, 1 );
-		CIVScript::PlayObjectAnim( pObj, "obj_chute_off", "PARACHUTE", 1000.00000000, 0, 1 );
-		CIVScript::TaskPlayAnimWithFlags( uiPlayerIndex, "chute_off", "PARACHUTE", 3.00000000, 0, 1280 );
-		*/
-		return true;
+		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strParameters.c_str()),1);
 	}
 	else if(strCommand == "bahama")
 	{
@@ -271,11 +224,8 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 			{
 				// Add our vehicle
 				g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-
 				pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-
 				pVehicle->Create();
-
 				pVehicle->SetPosition(vecPos);
 			}
 		}

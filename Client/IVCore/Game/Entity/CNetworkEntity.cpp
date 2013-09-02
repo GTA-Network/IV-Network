@@ -21,7 +21,8 @@ CNetworkEntity::CNetworkEntity()
 	m_vecMoveSpeed(CVector3()),
 	m_vecTurnSpeed(CVector3()),
 	m_entityId(INVALID_ENTITY),
-	m_eType(UNKNOWN_ENTITY)
+	m_eType(UNKNOWN_ENTITY),
+	m_pPlayerEntity(NULL)
 {
 
 }
@@ -95,6 +96,10 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 	// Check if our player ptr
 	if(pPlayer)
 	{
+		// Update player handle
+		if(!m_pPlayerEntity)
+			m_pPlayerEntity = pPlayer;
+
 		// Get the latest position
 		pPlayer->GetPosition(m_vecPosition);
 
@@ -168,7 +173,8 @@ void CNetworkEntity::Serialize(ePackageType pType)
 			// Merge EntitySync packet with our packet
 			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
 
-			// Stop current case
+			// Write player onfoot flag into raknet bitstream
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 			break;
 
 		}
@@ -202,14 +208,46 @@ void CNetworkEntity::Serialize(ePackageType pType)
 	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
 
 	// Send package to network
-	g_pCore->GetNetworkManager()->Call(CString("0x69766D50_F%d", eRPCIdentifier::RPC_SYNC_PACKAGE).Get(), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
 }
 
-void CNetworkEntity::Deserialize(ePackageType pType)
+void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
 	// Get Sync package here and recieve it to the server
-	CBitStream * pBitStream = new CBitStream();
-	pBitStream->Write0();
+	
+	CNetworkEntitySync * pSyncPackage = new CNetworkEntitySync;
+	pBitStream->Read((char *)pSyncPackage);
+	
+	switch(pSyncPackage->pEntityType)
+	{
+		case PLAYER_ENTITY:
+		{
+			sNetwork_Sync_Entity_Player * pSyncPlayer = &pSyncPackage->pPlayerPacket;
+
+			// Apply current 3D Position to the sync package
+			m_pPlayerEntity->SetPosition(pSyncPackage->pPlayerPacket.vecPosition);
+
+			// Apply current 3D Movement to the sync package
+			m_pPlayerEntity->SetMoveSpeed(pSyncPackage->pPlayerPacket.vecMovementSpeed);
+
+			// Apply current 3D Turnspeed to the sync package
+			m_pPlayerEntity->SetTurnSpeed(pSyncPackage->pPlayerPacket.vecTurnSpeed);
+
+			// Apply current duckstate to the sync package
+			m_pPlayerEntity->GetPlayerPed()->SetDucking(pSyncPackage->pPlayerPacket.bDuckState);
+
+			// Apply current heading to the sync package
+			m_pPlayerEntity->GetPlayerPed()->SetHeading(pSyncPackage->pPlayerPacket.fHeading);
+
+			// Finished deserialize, break!
+			break;
+		}
+		default:
+		{
+			CLogFile::Printf("[%s]: Unkown entity type, process...",__FUNCTION__);
+			break;
+		}
+	}
 
 	// TODO: apply the data from the syncpackage to the vehicles/peds
 }

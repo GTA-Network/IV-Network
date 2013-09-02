@@ -23,6 +23,12 @@ struct sScrollBarInfo
 	CString strDefaultText;
 };
 
+struct sRadioInfo
+{
+	unsigned uiIndex;
+	CString strRadioStationName;
+};
+
 sScrollBarInfo scrollBarItems[] = {
 	{0, "Financial", IV_SCROLLBAR_1_TEXT},
 	{1, "Theatre", IV_SCROLLBAR_2_TEXT},
@@ -32,6 +38,25 @@ sScrollBarInfo scrollBarItems[] = {
 	{5, "ComedyClub", IV_SCROLLBAR_6_TEXT},
 	{6, "Traffic(Tunnel)", IV_SCROLLBAR_7_TEXT},
 	{7, "News", IV_SCROLLBAR_8_TEXT},
+};
+
+
+sRadioInfo radioArray[] = {
+	{0, "Liberty City Rock"},
+	{1, "K 109 The Studio"},
+	{2, "WKTT Radio"},
+	{3, "LCHC (Where hardcode lives)"},
+	{4, "Self Actualization FM" },
+	{5, "Vice City FM" },
+	{6, "The Beat 102.7" },
+	{7, "San Juan Sounds" },
+	{8, "Radio Broker" },
+	{9, "RamJam FM" },
+	{10, "Vladivostok FM" },
+	{11, "Electro-CHOC(Dance)" },
+	{12, "Independence FM" },
+	{254, "Radio initalising.." },
+	{255, "Radio turned off.." },
 };
 
 bool CGameFunction::IsMenuActive()
@@ -387,4 +412,13 @@ uint32_t CGameFunction::HashToString(char *key, size_t len)
    hash ^= (hash >> 11);
    hash += (hash << 15);
    return hash;
+}
+
+CString CGameFunction::GetRadioName(BYTE byteRadioIndex)
+{
+	for(size_t i = 0; i < (sizeof(radioArray) / sizeof(sRadioInfo)); i++)
+		if(radioArray[i].uiIndex == byteRadioIndex)
+			return radioArray[i].strRadioStationName;
+
+	return CString("Unkown radio station.. %d",byteRadioIndex);
 }

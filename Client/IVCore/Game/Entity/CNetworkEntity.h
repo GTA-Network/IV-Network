@@ -12,6 +12,7 @@
 
 #include <Common.h>
 #include <Math/CMaths.h>
+#include <NetCommon.h>
 
 class CPlayerEntity;
 class CVehicleEntity;
@@ -165,6 +166,8 @@ private:
 	CNetworkEntitySubPlayer			m_pPlayerHandle;
 	CNetworkEntitySubVehicle		m_pVehicleHandle;
 
+	CPlayerEntity					*m_pPlayerEntity;
+
 public:
 	CNetworkEntity();
 	CNetworkEntity(eEntityType eType);
@@ -198,7 +201,7 @@ public:
 	virtual void		StopMoving();
 
 	virtual void		Serialize(ePackageType pType);
-	virtual void		Deserialize(ePackageType pType);
+	virtual void		Deserialize(RakNet::BitStream * pBitStream, ePackageType pType);
 
 	virtual void		AddToWorld() { /* Nothing can be done here */ };
 	virtual void		RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };

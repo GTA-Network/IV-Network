@@ -125,10 +125,6 @@ void CTrafficLights::CalculateCycleTime()
 void CTrafficLights::SetLocked(bool bLocked)
 {
 	m_bIsLocked = bLocked;
-
-#ifdef _SERVER
-	SyncState();
-#endif
 }
 
 bool CTrafficLights::IsLocked()
@@ -248,34 +244,6 @@ unsigned int CTrafficLights::GetRedDuration()
 	return m_uiRedDuration;
 }
 
-#ifdef _SERVER
-void CTrafficLights::SyncState()
-{
-	CBitStream bsSend;
-	bsSend.Write((BYTE)m_eStateSet);
-	if(m_eStateSet != TRAFFIC_LIGHT_STATE_DISABLED_DISABLED)
-	{
-		if(m_bIsLocked)
-			bsSend.Write1();
-		else
-			bsSend.Write0();
-
-		if(!IsUsingDefaultDurations())
-		{
-			if(m_eStateSet >= TRAFFIC_LIGHT_STATE_FLASHING_FLASHING && m_eStateSet < TRAFFIC_LIGHT_STATE_DISABLED_DISABLED)
-				bsSend.Write(m_uiYellowDuration);
-			else if(m_eStateSet < TRAFFIC_LIGHT_STATE_TO_GREEN_RED)
-			{
-				bsSend.Write(m_uiGreenDuration);
-				bsSend.Write(m_uiYellowDuration);
-				bsSend.Write(m_uiRedDuration);
-			}
-		}
-	}
-
-	g_pNetworkManager->RPC(RPC_ScriptingSetTrafficLightState, &bsSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED, INVALID_ENTITY_ID, true);
-}
-#else
 CTrafficLights::eGTATrafficLightState CTrafficLights::GetTrafficLightState()
 {
 	switch(GetState())
@@ -331,4 +299,3 @@ CTrafficLights::eGTATrafficLightState CTrafficLights::GetTrafficLightAltState()
 	}
 	return GTA_TRAFFIC_LIGHT_STATE_DISABLED;
 }
-#endif

@@ -168,3 +168,113 @@ IVVehicle * CIVPed::GetCurrentVehicle()
 
 	return NULL;
 }
+
+unsigned int CIVPed::GetNumberOfCharDrawableVariations(unsigned int ucBodyLocation)
+{
+	// Get the ped pointer
+	IVPed * pPed = GetPed();
+
+	// Is the ped pointer valid?
+	if(pPed)
+	{
+		unsigned int uiDrawableVariations;
+
+		DWORD DWORD_157D310 = (g_pCore->GetBase() + 0x157D310);
+		DWORD SUB_9440E0 = (g_pCore->GetBase() + 0x9440E0);
+
+		_asm	mov ecx, pPed;
+		_asm	mov edx, DWORD_157D310[ecx*4];
+		_asm	mov eax, ucBodyLocation;
+		_asm	mov ecx, [edx+128h];
+		_asm	push eax;
+		_asm	call SUB_9440E0;
+		_asm	movzx eax, al;
+		_asm	mov uiDrawableVariations, eax;
+		_asm	retn;
+
+		return uiDrawableVariations;
+	}
+	else
+		return 0;
+}
+
+unsigned int CIVPed::GetNumberOfCharTextureVariations(unsigned int ucBodyLocation, unsigned int uiPart)
+{
+	// Get the ped pointer
+	IVPed * pPed = GetPed();
+
+	// Is the ped pointer valid?
+	if(pPed)
+	{
+		unsigned int uiTextureVariations;
+
+		DWORD DWORD_157D310 = (g_pCore->GetBase() + 0x157D310);
+		DWORD SUB_944080 = (g_pCore->GetBase() + 0x944080);
+
+		_asm mov ecx, pPed;
+		_asm mov edx, DWORD_157D310[ecx*4];
+		_asm mov eax, uiPart;
+		_asm mov ecx, [edx+128h];
+		_asm mov edx, ucBodyLocation;
+		_asm push eax;
+		_asm push edx;
+		_asm call SUB_944080;
+		_asm movzx eax, al;
+		_asm mov uiTextureVariations, eax;
+		_asm retn;
+
+		return uiTextureVariations;
+	}
+	else
+		return 0;
+}
+
+void CIVPed::SetClothes(unsigned int ucBodyLocation, unsigned int uiVariation, unsigned int uiTexture)
+{
+	// Get the ped pointer
+	IVPed * pPed = GetPed();
+
+	// Is the ped pointer valid?
+	if(pPed)
+	{
+		DWORD SUB_944900 = (g_pCore->GetBase() + 0x944900);
+
+		// Move ped to ecx->eax register
+		_asm mov ecx, pPed;
+		_asm mov eax, [ecx];
+
+		// Move third parameter into edxy and push it to the stack
+		_asm mov edx, uiTexture;
+		_asm mov ecx, [eax+21Ch];
+		_asm push edx;
+		
+		// Move second parameter into edx and push it to the stack
+		_asm mov edx, [uiVariation];
+		_asm push edx;
+
+		// Move first parameter into edx and push it to the stack
+		_asm mov edx, [ucBodyLocation];
+		_asm push edx;
+
+		// Move *(BYTE *)(pPed + 537) and push it to the stack
+		_asm movzx edx, byte ptr [eax+219h];
+		_asm push edx;
+
+		// Push *(DWORD *)(pPed + 540) to the stack [added mov ecx, [eax+21Ch(540)] before]
+		_asm push ecx;
+
+		// Push *(DWORD *)(pPed + 540) + 128 to the stack
+		_asm add ecx, 80h;
+		_asm push ecx;
+
+		// Push the pPed to the stack
+		_asm push eax;
+
+		// Call our SetClothes function
+		_asm call SUB_944900;
+
+		// Cleanup stack and exit
+		_asm add esp, 1Ch;
+		_asm retn;
+	}
+}

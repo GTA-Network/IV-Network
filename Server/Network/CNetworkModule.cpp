@@ -13,6 +13,8 @@
 #include <CSettings.h>
 #include <CLogFile.h>
 #include "CNetworkRPC.h"
+#include <Common.h>
+#include <SharedUtility.h>
 
 RakNet::RPC4			* CNetworkModule::m_pRPC = NULL;
 
@@ -119,6 +121,9 @@ void CNetworkModule::UpdateNetwork(void)
 				// Is the player active in the player manager?
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
+					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
+					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(1).Get());
+					
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
 				}
@@ -128,10 +133,14 @@ void CNetworkModule::UpdateNetwork(void)
 			case ID_CONNECTION_LOST:
 			{
 				// Is the player active in the player manager?
-				if( CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
+				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
+					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
+					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(0).Get());
+					
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
+
 				}
 				break;
 			}

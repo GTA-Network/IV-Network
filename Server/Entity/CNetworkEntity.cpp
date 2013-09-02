@@ -80,14 +80,14 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
-void CNetworkEntity::Serialize(ePackageType pType)
+void CNetworkEntity::Serialize(RakNet::BitStream * bitStream, ePackageType pType)
 {
 	// Create Sync package here and send it to the server
 	CBitStream * pBitStream = new CBitStream();
 	pBitStream->Write0();
 }
 
-void CNetworkEntity::Deserialize(ePackageType pType)
+void CNetworkEntity::Deserialize(RakNet::BitStream * bitStream, ePackageType pType)
 {
 	// Get Sync package here and recieve it to the server
 	CBitStream * pBitStream = new CBitStream();

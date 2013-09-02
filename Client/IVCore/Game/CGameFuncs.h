@@ -61,6 +61,7 @@ public:
 	static DWORD            GetNativeAddress(DWORD dwNative);
 	static void				LoadWorldAtPosition(CVector3& vecPosition);
 	static uint32_t			HashToString(char *szKey, size_t strlength);
+	static CString			GetRadioName(BYTE byteRadioIndex);
 };
 
 #endif // CGameFuncs_h

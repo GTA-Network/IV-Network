@@ -221,11 +221,52 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		return;
 
 	// Print our IVMultiplayer "Identifier" in the left upper corner
+	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : 1) : -1) : -1;
+	CString strConnection;
+	int iConnectTime = (int)((timeGetTime() - GetGameLoadInitializeTime())/1000);
+
+	CString strSeconds;
+	if(iConnectTime > 0) {
+		int iSeconds = iConnectTime % 60;
+		int iMinutes = (iConnectTime / 60) % 60;
+		int iHours = (iConnectTime / 60 / 60) % 24;
+		int iDays = (iConnectTime / 60 / 60 / 24);
+
+		if(iDays > 0)
+		{
+			if(iDays > 9)
+				strSeconds.AppendF("%d Days,", iDays);
+			else
+				strSeconds.AppendF("%d Day%s,", iDays, iDays > 1 ? "s" : "");
+		}
+		if(iHours > 0)
+		{
+			if(iHours > 9)
+				strSeconds.AppendF(" %d Hours,",iHours);
+			else
+				strSeconds.AppendF(" 0%d Hour%s,",iHours, iHours > 1 ? "s" : "");
+		}
+		if(iMinutes > 0)
+		{
+			if(iMinutes > 9)
+				strSeconds.AppendF(" %d Minutes,",iMinutes);
+			else
+				strSeconds.AppendF(" 0%d Minute%s,",iMinutes, iMinutes > 1 ? "s" : "");
+		}
+
+		strSeconds.AppendF("%d Second%s",iSeconds, iSeconds > 1 ? "s" : "");
+	}
+	
+	CString strInformation = CString("IV:Multiplayer %s | Running since %s | Ping %hu", MOD_VERSION_STRING, strSeconds.Get(), usPing);
+	
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("IV:Multiplayer " MOD_VERSION_STRING " - Loading.. Hold on...").Get());
 	else
-		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("IV:Multiplayer" MOD_VERSION_STRING).Get());
-		
+		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, strInformation.Get());
+	
+	strSeconds.Clear();
+	strInformation.Clear();
+
 	// Render our chat instance
 	if(m_pChat && m_pChat->IsVisible())
 		m_pChat->Render();

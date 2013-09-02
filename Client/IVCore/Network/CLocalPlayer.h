@@ -58,7 +58,7 @@ public:
 
 		void							SetControl(bool bControl) { m_bToggleControl = bControl; }
 		inline bool						GetControl() { return m_bToggleControl; }
-		void							SetPlayerControlAdvanced(bool bControl, bool bCamera);
+		void							SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bForce = false);
 		inline bool						GetAdvancedControlState() { return m_bAdvancedControlState; }
 		inline bool						GetAdvancedCameraState() { return m_bAdvancedCameraState; }
 

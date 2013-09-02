@@ -511,7 +511,7 @@ void luaV_finishOp (lua_State *L) {
 #define Protect(x)	{ {x;}; base = ci->u.l.base; }
 
 #define checkGC(L,c)  \
-  Protect( luaC_condGC(L,{L->top = (c);  /* limit of live values */ \
+  Protect(luaC_condGC(L,{L->top = (c);  /* limit of live values */ \
                           luaC_step(L); \
                           L->top = ci->top;})  /* restore top */ \
            luai_threadyield(L); )

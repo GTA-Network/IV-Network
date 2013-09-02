@@ -684,4 +684,20 @@ namespace SharedUtility
 			CreateDirectoryA(strMultiplayerPath.Get());
 		}
 	}
+	
+	CString DiconnectReasonToString( unsigned int uiReason )
+	{
+		CString strReason( "Unknown" );
+
+		switch( uiReason )
+		{
+			case 0:		strReason.Set( "Timed Out" ); break;
+			case 1:		strReason.Set( "Quit" ); break;
+			case 2:		strReason.Set( "Kicked" ); break;
+			case 3:		strReason.Set( "Banned" ); break;
+		}
+
+		return strReason;
+	}
+
 };

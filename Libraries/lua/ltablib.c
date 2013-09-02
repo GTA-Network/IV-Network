@@ -71,7 +71,7 @@ static int tremove (lua_State *L) {
   if (pos != size)  /* validate 'pos' if given */
     luaL_argcheck(L, 1 <= pos && pos <= size + 1, 1, "position out of bounds");
   lua_rawgeti(L, 1, pos);  /* result = t[pos] */
-  for ( ; pos < size; pos++) {
+  for (; pos < size; pos++) {
     lua_rawgeti(L, 1, pos+1);
     lua_rawseti(L, 1, pos);  /* t[pos] = t[pos+1] */
   }

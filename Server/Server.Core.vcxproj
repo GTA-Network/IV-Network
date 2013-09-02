@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\server</IntDir>
+    <IntDir>$(SolutionDir)\Build\temp\server\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>

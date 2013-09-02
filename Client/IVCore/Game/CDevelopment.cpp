@@ -56,6 +56,7 @@ void CDevelopment::Process()
 			bool bEngineStatus = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetEngineStatus();
 			bool bHeadLightsStatus = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetHeadlights();
 			int iLightsState = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetLightsState();
+			BYTE byteRadioIndex = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetRadioStation();
 
 			// Controls
 			CControls * pControls = new CControls;
@@ -83,6 +84,8 @@ void CDevelopment::Process()
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Lights State: %d", iLightsState).Get());
 			fCurrentLine += 15;
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Headlights State: %d", bHeadLightsStatus).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Radio Station Index: [%d] %s", byteRadioIndex, CGameFunction::GetRadioName(byteRadioIndex).Get()).Get());
 		}
 
 		fCurrentLine += 30;

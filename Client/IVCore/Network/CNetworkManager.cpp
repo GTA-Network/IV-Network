@@ -86,13 +86,13 @@ void CNetworkManager::Connect(CString strHost, unsigned short usPort, CString st
 	// Get the result from the connection
 	switch(iConnectionResult)
 	{
-	case 0: strMessage.Format("Connecting to %s:%d...", strHost.Get(), usPort); break;
-	case 1: strMessage.Set("Failed to connect! (Invalid parameter)"); break;
-	case 2: strMessage.Set("Failed to connect! (Cannot resolve domain name)"); break;
-	case 3: strMessage.Set("Failed to connect! (Already connected)"); break;
-	case 4: strMessage.Set("Failed to connect! (Connection attempt already in progress)"); break;
-	case 5: strMessage.Set("Failed to connect! (Security initialization failed)"); break;
-	case 6: strMessage.Set("Failed to connect! (No host set)"); break;
+		case 0: strMessage.Format("Connecting to %s:%d...", strHost.Get(), usPort); break;
+		case 1: strMessage.Set("Failed to connect! (Invalid parameter)"); break;
+		case 2: strMessage.Set("Failed to connect! (Cannot resolve domain name)"); break;
+		case 3: strMessage.Set("Failed to connect! (Already connected)"); break;
+		case 4: strMessage.Set("Failed to connect! (Connection attempt already in progress)"); break;
+		case 5: strMessage.Set("Failed to connect! (Security initialization failed)"); break;
+		case 6: strMessage.Set("Failed to connect! (No host set)"); break;
 	}
 
 	// Did we fail to connect?

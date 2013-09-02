@@ -278,6 +278,8 @@ namespace CIVScript
     static void AllocateScriptToRandomPed(const char* p0, unsigned int p1, int p2, int p3) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ALLOCATE_SCRIPT_TO_RANDOM_PED, p0, p1, p2, p3); }
 	static void RegisterWorldPointScriptBrain(const char* p0, float p1) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REGISTER_WORLD_POINT_SCRIPT_BRAIN, p0, p1); }
 
+	static unsigned int GetNumberOfCharDrawableVariations(unsigned int ped, ePedComponent component) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_NUMBER_OF_CHAR_DRAWABLE_VARIATIONS, ped, component); }
+    static unsigned int GetNumberOfCharTextureVariations(unsigned int ped, ePedComponent component, unsigned int unknown1) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_NUMBER_OF_CHAR_TEXTURE_VARIATIONS, ped, component, unknown1); }
 };
 
 #endif // CIVScript_h

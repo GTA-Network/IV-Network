@@ -410,25 +410,25 @@ void CChat::ProcessInput()
 				return;
 		}
 
-		if(!bIsCommand)
+		/*if(!bIsCommand)
 		{
 			// Temporary(to print messages, until we've added the network manager
 			CString strInput = m_strInputText.Get();
 			Outputf(false, "%s: %s", g_pCore->GetNick().Get(), m_strInputText.Get());			AddToHistory();
-		}
+		}*/
 
 		// Is the network module instance valid?
-		/*if(pCore->GetNetworkModule())
+		if(g_pCore->GetNetworkManager())
 		{
 			// Are we connected?
-			if(pCore->GetNetworkModule()->IsConnected())
+			if(g_pCore->GetNetworkManager()->IsConnected())
 			{
 				RakNet::BitStream bitStream;
 				RakNet::RakString strInput;
 
 				// Check if we have a valid string(otherwise if we don't check it -> crash)
-				String Checkstring;
-				Checkstring.Append(m_strInputText.Get());
+				std::string Checkstring;
+				Checkstring.append(m_strInputText.Get());
 				for(int i = 0; i < m_strInputText.GetLength(); i++)
 				{
 					if(Checkstring[i] >= 'a' && Checkstring[i] <= 'z')
@@ -465,19 +465,19 @@ void CChat::ProcessInput()
 					strInput = m_strInputText.Get();
 
 					// 
-					Outputf(true, "#%s%s#FFFFFF: %s", String::DecimalToString(pCore->GetPlayerManager()->GetLocalPlayer()->GetColour()).Get(), pCore->GetNick().Get(), m_strInputText.Get());
+					Outputf(true, "#%s%s#FFFFFF: %s", CString::DecimalToString(g_pCore->GetGame()->GetLocalPlayer()->GetColor()).Get(), g_pCore->GetNick().Get(), m_strInputText.Get());
 				}
 
 				// Write the input
 				bitStream.Write(strInput.C_String());
 
 				// Send it to the server
-				pCore->GetNetworkModule()->Call(RPC_PLAYER_CHAT, &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+				g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 				// Add this message to the history
 				AddToHistory();
 			}
-		}*/
+		}
 	}
 }
 

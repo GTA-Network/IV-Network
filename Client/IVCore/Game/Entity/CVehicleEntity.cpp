@@ -77,11 +77,10 @@ bool CVehicleEntity::Create()
 
 	DWORD dwModelHash = m_pModelInfo->GetHash();
 
-	unsigned uiVehicleHandle;
-	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &uiVehicleHandle, true);
+	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, true);
 
     // Create the vehicle instance
-	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(uiVehicleHandle));
+	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));
 
 	// Mark as spawned
 	m_bSpawned = true;
@@ -101,6 +100,17 @@ bool CVehicleEntity::Destroy()
 
 	// Remove the vehicle from the world
 	m_pVehicle->RemoveFromWorld();
+
+	// Remove the vehicle reference
+	m_pModelInfo->RemoveReference();
+
+	// Release the entity
+	m_pVehicle->GetEntity()->Remove();
+
+	// Mark vehicle as no longer needed
+	IVVehicle * pVehicle = m_pVehicle->GetVehicle();
+	*(BYTE *)(pVehicle + 3949) |= 8u;
+	*(BYTE *)(pVehicle + 4360) = 1; // Disable function call(some loops through arrays..)
 
 	// Destroy the vehicle
 	CIVScript::DeleteCar(&m_uiVehicleHandle);
