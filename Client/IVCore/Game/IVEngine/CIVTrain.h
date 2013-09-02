@@ -11,43 +11,42 @@
 #define CIVTrain_h
 
 #include <Common.h>
-#include <Game/CGame.h>
 #include <CLogFile.h>
+#include <Game/Entity/CVehicleEntity.h>
 
-// Not sure.. 
-class IVTrain
-{
+class IVTrain { // size 40
 public:
-	PAD(IVTrain,pad0,4);			// 00-03
-	DWORD dwHandle;					// 04-07
-    CVector3 vecPosition;			// 08-19
-    PAD(IVTrain,pad2,19);			// 20-38
-    DWORD dwUnkown1;				// 39-43
-    BYTE byteState;                 // 44
-    BYTE byteUnkown2;				// 45
-	PAD(IVTrain,pad3,2);			// 46-78
-    DWORD dwHashValue;				// 48-52
-    PAD(IVTrain,pad4,347);			// 53-399
-    BYTE byteIsDriving;             // 400-401
-    PAD(IVTrain,pad5,205);          // 402-607
-    DWORD dwScriptingHandle;        // 608-612
+  BYTE f0[39];
+  BYTE byte27; // float fcruisespeed
 };
 
-class CIVTrain
-{
-private:
-	IVTrain *	m_pTrain;
-	DWORD		m_dwPointer;
-	EntityId	m_trainId;
-	CString		m_strTrainName;
+enum eTrainType {
+	TYPE_MAIN = 0,
+	TYPE_WAGON = 1
+};
+
+class CIVTrain : public CVehicleEntity {
 public:
-	CIVTrain(EntityId trainId, DWORD dwTrainPointer, CString strTrainName);
-	~CIVTrain();
+	IVTrain				*	m_pTrain;
+	CVehicleEntity		*	m_pVehicle;
 
-	void				SetTrainOffsetsAndCreate(EntityId trainRegisterId);
+	IVTrain				*	m_pWagon[8];
+	CIVTrain			*	m_pWagonEntity[8];
+	eTrainType				m_eTrainType;
 
-	unsigned int		GetTrainHandle();
-	DWORD				GetTrainPointer();
+						CIVTrain();
+						~CIVTrain() { };
+
+	void				CreateTrain();
+	void				CreateWagons(BYTE iWagons);
+	bool				IsTrain();
+	void				SetTrainDirection(int iDirection);
+	void				SetTrainCuriseSpeed(float fSpeed, unsigned int uiHandle = 1);
+
+	CVehicleEntity		*GetVehicleEntity() { return m_pVehicle; }
+	IVTrain				*GetTrain() { return m_pTrain; }
+	BYTE				GetMaxWagonCount() { return ARRAY_LENGTH(m_pWagonEntity); }
+	CIVTrain			*GetVehicleWagon(BYTE iWagon) { return m_pWagonEntity[iWagon] ? m_pWagonEntity[iWagon] : NULL; }
 };
 
 #endif // CIVTrain_h

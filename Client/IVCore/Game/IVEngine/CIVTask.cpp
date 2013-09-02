@@ -253,26 +253,22 @@ const char * GetTaskName(int iTaskType)
 
 CIVTask::CIVTask()
 {
-	CLogFile::Printf("CIVTask::CIVTask");
 	// Set the task
 	SetTask(NULL);
 }
 
 CIVTask::CIVTask(IVTask * pTask)
 {
-	CLogFile::Printf("CIVTask::CIVTask(0x%p)", pTask);
 	// Set the task
 	SetTask(pTask);
 }
 
 CIVTask::~CIVTask()
 {
-	CLogFile::Printf("CIVTask::~CIVTask");
 }
 
 void CIVTask::Create()
 {
-	CLogFile::Printf("CIVTask::Create");
 	if(!m_pTask)
 	{
 		// Allocate the task

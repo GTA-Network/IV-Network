@@ -274,6 +274,18 @@ void CVehicleEntity::GetPosition(CVector3& vecPosition)
 		vecPosition = m_vecPosition;
 }
 
+CVector3 CVehicleEntity::GetPosition()
+{
+	CVector3 vecPosition;
+
+	if(IsSpawned())
+		m_pVehicle->GetPosition(vecPosition);
+	else
+		vecPosition = m_vecPosition;
+
+	return vecPosition;
+}
+
 void CVehicleEntity::SetRotation(const CVector3& vecRotation, bool bResetInterpolation)
 {
 	if(IsSpawned())

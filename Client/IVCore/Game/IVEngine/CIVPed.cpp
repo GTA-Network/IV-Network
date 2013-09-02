@@ -178,19 +178,17 @@ unsigned int CIVPed::GetNumberOfCharDrawableVariations(unsigned int ucBodyLocati
 	if(pPed)
 	{
 		unsigned int uiDrawableVariations;
+		unsigned int uiPedHandle = g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf(pPed);
+		DWORD GetNumberOfCharDrawableVariations = (g_pCore->GetBase() + 0xC0B9D0);
 
-		DWORD DWORD_157D310 = (g_pCore->GetBase() + 0x157D310);
-		DWORD SUB_9440E0 = (g_pCore->GetBase() + 0x9440E0);
-
-		_asm	mov ecx, pPed;
-		_asm	mov edx, DWORD_157D310[ecx*4];
-		_asm	mov eax, ucBodyLocation;
-		_asm	mov ecx, [edx+128h];
-		_asm	push eax;
-		_asm	call SUB_9440E0;
-		_asm	movzx eax, al;
-		_asm	mov uiDrawableVariations, eax;
-		_asm	retn;
+		_asm	mov esi, esp  
+		_asm	mov	eax, dword ptr [ucBodyLocation]  
+		_asm	push eax  
+		_asm	mov ecx, dword ptr [uiPedHandle]  
+		_asm	push ecx  
+		_asm	call dword ptr [GetNumberOfCharDrawableVariations]  
+		_asm	add esp,8 
+		_asm	mov dword ptr [uiDrawableVariations], eax  
 
 		return uiDrawableVariations;
 	}
@@ -207,21 +205,19 @@ unsigned int CIVPed::GetNumberOfCharTextureVariations(unsigned int ucBodyLocatio
 	if(pPed)
 	{
 		unsigned int uiTextureVariations;
+		unsigned int uiPedHandle = g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf(pPed);
+		DWORD GetNumberOfCharTextureVariations = (g_pCore->GetBase() + 0xC0BA30);
 
-		DWORD DWORD_157D310 = (g_pCore->GetBase() + 0x157D310);
-		DWORD SUB_944080 = (g_pCore->GetBase() + 0x944080);
-
-		_asm mov ecx, pPed;
-		_asm mov edx, DWORD_157D310[ecx*4];
-		_asm mov eax, uiPart;
-		_asm mov ecx, [edx+128h];
-		_asm mov edx, ucBodyLocation;
-		_asm push eax;
-		_asm push edx;
-		_asm call SUB_944080;
-		_asm movzx eax, al;
-		_asm mov uiTextureVariations, eax;
-		_asm retn;
+		_asm	mov esi, esp;
+		_asm	mov eax, dword ptr [uiPart]; 
+		_asm	push eax;
+		_asm	mov ecx, dword ptr [ucBodyLocation];
+		_asm	push ecx;
+		_asm	mov edx, dword ptr [uiPedHandle];
+		_asm	push edx;
+		_asm	call dword ptr [GetNumberOfCharTextureVariations];
+		_asm	add esp, 0Ch;
+		_asm	mov dword ptr [uiTextureVariations], eax; 
 
 		return uiTextureVariations;
 	}
@@ -237,44 +233,19 @@ void CIVPed::SetClothes(unsigned int ucBodyLocation, unsigned int uiVariation, u
 	// Is the ped pointer valid?
 	if(pPed)
 	{
-		DWORD SUB_944900 = (g_pCore->GetBase() + 0x944900);
-
-		// Move ped to ecx->eax register
-		_asm mov ecx, pPed;
-		_asm mov eax, [ecx];
-
-		// Move third parameter into edxy and push it to the stack
-		_asm mov edx, uiTexture;
-		_asm mov ecx, [eax+21Ch];
-		_asm push edx;
+		unsigned int uiPedHandle = g_pCore->GetGame()->GetPools()->GetPedPool()->HandleOf(pPed);
+		DWORD SetClothes = (g_pCore->GetBase() + 0xC0BA70);
 		
-		// Move second parameter into edx and push it to the stack
-		_asm mov edx, [uiVariation];
-		_asm push edx;
-
-		// Move first parameter into edx and push it to the stack
-		_asm mov edx, [ucBodyLocation];
-		_asm push edx;
-
-		// Move *(BYTE *)(pPed + 537) and push it to the stack
-		_asm movzx edx, byte ptr [eax+219h];
-		_asm push edx;
-
-		// Push *(DWORD *)(pPed + 540) to the stack [added mov ecx, [eax+21Ch(540)] before]
-		_asm push ecx;
-
-		// Push *(DWORD *)(pPed + 540) + 128 to the stack
-		_asm add ecx, 80h;
-		_asm push ecx;
-
-		// Push the pPed to the stack
-		_asm push eax;
-
-		// Call our SetClothes function
-		_asm call SUB_944900;
-
-		// Cleanup stack and exit
-		_asm add esp, 1Ch;
-		_asm retn;
+		_asm	mov esi,esp  
+		_asm	mov	eax,dword ptr [uiTexture]  
+		_asm	push eax  
+		_asm	mov ecx,dword ptr [uiVariation]  
+		_asm	push ecx  
+		_asm	mov edx,dword ptr [ucBodyLocation]  
+		_asm	push edx  
+		_asm	mov eax,dword ptr [uiPedHandle]  
+		_asm	push eax  
+		_asm	call dword ptr [SetClothes]  
+		_asm	add esp,10h;
 	}
 }

@@ -527,6 +527,7 @@ DWORD CScriptVM_Process_JmpBack = 0;
 sRAGETHREAD * thread = 0;
 int i = 0;
 bool bPostStartupLoaded = false;
+bool bScriptFound = false;
 void _declspec(naked) CScriptVM__Process()
 {
 	_asm	mov thread, ecx;
@@ -540,12 +541,15 @@ void _declspec(naked) CScriptVM__Process()
 		case 0x8C56D5FD: // initial
 		{
 			g_startupProcessed = true;
+			bScriptFound = true;
 			break;
 		}
 		case 0x27EB33D7: // main
 		{
+			bScriptFound = true;
 			if(g_startupProcessed)
 			{
+				bScriptFound = true;
 				CScriptVM_Process_JmpBack = g_pCore->GetBase() + 0x4CE0CD;
 				_asm	popad;
 				_asm	jmp [CScriptVM_Process_JmpBack];
@@ -563,6 +567,7 @@ void _declspec(naked) CScriptVM__Process()
 		while(i < ARRAY_LENGTH(civScripts))
 		{
 			if(civScripts[i].dwScriptHash == thread->m_Context.ScriptHash) {
+				bScriptFound = true;
 				switch(civScripts[i].iSlotID)
 				{
 					case 7:
@@ -685,12 +690,12 @@ void _declspec(naked) CScriptVM__Process()
 					case 432: 
 					case 464:
 					{
-						CLogFile::Printf("Process script %s",civScripts[i].strScriptName.Get());
+						//CLogFile::Printf("Process script %s",civScripts[i].strScriptName.Get());
 						break;
 					}
 					default:
 					{
-						CLogFile::Printf("Ignore script %s",civScripts[i].strScriptName.Get());
+						//CLogFile::Printf("Ignore script %s",civScripts[i].strScriptName.Get());
 
 						CScriptVM_Process_JmpBack = g_pCore->GetBase() + 0x4CE0CD;
 						_asm	popad;
@@ -703,8 +708,15 @@ void _declspec(naked) CScriptVM__Process()
 		}
 	}
 
-	// Restore i result
+	if(!bScriptFound)
+		CLogFile::Printf("[%s] Processing unkown script 0x%p[%s]",__FUNCTION__, thread->m_Context.ScriptHash, thread->m_szProgramName);
+
+	// Restore default
 	i = 0;
+	bScriptFound = false;
+	
+
+	
 
 	_asm	popad;
 	_asm	mov edx, [ecx];

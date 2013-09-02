@@ -119,10 +119,7 @@ void CDevelopment::CreateDebugPlayer()
 	CVector3 vecCreatePos = g_pCore->GetGame()->GetLocalPlayer()->GetPosition();
 	m_pDebugPlayer = new CPlayerEntity(false);
 
-	// Check the ptr
-	CHECK_PTR_VOID(m_pDebugPlayer);
-
-	m_pDebugPlayer->SetModel(7);
+	m_pDebugPlayer->SetModel(0);
 	m_pDebugPlayer->Create();
 	m_pDebugPlayer->Teleport(vecCreatePos);
 

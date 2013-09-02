@@ -43,6 +43,8 @@ CIVStreaming				*CGame::m_pStream = 0;
 CTrafficLights				*CGame::m_pTrafficLights = 0;
 CString						CGame::m_strEFLCDirectory = 0;
 HWND						CGame::m_hwndGameWindow = 0;
+IVManagement				*CGame::m_pManagement = 0;
+InternalThread				CGame::m_Threads[254];
 
 /*
 	==== Why WaitForGameStartup ====
@@ -77,6 +79,9 @@ void CGame::Setup()
 	
 	// Create new pool instance
 	m_pPool = new CPools;
+
+	// Create new ivmanagement instance
+	m_pManagement = new IVManagement;
 	
 	// Create new traffic lights instance
 	m_pTrafficLights = new CTrafficLights;
@@ -453,4 +458,52 @@ void CGame::SetupGame()
 	pVehicle->Create();
 	pVehicle->SetPosition(vecCreatePos);
 
+}
+
+BYTE CGame::CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int siThreadId, int iPriority, const char * szThreadName, const char *szComment)
+{
+	CLogFile::Printf("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment);
+	g_pCore->GetChat()->Outputf(false, "[%s]: 0x%p, %s, %s" ,__FUNCTION__, dwStartAddress, szThreadName, szComment);
+
+	signed int EBP_iThreadId;
+	if(siThreadId < 0x4000)
+		EBP_iThreadId = 16384;
+	else
+		EBP_iThreadId = siThreadId;
+
+	BYTE iThreadOffset;
+	for(BYTE i = 0; i < ARRAY_LENGTH(m_Threads); i++)
+		if(!m_Threads[i].bInitialised) {
+			iThreadOffset = i;
+			break;
+		}
+
+	m_Threads[iThreadOffset].bInitialised = true;
+	m_Threads[iThreadOffset].szComment =  szComment;
+	m_Threads[iThreadOffset].szThreadTitle = szThreadName;
+	m_Threads[iThreadOffset].dwStartAddress = (DWORD)dwStartAddress;
+	m_Threads[iThreadOffset].hThreadHandle = CreateThread(0, EBP_iThreadId, (LPTHREAD_START_ROUTINE)dwStartAddress, lpvoidParameters, 0, (LPDWORD)&m_Threads[iThreadOffset].hThreadId);
+
+	if(m_Threads[iThreadOffset].hThreadId) {
+		SetThreadPriority(m_Threads[iThreadOffset].hThreadId, iPriority);
+		SetThreadPriorityBoost(m_Threads[iThreadOffset].hThreadId, 1);
+
+		ResumeThread(m_Threads[iThreadOffset].hThreadId);
+	}
+
+	return iThreadOffset;
+}
+
+void CGame::DestroyInternalThread(BYTE byteThreadId)
+{
+	if(!m_Threads[byteThreadId].bInitialised)
+		return;
+
+	TerminateThread(m_Threads[byteThreadId].hThreadHandle, 0);
+	m_Threads[byteThreadId].hThreadHandle = NULL;
+	m_Threads[byteThreadId].dwStartAddress = NULL;
+	m_Threads[byteThreadId].hThreadId = NULL;
+	m_Threads[byteThreadId].szComment = "";
+	m_Threads[byteThreadId].szThreadTitle = "";
+	m_Threads[byteThreadId].bInitialised = false;
 }

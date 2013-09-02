@@ -1315,6 +1315,8 @@ void CPlayerEntity::Interpolate()
 void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
 	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
+	if(!IsSpawned() || m_pPlayerPed->GetPed()->m_bytePlayerNumber < 0 || uiPlayerIndex < 1)
+		return;
 
 	// Copy data if our localplayer or copyplayer is avaiable
 	if(bCopyLocalPlayer || pCopy) {
@@ -1367,9 +1369,10 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
 
 				if(m_pIVSync->byteOldMoveStyle != 0)  {
-					// Delete any task lol
-					_asm	push 17;
-					_asm	push 0;
+					// Delete any task lol 
+					_asm	xor eax, eax;
+					_asm	push 11h; // 17
+					_asm	push eax;
 					_asm	push uiPlayerIndex;
 					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
@@ -1454,9 +1457,10 @@ void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCop
 			PTR_CHAT->Output("Settings weapon aim..");
 			//SetWeaponAimAtTask(m_pIVSyncHandle->vecAimTarget);
 			
-			m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
-			m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
-			m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
+			//m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimTarget);
+			//m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmHeading);
+			//m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmDown);
+			CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), m_pIVSyncHandle->vecAimTarget.fX, m_pIVSyncHandle->vecAimTarget.fY, m_pIVSyncHandle->vecAimTarget.fZ, 45000);
 		}
 		else if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsFiring() : m_ControlState.IsFiring()) {
 			PTR_CHAT->Output("Settings weapon shot..");

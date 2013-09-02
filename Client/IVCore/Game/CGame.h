@@ -43,6 +43,8 @@
 #include <Game/CTrafficLights.h>
 #include <Game/CTrafficHandler.h>
 
+#include <Game/IVManagement.h>
+
 typedef CEntityManager<CPlayerEntity, MAX_PLAYERS> CPlayerManager;
 typedef CEntityManager<CVehicleEntity, MAX_VEHICLES> CVehicleManager;
 typedef CEntityManager<CActorEntity, MAX_ACTORS> CActorManager;
@@ -82,6 +84,10 @@ private:
 	static CString						m_strEFLCDirectory;
 	bool								m_bUsingEFLCContent;
 	static HWND							m_hwndGameWindow;
+	static IVManagement					*m_pManagement;
+
+	static InternalThread				m_Threads[254];
+
 public:
 										CGame() { };
 										~CGame() { };
@@ -118,6 +124,7 @@ public:
 	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
 	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
 	CIVStreaming						*GetStreaming() { return m_pStream; }
+	IVManagement						*GetIVManagement() { return m_pManagement; }
 
 	CString								GetEFLCDirectory() { return m_strEFLCDirectory; }
 	inline bool							IsUsingEFLCContent()
@@ -130,6 +137,9 @@ public:
 	void								SetWindow(HWND hWindow) { m_hwndGameWindow = hWindow; };
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);
 	static void							SetupGame();
+
+	static BYTE							CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int ThreadId, int iPriority, const char * ThreadName, const char * szComment);
+	static void							DestroyInternalThread(BYTE byteThreadId);
 };
 
 #endif // CGame_h

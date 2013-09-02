@@ -95,6 +95,7 @@ public:
 
     void								SetPosition(const CVector3& vecPosition, bool bDontCancelTasks = false, bool bResetInterpolation = true);
     void								GetPosition(CVector3& vecPosition);
+	CVector3							GetPosition();
 
     void								SetRotation(const CVector3& vecRotation, bool bResetInterpolation = true);
     void								GetRotation(CVector3& vecRotation);

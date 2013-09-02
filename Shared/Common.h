@@ -116,6 +116,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #endif
 
 // Basic Names
+#define _DEV
 #define MOD_NAME "IV:Multiplayer"
 #define MOD_SHORT_NAME "IVMP"
 #define MOD_SHORT_NAME_ILLEGAL "IV:MP"

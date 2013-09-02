@@ -193,7 +193,8 @@ void CPatches::Initialize()
     */
     CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchEnableAndFixVehicleModels);
 
-	//CPatcher::InstallJmpPatch((g_pCore->GetBaseAddress() + 0x8589D3), (g_pCore->GetBaseAddress() + 0x859E25));
-
 	*(BYTE *)COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
+
+	// Allow remote desktop connections pff
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x405D67), (g_pCore->GetBase() + 0x405D6E), 1);
 }

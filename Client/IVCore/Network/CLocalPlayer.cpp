@@ -111,6 +111,13 @@ void CLocalPlayer::HandleSpawn()
 	CIVScript::SetDrawPlayerComponent(8, 1); // special 3
 	CIVScript::SetCharComponentVariation(GetScriptingHandle(), 8, iResult, 0);
 
+	// Set basic skin in developmet mode
+#ifdef _DEV
+	SetPedClothes(1, 1);
+	SetPedClothes(2, 1);
+	SetPedClothes(3, 0);
+#endif
+
 	// Notify the server 
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 }

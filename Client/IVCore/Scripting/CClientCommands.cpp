@@ -20,9 +20,11 @@
 #include <Game/IVEngine/CIVStreaming.h>
 #include <Ptrs.h>
 #include <Game/CEFLCSupport.h>
+#include <Game/IVEngine/CIVTrain.h>
 
 extern unsigned int l_U40;
 unsigned int pObj;
+CIVTrain * pTrain;
 
 bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
@@ -54,15 +56,11 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		vecCreatePos.fY += 1;
 
 		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
-		if(pVehicle)
-		{
+		if(pVehicle) {
 			// Add our vehicle
 			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-
 			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-
 			pVehicle->Create();
-
 			pVehicle->SetPosition(vecCreatePos);
 		}
 		return true;
@@ -91,42 +89,11 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
 
 		CPlayerEntity * pPlayer = new CPlayerEntity(false);
-		if(pPlayer)
-		{
+		if(pPlayer) {
 			pPlayer->SetModel(7);
 			pPlayer->Create();
 			pPlayer->Teleport(vecCreatePos);
 		}
-		return true;
-	}
-	else if(strCommand == "spawn")
-	{
-		g_pCore->GetChat()->Output("Spawning local player ...",false);
-		g_pCore->GetGame()->OnClientReadyToGamePlay();
-		g_pCore->GetGame()->GetLocalPlayer()->SetModel(7);
-		g_pCore->GetGame()->GetLocalPlayer()->SetMoney(10000);
-
-		int iVehicleType = 91;
-
-		CVector3 vecCreatePos; 
-		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-		vecCreatePos.fX += 4;
-		vecCreatePos.fY += 1;
-
-		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
-		if(pVehicle)
-		{
-			// Add our vehicle
-			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-
-			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-
-			pVehicle->Create();
-
-			pVehicle->SetPosition(vecCreatePos);
-		}
-
-		PTR_CHAT->Output("Type \"/ready\" and seconds later \"/parachute\" to create a parachute!",false);
 		return true;
 	}
 	else if(strCommand == "engine") 
@@ -141,7 +108,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if(!file)
 		{
-			g_pCore->GetChat()->Output("Failed to open 'SavedData.log'");
+			g_pCore->GetChat()->Output("Failed to open 'SavePositions.log'");
 			return true;
 		}
 
@@ -190,11 +157,38 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
 		return true;
 	}
+	else if(strCommand == "yaxis")
+	{
+		CVector3 vecPositon;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
+
+		vecPositon.fY += atoi(strParameters.c_str());
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
+		return true;
+	}
+	else if(strCommand == "zaxis")
+	{
+		CVector3 vecPositon;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
+
+		vecPositon.fZ += atoi(strParameters.c_str());
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
+		return true;
+	}
+	else if(strCommand == "port")
+	{
+		CVector3 vecPositon;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
+		vecPositon.fX = 900;
+		vecPositon.fY = -71;
+		vecPositon.fZ += 20;
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
+		return true;
+	}
 	else if(strCommand == "time")
 	{
 		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.c_str()),0);
 		CIVWeather::SetTime(atoi(strParameters.c_str()),0);
-		PTR_CHAT->Output("SET time succ!",false);
 		return true;
 	}
 	else if(strCommand == "setmodel")
@@ -204,7 +198,34 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "setclothes")
 	{
-		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strParameters.c_str()),1);
+		CString strParameter = CString("%s",strParameters.c_str());
+		g_pCore->GetChat()->Outputf(false, strParameter.Get());
+
+		// Get the end of the command
+		size_t sCommandEnd = strParameter.Find(" "); 
+
+		// If we don't have a valid end use the end of the string
+		if (sCommandEnd == std::string::npos)
+		{
+			sCommandEnd = strParameter.GetLength();
+		}
+
+		// Get the command name
+		std::string strCommand2 = strParameter.Substring(0, (sCommandEnd));
+
+		// Get the command parameters
+		std::string strParams;
+
+		// Do we have any parameters?
+		if(sCommandEnd < strParameter.GetLength())
+		{
+			strParams = strParameter.Substring((sCommandEnd + 1), strParameter.GetLength());
+		}
+
+		g_pCore->GetChat()->Outputf(false, "Setting clothes part %d to %d",atoi(strCommand2.c_str()), atoi(strParams.c_str()));
+		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strCommand2.c_str()), atoi(strParams.c_str()));
+
+		return true;
 	}
 	else if(strCommand == "bahama")
 	{
@@ -248,21 +269,10 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		PTR_CHAT->Output(false, "** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
 		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
 		return true;
-	}	
-	else if(strCommand == "startscript1")
-	{
-		PTR_CHAT->Outputf(false,"Starting Script");
-
-		CIVScript::RequestScript("golf_launcher");
-		CIVScript::StartNewScript("golf_launcher",1024);
 	}
-	else if(strCommand == "startscript2")
+	else if(strCommand == "createtrain")
 	{
-		PTR_CHAT->Outputf(false,"Starting Script \"%s\" ",strParameters.c_str());
-
-		CIVScript::RequestScript(strParameters.c_str());
-		CIVScript::StartNewScript(strParameters.c_str(),512);
+		g_pCore->GetGame()->GetIVManagement()->CreateTrain(g_pCore->GetGame()->GetLocalPlayer()->GetPosition(), 3, 20.0f, 0);
 	}
-
 	return false;
 }

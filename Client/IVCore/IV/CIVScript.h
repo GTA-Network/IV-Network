@@ -280,6 +280,19 @@ namespace CIVScript
 
 	static unsigned int GetNumberOfCharDrawableVariations(unsigned int ped, ePedComponent component) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_NUMBER_OF_CHAR_DRAWABLE_VARIATIONS, ped, component); }
     static unsigned int GetNumberOfCharTextureVariations(unsigned int ped, ePedComponent component, unsigned int unknown1) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_NUMBER_OF_CHAR_TEXTURE_VARIATIONS, ped, component, unknown1); }
+
+	static void TaskAimGunAtCoord(unsigned int ped, float tX, float tY, float tZ, unsigned int duration) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_TASK_AIM_GUN_AT_COORD, ped, tX, tY, tZ, duration); }
+	
+	// unsigned int
+    static void CreateMissionTrain(unsigned int unknown1, float x, float y, float z, bool unknown2, unsigned int *pTrain) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_MISSION_TRAIN, unknown1, x, y, z, unknown2, pTrain); }
+    static void DeleteMissionTrain(unsigned int *pTrain) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DELETE_MISSION_TRAIN, pTrain); }
+    static eTrainStation GetCurrentStationForTrain(unsigned int train) { return CIVScript_NativeInvoke::Invoke<eTrainStation>(NATIVE_GET_CURRENT_STATION_FOR_TRAIN, train); }
+    static eTrainStation GetNextStationForTrain(unsigned int train) { return CIVScript_NativeInvoke::Invoke<eTrainStation>(NATIVE_GET_NEXT_STATION_FOR_TRAIN, train); }
+    static const char *GetStationName(unsigned int train, eTrainStation station) { return CIVScript_NativeInvoke::Invoke<const char *>(NATIVE_GET_STATION_NAME, train, station); }
+    static void MarkMissionTrainAsNoLongerNeeded(unsigned int train) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_MARK_MISSION_TRAIN_AS_NO_LONGER_NEEDED, train); }
+    static void MarkMissionTrainsAsNoLongerNeeded() { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_MARK_MISSION_TRAINS_AS_NO_LONGER_NEEDED); }
+    static void SetTrainCuriseSpeed(unsigned int train, float fSpeed) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_TRAIN_CRUISE_SPEED, train, fSpeed); }
+	static void SetTrainSpeed(unsigned int train, float fSpeed) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_TRAIN_SPEED, train, fSpeed); }
 };
 
 #endif // CIVScript_h
