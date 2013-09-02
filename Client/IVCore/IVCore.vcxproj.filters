@@ -33,9 +33,6 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{86c7be21-5648-45ca-b9fc-61ec8c27dc41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Libraries">
-      <UniqueIdentifier>{d964c099-b2be-4118-95b7-bfc172bbc1d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Network">
       <UniqueIdentifier>{c9ae161e-8a7b-4223-8b00-2f451aeda1a0}</UniqueIdentifier>
     </Filter>
@@ -44,9 +41,6 @@
     </Filter>
     <Filter Include="Source Files\Shared">
       <UniqueIdentifier>{29601084-a050-43f5-ba36-13c00a1d89e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Libraries\TinyXML">
-      <UniqueIdentifier>{ea52250c-f438-49bf-a887-9dbe9d425185}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Libraries\TinyXML">
       <UniqueIdentifier>{7cdf702d-b1e9-4083-bf5d-d1c7b66e1d53}</UniqueIdentifier>
@@ -102,9 +96,6 @@
     <Filter Include="Source Files\Game\IV\Script">
       <UniqueIdentifier>{5ea8cd6f-b8df-4dcc-b043-c24e7d76e210}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Libraries\RakNet">
-      <UniqueIdentifier>{64df113d-71d6-49a6-acf1-970760ca89bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Libraries\RakNet">
       <UniqueIdentifier>{3d8c7e5d-3ba1-44e7-abdd-5b012d5bf336}</UniqueIdentifier>
     </Filter>
@@ -116,12 +107,6 @@
     </Filter>
     <Filter Include="Header Files\Libraries\Zlib">
       <UniqueIdentifier>{d29abb51-0ce3-4a3d-9cd8-88e5e0982110}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Libraries\ZLib">
-      <UniqueIdentifier>{6c219bf2-c921-44a9-897a-9027bbcfe0c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Libraries\LibPNG">
-      <UniqueIdentifier>{aef79625-8d90-4195-a707-5340a3e588ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Hooks\CWin32MouseHook">
       <UniqueIdentifier>{48a9aec6-ea59-4631-83d9-d620322d6175}</UniqueIdentifier>
@@ -144,14 +129,29 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{9285ac95-9db2-4bc3-bbec-141a7ad0787d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Libraries\md5">
-      <UniqueIdentifier>{3ced2430-7826-44cd-a67c-b979ed7a32a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Libraries\md5">
       <UniqueIdentifier>{1335a3e3-5167-4395-aecd-6226fa580870}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\RAGEEngine">
       <UniqueIdentifier>{76db95f5-e1fd-4cae-bc08-e181495588a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries">
+      <UniqueIdentifier>{d964c099-b2be-4118-95b7-bfc172bbc1d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\TinyXML">
+      <UniqueIdentifier>{ea52250c-f438-49bf-a887-9dbe9d425185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\RakNet">
+      <UniqueIdentifier>{64df113d-71d6-49a6-acf1-970760ca89bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\ZLib">
+      <UniqueIdentifier>{6c219bf2-c921-44a9-897a-9027bbcfe0c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\LibPNG">
+      <UniqueIdentifier>{aef79625-8d90-4195-a707-5340a3e588ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\md5">
+      <UniqueIdentifier>{3ced2430-7826-44cd-a67c-b979ed7a32a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

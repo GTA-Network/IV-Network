@@ -74,41 +74,33 @@ bool CIVTrain::IsTrain()
 
 void CIVTrain::SetTrainCuriseSpeed(float fSpeed, unsigned int uiHandle)
 {
+	IVTrain * pTrain = NULL;
+	pTrain = GetIVTrain();
+	g_pCore->DumpVFTable(*(DWORD *)pTrain,11);
+
 	CIVScript::SetTrainCuriseSpeed(uiHandle ? uiHandle : m_pVehicle->GetScriptingHandle(), fSpeed);
 	CIVScript::SetTrainSpeed(uiHandle ? uiHandle : m_pVehicle->GetScriptingHandle(), fSpeed);
 	return;
+}
 
-	//int __cdecl sub_995410(m_pVehicle, fSpeed)
+IVTrain * CIVTrain::GetIVTrain()
+{
+	IVVehicle * pVehicle = CVehicleEntity::GetGameVehicle()->GetVehicle();
+	if(pVehicle) {
+		// Check if our vehicle is a train
+		if(*(DWORD *)(pVehicle + 4948) == 3) {
+			int result; // eax@1
+			int i; // ecx@1
 
-	/*
+			for (i = *(DWORD *)(pVehicle + 5408); i; i = *(DWORD *)(i + 5408))
+				result = i;
 
-	v2 = (signed int)ffloor(fSpeed);
-	*(_BYTE *)(a1 + 0xEBF) = v2;
-
-	result = (IVTrain *)GetIVTrainClassFromVehicle(m_pVehicle); // A5F910
-	if ( result )
-		result->byte27 = v2;
-
-	*/
-
-	signed int v2; // ebx@1
-	int result; // eax@1
-
-	v2 = (signed int)floor(fSpeed);
-	*(BYTE *)(m_pVehicle + 0xEBF) = v2;
-
-	DWORD GETTRAINHANDLE = (g_pCore->GetBase() + 0xA5F910);
-
-	_asm mov ecx, m_pVehicle;
-	_asm mov eax, ecx;
-	_asm push eax;
-	_asm call GETTRAINHANDLE;
-	_asm add esp, 4;
-	_asm mov ecx, [eax];
-	//_asm mov dword ptr m_pTrain, ecx;
-	_asm retn;
-
-	// Update the train speed
-	if(m_pTrain)
-		m_pTrain->byte27 = v2;
+			if ((*(DWORD **)result + 324) || (*(DWORD **)result) && *(*(DWORD **)result + 3824))
+				IVTrain * pTrain = *(IVTrain **)(*(DWORD **)result + 0xEF4);
+			else 
+				return NULL;
+		}
+		return NULL;
+	}
+	return NULL;
 }
