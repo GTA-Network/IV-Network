@@ -111,6 +111,7 @@ void CEFLCSupport::InstallSupport()
 	if(!g_pCore->GetGame()->IsUsingEFLCContent())
 		return;
 
+#ifndef CHEAP_RELEASE
 	// Hook loading files
 	CPatcher::InstallJmpPatch((COffsets::RAGE_AssetManager__OpenFile - 0xC), (DWORD)RAGE_AssetManager__OpenFile);
 
@@ -120,6 +121,7 @@ void CEFLCSupport::InstallSupport()
 	// Hook loading tune
 	char *szLoadingTune = "LOADINGTUNE";
 	CPatcher::InstallPushPatch(COffsets::IV_HookLoadingTune, (DWORD)szLoadingTune);
+#endif
 }
 
 void CEFLCSupport::InstallPreGameLoad()

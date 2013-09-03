@@ -11,14 +11,13 @@
 #include <Patcher\CPatcher.h>
 #include <fstream>
 #include <Ptrs.h>
+#include <CXML.h>
 
 _declspec(naked) void CTaskSimpleStartVehicle__Process()
 {
 	_asm xor eax, eax;
 	_asm retn 4;
 }
-
-#include <CXML.h>
 
 const char TLAD[] = "<ini><device>e1</device><content><name>The Lost and Damned Radio</name><id>1</id><audiometadata>e1_radio.xml</audiometadata><enabled /></content>	<content><name>The Lost and Damned</name><id>2</id>" 
 		"<episode>2</episode><datfile>content.dat</datfile><audiometadata>e1_audio.xml</audiometadata><loadingscreens>pc/textures/loadingscreens.wtd</loadingscreens><loadingscreensdat>common\\data\\loadingscreens.dat</loadingscreensdat>"
@@ -55,20 +54,8 @@ const char TBOGT[] = "<ini>"
 const char setu[] = "setup3.xml";
 void CPatches::Initialize()
 {
-
-	//CXML * pXML = new CXML();
-	//pXML->load(CString("%s\TBoGT\setup.xml", SharedUtility::GetAppPath()));
-	//pXML->newNode("ini");
-	//pXML->newNode("device");
-	//pXML->
-
 	char szInstallDirectory[MAX_PATH];
-
-	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, "Software\\IVMP", "gtaivdir", NULL,
-		szInstallDirectory, sizeof(szInstallDirectory)) ||
-		SharedUtility::Exists(szInstallDirectory))
-	{
-
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL,szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
 		ofstream myfile;
 		myfile.open(CString("%s\\TBoGT\\setup3.xml", szInstallDirectory).Get());
 		myfile << TBOGT;
@@ -80,9 +67,9 @@ void CPatches::Initialize()
 
 	}
 
+	// Patch setup files
 	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B3DAC, (DWORD)setu);
 	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B4A0E, (DWORD)setu);
-	//*(DWORD*)(g_pCore->GetBase() + 0x182197C) = 1;
 
 	// Skip main menu #1
 	*(BYTE *)COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
@@ -106,13 +93,10 @@ void CPatches::Initialize()
 	// Always start a new game
 	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
 
-	// Disable startup.sco
-    //*(BYTE *)COffsets::IV_Hook__PatchStartupDOTsco = 0x75;
-	//CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchStartupDOTsco, 2);
-
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD)CTaskSimpleStartVehicle__Process);
 
+#ifndef CHEAP_RELEASE
 	// Replace I Luv "L.C." with "IVMP"
 	CPatcher::Unprotect((g_pCore->GetBase() + 0x19DB0E9),4);
 	*(BYTE *)(g_pCore->GetBase() + 0x19DB0E6) = 0x49; // L -> I
@@ -127,8 +111,9 @@ void CPatches::Initialize()
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DD4 + 0x1)) = (DWORD)szLoadingText; // Replace for caricamento...
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DC5 + 0x1)) = (DWORD)szLoadingText; // Replace for carga...
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DB6 + 0x1)) = (DWORD)szLoadingText; // Replace for loading...
-
+#endif
 	// === RAGE %% RGSC Stuff
+
     // Don't initialize error reporting
     CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchErrorReporting);
 
@@ -169,7 +154,7 @@ void CPatches::Initialize()
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function
 
-#ifdef _DEBUG // Disable this function in our debug mode
+#ifdef _DEV // Disable this function in our debug mode
     CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchErrorMessageBoxes, (COffsets::IV_Hook__PatchErrorMessageBoxes + 0x6B1));
 #endif
 

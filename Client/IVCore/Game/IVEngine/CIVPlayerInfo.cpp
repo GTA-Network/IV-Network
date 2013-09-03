@@ -31,9 +31,10 @@ CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber)
 	_asm	call COffsets::FUNC_CPlayerInfo__Constructor;
 
 	pPlayerInfo->m_bytePlayerNumber = bytePlayerNumber;
-	*(DWORD *)(pPlayerInfo + 0x15C) = 0;
-	*(DWORD *)(pPlayerInfo + 0x15D) = 0;
-	*(DWORD *)(pPlayerInfo + 0x15B) = 0;
+
+	*(BYTE *)(pPlayerInfo + 0x15B) = 0;
+	*(BYTE *)(pPlayerInfo + 0x15C) = 0;
+	*(BYTE *)(pPlayerInfo + 0x15D) = 0;
 	*(DWORD *)(pPlayerInfo + 0x137) = 2;
 
 	m_bCreatedByUs = true;
