@@ -1351,7 +1351,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
-		m_pIVSync->bStoreOnFootSwitch = false;
+		//m_pIVSync->bStoreOnFootSwitch = false;
 		if(m_pIVSyncHandle->vecMoveSpeed.Length() < 1.0)
 			m_pIVSync->byteMoveStyle = 0;
 		else if(m_pIVSyncHandle->vecMoveSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMoveSpeed.Length() >= 1.0)
@@ -1369,13 +1369,21 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
 
 				if(m_pIVSync->byteOldMoveStyle != 0)  {
+					m_pIVSync->bStoreOnFootSwitch = false;
+					
+					CLogFile::Printf("FUCKU %d",uiPlayerIndex);
 					// Delete any task lol 
+					_asm	push ebp;
+					_asm	mov ebp, esp;
+					_asm	push edx;
 					_asm	xor eax, eax;
 					_asm	push 11h; // 17
 					_asm	push eax;
-					_asm	push uiPlayerIndex;
+					_asm	mov eax, uiPlayerIndex;
+					_asm	push eax;
 					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
+					_asm	pop edx;
 
 					// Deltete shot at coord task if the player stop moving or the state has changed
 					_asm	push 36;

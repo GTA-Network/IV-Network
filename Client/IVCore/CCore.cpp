@@ -221,7 +221,8 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		return;
 
 	// Print our IVMultiplayer "Identifier" in the left upper corner
-	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : 1) : -1) : -1;
+	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
+
 	CString strConnection;
 	int iConnectTime = (int)((timeGetTime() - GetGameLoadInitializeTime())/1000);
 
