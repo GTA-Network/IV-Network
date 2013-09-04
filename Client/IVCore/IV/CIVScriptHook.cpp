@@ -15,6 +15,7 @@ extern	CCore				* g_pCore;
 sRAGETHREAD *	g_pRageScriptThread = NULL;
 bool			g_bRageScriptLoaded = false;
 int				g_iRageScriptFrames = 0;
+bool			bScriptProcssSwitch = false;
 
 struct CIVScriptInstance
 {
@@ -496,12 +497,6 @@ CIVScriptInstance civScripts[] = {
 	{469, "yusuf4", 0x36966E4D},
 };
 
-__declspec(naked) int GetRunningScriptThread()
-{
-	_asm mov eax, g_pRageScriptThread;
-	_asm retn;
-}
-
 void CRageThread_Script_Process()
 {
 	//GameScriptProcess();
@@ -714,9 +709,6 @@ void _declspec(naked) CScriptVM__Process()
 	// Restore default
 	i = 0;
 	bScriptFound = false;
-	
-
-	
 
 	_asm	popad;
 	_asm	mov edx, [ecx];
@@ -839,13 +831,20 @@ void _declspec(naked) CScriptVM__Process()
 	
 	_asm	popad;
 	_asm	jmp CScriptVM_Process_JmpBack;
-}
 
+	//*(sRAGETHREAD **)COffsets::VAR_ScrVM__ActiveThread = g_pRageScriptThread;
+}
+sRAGETHREAD* g_pOldScriptThread = 0;
 void _declspec(naked) CScriptVM_Prcoess_End()
 {
 	_asm	pushad;
 
+	//g_pOldScriptThread = *(sRAGETHREAD**)(g_pCore->GetBase() + 0x16EAD50);
+	//*(sRAGETHREAD**)(g_pCore->GetBase() + 0x16EAD50) = g_pRageScriptThread;
+
 	CRageThread_Script_Process();
+
+	//*(sRAGETHREAD**)(g_pCore->GetBase() + 0x16EAD50) = g_pOldScriptThread;
 
 	_asm	popad;
 	_asm	pop esi;
@@ -854,14 +853,28 @@ void _declspec(naked) CScriptVM_Prcoess_End()
 	_asm	retn;
 }
 
+__declspec(naked) int GetRunningScriptThread()
+{
+	//CLogFile::Printf("%s",__FUNCTION__);
+	_asm mov eax, g_pRageScriptThread;
+	_asm retn;
+}
+
 void CIVScriptingHook::InstallScriptHooks()
 {
 	g_pRageScriptThread = new sRAGETHREAD;
 	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
 
+	bScriptProcssSwitch = false;
+
 	// Hook CScriptVM Process
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x4CE0BE, (DWORD)CScriptVM__Process);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x4CE0DC, (DWORD)CScriptVM_Prcoess_End);
+
+	// Disable check to invalid threads
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD)GetRunningScriptThread, 5);
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x830DE1), 39);
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0830E64), 22);
 }
 
 void CIVScriptingHook::UninstallScriptHooks()

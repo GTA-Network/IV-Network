@@ -298,6 +298,10 @@ void CGame::RenderRAGEScripts()
 	// If our local player exists, pulse him
 	if(m_pLocalPlayer)
 		m_pLocalPlayer->Pulse();
+
+	// If our iv management exists, process it
+	if(m_pManagement)
+		m_pManagement->Pulse();
 	
 }
 

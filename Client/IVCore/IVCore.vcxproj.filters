@@ -33,9 +33,6 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{86c7be21-5648-45ca-b9fc-61ec8c27dc41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network">
-      <UniqueIdentifier>{c9ae161e-8a7b-4223-8b00-2f451aeda1a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Scripting">
       <UniqueIdentifier>{1c62bcc5-c913-424e-a85f-1cd83ce237ad}</UniqueIdentifier>
     </Filter>
@@ -87,9 +84,6 @@
     <Filter Include="Header Files\Network\Shared">
       <UniqueIdentifier>{f2406a1d-0a05-4ad2-87c8-b69d5498868b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network\Shared">
-      <UniqueIdentifier>{f0910143-47ff-47fb-8d51-a9bc2adfd8f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Game\IV">
       <UniqueIdentifier>{d6de98b1-a0cc-4a14-8e60-4c14375ceb97}</UniqueIdentifier>
     </Filter>
@@ -120,9 +114,6 @@
     <Filter Include="Header Files\General">
       <UniqueIdentifier>{7462d777-5630-4513-9b77-bc61bcf4f07f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Network\Entity">
-      <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Network\Entity">
       <UniqueIdentifier>{af954cd9-5ad4-473c-88b7-8e73dc096e5b}</UniqueIdentifier>
     </Filter>
@@ -152,6 +143,15 @@
     </Filter>
     <Filter Include="Source Files\Libraries\md5">
       <UniqueIdentifier>{3ced2430-7826-44cd-a67c-b979ed7a32a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{c9ae161e-8a7b-4223-8b00-2f451aeda1a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network\Shared">
+      <UniqueIdentifier>{f0910143-47ff-47fb-8d51-a9bc2adfd8f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network\Entity">
+      <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

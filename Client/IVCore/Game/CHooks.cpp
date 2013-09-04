@@ -681,6 +681,53 @@ _declspec(naked) signed int GTA_CreateThread()
 	_asm pop edi;
 	_asm retn;
 }
+void log(const char *a1, ...)
+{
+	CLogFile::Printf("%s", 1);
+}
+
+void GTA_LOG(DWORD a1, int a2, DWORD a3 = NULL, DWORD a4 = NULL, ...)
+{
+	// Print for a3
+	va_list vaArgs;
+	char szBuffer[2048];
+	va_start(vaArgs, a3);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *)a3, vaArgs);
+	va_end(vaArgs);
+
+	// Print for a4
+	vaArgs;
+	szBuffer[2048];
+	va_start(vaArgs, a4);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *)a4, vaArgs);
+	va_end(vaArgs);
+
+	log((const char *)(strlen((char *)a3) != 0 ? a3 : a4));
+}
+
+DWORD dwJumpBackChoose;
+int iCheck = 0;
+_declspec(naked) void Choose()
+{
+	_asm mov eax, esi;
+	_asm mov iCheck, eax;
+	_asm pushad;
+
+	if(iCheck > 2)
+	{
+		_asm popad;
+		_asm pop ebx;
+		_asm pop edi;
+		_asm pop esi;
+		_asm pop ebx;
+		_asm retn;
+	}
+
+	dwJumpBackChoose = (g_pCore->GetBase() + 0x408DC1);
+	_asm popad;
+	_asm add esi, 1;
+	_asm jmp [dwJumpBackChoose];
+}
 
 void CHooks::Intialize()
 {
@@ -722,4 +769,7 @@ void CHooks::Intialize()
 
 	// Hook gta_createthread to use our own function 
 	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x452210),(DWORD)GTA_CreateThread,1);
+
+	// Hook GTA IV dev log
+	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xBD6730), (DWORD)GTA_LOG, 1);
 }

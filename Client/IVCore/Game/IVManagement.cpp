@@ -9,6 +9,7 @@
 
 #include "IVManagement.h"
 #include <Ptrs.h>
+#include <IV/CIVScript.h>
 
 IVManagement::IVManagement()
 {
@@ -98,4 +99,14 @@ BYTE IVManagement::GetTrainCount()
 			byteCount++;
 
 	return byteCount;
+}
+
+void IVManagement::Pulse()
+{
+	if(g_pCore->GetGame()->GetLocalPlayer())
+	{
+		//float fHealth = PTR_LOCALPLAYER->GetHealth();
+
+		//CIVScript::DrawRect(20, 20, (fHealth * (500)) / 100, 200, 0, 0, 0, 255);
+	}
 }

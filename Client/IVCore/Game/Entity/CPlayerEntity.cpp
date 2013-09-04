@@ -1372,18 +1372,13 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 					m_pIVSync->bStoreOnFootSwitch = false;
 					
 					CLogFile::Printf("FUCKU %d",uiPlayerIndex);
+					
 					// Delete any task lol 
-					_asm	push ebp;
-					_asm	mov ebp, esp;
-					_asm	push edx;
-					_asm	xor eax, eax;
-					_asm	push 11h; // 17
-					_asm	push eax;
-					_asm	mov eax, uiPlayerIndex;
-					_asm	push eax;
+					_asm	push 17;
+					_asm	push 0;
+					_asm	push uiPlayerIndex;
 					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
-					_asm	pop edx;
 
 					// Deltete shot at coord task if the player stop moving or the state has changed
 					_asm	push 36;
@@ -1398,6 +1393,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 					_asm	push uiPlayerIndex;
 					_asm	call COffsets::IV_Func__DeletePedTaskID;
 					_asm	add esp, 0Ch;
+
 				}
 				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMoveSpeed);
 				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
@@ -1450,7 +1446,7 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 	m_pIVSync->byteOldMoveStyle = m_pIVSync->byteMoveStyle;
 	
 	// Now store context data
-	StoreIVContextSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
+	//StoreIVContextSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
 }
 
 void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)

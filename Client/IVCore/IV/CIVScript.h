@@ -293,6 +293,8 @@ namespace CIVScript
     static void MarkMissionTrainsAsNoLongerNeeded() { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_MARK_MISSION_TRAINS_AS_NO_LONGER_NEEDED); }
     static void SetTrainCuriseSpeed(unsigned int train, float fSpeed) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_TRAIN_CRUISE_SPEED, train, fSpeed); }
 	static void SetTrainSpeed(unsigned int train, float fSpeed) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_TRAIN_SPEED, train, fSpeed); }
+
+	static void DrawRect(unsigned int p0, unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5, unsigned int p6, unsigned int p7) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DRAW_RECT, p0, p1, p2, p3, p4, p5, p6, p7); }
 };
 
 #endif // CIVScript_h

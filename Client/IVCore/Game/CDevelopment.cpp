@@ -57,6 +57,17 @@ void CDevelopment::Process()
 			bool bHeadLightsStatus = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetHeadlights();
 			int iLightsState = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetLightsState();
 			BYTE byteRadioIndex = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetRadioStation();
+			float fVehicleEngineHealth = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetEngineHealth();
+			float fPetrolHealth = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetPetrolTankHealth();
+			float fGasPressure = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetGasPedal();
+			float fBreakPressure = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetBrakePedal();
+			float fSteeringBias = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetSteerBias();
+			float fSteering = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetSteeringAngle();
+			float fDirtLevel = g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetDirtLevel();
+			CVector3 vecDirection;
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetDirection(vecDirection);
+			CVector3 vecRoll;
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetGameVehicle()->GetRoll(vecRoll);
 
 			// Controls
 			CControls * pControls = new CControls;
@@ -68,6 +79,10 @@ void CDevelopment::Process()
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Move Speed: %.2f, %.2f ,%.2f", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
 			fCurrentLine += 15;
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Turn Speed: %.2f, %.2f ,%.2f", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Direction: %.2f, %.2f ,%.2f", vecDirection.fX, vecDirection.fY, vecDirection.fZ).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Roll: %.2f, %.2f ,%.2f", vecRoll.fX, vecRoll.fY, vecRoll.fZ).Get());
 			
 			fCurrentLine += 30;
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input RIGHT: %d", (pControls->ucInVehicleMove[0])).Get());
@@ -77,6 +92,23 @@ void CDevelopment::Process()
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input UP: %d", (pControls->ucInVehicleMove[2])).Get());
 			fCurrentLine += 15;
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input DOWN: %d", (pControls->ucInVehicleMove[3])).Get());
+
+			fCurrentLine += 30;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Engine Health: %f", fVehicleEngineHealth).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Petrol Health: %f", fPetrolHealth).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Gas pressure: %f", fGasPressure).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Break Pressure: %f", fBreakPressure).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Steering Bias: %f", fSteeringBias).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Steering: %f", fSteering).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Dirt Level: %f", fDirtLevel).Get());
+			fCurrentLine += 15;
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Indicators: %d, %d, %d, %d", 0, 0, 0, 0).Get());
 
 			fCurrentLine += 30;
 			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Engine State: %d", bEngineStatus).Get());

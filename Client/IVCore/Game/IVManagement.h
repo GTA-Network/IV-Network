@@ -45,6 +45,6 @@ public:
 	static void			ProcessTrain(LPVOID lpParameter);
 	BYTE				GetFreeTrainSlot();
 	BYTE				GetTrainCount();
+	void				Pulse();
 };
-;
 #endif // IVManagement_h
