@@ -39,7 +39,9 @@ public:
         IVCamData m_data1;      // 010-084
         PAD(IVCam, pad1, 0xC);  // 084-090
         IVCamData m_data2;      // 090-104
-        PAD(IVCam, pad2, 0x3C); // 104-140
+		PAD(IVCam, pad2, 0xC);  // 104-110
+		IVCamData m_data3;      // 110-124
+        PAD(IVCam, pad3, 0x10); // 124-140
 };
 
 class CIVCam

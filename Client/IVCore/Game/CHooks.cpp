@@ -7,14 +7,17 @@
 //
 //==========================================================================================
 
-#include	"CHooks.h"
-#include	"COffsets.h"
-#include	<CCore.h>
-#include	<Patcher\CPatcher.h>
-#include	<Game/IVEngine/CIVPlayerInfo.h>
-#include	"CContextData.h"
-#include	<SharedUtility.h>
+#include "CHooks.h"
+#include "COffsets.h"
+#include <CCore.h>
+#include <Patcher/CPatcher.h>
+#include <Game/IVEngine/CIVPlayerInfo.h>
+#include "CContextData.h"
+#include <SharedUtility.h>
 #include "CGameFuncs.h"
+#include <IV/CIVScript_FunctionInvoke.h>
+#include <IV/CIVScriptEnums.h>
+#include <IV/CIVScript_FunctionList.h>
 
 extern	CCore	* g_pCore;
 IVTask       * ___pTask = NULL;
@@ -705,28 +708,123 @@ void GTA_LOG(DWORD a1, int a2, DWORD a3 = NULL, DWORD a4 = NULL, ...)
 	log((const char *)(strlen((char *)a3) != 0 ? a3 : a4));
 }
 
-DWORD dwJumpBackChoose;
-int iCheck = 0;
-_declspec(naked) void Choose()
-{
-	_asm mov eax, esi;
-	_asm mov iCheck, eax;
-	_asm pushad;
+Vector2 * v12;
+Vector2 * pViewportSize = new Vector2();
+float center;
+int bAbsolut;
 
-	if(iCheck > 2)
-	{
-		_asm popad;
-		_asm pop ebx;
-		_asm pop edi;
-		_asm pop esi;
-		_asm pop ebx;
-		_asm retn;
+#define MIN_X 0.025f
+#define MAX_X 0.975f
+#define MIN_Y 0.025f
+#define MAX_Y 0.975f
+#define ZERO 0.0f
+float fOriginalX;
+float fOriginalY;
+
+void _declspec(naked) Keks()
+{
+	_asm	mov v12, edx;
+	_asm	push eax; get absolute flag
+	_asm	mov eax, [ebp+14h] ; 3th parameter
+	_asm	mov bAbsolut, eax;
+	_asm	pop eax;
+
+	fOriginalX = v12->fX;
+	fOriginalY = v12->fY;
+
+	// Calculate and check our coordinates 
+	if(!bAbsolut) {
+
+		if(v12->fX < MAX_X && v12->fX > MIN_X) { // Check if the X axis is smaller than 1, but still positive
+			if(v12->fY < MAX_Y && v12->fY > MIN_Y) // Check if the Y Acis is smaller than 1, but still positive
+			{
+				goto out; // Let GTA calc the position on itself
+			}
+			else {
+				if(v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+					v12->fY = MAX_Y;
+
+				if(v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+					v12->fY = MIN_Y;
+			}
+
+			goto out;
+		}
+		else
+		{
+			if(v12->fX > MAX_X)
+				v12->fX = MAX_X; // Check if the X Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+
+			if(v12->fX < MIN_X)
+				v12->fX = MIN_X; // Check if the X Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+		}
+
+		if(v12->fY < MAX_Y && v12->fY > MIN_Y) { // Check if the Y Acis is smaller than 1, but still positive
+			if(v12->fX < MAX_X && v12->fX > MIN_X)// Check if the X axis is smaller than 1, but still positive
+			{
+				goto out;
+			}
+			else
+			{
+				if(v12->fX > MAX_X) // Check if the X Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+					v12->fX = MAX_X;
+
+				if(v12->fX < 0) // Check if the X Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+					v12->fX = MIN_X;
+			}
+
+			goto out;
+		}
+		else {
+			if(v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+				v12->fY = MAX_Y;
+
+			if(v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+				v12->fY = MIN_Y;
+		}
+		goto out;
 	}
 
-	dwJumpBackChoose = (g_pCore->GetBase() + 0x408DC1);
+out:
+
+	_asm    mov esp, ebp;
+	_asm    pop ebp;
+	_asm    retn;
+}
+
+DWORD ResizeMapJmpBack;
+int a1, a2, a3;
+
+_declspec(naked) signed int ResizeMap()
+{
+	_asm push eax;
+	_asm mov eax, [ebp+4];
+	_asm mov a1, eax;
+	_asm mov eax, [ebp+8];
+	_asm mov a2, eax;
+	_asm mov eax, [ebp+0Ch];
+	_asm mov a3, eax;
+	_asm pushad;
+
+	ResizeMapJmpBack = (g_pCore->GetBase() + 0x8364D7);
+
 	_asm popad;
-	_asm add esi, 1;
-	_asm jmp [dwJumpBackChoose];
+	_asm pop eax;
+	_asm jmp ResizeMapJmpBack; 
+}
+
+DWORD sub_849BC0;
+_declspec(naked) void RenderMap()
+{
+	sub_849BC0 = (g_pCore->GetBase() + 0x849BC0);
+	_asm	call sub_849BC0;
+	_asm	add esp, 4;
+	_asm	popad;
+
+	g_pCore->GetGame()->SetRadarVisible(true);
+	
+	_asm	pushad;
+	_asm	retn;
 }
 
 void CHooks::Intialize()
@@ -767,9 +865,65 @@ void CHooks::Intialize()
 	// this disables a call to a destructor of a member in rageResourceCache [field_244] 
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch2, (DWORD)CRASH_625F15_HOOK);
 
+	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
+	*(BYTE *)(g_pCore->GetBase() + 0x83C216) = 0xEB;
+	*(BYTE *)(g_pCore->GetBase() + 0x83BFE0) = 0xC3;
+
+	// Patch crosshair
+	CPatcher::Unprotect((g_pCore->GetBase() + 0xE35790), 13);
+	*(DWORD *)(g_pCore->GetBase() + 0xE35790) = 0x73706172;
+	*(DWORD *)(g_pCore->GetBase() + 0xE35790 + 0x4) = 0x6B6C6500;
+	*(DWORD *)(g_pCore->GetBase() + 0xE35790 + 0x8) = 0x00000000;
+	*(BYTE*)(g_pCore->GetBase() + 0xE35790 + 0x12) = 0x0;
+
+	// Patch icons to star
+	CPatcher::Unprotect((g_pCore->GetBase() + 0xFEA8E4), 20);
+	*(DWORD *)(g_pCore->GetBase() + 0xFEA8E4) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *)(g_pCore->GetBase() + 0xFEA8E8) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *)(g_pCore->GetBase() + 0xFEA8EC) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *)(g_pCore->GetBase() + 0xFEA8F0) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *)(g_pCore->GetBase() + 0xFEA8F4) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+
+	// Change calc from circle to square(blips)
+	*(BYTE*)(g_pCore->GetBase() + 0x8385E7 + 0x6) = 0x1;
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8386AB, (DWORD)Keks);
+
+	// Enable square map(instead of circle map)
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA22C53, g_pCore->GetBase() + 0xA22EF3);
+
+	// Enable big radar
+	*(BYTE *)(g_pCore->GetBase() + 0x08364D0 + 0x6) = 0x1;
+
+	// Hook resize map function
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x8364D0), (DWORD)ResizeMap, 5);
+	*(WORD *)(g_pCore->GetBase() + 0x8364D0 + 0x5) = 0x9090;
+
+	// Make blip small
+	*(BYTE *)(g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+	*(BYTE *)(g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+
+	// Hook render map function
+	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD)RenderMap, 5);
+}
+
+	// Make blip small 	
+	//*(BYTE *)(g_pCore->GetBase() + 0x4B519F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+	//*(BYTE *)(g_pCore->GetBase() + 0x4B51E8 + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+
+	// Deactivate development radar calculations
+	//*(WORD *)(g_pCore->GetBase() + 0x83895C) = 0xB001; // mov al, 1
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x83895E), 3);
+
 	// Hook gta_createthread to use our own function 
 	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x452210),(DWORD)GTA_CreateThread,1);
 
 	// Hook GTA IV dev log
 	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xBD6730), (DWORD)GTA_LOG, 1);
-}
+
+	// Enable dev mode
+	//*(DWORD *)(g_pCore->GetBase() + 0x104E11F) = 1;
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x7C2088),6);
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x7C66BF), 6);
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x85A754), 7);
+	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0xA22AA3), 10); // Disables radio logos, hud crosshair
+	//*(BYTE *)(g_pCore->GetBase() + 0x90945E + 0x6) = 0x9; // disable!

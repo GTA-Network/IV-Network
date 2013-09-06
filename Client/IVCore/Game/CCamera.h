@@ -56,6 +56,9 @@ public:
 	bool				IsOnScreen(const CVector3& vecPosition);
 
 	void				SetCamBehindPed(unsigned int uiPed);
+
+	CIVCam				*GetGameCam() { return m_pGameCam; }
+	CIVCam				*GetScriptCam() { return m_pScriptCam; }
 };
 
 #endif // CCamera_h

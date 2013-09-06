@@ -150,18 +150,26 @@ struct sPlayerEntity_InterpolationData
 struct sPlayerEntity_StoreIVSynchronization
 {
 	CVector3		vecPosition;
-	CVector3		vecMoveSpeed;
+	CVector3		vecMovementSpeed;
 	CVector3		vecTurnSpeed;
-	CVector3		vecAimTarget;
-	CVector3		vecShotSource;
-	CVector3		vecShotTarget;
-	float			fArmHeading;
-	float			fArmDown;
-	float			fHeading;
-	bool			bDuckingState;
-	CControls		* pControls ;
-	unsigned		uiPlayerIndex;
+	CVector3		vecDirection;
+	CVector3		vecRoll;
 
+	bool			bDuckState;
+	float			fHeading;
+
+	CVector3		vecAimAtCoordinates;
+	float			fArmsHeadingCircle;
+	float			fArmsUpDownRotation;
+	CVector3		vecShotAtCoordinates;
+	CVector3		vecShotAtTarget;
+	CVector3		vecLookAtCoordinates;
+	/*Matrix34		pWeaponCameraA;
+	Matrix34		pWeaponCameraB;
+	Matrix34		pWeaponCameraC;
+	*/
+	CControls	   *pControls ;
+	unsigned		uiPlayerIndex;
 	unsigned		uiJumpTime;
 };
 

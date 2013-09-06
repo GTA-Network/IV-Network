@@ -120,9 +120,7 @@ void CIVPhysical::SetHealth(float fHealth)
 	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
 
 	if(pPhysical)
-	{
 		pPhysical->SetHealth(fHealth, 1);
-	}
 }
 
 float CIVPhysical::GetHealth()

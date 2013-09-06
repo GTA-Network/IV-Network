@@ -122,12 +122,15 @@ _declspec(naked) void CIKManager__AimWeapon()
 }
 
 // Hook for CIkManager::PointArms func to sync the arm heading and up/down for aim sync
+DWORD dwCallFrom;
 _declspec(naked) void CIkManager__PointArms_Hook()
 {
 	// Get the ped pointer from the ik manager
 	_asm	mov eax, [ecx+40h] // CIkManager + 0x40 = CPed * pPed
 	_asm	mov g_pIKPed, eax
 	// Get the function arguments
+	_asm	mov eax, [esp+0];
+	_asm	mov dwCallFrom, eax;
 	_asm	mov eax, [esp+4];
 	_asm	mov g_fArmHeading, eax;
 	_asm	mov eax, [esp+8];
@@ -135,9 +138,10 @@ _declspec(naked) void CIkManager__PointArms_Hook()
 	_asm	pushad;
 
 	// Store our values
+	CLogFile::Printf("Renderingfrom: 0x%p",dwCallFrom);
 	StoreArmHeadingUpDown(g_pIKPed, &g_fArmHeading, &g_fArmUpDown);
 
-	_asm	popad
+	_asm	popad;
 	// Store our values in case they have been changed
 	_asm	mov eax, g_fArmHeading;
 	_asm	mov [esp+4], eax;

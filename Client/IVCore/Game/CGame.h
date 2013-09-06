@@ -87,6 +87,7 @@ private:
 	static IVManagement					*m_pManagement;
 
 	static InternalThread				m_Threads[254];
+	static bool							m_bRadarVisibility;
 
 public:
 										CGame() { };
@@ -99,6 +100,7 @@ public:
 	static void							OnClientPastGameJoin();
 	static void							Setup();
 	static void							RenderRAGEScripts();
+	static void							RenderUIElements();
 	static void							ProcessEnvironment();
 	static void							UnprotectMemory();
 	static bool							CheckInstances(bool bInitialised = false);
@@ -140,6 +142,9 @@ public:
 
 	static BYTE							CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int ThreadId, int iPriority, const char * ThreadName, const char * szComment);
 	static void							DestroyInternalThread(BYTE byteThreadId);
+
+	static void							SetRadarVisible(bool bVisible) { m_bRadarVisibility = bVisible; }
+	static bool							GetRadarVisibility() { return m_bRadarVisibility; }
 };
 
 #endif // CGame_h

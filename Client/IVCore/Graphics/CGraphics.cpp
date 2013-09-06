@@ -15,6 +15,34 @@
 
 extern CCore *g_pCore;
 
+
+struct D3DVERTEX
+{
+	float fX;
+	float fY;
+	float fZ;
+	float fRHW;
+	DWORD dwColor;
+
+	D3DVERTEX()
+	{
+		fX = 0.0f;
+		fY = 0.0f;
+		fZ = 0.0f;
+		fRHW = 1.0f;
+		dwColor = 0;
+	}
+
+	D3DVERTEX(float _fX, float _fY, float _fZ, float _fRHW, DWORD _dwColor)
+	{
+		fX = _fX;
+		fY = _fY;
+		fZ = _fZ;
+		fRHW = _fRHW;
+		dwColor = _dwColor;
+	}
+};
+
 const unsigned char g_szPixel [] = { 0x42, 0x4D, 0x3A, 0, 0, 0, 0, 0, 0, 0, 0x36, 0, 0, 0, 0x28, 0, 0,
                                     0, 0x1, 0, 0, 0, 0x1, 0, 0, 0, 0x1, 0, 0x18, 0, 0, 0, 0, 0,
                                     0x4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -87,25 +115,6 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 			// Terminate process
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
-
-		/*// Basic initialize
-		D3DXCreateLine ( pDevice, &m_pLineInterface );
-		D3DXCreateTextureFromFileInMemory ( pDevice, g_szPixel, sizeof ( g_szPixel ), &m_pDXPixelTexture );
-
-		D3DDEVICE_CREATION_PARAMETERS cparams;
-		RECT rect;
-
-		m_pDevice->GetCreationParameters(&cparams);
-		GetWindowRect(cparams.hFocusWindow, &rect);
-		
-		int width=rect.bottom-rect.top;
-		int height=rect.right-rect.left;
-
-		D3DXCreateTextureFromFile( pDevice, "multiplayer/logo.png", &pLoadingScreenTexture);
-		m_pDevice->SetTexture(0, pLoadingScreenTexture);
-
-		// Reset our device
-		g_pCore->OnDeviceReset(m_pDevice);*/
 	}
 }
 
@@ -124,11 +133,16 @@ bool CGraphics::LoadFonts()
 
 	bool bSuccess = true;
 	for(int i = 0; bSuccess && i < NUM_FONTS; i++)
-	{
+	{	
 		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontInfos[i].uiHeight, 0, fontInfos[i].uiWeight, 1, FALSE,
 						DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, fontInfos[i].szFontName,
                         &m_pFonts[i]));
 	}
+
+	// Load texture for radar
+	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\hud.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, 
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
+		NULL, NULL, &m_pRadarOverlayTexture);
 
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }
@@ -245,6 +259,42 @@ void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulCol
 		DrawText((unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, (unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, ulColor, fScale, fScale, ulFormat, fontIndex, bShadow, szBuffer); 
 }
 
+void CGraphics::DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox)
+{
+	/*
+	// Begin the sprite
+	m_pSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
+
+	// Generate the matrix
+	D3DXMATRIX matrix;
+	D3DXMatrixTransformation2D( &matrix, NULL, 0.0f, &D3DXVECTOR2( fWidth, fHeight ), NULL, 0.0f, &D3DXVECTOR2( fLeft, fTop ) );
+
+	// Set the sprite transform
+	m_pSprite->SetTransform( &matrix );
+
+	// Draw the box
+	m_pSprite->Draw( m_pPixelTexture, NULL, NULL, NULL, dwColorBox );
+
+	// End the sprite*
+	m_pSprite->End( );*/
+
+    D3DVERTEX vertex[4];
+	vertex[0] = D3DVERTEX(fLeft, fTop, 0.0f, 1.0f, dwColorBox);
+    vertex[1] = D3DVERTEX((fLeft + fWidth), fTop, 0.0f, 1.0f, dwColorBox);
+    vertex[2] = D3DVERTEX((fLeft + fWidth), (fTop + fHeight), 0.0f, 1.0f, dwColorBox);
+    vertex[3] = D3DVERTEX(fLeft, (fTop + fHeight), 0.0f, 1.0f, dwColorBox);
+    short indices[6] = {0,1,2,0,2,3};
+
+    m_pDevice->SetTexture(0, NULL);
+    m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+    m_pDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, &indices[0], D3DFMT_INDEX16, &vertex[0], sizeof(D3DVERTEX));
+ 
+}
+
+void CGraphics::DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour)
+{
+	// TODO
+}
 ID3DXFont * CGraphics::GetFont(unsigned int uiIndex)
 {
 	if(uiIndex > NUM_FONTS)

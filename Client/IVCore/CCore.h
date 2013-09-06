@@ -76,6 +76,7 @@ private:
 	CTime							*m_pTimeManagement;
 
 	bool							m_hwndFocused;
+	BYTE							m_byteLoadingStyle;
 
 public:
 									CCore();

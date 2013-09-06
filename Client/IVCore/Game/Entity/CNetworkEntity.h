@@ -129,9 +129,16 @@ public:
 	float						fHeading;
 
 	struct {
-		CVector3 vecAimTarget;
-		float	 vecAimSpecific[2];
-		CVector3 vecShotTarget;
+		CVector3				vecAimAtCoordinates;
+		float					fArmsHeadingCircle;
+		float					fArmsUpDownRotation;
+		CVector3				vecShotAtCoordinates;
+		CVector3				vecShotAtTarget;
+		CVector3				vecLookAtCoordinates;
+		//Matrix34				pWeaponCameraA;
+		//Matrix34				pWeaponCameraB;
+		//Matrix34				pWeaponCameraC;
+
 	}							sWeaponData;
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
@@ -159,6 +166,8 @@ private:
 	CVector3						m_vecRotation;
 	CVector3						m_vecMoveSpeed;
 	CVector3						m_vecTurnSpeed;
+	CVector3						m_vecDirection;
+	CVector3						m_vecRoll;
 
 	CNetworkEntitySync				m_pEntitySync;
 	CNetworkEntitySync				m_pEntityLastSync;
@@ -169,56 +178,63 @@ private:
 	CPlayerEntity					*m_pPlayerEntity;
 
 public:
-	CNetworkEntity();
-	CNetworkEntity(eEntityType eType);
-	CNetworkEntity(eEntityType eType, EntityId entityId);
-	~CNetworkEntity();
+									CNetworkEntity();
+									CNetworkEntity(eEntityType eType);
+									CNetworkEntity(eEntityType eType, EntityId entityId);
+									~CNetworkEntity();
 
-	virtual bool		Create() = 0;
-	virtual bool		Destroy() = 0;
+	virtual bool					Create() = 0;
+	virtual bool					Destroy() = 0;
 
-	virtual void		Pulse(CPlayerEntity * pPlayer);
-	virtual void		Pulse(CVehicleEntity * pVehicle);
+	virtual void					Pulse(CPlayerEntity * pPlayer);
+	virtual void					Pulse(CVehicleEntity * pVehicle);
+	
+	virtual void					GetPosition(CVector3& vecPos);
+	virtual void					SetPosition(const CVector3& vecPos);
 
-	virtual void		GetPosition(CVector3& vecPos);
-	virtual void		SetPosition(const CVector3& vecPos);
+	virtual void					GetRotation(CVector3& vecRot);
+	virtual void					SetRotation(const CVector3& vecRot);
 
-	virtual void		GetRotation(CVector3& vecRot);
-	virtual void		SetRotation(const CVector3& vecRot);
+	virtual void					GetMoveSpeed(CVector3& vecMoveSpeed);
+	virtual void					SetMoveSpeed(const CVector3& vecMoveSpeed);
 
-	virtual void		GetMoveSpeed(CVector3& vecMoveSpeed);
-	virtual void		SetMoveSpeed(const CVector3& vecMoveSpeed);
+	virtual void					GetTurnSpeed(CVector3& vecTurnSpeed);
+	virtual void					SetTurnSpeed(const CVector3& vecTurnSpeed);
 
-	virtual void		GetTurnSpeed(CVector3& vecTurnSpeed);
-	virtual void		SetTurnSpeed(const CVector3& vecTurnSpeed);
+	virtual void					GetDirectionSpeed(CVector3& vecDirectionSpeed);
+	virtual void					SetDirectionSpeed(const CVector3& vecDirectionSpeed);
 
-	virtual EntityId	GetId() { return m_entityId; }
-	virtual void		SetId(EntityId entityId) { m_entityId = entityId; }
+	virtual void					GetRollSpeed(CVector3& vecRollSpeed);
+	virtual void					SetRollSpeed(const CVector3& vecRollSpeed);
 
-	bool				IsOnScreen();
+	virtual EntityId				GetId() { return m_entityId; }
+	virtual void					SetId(EntityId entityId) { m_entityId = entityId; }
 
-	virtual	bool		IsMoving();
-	virtual void		StopMoving();
+	bool							IsOnScreen();
 
-	virtual void		Serialize(ePackageType pType);
-	virtual void		Deserialize(RakNet::BitStream * pBitStream, ePackageType pType);
+	virtual	bool					IsMoving();
+	virtual void					StopMoving();
 
-	virtual void		AddToWorld() { /* Nothing can be done here */ };
-	virtual void		RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };
+	virtual void					Serialize(ePackageType pType);
+	virtual RakNet::BitStream		ManualSerialize(ePackageType pType);
+	virtual void					Deserialize(RakNet::BitStream * pBitStream, ePackageType pType);
 
-	//virtual void		SetInterior(DWORD dwInterior) { m_dwInterior = dwInterior; }
-	//virtual DWORD		GetInterior() { return m_dwInterior; }
+	virtual void					AddToWorld() { /* Nothing can be done here */ };
+	virtual void					RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };
 
-	eEntityType			GetType() { return m_eType; }
-	void				SetType(eEntityType eType) { m_eType = eType; }
+	//virtual void					SetInterior(DWORD dwInterior) { m_dwInterior = dwInterior; }
+	//virtual DWORD					GetInterior() { return m_dwInterior; }
 
-	CNetworkEntitySync	GetLatestSyncPackage() { return m_pEntitySync; }
-	CNetworkEntitySync	GetOldestSyncPackage() { return m_pEntityLastSync; }
+	eEntityType						GetType() { return m_eType; }
+	void							SetType(eEntityType eType) { m_eType = eType; }
 
-	CNetworkEntitySubPlayer	GetPlayerHandle() { return m_pPlayerHandle; }
-	CNetworkEntitySubPlayer	*GetPlayerHandlePtr() { return &m_pPlayerHandle; }
-	CNetworkEntitySubVehicle GetVehicleHandle() { return m_pVehicleHandle; }
-	CNetworkEntitySubVehicle *GetVehicleHandlePtr() { return &m_pVehicleHandle; }
+	CNetworkEntitySync				GetLatestSyncPackage() { return m_pEntitySync; }
+	CNetworkEntitySync				GetOldestSyncPackage() { return m_pEntityLastSync; }
+
+	CNetworkEntitySubPlayer			GetPlayerHandle() { return m_pPlayerHandle; }
+	CNetworkEntitySubPlayer			*GetPlayerHandlePtr() { return &m_pPlayerHandle; }
+	CNetworkEntitySubVehicle		GetVehicleHandle() { return m_pVehicleHandle; }
+	CNetworkEntitySubVehicle		*GetVehicleHandlePtr() { return &m_pVehicleHandle; }
 };
 
 #endif // CNetworkEntity_h

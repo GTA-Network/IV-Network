@@ -222,7 +222,7 @@ void CopyThread()
 						SetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), GetFileAttributes(CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get()) & ~FILE_ATTRIBUTE_READONLY);
 					
 					if(!CopyFileEx(file.Get(), CString(szCopyFileDest[n], szInstallDirectory, "\\TBoGT\\common\\data\\").Get(), (LPPROGRESS_ROUTINE)CurrentFileProgress, NULL, false, 0))
-						MessageBoxA(NULL,szCopyFile[n],"FAILED",MB_OK);
+						MessageBoxA(NULL,szCopyFile[n],"Failed to copy file.. Pls post a bug report",MB_OK);
 				}
 				else if(CString(szCopyFile[n]).Find("ultiplayer\\pc\\textures\\") != std::string::npos && szCopyFile[n][0] != '%') {
 					CString file(SharedUtility::GetAppPath());
@@ -270,6 +270,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				20, 40, 345, 17,
 				hWnd, NULL, hInst, NULL);
 			
+			MoveWindow(hwnd, 4000, 4000, 345, 17, false);
+
 			font = CreateFont(18, 0, 0, 0, 300, false, false, false, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial");
 			SendMessage(pgCurrentFile, PBM_SETRANGE, 0, MAKELPARAM(0, 220));
 			CGameFiles::CheckFiles();

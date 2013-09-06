@@ -51,18 +51,27 @@ enum ePackageEntityDefinition
 
 struct sNetwork_Sync_Entity_Player
 {
-	CVector3 vecPosition;
-	CVector3 vecMovementSpeed;
-	CVector3 vecTurnSpeed;
+	CVector3		vecPosition;
+	CVector3		vecMovementSpeed;
+	CVector3		vecTurnSpeed;
+	CVector3		vecDirection;
+	CVector3		vecRoll;
 
-	bool	 bDuckState;
-	float	 fHeading;
+	bool			bDuckState;
+	float			fHeading;
 
 	struct {
-		CVector3 vecAimTarget;
-		float	 vecAimSpecific[2];
-		CVector3 vecShotTarget;
-	}		 sWeaponData;
+	CVector3		vecAimAtCoordinates;
+	float			fArmsHeadingCircle;
+	float			fArmsUpDownRotation;
+	CVector3		vecShotAtCoordinates;
+	CVector3		vecShotAtTarget;
+	CVector3		vecLookAtCoordinates;
+	/*Matrix34		pWeaponCameraA;
+	Matrix34		pWeaponCameraB;
+	Matrix34		pWeaponCameraC;
+	*/
+	}				sWeaponData;
 };
 
 struct sNetwork_Sync_Entity_Vehicle

@@ -77,10 +77,12 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "weapon")
 	{
+		int iWeapon = atoi(strParameters.c_str());
+
 		if(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed())
-			CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+			CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon,50,true);
 		
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)CIVScript::WEAPON_SHOTGUN,50,true);
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon,50,true);
 		return true;
 	}
 	else if(strCommand == "cp")
@@ -273,6 +275,16 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	else if(strCommand == "createtrain")
 	{
 		g_pCore->GetGame()->GetIVManagement()->CreateTrain(g_pCore->GetGame()->GetLocalPlayer()->GetPosition(), 3, 20.0f, 0);
+	}
+	else if(strCommand == "blip")
+	{
+		unsigned int uiBlip;
+		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_ADD_BLIP_FOR_COORD, 0, 0, 0,&uiBlip); 
+		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_CHANGE_BLIP_SPRITE, 10);
+	}
+	else if(strCommand == "numberplate")
+	{
+		g_pCore->GetChat()->Output("FAIL");
 	}
 	return false;
 }

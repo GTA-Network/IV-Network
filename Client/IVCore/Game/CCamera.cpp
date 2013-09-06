@@ -122,7 +122,9 @@ void CCamera::GetAimPosition(CVector3 *vecPosition)
 	vecCamForward = CVector3(m_pGameCam->GetCam()->m_data1.m_matMatrix.vecForward.fX,m_pGameCam->GetCam()->m_data1.m_matMatrix.vecForward.fY,m_pGameCam->GetCam()->m_data1.m_matMatrix.vecForward.fZ);
 
 	// Scale calc.
-	float fScale = 10.0f;
+	CVector3 vecFinalCamLookAt = Math::GetOffsetDegrees(vecCamPosition,vecCamForward);
+	float fScale = (vecFinalCamLookAt.Length()/2);
+
 	vecPosition->fX = (vecCamPosition.fX + (vecCamForward.fX * fScale));
 	vecPosition->fY = (vecCamPosition.fY + (vecCamForward.fY * fScale));
 	vecPosition->fZ = (vecCamPosition.fZ + (vecCamForward.fZ * fScale));

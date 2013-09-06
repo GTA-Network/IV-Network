@@ -61,6 +61,8 @@ public:
 	void					DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, unsigned int fontIndex, bool bShadow, const char * szText);
 	void					DrawText(float fX, float fY, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char * szFormat, ...);
 	void					DrawText(CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char *szFormat, ...);
+	void					DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox);
+	void					DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour);
 
 	ID3DXFont				* GetFont(unsigned int uiIndex);
 
@@ -85,6 +87,9 @@ public:
 	// member function public
 	LPDIRECT3DTEXTURE9		pLoadingScreenTexture;
 	LPD3DXSPRITE			GetSprite() { return m_pSprite; }
+
+	// Radar texture
+	LPDIRECT3DTEXTURE9		m_pRadarOverlayTexture;
 };
 
 #endif // CGraphics_h

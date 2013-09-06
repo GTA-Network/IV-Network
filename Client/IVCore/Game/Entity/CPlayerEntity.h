@@ -35,6 +35,8 @@ private:
 	CVector3								m_vecPosition;
 	CVector3								m_vecMoveSpeed;
 	CVector3								m_vecTurnSpeed;
+	CVector3								m_vecDirection;
+	CVector3								m_vecRoll;
 
 	CIVPlayerPed							* m_pPlayerPed;
 	CIVPlayerInfo							* m_pPlayerInfo;
@@ -155,6 +157,7 @@ public: // Handles "GET" functions
 	CString							GetNick() { return m_strNick; }
 	unsigned						GetColor() { return m_uiColor; }
 	float							GetHealth();
+	float							GetArmour();
 
 	CContextData					* GetContextData() { return m_pContextData; }
 	CVehicleEntity					* InternalGetVehicle();

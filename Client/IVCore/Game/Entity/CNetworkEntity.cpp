@@ -74,6 +74,26 @@ void CNetworkEntity::SetTurnSpeed(const CVector3& vecTurnSpeed)
 	m_vecTurnSpeed = vecTurnSpeed;
 }
 
+void CNetworkEntity::GetDirectionSpeed(CVector3& vecDirectionSpeed)
+{
+	vecDirectionSpeed = m_vecDirection;
+}
+
+void CNetworkEntity::SetDirectionSpeed(const CVector3& vecDirectionSpeed)
+{
+	m_vecDirection = vecDirectionSpeed;
+}
+
+void CNetworkEntity::GetRollSpeed(CVector3& vecRollSpeed)
+{
+	vecRollSpeed = m_vecRoll;
+}
+
+void CNetworkEntity::SetRollSpeed(const CVector3& vecRollSpeed)
+{
+	m_vecRoll = vecRollSpeed;
+}
+
 bool CNetworkEntity::IsMoving()
 {
 	if(!(m_vecMoveSpeed.fX == 0 && m_vecMoveSpeed.fY == 0 && (m_vecMoveSpeed.fZ >= -0.000020 && m_vecMoveSpeed.fZ <= 0.000020)))
@@ -100,6 +120,10 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 		if(!m_pPlayerEntity)
 			m_pPlayerEntity = pPlayer;
 
+		/*
+		 * > First start updating basic entity members(e.g. position, movement etc.)
+		*/
+
 		// Get the latest position
 		pPlayer->GetPosition(m_vecPosition);
 
@@ -109,11 +133,47 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 		// Get the latest turn speed
 		pPlayer->GetTurnSpeed(m_vecTurnSpeed);
 
-		// GEt the latest rotation
+		// Get the latest direction speed
+		pPlayer->GetPlayerPed()->GetDirection(m_vecDirection);
+
+		// Get the latest roll speed
+		pPlayer->GetPlayerPed()->GetRoll(m_vecRoll);
+
+		/*
+		 * > Now render specific player parts(e.g. rotation, crouch state etc.)
+		*/
+		// Get the latest rotation
 		m_pPlayerHandle.fHeading = pPlayer->GetRotation();
 
 		// Get the latest crouch state
 		m_pPlayerHandle.bDuckState = pPlayer->GetPlayerPed()->IsDucking();
+
+		/*
+		 * > At last, fetch the weapon data
+		*/
+
+		// Get the arm heading circles
+		pPlayer->GetContextData()->GetArmHeading(m_pPlayerHandle.sWeaponData.fArmsHeadingCircle);
+
+		// Get the arm rotation circles
+		pPlayer->GetContextData()->GetArmUpDown(m_pPlayerHandle.sWeaponData.fArmsUpDownRotation);
+
+		// Get the aim at coordinates
+		pPlayer->GetContextData()->GetWeaponAimTarget(m_pPlayerHandle.sWeaponData.vecAimAtCoordinates);
+
+		// Get the shot at coordinates
+		pPlayer->GetContextData()->GetWeaponShotSource(m_pPlayerHandle.sWeaponData.vecShotAtCoordinates);
+
+		// Get the shot at target specific coordinates
+		pPlayer->GetContextData()->GetWeaponShotTarget(m_pPlayerHandle.sWeaponData.vecShotAtTarget);
+
+		// Get the weapon camera matrix'es
+		//m_pPlayerHandle.sWeaponData.pWeaponCameraA = g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1.m_matMatrix;
+		//m_pPlayerHandle.sWeaponData.pWeaponCameraB = g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data2.m_matMatrix;
+		//m_pPlayerHandle.sWeaponData.pWeaponCameraC = g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data3.m_matMatrix;
+
+		// Get the look at aiming coordinates
+		g_pCore->GetGame()->GetCamera()->GetAimPosition(&m_pPlayerHandle.sWeaponData.vecAimAtCoordinates);
 	}
 }
 
@@ -164,12 +224,29 @@ void CNetworkEntity::Serialize(ePackageType pType)
 			// Apply current 3D Turnspeed to the sync package
 			pSyncPacket->vecTurnSpeed = m_vecTurnSpeed;
 
+			// Apply current 3D Directionspeed to the sync package
+			pSyncPacket->vecDirection = m_vecDirection;
+
+			// Apply current 3D Rollspeed to the sync package
+			pSyncPacket->vecRoll = m_vecRoll;
+
 			// Apply current duckstate to the sync package
 			m_pEntitySync.pPlayerPacket.bDuckState = m_pPlayerHandle.bDuckState;
 
 			// Apply current heading to the sync package
 			m_pEntitySync.pPlayerPacket.fHeading = m_pPlayerHandle.fHeading;
 			
+			// Apply current weapon sync data to the sync package
+			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsHeadingCircle = m_pPlayerHandle.sWeaponData.fArmsHeadingCircle;
+			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsUpDownRotation = m_pPlayerHandle.sWeaponData.fArmsUpDownRotation;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtCoordinates = m_pPlayerHandle.sWeaponData.vecShotAtCoordinates;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtTarget = m_pPlayerHandle.sWeaponData.vecShotAtTarget;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraA = m_pPlayerHandle.sWeaponData.pWeaponCameraA;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraB = m_pPlayerHandle.sWeaponData.pWeaponCameraB;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraC = m_pPlayerHandle.sWeaponData.pWeaponCameraC;
+
 			// Merge EntitySync packet with our packet
 			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
 
@@ -211,6 +288,101 @@ void CNetworkEntity::Serialize(ePackageType pType)
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
 }
 
+RakNet::BitStream CNetworkEntity::ManualSerialize(ePackageType pType)
+{
+	// Create Sync package here and send it to the server
+	RakNet::BitStream * pBitStream = new BitStream;
+
+	// Backup old sync
+	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
+
+	// Create package
+	m_pEntitySync = *(new CNetworkEntitySync);
+
+	switch(m_eType)
+	{
+		case PLAYER_ENTITY:
+		{
+			// If we already set data for our next sync packet, copy the data
+			sNetwork_Sync_Entity_Player * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
+
+			// Apply entity type to package
+			m_pEntitySync.pEntityType = PLAYER_ENTITY;
+
+			// Apply current 3D Position to the sync package
+			pSyncPacket->vecPosition = m_vecPosition;
+
+			// Apply current 3D Movement to the sync package
+			pSyncPacket->vecMovementSpeed = m_vecMoveSpeed;
+
+			// Apply current 3D Turnspeed to the sync package
+			pSyncPacket->vecTurnSpeed = m_vecTurnSpeed;
+
+			// Apply current 3D Directionspeed to the sync package
+			pSyncPacket->vecDirection = m_vecDirection;
+
+			// Apply current 3D Rollspeed to the sync package
+			pSyncPacket->vecRoll = m_vecRoll;
+
+			// Apply current duckstate to the sync package
+			m_pEntitySync.pPlayerPacket.bDuckState = m_pPlayerHandle.bDuckState;
+
+			// Apply current heading to the sync package
+			m_pEntitySync.pPlayerPacket.fHeading = m_pPlayerHandle.fHeading;
+			
+			// Apply current weapon sync data to the sync package
+			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsHeadingCircle = m_pPlayerHandle.sWeaponData.fArmsHeadingCircle;
+			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsUpDownRotation = m_pPlayerHandle.sWeaponData.fArmsUpDownRotation;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtCoordinates = m_pPlayerHandle.sWeaponData.vecShotAtCoordinates;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtTarget = m_pPlayerHandle.sWeaponData.vecShotAtTarget;
+			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraA = m_pPlayerHandle.sWeaponData.pWeaponCameraA;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraB = m_pPlayerHandle.sWeaponData.pWeaponCameraB;
+			//m_pEntitySync.pPlayerPacket.sWeaponData.pWeaponCameraC = m_pPlayerHandle.sWeaponData.pWeaponCameraC;
+
+			// Merge EntitySync packet with our packet
+			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
+
+			// Write player onfoot flag into raknet bitstream
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
+			break;
+
+		}
+
+		case VEHICLE_ENTITY:
+		{
+			// If we already set data for our next sync packet, copy the data
+			sNetwork_Sync_Entity_Vehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
+
+			// Apply entity type to package
+			m_pEntitySync.pEntityType = VEHICLE_ENTITY;
+
+			// Apply current 3D Position to the sync package
+			pSyncPacket->vecPosition = m_vecPosition;
+
+			// Merge EntitySync packet with our packet
+			memcpy(&m_pEntitySync.pVehiclePacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Vehicle));
+
+			// Stop current case
+			break;
+		}
+
+		default:
+		{
+			CLogFile::Print("Failed to get entity type from current entitiy. Sync canceled..");
+			break;
+		}
+	}
+
+	// Write our Entity-Sync to the bitstream
+	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
+
+	// return bitstream package
+	return (pBitStream != NULL);
+}
+
+
 void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
 	// Get Sync package here and recieve it to the server
@@ -233,11 +405,25 @@ void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pT
 			// Apply current 3D Turnspeed to the sync package
 			m_pPlayerEntity->SetTurnSpeed(pSyncPackage->pPlayerPacket.vecTurnSpeed);
 
+			// Apply current 3D Directionspeed to the sync package
+			m_pPlayerEntity->GetPlayerPed()->SetDirection(pSyncPackage->pPlayerPacket.vecDirection);
+
+			// Apply current 3D Rollspeed to the sync package
+			m_pPlayerEntity->GetPlayerPed()->SetRoll(pSyncPackage->pPlayerPacket.vecRoll);
+
 			// Apply current duckstate to the sync package
 			m_pPlayerEntity->GetPlayerPed()->SetDucking(pSyncPackage->pPlayerPacket.bDuckState);
 
 			// Apply current heading to the sync package
 			m_pPlayerEntity->GetPlayerPed()->SetHeading(pSyncPackage->pPlayerPacket.fHeading);
+			
+			// Apply current weapon sync data to the sync package
+			m_pPlayerEntity->GetContextData()->SetArmHeading(pSyncPackage->pPlayerPacket.sWeaponData.fArmsHeadingCircle);
+			m_pPlayerEntity->GetContextData()->SetArmUpDown(pSyncPackage->pPlayerPacket.sWeaponData.fArmsHeadingCircle);
+			m_pPlayerEntity->GetContextData()->SetWeaponAimTarget(pSyncPackage->pPlayerPacket.sWeaponData.vecAimAtCoordinates);
+			m_pPlayerEntity->GetContextData()->SetWeaponShotSource(pSyncPackage->pPlayerPacket.sWeaponData.vecShotAtCoordinates);
+			m_pPlayerEntity->GetContextData()->SetWeaponShotTarget(pSyncPackage->pPlayerPacket.sWeaponData.vecShotAtTarget);
+			//m_pPlayerEntity->SetLookAt(pSyncPackage->pPlayerPacket.sWeaponData.vecLookAtCoordinates);
 
 			// Finished deserialize, break!
 			break;

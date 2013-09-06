@@ -72,7 +72,7 @@ public:
 	void            SetArmHeading(const float fArmHeading) { m_WeaponHandle.m_ArmUp = fArmHeading; }
     void            GetArmHeading(float& fArmHeading) { fArmHeading = m_WeaponHandle.m_ArmUp; }
     void            SetArmUpDown(const float fArmUpDown) { m_WeaponHandle.m_ArmDown = fArmUpDown; }
-    void            GetArmUpDown(float& fArmUpDown) { fArmUpDown = m_WeaponHandle.m_ArmUp; }
+	void            GetArmUpDown(float& fArmUpDown) { fArmUpDown = m_WeaponHandle.m_ArmDown; }
 	void            SetWeaponShotSource(const CVector3& vecWeaponShotSource) { m_WeaponHandle.m_vecShotSource = vecWeaponShotSource; }
 	void            GetWeaponShotSource(CVector3& vecWeaponShotSource) { vecWeaponShotSource = m_WeaponHandle.m_vecShotSource; }
 	void            SetWeaponShotTarget(const CVector3& vecWeaponShotTarget) { m_WeaponHandle.m_vecShotTarget = vecWeaponShotTarget; }

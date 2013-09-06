@@ -54,6 +54,20 @@ void CPatcher::InstallNopPatch(DWORD dwAddress, int iSize)
 	Reprotect(protectionInfo);
 }
 
+void CPatcher::InstallPadPatch(DWORD dwAddress, int iSize)
+{
+	DWORD dwAddr = dwAddress;
+
+	// Unprotect the address memory
+	ProtectionInfo protectionInfo = Unprotect(dwAddr, iSize);
+
+	// Write the no operation to the address memory
+	memset((void *)dwAddr, 0x00, iSize);
+
+	// Re-protect the address memory
+	Reprotect(protectionInfo);
+}
+
 void * CPatcher::InstallDetourPatchInternal(DWORD dwAddress, DWORD dwDetourAddress, BYTE byteType, int iSize)
 {
 	// Allocate the trampoline memory

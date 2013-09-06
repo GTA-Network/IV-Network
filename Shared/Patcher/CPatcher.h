@@ -29,6 +29,7 @@ public:
 	static ProtectionInfo	Unprotect(DWORD dwAddress, int iSize);
 	static void				Reprotect(ProtectionInfo protectionInfo);
 	static void				InstallNopPatch(DWORD dwAddress, int iSize = 1);
+	static void				InstallPadPatch(DWORD dwAddress, int iSize = 1);
 	static void				* InstallDetourPatchInternal(DWORD dwAddress, DWORD dwDetourAddress, BYTE byteType, int iSize = 5);
 	static void				UninstallDetourPatchInternal(DWORD dwAddress, void * pTrampoline, int iSize = 5);
 	static void				* InstallJmpPatch(DWORD dwAddress, DWORD dwJmpAddress, int iSize = 5);

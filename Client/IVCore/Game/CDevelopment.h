@@ -25,6 +25,8 @@ public:
 						~CDevelopment() { };
 
 	void				Process();
+	void				DumpTask(CString strTask, CIVTask * pTask);
+	void				DumpTasks(CIVPedTaskManager * pPedTaskManager, int iType);
 	void				SetDebugView(bool bView) { bDebugView = bView; }
 	bool				GetDebugView() { return bDebugView; }
 

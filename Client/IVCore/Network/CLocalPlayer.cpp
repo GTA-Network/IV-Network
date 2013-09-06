@@ -157,9 +157,10 @@ void CLocalPlayer::DoDeathCheck()
 		CGameFunction::GetTime(&m_iRespawnTime[0], &m_iRespawnTime[1]);
 	}
 }
-
+	
 void CLocalPlayer::Pulse()
 {
+
 	CPlayerEntity::Pulse();
 
 	if(IsSpawned()) {
