@@ -67,7 +67,6 @@ public:
 			if(!Exists(id))
 			{
 				m_pEntities[id] = pEntity;
-				CLogFile::Printf("%i", id);
 				return id;
 			}
 		}

@@ -37,8 +37,8 @@ int	CEntityNatives::SetPosition(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
 	GET_ENTITY_SAFE;
-		
 	CVector3 vecPos;
+	pVM->ResetStackIndex();
 	pVM->Pop(vecPos);
 	pEntity->SetPosition(vecPos);
 	pVM->ResetStackIndex();

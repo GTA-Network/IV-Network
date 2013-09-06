@@ -18,17 +18,23 @@
 
 void CScriptClasses::Register(CScriptVM * pVM)
 {
-	pVM->RegisterFunction("createEntity", CreateEntity);
+	//pVM->RegisterFunction("createEntity", CreateEntity);
 
-	pVM->RegisterScriptClass("C3DLabelEntity", CreateEntity);
-	pVM->RegisterScriptClass("CActorEntity", CreateEntity);
-	pVM->RegisterScriptClass("CBlipEntity", CreateEntity);
-	pVM->RegisterScriptClass("CCheckpointEntity", CreateEntity);
-	pVM->RegisterScriptClass("CFireEntity", CreateEntity);
-	pVM->RegisterScriptClass("CObjectEntity", CreateEntity);
-	pVM->RegisterScriptClass("CPickupEntity", CreateEntity);
-	pVM->RegisterScriptClass("CPlayerEntity", CreateEntity);
-	pVM->RegisterScriptClass("CVehicleEntity", CreateEntity);
+	//pVM->RegisterScriptClass("C3DLabelEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CActorEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CBlipEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CCheckpointEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CFireEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CObjectEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CPickupEntity", CreateEntity);
+	//pVM->RegisterScriptClass("CPlayerEntity", CreateEntity);
+
+	//pVM->RegisterScriptClass("CVehicleEntity", CreateEntity);
+	//{
+	//	CVehicleNatives::Register(pVM);
+	//	CEntityNatives::Register(pVM);
+	//}
+	//pVM->FinishRegisterScriptClass();
 }
 
 
@@ -40,9 +46,9 @@ int CScriptClasses::CreateEntity(int * VM)
 	{
 		CScriptVM* pVM = pResource->GetVM();
 		
-		CString strEntity;
-		pVM->Pop(strEntity);
-		pVM->ResetStackIndex();
+		CString strEntity = "HJHKJ";
+		/*pVM->Pop(strEntity);
+		pVM->ResetStackIndex();*/
 		if(strEntity == "3DLABEL")
 		{
 			C3DLabelEntity* p3DLabel = new C3DLabelEntity();
@@ -84,24 +90,24 @@ int CScriptClasses::CreateEntity(int * VM)
 			pVM->SetClassInstance("CPlayerEntity", (void*)pPlayer);
 			CEntityNatives::Register(pVM);
 			CPlayerNatives::Register(pVM);
-		} else if(strEntity == "VEHICLE") {
+		} else /*if(strEntity == "VEHICLE")*/ {
 			CVehicleEntity* pVehicle = new CVehicleEntity();
 
 			/* now read the additional params for vehicle spawning */
 
 			// Memo: add params count check in VM Pop methods
 			// Merge the pop events so we use only Pop instead of PopVector
-			CVector3 vecPos;
-			CVector3 vecRot;
-			pVM->Pop(vecPos);
-			pVM->Pop(vecRot);
+			//CVector3 vecPos;
+			//CVector3 vecRot;
+			//pVM->Pop(vecPos);
+			//pVM->Pop(vecRot);
 
-			// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
+			//// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 			pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));
-			
+			//
 			pVM->SetClassInstance("CVehicleEntity", (void*)pVehicle);
-			CEntityNatives::Register(pVM);
-			CVehicleNatives::Register(pVM);
+			//CEntityNatives::Register(pVM);
+			//CVehicleNatives::Register(pVM);
 
 			//pVehicle->Spawn();
 		}

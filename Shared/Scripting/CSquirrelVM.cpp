@@ -15,7 +15,7 @@
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
 #include "CScriptArgument.h"
-
+#include "CScriptClass.h"
 
 void PrintFunction(SQVM * pVM, const char * szFormat, ...)
 {
@@ -54,8 +54,10 @@ CSquirrelVM::~CSquirrelVM()
 }
 
 
+
 bool CSquirrelVM::LoadScript(CString script)
 {
+		
 	CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
 	
 	if(!SharedUtility::Exists(script.Get()) && SQ_FAILED(sqstd_dofile( m_pVM, scriptPath.Get(), SQFalse, SQTrue )))
@@ -75,6 +77,13 @@ bool CSquirrelVM::LoadScripts(std::list<CScript> scripts)
 				return false;
 	
 	return true;
+}
+
+void* CSquirrelVM::GetUserData(int idx)
+{
+	SQUserPointer p;
+	sq_getuserpointer(m_pVM, -1, &p);
+	return (void*)p;
 }
 
 void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate, bool bPushRootTable)
@@ -101,11 +110,17 @@ void CSquirrelVM::RegisterFunction(const char* szFunctionName, scriptFunction pf
 	// Create a new slot
 	sq_createslot(m_pVM, -3);
 }
+extern int iFuncIndex;
+int oldtop = 0;
+
 
 void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
+
+	iFuncIndex = 0;
+#if 1
 	int n = 0;
-	int oldtop = sq_gettop(m_pVM);
+	oldtop = sq_gettop(m_pVM);
 	sq_pushroottable(m_pVM);
 	sq_pushstring(m_pVM, className, -1);
 
@@ -124,10 +139,7 @@ void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnF
 	sq_pushstring(m_pVM, _SC("constructor"), -1);
 	sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
 	sq_newslot(m_pVM, -3, false); // Add the constructor method
-
-	sq_newslot(m_pVM, -3, SQFalse); // Add the class
-
-	sq_pop(m_pVM, m_pVM->_top-oldtop);
+#endif
 }
 
 SQInteger deleteClassInstance(SQUserPointer ptr, SQInteger size)
@@ -140,22 +152,21 @@ SQInteger deleteClassInstance(SQUserPointer ptr, SQInteger size)
 
 void CSquirrelVM::SetClassInstance(const char* szClassName, void * pInstance)
 {
+	sq_setinstanceup(m_pVM, 1, (SQUserPointer *)pInstance);
+	sq_setreleasehook(m_pVM, 1, deleteClassInstance);
+
 	HSQOBJECT instance;
 	sq_resetobject(&instance);
-	sq_getstackobj(m_pVM, -1, &instance);
-
-	sq_pushroottable(m_pVM);
-	sq_pushstring(m_pVM, szClassName, -1);
-	sq_get(m_pVM, -2);
-	sq_setinstanceup(m_pVM, -1, (SQUserPointer *)pInstance);
-	sq_setreleasehook(m_pVM, -1, deleteClassInstance);
+	sq_getstackobj(m_pVM, 1, &instance);
+	sq_addref(m_pVM, &instance);
 }
 
 void* CSquirrelVM::GetClassInstance(const char* szClassName)
 {
 	SQUserPointer pInstance = NULL;
-
-	if(SQ_FAILED(sq_getinstanceup(m_pVM, -1, &pInstance, NULL)))
+	SQObjectType type = sq_gettype(m_pVM, 1);
+	assert(type == SQObjectType::OT_INSTANCE);
+	if(SQ_FAILED(sq_getinstanceup(m_pVM, 1, &pInstance, NULL)))
 		pInstance = NULL;
 
 	return pInstance;
@@ -166,6 +177,13 @@ void CSquirrelVM::RegisterClassFunction(const char* szFunctionName, scriptFuncti
 	sq_pushstring(m_pVM, szFunctionName, -1);
 	sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
 	sq_newslot(m_pVM, -3, SQFalse);
+}
+
+void CSquirrelVM::FinishRegisterScriptClass()
+{
+	sq_newslot(m_pVM, -3, SQFalse);
+	sq_pop(m_pVM, m_pVM->_top-oldtop);
+	iFuncIndex = 0;
 }
 
 void CSquirrelVM::Pop(bool& b)
@@ -378,11 +396,11 @@ CScriptArgument::ArgumentType CSquirrelVM::GetType(int idx)
 	{
 	case OT_FLOAT:
 		{
-				return CScriptArgument::ArgumentType::ST_FLOAT;
+			return CScriptArgument::ArgumentType::ST_FLOAT;
 		}
 	case OT_INTEGER:
 		{
-				return CScriptArgument::ArgumentType::ST_INTEGER;
+			return CScriptArgument::ArgumentType::ST_INTEGER;
 		}
 	case OT_BOOL:
 		{

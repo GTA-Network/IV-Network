@@ -423,6 +423,9 @@
     <ClCompile Include="..\Shared\Scripting\Natives\CMathNatives.cpp">
       <Filter>Source Files\Shared\Scripting\Natives</Filter>
     </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ApplyTuple.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -661,6 +664,12 @@
     </ClInclude>
     <ClInclude Include="Network\CNetworkRPC.h">
       <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ApplyTuple.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScriptClass.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

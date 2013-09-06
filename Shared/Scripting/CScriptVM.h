@@ -81,6 +81,10 @@ public:
 
 	virtual void RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0) {}
 	virtual void RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL) {}
+	virtual void FinishRegisterScriptClass() {}
+	virtual void* GetUserData(int idx) { return 0; }
+
+	virtual void PushInstance(const char* szClassName, void * pInstance) { } 
 	virtual void SetClassInstance(const char* szClassName, void * pInstance) { }
 	virtual void* GetClassInstance(const char* szClassName) {return 0;}
 };

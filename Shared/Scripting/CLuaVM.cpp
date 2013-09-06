@@ -12,6 +12,7 @@
 #include <SharedUtility.h>
 #include <CLogFile.h>
 #include "CScriptArgument.h"
+#include "CScriptClass.h"
 
 CLuaVM::CLuaVM(CResource* pResource)
 	: CScriptVM(pResource),
@@ -28,9 +29,21 @@ CLuaVM::~CLuaVM()
 
 }
 
+class Foo
+{
+public:
+	Foo() { printf("hallo"); }
+	Foo(int i) { printf("ctor! %i\n", i); }
+	~Foo();
+
+	int abc(int a, int b, int c) { printf("%i:%i:%i\n", a, b, c); return 143; }
+	static void aaa() { printf("aaa!\n"); }
+};
+
 bool CLuaVM::LoadScript(CString script)
 {
-		CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
+	(new CScriptClass<Foo>("Foo"))->AddMethod("abc", &Foo::abc).AddMethod("new", &Foo::abc).Register(this);
+	CString scriptPath( "%s/%s", GetResource()->GetResourceDirectoryPath().Get(), script.Get());
 	
 	if(!SharedUtility::Exists(script.Get()) && luaL_loadfile(m_pVM, scriptPath.Get()) != 0)
 	{
@@ -64,49 +77,56 @@ static int gc_obj(lua_State *L) {
 	CLogFile::Printf("Delete class");
 	return 0;
 }
-
+static int clsIndex = 0;
+int metatable = 0;
 void CLuaVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
 {
 	m_strClassName = className;
 
-	lua_pushcfunction(m_pVM, (lua_CFunction)pfnFunction);
+	lua_pushcclosure(m_pVM, (lua_CFunction)pfnFunction, 1);
 	lua_setglobal(m_pVM, m_strClassName.Get());
 
 	luaL_newmetatable(m_pVM, className);
+	metatable = lua_gettop(m_pVM);
+
 	lua_pushstring(m_pVM, "__gc");
 	lua_pushcfunction(m_pVM, gc_obj);
-	lua_settable(m_pVM, -3);
+	lua_settable(m_pVM, metatable);
 
 	iFuncIndex = 0;
 }
 
 void CLuaVM::SetClassInstance(const char* szClassName, void * pInstance)
 {
-	lua_newtable(m_pVM);
-	lua_pushnumber(m_pVM, 0);
 	void** a = (void**)lua_newuserdata(m_pVM, sizeof(int*));
 	*a = pInstance;
 	luaL_getmetatable(m_pVM, szClassName);
 	lua_setmetatable(m_pVM, -2);
-	lua_settable(m_pVM, -3); // table[0] = obj;
-	iFuncIndex = 0;
 }
 
 void * CLuaVM::GetClassInstance(const char* szClassName)
 {
-	int i = (int)lua_tonumber(m_pVM, lua_upvalueindex(1));
-	lua_pushnumber(m_pVM, 0);
-	lua_gettable(m_pVM, 1);
-	m_iStackIndex++;
-	return (void*)*(int**)lua_touserdata(m_pVM, -1);//luaL_checkudata(m_pVM, -1, szClassName);
+	return (void*)*(int**)lua_touserdata(m_pVM,  lua_upvalueindex(1));
+}
+
+
+void * CLuaVM::GetUserData(int idx)
+{
+	return (void*)lua_touserdata(m_pVM, idx);
 }
 
 void CLuaVM::RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount, const char* szFunctionTemplate)
 {
 	lua_pushstring(m_pVM, szFunctionName);
-	lua_pushnumber(m_pVM, iFuncIndex++);
+	lua_pushlightuserdata(m_pVM, this);
 	lua_pushcclosure(m_pVM, (lua_CFunction)pfnFunction, 1);
-	lua_settable(m_pVM, -3);
+	lua_settable(m_pVM, metatable);
+}
+
+void CLuaVM::FinishRegisterScriptClass()
+{
+	lua_pushvalue(m_pVM, -1);
+	lua_setfield(m_pVM, -1, "__index");
 }
 
 void CLuaVM::Pop(bool& b)
@@ -144,7 +164,7 @@ void CLuaVM::Pop(bool& b, bool bDefaultValue)
 void CLuaVM::Pop(int& i)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
-	if (argType == LUA_TBOOLEAN)
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
 	{
 		i = static_cast<int>(lua_tointeger(m_pVM, m_iStackIndex++));
 		return;
