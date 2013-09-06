@@ -12,9 +12,7 @@
 #include <string.h>
 #include <assert.h>
 
-// HAX, 
 #include "../../Libraries/zlib-1.2.5/zlib.h"
-#pragma comment(lib,"../../Libraries/zlib-1.2.5/projects/Debug/zlib_d.lib")
 
 #if defined(MSDOS) || defined(OS2) || defined(WIN32) || defined(__CYGWIN__)
 #  include <fcntl.h>
