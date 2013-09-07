@@ -37,6 +37,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read(_strName);
 	CString strName(_strName.C_String());
 
+
+
 	// Read the player serial
 	RakNet::RakString _strSerial;
 	pBitStream->Read(_strSerial);
@@ -57,9 +59,12 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Add the player to the manager
 	// TODO: add to player manager
 	CPlayerEntity * pPlayer = new CPlayerEntity();
+
+	pPlayer->SetName(strName);
+
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
-	CLogFile::Printf( "[join] %s has connected to the server. (%s)", strName.Get(), strSerial.Get() );
+	CLogFile::Printf("[join] %s has connected to the server. (%s)", strName.Get(), strSerial.Get());
 
 	// Add everyone else connected for this player
 	// TODO: handle client join
@@ -113,7 +118,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			// Is this not a command?
 			if(!bIsCommand)
 			{
-				CLogFile::Printf("[chat] %d: %s", pPlayer->GetId(), strInput.C_String());
+				CLogFile::Printf("[chat] %s: %s", pPlayer->GetName().Get(), strInput.C_String());
 
 				// Send the RPC back to other players
 				RakNet::BitStream bitStream;
@@ -123,7 +128,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			}
 			else
 			{
-				CLogFile::Printf("[command] %d: %s", pPlayer->GetId(), strInput.C_String());
+				CLogFile::Printf("[command] %s: %s", pPlayer->GetName().Get(), strInput.C_String());
 			}
 		}
 	}
@@ -181,13 +186,13 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 			// Is the killer valid?
 			if(pKiller)
-				CLogFile::Printf("[death] %d has been killed by %d!", pPlayer->GetId(), pKiller->GetId());
+				CLogFile::Printf("[death] %s has been killed by %d!", pPlayer->GetName().Get(), pKiller->GetId());
 			else
-				CLogFile::Printf("[death] %d has been killed by NOT_A_PLAYER!", pPlayer->GetId());
+				CLogFile::Printf("[death] %s has been killed by NOT_A_PLAYER!", pPlayer->GetName().Get());
 		}
 		else
 		{
-			CLogFile::Printf("[death] %d has died!", pPlayer->GetId());
+			CLogFile::Printf("[death] %s has died!", pPlayer->GetName().Get());
 		}
 	}
 	CLogFile::Printf("%s",__FUNCTION__);
@@ -210,7 +215,7 @@ void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// Spawn everyone else connected for this player
 		//CServer::GetInstance()->GetPlayerManager()->HandlePlayerSpawn(playerId);
 
-		CLogFile::Printf("[spawn] %d has spawned.", pPlayer->GetId()); 
+		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get()); 
 	}
 	CLogFile::Printf("%s",__FUNCTION__);
 }
