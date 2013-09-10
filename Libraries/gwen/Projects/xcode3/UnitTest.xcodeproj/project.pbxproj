@@ -1,0 +1,309 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		34C73ADB034302D47FB64480 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A45FE721591A8415EE509B /* Button.cpp */; };
+		791161F404D7213A23DC1FCB /* Checkbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 794571392784476107FD6C43 /* Checkbox.cpp */; };
+		35E5245479E71939130C366B /* ComboBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EEE0D6030682669488A316C /* ComboBox.cpp */; };
+		01222E0C55306DCC72CD4C80 /* CrossSplitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11390BC02E4B377A13EC7744 /* CrossSplitter.cpp */; };
+		1EBE05ED4A2E6CAD615C30FE /* GroupBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B545D64623375F70B3334A /* GroupBox.cpp */; };
+		1E6E648538281D35191E0369 /* ImagePanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 327830977385640B52F73F67 /* ImagePanel.cpp */; };
+		2E976B5A747E11786D476DD2 /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE430087DCF4D151AE30E49 /* Label.cpp */; };
+		50743865003175A00BCB0F11 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BB9011E2A946C743A806A03 /* ListBox.cpp */; };
+		598811D174B3798A30851144 /* MenuStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 785B55D75947037B0EC618E2 /* MenuStrip.cpp */; };
+		6E4725F533F0709E35A52887 /* Numeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B647F99742B781737DF0491 /* Numeric.cpp */; };
+		61FF1B8E279B43F32D5F75F4 /* PanelListPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 306D43CA62792E467CBD3F70 /* PanelListPanel.cpp */; };
+		280B6E411BBD12A270D10ADE /* ProgressBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D1836AF67D319DA05DF0430 /* ProgressBar.cpp */; };
+		423B534F007C1C6A50340848 /* Properties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 676138891CE9046F7B600BB3 /* Properties.cpp */; };
+		587D22991F285285504516AB /* RadioButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 672570EE6D6943A952405522 /* RadioButton.cpp */; };
+		68110043669C49F433357A4B /* ScrollControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 65D07FD70E8A2AC920F631E9 /* ScrollControl.cpp */; };
+		1DD138CB6C6B741224FD6C4A /* Slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 266A4014727011013950058B /* Slider.cpp */; };
+		741515842872772B6CE53CB7 /* StatusBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3328476D5274128D44AB5542 /* StatusBar.cpp */; };
+		052047D545E6535245A64A93 /* TabControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 76355B0A140C20374D112D9D /* TabControl.cpp */; };
+		729F27E844C22F4706EB6B12 /* TextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 64FE235C63D602584EEF5906 /* TextBox.cpp */; };
+		75F733BC6C70307B0D586178 /* TreeControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B545A971A245B2C21FD5502 /* TreeControl.cpp */; };
+		7BD06C8B23B9234331D82930 /* UnitTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33E2637266C65371636F43A9 /* UnitTest.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		63A45FE721591A8415EE509B /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Button.cpp"; path = "Button.cpp"; sourceTree = "<group>"; };
+		794571392784476107FD6C43 /* Checkbox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Checkbox.cpp"; path = "Checkbox.cpp"; sourceTree = "<group>"; };
+		3EEE0D6030682669488A316C /* ComboBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "ComboBox.cpp"; path = "ComboBox.cpp"; sourceTree = "<group>"; };
+		11390BC02E4B377A13EC7744 /* CrossSplitter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "CrossSplitter.cpp"; path = "CrossSplitter.cpp"; sourceTree = "<group>"; };
+		45B545D64623375F70B3334A /* GroupBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "GroupBox.cpp"; path = "GroupBox.cpp"; sourceTree = "<group>"; };
+		327830977385640B52F73F67 /* ImagePanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "ImagePanel.cpp"; path = "ImagePanel.cpp"; sourceTree = "<group>"; };
+		4CE430087DCF4D151AE30E49 /* Label.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Label.cpp"; path = "Label.cpp"; sourceTree = "<group>"; };
+		6BB9011E2A946C743A806A03 /* ListBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "ListBox.cpp"; path = "ListBox.cpp"; sourceTree = "<group>"; };
+		785B55D75947037B0EC618E2 /* MenuStrip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "MenuStrip.cpp"; path = "MenuStrip.cpp"; sourceTree = "<group>"; };
+		1B647F99742B781737DF0491 /* Numeric.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Numeric.cpp"; path = "Numeric.cpp"; sourceTree = "<group>"; };
+		306D43CA62792E467CBD3F70 /* PanelListPanel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "PanelListPanel.cpp"; path = "PanelListPanel.cpp"; sourceTree = "<group>"; };
+		0D1836AF67D319DA05DF0430 /* ProgressBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "ProgressBar.cpp"; path = "ProgressBar.cpp"; sourceTree = "<group>"; };
+		676138891CE9046F7B600BB3 /* Properties.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Properties.cpp"; path = "Properties.cpp"; sourceTree = "<group>"; };
+		672570EE6D6943A952405522 /* RadioButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "RadioButton.cpp"; path = "RadioButton.cpp"; sourceTree = "<group>"; };
+		2EF26464472B5BB354F63C4E /* ReadMe.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "ReadMe.txt"; path = "ReadMe.txt"; sourceTree = "<group>"; };
+		65D07FD70E8A2AC920F631E9 /* ScrollControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "ScrollControl.cpp"; path = "ScrollControl.cpp"; sourceTree = "<group>"; };
+		266A4014727011013950058B /* Slider.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Slider.cpp"; path = "Slider.cpp"; sourceTree = "<group>"; };
+		3328476D5274128D44AB5542 /* StatusBar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "StatusBar.cpp"; path = "StatusBar.cpp"; sourceTree = "<group>"; };
+		76355B0A140C20374D112D9D /* TabControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "TabControl.cpp"; path = "TabControl.cpp"; sourceTree = "<group>"; };
+		64FE235C63D602584EEF5906 /* TextBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "TextBox.cpp"; path = "TextBox.cpp"; sourceTree = "<group>"; };
+		2B545A971A245B2C21FD5502 /* TreeControl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "TreeControl.cpp"; path = "TreeControl.cpp"; sourceTree = "<group>"; };
+		33E2637266C65371636F43A9 /* UnitTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "UnitTest.cpp"; path = "UnitTest.cpp"; sourceTree = "<group>"; };
+		78EA240203C1379C003221AD /* libunittest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libunittest.a"; path = "libunittest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		07CC16C123F569D03CCA4F68 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5E1C09065FA528E52C3971B4 /* UnitTest */ = {
+			isa = PBXGroup;
+			children = (
+				2CD12AFD6B605D3603A21DC3 /* unittest */,
+				39D2441E50174D454D5C1562 /* Products */,
+			);
+			name = "UnitTest";
+			sourceTree = "<group>";
+		};
+		2CD12AFD6B605D3603A21DC3 /* unittest */ = {
+			isa = PBXGroup;
+			children = (
+				63A45FE721591A8415EE509B /* Button.cpp */,
+				794571392784476107FD6C43 /* Checkbox.cpp */,
+				3EEE0D6030682669488A316C /* ComboBox.cpp */,
+				11390BC02E4B377A13EC7744 /* CrossSplitter.cpp */,
+				45B545D64623375F70B3334A /* GroupBox.cpp */,
+				327830977385640B52F73F67 /* ImagePanel.cpp */,
+				4CE430087DCF4D151AE30E49 /* Label.cpp */,
+				6BB9011E2A946C743A806A03 /* ListBox.cpp */,
+				785B55D75947037B0EC618E2 /* MenuStrip.cpp */,
+				1B647F99742B781737DF0491 /* Numeric.cpp */,
+				306D43CA62792E467CBD3F70 /* PanelListPanel.cpp */,
+				0D1836AF67D319DA05DF0430 /* ProgressBar.cpp */,
+				676138891CE9046F7B600BB3 /* Properties.cpp */,
+				672570EE6D6943A952405522 /* RadioButton.cpp */,
+				2EF26464472B5BB354F63C4E /* ReadMe.txt */,
+				65D07FD70E8A2AC920F631E9 /* ScrollControl.cpp */,
+				266A4014727011013950058B /* Slider.cpp */,
+				3328476D5274128D44AB5542 /* StatusBar.cpp */,
+				76355B0A140C20374D112D9D /* TabControl.cpp */,
+				64FE235C63D602584EEF5906 /* TextBox.cpp */,
+				2B545A971A245B2C21FD5502 /* TreeControl.cpp */,
+				33E2637266C65371636F43A9 /* UnitTest.cpp */,
+			);
+			name = "unittest";
+			path = ../../unittest;
+			sourceTree = "<group>";
+		};
+		39D2441E50174D454D5C1562 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				78EA240203C1379C003221AD /* libunittest.a */,
+			);
+			name = "Products";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		14751BA677E81C56175E717D /* UnitTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 16E12E5D59EE6F5A5C2A6E2D /* Build configuration list for PBXNativeTarget "UnitTest" */;
+			buildPhases = (
+				4FBA4183514A3941276D66E3 /* Resources */,
+				55FD5DED6D57149C7CAE4F85 /* Sources */,
+				07CC16C123F569D03CCA4F68 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UnitTest";
+			productName = "UnitTest";
+			productReference = 78EA240203C1379C003221AD /* libunittest.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "UnitTest" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 5E1C09065FA528E52C3971B4 /* UnitTest */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				14751BA677E81C56175E717D /* libunittest.a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4FBA4183514A3941276D66E3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		55FD5DED6D57149C7CAE4F85 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34C73ADB034302D47FB64480 /* Button.cpp in Sources */,
+				791161F404D7213A23DC1FCB /* Checkbox.cpp in Sources */,
+				35E5245479E71939130C366B /* ComboBox.cpp in Sources */,
+				01222E0C55306DCC72CD4C80 /* CrossSplitter.cpp in Sources */,
+				1EBE05ED4A2E6CAD615C30FE /* GroupBox.cpp in Sources */,
+				1E6E648538281D35191E0369 /* ImagePanel.cpp in Sources */,
+				2E976B5A747E11786D476DD2 /* Label.cpp in Sources */,
+				50743865003175A00BCB0F11 /* ListBox.cpp in Sources */,
+				598811D174B3798A30851144 /* MenuStrip.cpp in Sources */,
+				6E4725F533F0709E35A52887 /* Numeric.cpp in Sources */,
+				61FF1B8E279B43F32D5F75F4 /* PanelListPanel.cpp in Sources */,
+				280B6E411BBD12A270D10ADE /* ProgressBar.cpp in Sources */,
+				423B534F007C1C6A50340848 /* Properties.cpp in Sources */,
+				587D22991F285285504516AB /* RadioButton.cpp in Sources */,
+				68110043669C49F433357A4B /* ScrollControl.cpp in Sources */,
+				1DD138CB6C6B741224FD6C4A /* Slider.cpp in Sources */,
+				741515842872772B6CE53CB7 /* StatusBar.cpp in Sources */,
+				052047D545E6535245A64A93 /* TabControl.cpp in Sources */,
+				729F27E844C22F4706EB6B12 /* TextBox.cpp in Sources */,
+				75F733BC6C70307B0D586178 /* TreeControl.cpp in Sources */,
+				7BD06C8B23B9234331D82930 /* UnitTest.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		37F13D0F217562303AA57408 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../lib/xcode3;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "unittest";
+			};
+			name = "Release";
+		};
+		085F6A5212C224CA2A1A0FA7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../lib/xcode3;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "unittestd";
+			};
+			name = "Debug";
+		};
+		078C362936417BDE5C4C5E65 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../lib",
+					"../../lib/xcode3",
+				);
+				OBJROOT = "obj/Release/UnitTest";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-ffast-math",
+				);
+				PREBINDING = NO;
+				SYMROOT = "../../lib/xcode3";
+			};
+			name = "Release";
+		};
+		47764BD44BCD33575A4A50E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../lib",
+					"../../lib/xcode3",
+				);
+				OBJROOT = "obj/Debug/UnitTest";
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SYMROOT = "../../lib/xcode3";
+			};
+			name = "Debug";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		16E12E5D59EE6F5A5C2A6E2D /* Build configuration list for PBXNativeTarget "libunittest.a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				37F13D0F217562303AA57408 /* Release */,
+				085F6A5212C224CA2A1A0FA7 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "UnitTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				078C362936417BDE5C4C5E65 /* Release */,
+				47764BD44BCD33575A4A50E8 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

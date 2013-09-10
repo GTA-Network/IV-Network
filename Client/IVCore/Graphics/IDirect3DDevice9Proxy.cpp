@@ -127,7 +127,7 @@ HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentat
 	if (SUCCEEDED(hr))
 	{
 		if( g_pCore )
-			g_pCore->GetGraphics()->OnRestoreDevice( m_pDevice );
+			g_pCore->GetGraphics()->OnRestoreDevice(m_pDevice);
 	}
 	return hr;
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Filter Include="unittest">
+			<UniqueIdentifier>{4399017B-187D-9848-AD14-7C687C9B69F7}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="..\..\unittest\Button.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\Checkbox.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\ComboBox.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\CrossSplitter.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\GroupBox.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\ImagePanel.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\Label.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\ListBox.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\MenuStrip.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\Numeric.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\PanelListPanel.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\ProgressBar.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\Properties.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\RadioButton.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\ScrollControl.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\Slider.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\StatusBar.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\TabControl.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\TextBox.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\TreeControl.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\unittest\UnitTest.cpp">
+			<Filter>unittest</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\unittest\ReadMe.txt">
+			<Filter>unittest</Filter>
+		</None>
+	</ItemGroup>
+</Project>

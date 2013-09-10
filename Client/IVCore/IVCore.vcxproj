@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../IVCore/;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../IVCore/;../;../../Libraries/DXSDK/include;../../../../Shared;../../vendor/gwen/include;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -644,6 +644,7 @@
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
     <ClInclude Include="Graphics\Input.h" />
     <ClInclude Include="Graphics\StdDXInc.h" />
+	<ClInclude Include="Graphics\CGUI.h" />
     <ClInclude Include="Hooks\CWin32MouseHook.h" />
     <ClInclude Include="Hooks\CXLive.h" />
     <ClInclude Include="IV\CIVExternalScriptCall.h" />

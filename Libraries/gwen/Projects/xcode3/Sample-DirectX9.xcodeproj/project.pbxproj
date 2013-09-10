@@ -1,0 +1,385 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3ECA0969273867F85D9C01B7 /* Direct3DSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C68774A4A8823D272D7394D /* Direct3DSample.cpp */; };
+		3C42386E51443C5E012A6BAB /* libGWEN-Renderer-DirectX9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317129A30B8263B40A1F5087 /* libGWEN-Renderer-DirectX9.a */; };
+		05CE7D6D1AFF1C29157B53C5 /* libgwen_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50F0027E01860C0A4D963DD8 /* libgwen_static.a */; };
+		18884A5B178024E208373DF9 /* libunittest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FFF0FA35EB77BAF29A066F0 /* libunittest.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		316371C123A270BF6E1B611B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 446068DD12DA773C68FB253B /* Renderer-DirectX9.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 34EE1AE227211B413AB45591;
+			remoteInfo = "libGWEN-Renderer-DirectX9.a";
+		};
+		3B5475AD03841B8D663607A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 446068DD12DA773C68FB253B /* Renderer-DirectX9.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 134A01640ABA57794BEB5FB9;
+			remoteInfo = "libGWEN-Renderer-DirectX9.a";
+		};
+		600328C9075936B2267800E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FE90C9C3C30569E6D451326 /* GWEN Static.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5C092117446C4C1D446F3FF9;
+			remoteInfo = "libgwen_static.a";
+		};
+		4AC11E6F19A7676619626574 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FE90C9C3C30569E6D451326 /* GWEN Static.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 27C7094961714C9D331F3EBC;
+			remoteInfo = "libgwen_static.a";
+		};
+		2D9E157162715DB735FF3C0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 781B13AC74AB0E4844962D71 /* UnitTest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 78EA240203C1379C003221AD;
+			remoteInfo = "libunittest.a";
+		};
+		75B03C1B4AB005A33C295027 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 781B13AC74AB0E4844962D71 /* UnitTest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 14751BA677E81C56175E717D;
+			remoteInfo = "libunittest.a";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4C68774A4A8823D272D7394D /* Direct3DSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "Direct3DSample.cpp"; path = "Direct3DSample.cpp"; sourceTree = "<group>"; };
+		666D6E731F4259650FBB1F28 /* DX9Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "DX9Sample.app"; path = "DX9Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		446068DD12DA773C68FB253B /* Renderer-DirectX9.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Renderer-DirectX9.xcodeproj"; path = "Renderer-DirectX9.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		5FE90C9C3C30569E6D451326 /* GWEN Static.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "GWEN Static.xcodeproj"; path = "GWEN Static.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		781B13AC74AB0E4844962D71 /* UnitTest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "UnitTest.xcodeproj"; path = "UnitTest.xcodeproj"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5CEB44A86BB0128F65FF7FB8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C42386E51443C5E012A6BAB /* libGWEN-Renderer-DirectX9.a in Frameworks */,
+				05CE7D6D1AFF1C29157B53C5 /* libgwen_static.a in Frameworks */,
+				18884A5B178024E208373DF9 /* libunittest.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		678D4227066A469F03752745 /* Sample-DirectX9 */ = {
+			isa = PBXGroup;
+			children = (
+				74D0496B1B57600825891179 /* Samples */,
+				4045162D692C15C074426D2F /* Products */,
+				417B520E57E03FFC7A6414A6 /* Projects */,
+			);
+			name = "Sample-DirectX9";
+			sourceTree = "<group>";
+		};
+		74D0496B1B57600825891179 /* Samples */ = {
+			isa = PBXGroup;
+			children = (
+				72BF10602114685F43B505C0 /* Direct3D */,
+			);
+			name = "Samples";
+			path = ../../Samples;
+			sourceTree = "<group>";
+		};
+		72BF10602114685F43B505C0 /* Direct3D */ = {
+			isa = PBXGroup;
+			children = (
+				4C68774A4A8823D272D7394D /* Direct3DSample.cpp */,
+			);
+			name = "Direct3D";
+			path = Direct3D;
+			sourceTree = "<group>";
+		};
+		4045162D692C15C074426D2F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				666D6E731F4259650FBB1F28 /* DX9Sample.app */,
+			);
+			name = "Products";
+			sourceTree = "<group>";
+		};
+		417B520E57E03FFC7A6414A6 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				446068DD12DA773C68FB253B /* Renderer-DirectX9.xcodeproj */,
+				5FE90C9C3C30569E6D451326 /* GWEN Static.xcodeproj */,
+				781B13AC74AB0E4844962D71 /* UnitTest.xcodeproj */,
+			);
+			name = "Projects";
+			sourceTree = "<group>";
+		};
+		525307206F1A0F3A2523453D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				317129A30B8263B40A1F5087 /* libGWEN-Renderer-DirectX9.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		389D10A00B0149CD24112FFC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				50F0027E01860C0A4D963DD8 /* libgwen_static.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6CA033A922324AD576A23AC9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4FFF0FA35EB77BAF29A066F0 /* libunittest.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		778540B27BCD1E4534704E66 /* Sample-DirectX9 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36E3114337BC54B3791D54A1 /* Build configuration list for PBXNativeTarget "Sample-DirectX9" */;
+			buildPhases = (
+				77BC7DA82D9D6A4459AD3A86 /* Resources */,
+				6D2A6E63153C7F5B4A6D1C97 /* Sources */,
+				5CEB44A86BB0128F65FF7FB8 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				32130DCB13FC760F6FD168C8 /* PBXTargetDependency */,
+				002004A645EA7047569E237E /* PBXTargetDependency */,
+				646A121A78112DCA77B032FD /* PBXTargetDependency */,
+			);
+			name = "Sample-DirectX9";
+			productInstallPath = "$(HOME)/Applications";
+			productName = "Sample-DirectX9";
+			productReference = 666D6E731F4259650FBB1F28 /* DX9Sample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "Sample-DirectX9" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 678D4227066A469F03752745 /* Sample-DirectX9 */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 525307206F1A0F3A2523453D /* Products */;
+					ProjectRef = 446068DD12DA773C68FB253B /* Renderer-DirectX9.xcodeproj */;
+				},
+				{
+					ProductGroup = 389D10A00B0149CD24112FFC /* Products */;
+					ProjectRef = 5FE90C9C3C30569E6D451326 /* GWEN Static.xcodeproj */;
+				},
+				{
+					ProductGroup = 6CA033A922324AD576A23AC9 /* Products */;
+					ProjectRef = 781B13AC74AB0E4844962D71 /* UnitTest.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				778540B27BCD1E4534704E66 /* DX9Sample.app */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		317129A30B8263B40A1F5087 /* libGWEN-Renderer-DirectX9.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "../../lib/xcode3/libGWEN-Renderer-DirectX9.a";
+			remoteRef = 316371C123A270BF6E1B611B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		50F0027E01860C0A4D963DD8 /* libgwen_static.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "../../lib/xcode3/libgwen_static.a";
+			remoteRef = 600328C9075936B2267800E8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FFF0FA35EB77BAF29A066F0 /* libunittest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "../../lib/xcode3/libunittest.a";
+			remoteRef = 2D9E157162715DB735FF3C0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		77BC7DA82D9D6A4459AD3A86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6D2A6E63153C7F5B4A6D1C97 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ECA0969273867F85D9C01B7 /* Direct3DSample.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin PBXTargetDependency section */
+		32130DCB13FC760F6FD168C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libGWEN-Renderer-DirectX9.a";
+			targetProxy = 3B5475AD03841B8D663607A3 /* PBXContainerItemProxy */;
+		};
+		002004A645EA7047569E237E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libgwen_static.a";
+			targetProxy = 4AC11E6F19A7676619626574 /* PBXContainerItemProxy */;
+		};
+		646A121A78112DCA77B032FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "libunittest.a";
+			targetProxy = 75B03C1B4AB005A33C295027 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1F457921711459D64A2B640D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "DX9Sample";
+			};
+			name = "Release";
+		};
+		744425CB1CE522BD65302194 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../bin;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = "DX9Sample_D";
+			};
+			name = "Debug";
+		};
+		55B902EF7411780D60E41731 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../lib",
+					"../../lib/xcode3",
+				);
+				OBJROOT = "obj/Release/Sample-DirectX9";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-ffast-math",
+				);
+				PREBINDING = NO;
+				SYMROOT = "../../bin";
+			};
+			name = "Release";
+		};
+		22247C6A22237A0C23093216 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"../../lib",
+					"../../lib/xcode3",
+				);
+				OBJROOT = "obj/Debug/Sample-DirectX9";
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SYMROOT = "../../bin";
+			};
+			name = "Debug";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		36E3114337BC54B3791D54A1 /* Build configuration list for PBXNativeTarget "DX9Sample.app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F457921711459D64A2B640D /* Release */,
+				744425CB1CE522BD65302194 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "Sample-DirectX9" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B902EF7411780D60E41731 /* Release */,
+				22247C6A22237A0C23093216 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

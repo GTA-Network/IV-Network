@@ -109,7 +109,7 @@ public:
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
-
+	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
 

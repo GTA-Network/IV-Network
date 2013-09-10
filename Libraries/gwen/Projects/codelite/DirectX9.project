@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Project Name="DirectX9">
+  <VirtualDirectory Name="renderers">
+    <VirtualDirectory Name="DirectX9">
+      <File Name="../../renderers/DirectX9/DirectX9.cpp"/>
+    </VirtualDirectory>
+  </VirtualDirectory>
+  <Settings Type="Static Library">
+    <Configuration Name="Release" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library">
+      <General OutputFile="../../lib/codelite/libDirectX9.a" IntermediateDirectory="obj/Release/DirectX9" Command="./libDirectX9.a" CommandArguments="" WorkingDirectory="../../lib/codelite" PauseExecWhenProcTerminates="yes"/>
+      <Compiler Required="yes" Options="-g;-O2;-ffast-math">
+        <IncludePath Value="../../include"/>
+        <Preprocessor Value="GWEN_COMPILE"/>
+        <Preprocessor Value="GWEN_DLL"/>
+        <Preprocessor Value="NDEBUG"/>
+      </Compiler>
+      <Linker Required="yes" Options="">
+      </Linker>
+      <ResourceCompiler Required="no" Options=""/>
+      <CustomBuild Enabled="no">
+        <CleanCommand></CleanCommand>
+        <BuildCommand></BuildCommand>
+        <SingleFileCommand></SingleFileCommand>
+        <MakefileGenerationCommand></MakefileGenerationCommand>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory></WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild></CustomPostBuild>
+        <CustomPreBuild></CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+    <Configuration Name="Debug" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library">
+      <General OutputFile="../../lib/codelite/libDirectX9.a" IntermediateDirectory="obj/Debug/DirectX9" Command="./libDirectX9.a" CommandArguments="" WorkingDirectory="../../lib/codelite" PauseExecWhenProcTerminates="yes"/>
+      <Compiler Required="yes" Options="-g">
+        <IncludePath Value="../../include"/>
+        <Preprocessor Value="GWEN_COMPILE"/>
+        <Preprocessor Value="GWEN_DLL"/>
+        <Preprocessor Value="_DEBUG"/>
+      </Compiler>
+      <Linker Required="yes" Options="">
+      </Linker>
+      <ResourceCompiler Required="no" Options=""/>
+      <CustomBuild Enabled="no">
+        <CleanCommand></CleanCommand>
+        <BuildCommand></BuildCommand>
+        <SingleFileCommand></SingleFileCommand>
+        <MakefileGenerationCommand></MakefileGenerationCommand>
+        <ThirdPartyToolName>None</ThirdPartyToolName>
+        <WorkingDirectory></WorkingDirectory>
+      </CustomBuild>
+      <AdditionalRules>
+        <CustomPostBuild></CustomPostBuild>
+        <CustomPreBuild></CustomPreBuild>
+      </AdditionalRules>
+    </Configuration>
+  </Settings>
+  <Dependencies name="Release">
+  </Dependencies>
+  <Dependencies name="Debug">
+  </Dependencies>
+</CodeLite_Project>

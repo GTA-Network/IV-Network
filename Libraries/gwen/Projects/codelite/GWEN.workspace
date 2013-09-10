@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="GWEN" Database="./GWEN.tags">
+  <Project Name="GWEN DLL" Path="GWEN DLL.project" Active="Yes" />
+  <Project Name="GWEN Static" Path="GWEN Static.project" Active="No" />
+  <Project Name="UnitTest" Path="UnitTest.project" Active="No" />
+  <Project Name="Renderer-DirectX9" Path="Renderer-DirectX9.project" Active="No" />
+  <Project Name="Renderer-OpenGL" Path="Renderer-OpenGL.project" Active="No" />
+  <Project Name="Renderer-GDI" Path="Renderer-GDI.project" Active="No" />
+  <Project Name="Renderer-SFML" Path="Renderer-SFML.project" Active="No" />
+  <Project Name="Sample-DirectX9" Path="Sample-DirectX9.project" Active="No" />
+  <Project Name="Sample-OpenGL" Path="Sample-OpenGL.project" Active="No" />
+  <Project Name="Sample-WindowsGDI" Path="Sample-WindowsGDI.project" Active="No" />
+  <Project Name="Sample-SFML" Path="Sample-SFML.project" Active="No" />
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="GWEN DLL" ConfigName="Release"/>
+      <Project Name="GWEN Static" ConfigName="Release"/>
+      <Project Name="UnitTest" ConfigName="Release"/>
+      <Project Name="Renderer-DirectX9" ConfigName="Release"/>
+      <Project Name="Renderer-OpenGL" ConfigName="Release"/>
+      <Project Name="Renderer-GDI" ConfigName="Release"/>
+      <Project Name="Renderer-SFML" ConfigName="Release"/>
+      <Project Name="Sample-DirectX9" ConfigName="Release"/>
+      <Project Name="Sample-OpenGL" ConfigName="Release"/>
+      <Project Name="Sample-WindowsGDI" ConfigName="Release"/>
+      <Project Name="Sample-SFML" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="GWEN DLL" ConfigName="Debug"/>
+      <Project Name="GWEN Static" ConfigName="Debug"/>
+      <Project Name="UnitTest" ConfigName="Debug"/>
+      <Project Name="Renderer-DirectX9" ConfigName="Debug"/>
+      <Project Name="Renderer-OpenGL" ConfigName="Debug"/>
+      <Project Name="Renderer-GDI" ConfigName="Debug"/>
+      <Project Name="Renderer-SFML" ConfigName="Debug"/>
+      <Project Name="Sample-DirectX9" ConfigName="Debug"/>
+      <Project Name="Sample-OpenGL" ConfigName="Debug"/>
+      <Project Name="Sample-WindowsGDI" ConfigName="Debug"/>
+      <Project Name="Sample-SFML" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

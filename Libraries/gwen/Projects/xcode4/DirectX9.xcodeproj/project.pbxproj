@@ -1,0 +1,234 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CEA36E3065026ED13983084 /* DirectX9.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5F2A21E51FA16D1A27546CA5 /* DirectX9.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5F2A21E51FA16D1A27546CA5 /* DirectX9.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "DirectX9.cpp"; path = "DirectX9.cpp"; sourceTree = "<group>"; };
+		01F37B604A4951EC2C1A1FBB /* libDirectX9.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libDirectX9.a"; path = "libDirectX9.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2E334A52470271381777650D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D7543844A2500CC6E675D54 /* DirectX9 */ = {
+			isa = PBXGroup;
+			children = (
+				63FF2595304271635C345C10 /* renderers */,
+				05A844754792511B479407E0 /* Products */,
+			);
+			name = "DirectX9";
+			sourceTree = "<group>";
+		};
+		63FF2595304271635C345C10 /* renderers */ = {
+			isa = PBXGroup;
+			children = (
+				7AC36649258A18394D076D7D /* DirectX9 */,
+			);
+			name = "renderers";
+			path = ../../renderers;
+			sourceTree = "<group>";
+		};
+		7AC36649258A18394D076D7D /* DirectX9 */ = {
+			isa = PBXGroup;
+			children = (
+				5F2A21E51FA16D1A27546CA5 /* DirectX9.cpp */,
+			);
+			name = "DirectX9";
+			path = DirectX9;
+			sourceTree = "<group>";
+		};
+		05A844754792511B479407E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01F37B604A4951EC2C1A1FBB /* libDirectX9.a */,
+			);
+			name = "Products";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7E04389845C36FFB22D641AE /* DirectX9 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 050317F632B64F9C39AD609E /* Build configuration list for PBXNativeTarget "DirectX9" */;
+			buildPhases = (
+				06072A0918813815691274DD /* Resources */,
+				4B6C175D4C600BC777732739 /* Sources */,
+				2E334A52470271381777650D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DirectX9";
+			productName = "DirectX9";
+			productReference = 01F37B604A4951EC2C1A1FBB /* libDirectX9.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "DirectX9" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0D7543844A2500CC6E675D54 /* DirectX9 */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7E04389845C36FFB22D641AE /* libDirectX9.a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		06072A0918813815691274DD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4B6C175D4C600BC777732739 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CEA36E3065026ED13983084 /* DirectX9.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		66B144D663990EAF1E7D0653 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../lib/xcode4;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "DirectX9";
+			};
+			name = "Release";
+		};
+		14B12A931EEC63D223811CBF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_BUILD_DIR = ../../lib/xcode4;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = "DirectX9";
+			};
+			name = "Debug";
+		};
+		69C00C9E22C8716D69C74CCC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GWEN_COMPILE",
+					"GWEN_DLL",
+					"NDEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				OBJROOT = "obj/Release/DirectX9";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"-ffast-math",
+				);
+				PREBINDING = NO;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
+				SYMROOT = "../../lib/xcode4";
+			};
+			name = "Release";
+		};
+		1DD653094D3B07B439CC28EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CONFIGURATION_BUILD_DIR = "$(SYMROOT)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GWEN_COMPILE",
+					"GWEN_DLL",
+					"_DEBUG",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../include",
+				);
+				OBJROOT = "obj/Debug/DirectX9";
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
+				SYMROOT = "../../lib/xcode4";
+			};
+			name = "Debug";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		050317F632B64F9C39AD609E /* Build configuration list for PBXNativeTarget "libDirectX9.a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				66B144D663990EAF1E7D0653 /* Release */,
+				14B12A931EEC63D223811CBF /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "DirectX9" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69C00C9E22C8716D69C74CCC /* Release */,
+				1DD653094D3B07B439CC28EF /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Release";
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
