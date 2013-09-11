@@ -112,51 +112,6 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 	}
 }
 
-/*
-bool CGraphics::LoadFonts()
-{
-	if (!m_pDevice) return 0;
-	if (m_pFont) SAFE_DELETE(m_pFont);
-	// Create the font and sprite objects
-	int size;
-
-	if (GetSystemMetrics(SM_CXSCREEN) < 1280) // Normal ugly arial font
-	{
-		size = 14;
-	}
-	else if (GetSystemMetrics(SM_CXSCREEN) == 1024) // Normal size arial font
-	{
-		size = 16;
-	}
-	else // The nice arial font
-	{
-		size = 18;
-	}
-
-	CLogFile::Print("Set the font size");
-
-	// Load the regular font
-	D3DXCreateFont(m_pDevice, size, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont);
-
-	CLogFile::Print("Created the font");
-
-	// Load texture for radar	
-	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\hud.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
-		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0, NULL, NULL, &m_pRadarOverlayTexture);
-
-	CLogFile::Print("Loaded the texture for the GTA V Radar");
-
-	// If you get to this point we will set the bSuccess to true
-	bool bSuccess = true;
-
-	CLogFile::Print("Returning LoadFonts");
-
-	return bSuccess;
-}
-*/
-
-
-
 bool CGraphics::LoadFonts()
 {
 	int isize;
