@@ -44,6 +44,16 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
+#include <gwen/Controls/Text.h>
+#include <gwen/Controls/WindowControl.h>
+#include <gwen/Input/Windows.h>
+#include <gwen/Renderers/DirectX9.h>
+#include <gwen/Skins/Simple.h>
+#include <gwen/Controls/WindowControl.h>
+#include <gwen/Align.h>
+#include <Graphics/CGUIView.h>
+#include <Graphics/CGUI.h>
+
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
 
@@ -54,6 +64,8 @@ private:
 	bool							m_bGameLoaded;
 	unsigned						m_uiBaseAddress;
 	unsigned						m_uiGameInitializeTime;
+	
+	CGUI                  			* m_pGUI;
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
@@ -81,6 +93,8 @@ private:
 public:
 									CCore();
 									~CCore() { };
+									
+	CGUI							* GetGUI() { return m_pGUI; }								
 
 	bool							Initialise();
 
@@ -92,7 +106,7 @@ public:
 
 	void							OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
-	void							OnDeviceReset(IDirect3DDevice9 * pDevice);
+	void							OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDevicePreRender();
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
 	
