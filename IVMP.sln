@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.20617.1 PREVIEW
+VisualStudioVersion = 12.0.20623.1 VSUPREVIEW
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client - @Responsible FRi", "Client - @Responsible FRi", "{B595E6DA-BAB2-43D5-B5FB-23D511693726}"
 EndProject
@@ -367,6 +367,11 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "Libraries\zlib-1.2.5\projects\zlib.vcxproj", "{9006D124-5D00-4CB7-BAD9-F527B19502C9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IVCore", "Client\IVCore\IVCore.vcxproj", "{56387735-7D4A-47AA-A885-09CCC5D5AA67}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9006D124-5D00-4CB7-BAD9-F527B19502C9} = {9006D124-5D00-4CB7-BAD9-F527B19502C9}
+		{99E8E26E-4171-4A0A-B6D8-020A0E63E436} = {99E8E26E-4171-4A0A-B6D8-020A0E63E436}
+		{2B44E691-45AD-4D4C-80B2-14028BB2DD36} = {2B44E691-45AD-4D4C-80B2-14028BB2DD36}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IVGameReady", "Client\IVGameReady\IVGameReady.vcxproj", "{CDEA73BD-6EF9-4407-843C-2728D07994A2}"
 EndProject

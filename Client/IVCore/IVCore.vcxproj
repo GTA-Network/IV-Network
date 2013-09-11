@@ -61,8 +61,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../Libraries/gwen/include;../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GWEN-Renderer-DirectX9d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../Libraries/gwen/lib/vs2008;../../Libraries/gwen/include;../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)IVMultiplayer.dll" "$(SolutionDir)Files\IVMultiplayer.dll"</Command>
