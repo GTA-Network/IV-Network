@@ -56,6 +56,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patcher", "Patcher", "{5647
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{D7EBB58A-E021-4EAE-9F03-A58440D8282C}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\gwen\gwend_static.lib = Libraries\gwen\gwend_static.lib
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TinyXML", "TinyXML", "{45278608-79FF-45D7-A03E-140152BF726B}"
 	ProjectSection(SolutionItems) = preProject
