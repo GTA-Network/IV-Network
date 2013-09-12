@@ -75,8 +75,7 @@ void CScriptArgument::Push(CScriptVM * pVM)
 
 void CScriptArgument::set(const CScriptArgument& p)
 {
-	CScriptArgument fdsafdsafds = p;
-	m_eType = fdsafdsafds.GetType(); // fuck you
+	m_eType = p.GetType(); // fuck you
 
 	switch(m_eType)
 	{
