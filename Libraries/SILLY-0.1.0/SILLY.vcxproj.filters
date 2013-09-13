@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{c8105c39-1d27-4fa5-bd82-50171c226d9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loaders">
+      <UniqueIdentifier>{889dfa34-3c47-40be-8b5b-92dd700b448a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{6295f4a5-a7d5-4c77-bceb-f292931efe13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\loaders">
+      <UniqueIdentifier>{492f392d-7664-4a30-9bec-857d873844a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SILLYDataSource.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYFileDataSource.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYImage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYImageContext.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYImageLoader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYImageLoaderManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SILLYMemoryDataSource.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYJPGImageContext.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYJPGImageLoader.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYPNGImageContext.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYPNGImageLoader.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYTGAImageContext.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loaders\SILLYTGAImageLoader.cpp">
+      <Filter>src\loaders</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\SILLY.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYBase.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYDataSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYFileDataSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYImage.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYImageContext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYImageLoader.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYImageLoaderManager.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYMemoryDataSource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SILLYOptions.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYJPGImageContext.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYJPGImageLoader.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYPNGImageContext.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYPNGImageLoader.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYTGAImageContext.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\loaders\SILLYTGAImageLoader.h">
+      <Filter>include\loaders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\SILLYDataSource.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYFileDataSource.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYImage.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYImageContext.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYImageLoader.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYImageLoaderManager.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\SILLYMemoryDataSource.icpp">
+      <Filter>include</Filter>
+    </None>
+    <None Include="include\loaders\SILLYJPGImageContext.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+    <None Include="include\loaders\SILLYJPGImageLoader.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+    <None Include="include\loaders\SILLYPNGImageContext.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+    <None Include="include\loaders\SILLYPNGImageLoader.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+    <None Include="include\loaders\SILLYTGAImageContext.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+    <None Include="include\loaders\SILLYTGAImageLoader.icpp">
+      <Filter>include\loaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>

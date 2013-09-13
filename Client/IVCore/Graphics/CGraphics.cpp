@@ -140,6 +140,11 @@ bool CGraphics::LoadFonts()
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
 
+	// Load the texture for the loading screen
+	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\loadingscreen.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
+		NULL, NULL, &m_pLoadingScreenTexture);
+
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }
 

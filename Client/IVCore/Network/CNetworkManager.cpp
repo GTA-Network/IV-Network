@@ -104,14 +104,6 @@ void CNetworkManager::Connect(CString strHost, unsigned short usPort, CString st
 		// Set the last connection try
 		m_uiLastConnectionTry = (unsigned int)SharedUtility::GetTime();
 	}
-
-	CGUI* pGUI = g_pCore->GetGUI();
-	if (pGUI)
-	{
-		pGUI->ClearView(CGUI::GUI_SERVER);
-		pGUI->SetView(CGUI::GUI_SERVER);
-	}
-
 	// Output the connection message
 	g_pCore->GetChat()->Outputf(true, "#16C5F2%s", strMessage.Get());
 }

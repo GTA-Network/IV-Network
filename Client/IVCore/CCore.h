@@ -27,6 +27,8 @@
 #include "Game/CGame.h"
 #include "Graphics/CGraphics.h"
 #include "Graphics/CChat.h"
+#include "Graphics/CGUI.h"
+#include "Graphics/CMainMenu.h"
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
@@ -44,16 +46,6 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
-#include <gwen/Controls/Text.h>
-#include <gwen/Controls/WindowControl.h>
-#include <gwen/Input/Windows.h>
-#include <gwen/Renderers/DirectX9.h>
-#include <gwen/Skins/Simple.h>
-#include <gwen/Controls/WindowControl.h>
-#include <gwen/Align.h>
-#include <Graphics/CGUIView.h>
-#include <Graphics/CGUI.h>
-
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
 
@@ -65,14 +57,14 @@ private:
 	unsigned						m_uiBaseAddress;
 	unsigned						m_uiGameInitializeTime;
 	
-	CGUI                  			* m_pGUI;
-
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
 	CChat							* m_pChat;
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
 	CDevelopment					* m_pDevelopment;
+	CGUI							* m_pGUI;
+	CMainMenu						* m_pMainMenu;
 						
 
 	eGAMEStates						m_eGameState;
@@ -92,9 +84,7 @@ private:
 
 public:
 									CCore();
-									~CCore() { };
-									
-	CGUI							* GetGUI() { return m_pGUI; }								
+									~CCore() { };						
 
 	bool							Initialise();
 

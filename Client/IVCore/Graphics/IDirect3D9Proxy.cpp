@@ -129,6 +129,9 @@ HRESULT STDMETHODCALLTYPE IDirect3D9Proxy::CreateDevice(UINT Adapter, D3DDEVTYPE
 	{
 		// Initialise the graphics
 		g_pCore->GetGraphics()->Initialise(*ppReturnedDeviceInterface);
+		
+		// Create the DirectX Device
+		g_pCore->OnDeviceCreate(*ppReturnedDeviceInterface, pPresentationParameters);
 
 		//
 		*ppReturnedDeviceInterface = new IDirect3DDevice9Proxy(*ppReturnedDeviceInterface);

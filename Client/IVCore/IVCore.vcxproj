@@ -55,14 +55,14 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries;../../../Libraries;../IVCore/;../;../../Libraries/DXSDK/include;../../../../Shared;../../Libraries/gwen/include;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Shared;../../../Shared;../../Libraries/CEGUI/cegui/include;../../Libraries/SILLY-0.1.0/bin;../../Libraries/expat-2.0.1/bin/Debug;../../Libraries;../../../Libraries;../IVCore/;../;../../Libraries/DXSDK/include;../../../../Shared;../../;../../Network/Core/;../../../Network/Core/;../General/;../../General/;../../../General/;General/</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>GWEN-Renderer-DirectX9d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../Libraries/gwen/lib/vs2008;../../Libraries/gwen/include;../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SILLY_d.lib;libjpeg_d.lib;libpng_d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;CEGUISILLYImageCodec_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../Libraries/lpng142/projects/Debug;../../Libraries/jpeg-6b/projects/Debug;../../Libraries/SILLY-0.1.0/bin;../../Libraries/CEGUI/lib/;../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)IVMultiplayer.dll" "$(SolutionDir)Files\IVMultiplayer.dll"</Command>
@@ -307,7 +307,7 @@
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\CGUI.cpp" />
-    <ClCompile Include="Graphics\CGUIView.cpp" />
+    <ClCompile Include="Graphics\CMainMenu.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
@@ -641,7 +641,6 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
-    <ClInclude Include="Graphics\CGUIView.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
