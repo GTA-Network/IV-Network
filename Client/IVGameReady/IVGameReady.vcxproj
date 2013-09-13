@@ -39,8 +39,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <IntDir>$(SolutionDir)\Build\temp\build_clientfilecopier\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\</IntDir>
+    <TargetName>IVGameReady</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\Build\$(Configuration)</OutDir>
+    <IntDir>$(SolutionDir)\Build\$(Configuration)\temp\</IntDir>
     <TargetName>IVGameReady</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -58,7 +63,7 @@
       <AdditionalLibraryDirectories>Libraries/zlib-1.2.5/projects/Debug;../Libraries/zlib-1.2.5/projects/Debug;../../Libraries/zlib-1.2.5/projects/Debug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetDir)IVGameReady.exe" "$(SolutionDir)Files\IVGameReady.exe"</Command>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,6 +79,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />

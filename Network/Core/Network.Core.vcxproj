@@ -41,7 +41,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Build\</OutDir>
     <TargetName>Network</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_networkcore\</IntDir>
+    <IntDir>$(SolutionDir)Build\temp\build_networkcore\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Build\temp\lib</OutDir>
