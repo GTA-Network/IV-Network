@@ -31,6 +31,7 @@ CCore::CCore(void)
 	m_pChat = NULL;
 	m_pFPSCounter = NULL;
 	m_pNetworkManager = NULL;
+	m_pGUI = NULL;
 }
 
 bool CCore::Initialise()
@@ -188,6 +189,8 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Setup the chat
 	if(m_pChat)
 		m_pChat->Setup(pPresentationParameters);
+
+	m_pGUI = new CGUI(pDevice);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -201,7 +204,12 @@ void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
 	PRINT_FUNCTION
-	
+
+	if (m_pGUI)
+	{
+		m_pGUI->SetScreenSize(pPresentationParameters->BackBufferWidth, pPresentationParameters->BackBufferHeight);
+	}
+
 	// Mark as not lost device
 	g_bDeviceLost = false;
 }
@@ -355,6 +363,12 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		CAM3.m_fUnknown2 = CAM3.m_fUnknown2*2;
 		CAM3.m_fUnknown3 = CAM3.m_fUnknown3*2;*/
 	}
+
+	if (m_pGUI)
+	{
+		m_pGUI->Render();
+	}
+
 	pDevice->Present(NULL,NULL,NULL,NULL);
 }
 
