@@ -11,6 +11,7 @@
 #include "CIVPed.h"
 #include <CCore.h>
 #include "CIVPedTaskManager.h"
+
 extern CCore * g_pCore;
 
 struct _IVTask
@@ -284,7 +285,7 @@ void CIVTask::Destroy()
 	if(m_pTask)
 	{
 		IVTask * pTask = m_pTask;
-		DWORD dwFunctionAddress = pTask->m_pVFTable->ScalarDeletingDestructor;
+		DWORD dwFunctionAddress = (DWORD)pTask->~IVTask;
 
 		_asm	push 1;
 		_asm	mov ecx, pTask;
@@ -293,27 +294,18 @@ void CIVTask::Destroy()
 }
 
 CIVTask * CIVTask::GetParent()
-{
-	if(m_pTask)
+{/*
+	if (m_pTask)
 		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pTask->m_pParent);
+	*/	
 
 	return NULL;
 }
 
 CIVTask * CIVTask::Clone()
 {
-	if(m_pTask)
-	{
-		IVTask * pTask = m_pTask;
-		IVTask * pCloneTask = NULL;
-		DWORD dwFunctionAddress = pTask->m_pVFTable->Clone;
-
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-		_asm	mov pCloneTask, eax;
-
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pCloneTask);
-	}
+	//if(m_pTask)
+	//	return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pTask->Clone());
 
 	return NULL;
 }
@@ -322,15 +314,8 @@ bool CIVTask::IsSimple()
 {
 	bool bIsSimple = true;
 
-	if(m_pTask)
-	{
-		IVTask * pTask = m_pTask;
-		DWORD dwFunctionAddress = pTask->m_pVFTable->IsSimple;
-
-		_asm	mov ecx, pTask
-		_asm	call dwFunctionAddress
-		_asm	mov bIsSimple, al
-	}
+	if (m_pTask)
+		return m_pTask->IsSimple();
 
 	return bIsSimple;
 }
@@ -340,14 +325,7 @@ int CIVTask::GetType()
 	int iType = TASK_TYPE_NONE;
 
 	if(m_pTask)
-	{
-		IVTask * pTask = m_pTask;
-		DWORD dwFunctionAddress = pTask->m_pVFTable->GetType;
-
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-		_asm	mov iType, eax;
-	}
+		return m_pTask->GetType();
 
 	return iType;
 }
@@ -362,19 +340,7 @@ bool CIVTask::MakeAbortable(CIVPed * pPed, int iAbortPriority, void * pEvent)
 	bool bReturn;
 
 	if(m_pTask)
-	{
-		void * pGameEvent = NULL;
-		IVPed * pGamePed = pPed->GetPed();
-		IVTask * pTask = m_pTask;
-		DWORD dwFunctionAddress = pTask->m_pVFTable->MakeAbortable;
-
-		_asm	push pGameEvent;
-		_asm	push iAbortPriority;
-		_asm	push pGamePed;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress
-		_asm	mov bReturn, al;
-	}
+		m_pTask->MakeAbortable(pPed->GetPed(), iAbortPriority, (IVEvent*)pEvent);
 
 	return bReturn;
 }
@@ -395,15 +361,12 @@ bool CIVTaskSimple::ProcessPed(CIVPed * pPed)
 {
 	IVTaskSimple * pTask = (IVTaskSimple *)GetTask();
 
-	if(pTask)
+	if (pTask)
 	{
-		IVPed * pGamePed = pPed->GetPed();
-		DWORD dwFunctionAddress = ((IVTaskSimpleVFTable *)pTask->m_pVFTable)->ProcessPed;
-
-		_asm	push pGamePed;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
+		pTask->ProcessPed(pPed->GetPed());
+		return true;
 	}
+		
 
 	return false;
 }
@@ -423,14 +386,7 @@ void CIVTaskComplex::SetSubTask(CIVTask * pSubTask)
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
 	if(pTask)
-	{
-		IVTask * pGameSubTask = pSubTask->GetTask();
-		DWORD dwFunctionAddress = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->SetSubTask;
-
-		_asm	push pGameSubTask;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-	}
+		pTask->SetSubTask(pSubTask->GetTask());
 }
 
 CIVTask * CIVTaskComplex::CreateNextSubTask(CIVPed * pPed)
@@ -438,18 +394,7 @@ CIVTask * CIVTaskComplex::CreateNextSubTask(CIVPed * pPed)
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
 	if(pTask)
-	{
-		IVPed * pGamePed = pPed->GetPed();
-		IVTask * pSubTask = NULL;
-		DWORD dwFunctionAddress = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->CreateNextSubTask;
-
-		_asm	push pGamePed;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-		_asm	mov pSubTask, eax;
-
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
-	}
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pTask->CreateNextSubTask(pPed->GetPed()));
 
 	return NULL;
 }
@@ -459,18 +404,7 @@ CIVTask * CIVTaskComplex::CreateFirstSubTask(CIVPed * pPed)
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
 	if(pTask)
-	{
-		IVPed * pGamePed = pPed->GetPed();
-		IVTask * pSubTask = NULL;
-		DWORD dwFunctionAddress = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->CreateFirstSubTask;
-
-		_asm	push pGamePed;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-		_asm	mov pSubTask, eax;
-
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
-	}
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pTask->CreateFirstSubTask(pPed->GetPed()));
 
 	return NULL;
 }
@@ -480,18 +414,7 @@ CIVTask * CIVTaskComplex::ControlSubTask(CIVPed * pPed)
 	IVTaskComplex * pTask = (IVTaskComplex *)GetTask();
 	
 	if(pTask)
-	{
-		IVPed * pGamePed = pPed->GetPed();
-		IVTask * pSubTask = NULL;
-		DWORD dwFunctionAddress = ((IVTaskComplexVFTable *)pTask->m_pVFTable)->ControlSubTask;
-
-		_asm	push pGamePed;
-		_asm	mov ecx, pTask;
-		_asm	call dwFunctionAddress;
-		_asm	mov pSubTask, eax;
-
-		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pSubTask);
-	}
+		return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(pTask->ControlSubTask(pPed->GetPed()));
 
 	return NULL;
 }

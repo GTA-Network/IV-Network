@@ -10,8 +10,6 @@
 #include "CEFLCSupport.h"
 #include <CCore.h>
 #include <Ptrs.h>
-#include <IV/IVParachute_Manager.h>
-#include <IV/IVParachute_Process.h>
 #include <algorithm> 
 #include <string> 
 #pragma warning(disable:4305)

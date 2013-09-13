@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
+    <OutDir>$(SolutionDir)\Build\temp\lib</OutDir>
     <TargetName>Network</TargetName>
-    <IntDir>$(SolutionDir)Build\temp\build_networkcore\</IntDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\Build\temp\lib</OutDir>
     <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_networkcore\</IntDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

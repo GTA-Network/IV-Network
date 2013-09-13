@@ -125,7 +125,7 @@ void CIVModelInfo::AddReference( bool bWaitForLoad )
 	m_dwReferenceCount++;
 
 	// Is this the first reference?
-	if( m_dwReferenceCount == 1 )
+	if( m_dwReferenceCount == 1 || !IsLoaded())
 	{
 		// Load the model
 		Load( bWaitForLoad );

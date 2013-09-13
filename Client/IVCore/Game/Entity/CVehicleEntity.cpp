@@ -49,7 +49,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_fSpawnAngle = fAngle;
 
 	// Set the spawn position
-	memcpy(&m_vecSpawnPosition,&vecPos,sizeof(CVector3));
+	memcpy(&m_vecSpawnPosition, &vecPos, sizeof(CVector3));
 
 	// Mark as not spawned
 	m_bSpawned = false;
@@ -75,9 +75,7 @@ bool CVehicleEntity::Create()
 	// Load the model
 	m_pModelInfo->AddReference(true);
 
-	DWORD dwModelHash = m_pModelInfo->GetHash();
-
-	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, true);
+	CIVScript::CreateCar(m_pModelInfo->GetHash(), 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, true);
 
     // Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));

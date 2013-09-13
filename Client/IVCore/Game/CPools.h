@@ -15,6 +15,7 @@
 #include <Game\IVEngine\CIVPed.h>
 #include <Game\IVEngine\CIVVehicle.h>
 #include <Game\IVEngine\CIVPlayerPed.h>
+#include <Game/CTaskManager.h>
 #include <Game\IVEngine\CIVTask.h>
 #include <Game\IVEngine\CIVPedMoveBlend.h>
 #include <Game\IVEngine\CIVCheckpoint.h>

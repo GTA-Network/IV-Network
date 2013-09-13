@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
     <TargetName>IVNetworkCore</TargetName>
-    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\</IntDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Build\$(Configuration)</OutDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
     <TargetName>IVNetworkCore</TargetName>
-    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\</IntDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -319,9 +319,6 @@
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp" />
-    <ClCompile Include="IV\IVParachute_AI.cpp" />
-    <ClCompile Include="IV\IVParachute_Manager.cpp" />
-    <ClCompile Include="IV\IVParachute_Process.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
@@ -662,10 +659,6 @@
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
-    <ClInclude Include="IV\IVParachuteData.h" />
-    <ClInclude Include="IV\IVParachute_AI.h" />
-    <ClInclude Include="IV\IVParachute_Manager.h" />
-    <ClInclude Include="IV\IVParachute_Process.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />

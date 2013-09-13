@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.dll</TargetExt>
-    <OutDir>$(SolutionDir)Build\Debug\multiplayer\modules\</OutDir>
-    <IntDir>$(SolutionDir)Build\Debug\temp\build_clienttestmodule\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\multiplayer\modules\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\build_clienttestmodule\</IntDir>
     <TargetName>IVSkyLift</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

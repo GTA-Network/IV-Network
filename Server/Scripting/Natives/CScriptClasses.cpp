@@ -15,9 +15,26 @@
 #include "../../../Server/Scripting/Natives/Natives.h"
 #include "Entity/Entities.h"
 #include <CServer.h>
+#include <Scripting/CScriptClass.h>
+
+class CScriptVehicle
+{
+	CScriptVehicle();
+	~CScriptVehicle();
+};
+
+class CScriptPlayer
+{
+	CScriptPlayer();
+	~CScriptPlayer();
+};
 
 void CScriptClasses::Register(CScriptVM * pVM)
 {
+
+	(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->Register(pVM);
+	(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->Register(pVM);
+
 	//pVM->RegisterFunction("createEntity", CreateEntity);
 
 	//pVM->RegisterScriptClass("C3DLabelEntity", CreateEntity);
