@@ -51,7 +51,7 @@ public:
 	CScriptArgument(const CScriptArguments& array, bool isArray = true) { m_eType = (isArray ? ST_ARRAY : ST_TABLE); data.pArray = new CScriptArguments(array); }
 	~CScriptArgument();
 
-	ArgumentType		 GetType() const { return m_eType; }
+	ArgumentType		 GetType() { return m_eType; }
 
 	void				 reset();
 
