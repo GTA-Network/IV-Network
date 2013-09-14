@@ -30,7 +30,7 @@ DWORD dwJmp2;
 char *file = new char[255];
 char *file_ptr;
 
-
+extern bool g_bLoading;
 bool CEFLCSupport::OpenFile_Decision(char* j)
 {
 	CString strCheckFile = CString("%s",j).ToLower();
@@ -38,6 +38,8 @@ bool CEFLCSupport::OpenFile_Decision(char* j)
 	{
 		CLogFile::Printf("[%s]: Setting hud.dat to hud_eflc.dat",__FUNCTION__);
 		sprintf(j, "e2:/common/data/hud_eflc.dat");
+		// Set the loading to false
+		g_bLoading = false;
 	}
 	return false;
 }

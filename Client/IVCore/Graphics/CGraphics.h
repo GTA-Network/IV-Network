@@ -44,6 +44,7 @@ private:
 	struct ID3DXLine*       m_pLineInterface;
 	IDirect3DTexture9		* m_pDXPixelTexture;
 	IDirect3DTexture9		* m_pPixelTexture;
+	IDirect3DSurface9		* m_pOriginalTarget;
 public:
 	CGraphics();
 	~CGraphics();
@@ -78,11 +79,13 @@ public:
 	IDirect3DDevice9		*GetDevice() { return m_pDevice; }
 	
 	// member function public
-	LPDIRECT3DTEXTURE9		pLoadingScreenTexture;
 	LPD3DXSPRITE			GetSprite() { return m_pSprite; }
 
-	// Radar texture
+	// Image Textures
+	// Radar
 	LPDIRECT3DTEXTURE9		m_pRadarOverlayTexture;
+	// Loading Screen
+	LPDIRECT3DTEXTURE9		m_pLoadingBackgroundTexture;
 };
 
 #endif // CGraphics_h

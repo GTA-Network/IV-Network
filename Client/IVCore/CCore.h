@@ -44,14 +44,14 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
+#include <gwen/Skins/TexturedBase.h>
 #include <gwen/Controls/Text.h>
 #include <gwen/Controls/WindowControl.h>
-#include <gwen/Input/Windows.h>
 #include <gwen/Renderers/DirectX9.h>
+#include <gwen/Input/Windows.h>
+#include <gwen/Gwen.h>
 #include <gwen/Skins/Simple.h>
-#include <gwen/Controls/WindowControl.h>
 #include <gwen/Align.h>
-#include <Graphics/CGUIView.h>
 #include <Graphics/CGUI.h>
 
 #include <RAGEEngine/RAGEInterface.h>
@@ -150,6 +150,11 @@ public:
 	}
 	bool							GetHWND() { return m_hwndFocused; }
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
+	
+	bool							m_bLoadingVisibility;
+	void							RenderLoadingScreen();
+	void							SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
+	bool							GetLoadingVisibility() { return m_bLoadingVisibility; }
 };
 
 #endif // CCore_h

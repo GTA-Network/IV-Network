@@ -500,10 +500,10 @@ CIVScriptInstance civScripts[] = {
 void CRageThread_Script_Process()
 {
 	//GameScriptProcess();
-	if(g_iRageScriptFrames < 2)
+	if(g_iRageScriptFrames < 5)
 	{
 		g_iRageScriptFrames++;
-		CIVScript::DoScreenFadeIn(0);
+		CIVScript::DoScreenFadeIn(5000);
 		g_pCore->OnGameLoad();
 	}
 

@@ -114,24 +114,10 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 
 bool CGraphics::LoadFonts()
 {
-	int isize;
-	if (GetSystemMetrics(SM_CXSCREEN) < 1280) // Low quality
-	{
-		isize = 14;
-	}
-	else if (GetSystemMetrics(SM_CXSCREEN) >= 1280 || (GetSystemMetrics(SM_CXSCREEN) <= 1400 && GetSystemMetrics(SM_CXSCREEN) >= 1280)) // Medium quality
-	{
-		isize = 16;
-	}
-	else // High quality
-	{
-		isize = 18;
-	}
-
 	bool bSuccess = true;
 	for(int i = 0; bSuccess && i < NUM_FONTS; i++) // Leave the loop here incase we add the choice of customizing your font - ViruZz
 	{	
-		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, isize, 0, FW_BOLD, 1, FALSE,
+		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, 18, 0, FW_BOLD, 1, FALSE,
 			DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
 	}
 
@@ -139,6 +125,11 @@ bool CGraphics::LoadFonts()
 	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\hud.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, 
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
+
+	// Load texture for loading screen
+	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+		NULL, NULL, &m_pLoadingBackgroundTexture);
 
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }

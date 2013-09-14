@@ -28,12 +28,17 @@ void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngl
 	_asm	popad;
 }
 
+extern bool g_bLoading;
+
 void __declspec(naked) HandleLocalPlayerSpawn()
 {
     _asm	pushad;
 
 	CLogFile::Printf("%s",__FUNCTION__);
     g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
+
+	// Set the loading to false
+	g_bLoading = false;
 
     _asm	popad;
     _asm	jmp COffsets::FUNC_SpawnPlayer;

@@ -123,6 +123,12 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     // Are we focused?
     if(bFocused)
     {
+		// Temp Testing
+		CGUI* pGUI = g_pCore->GetGUI();
+		if (pGUI)
+		{
+			pGUI->ProcessInput(uMsg, lParam, wParam);
+		}
 		if(uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE))
 		{
 			return true;

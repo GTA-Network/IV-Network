@@ -307,7 +307,6 @@
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\CGUI.cpp" />
-    <ClCompile Include="Graphics\CGUIView.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
@@ -641,7 +640,6 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
-    <ClInclude Include="Graphics\CGUIView.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />

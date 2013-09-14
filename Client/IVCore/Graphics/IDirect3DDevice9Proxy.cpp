@@ -113,10 +113,9 @@ HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentat
 	if( g_pCore )
 		g_pCore->GetGraphics()->OnLostDevice( m_pDevice );
 
-	// Windowed mode
-	pPresentationParameters->Windowed = 1;
+	pPresentationParameters->Windowed = 0;
+	pPresentationParameters->FullScreen_RefreshRateInHz = 60;
 	pPresentationParameters->Flags = 0;
-	pPresentationParameters->FullScreen_RefreshRateInHz = 0;
 	pPresentationParameters->PresentationInterval = 0;
 	LONG_PTR style = GetWindowLongPtr(pPresentationParameters->hDeviceWindow, GWL_STYLE);
 	SetWindowLongPtr(pPresentationParameters->hDeviceWindow, GWL_STYLE, style | WS_POPUPWINDOW | WS_CAPTION | WS_THICKFRAME);

@@ -7,31 +7,34 @@
 //
 //==============================================================================
 
+#pragma once
+
 #include "CCore.h"
-	
-class CGUI 
+
+class CGUI
 {
-public:
-	enum eGUIView { GUI_IVMP = 0, GUI_SERVER = 1, GUI_NONE = 2 };
-	CGUI(IDirect3DDevice9* pDevice);
-	~CGUI();
+	private: 
+			// The Gwen Stuff
+			Gwen::Renderer::DirectX9			* m_pRenderer;
+			Gwen::Skin::TexturedBase			* m_pSkin;
+			Gwen::Controls::Canvas				* m_pCanvas;
+			Gwen::Input::Windows				m_input;		
+			
+			// The Window Size Variable
+			unsigned int						m_uiWidth;
+			unsigned int						m_uiHeight;
 	
-	void Render();
-	bool ProcessInput(MSG msg);
-	
-	void SetScreenSize(int iWidth, int iHeight);
-	eGUIView GetView();
-	void SetView(eGUIView view);
-	void ClearView(eGUIView view);
-	
-	Gwen::Controls::Canvas* GetCanvas(eGUIView view);
-private:
-	// DX-based renderer
-	Gwen::Renderer::DirectX9* m_pRenderer;
-	
-	CGUIView* m_pActiveView;
-	CGUIView* m_pViews[GUI_NONE];
-	
-	int m_iScreenWidth;
-	int m_iScreenHeight;
-};	
+	public:
+			CGUI(IDirect3DDevice9 * pDevice, unsigned int uiWidth, unsigned int uiHeight);
+			~CGUI(void);
+
+			
+			// The GWEN Rendering Stuff
+			void								Render(void);
+			bool								ProcessInput(UINT uMessage, LPARAM lParam, WPARAM wParam);
+			
+			// The Windows Stuff
+			unsigned int						GetWindowWidth() {return *(int*)0xC17044;}
+			unsigned int						GetWindowHeight() {return *(int*)0xC17048;}
+};
+		
