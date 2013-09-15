@@ -15,6 +15,7 @@
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
+extern bool		 g_bLoading;
 
 void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngle)
 {
@@ -27,8 +28,6 @@ void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngl
 
 	_asm	popad;
 }
-
-extern bool g_bLoading;
 
 void __declspec(naked) HandleLocalPlayerSpawn()
 {

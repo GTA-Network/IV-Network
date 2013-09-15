@@ -123,12 +123,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     // Are we focused?
     if(bFocused)
     {
-		// Temp Testing
 		CGUI* pGUI = g_pCore->GetGUI();
-		if (pGUI)
-		{
-			pGUI->ProcessInput(uMsg, lParam, wParam);
-		}
 		if(uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE))
 		{
 			return true;
@@ -153,8 +148,24 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 						CSnapShot::Reset();
 					}
 				}
+				case VK_F9:
+				{
+					if (pGUI)
+					{
+						pGUI->SetView((CGUI::eGUIView)((pGUI->GetView() + 1) % (CGUI::GUI_NONE + 1)));
+						ShowCursor(true);
+						CLogFile::Print("Setted the GUI View");
+					}
+					else
+					{
+						g_pCore->GetChat()->Output("Wtf the GUI doesn't exist.", false);
+					}
+				}
 			}
 		}
+		
+		if (pGUI)
+			pGUI->ProcessInput(uMsg, lParam, wParam);
 
 		if(g_pCore->GetChat())
 			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);

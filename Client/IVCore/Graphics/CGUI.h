@@ -7,34 +7,33 @@
 //
 //==============================================================================
 
-#pragma once
-
 #include "CCore.h"
-
-class CGUI
-{
-	private: 
-			// The Gwen Stuff
-			Gwen::Renderer::DirectX9			* m_pRenderer;
-			Gwen::Skin::TexturedBase			* m_pSkin;
-			Gwen::Controls::Canvas				* m_pCanvas;
-			Gwen::Input::Windows				m_input;		
-			
-			// The Window Size Variable
-			unsigned int						m_uiWidth;
-			unsigned int						m_uiHeight;
 	
-	public:
-			CGUI(IDirect3DDevice9 * pDevice, unsigned int uiWidth, unsigned int uiHeight);
-			~CGUI(void);
-
-			
-			// The GWEN Rendering Stuff
-			void								Render(void);
-			bool								ProcessInput(UINT uMessage, LPARAM lParam, WPARAM wParam);
-			
-			// The Windows Stuff
-			unsigned int						GetWindowWidth() {return *(int*)0xC17044;}
-			unsigned int						GetWindowHeight() {return *(int*)0xC17048;}
-};
-		
+class CGUI 
+{
+public:
+	enum eGUIView { GUI_MAIN = 0, GUI_SERVER = 1, GUI_NONE = 2 };
+	CGUI(IDirect3DDevice9* pDevice);
+	~CGUI();
+	
+	void Render();
+	bool ProcessInput(UINT message, LPARAM lParam, WPARAM wParam);
+	
+	void SetScreenSize(int iWidth, int iHeight);
+	void GetScreenSize(int* iWidth, int* iHeight);
+	eGUIView GetView();
+	void SetView(eGUIView view);
+	void ClearView(eGUIView view);
+	
+	Gwen::Renderer::DirectX9* GetRenderer() { return m_pRenderer; }
+	Gwen::Controls::Canvas* GetCanvas(eGUIView view);
+private:
+	// DX-based renderer
+	Gwen::Renderer::DirectX9* m_pRenderer;
+	
+	CGUIView* m_pActiveView;
+	CGUIView* m_pViews[GUI_NONE];
+	
+	int m_iScreenWidth;
+	int m_iScreenHeight;
+};	

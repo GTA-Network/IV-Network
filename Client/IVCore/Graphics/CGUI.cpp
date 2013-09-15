@@ -11,44 +11,113 @@
 
 using namespace Gwen;
 
-CGUI::CGUI(IDirect3DDevice9 * pDevice, unsigned int uiWidth, unsigned int uiHeight)
+CGUI::CGUI(IDirect3DDevice9* pDevice)
 {
-	// Create the GWEN Renderer
-	m_pRenderer = new Gwen::Renderer::DirectX9(pDevice);
+	m_pActiveView = NULL;
+	memset(m_pViews, 0, sizeof(m_pViews));
+
+	m_pRenderer = new Renderer::DirectX9(pDevice);
 
 
-	// Create the GWEN Skin 
-	// Todo: Change the skin to a custom one
-	m_pSkin = new Gwen::Skin::TexturedBase();
-	m_pSkin->SetRender(m_pRenderer);
-	m_pSkin->Init("multiplayer\\datafiles\\DefaultSkin.png");
+	m_iScreenWidth = 1680;
+	m_iScreenHeight = 1050;
 
-	// Create the GWEN Canvas
-	m_pCanvas = new Gwen::Controls::Canvas(m_pSkin);
-	m_pCanvas->SetSize(uiWidth, uiHeight);
+	ClearView(GUI_MAIN);
+	ClearView(GUI_SERVER);
 
-	// Initialize the GWEN Input
-	m_input.Initialize(m_pCanvas);
+	// Create the main menu instance
+	new CMainMenu(GetCanvas(GUI_MAIN));
+
+	SetView(GUI_MAIN);
 }
 
 CGUI::~CGUI()
 {
-	// Clean up the GWEN Stuff
-	delete m_pCanvas;
-	delete m_pSkin;
-	delete m_pRenderer;
+	for (int i = 0; i < GUI_NONE; ++i)
+	{
+		SAFE_DELETE(m_pViews[i]);
+	}
 }
 
-void CGUI::Render(void)
+void CGUI::Render()
 {
-	// The skin won't load render properly without this
-	m_pRenderer->DrawFilledRect(Gwen::Rect(0, 0, 0, 0));
-
-	// Render the GWEN Canvas
-	m_pCanvas->RenderCanvas();
+	if (m_pActiveView)
+	{
+		m_pActiveView->Render();
+	}
 }
 
-bool CGUI::ProcessInput(UINT uMessage, LPARAM lParam, WPARAM wParam)
+bool CGUI::ProcessInput(UINT message, LPARAM lParam, WPARAM wParam)
 {
+	if (m_pActiveView)
+	{
+		return m_pActiveView->ProcessInput(message, lParam, wParam);
+	}
 	return false;
+}
+
+CGUI::eGUIView CGUI::GetView()
+{
+	if (!m_pActiveView)
+		return GUI_NONE;
+
+	for (int i = 0; i < GUI_NONE; ++i)
+	{
+		if (m_pViews[i] == m_pActiveView)
+		{
+			return (eGUIView) i;
+		}
+	}
+	return GUI_NONE;
+}
+
+void CGUI::SetView(eGUIView view)
+{
+	if (view < GUI_NONE)
+	{
+		m_pActiveView = m_pViews[view];
+	}
+	else
+	{
+		m_pActiveView = NULL;
+	}
+}
+
+void CGUI::ClearView(eGUIView view)
+{
+	if (view >= GUI_NONE)
+		return;
+
+	if (m_pActiveView && m_pActiveView == m_pViews[view])
+		SetView(GUI_NONE);
+
+	SAFE_DELETE(m_pViews[view]);
+
+	CGUIView* pView = new CGUIView(m_pRenderer);
+
+	pView->SetScreenSize(m_iScreenWidth, m_iScreenHeight);
+
+	m_pViews[view] = pView;
+}
+
+void CGUI::SetScreenSize(int iWidth, int iHeight)
+{
+	for (int i = 0; i < GUI_NONE; ++i)
+		m_pViews[i]->SetScreenSize(iWidth, iHeight);
+
+	m_iScreenWidth = iWidth;
+	m_iScreenHeight = iHeight;
+}
+
+void CGUI::GetScreenSize(int* iWidth, int* iHeight)
+{
+	*iWidth = m_iScreenWidth;
+	*iHeight = m_iScreenHeight;
+}
+
+Gwen::Controls::Canvas* CGUI::GetCanvas(eGUIView view)
+{
+	if (view < GUI_NONE)
+		return m_pViews[view]->GetCanvas();
+	return NULL;
 }

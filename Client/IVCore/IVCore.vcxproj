@@ -307,6 +307,8 @@
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\CGUI.cpp" />
+    <ClCompile Include="Graphics\CGUIView.cpp" />
+    <ClCompile Include="Graphics\CMainMenu.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />

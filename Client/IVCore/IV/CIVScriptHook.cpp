@@ -500,10 +500,10 @@ CIVScriptInstance civScripts[] = {
 void CRageThread_Script_Process()
 {
 	//GameScriptProcess();
-	if(g_iRageScriptFrames < 5)
+	if(g_iRageScriptFrames < 5) // < 5 for a loading screen hacky
 	{
 		g_iRageScriptFrames++;
-		CIVScript::DoScreenFadeIn(5000);
+		CIVScript::DoScreenFadeIn(5000); // 500 for a loading screen hacky
 		g_pCore->OnGameLoad();
 	}
 

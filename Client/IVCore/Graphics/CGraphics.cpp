@@ -126,7 +126,6 @@ bool CGraphics::LoadFonts()
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
 
-	// Load texture for loading screen
 	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
 		NULL, NULL, &m_pLoadingBackgroundTexture);
