@@ -13,7 +13,7 @@ CMainMenu::CMainMenu(Gwen::Controls::Canvas* pCanvas) : Gwen::Controls::PanelLis
 {
 	// Set the default information of the Main Menu
 	SetPadding(Gwen::Padding(0, 0));	
-	SetPos(10, 300);
+	SetPos(500, 300);
 	SetSize(150, 300);
 	SetHorizontal();
 	
