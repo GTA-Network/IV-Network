@@ -17,16 +17,26 @@
 #include <CServer.h>
 #include <Scripting/CScriptClass.h>
 
-class CScriptVehicle
+
+class CScriptEntity
 {
-	CScriptVehicle();
-	~CScriptVehicle();
+public:
+	CScriptEntity() { };
+	~CScriptEntity() { };
 };
 
-class CScriptPlayer
+class CScriptVehicle : public CScriptEntity
 {
-	CScriptPlayer();
-	~CScriptPlayer();
+public:
+	CScriptVehicle() { };
+	~CScriptVehicle() { };
+};
+
+class CScriptPlayer : public CScriptEntity
+{
+public:
+	CScriptPlayer() { };
+	~CScriptPlayer() { };
 };
 
 void CScriptClasses::Register(CScriptVM * pVM)

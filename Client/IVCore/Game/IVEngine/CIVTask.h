@@ -15,6 +15,9 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
+class CIVPed;
+class IVPed;
+
 class CTaskManager;
 
 class IVEvent
@@ -46,10 +49,23 @@ public:
 	virtual void Function20();
 };
 
-static const char * GetTaskName(int iTaskType);
 
-class CIVPed;
-class IVPed;
+class CIVEvent
+{
+private:
+	IVEvent * m_pEvent;
+
+public:
+	CIVEvent();
+	CIVEvent(IVEvent * pEvent);
+	~CIVEvent();
+
+	void      SetEvent(IVEvent * pEvent) { m_pEvent = pEvent; };
+	IVEvent * GetEvent() { return m_pEvent; }
+};
+
+
+static const char * GetTaskName(int iTaskType);
 
 class IVTask
 {
@@ -58,23 +74,23 @@ public:
 	//PAD(IVTask, pad0, 0x104); // incorrect (probably the biggest task size possible?)
 	// 0xE = pPed? // incorrect
 
-	virtual			~IVTask();
+	virtual                 ~IVTask();
 	virtual IVTask* Clone();
-	virtual bool	IsSimple();
-	virtual int		GetType();
-	virtual void	Function4();
-	virtual bool	MakeAbortable(IVPed * pPed, int iAbortPriority, IVEvent * pEvent);
-	virtual float	Function6(int a1);
-	virtual int		Function7(int a1);
+	virtual bool    IsSimple();
+	virtual int     GetType();
+	virtual void    Function4();
+	virtual bool    MakeAbortable(IVPed * pPed, int iAbortPriority, IVEvent * pEvent);
+	virtual float   Function6(int a1);
+	virtual int             Function7(int a1);
 	virtual void    Function8(int a1);
-	virtual int		Function9();
-	virtual bool	Function10(); // *(this + 24) > 0.0;
-	virtual int		Function11(); // get this+20
-	virtual int		Function12();
-	virtual bool	Function13(int a1, int a2);
-	virtual int		Function14();
-	virtual int		Function15();
-	virtual int		Function16(int a2);
+	virtual int             Function9();
+	virtual bool    Function10(); // *(this + 24) > 0.0;
+	virtual int     Function11(); // get this+20
+	virtual int     Function12();
+	virtual bool    Function13(int a1, int a2);
+	virtual int     Function14();
+	virtual int     Function15();
+	virtual int     Function16(int a2);
 };
 class IVTaskSimple : public IVTask
 {
@@ -89,55 +105,60 @@ class IVTaskComplex : public IVTask
 {
 public:
 	IVTask * m_pSubTask;
-	virtual					~IVTaskComplex();
-	virtual void			SetSubTask(IVTask* pTask);
-	virtual IVTask*			CreateNextSubTask(IVPed* pPed);
-	virtual IVTask*			CreateFirstSubTask(IVPed* pPed);
-	virtual IVTask*			ControlSubTask(IVPed* pPed);
+	virtual                         ~IVTaskComplex();
+	virtual void            SetSubTask(IVTask* pTask);
+	virtual IVTask*         CreateNextSubTask(IVPed* pPed);
+	virtual IVTask*         CreateFirstSubTask(IVPed* pPed);
+	virtual IVTask*         ControlSubTask(IVPed* pPed);
 };
 
+static const char * GetTaskName(int iTaskType);
 
-class CIVTask {
+class CIVTask
+{
 private:
-	IVTask				* m_pTask;
+	IVTask * m_pTask;
 
 public:
 	CIVTask();
 	CIVTask(IVTask * pTask);
 	~CIVTask();
 
-	void				SetTask(IVTask * pTask) { m_pTask = pTask; }
-	IVTask				* GetTask() { return m_pTask; }
+	void         SetTask(IVTask * pTask);
+	IVTask *     GetTask();
 
-	void				Create();
-	void				Destroy();
-	CIVTask				* GetParent();
-	CIVTask				* Clone();
-	bool				IsSimple();
-	int					GetType();
-	const char			* GetName();
-	bool				MakeAbortable(CIVPed * pPed, int iAbortPriority, void * pEvent = NULL);
-	void				SetAsPedTask(CIVPed * pPed, int iTaskPriority, bool bForceNewTask = false);
+	void         Create();
+	void         Destroy();
+	CIVTask *    GetParent();
+	CIVTask *    Clone();
+	bool         IsSimple();
+	int          GetType();
+	const char * GetName();
+	bool         MakeAbortable(CIVPed * pPed, int iAbortPriority, CIVEvent * pEvent = NULL);
+	void         SetAsPedTask(CIVPed * pPed, int iTaskPriority, bool bForceNewTask = false);
+	void         SetAsPedTaskSecondary(CIVPed * pPed, int iTaskPriority);
 };
 
-class CIVTaskSimple : public CIVTask {
+class CIVTaskSimple : public CIVTask
+{
 public:
 	CIVTaskSimple() : CIVTask() {}
-	CIVTaskSimple(IVTaskSimple * pTask) : CIVTask(pTask) { }
+	CIVTaskSimple(IVTaskSimple * pTask) : CIVTask(pTask) {}
 
-	bool		ProcessPed(CIVPed * pPed);
+	bool ProcessPed(CIVPed * pPed);
 };
 
-class CIVTaskComplex : public CIVTask {
+class CIVTaskComplex : public CIVTask
+{
 public:
-	CIVTaskComplex() : CIVTask() { }
-	CIVTaskComplex(IVTaskComplex * pTask) : CIVTask(pTask) { }
+	CIVTaskComplex() : CIVTask() {}
+	CIVTaskComplex(IVTaskComplex * pTask) : CIVTask(pTask) {}
 
-	CIVTask			* GetSubTask();
-	void			SetSubTask(CIVTask * pTask);
-	CIVTask			* CreateNextSubTask(CIVPed * pPed);
-	CIVTask			* CreateFirstSubTask(CIVPed * pPed);
-	CIVTask			* ControlSubTask(CIVPed * pPed);
+	CIVTask * GetSubTask();
+	void      SetSubTask(CIVTask * pSubTask);
+	CIVTask * CreateNextSubTask(CIVPed * pPed);
+	CIVTask * CreateFirstSubTask(CIVPed * pPed);
+	CIVTask * ControlSubTask(CIVPed * pPed);
 };
 
 #endif // CIVTask_h

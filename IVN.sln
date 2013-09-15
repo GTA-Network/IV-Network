@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.20623.1 VSUPREVIEW
+VisualStudioVersion = 12.0.20827.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client - @Responsible FRi", "Client - @Responsible FRi", "{B595E6DA-BAB2-43D5-B5FB-23D511693726}"
 EndProject
@@ -359,6 +359,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZLib_files", "ZLib_files", 
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compressor", "Client\Compressor\Client.Compressor.vcxproj", "{FAE2902E-34E5-40A9-ACA7-4C01518EF4CC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9006D124-5D00-4CB7-BAD9-F527B19502C9} = {9006D124-5D00-4CB7-BAD9-F527B19502C9}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{53F1CF06-78F8-47EA-95AB-4DB34DA24409}"
 EndProject
@@ -374,6 +377,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IVCore", "Client\IVCore\IVC
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IVGameReady", "Client\IVGameReady\IVGameReady.vcxproj", "{CDEA73BD-6EF9-4407-843C-2728D07994A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9006D124-5D00-4CB7-BAD9-F527B19502C9} = {9006D124-5D00-4CB7-BAD9-F527B19502C9}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IVMapEditor", "Client\IVMapEditor\IVMapEditor.vcxproj", "{11DCC6C3-E5AC-4867-821A-917A6F5DF976}"
 EndProject
