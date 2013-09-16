@@ -114,7 +114,7 @@ extern int iFuncIndex;
 int oldtop = 0;
 
 
-void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
+void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
 {
 
 	iFuncIndex = 0;
@@ -137,7 +137,13 @@ void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnF
 	}
 
 	sq_pushstring(m_pVM, _SC("constructor"), -1);
-	sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
+	if (userPointer != nullptr)
+	{
+		sq_pushuserpointer(m_pVM, userPointer);
+		sq_newclosure(m_pVM, (SQFUNCTION) pfnFunction, 1);
+	}
+	else
+		sq_newclosure(m_pVM, (SQFUNCTION)pfnFunction, 0);
 	sq_newslot(m_pVM, -3, false); // Add the constructor method
 #endif
 }
@@ -163,11 +169,11 @@ void CSquirrelVM::SetClassInstance(const char* szClassName, void * pInstance)
 
 void* CSquirrelVM::GetClassInstance(const char* szClassName)
 {
-	SQUserPointer pInstance = NULL;
+	SQUserPointer pInstance = nullptr;
 	SQObjectType type = sq_gettype(m_pVM, 1);
 	assert(type == SQObjectType::OT_INSTANCE);
-	if(SQ_FAILED(sq_getinstanceup(m_pVM, 1, &pInstance, NULL)))
-		pInstance = NULL;
+	if(SQ_FAILED(sq_getinstanceup(m_pVM, 1, &pInstance, nullptr)))
+		pInstance = nullptr;
 
 	return pInstance;
 }

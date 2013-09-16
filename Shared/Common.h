@@ -83,7 +83,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define NETWORK_VERSION 0x1
 
 // Mod version string
-#define MOD_VERSION_STRING "1.0.0 DEV ft. Episodes from Liberty City"
+#define MOD_VERSION_STRING "1.0.0 DEV EFLC"
 
 // Version identifiers
 #define VERSION_IDENTIFIER MOD_NAME " " MOD_VERSION_STRING DEBUG_IDENTIFIER " [" __DATE__ ", " __TIME__ "]"

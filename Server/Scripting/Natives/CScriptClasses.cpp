@@ -15,9 +15,92 @@
 #include "../../../Server/Scripting/Natives/Natives.h"
 #include "Entity/Entities.h"
 #include <CServer.h>
+#include <Scripting/CScriptClass.h>
+
+
+class CScriptEntity
+{
+	CNetworkEntity* m_pEntity;
+public:
+	CScriptEntity() { };
+	~CScriptEntity() { };
+
+	CNetworkEntity* GetEntity() { return m_pEntity; }
+	void SetEntity(CNetworkEntity* pEntity) { m_pEntity = pEntity; }
+
+	void SetPosition(float fX, float fY, float fZ) { m_pEntity->SetPosition(CVector3(fX, fY, fZ)); }
+	void SetRotation(float fX, float fY, float fZ) { m_pEntity->SetRotation(CVector3(fX, fY, fZ)); }
+	void SetMoveSpeed(float fX, float fY, float fZ) { m_pEntity->SetMoveSpeed(CVector3(fX, fY, fZ)); }
+	void SetTurnSpeed(float fX, float fY, float fZ) { m_pEntity->SetTurnSpeed(CVector3(fX, fY, fZ)); }
+};
+
+class CScriptVehicle : public CScriptEntity
+{
+public:
+	CScriptVehicle() { SetEntity(new CVehicleEntity); };
+	~CScriptVehicle() { delete GetEntity(); };
+};
+
+class CScriptPlayer : public CScriptEntity
+{
+public:
+	CScriptPlayer() { SetEntity(new CPlayerEntity); };
+	~CScriptPlayer() { delete GetEntity(); };
+
+	inline CPlayerEntity* GetEntity() { return (CPlayerEntity*)CScriptEntity::GetEntity(); }
+
+	float GetArmour(void) {
+		return 0.0f;
+		//return GetEntity()->GetArmour();
+	}
+	void  SetArmour(float fArmour) { }
+
+	DWORD GetColor(void);
+	void  SetColor(DWORD dwColor);
+
+	float GetHeading() {
+		return 0.0f; //return GetEntity()->GetHeading();
+	}
+	void  SetHeading(float fHeading) {
+		//GetEntity()->SetHeading(fHeading);
+	}
+
+	const char* GetName() { 
+		return GetEntity()->GetName().C_String();
+	}
+	void		SetName(const char* szName) {
+		GetEntity()->SetName(CString(szName));
+		free((void*)szName);
+	}
+};
 
 void CScriptClasses::Register(CScriptVM * pVM)
 {
+
+	{ // ScriptVehicle
+		(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
+			AddMethod("setPosition", &CScriptVehicle::SetPosition).
+			AddMethod("setRotation", &CScriptVehicle::SetRotation).
+			AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
+			AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
+			Register(pVM);
+	}
+
+	{ // ScriptPlayer
+		(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->
+			AddMethod("setPosition", &CScriptPlayer::SetPosition).
+			AddMethod("setRotation", &CScriptPlayer::SetRotation).
+			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed).
+			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed).
+			AddMethod("getArmour", &CScriptPlayer::GetArmour).
+			AddMethod("setArmour", &CScriptPlayer::SetArmour).
+			AddMethod("getHeading", &CScriptPlayer::GetHeading).
+			AddMethod("setHeading", &CScriptPlayer::SetHeading).
+			AddMethod("getName", &CScriptPlayer::GetName).
+			AddMethod("setName", &CScriptPlayer::SetName).
+			Register(pVM);
+	}
+
 	//pVM->RegisterFunction("createEntity", CreateEntity);
 
 	//pVM->RegisterScriptClass("C3DLabelEntity", CreateEntity);
