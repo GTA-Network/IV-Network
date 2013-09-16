@@ -18,13 +18,17 @@ CGUI::CGUI(IDirect3DDevice9* pDevice)
 
 	m_pRenderer = new Renderer::DirectX9(pDevice);
 
-	m_iScreenWidth = 1024;
-	m_iScreenHeight = 768;
 
-	ClearView(GUI_IVMP);
+	m_iScreenWidth = 1680;
+	m_iScreenHeight = 1050;
+
+	ClearView(GUI_MAIN);
 	ClearView(GUI_SERVER);
 
-	SetView(GUI_IVMP);
+	// Create the main menu instance
+	new CMainMenu(GetCanvas(GUI_MAIN));
+
+	SetView(GUI_MAIN);
 }
 
 CGUI::~CGUI()
@@ -43,11 +47,11 @@ void CGUI::Render()
 	}
 }
 
-bool CGUI::ProcessInput(MSG msg)
+bool CGUI::ProcessInput(UINT message, LPARAM lParam, WPARAM wParam)
 {
 	if (m_pActiveView)
 	{
-		return m_pActiveView->ProcessInput(msg);
+		return m_pActiveView->ProcessInput(message, lParam, wParam);
 	}
 	return false;
 }
@@ -103,6 +107,12 @@ void CGUI::SetScreenSize(int iWidth, int iHeight)
 
 	m_iScreenWidth = iWidth;
 	m_iScreenHeight = iHeight;
+}
+
+void CGUI::GetScreenSize(int* iWidth, int* iHeight)
+{
+	*iWidth = m_iScreenWidth;
+	*iHeight = m_iScreenHeight;
 }
 
 Gwen::Controls::Canvas* CGUI::GetCanvas(eGUIView view)

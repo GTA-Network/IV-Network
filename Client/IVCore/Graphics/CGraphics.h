@@ -83,6 +83,9 @@ public:
 
 	// Radar texture
 	LPDIRECT3DTEXTURE9		m_pRadarOverlayTexture;
+	
+	// Loading Screen Texture
+	LPDIRECT3DTEXTURE9    	m_pLoadingBackgroundTexture;
 };
 
 #endif // CGraphics_h

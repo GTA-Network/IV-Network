@@ -8,6 +8,7 @@
 //==========================================================================================
 
 #include	"CCore.h"
+#include    <IV/CIVScript.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
@@ -32,6 +33,7 @@ CCore::CCore(void)
 	m_pFPSCounter = NULL;
 	m_pNetworkManager = NULL;
 	m_pGUI = NULL;
+	m_bLoadingVisibility = 0;
 }
 
 bool CCore::Initialise()
@@ -148,9 +150,6 @@ void CCore::OnGameLoad()
 	// Initialize game instance & respawn local player
 	GetGame()->Initialise();
 
-	// Remove all stuff from directx device(which is drawn)
-	m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
-
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
@@ -205,11 +204,6 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 {
 	PRINT_FUNCTION
 
-	if (m_pGUI)
-	{
-		m_pGUI->SetScreenSize(pPresentationParameters->BackBufferWidth, pPresentationParameters->BackBufferHeight);
-	}
-
 	// Mark as not lost device
 	g_bDeviceLost = false;
 }
@@ -219,10 +213,22 @@ void CCore::OnDevicePreRender()
 	;
 }
 
+bool g_bLoading = true;
+
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Prerender devices
 	OnDevicePreRender();
+
+	// Is the game not loaded?
+	if (!IsGameLoaded() || g_bLoading)
+	{
+		// Clear the original EFLC Loading Screen
+		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+
+		// Render our own Loading Screen
+		RenderLoadingScreen();
+	}
 
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
@@ -316,6 +322,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render ingame ui elements
 	m_pGame->RenderUIElements();
 
+	// Render our gui instance
+	if (m_pGUI)
+		m_pGUI->Render();
+
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
 	{
@@ -362,11 +372,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		CAM3.m_fUnknown = CAM3.m_fUnknown*2;
 		CAM3.m_fUnknown2 = CAM3.m_fUnknown2*2;
 		CAM3.m_fUnknown3 = CAM3.m_fUnknown3*2;*/
-	}
-
-	if (m_pGUI)
-	{
-		m_pGUI->Render();
 	}
 
 	pDevice->Present(NULL,NULL,NULL,NULL);
@@ -451,4 +456,27 @@ void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
 
 	for(int i = 0; i < iFunctionCount; i++)
 		CLogFile::Printf("VFTable Offset: %d, Function: 0x%p (At Address: 0x%p)", (i * 4), *(PDWORD)(dwAddress + (i * 4)), (dwAddress + (i * 4)));
+}
+
+void CCore::RenderLoadingScreen()
+{
+	float rotation = 0.0f;
+
+	D3DVIEWPORT9 viewport;
+
+	g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
+	g_pCore->GetGraphics()->GetSprite()->Begin(0);
+
+	D3DXVECTOR2 spriteCentre = D3DXVECTOR2(0, 0);
+	D3DXVECTOR2 trans = D3DXVECTOR2(0, 0);
+	D3DXMATRIX mat;
+	D3DXVECTOR2 scaling2(viewport.Width / 2020.0f, viewport.Height / 2050.0f);
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling2, &spriteCentre, rotation, &trans);
+
+	g_pCore->GetGraphics()->GetSprite()->SetTransform(&mat);
+	g_pCore->GetGraphics()->GetSprite()->Draw(g_pCore->GetGraphics()->m_pLoadingBackgroundTexture, NULL, NULL, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255, 255, 255, 255));
+	g_pCore->GetGraphics()->GetSprite()->Flush();
+	g_pCore->GetGraphics()->GetSprite()->End();
+
+	g_pCore->GetGUI()->Render();
 }

@@ -44,14 +44,17 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
-#include <gwen/Controls/Text.h>
-#include <gwen/Controls/WindowControl.h>
-#include <gwen/Input/Windows.h>
 #include <gwen/Renderers/DirectX9.h>
+#include <gwen/Controls/ImagePanel.h>
 #include <gwen/Skins/Simple.h>
 #include <gwen/Controls/WindowControl.h>
+#include <gwen/Controls/PanelListPanel.h>
+#include <gwen/Controls/Text.h>
+#include <gwen/Controls.h>
+#include <gwen/Input/Windows.h>
 #include <gwen/Align.h>
 #include <Graphics/CGUIView.h>
+#include <Graphics/CMainMenu.h>
 #include <Graphics/CGUI.h>
 
 #include <RAGEEngine/RAGEInterface.h>
@@ -64,8 +67,6 @@ private:
 	bool							m_bGameLoaded;
 	unsigned						m_uiBaseAddress;
 	unsigned						m_uiGameInitializeTime;
-	
-	CGUI                  			* m_pGUI;
 
 	CGame							* m_pGame;
 	CGraphics						* m_pGraphics;
@@ -73,7 +74,7 @@ private:
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
 	CDevelopment					* m_pDevelopment;
-						
+	CGUI                  			* m_pGUI;					
 
 	eGAMEStates						m_eGameState;
 
@@ -92,9 +93,7 @@ private:
 
 public:
 									CCore();
-									~CCore() { };
-									
-	CGUI							* GetGUI() { return m_pGUI; }								
+									~CCore() { };							
 
 	bool							Initialise();
 
@@ -123,6 +122,7 @@ public:
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
+	CGUI                 		 	* GetGUI() { return m_pGUI; }
 	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
@@ -150,6 +150,11 @@ public:
 	}
 	bool							GetHWND() { return m_hwndFocused; }
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
+	
+	bool              				m_bLoadingVisibility;
+	void              				RenderLoadingScreen();
+	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
+	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 };
 
 #endif // CCore_h
