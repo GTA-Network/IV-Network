@@ -39,14 +39,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\Build\</OutDir>
-    <TargetName>IVMultiplayer</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_clientcore\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>IVNetworkCore</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_clientcore\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>IVNetworkCore</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,11 +61,11 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GWEN-Renderer-DirectX9d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../Libraries/gwen/lib/vs2008;../../Libraries/gwen/include;../../Libraries/DXSDK/Lib/;../../Libraries/Detours/;../../Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetDir)IVMultiplayer.dll" "$(SolutionDir)Files\IVMultiplayer.dll"</Command>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,6 +82,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\lpng142\png.c" />
@@ -306,6 +309,8 @@
     <ClCompile Include="Graphics\CDirectInputDevice8Proxy.cpp" />
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
+    <ClCompile Include="Graphics\CGUI.cpp" />
+    <ClCompile Include="Graphics\CGUIView.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
@@ -314,9 +319,6 @@
     <ClCompile Include="Hooks\CXLive.cpp" />
     <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp" />
-    <ClCompile Include="IV\IVParachute_AI.cpp" />
-    <ClCompile Include="IV\IVParachute_Manager.cpp" />
-    <ClCompile Include="IV\IVParachute_Process.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
@@ -639,12 +641,13 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
+    <ClInclude Include="Graphics\CGUIView.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
     <ClInclude Include="Graphics\Input.h" />
     <ClInclude Include="Graphics\StdDXInc.h" />
-	<ClInclude Include="Graphics\CGUI.h" />
+    <ClInclude Include="Graphics\CGUI.h" />
     <ClInclude Include="Hooks\CWin32MouseHook.h" />
     <ClInclude Include="Hooks\CXLive.h" />
     <ClInclude Include="IV\CIVExternalScriptCall.h" />
@@ -656,10 +659,6 @@
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
-    <ClInclude Include="IV\IVParachuteData.h" />
-    <ClInclude Include="IV\IVParachute_AI.h" />
-    <ClInclude Include="IV\IVParachute_Manager.h" />
-    <ClInclude Include="IV\IVParachute_Process.h" />
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />

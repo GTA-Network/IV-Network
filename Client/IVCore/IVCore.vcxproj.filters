@@ -836,15 +836,6 @@
     <ClCompile Include="General\CException.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>
-    <ClCompile Include="IV\IVParachute_Process.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
-    <ClCompile Include="IV\IVParachute_Manager.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
-    <ClCompile Include="IV\IVParachute_AI.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
@@ -868,6 +859,12 @@
     </ClCompile>
     <ClCompile Include="Game\IVManagement.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CGUI.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\CGUIView.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1855,18 +1852,6 @@
     <ClInclude Include="General\Ptrs.h">
       <Filter>Header Files\General</Filter>
     </ClInclude>
-    <ClInclude Include="IV\IVParachute_Process.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
-    <ClInclude Include="IV\IVParachute_Manager.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
-    <ClInclude Include="IV\IVParachute_AI.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
-    <ClInclude Include="IV\IVParachuteData.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
     <ClInclude Include="IV\CIVExternalScriptCall.h">
       <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
@@ -1890,6 +1875,12 @@
     </ClInclude>
     <ClInclude Include="Game\IVManagement.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CGUIView.h">
+      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

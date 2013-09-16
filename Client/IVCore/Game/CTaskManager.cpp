@@ -136,6 +136,8 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 
 bool CTaskManager::HandleTaskDelete(IVTask * pGameTask)
 {
+	CLogFile::Printf(__FUNCTION__);
+
 	// Do we have an invalid task pointer?
 	if(!pGameTask)
 		return NULL;

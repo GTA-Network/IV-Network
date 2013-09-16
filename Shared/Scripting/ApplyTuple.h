@@ -106,7 +106,7 @@ void returnValue(CScriptVM* pVM, T v);
 *
 * @ingroup g_util_tuple
 */
-template < uint32_t N >
+template < int N >
 struct apply_obj_func
 {
 	template < typename T, typename R, typename... ArgsF, typename... ArgsT, typename... Args >

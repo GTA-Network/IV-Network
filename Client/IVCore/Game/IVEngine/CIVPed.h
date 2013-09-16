@@ -100,55 +100,87 @@ public:
 	ePedType m_type;
 };
 
-#pragma pack(1)
+
+class IVPedData
+{
+public:
+	DWORD dword4;
+	PAD(IVPedData, pad0, 0x58); // 04-60
+
+	virtual					~IVPedData();
+	virtual void            Function1();
+	virtual void            Function2();
+	virtual IVTask*         CreateWanderTask(IVPed* pPed);
+	virtual IVTask*         CreateDriveTask(IVPed *pPed, int a2, int a3);
+	virtual IVTask*         CreateTaskForCurrentState(IVPed* pPed);
+};
+
+class IVPedMoveBlendOnFoot;
+
 class IVPed : public IVPhysical {
 public:
-	PAD(IVPed, pad0, 0x8);
-	BYTE m_bytePlayerNumber;
-	BYTE m_byteIsPlayerPed;
-	PAD(IVPed, pad1, 0x2);
-	IVPedBase * m_pPedBase;
-	PAD(IVPed, pad2, 0x4);
-	IVPedIntelligence * m_pPedIntelligence;
-	IVPlayerInfo * m_pPlayerInfo;
-	DWORD m_pPedData;
-	PAD(IVPed, pad3, 0x3C);
-	BYTE m_byteUnknown;
-	PAD(IVPed, pad4, 0x43);
-	PAD(IVPed, pad19, 0x11A); //todo: IVPedWeapons m_weapons;
-	PAD(IVPed, pad5, 0x1B6);
-	void * m_pPedAudio;
-	PAD(IVPed, pad6, 0x98);
-	DWORD m_dwVoiceHash;
-	PAD(IVPed, pad7, 0x1A8);
-	DWORD m_dwRagdollStatus;
-	DWORD m_dwRagdollTime;
-	PAD(IVPed, pad8, 0x21);
-	BYTE m_byteWeaponObjectVisible;
-	PAD(IVPed, pad9, 0x8);
-	IVEntity * m_pTargetVehicle;
-	PAD(IVPed, pad10, 0x272);
-	BYTE m_byteCreatedBy;
-	PAD(IVPed, pad11, 0xF);
-	DWORD m_dwArrestState;
-	DWORD m_dwDeathState;
-	PAD(IVPed, pad12, 0x8);
-	DWORD m_pPedMoveBlendOnFoot;
-	float m_fMaxHealth;
-	PAD(IVPed, pad13, 0x18);
-	float m_fCurrentHeading;
-	float m_fDesiredHeading;
-	PAD(IVPed, pad14, 0x88);
-	IVVehicle * m_pCurrentVehicle;
-	PAD(IVPed, pad15, 0x7C);
-	void * m_pPedIKManager;
-	PAD(IVPed, pad16, 0x17C);
-	BYTE m_byteRingState;
-	PAD(IVPed, pad17, 0x17);
-	float m_fHeadingLimit[2];
-	PAD(IVPed, pad18, 0x1A0);
+	PAD(IVPed, pad0, 0x8);                  // 210-218
+	BYTE m_bytePlayerNumber;                // 218-219
+	BYTE m_byteIsPlayerPed;                 // 219-21A
+	PAD(IVPed, pad1, 0x2);                  // 210-21C
+	IVPedBase * m_pPedBase;                 // 21C-220
+	PAD(IVPed, pad2, 0x4);                  // 220-224
+	IVPedIntelligenceNY* m_pPedIntelligence;// 224-228 (Should be IVPedIntelligenceNY)
+	IVPlayerInfo * m_pPlayerInfo;           // 228-22C
+	IVPedData * m_pPedData;                 // 22C-230
+	PAD(IVPed, pad3, 0x3C);                 // 230-26C
+	BYTE m_byteUnknown;                     // 26C-26D - Bits 4: in vehicle
+	PAD(IVPed, pad4, 0x43);                 // 26D-2B0
+	PAD(IVPed, pad19, 0x11A);  //IVPedWeapons m_weapons;                 // 2B0-3CA
+	// 0x3A8 - IVEntity * pTargetEntity;
+	// 0x3D0 - audPedAudioEntity
+	// 0x580 - audSpeechAudioEntity
+	// 0x790 - audPlaceableTracker
+	PAD(IVPed, pad5, 0x1B6);                // 3CA-580
+	void * m_pPedAudio;                     // 580-584 // (CPedAudio (audSpeechAudioEntity))
+	PAD(IVPed, pad6, 0x98);                 // 584-61C
+	DWORD m_dwVoiceHash;                    // 61C-620
+	PAD(IVPed, pad7, 0x1A8);                // 620-7C8
+	// 0x780 - BYTE m_byteIsDrunk; (Possibly m_byteVoiceIsDrunk)
+	DWORD m_dwRagdollStatus;                // 7C8-7CC
+	DWORD m_dwRagdollTime;                  // 7CC-7D0
+	PAD(IVPed, pad8, 0x21);                 // 7D0-7F1
+	BYTE m_byteWeaponObjectVisible;         // 7F1-7F2
+	PAD(IVPed, pad9, 0x8);                  // 7F2-7FA
+	IVEntity * m_pTargetVehicle;            // 7FA-7FE
+	PAD(IVPed, pad10, 0x272);               // 3CA-A70
+	BYTE m_byteCreatedBy;                   // A70-A71 - See eCharCreator
+	PAD(IVPed, pad11, 0xF);                 // A71-A80
+	DWORD m_dwArrestState;                  // A80-A84
+	DWORD m_dwDeathState;                   // A84-A88
+	PAD(IVPed, pad12, 0x8);                 // A88-A90
+	IVPedMoveBlendOnFoot* m_pPedMoveBlendOnFoot;            // A90-A94
+	float m_fMaxHealth;                     // A94-A98
+	PAD(IVPed, pad13, 0x18);                // A98-AB0
+	float m_fCurrentHeading;                // AB0-AB4
+	float m_fDesiredHeading;                // AB4-AB8
+	PAD(IVPed, pad14, 0x88);                // AB8-B40
+	IVVehicle * m_pCurrentVehicle;          // B40-B44
+	PAD(IVPed, pad15, 0x7C);                // B44-BC0
+	void * m_pPedIKManager;                 // BC0-BC4 // +0x40 = pPed (CIKManager)
+	PAD(IVPed, pad16, 0x17C);               // BC4-D40
+	BYTE m_byteRingState;                   // D40-D41
+	PAD(IVPed, pad17, 0x17);                // D41-D58
+	float m_fHeadingLimit[2];               // D58-D60
+	PAD(IVPed, pad18, 0x1A0);               // BC4-F00
+
+	virtual					~IVPed();
+	virtual void			Function72(); // something with death and maybe respawn
+	virtual void			Function73(); // something with player info
+	virtual void			Function74(); // return 0;
+	virtual int				Function75(); // return dword_12308B0;
+	virtual int				Function76(); // return dword_F21F10;
+	virtual int				Function77(); // return dword_F21F20;
+	virtual void			Function78(); // nullsub
+	virtual void			Function79(); // nullsub
+	virtual void			Function80(); // nullsub
+
 };
-#pragma pack()
 
 class CIVPed : public CIVPhysical {
 private:

@@ -118,14 +118,14 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 // Basic Names
 #define _DEV
 //#define CHEAP_RELEASE
-#define MOD_NAME "IV:Multiplayer"
-#define MOD_SHORT_NAME "IVMP"
-#define MOD_SHORT_NAME_ILLEGAL "IV:MP"
-#define CLIENT_CORE_NAME "IVMultiplayer"
-#define CLIENT_LAUNCH_HELPER_NAME "IVMultiplayerLaunchInjector"
+#define MOD_NAME "IV:Network"
+#define MOD_SHORT_NAME "IVN"
+#define MOD_SHORT_NAME_ILLEGAL "IV:Net"
+#define CLIENT_CORE_NAME "IVNetwork"
+#define CLIENT_LAUNCH_HELPER_NAME "IVNetworkLaunchInject"
 #define SERVER_CORE_NAME "Server.Core"
 #define NETWORK_MODULE_NAME "Network.Core"
-#define REGISTRY_AREA "Software\\IVMultiplayer"
+#define REGISTRY_AREA "Software\\IVNetwork"
 #define GAME_DIRECTORY "GrandTheftAutoDirectory"
 #define MP_START_EXECUTABLE "LaunchIVMultiplayer.exe"
 #define MP_GET_GAME_READY_EXECUTABLE "IVGameReady.exe"
@@ -177,7 +177,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define CLIENT_SETTINGS_FILE "multiplayer//IVMP-Settings.xml"
 
 // Chat definitions
-#define	NUM_FONTS 6
+#define	NUM_FONTS 1
 
 #define	CHAT_TEXT_COLOR CColor(255, 255, 255, 255)
 #define	CHAT_WIDTH 480
@@ -204,7 +204,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define D3DVEC_TO_CVEC(vec) &CVector3(vec.x, vec.y, vec.z)
 
 // Macros
-#define GET_RPC_CODEX(x) CString("IVMP0xF%dF", int(x)).Get()
+#define GET_RPC_CODEX(x) CString("IVN0xF%dF", int(x)).Get()
 #define CHECK_PTR(x) if(!x) return false;
 #define CHECK_PTR_VOID(x) if(!x) return;
 

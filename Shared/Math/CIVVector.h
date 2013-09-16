@@ -9,6 +9,7 @@
 
 #ifndef CIVVector_h
 #define CIVVector_h
+
 struct CVECTOR
 {
 	float	x;	// 0x0 | 0
