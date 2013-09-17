@@ -31,6 +31,11 @@ private:
 	float		m_fHeading;
 	CControls m_controlState;
 
+	float		m_fHealth;
+	float		m_fArmour;
+
+	DWORD		m_dwColor;
+
 	struct {
 		CVector3		vecAimAtCoordinates;
 		float			fArmsHeadingCircle;
@@ -47,6 +52,15 @@ public:
 	bool Destroy() { return true; }
 
 	void		Pulse();
+
+	float		GetHealth() { return m_fHealth; }
+	void		SetHealth(float fHealth) { m_fHealth = fHealth; }
+
+	float		GetArmour() { return m_fArmour; }
+	void		SetArmour(float fArmour) { m_fArmour = fArmour; }
+
+	DWORD		GetColor() { return m_dwColor; }
+	void		SetColor(DWORD dwColor) { m_dwColor = dwColor; }
 
 	void		SetName(const CString& strName) { m_strName = strName; }
 	CString		GetName() { return m_strName; }

@@ -65,6 +65,4 @@ bool CGUIView::ProcessInput(UINT message, LPARAM lParam, WPARAM wParam)
 void CGUIView::SetScreenSize(int iWidth, int iHeight)
 {
 	m_pCanvas->SetSize(iWidth, iHeight);
-}
-	
-			
+}		

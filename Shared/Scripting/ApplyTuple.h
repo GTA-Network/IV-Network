@@ -26,6 +26,9 @@ template<>
 bool getValue<bool>(CScriptVM* pVM, int idx);
 
 template<>
+char getValue < char>(CScriptVM* pVM, int idx);
+
+template<>
 unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx);
 
 template<>
@@ -83,6 +86,12 @@ void returnValue(CScriptVM* pVM, const char *v);
 
 template<>
 void returnValue(CScriptVM* pVM, float v);
+
+template<>
+void returnValue(CScriptVM* pVM, unsigned int v);
+
+template<>
+void returnValue(CScriptVM* pVM, char v);
 
 template<class T>
 void returnValue(CScriptVM* pVM, T *v);

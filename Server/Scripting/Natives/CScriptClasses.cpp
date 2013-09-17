@@ -50,19 +50,25 @@ public:
 	inline CPlayerEntity* GetEntity() { return (CPlayerEntity*)CScriptEntity::GetEntity(); }
 
 	float GetArmour(void) {
-		return 0.0f;
-		//return GetEntity()->GetArmour();
+		return GetEntity()->GetArmour();
 	}
-	void  SetArmour(float fArmour) { }
 
-	DWORD GetColor(void);
-	void  SetColor(DWORD dwColor);
+	void  SetArmour(float fArmour) { 
+		GetEntity()->SetArmour(fArmour); 
+	}
+
+	DWORD GetColor(void) { 
+		return GetEntity()->GetColor();
+	}
+	void  SetColor(DWORD dwColor) {
+		GetEntity()->SetColor(dwColor);
+	}
 
 	float GetHeading() {
-		return 0.0f; //return GetEntity()->GetHeading();
+		return GetEntity()->GetHeading();
 	}
 	void  SetHeading(float fHeading) {
-		//GetEntity()->SetHeading(fHeading);
+		GetEntity()->SetHeading(fHeading);
 	}
 
 	const char* GetName() { 
@@ -72,20 +78,25 @@ public:
 		GetEntity()->SetName(CString(szName));
 		free((void*)szName);
 	}
+
+	int	GetMoney() { return 0; }
+	void SetMoney(int iMoney) { }
+
+	int GetModel() { return 0; }
+	void SetModel(int iModel) { }
+
+	unsigned int GetDimension() { return 0; }
+	void		 SetDimension(unsigned int uiDimension) { }
+
+	char GetWantedLevel() { return 0; }
+	void SetWantedLevel(char cWantedLevel) { }
+
+	float		GetHealth() { return GetEntity()->GetHealth(); }
+	void		SetHealth(float fHealth) { GetEntity()->SetHealth(fHealth); }
 };
 
 void CScriptClasses::Register(CScriptVM * pVM)
 {
-
-	{ // ScriptVehicle
-		(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
-			AddMethod("setPosition", &CScriptVehicle::SetPosition).
-			AddMethod("setRotation", &CScriptVehicle::SetRotation).
-			AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
-			AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
-			Register(pVM);
-	}
-
 	{ // ScriptPlayer
 		(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->
 			AddMethod("setPosition", &CScriptPlayer::SetPosition).
@@ -94,30 +105,33 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed).
 			AddMethod("getArmour", &CScriptPlayer::GetArmour).
 			AddMethod("setArmour", &CScriptPlayer::SetArmour).
+			AddMethod("getHealth", &CScriptPlayer::GetHealth).
+			AddMethod("setHealth", &CScriptPlayer::SetHealth).
 			AddMethod("getHeading", &CScriptPlayer::GetHeading).
 			AddMethod("setHeading", &CScriptPlayer::SetHeading).
+			AddMethod("getModel", &CScriptPlayer::GetModel).
+			AddMethod("setModel", &CScriptPlayer::SetModel).
+			AddMethod("getDimension", &CScriptPlayer::GetDimension).
+			AddMethod("setDimension", &CScriptPlayer::SetDimension).
 			AddMethod("getName", &CScriptPlayer::GetName).
 			AddMethod("setName", &CScriptPlayer::SetName).
-			Register(pVM);
+			AddMethod("getMoney", &CScriptPlayer::GetMoney).
+			AddMethod("setMoney", &CScriptPlayer::SetMoney).
+			AddMethod("getWantedLevel", &CScriptPlayer::GetWantedLevel).
+			AddMethod("setWantedLevel", &CScriptPlayer::SetWantedLevel).
+		Register(pVM);
 	}
 
-	//pVM->RegisterFunction("createEntity", CreateEntity);
-
-	//pVM->RegisterScriptClass("C3DLabelEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CActorEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CBlipEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CCheckpointEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CFireEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CObjectEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CPickupEntity", CreateEntity);
-	//pVM->RegisterScriptClass("CPlayerEntity", CreateEntity);
-
-	//pVM->RegisterScriptClass("CVehicleEntity", CreateEntity);
-	//{
-	//	CVehicleNatives::Register(pVM);
-	//	CEntityNatives::Register(pVM);
-	//}
-	//pVM->FinishRegisterScriptClass();
+	{ // ScriptVehicle
+		(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
+		AddMethod("setPosition", &CScriptVehicle::SetPosition).
+		AddMethod("setRotation", &CScriptVehicle::SetRotation).
+		AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
+		AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
+		//AddMethod("getHealth", &CScriptVehicle::GetHealth).
+		//AddMethod("setHealth", &CScriptVehicle::SetHealth).
+		Register(pVM);
+	}
 }
 
 
