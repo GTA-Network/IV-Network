@@ -40,12 +40,13 @@
     <_ProjectFileVersion>12.0.20617.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\lib\vs2008\</OutDir>
-    <IntDir>obj\Release\Renderer-DirectX9\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\lib\vs2008\</OutDir>
-    <IntDir>obj\Debug\Renderer-DirectX9\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
+    <TargetName>GWEN-Renderer-DirectX9d</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -90,7 +91,7 @@
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)GWEN-Renderer-DirectX9d.lib</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\lib;..\..\lib\vs2008;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>

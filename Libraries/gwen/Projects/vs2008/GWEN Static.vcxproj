@@ -40,12 +40,13 @@
     <_ProjectFileVersion>12.0.20617.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\..\lib\vs2008\</OutDir>
-    <IntDir>obj\Release\GWEN Static\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\..\lib\vs2008\</OutDir>
-    <IntDir>obj\Debug\GWEN Static\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\Lib\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
+    <TargetName>gwend_static</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -90,7 +91,7 @@
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Lib>
-      <OutputFile>$(OutDir)gwend_static.lib</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>..\..\lib;..\..\lib\vs2008;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -255,9 +256,6 @@
     <ClCompile Include="..\..\src\Utility.cpp" />
     <ClCompile Include="..\..\src\events.cpp" />
     <ClCompile Include="..\..\src\inputhandler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\gwend_static.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

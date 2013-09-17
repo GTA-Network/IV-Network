@@ -19,15 +19,11 @@ CServer::CServer()
 {
 	s_pInstance = this;
 
-	m_pRPCHandler = new CServerRPCHandler();
-
 	m_pNetworkModule = new CNetworkModule();
 }
 
 CServer::~CServer()
 {
-	SAFE_DELETE(m_pNetServer);
-
 	SAFE_DELETE(m_pPlayerManager);
 
 	SAFE_DELETE(m_pVehicleManager);
@@ -52,7 +48,6 @@ CServer::~CServer()
 bool CServer::Startup()
 {
 	// Register our RPCs before set the NetServer´s rpc handler
-	m_pRPCHandler->RegisterRPCs();
 	CEvents* pEvents = new CEvents();
 
 	// Create all the managers
@@ -206,12 +201,15 @@ bool CServer::Startup()
 	return true;
 }
 
+
+unsigned long m_ulLastProcess = 0;
 void CServer::Process()
 {
-
 	m_pNetworkModule->Pulse();
 
+
 	// Pulse all managers
+	// Seems like this slows the server extremely down (we process over 264000 entities) optimize compile?!
 	// Do not worry about that some managers dont need to be pulsed its just that its complete and all the same structure
 	m_pPlayerManager->Pulse();
 
@@ -230,12 +228,53 @@ void CServer::Process()
 	m_pBlipManager->Pulse();
 
 	m_pCheckpointManager->Pulse();
+
+	// Get the current time
+	unsigned long ulTime = SharedUtility::GetTime();
+
+	// Is show fps enabled?
+	if (m_bShowFPS)
+	{
+		// Get the amount of time elapsed since the last fps update
+		unsigned long ulTimeElapsed = (ulTime - m_ulLastFPSUpdateTime);
+
+		// Update the fps if a second or more has passed
+		if (ulTimeElapsed >= 1000)
+		{
+			// Set the fps
+			m_ulFramesPerSecond = m_ulFrameCount;
+
+			// Set the server title
+#ifdef _WIN32
+			CString strTitle(" " VERSION_IDENTIFIER " Server"" - FPS: %d", m_ulFramesPerSecond);
+			SetConsoleTitle(strTitle.Get());
+
+#endif
+
+			/// Calculate the delay to receive the maximum FPS set in server
+
+			// Reset the frame count
+			m_ulFrameCount = 0;
+
+			// Set the last fps update tick count
+			m_ulLastFPSUpdateTime = ulTime;
+		}
+
+		// Increment the frame count
+		m_ulFrameCount++;
+	}
+
+	int delay = 1000.0f / m_uiMaximumFPS - (float) (ulTime - m_ulLastProcess);
+	if (delay > 0)
+		Sleep(delay);
+
+	
+
+	m_ulLastProcess = SharedUtility::GetTime();
 }
 
 void CServer::Shutdown()
 {
-	m_pNetServer->EnsureStopped();
-
 	// TODO: clear events
 	CEvents::GetInstance()->Clear();
 

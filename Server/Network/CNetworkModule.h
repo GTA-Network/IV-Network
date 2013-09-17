@@ -10,21 +10,7 @@
 #ifndef CNetworkModule_h
 #define CNetworkModule_h
 
-#include "../../Network/Core/NetCommon.h"
-
-//// OS Dependant includes
-//#ifdef _WIN32
-//#include "../Libraries/RakNet/WindowsIncludes.h"
-//#include	<windowsx.h>
-//#else
-//#include	"../Shared/Linux.h"
-//#endif
-//
-//// RakNet
-//#include "../../Libraries/RakNet/RakPeerInterface.h"
-//#include "../../Libraries/RakNet/BitStream.h"
-//#include "../../Libraries/RakNet/MessageIdentifiers.h"
-//#include "../../Libraries/RakNet/RPC4Plugin.h"
+#include <Network/NetCommon.h>
 
 class CNetworkModule {
 

@@ -525,9 +525,4 @@
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\gwend_static.lib">
-      <Filter>include\Gwen</Filter>
-    </Library>
-  </ItemGroup>
 </Project>

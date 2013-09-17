@@ -62,8 +62,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Build\;$(SolutionDir)\Build\temp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RakNet.lib;Ws2_32.lib;Winmm.lib;Kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -71,6 +71,9 @@
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -79,15 +82,26 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries;../Libraries/Squirrel;./</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <SDLCheck>false</SDLCheck>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RakNet.lib;Ws2_32.lib;Winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
@@ -194,7 +208,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CNetworkModule.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
-    <ClCompile Include="Network\CServerRPCHandler.cpp" />
     <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CActorNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
@@ -275,7 +288,6 @@
     <ClInclude Include="Entity\Entities.h" />
     <ClInclude Include="Network\CNetworkModule.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
-    <ClInclude Include="Network\CServerRPCHandler.h" />
     <ClInclude Include="Scripting\Natives\C3DLabelNatives.h" />
     <ClInclude Include="Scripting\Natives\CActorNatives.h" />
     <ClInclude Include="Scripting\Natives\CBlipNatives.h" />

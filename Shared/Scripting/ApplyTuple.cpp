@@ -30,7 +30,7 @@ float getValue<float>(CScriptVM* pVM, int idx)
 template<>
 DWORD getValue<DWORD>(CScriptVM* pVM, int idx)
 {
-	DWORD dw;
+	DWORD dw = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
 	//pVM->Pop(dw);
 	printf("Warning: unable to pop this type [%s]", __FUNCTION__);
@@ -49,7 +49,7 @@ bool getValue<bool>(CScriptVM* pVM, int idx)
 template<>
 unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx)
 {
-	unsigned int ui;
+	unsigned int ui = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
 	//pVM->Pop(ui);
 	printf("Warning: unable to pop this type [%s]", __FUNCTION__);

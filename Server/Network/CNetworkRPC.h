@@ -10,11 +10,10 @@
 #ifndef CNetworkRPC_h
 #define CNetworkRPC_h
 
-#include "../../Network/Core/NetCommon.h"
+#include <Network/NetCommon.h>
 
 class CNetworkRPC
 {
-
 private:
 
 	static	bool		m_bRegistered;
