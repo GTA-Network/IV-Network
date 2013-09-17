@@ -21,10 +21,10 @@ CGUIView::CGUIView(Renderer::DirectX9* pRenderer)
 	m_pCanvas->SetSkin( &skin );
 	
 #ifdef MOUSE_DEBUG
-	m_pHelper = new Controls::Button(m_pCanvas);
+	m_pHelper = new Controls::ImagePanel(m_pCanvas);
 	m_pHelper->SetPos(0, 0);
 	m_pHelper->SetSize(16, 16);
-	m_pHelper->SetText("");
+	m_pHelper->SetShouldDrawBackground(false);
 	m_pHelper->SetImage(SharedUtility::GetAbsolutePath("\\multiplayer\\datafiles\\cursor.png").Get());
 #endif
 
@@ -56,6 +56,7 @@ bool CGUIView::ProcessInput(UINT message, LPARAM lParam, WPARAM wParam)
 		int y = HIWORD(msg.lParam);
 		int x = LOWORD(msg.lParam);
 		m_pHelper->SetPos(x+1, y+1);
+		m_pHelper->BringToFront();
 	}
 #endif
 	return m_pInput->ProcessMessage(msg);

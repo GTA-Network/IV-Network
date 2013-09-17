@@ -9,12 +9,12 @@
 	
 #include "CCore.h"
 
-class CMainMenu : public Gwen::Controls::PanelListPanel
+class CMainMenu : public Gwen::Controls::Base
 {
-	public:
-			CMainMenu(Gwen::Controls::Canvas* pCanvas);
-				
-			void HideAbout(Gwen::Controls::Base* pControl);
-			void ShowAbout(Gwen::Controls::Base* pControl);
-			void Exit(Gwen::Controls::Base* pControl);
+public:
+	CMainMenu(Gwen::Controls::Canvas* pCanvas);
+
+	void HideAbout(Gwen::Controls::Base* pControl);
+	void ShowAbout(Gwen::Controls::Base* pControl);
+	void Exit(Gwen::Controls::Base* pControl);
 };			

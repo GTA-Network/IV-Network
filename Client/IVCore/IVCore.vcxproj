@@ -385,6 +385,8 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
+    <ClInclude Include="Graphics\CGUIView.h" />
+    <ClInclude Include="Graphics\CMainMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />

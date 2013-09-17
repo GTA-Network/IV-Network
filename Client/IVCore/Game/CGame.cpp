@@ -265,7 +265,7 @@ void CGame::Reset()
 	Initialise();
 
 	// Temp
-	g_pCore->GetGUI()->SetView((CGUI::eGUIView)((g_pCore->GetGUI()->GetView() + 1) % (CGUI::GUI_NONE + 1)));
+	g_pCore->GetGUI()->SetView(CGUI::GUI_NONE);
 
 	// Prepare our world
 	PrepareWorld();

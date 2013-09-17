@@ -18,7 +18,6 @@ CGUI::CGUI(IDirect3DDevice9* pDevice)
 
 	m_pRenderer = new Renderer::DirectX9(pDevice);
 
-
 	m_iScreenWidth = 1680;
 	m_iScreenHeight = 1050;
 

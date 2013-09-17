@@ -9,13 +9,12 @@
 
 #include "CCore.h"
 
-CMainMenu::CMainMenu(Gwen::Controls::Canvas* pCanvas) : Gwen::Controls::PanelListPanel(pCanvas)
+CMainMenu::CMainMenu(Gwen::Controls::Canvas* pCanvas) : Gwen::Controls::Base(pCanvas)
 {
 	// Set the default information of the Main Menu
 	SetPadding(Gwen::Padding(0, 0));	
 	SetPos(10, 300);
-	SetSize(150, 300);
-	SetHorizontal();
+	SetSize(500, 300);
 	
 	Gwen::Controls::Button* pConnect =  new Gwen::Controls::Button(this);
 	pConnect->SetText("Connect");
@@ -25,14 +24,14 @@ CMainMenu::CMainMenu(Gwen::Controls::Canvas* pCanvas) : Gwen::Controls::PanelLis
 	Gwen::Controls::Button* pAbout = new Gwen::Controls::Button(this);
 	pAbout->SetText("About");
 	pAbout->SetSize(150, 30);
-	pAbout->SetPos(10, 100);
+	pAbout->SetPos(165, 100);
 	pAbout->IsHovered();
 	pAbout->onPress.Add(this, &CMainMenu::ShowAbout);
 
 	Gwen::Controls::Button* pExit = new Gwen::Controls::Button(this);
 	pExit->SetText("Exit");
 	pExit->SetSize(150, 30);
-	pExit->SetPos(10, 100);
+	pExit->SetPos(320, 100);
 	pExit->onPress.Add(this, &CMainMenu::Exit);
 }
 
