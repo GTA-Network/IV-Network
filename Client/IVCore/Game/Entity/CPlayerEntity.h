@@ -177,11 +177,6 @@ public: // Handles call functions
 		m_bSpawned = true;
 	}
 
-	inline CPlayerEntity			GetPlayerEntityInstance()
-	{
-		return this;
-	}
-
 	void							SetNetworked(bool bNetworked) { m_bNetworked = bNetworked; }
 	void							SetId(unsigned short usPlayerId) { m_usPlayerId = usPlayerId; }
 	void							SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }

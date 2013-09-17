@@ -443,9 +443,6 @@
     <ClInclude Include="Scripting\Natives\CPlayerNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\Natives\Natives.h">
-      <Filter>Header Files\Scripting\Natives</Filter>
-    </ClInclude>
     <ClInclude Include="Scripting\Natives\C3DLabelNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
@@ -664,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CScriptClass.h">
       <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\Natives_Server.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -533,6 +533,9 @@
     <ClCompile Include="Graphics\CMainMenu.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CCrashFixes.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1083,6 +1086,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\CGUI.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CCrashFixes.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

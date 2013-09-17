@@ -412,7 +412,7 @@ HWND CGame::GetGameWindow()
 
 void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
 {
-	CLogFile::Printf("Warning: Exception 0x%p at 0x%p",dwExceptionType, dwAddress);
+	CLogFile::Printf("Warning: Exception 0x%p at 0x%p", dwExceptionType, dwAddress);
 }
 
 void CGame::ProcessEnvironment()

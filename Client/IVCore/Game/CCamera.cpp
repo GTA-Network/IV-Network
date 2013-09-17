@@ -11,7 +11,9 @@
 
 #include "CCamera.h"
 #include "IV/CIVScript.h"
-#include <Ptrs.h>
+#include <CCore.h>
+
+extern CCore* g_pCore;
 
 CCamera::CCamera()
 {

@@ -196,6 +196,7 @@ void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 */
 void CNetworkEntity::Serialize(ePackageType pType)
 {
+#if 0
 	// Create Sync package here and send it to the server
 	RakNet::BitStream * pBitStream = new BitStream;
 
@@ -286,13 +287,14 @@ void CNetworkEntity::Serialize(ePackageType pType)
 
 	// Send package to network
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
+#endif
 }
 
 RakNet::BitStream CNetworkEntity::ManualSerialize(ePackageType pType)
 {
 	// Create Sync package here and send it to the server
 	RakNet::BitStream * pBitStream = new BitStream;
-
+#if 0
 	// Backup old sync
 	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
 
@@ -377,14 +379,16 @@ RakNet::BitStream CNetworkEntity::ManualSerialize(ePackageType pType)
 
 	// Write our Entity-Sync to the bitstream
 	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
-
+#endif 
 	// return bitstream package
 	return (pBitStream != NULL);
+
 }
 
 
 void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
+#if 0
 	// Get Sync package here and recieve it to the server
 	
 	CNetworkEntitySync * pSyncPackage = new CNetworkEntitySync;
@@ -436,4 +440,5 @@ void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pT
 	}
 
 	// TODO: apply the data from the syncpackage to the vehicles/peds
+#endif
 }

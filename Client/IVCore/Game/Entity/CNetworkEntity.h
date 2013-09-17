@@ -12,24 +12,10 @@
 
 #include <Common.h>
 #include <Math/CMaths.h>
-#include <NetCommon.h>
+#include <Network/NetCommon.h>
 
 class CPlayerEntity;
 class CVehicleEntity;
-enum eEntityType
-{
-	PLAYER_ENTITY,
-	VEHICLE_ENTITY,
-	OBJECT_ENTITY,
-	PICKUP_ENTITY,
-	LABEL_ENTITY,
-	FIRE_ENTITY,
-	CHECKPOINT_ENTITY,
-	BLIP_ENTITY,
-	ACTOR_ENTITY,
-	UNKNOWN_ENTITY, // MAX_ENTITY
-	INVALID_ENTITY,
-};
 
 class CNetworkEntityType {
 public:
@@ -118,44 +104,6 @@ public:
 		// Return invalid
 		return 10;
 	}
-};
-
-// Handles data between client ped and network sync(stores the values)
-class CNetworkEntitySubPlayer {
-private:
-
-public:
-	bool						bDuckState;
-	float						fHeading;
-
-	struct {
-		CVector3				vecAimAtCoordinates;
-		float					fArmsHeadingCircle;
-		float					fArmsUpDownRotation;
-		CVector3				vecShotAtCoordinates;
-		CVector3				vecShotAtTarget;
-		CVector3				vecLookAtCoordinates;
-		//Matrix34				pWeaponCameraA;
-		//Matrix34				pWeaponCameraB;
-		//Matrix34				pWeaponCameraC;
-
-	}							sWeaponData;
-	// Add player members to sync(like weapon sync, key sync etc.)
-};
-
-// Handles data between client ped and network sync(stores the values)
-class CNetworkEntitySubVehicle {
-private:
-
-public:
-	// Add vehicle members to sync(like indicators, variation etc.)
-};
-
-class CNetworkEntitySync {
-public:
-	eEntityType							pEntityType;
-	sNetwork_Sync_Entity_Player			pPlayerPacket;
-	sNetwork_Sync_Entity_Vehicle		pVehiclePacket;
 };
 
 class CNetworkEntity {

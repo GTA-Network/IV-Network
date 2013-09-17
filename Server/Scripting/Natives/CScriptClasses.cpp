@@ -12,7 +12,7 @@
 #include <Scripting/CSquirrelVM.h>
 #include <CLogFile.h>
 #include <Scripting/ResourceSystem/CResourceManager.h>
-#include "../../../Server/Scripting/Natives/Natives.h"
+#include "../../../Server/Scripting/Natives/Natives_Server.h"
 #include "Entity/Entities.h"
 #include <CServer.h>
 #include <Scripting/CScriptClass.h>
