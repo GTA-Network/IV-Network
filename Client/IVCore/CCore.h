@@ -30,6 +30,7 @@
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include "Game/CCrashFixes.h"
 #include "Graphics/CFPSCounter.h"
 
 #include "Network/CLocalPlayer.h"

@@ -24,6 +24,7 @@ CGUIView::CGUIView(Renderer::DirectX9* pRenderer)
 	m_pHelper = new Controls::ImagePanel(m_pCanvas);
 	m_pHelper->SetPos(0, 0);
 	m_pHelper->SetSize(16, 16);
+	m_pHelper->SetDrawColor(Gwen::Color(0, 0, 0, 0));
 	m_pHelper->SetShouldDrawBackground(false);
 	m_pHelper->SetImage(SharedUtility::GetAbsolutePath("\\multiplayer\\datafiles\\cursor.png").Get());
 #endif

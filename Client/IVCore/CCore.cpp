@@ -125,6 +125,9 @@ bool CCore::Initialise()
 	
 	// Patch game addresses
 	CPatches::Initialize();
+
+	// Install crash fixes
+	CCrashFixes::Install();
 	
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);

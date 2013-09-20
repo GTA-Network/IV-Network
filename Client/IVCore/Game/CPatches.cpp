@@ -164,9 +164,6 @@ void CPatches::Initialize()
     //*(DWORD *)(COffsets::IV_Hook__PatchSecuromCheck + 30) = 0x90C301B0;
     //*(DWORD *)(COffsets::IV_Hook__PatchSecuromCheck + 60) = 0x90C301B0;
 
-    // Fix vehicle crash -> 8 xrefs
-    //CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchPreventVehicleCrash, (COffsets::IV_Hook__PatchPreventVehicleCrash + 40));
-
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function
 
