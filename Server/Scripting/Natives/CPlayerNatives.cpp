@@ -15,29 +15,7 @@
 
 void CPlayerNatives::Register(CScriptVM * pVM)
 {
-	pVM->RegisterClassFunction("setArmour", SetArmour);
-	pVM->RegisterClassFunction("getArmour", GetArmour);
 
-	pVM->RegisterClassFunction("getClothes", GetClothes);
-	pVM->RegisterClassFunction("setClothes", SetClothes);
-
-	pVM->RegisterClassFunction("getColor", GetColor);
-	pVM->RegisterClassFunction("setColor", SetColor);
-
-	pVM->RegisterClassFunction("getDimension", GetDimension);
-	pVM->RegisterClassFunction("setDimension", SetDimension);
-
-	pVM->RegisterClassFunction("getHeading", GetHeading);
-	pVM->RegisterClassFunction("setHeading", SetHeading);
-
-	pVM->RegisterClassFunction("getHealth", GetHealth);
-	pVM->RegisterClassFunction("setHealth", SetHealth);
-
-	pVM->RegisterClassFunction("getModel", GetModel);
-	pVM->RegisterClassFunction("setModel", SetModel);
-
-	pVM->RegisterClassFunction("getName", GetName);
-	pVM->RegisterClassFunction("setName", SetName);
 }
 
 int CPlayerNatives::GetArmour(int * VM)

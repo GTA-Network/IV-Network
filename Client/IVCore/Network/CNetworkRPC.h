@@ -10,9 +10,8 @@
 #ifndef CNetworkRPC_h
 #define CNetworkRPC_h
 
-#include <NetCommon.h>
+#include <Network/NetCommon.h>
 #include <Network/RPCIdentifiers.h>
-#include <CRPCHandler.hpp>
 
 class CNetworkRPC {
 private:

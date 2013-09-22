@@ -30,6 +30,7 @@
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
+#include "Game/CCrashFixes.h"
 #include "Graphics/CFPSCounter.h"
 
 #include "Network/CLocalPlayer.h"
@@ -43,6 +44,19 @@
 
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
+
+#include <gwen/Renderers/DirectX9.h>
+#include <gwen/Controls/ImagePanel.h>
+#include <gwen/Skins/Simple.h>
+#include <gwen/Controls/WindowControl.h>
+#include <gwen/Controls/PanelListPanel.h>
+#include <gwen/Controls/Text.h>
+#include <gwen/Controls.h>
+#include <gwen/Input/Windows.h>
+#include <gwen/Align.h>
+#include <Graphics/CGUIView.h>
+#include <Graphics/CMainMenu.h>
+#include <Graphics/CGUI.h>
 
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
@@ -61,7 +75,7 @@ private:
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
 	CDevelopment					* m_pDevelopment;
-						
+	CGUI                  			* m_pGUI;					
 
 	eGAMEStates						m_eGameState;
 
@@ -69,6 +83,7 @@ private:
 	CString							m_strHost;
 	unsigned short					m_usPort;
 	CString							m_strPass;
+	CString							m_strServerName;
 
 	CLibrary						*m_pRAGELibrary;
 	GetInterface_t					m_pEngine;
@@ -80,7 +95,7 @@ private:
 
 public:
 									CCore();
-									~CCore() { };
+									~CCore() { };							
 
 	bool							Initialise();
 
@@ -92,7 +107,7 @@ public:
 
 	void							OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
-	void							OnDeviceReset(IDirect3DDevice9 * pDevice);
+	void							OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDevicePreRender();
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
 	
@@ -109,6 +124,7 @@ public:
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
+	CGUI                 		 	* GetGUI() { return m_pGUI; }
 	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
@@ -121,6 +137,9 @@ public:
 	unsigned short					GetPort( ) { return m_usPort; }
 	void							SetPass( CString strPass ) { m_strPass = strPass; }
 	CString							GetPass( ) { return m_strPass; }
+
+	void							SetServerName(CString strServerName) { m_strServerName = strServerName;  }
+	CString							GetServerName() { return m_strServerName; }
 
 	unsigned						GetGameLoadInitializeTime() { return m_uiGameInitializeTime; }
 	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
@@ -136,6 +155,11 @@ public:
 	}
 	bool							GetHWND() { return m_hwndFocused; }
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
+	
+	bool              				m_bLoadingVisibility;
+	void              				RenderLoadingScreen();
+	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
+	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 };
 
 #endif // CCore_h

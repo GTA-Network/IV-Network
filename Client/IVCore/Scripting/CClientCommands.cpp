@@ -9,8 +9,6 @@
 
 #include "CClientCommands.h"
 
-#include <IV/IVParachute_Manager.h>
-#include <IV/IVParachute_Process.h>
 #include <Game/IVEngine/CIVModelManager.h>
 #include <Game/IVEngine/CIVHud.h>
 #include <IV/CIVScript.h>

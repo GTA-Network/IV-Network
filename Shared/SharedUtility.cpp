@@ -21,7 +21,7 @@
 #include <direct.h>
 #include <WS2tcpip.h>
 #include <tlhelp32.h>
-#include <../Libraries/md5/md5.h>
+#include <md5/md5.h>
 #else
 #define stricmp strcasecmp
 #define vsprintf_s vsprintf

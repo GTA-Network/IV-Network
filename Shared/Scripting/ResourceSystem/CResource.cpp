@@ -21,7 +21,7 @@
 
 #ifdef _CLIENT
 #else
-#include "../../Server/Scripting/Natives/Natives.h"
+#include "../../Server/Scripting/Natives/Natives_Server.h"
 #endif
 
 CResource::CResource()

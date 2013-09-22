@@ -111,7 +111,7 @@ void _declspec(naked) CPlayerPed__ProcessInput_Hook()
 	_asm
 	{
 		mov g_pPed, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pPed, false);
@@ -119,8 +119,8 @@ void _declspec(naked) CPlayerPed__ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CPlayerPed__ProcessInput
-			pushad
+		call COffsets::FUNC_CPlayerPed__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pPed, true);
@@ -128,7 +128,7 @@ void _declspec(naked) CPlayerPed__ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 
@@ -137,7 +137,7 @@ void _declspec(naked) CAutomobile_ProcessInput_Hook()
 	_asm
 	{
 		mov g_pKeySyncIVVehicle, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
@@ -145,8 +145,8 @@ void _declspec(naked) CAutomobile_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CAutomobile__ProcessInput
-			pushad
+		call COffsets::FUNC_CAutomobile__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
@@ -154,7 +154,7 @@ void _declspec(naked) CAutomobile_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 
@@ -163,7 +163,7 @@ void _declspec(naked) CBike_ProcessInput_Hook()
 	_asm
 	{
 		mov g_pKeySyncIVVehicle, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
@@ -171,8 +171,8 @@ void _declspec(naked) CBike_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CBike__ProcessInput
-			pushad
+		call COffsets::FUNC_CBike__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
@@ -180,7 +180,7 @@ void _declspec(naked) CBike_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 
@@ -189,7 +189,7 @@ void _declspec(naked) CBoat_ProcessInput_Hook()
 	_asm
 	{
 		mov g_pKeySyncIVVehicle, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
@@ -197,8 +197,8 @@ void _declspec(naked) CBoat_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CBoat__ProcessInput
-			pushad
+		call COffsets::FUNC_CBoat__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
@@ -206,7 +206,7 @@ void _declspec(naked) CBoat_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 
@@ -215,7 +215,7 @@ void _declspec(naked) CTrain_ProcessInput_Hook()
 	_asm
 	{
 		mov g_pKeySyncIVVehicle, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
@@ -223,8 +223,8 @@ void _declspec(naked) CTrain_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CTrain__ProcessInput
-			pushad
+		call COffsets::FUNC_CTrain__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
@@ -232,7 +232,7 @@ void _declspec(naked) CTrain_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 
@@ -241,7 +241,7 @@ void _declspec(naked) CHeli_ProcessInput_Hook()
 	_asm
 	{
 		mov g_pKeySyncIVVehicle, ecx
-			pushad
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
@@ -249,8 +249,8 @@ void _declspec(naked) CHeli_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			call COffsets::FUNC_CHeli__ProcessInput
-			pushad
+		call COffsets::FUNC_CHeli__ProcessInput
+		pushad
 	}
 
 	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
@@ -258,7 +258,7 @@ void _declspec(naked) CHeli_ProcessInput_Hook()
 	_asm
 	{
 		popad
-			ret
+		ret
 	}
 }
 

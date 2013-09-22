@@ -9,7 +9,7 @@
 
 #include	"CZlib.h"
 #include	<assert.h>
-#include	<Libraries/zlib-1.2.5/zlib.h>
+#include	<zlib-1.2.5/zlib.h>
 
 #if defined(MSDOS) || defined(OS2) || defined(_WIN32) || defined(__CYGWIN__)
 #  include <fcntl.h>

@@ -113,12 +113,14 @@ void CChat::Render()
 
 }
 
-void CChat::Output(const char * szText, bool bColorCoded)
+void CChat::Output(const char * szTextOld, bool bColorCoded)
 {
-	//CLogFile::Printf("CChat::Output: %s",szText);
+	CString strText = szTextOld;
+	if (strlen(szTextOld) > 128)
+		strText = strText.Substring(0, 127);
 	 
 	CChatLine * pLine = NULL;
-	const char * szRemainingText = szText;
+	const char * szRemainingText = strText.Get();
 	CColor color = m_TextColor;
 
 	do

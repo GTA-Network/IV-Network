@@ -71,7 +71,7 @@ public:
 			sq_newslot(m_pVM, -3, SQFalse);
 		}
 		return true;
-	};
+	}
 
 	int invoke(int * VM)
 	{
@@ -84,7 +84,7 @@ public:
 		CLogFile::Printf("[TODO] Pop values after call [%s]", __FUNCTION__);
 		//if (Arg_Count_) pop(Arg_Count_);
 
-		//returnValue(pVM, ret);
+		returnValue(pVM, ret);
 
 		return 1;
 	}
@@ -111,10 +111,85 @@ private:
 template<typename _Class, typename... _Args>
 class CScriptMethod<void, _Class, _Args...> : public CScriptMethodBase
 {
-
+private:
+	std::string name_;
 public:
 	typedef _Class ClassType;
 	typedef void (_Class::*MethodType)(_Args...);
+
+	CScriptMethod(const std::string &name, MethodType && fn) : name_(name), fn(std::forward<decltype(fn)>(fn))
+	{ }
+
+	bool Register(CScriptVM* pVM)
+	{
+		// TODO: add userdata this
+		/* LUA
+		lua_pushlightuserdata(m_pVM, this);
+		lua_pushcclosure(m_pVM, &call_func, 1);
+		lua_setfield(m_pVM, -2, name_.c_str());
+		*/
+		if (pVM->GetVMType() == LUA_VM)
+		{
+			lua_State* m_pVM = ((CLuaVM*) pVM)->GetVM();
+
+			lua_pushlightuserdata(m_pVM, this);
+			lua_pushcclosure(m_pVM, (lua_CFunction) call_func, 1);
+			lua_setfield(m_pVM, -2, name_.c_str());
+			//lua_pushstring(m_pVM, "__index");
+			//lua_pushcfunction(m_pVM, (lua_CFunction)call_func);
+			//lua_settable(m_pVM, -3);
+
+			//luaL_setfuncs
+			//
+			//lua_pushstring(m_pVM, name_.c_str());
+			//lua_pushlightuserdata(m_pVM, this);
+			//lua_pushcclosure(m_pVM, (lua_CFunction)call_func, 1);
+			//lua_settable(m_pVM, -3);
+		}
+		else if (pVM->GetVMType() == SQUIRREL_VM) {
+			SQVM* m_pVM = ((CSquirrelVM*) pVM)->GetVM();
+			//pVM->RegisterClassFunction(name_.c_str(), call_func);
+			//
+			sq_pushstring(m_pVM, name_.c_str(), -1);
+			sq_pushuserpointer(m_pVM, this);
+			sq_newclosure(m_pVM, (SQFUNCTION) call_func, 1);
+			sq_newslot(m_pVM, -3, SQFalse);
+		}
+		return true;
+	}
+
+	int invoke(int * VM)
+	{
+		GET_SCRIPT_VM_SAFE;
+
+		ClassType *obj = (ClassType *) pVM->GetClassInstance("");
+
+		applyTuple(pVM, (_Class *) obj, fn, args);
+
+		CLogFile::Printf("[TODO] Pop values after call [%s]", __FUNCTION__);
+		//if (Arg_Count_) pop(Arg_Count_);
+
+		return 0;
+	}
+
+	static int call_func(int * VM)
+	{
+		GET_SCRIPT_VM_SAFE;
+		if (pVM->GetVMType() == LUA_VM)
+		{
+			auto mimp = (CScriptMethod<void, _Class, _Args...> *)pVM->GetUserData(lua_upvalueindex(1));
+			return mimp->invoke(VM);
+		}
+		else if (pVM->GetVMType() == SQUIRREL_VM) {
+			auto mimp = (CScriptMethod<void, _Class, _Args...> *)pVM->GetUserData(-1);
+			return mimp->invoke(VM);
+		}
+		return 0;
+	}
+private:
+	MethodType fn;
+	std::tuple<_Args...> args;
+	static const unsigned int Arg_Count_ = sizeof...(_Args);
 };
 
 template<typename _Class>
@@ -169,6 +244,7 @@ public:
 
 	bool Register(CScriptVM* pVM)
 	{
+		// Do additional stuff before add something to the vm
 		if(pVM->GetVMType() == LUA_VM)
 		{
 			lua_State* m_pVM = ((CLuaVM*)pVM)->GetVM();
@@ -176,7 +252,7 @@ public:
 			lua_pushlightuserdata(m_pVM, this);
 		}
 		// Register Script class have to prepare the stack and register to start registering the methods
-		pVM->RegisterScriptClass(name_.c_str(), ctor);
+		pVM->RegisterScriptClass(name_.c_str(), ctor, this);
 
 		// Register member methods
 		for (auto &method : methods)
@@ -189,6 +265,7 @@ public:
 
 		return true;
 	}
+
 	bool RegisterMethods(CScriptVM* pVM)
 	{
 		// Register member methods
@@ -200,22 +277,31 @@ public:
 		return true;
 	}
 
-
 	static int ctor(int *VM)
 	{	
 		GET_SCRIPT_VM_SAFE;
-		if(pVM->GetVMType() == LUA_VM)
+
+		switch (pVM->GetVMType())
 		{
-			auto mimp = ((CScriptClass<_Class> *)pVM->GetUserData(lua_upvalueindex(1)));
-			pVM->SetClassInstance(mimp->name_.c_str(), new ClassType);
-		} else if(pVM->GetVMType() == SQUIRREL_VM)
-		{
-			auto mimp = ((CScriptClass<_Class> *)pVM->GetUserData(-1));
-			pVM->SetClassInstance(mimp->name_.c_str(), new ClassType);
+		case LUA_VM:
+			{
+				auto mimp = ((CScriptClass<_Class> *)pVM->GetUserData(lua_upvalueindex(1)));
+				pVM->SetClassInstance(mimp->name_.c_str(), new ClassType);
+			}
+			break;
+		case SQUIRREL_VM:
+			{
+				auto mimp = ((CScriptClass<_Class> *)pVM->GetUserData(-1));
+				pVM->SetClassInstance(mimp->name_.c_str(), new ClassType);
+			}
+			break;
+		default:
+			{
+				CLogFile::Printf("Warning: Unknown VM Type");
+			}
+			break;
 		}
 		// Note class need default constructor
-		
-		CLogFile::Printf("Create");
 		return 1;
 	}
 };

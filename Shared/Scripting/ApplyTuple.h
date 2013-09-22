@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 template<typename T>
-T getValue(CScriptVM*, int);
+T getValue(CScriptVM*, int idx);
 
 template<>
 int getValue<int>(CScriptVM* pVM, int idx);
@@ -17,57 +17,47 @@ template<>
 double getValue<double>(CScriptVM* pVM, int idx);
 
 template<>
+float getValue<float>(CScriptVM* pVM, int idx);
+
+template<>
+DWORD getValue<DWORD>(CScriptVM* pVM, int idx);
+
+template<>
+bool getValue<bool>(CScriptVM* pVM, int idx);
+
+template<>
+char getValue < char>(CScriptVM* pVM, int idx);
+
+template<>
+unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx);
+
+template<>
 const char *getValue<const char *>(CScriptVM* pVM, int idx);
 
-#if 0
+#if 1
 template<class T>
-LuaGlueClass<T> *getGlueClass(CScriptVM* pVM, unsigned int idx)
+T getValue_(CScriptVM *pVM, unsigned int idx, std::true_type)
 {
-	int ret = luaL_getmetafield(state, idx, LuaGlueClass<T>::METATABLE_CLASSIDX_FIELD);
-	if(!ret)
 	{
-		printf("getGlueClassPtr: typeid:%s\n", typeid(LuaGlueClass<T>).name());
-		printf("getGlueClassPtr: failed to get metafield for obj at idx %i\n", idx);
-		return 0;
+		return (T) pVM->GetUserData(idx);
 	}
-
-	int id = luaL_checkint(state, -1);
-	lua_pop(state, 1);
-
-	//printf("getGlueClass: METATABLE_CLASSIDX_FIELD: %i\n", id);
-	return (LuaGlueClass<T> *)g.lookupClass(id);
-}
-
-template<class T>
-T getValue_(LuaGlue &g, lua_State *state, unsigned int idx, std::true_type)
-{
-	//printf("getValuePtr: idx:%i\n", idx);
-	if(lua_islightuserdata(state, idx))
-	{
-		//printf("getValue: lud!\n");
-		return (T)lua_touserdata(state, idx);
-	}
-
 
 	(void)g;
-	T v = *(T *)lua_touserdata(state, idx);
+	T v = *(T *) pVM->GetUserData(idx);
 	return v;
 
-	printf("getValuePtr: failed to get a class instance for lua stack value at idx: %i\n", idx);
+	printf("getValuePtr: failed to get a class instance for script stack value at idx: %i\n", idx);
 return 0;
 }
 
 template<class T>
-T getValue_(LuaGlue &g, lua_State *state, unsigned int idx, std::false_type)
+T getValue_(CScriptVM* pVM, unsigned int idx, std::false_type)
 {
-	if(lua_islightuserdata(state, idx))
 	{
-		//printf("getValue: lud!\n");
-		return *(T*)lua_touserdata(state, idx);
+		return *(T*) (T) pVM->GetUserData(idx);
 	}
 
-	(void)g;
-	return **(T **)lua_touserdata(state, idx);
+	return **(T **) (T) pVM->GetUserData(idx);
 
 printf("getValue: failed to get a class instance for lua stack value at idx: %i\n", idx);
 return T();
@@ -77,8 +67,40 @@ return T();
 template<class T>
 T getValue(CScriptVM* pVM, int idx)
 {
-	return getValue<T>(pVM, idx, std::is_pointer<T>());
+	return getValue_<T>(pVM, idx, std::is_pointer<T>());
 }
+
+
+
+template<typename T>
+void returnValue(CScriptVM* pVM, T);
+
+template<>
+void returnValue(CScriptVM* pVM, int v);
+
+template<>
+void returnValue(CScriptVM* pVM, double v);
+
+template<>
+void returnValue(CScriptVM* pVM, const char *v);
+
+template<>
+void returnValue(CScriptVM* pVM, float v);
+
+template<>
+void returnValue(CScriptVM* pVM, unsigned int v);
+
+template<>
+void returnValue(CScriptVM* pVM, char v);
+
+template<class T>
+void returnValue(CScriptVM* pVM, T *v);
+
+// this is currently a source of memory leaks :(
+// need to tell the code that lua owns it somehow
+template<class T>
+void returnValue(CScriptVM* pVM, T v);
+
 
 // original apply tuple code:
 // http://stackoverflow.com/questions/687490/how-do-i-expand-a-tuple-into-variadic-template-functions-arguments
@@ -93,7 +115,7 @@ T getValue(CScriptVM* pVM, int idx)
 *
 * @ingroup g_util_tuple
 */
-template < uint32_t N >
+template < int N >
 struct apply_obj_func
 {
 	template < typename T, typename R, typename... ArgsF, typename... ArgsT, typename... Args >

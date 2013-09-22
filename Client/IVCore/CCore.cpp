@@ -8,6 +8,7 @@
 //==========================================================================================
 
 #include	"CCore.h"
+#include    <IV/CIVScript.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
@@ -31,6 +32,8 @@ CCore::CCore(void)
 	m_pChat = NULL;
 	m_pFPSCounter = NULL;
 	m_pNetworkManager = NULL;
+	m_pGUI = NULL;
+	m_bLoadingVisibility = 0;
 }
 
 bool CCore::Initialise()
@@ -122,6 +125,9 @@ bool CCore::Initialise()
 	
 	// Patch game addresses
 	CPatches::Initialize();
+
+	// Install crash fixes
+	CCrashFixes::Install();
 	
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);
@@ -146,9 +152,6 @@ void CCore::OnGameLoad()
 
 	// Initialize game instance & respawn local player
 	GetGame()->Initialise();
-
-	// Remove all stuff from directx device(which is drawn)
-	m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
@@ -188,6 +191,8 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Setup the chat
 	if(m_pChat)
 		m_pChat->Setup(pPresentationParameters);
+
+	m_pGUI = new CGUI(pDevice);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -198,7 +203,7 @@ void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
 	g_bDeviceLost = true;
 }
 
-void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice)
+void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
 	PRINT_FUNCTION
 
@@ -211,10 +216,22 @@ void CCore::OnDevicePreRender()
 	;
 }
 
+bool g_bLoading = true;
+
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Prerender devices
 	OnDevicePreRender();
+
+	// Is the game not loaded?
+	if (!IsGameLoaded() || g_bLoading)
+	{
+		// Clear the original EFLC Loading Screen
+		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+
+		// Render our own Loading Screen
+		RenderLoadingScreen();
+	}
 
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
@@ -262,15 +279,15 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	m_byteLoadingStyle++;
 	CString strLoadingInformation;
 	if(m_byteLoadingStyle >= 10 && m_byteLoadingStyle < 20)
-		strLoadingInformation = CString("IV:Multiplayer " VERSION_IDENTIFIER " - Loading.. Hold on /").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on /").Get();
 	else if(m_byteLoadingStyle >= 20 && m_byteLoadingStyle < 30)
-		strLoadingInformation = CString("IV:Multiplayer " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
 	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
-		strLoadingInformation = CString("IV:Multiplayer " VERSION_IDENTIFIER " - Loading.. Hold on \\").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on \\").Get();
 	else if(m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
-		strLoadingInformation = CString("IV:Multiplayer " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
 	else if(m_byteLoadingStyle == 50) {
-		strLoadingInformation = CString("IV:Multiplayer " VERSION_IDENTIFIER " - Loading.. Hold on").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on").Get();
 		m_byteLoadingStyle = 9;
 	}
 
@@ -308,6 +325,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render ingame ui elements
 	m_pGame->RenderUIElements();
 
+	// Render our gui instance
+	if (m_pGUI)
+		m_pGUI->Render();
+
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
 	{
@@ -319,42 +340,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		CSnapShot::Reset();
 	}
 	
-	#define CAM1 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
-	#define CAM2 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
-	#define CAM3 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
 
-	if(g_pCore->GetGame()->GetCamera()) {
-		/*
-		CAM1.m_fFar = CAM1.m_fFar*2;
-		CAM1.m_fFarDOF = CAM1.m_fFarDOF*2;
-		CAM1.m_fFOV = CAM1.m_fFOV*2;
-		CAM1.m_fMotionBlur = CAM1.m_fMotionBlur*2;
-		CAM1.m_fNear = CAM1.m_fNear*2;
-		CAM1.m_fNearDOF = CAM1.m_fNearDOF*2;
-		CAM1.m_fUnknown = CAM1.m_fUnknown*2;
-		CAM1.m_fUnknown2 = CAM1.m_fUnknown2*2;
-		CAM1.m_fUnknown3 = CAM1.m_fUnknown3*2;
-
-		CAM2.m_fFar = CAM2.m_fFar*2;
-		CAM2.m_fFarDOF = CAM2.m_fFarDOF*2;
-		CAM2.m_fFOV = CAM2.m_fFOV*2;
-		CAM2.m_fMotionBlur = CAM2.m_fMotionBlur*2;
-		CAM2.m_fNear = CAM2.m_fNear*2;
-		CAM2.m_fNearDOF = CAM2.m_fNearDOF*2;
-		CAM2.m_fUnknown = CAM2.m_fUnknown*2;
-		CAM2.m_fUnknown2 = CAM2.m_fUnknown2*2;
-		CAM2.m_fUnknown3 = CAM2.m_fUnknown3*2;
-		
-		CAM3.m_fFOV = CAM3.m_fFOV*2;
-		CAM3.m_fFar = CAM3.m_fFar*2;
-		CAM3.m_fFarDOF = CAM3.m_fFarDOF*2;
-		CAM3.m_fMotionBlur = CAM3.m_fMotionBlur*2;
-		CAM3.m_fNear = CAM3.m_fNear*2;
-		CAM3.m_fNearDOF = CAM3.m_fNearDOF*2;
-		CAM3.m_fUnknown = CAM3.m_fUnknown*2;
-		CAM3.m_fUnknown2 = CAM3.m_fUnknown2*2;
-		CAM3.m_fUnknown3 = CAM3.m_fUnknown3*2;*/
-	}
+	// If our local player exists, pulse him
+	if (m_pGame->GetLocalPlayer())
+		m_pGame->GetLocalPlayer()->Pulse();
 
 	pDevice->Present(NULL,NULL,NULL,NULL);
 }
@@ -438,4 +427,27 @@ void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
 
 	for(int i = 0; i < iFunctionCount; i++)
 		CLogFile::Printf("VFTable Offset: %d, Function: 0x%p (At Address: 0x%p)", (i * 4), *(PDWORD)(dwAddress + (i * 4)), (dwAddress + (i * 4)));
+}
+
+void CCore::RenderLoadingScreen()
+{
+	float rotation = 0.0f;
+
+	D3DVIEWPORT9 viewport;
+
+	g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
+	g_pCore->GetGraphics()->GetSprite()->Begin(0);
+
+	D3DXVECTOR2 spriteCentre = D3DXVECTOR2(0, 0);
+	D3DXVECTOR2 trans = D3DXVECTOR2(0, 0);
+	D3DXMATRIX mat;
+	D3DXVECTOR2 scaling2(viewport.Width / 2020.0f, viewport.Height / 2050.0f);
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling2, &spriteCentre, rotation, &trans);
+
+	g_pCore->GetGraphics()->GetSprite()->SetTransform(&mat);
+	g_pCore->GetGraphics()->GetSprite()->Draw(g_pCore->GetGraphics()->m_pLoadingBackgroundTexture, NULL, NULL, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255, 255, 255, 255));
+	g_pCore->GetGraphics()->GetSprite()->Flush();
+	g_pCore->GetGraphics()->GetSprite()->End();
+
+	g_pCore->GetGUI()->Render();
 }

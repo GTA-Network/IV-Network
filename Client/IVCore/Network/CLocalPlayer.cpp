@@ -15,6 +15,7 @@
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
+extern bool		 g_bLoading;
 
 void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngle)
 {
@@ -34,6 +35,9 @@ void __declspec(naked) HandleLocalPlayerSpawn()
 
 	CLogFile::Printf("%s",__FUNCTION__);
     g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
+
+	// Set the loading to false
+	g_bLoading = false;
 
     _asm	popad;
     _asm	jmp COffsets::FUNC_SpawnPlayer;
