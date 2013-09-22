@@ -108,6 +108,7 @@ public:
 
 class CNetworkEntity {
 private:
+	CControls						m_pControls;
 	eEntityType						m_eType;
 	EntityId						m_entityId;
 	CVector3						m_vecPosition;

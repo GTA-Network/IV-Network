@@ -15,7 +15,6 @@
 #include <Game/IVEngine/CIVPlayerPed.h>
 #include <Game/IVEngine/CIVPad.h>
 
-
 struct sWeaponHandlerData
 {
 	CVector3	m_vecAimPosition;

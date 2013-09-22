@@ -39,14 +39,19 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read( iPort );
 
 	// Set the localplayer id
-	g_pCore->GetGame()->GetLocalPlayer()->SetId( playerId );
+	g_pCore->GetGame()->GetLocalPlayer()->SetId(playerId);
+
+	// Add the local player to the playermanager
+	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, reinterpret_cast<CPlayerEntity *>(g_pCore->GetGame()->GetLocalPlayer()));
 
 	// Set the localplayer colour
 	g_pCore->GetGame()->GetLocalPlayer()->SetColor( uiColour );
 
-	//
-	g_pCore->GetChat()->Clear();
-	g_pCore->GetChat()->Outputf( true, "#16C5F2 Successfully connected to %s.", strServerName.C_String() );
+	// Set the servername
+	g_pCore->SetServerName(strServerName.C_String());
+
+	// Notify the player via chat
+	g_pCore->GetChat()->Outputf(true, "#16C5F2 Connection established waiting for welcome message %s.", strServerName.C_String());
 
 	// Start the game
 	g_pCore->GetGame()->SetupGame();
@@ -69,12 +74,18 @@ void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Set the network state
 	g_pCore->GetNetworkManager()->SetNetworkState(NETSTATE_CONNECTED);
 
-	// Spawn the localplayer
-
 	// Set the stuff from server
-	CIVWeather::SetTime(iHour,iMinute);
+	g_pCore->GetTimeManagementInstance()->SetTime(iHour, iMinute);
+	CIVWeather::SetTime(iHour, iMinute);
 	CIVWeather::SetWeather((eWeather)iWeather);
 	CIVWeather::SetDayOfWeek(iDay);
+
+	// Notify the client
+	g_pCore->GetChat()->Clear();
+	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
+
+	// Start the game
+	g_pCore->GetGame()->OnClientReadyToGamePlay();
 }
 
 void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -87,16 +98,25 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CString strPlayerName;
 	pBitStream->Read(strPlayerName);
 
+	// Check if we are the local player(thx for broadcasting to XForce, *keks*)
+	if(g_pCore->GetGame()->GetLocalPlayer()->GetId() == playerId)
+		return;
+
 	// Add the player
-	CPlayerEntity * pEntity = new CPlayerEntity();
-	pEntity->SetId(playerId);
+	CPlayerEntity * pEntity = new CPlayerEntity;
+	pEntity->SetModel(0); // Set temporary to luis lol
+	pEntity->Create();
 	pEntity->SetNick(strPlayerName);
+	pEntity->SetId(playerId);
 
-	g_pCore->GetGame()->GetPlayerManager()->Add(pEntity);
+	// Notify the playermanager that we're having a new player
+	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, pEntity);
 
-	pEntity->Spawn();
-	// temp
-	pEntity->SetModel(7);
+	// Update the network entity to fetch the class and the scripting index
+	pEntity->CNetworkEntity::Pulse(pEntity);
+
+	// Temporary set the position to our dev spawn
+	pEntity->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 }
 
 void PlayerLeave(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -105,9 +125,8 @@ void PlayerLeave(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	EntityId playerId;
 	pBitStream->ReadCompressed(playerId);
 
+	// Remove the player from the player manager
 	g_pCore->GetGame()->GetPlayerManager()->Delete(playerId);
-	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->Destroy();
-	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->~CPlayerEntity();
 }
 
 void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -121,7 +140,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read( strInput );
 
 	// Is the player active?
-	if( g_pCore->GetGame()->GetPlayerManager()->DoesExists( playerId ) )
+	if(g_pCore->GetGame()->GetPlayerManager()->DoesExists( playerId ))
 	{
 		// Get the player pointer
 		CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
@@ -139,11 +158,11 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 {
 	// Read the playerid
 	EntityId playerId;
-	pBitStream->ReadCompressed( playerId );
+	pBitStream->Read( playerId );
 
 	// Read the player ping
 	unsigned short usPing;
-	pBitStream->ReadCompressed( usPing );
+	pBitStream->Read( usPing );
 
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
@@ -153,6 +172,10 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	{
 		// Set the player ping
 		pPlayer->SetPing( usPing );
+
+		// Check for local player
+		if (pPlayer->IsLocalPlayer())
+			return;
 
 		// Is the localplayer spawned?
 		if( g_pCore->GetGame()->GetLocalPlayer()->IsSpawned() )
@@ -164,15 +187,15 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 				return;
 			}
 
-			ePackageType pPackageType = ePackageType();
-			pBitStream->Read((char *)pPackageType);
+			ePackageType eType;
+			pBitStream->Read<ePackageType>(eType);
 
-			switch(pPackageType)
+			switch ((int)eType)
 			{
 				case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 				{
 					// Process player deserialise package
-					pPlayer->Deserialize(pBitStream, pPackageType);
+					pPlayer->Deserialize(pBitStream, eType);
 					break;
 				}
 				default:
@@ -197,6 +220,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -213,7 +237,8 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_START_GAME));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
-		
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
+
 		// Mark as not registered
 		m_bRegistered = false;
 	}

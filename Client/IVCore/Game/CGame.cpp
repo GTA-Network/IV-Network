@@ -132,9 +132,8 @@ void CGame::Initialise()
 	m_pPool->Initialize();
 
 	// Create our camera instance if it doesn't exist/isn't created yet
-	CCamera * pCamera = new CCamera;
 	if(!m_pCamera)
-		m_pCamera = pCamera;
+		m_pCamera = new CCamera;
 
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pPlayerManager)
@@ -211,7 +210,6 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	// Call basic initialasion functions from the localplayer class
 	m_pLocalPlayer->Reset();
 	m_pLocalPlayer->SetSpawnLocation(CVector3(DEVELOPMENT_SPAWN_POSITION),0.0f);
-	m_pLocalPlayer->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 
 	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
 }
@@ -295,19 +293,6 @@ void CGame::RenderRAGEScripts()
 	// If our loacl player isn't create, try to create it
 	if(!m_LocalPlayerInitialised)
 		OnEnvironmentStartUp(true);
-
-	// If our network manager exists process it
-	if(g_pCore->GetNetworkManager())
-		g_pCore->GetNetworkManager()->Pulse();
-
-	// If our local player exists, pulse him
-	if(m_pLocalPlayer)
-		m_pLocalPlayer->Pulse();
-
-	// If our iv management exists, process it
-	if(m_pManagement)
-		m_pManagement->Pulse();
-	
 }
 
 void CGame::PrepareWorld()
@@ -324,6 +309,8 @@ void CGame::PrepareWorld()
 	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
 	m_pTrafficLights->Reset();
 
+	SAFE_DELETE(m_pCamera);
+	m_pCamera = new CCamera;
 	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
 	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 }
@@ -331,8 +318,7 @@ void CGame::PrepareWorld()
 void CGame::OnClientReadyToGamePlay()
 {
 	// Make our local player ready to port to the default spawn position
-	m_pLocalPlayer->Teleport(CVector3(DEVELOPMENT_SPAWN_POSITION));
-	//m_pLocalPlayer->Respawn();
+	m_pLocalPlayer->Respawn();
 	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
 	m_pLocalPlayer->SetPlayerControlAdvanced(true, true, true);
 
@@ -343,8 +329,8 @@ void CGame::OnClientReadyToGamePlay()
 	CIVHud::SetPlayerNamesVisible(true);
 
 	// Update our environment settings and set default timemanagement data
-	g_pCore->GetTimeManagementInstance()->SetTime(7,0);
-	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
+	//g_pCore->GetTimeManagementInstance()->SetTime(7,0);
+	//g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
 }
 
 void CGame::OnClientPastGameJoin()
@@ -420,6 +406,14 @@ void CGame::ProcessEnvironment()
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 		return;
 
+	// If our iv management exists, process it
+	if (m_pManagement)
+		m_pManagement->Pulse();
+
+	// If our player manager exists, process it
+	if (m_pPlayerManager)
+		m_pPlayerManager->Pulse();
+
 	unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
 	int uGameHour = 0, uGameMinute = 0; // deleted by jmpback from func
 
@@ -446,26 +440,7 @@ void CGame::ProcessEnvironment()
 
 void CGame::SetupGame()
 {
-	g_pCore->GetGame()->OnClientReadyToGamePlay();
-	g_pCore->GetGame()->GetLocalPlayer()->SetModel(0);
-	g_pCore->GetGame()->GetLocalPlayer()->SetMoney(10000);
-
-	int iVehicleType = 141;
-
-	CVector3 vecCreatePos; 
-	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
-	vecCreatePos.fX += 4;
-	vecCreatePos.fY += 1;
-
-	CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
-	
-	CHECK_PTR_VOID(pVehicle);
-
-	// Add our vehicle
-	g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-	pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
-	pVehicle->Create();
-	pVehicle->SetPosition(vecCreatePos);
+	//g_pCore->GetGame()->PrepareWorld();
 }
 
 void CGame::RenderUIElements()

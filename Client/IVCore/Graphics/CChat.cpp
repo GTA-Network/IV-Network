@@ -113,12 +113,14 @@ void CChat::Render()
 
 }
 
-void CChat::Output(const char * szText, bool bColorCoded)
+void CChat::Output(const char * szTextOld, bool bColorCoded)
 {
-	//CLogFile::Printf("CChat::Output: %s",szText);
+	CString strText = szTextOld;
+	if (strlen(szTextOld) > 128)
+		strText = strText.Substring(0, 127);
 	 
 	CChatLine * pLine = NULL;
-	const char * szRemainingText = szText;
+	const char * szRemainingText = strText.Get();
 	CColor color = m_TextColor;
 
 	do
@@ -441,7 +443,7 @@ void CChat::ProcessInput()
 						continue;
 					if(Checkstring[i] == '_' || Checkstring[i] == ' ')
 						continue;
-					if(Checkstring[i] == '.' || Checkstring[i] == ':' || Checkstring[i] == ',' || Checkstring[i] == ';')
+					if(Checkstring[i] == '.' || Checkstring[i] == ':' || Checkstring[i] == ',' || Checkstring[i] == ';');
 						continue;
 
 					return Output("Unkown message input, please use only words from a-z", false);

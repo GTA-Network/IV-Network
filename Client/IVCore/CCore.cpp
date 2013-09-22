@@ -340,42 +340,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		CSnapShot::Reset();
 	}
 	
-	#define CAM1 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
-	#define CAM2 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
-	#define CAM3 g_pCore->GetGame()->GetCamera()->GetGameCam()->GetCam()->m_data1
 
-	if(g_pCore->GetGame()->GetCamera()) {
-		/*
-		CAM1.m_fFar = CAM1.m_fFar*2;
-		CAM1.m_fFarDOF = CAM1.m_fFarDOF*2;
-		CAM1.m_fFOV = CAM1.m_fFOV*2;
-		CAM1.m_fMotionBlur = CAM1.m_fMotionBlur*2;
-		CAM1.m_fNear = CAM1.m_fNear*2;
-		CAM1.m_fNearDOF = CAM1.m_fNearDOF*2;
-		CAM1.m_fUnknown = CAM1.m_fUnknown*2;
-		CAM1.m_fUnknown2 = CAM1.m_fUnknown2*2;
-		CAM1.m_fUnknown3 = CAM1.m_fUnknown3*2;
-
-		CAM2.m_fFar = CAM2.m_fFar*2;
-		CAM2.m_fFarDOF = CAM2.m_fFarDOF*2;
-		CAM2.m_fFOV = CAM2.m_fFOV*2;
-		CAM2.m_fMotionBlur = CAM2.m_fMotionBlur*2;
-		CAM2.m_fNear = CAM2.m_fNear*2;
-		CAM2.m_fNearDOF = CAM2.m_fNearDOF*2;
-		CAM2.m_fUnknown = CAM2.m_fUnknown*2;
-		CAM2.m_fUnknown2 = CAM2.m_fUnknown2*2;
-		CAM2.m_fUnknown3 = CAM2.m_fUnknown3*2;
-		
-		CAM3.m_fFOV = CAM3.m_fFOV*2;
-		CAM3.m_fFar = CAM3.m_fFar*2;
-		CAM3.m_fFarDOF = CAM3.m_fFarDOF*2;
-		CAM3.m_fMotionBlur = CAM3.m_fMotionBlur*2;
-		CAM3.m_fNear = CAM3.m_fNear*2;
-		CAM3.m_fNearDOF = CAM3.m_fNearDOF*2;
-		CAM3.m_fUnknown = CAM3.m_fUnknown*2;
-		CAM3.m_fUnknown2 = CAM3.m_fUnknown2*2;
-		CAM3.m_fUnknown3 = CAM3.m_fUnknown3*2;*/
-	}
+	// If our local player exists, pulse him
+	if (m_pGame->GetLocalPlayer())
+		m_pGame->GetLocalPlayer()->Pulse();
 
 	pDevice->Present(NULL,NULL,NULL,NULL);
 }

@@ -83,6 +83,7 @@ private:
 	CString							m_strHost;
 	unsigned short					m_usPort;
 	CString							m_strPass;
+	CString							m_strServerName;
 
 	CLibrary						*m_pRAGELibrary;
 	GetInterface_t					m_pEngine;
@@ -136,6 +137,9 @@ public:
 	unsigned short					GetPort( ) { return m_usPort; }
 	void							SetPass( CString strPass ) { m_strPass = strPass; }
 	CString							GetPass( ) { return m_strPass; }
+
+	void							SetServerName(CString strServerName) { m_strServerName = strServerName;  }
+	CString							GetServerName() { return m_strServerName; }
 
 	unsigned						GetGameLoadInitializeTime() { return m_uiGameInitializeTime; }
 	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
