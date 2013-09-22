@@ -57,7 +57,7 @@ public:
 	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 2; }
 
-	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);
+	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	void		 FinishRegisterScriptClass();
 	void		*GetUserData(int idx);

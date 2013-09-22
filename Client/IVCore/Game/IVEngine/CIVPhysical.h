@@ -35,24 +35,24 @@ public:
         float m_fHealth;                // 1F0-1F4
         PAD(IVPhysical, pad3, 0x1C);    // 1F4-210
 
-        virtual ~IVPhysical();
-        virtual void            Function55(); 
-        virtual void            Function56(); // seems get flag
-        virtual void            Function57(); // something with bound or so
-        virtual void            Function58(); // nullsub
-        virtual CVector3*       GetVelocity(CVector3*);
-        virtual void            SetHealth(float);
-        virtual void            SetHealth(float, int);
-        virtual void            AddHealth(float);
-        virtual float           GetHealth();
-        virtual void            Function64(); // something with network object
-        virtual void            Function65(); // return 1;
-        virtual void            Function66(); // return 1;
-        virtual CVector3*       Function67(CVector3*); // sets something
-        virtual void            Function68(); // unregister reference
-        virtual void            Function69(); // physics calculation
-        virtual void            Function70();
-        virtual void            Function71();
+        virtual					~IVPhysical();
+        virtual void			Function55(); 
+        virtual void			Function56(); // seems get flag
+        virtual void			Function57(); // something with bound or so
+        virtual void			Function58(); // nullsub
+        virtual CVector3*		GetVelocity(CVector3*);
+        virtual void			SetHealth(float);
+        virtual void			SetHealth(float, int);
+        virtual void			AddHealth(float);
+        virtual float			GetHealth();
+		virtual void			Function64(); // something with network object
+		virtual void			Function65(); // return 1;
+		virtual void			Function66(); // return 1;
+        virtual CVector3*		Function67(CVector3*); // sets something
+		virtual void			Function68(); // unregister reference
+		virtual void			Function69(); // physics calculation
+		virtual void			Function70();
+		virtual void			Function71();
 };
 
 class CIVPhysical : public CIVDynamicEntity {

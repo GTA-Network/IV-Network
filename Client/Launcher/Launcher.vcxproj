@@ -40,14 +40,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <TargetName>LaunchIVMultiplayer</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_clientlauncher\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>LaunchIVNetwork</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_clientlauncher\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>LaunchIVNetwork</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>../../Shared;../../Libraries;../;../../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
@@ -69,7 +69,7 @@
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetDir)LaunchIVMultiplayer.exe" "$(SolutionDir)Files\LaunchIVMultiplayer.exe"</Command>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
     <Manifest>
       <AdditionalManifestFiles>
@@ -84,14 +84,18 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>..\..\Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\tinyxml\ticpp.cpp" />

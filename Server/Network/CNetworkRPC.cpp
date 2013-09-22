@@ -16,7 +16,7 @@
 #include <Scripting/CEvents.h>
 #include <CSettings.h>
 
-#define GET_RPC_CODEX(x) CString("IVMP0xF%dF", int(x)).Get()
+#define GET_RPC_CODEX(x) CString("IVN0xF%dF", int(x)).Get()
 
 extern CServer * g_pServer;
 
@@ -26,7 +26,7 @@ RakNet::BitStream		bsReject;
 void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the playerid
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Read the player version
 	DWORD dwVersion;
@@ -45,7 +45,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CString strSerial(_strSerial.C_String());
 
 	// Is the network version invalid?
-	if(dwVersion != (DWORD)/*NETWORK_VERSION*/0x0)
+	if (dwVersion != (DWORD)/*NETWORK_VERSION*/0x0)
 	{
 		// TODO
 	}
@@ -64,7 +64,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
-	CLogFile::Printf("[join] %s has connected to the server. (%s)", strName.Get(), strSerial.Get());
+	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
 
 	// Add everyone else connected for this player
 	// TODO: handle client join
@@ -92,12 +92,46 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Send it back to the player
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_START_GAME), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+
+	for (EntityId i = 0; i < CServer::GetInstance()->GetPlayerManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetPlayerManager()->DoesExists(i) && i != playerId)
+		{
+			bitStream.Reset();
+			bitStream.WriteCompressed(i);
+			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetName().Get());
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+
+		}
+	}
+
+	for (EntityId i = 0; i < CServer::GetInstance()->GetPlayerManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetPlayerManager()->DoesExists(i) && i != playerId)
+		{
+			bitStream.Reset();
+			bitStream.WriteCompressed(playerId);
+			bitStream.Write(_strName.C_String());
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
+		}
+	}
+
+
+	bitStream.Reset();
+
+	bitStream.WriteCompressed(playerId);
+	bitStream.Write(7);
+	bitStream.Write(3);
+	bitStream.Write(3);
+	bitStream.Write(1);
 }
 
 void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the playerid
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Read if this is a command
 	bool bIsCommand = pBitStream->ReadBit();
@@ -107,16 +141,16 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read(strInput);
 
 	// Is the player active?
-	if(CServer::GetInstance()->GetPlayerManager()->DoesExists(playerId))
+	if (CServer::GetInstance()->GetPlayerManager()->DoesExists(playerId))
 	{
 		// Get a pointer to the player
 		CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 		// Is the pointer valid?
-		if(pPlayer)
+		if (pPlayer)
 		{
 			// Is this not a command?
-			if(!bIsCommand)
+			if (!bIsCommand)
 			{
 				CLogFile::Printf("[chat] %s: %s", pPlayer->GetName().Get(), strInput.C_String());
 
@@ -137,10 +171,10 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Is the player active?
-	if(CServer::GetInstance()->GetPlayerManager()->DoesExists(playerId))
+	if (CServer::GetInstance()->GetPlayerManager()->DoesExists(playerId))
 	{
 		// Deserialse the bitstream with the player
 		ePackageType eType;
@@ -148,22 +182,28 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 		switch (eType)
 		{
-			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
-			case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
-			case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
+		case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
+			{
+				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
+				pBitStream->Reset();
+
+				// TODO: dont send the sync directly store (queue) it make some interpolation or somthing and then send it to get a nice and smooth sync
+				break;
+			}
+		case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
+		case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
 			{
 				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
 				break;
 			}
 		}
-		
 	}
 }
 
 void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Read the killer id
 	EntityId killerId;
@@ -173,19 +213,19 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player pointer valid?
-	if(pPlayer)
+	if (pPlayer)
 	{
 		// Kill the player
 		//pPlayer->KillForWorld();
 
 		// Is the killer a player?
-		if(killerId != INVALID_ENTITY_ID)
+		if (killerId != INVALID_ENTITY_ID)
 		{
 			// Find the killer
 			CPlayerEntity* pKiller = CServer::GetInstance()->GetPlayerManager()->GetAt(killerId);
 
 			// Is the killer valid?
-			if(pKiller)
+			if (pKiller)
 				CLogFile::Printf("[death] %s has been killed by %d!", pPlayer->GetName().Get(), pKiller->GetId());
 			else
 				CLogFile::Printf("[death] %s has been killed by NOT_A_PLAYER!", pPlayer->GetName().Get());
@@ -195,19 +235,19 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CLogFile::Printf("[death] %s has died!", pPlayer->GetName().Get());
 		}
 	}
-	CLogFile::Printf("%s",__FUNCTION__);
+	CLogFile::Printf("%s", __FUNCTION__);
 }
 
 void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player pointer valid?
-	if(pPlayer)
+	if (pPlayer)
 	{
 		// Spawn the player
 		//pPlayer->SpawnForWorld();
@@ -215,31 +255,31 @@ void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// Spawn everyone else connected for this player
 		//CServer::GetInstance()->GetPlayerManager()->HandlePlayerSpawn(playerId);
 
-		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get()); 
+		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get());
 	}
-	CLogFile::Printf("%s",__FUNCTION__);
+	CLogFile::Printf("%s", __FUNCTION__);
 }
 
 void PlayerRespawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Get a pointer to the player
 	CPlayerEntity * pNetworkPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player pointer valid?
-	if(pNetworkPlayer)
+	if (pNetworkPlayer)
 	{
 		// Respawn the player
 	}
-	CLogFile::Printf("%s",__FUNCTION__);
+	CLogFile::Printf("%s", __FUNCTION__);
 }
 
 void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Read the vehicle id
 	EntityId vehicleId;
@@ -253,7 +293,7 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player instance valid?
-	if(pPlayer)
+	if (pPlayer)
 	{
 		// Handle this with the player
 		//pPlayer->HandleVehicleEnter(vehicleId, iSeat);
@@ -265,7 +305,7 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
-	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Read the vehicle id
 	EntityId vehicleId;
@@ -279,7 +319,7 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player instance valid?
-	if(pPlayer)
+	if (pPlayer)
 	{
 		// Handle this with the player
 		//pPlayer->HandleVehicleExit(vehicleId, iSeat);
@@ -291,12 +331,12 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we already registered?
-	if(m_bRegistered)
+	if (m_bRegistered)
 		return;
 
 	// Default rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
-	
+
 	// Player rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), PlayerSync);
@@ -312,7 +352,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 {
 	// Are we not registered?
-	if(!m_bRegistered)
+	if (!m_bRegistered)
 		return;
 
 	// Default rpcs

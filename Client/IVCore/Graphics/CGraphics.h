@@ -24,20 +24,13 @@
 #include <Math\CMaths.h>
 #include <Detours\detours.h>
 
-struct sFontInfo
-{
-	const char			* szFontName;
-	unsigned int		uiHeight;
-	unsigned int		uiWeight;
-};
-
 class CDirect3D9Hook;
 class CGraphics {
 private:
 	IDirect3DDevice9		* m_pDevice;
 	CDirect3D9Hook			* m_pDeviceHook;
 	CDirectInput8Hook		* m_pDirectInput8Hook;
-	ID3DXFont				* m_pFonts[NUM_FONTS];
+	ID3DXFont				* m_pFont;
 	LPD3DXSPRITE			m_pSprite;
 
 	bool					m_bInitialised;
@@ -64,7 +57,7 @@ public:
 	void					DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox);
 	void					DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour);
 
-	ID3DXFont				* GetFont(unsigned int uiIndex);
+	ID3DXFont				* GetFont();
 
 	void					OnLostDevice(IDirect3DDevice9 * pDevice);
 	void					OnRestoreDevice(IDirect3DDevice9 * pDevice);
@@ -90,6 +83,9 @@ public:
 
 	// Radar texture
 	LPDIRECT3DTEXTURE9		m_pRadarOverlayTexture;
+	
+	// Loading Screen Texture
+	LPDIRECT3DTEXTURE9    	m_pLoadingBackgroundTexture;
 };
 
 #endif // CGraphics_h

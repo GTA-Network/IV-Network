@@ -252,9 +252,6 @@
     <ClCompile Include="Entity\CVehicleEntity.cpp">
       <Filter>Source Files\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Network\CServerRPCHandler.cpp">
-      <Filter>Source Files\Network</Filter>
-    </ClCompile>
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp">
       <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
     </ClCompile>
@@ -446,9 +443,6 @@
     <ClInclude Include="Scripting\Natives\CPlayerNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
-    <ClInclude Include="Scripting\Natives\Natives.h">
-      <Filter>Header Files\Scripting\Natives</Filter>
-    </ClInclude>
     <ClInclude Include="Scripting\Natives\C3DLabelNatives.h">
       <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
@@ -511,9 +505,6 @@
     </ClInclude>
     <ClInclude Include="Entity\Entities.h">
       <Filter>Header Files\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\CServerRPCHandler.h">
-      <Filter>Header Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CScriptVM.h">
       <Filter>Header Files\Shared\Scripting</Filter>
@@ -670,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\CScriptClass.h">
       <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\Natives_Server.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

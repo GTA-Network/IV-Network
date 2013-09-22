@@ -341,7 +341,7 @@ bool CPlayerEntity::Create()
 	m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
 
 	// Set the game player info pointer
-	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned)m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
+	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
 	// Allocate the player ped
 	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
@@ -377,7 +377,6 @@ bool CPlayerEntity::Create()
 
 	// Set the player state to spawned
 	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
-
 	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
 
 	// Set our player info with the ped
@@ -398,11 +397,11 @@ bool CPlayerEntity::Create()
 	m_pPlayerPed->AddToWorld();
 
 	// Create the player blip
-	//CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, "DummyPed");
+	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), "DummyPed", 255, 255, 255, 255);
+	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), m_strNick.Get(), 255, 255, 255, 255);
 
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
@@ -490,7 +489,7 @@ bool CPlayerEntity::Destroy()
 	return true;
 }
 
-void CPlayerEntity::SetPosition(CVector3& vecPosition)
+void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 {
 	// Are we spawned?
 	if(IsSpawned())
@@ -509,7 +508,11 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition)
 		}
 	}
 
-	RemoveTargetPosition();
+	// Just update the position
+	if (bForce) {
+		RemoveTargetPosition();
+		m_vecPosition = vecPosition;
+	}
 	CNetworkEntity::SetPosition(vecPosition);
 }
 
@@ -607,9 +610,9 @@ void CPlayerEntity::SetHealth(float fHealth)
 
 float CPlayerEntity::GetHealth()
 {
-	float fHealth = m_pPlayerPed->GetHealth();
-	//_asm add esp, 4;
-	return fHealth;
+	unsigned fHealth;
+	CIVScript::GetCharHealth(GetScriptingHandle(), &fHealth);
+	return (float)fHealth;
 }
 
 float CPlayerEntity::GetArmour()
@@ -1318,7 +1321,7 @@ void CPlayerEntity::UpdateTargetPosition()
 		}
 
 		// Set our new position
-		SetPosition(vecNewPosition);
+		SetPosition(vecNewPosition, false);
 	}
 }
 
@@ -1329,50 +1332,45 @@ void CPlayerEntity::Interpolate()
 		UpdateTargetPosition();
 }
 
+void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading, float fAimData[2], CVector3 vecWeaponData[3])
+{
+	CLogFile::Printf("%f %f %f, %f %f %f, %f %f %f, %f %f %f, %f %f %f, %d, %f", 
+		vecPosition.fX, vecPosition.fY, vecPosition.fZ,
+		vecMovement.fX, vecMovement.fY, vecMovement.fZ,
+		vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ,
+		vecRoll.fX, vecRoll.fY, vecRoll.fZ,
+		vecDirection.fX, vecDirection.fY, vecDirection.fZ,
+		bDuck, fHeading);
+
+	m_pIVSyncHandle->vecPosition = vecPosition;
+	m_pIVSyncHandle->vecMovementSpeed = vecMovement;
+	m_pIVSyncHandle->vecTurnSpeed = vecTurnSpeed;
+	m_pIVSyncHandle->vecRoll = vecRoll;
+	m_pIVSyncHandle->vecDirection = vecDirection;
+	m_pIVSyncHandle->bDuckState = bDuck;
+	m_pIVSyncHandle->fHeading = fHeading;
+	m_pIVSyncHandle->vecAimAtCoordinates = vecWeaponData[0];
+	m_pIVSyncHandle->vecShotAtCoordinates = vecWeaponData[1];
+	m_pIVSyncHandle->vecShotAtTarget = vecWeaponData[2];
+	m_pIVSyncHandle->fArmsHeadingCircle = fAimData[0];
+	m_pIVSyncHandle->fArmsUpDownRotation = fAimData[1];
+}
+
+int iCount = -1;
 void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
 {
+	iCount++;
+	/*if (g_pCore->GetChat())
+		g_pCore->GetChat()->Outputf(false, "Recieving sync.. %d", iCount);
+	*/
 	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
 	if(!IsSpawned() || m_pPlayerPed->GetPed()->m_bytePlayerNumber < 0 || uiPlayerIndex < 1)
 		return;
 
-	// Copy data if our localplayer or copyplayer is avaiable
-	if(bCopyLocalPlayer || pCopy) {
-		pCopy->CNetworkEntity::GetPosition(m_pIVSyncHandle->vecPosition);
-		pCopy->CNetworkEntity::GetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-		pCopy->CNetworkEntity::GetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-		pCopy->CNetworkEntity::GetDirectionSpeed(m_pIVSyncHandle->vecDirection);
-		pCopy->CNetworkEntity::GetRollSpeed(m_pIVSyncHandle->vecRoll);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponAimTarget(m_pIVSyncHandle->vecAimAtCoordinates);
-		pCopy->CPlayerEntity::GetContextData()->GetArmHeading(m_pIVSyncHandle->fArmsHeadingCircle);
-		pCopy->CPlayerEntity::GetContextData()->GetArmUpDown(m_pIVSyncHandle->fArmsUpDownRotation);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotSource(m_pIVSyncHandle->vecShotAtCoordinates);
-		pCopy->CPlayerEntity::GetContextData()->GetWeaponShotTarget(m_pIVSyncHandle->vecShotAtTarget);
-		m_pIVSyncHandle->bDuckState = pCopy->CNetworkEntity::GetPlayerHandle().bDuckState;
-		m_pIVSyncHandle->fHeading = pCopy->CPlayerEntity::GetRotation();
-		pCopy->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
-
-		// Add 2m to x axis
-		m_pIVSyncHandle->vecPosition.fX += 2;
-	}
-	else { // Otherwise copy the data from our class instance
-		m_pIVSyncHandle->vecPosition = this->m_vecPosition;
-		m_pIVSyncHandle->vecMovementSpeed = this->m_vecMoveSpeed;
-		m_pIVSyncHandle->vecTurnSpeed = this->m_vecTurnSpeed;
-		m_pIVSyncHandle->vecDirection = this->m_vecDirection;
-		m_pIVSyncHandle->vecRoll = this->m_vecRoll;
-		this->m_pContextData->GetWeaponAimTarget(m_pIVSyncHandle->vecAimAtCoordinates);
-		this->m_pContextData->GetArmHeading(m_pIVSyncHandle->fArmsHeadingCircle);
-		this->m_pContextData->GetArmUpDown(m_pIVSyncHandle->fArmsUpDownRotation);
-		this->m_pContextData->GetWeaponShotSource(m_pIVSyncHandle->vecShotAtCoordinates);
-		this->m_pContextData->GetWeaponShotTarget(m_pIVSyncHandle->vecShotAtTarget);
-		m_pIVSyncHandle->bDuckState = this->CNetworkEntity::GetPlayerHandle().bDuckState;
-		m_pIVSyncHandle->fHeading = this->CPlayerEntity::GetRotation();
-		this->CPlayerEntity::GetControlState(m_pIVSyncHandle->pControls);
-	}
-
 	// First update onfoot movement(stand still, walk, run, jump etc.)
 	if(!bHasWeaponData) {
 		m_pIVSync->bStoreOnFootSwitch = false;
+
 		if(m_pIVSyncHandle->vecMovementSpeed.Length() < 1.0)
 			m_pIVSync->byteMoveStyle = 0;
 		else if(m_pIVSyncHandle->vecMovementSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMovementSpeed.Length() >= 1.0)
@@ -1416,22 +1414,39 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 				}
 				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
 				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
+				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
 				break;
 			}
 			case IVSYNC_ONFOOT_WALK:
 			{
+				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
+				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
+				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
+
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMovementSpeed, 2);
 				break;
 			}
 			case IVSYNC_ONFOOT_SWITCHSTATE:
 			{
+				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
+				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
+				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
+
 				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMovementSpeed, 3);
 				break;
 			}
 			case IVSYNC_ONFOOT_RUN:
 			{
+				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
+				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
+				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
+
 				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*3);
 				SetMoveToDirection(m_pIVSyncHandle->vecPosition, CVector3(m_pIVSyncHandle->vecMovementSpeed.fX * 1.1, m_pIVSyncHandle->vecMovementSpeed.fY * 1.1, m_pIVSyncHandle->vecMovementSpeed.fZ), 4);
 				break;
@@ -1457,9 +1472,14 @@ void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLoc
 		SetRotation(m_pIVSyncHandle->fHeading);
 		SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecMovementSpeed : CVector3());
 		SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecTurnSpeed : CVector3());
-
-		//CPlayerEntity::SetPosition(m_pIVSyncHandle->vecPosition);
+		CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
+		CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
+		CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
+		CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
 	}
+	
+	// Set the ammunation and weapon data
+
 
 	// Apply the move state
 	m_pIVSync->byteOldMoveStyle = m_pIVSync->byteMoveStyle;
@@ -1508,7 +1528,6 @@ void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCop
 		}
 	}
 
-
 	// Second check if we have to apply the control states
 	if(m_bLocalPlayer)
 		pCopy->GetControlState(&m_ControlState);
@@ -1553,7 +1572,7 @@ void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalP
 	}
 
 	// Fifth check if we have to update the duck state
-	if((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != CNetworkEntity::GetPlayerHandle().bDuckState)
+	if ((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != m_pIVSyncHandle->bDuckState)
 		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckState);
 }
 
@@ -1927,4 +1946,78 @@ unsigned char CPlayerEntity::GetPedClothes(unsigned short ucBodyLocation)
 		return 0;
 
 	return GetClothesValueFromSlot(ucBodyLocation);
+}
+
+void CPlayerEntity::GiveWeapon(unsigned uiWeaponId, unsigned uiAmmunation)
+{
+	if (IsSpawned())
+		CIVScript::GiveWeaponToChar(GetScriptingHandle(), uiWeaponId, uiAmmunation, true);
+}
+
+void CPlayerEntity::RemoveWeapon(unsigned uiWeaponId)
+{
+	if (IsSpawned())
+		;
+}
+
+void CPlayerEntity::RemoveAllWeapons()
+{
+	if (IsSpawned())
+		;
+}
+
+void CPlayerEntity::SetCurrentWeapon(unsigned uiWeaponId)
+{
+	if (IsSpawned())
+		;
+}
+
+unsigned CPlayerEntity::GetCurrentWeapon()
+{
+	if (IsSpawned())
+		return 0;
+
+	return 0;
+}
+
+void CPlayerEntity::SetAmmunation(unsigned uiWeaponId, unsigned uiAmmunation)
+{
+	if (IsSpawned())
+		;
+}
+
+unsigned CPlayerEntity::GetAmmunation(unsigned uiWeapnId)
+{
+	if (IsSpawned())
+		return 0;
+	
+	return 0;
+}
+
+void CPlayerEntity::GetWeaponInSlot(unsigned uiWeaponSlot, unsigned &uiWeaponId, unsigned &uiAmmunation, unsigned &uiUnkown)
+{
+	if (IsSpawned())
+		;
+}
+
+unsigned CPlayerEntity::GetAmmunationInClip(unsigned uiWeapon)
+{
+	if (IsSpawned())
+		return 0;
+
+	return 0;
+}
+
+void CPlayerEntity::SetAmmunationInClip(unsigned uiAmmunationInClip)
+{
+	if (IsSpawned())
+		;
+}
+
+unsigned CPlayerEntity::GetMaxAmmunationInClip(unsigned uiWeapon)
+{
+	if (IsSpawned())
+		return 0;
+
+	return 0;
 }

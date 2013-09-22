@@ -59,7 +59,7 @@ public:
 
 	int			 GetArgumentCount() { return lua_gettop(m_pVM); }
 
-	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass = 0);
+	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	void		 FinishRegisterScriptClass();
 	void		*GetUserData(int idx);

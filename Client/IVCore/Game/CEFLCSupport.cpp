@@ -10,14 +10,13 @@
 #include "CEFLCSupport.h"
 #include <CCore.h>
 #include <Ptrs.h>
-#include <IV/IVParachute_Manager.h>
-#include <IV/IVParachute_Process.h>
 #include <algorithm> 
 #include <string> 
 #pragma warning(disable:4305)
 
 extern unsigned int l_U40;
 extern CCore * g_pCore;
+extern bool g_bLoading;
 
 bool CEFLCSupport::m_bVehicles = false;
 bool CEFLCSupport::m_bPeds = false;
@@ -38,6 +37,9 @@ bool CEFLCSupport::OpenFile_Decision(char* j)
 	{
 		CLogFile::Printf("[%s]: Setting hud.dat to hud_eflc.dat",__FUNCTION__);
 		sprintf(j, "e2:/common/data/hud_eflc.dat");
+		
+		// Set the loading screen to false;
+		g_bLoading = false;
 	}
 	return false;
 }

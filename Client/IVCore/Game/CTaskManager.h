@@ -9,6 +9,7 @@
 
 #ifndef CTaskManager_h
 #define CTaskManager_h
+
 #include <Game/IVEngine/CIVTask.h>
 
 struct ClientTaskPair

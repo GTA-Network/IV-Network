@@ -10,7 +10,7 @@
 #ifndef CNetworkManager_h
 #define CNetworkManager_h
 
-#include <NetCommon.h>
+#include <Network/NetCommon.h>
 
 class CNetworkManager {
 private:

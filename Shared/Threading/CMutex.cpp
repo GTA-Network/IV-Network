@@ -56,7 +56,7 @@ bool CMutex::TryLock(unsigned int uiTimeOutMilliseconds)
 {
 	// Attempt to lock the mutex
 	bool bLocked = false;
-#if defined(WIN32) && !defined(USE_CRITICAL_SECTION)
+#if defined(_WIN32) && !defined(USE_CRITICAL_SECTION)
 	bLocked = (WaitForSingleObject(m_hMutex, uiTimeOutMilliseconds) == 0);
 #else
 	if(uiTimeOutMilliseconds == 0)

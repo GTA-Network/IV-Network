@@ -40,14 +40,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\server</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>IVNetworkDedicatedServer</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Build\</OutDir>
-    <TargetName>$(ProjectName)</TargetName>
-    <IntDir>$(SolutionDir)\Build\temp\build_server\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <TargetName>IVNetworkDedicatedServer</TargetName>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,22 +55,25 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared;../Network/Core; ../Libraries;../Libraries/Squirrel;./</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./;$(SolutionDir)\Shared;$(SolutionDir)\Libraries;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;_CRT_SECURE_NO_WARNINGS;_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;Kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Build\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RakNet.lib;Ws2_32.lib;Winmm.lib;Kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
     <PostBuildEvent>
-      <Command>copy /Y "$(TargetDir)Server.Core.exe" "$(SolutionDir)Files\Server.Core.exe"</Command>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -79,16 +82,30 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>../Shared</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>./;$(SolutionDir)\Shared;$(SolutionDir)\Libraries;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <SDLCheck>false</SDLCheck>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>Ws2_32.lib;Winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>RakNet.lib;Ws2_32.lib;Winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\lua\lapi.c" />
@@ -191,7 +208,6 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CNetworkModule.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
-    <ClCompile Include="Network\CServerRPCHandler.cpp" />
     <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CActorNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
@@ -272,7 +288,6 @@
     <ClInclude Include="Entity\Entities.h" />
     <ClInclude Include="Network\CNetworkModule.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
-    <ClInclude Include="Network\CServerRPCHandler.h" />
     <ClInclude Include="Scripting\Natives\C3DLabelNatives.h" />
     <ClInclude Include="Scripting\Natives\CActorNatives.h" />
     <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
@@ -286,7 +301,7 @@
     <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
     <ClInclude Include="Scripting\Natives\CServerNatives.h" />
     <ClInclude Include="Scripting\Natives\CVehicleNatives.h" />
-    <ClInclude Include="Scripting\Natives\Natives.h" />
+    <ClInclude Include="Scripting\Natives\Natives_Server.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Server.rc" />

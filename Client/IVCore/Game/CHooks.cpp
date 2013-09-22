@@ -36,7 +36,7 @@ bool			bInitialiseGame = true;
 DWORD			dwJumpGame;
 int				iFrameCalls = 0;
 
-int				hFile2;
+
 HANDLE			iTexture;
 int				v2;// edi@1
 signed int		v3;// esi@1
@@ -45,24 +45,7 @@ int				v5;// eax@3
 int				result;// eax@5
 DWORD			dwJump;
 
-_declspec(naked) void TextureSelect_Hook()
-{   
-	_asm	mov eax, [esp+4];
-	_asm	mov iTexture, eax;
-	_asm	mov eax, [esp+8];
-	_asm	mov hFile2, eax;
-	_asm	pushad;
 
-	if(hFile2 < 10000000) 
-		g_pCore->GetGame()->ThrowInternalException(COffsets::FUNC_GENERATETEXTURE, 0xC0000005);
-	
-	_asm	popad;
-	_asm	push ebx;
-	_asm	push esi;
-	_asm	push edi;
-	_asm	mov edi, ecx;
-	_asm	jmp COffsets::IV_Hook__TextureSelect__JmpBack;
-}
 
 
 _declspec(naked) void CTask__Destructor_Hook()
@@ -303,41 +286,7 @@ _declspec(naked) void CFunctionRetnPatch()
 	_asm
 	{
 		xor eax, eax
-			retn
-	}
-}
-
-_declspec(naked) void CRASH_625F15_HOOK()
-{
-	_asm
-	{
-		test    eax, eax
-			jz              keks
-			cmp     eax, 100000h
-			jl              keks
-			mov     edx, [eax]
-		push    1
-			mov     ecx, edi
-			call    edx
-
-keks_patch:
-		mov     al, 1
-			pop     edi
-			pop     esi
-			pop     ebp
-			pop     ebx
-			add     esp, 0Ch
-			retn    4
-keks:
-		pushad
-	}
-
-	g_pCore->GetChat()->Output("Prevent crash at 0x625F15");
-
-	_asm
-	{
-		popad
-			jmp keks_patch
+		retn
 	}
 }
 
@@ -855,15 +804,6 @@ void CHooks::Intialize()
 	
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
-	
-	// Hook texture select/generate function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD)TextureSelect_Hook);
-	
-	// This disables some calculate for modelinfo but it seems this is not necessary
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch1, (COffsets::IV_Hook__UnkownPatch1 + 0x40));
-	
-	// this disables a call to a destructor of a member in rageResourceCache [field_244] 
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__UnkownPatch2, (DWORD)CRASH_625F15_HOOK);
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *)(g_pCore->GetBase() + 0x83C216) = 0xEB;

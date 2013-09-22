@@ -12,6 +12,7 @@
 
 #include "Common.h"
 #include "Math/CMaths.h"
+#include "Game/eInput.h"
 
 enum ePackageType
 {
@@ -33,7 +34,7 @@ enum eDisconnectReason
 
 enum eNetworkState
 {
-	NETSTATE_NONE				= 0,
+	NETSTATE_NONE = 0,
 	NETSTATE_STARTED,
 	NETSTATE_CONNECTING,
 	NETSTATE_CONNECTED,
@@ -43,48 +44,73 @@ enum eNetworkState
 	NETSTATE_AWAIT_CONNECT
 };
 
-enum ePackageEntityDefinition
+enum eEntityType
 {
-	RPC_PACKET_ENTITY_PLAYER = 1,
-	RPC_PACKET_ENTITY_VEHICLE = 2
+	PLAYER_ENTITY,
+	VEHICLE_ENTITY,
+	OBJECT_ENTITY,
+	PICKUP_ENTITY,
+	LABEL_ENTITY,
+	FIRE_ENTITY,
+	CHECKPOINT_ENTITY,
+	BLIP_ENTITY,
+	ACTOR_ENTITY,
+	UNKNOWN_ENTITY, // MAX_ENTITY
+	INVALID_ENTITY,
 };
 
-struct sNetwork_Sync_Entity_Player
-{
-	CVector3		vecPosition;
-	CVector3		vecMovementSpeed;
-	CVector3		vecTurnSpeed;
-	CVector3		vecDirection;
-	CVector3		vecRoll;
 
-	bool			bDuckState;
-	float			fHeading;
+// Handles data between client ped and network sync(stores the values)
+class CNetworkEntitySubPlayer {
+private:
+
+public:
+	CControls					pControlState;
+	CVector3					vecPosition;
+	CVector3					vecMovementSpeed;
+	CVector3					vecTurnSpeed;
+	CVector3					vecDirection;
+	CVector3					vecRoll;
+
+	bool						bDuckState;
+	float						fHeading;
 
 	struct {
-	CVector3		vecAimAtCoordinates;
-	float			fArmsHeadingCircle;
-	float			fArmsUpDownRotation;
-	CVector3		vecShotAtCoordinates;
-	CVector3		vecShotAtTarget;
-	CVector3		vecLookAtCoordinates;
-	/*Matrix34		pWeaponCameraA;
-	Matrix34		pWeaponCameraB;
-	Matrix34		pWeaponCameraC;
-	*/
-	}				sWeaponData;
+		CVector3				vecAimAtCoordinates;
+		float					fArmsHeadingCircle;
+		float					fArmsUpDownRotation;
+		CVector3				vecShotAtCoordinates;
+		CVector3				vecShotAtTarget;
+		CVector3				vecLookAtCoordinates;
+		//Matrix34				pWeaponCameraA;
+		//Matrix34				pWeaponCameraB;
+		//Matrix34				pWeaponCameraC;
+
+	}							sWeaponData;
+	// Add player members to sync(like weapon sync, key sync etc.)
 };
 
-struct sNetwork_Sync_Entity_Vehicle
-{
-	CVector3 vecPosition;
+// Handles data between client ped and network sync(stores the values)
+class CNetworkEntitySubVehicle {
+private:
+
+public:
+	CVector3					vecPosition;
+	CVector3					vecMovementSpeed;
+	CVector3					vecTurnSpeed;
+	CVector3					vecDirection;
+	CVector3					vecRoll;
+	// Add vehicle members to sync(like indicators, variation etc.)
 };
 
-struct sNetwork_Sync_Packet
-{
-	ePackageEntityDefinition eEntity;
-	sNetwork_Sync_Entity_Player pEntityPlayer;
-	sNetwork_Sync_Entity_Vehicle pEntityVehicle;
+class CNetworkEntitySync {
+public:
+
+	eEntityType							pEntityType;
+	CNetworkEntitySubPlayer				pPlayerPacket;
+	CNetworkEntitySubVehicle			pVehiclePacket;
 };
+
 
 
 #define	NETWORK_TIMEOUT					3000

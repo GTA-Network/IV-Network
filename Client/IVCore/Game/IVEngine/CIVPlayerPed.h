@@ -18,6 +18,7 @@
 
 class IVPlayerPed : public IVPed {
 public:
+	virtual ~IVPlayerPed();
 };
 
 class CIVPlayerPed : public CIVPed {

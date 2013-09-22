@@ -38,7 +38,7 @@ public:
 		BYTE m_byteFlags7;			  // 0F6C-0F6D
 		BYTE m_byteFlags8;			  // 0F6D-0F6E // 64 - Pretend Occupants
         BYTE m_byteFlags9;			  // 0F6E-0F6F // 
-        BYTE m_byteFlags10;
+        BYTE m_byteFlags10;			  // 0F70-0F71	
 		BYTE m_byteFlags11;
         BYTE m_byteFlags12;            // 0F6F-0F70 // 32 - Is Police Vehicle
         BYTE m_byteFlags13;            // 0F70-0F71 // 4 - Can Be Visibly Damaged

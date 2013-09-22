@@ -79,7 +79,7 @@ static int gc_obj(lua_State *L) {
 }
 static int clsIndex = 0;
 int metatable = 0;
-void CLuaVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, const char* baseClass)
+void CLuaVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
 {
 	m_strClassName = className;
 

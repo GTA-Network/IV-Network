@@ -1,7 +1,7 @@
 //========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CInput.cpp
-// Project: Client.Core
+// Project: Server
 // Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //
@@ -10,6 +10,7 @@
 #include "CInput.h"
 #include <CLogFile.h>
 #include <Scripting/CEvents.h>
+#include "CServer.h"
 
 extern bool g_bClose;
 
@@ -50,7 +51,14 @@ void CInput::ProcessInput(CString strInput)
 		printf("unloadresource <name>\n");
 		printf("exit\n");
 		return;
-
+	}
+	else if (strCommand == "setSyncRate") {
+		int rate = atoi(strParameters.Get());
+		CServer::GetInstance()->SetSyncRate(rate);
+	}
+	else if (strCommand == "setMaxFPS") {
+		int fps = atoi(strParameters.Get());
+		CServer::GetInstance()->SetMaximumFPS(fps);
 	}
 }
 

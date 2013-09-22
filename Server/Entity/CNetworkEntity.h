@@ -12,22 +12,8 @@
 
 #include <Common.h>
 #include <Math/CMaths.h>
-#include <NetCommon.h>
+#include <Network/NetCommon.h>
 
-enum eEntityType
-{
-	PLAYER_ENTITY,
-	VEHICLE_ENTITY,
-	OBJECT_ENTITY,
-	PICKUP_ENTITY,
-	LABEL_ENTITY,
-	FIRE_ENTITY,
-	CHECKPOINT_ENTITY,
-	BLIP_ENTITY,
-	ACTOR_ENTITY,
-	UNKNOWN_ENTITY, // MAX_ENTITY
-	INVALID_ENTITY,
-};
 
 class CNetworkEntity {
 private:

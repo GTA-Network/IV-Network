@@ -1,1 +1,0 @@
-RakNet version included: 4.08 (03.08.2013)

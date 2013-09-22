@@ -187,7 +187,8 @@ public: // Handles call functions
 	void							SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }
 	void							SetPing(unsigned short usPing) { m_usPing = usPing; }
 
-	void							SetPosition(CVector3 &vecPosition);
+	void							ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading, float fAimData[2], CVector3 vecWeaponData[3]);
+	void							SetPosition(CVector3 &vecPosition, bool bForce = false);
 	void							SetRotation(float fAngle);
 	void							SetHealth(float fHealth);
 	void							SetModel(int iModelId);
@@ -251,6 +252,17 @@ public: // Handles call functions
 	void							SetPedClothes(unsigned short ucBodyLocation, unsigned  char ucClothes);
 	unsigned char					GetPedClothes(unsigned short ucBodyLocation);
 
+	void							GiveWeapon(unsigned uiWeaponId, unsigned uiAmmunation);
+	void							RemoveWeapon(unsigned uiWeaponId);
+	void							RemoveAllWeapons();
+	void							SetCurrentWeapon(unsigned uiWeaponId);
+	unsigned						GetCurrentWeapon();
+	void							SetAmmunation(unsigned uiWeaponId, unsigned uiAmmunation);
+	unsigned						GetAmmunation(unsigned uiWeapnId);
+	void							GetWeaponInSlot(unsigned uiWeaponSlot, unsigned &uiWeaponId, unsigned &uiAmmunation, unsigned &uiUnkown);
+	unsigned						GetAmmunationInClip(unsigned uiWeapon);
+	void							SetAmmunationInClip(unsigned uiAmmunationInClip);
+	unsigned						GetMaxAmmunationInClip(unsigned uiWeapon);
 };
 
 #endif // CPlayerEntity_h

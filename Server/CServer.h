@@ -16,10 +16,6 @@
 #endif
 #include "Common.h"
 
-#include <CNetworkServer.h>
-
-#include <Network/CServerRPCHandler.h>
-
 #include <Scripting/ResourceSystem/CResourceManager.h>
 
 #include <Entity/CEntityManager.h>
@@ -41,9 +37,6 @@ class CServer {
 private:
 	static CServer				* s_pInstance;
 
-	CNetworkServer				* m_pNetServer;
-	CServerRPCHandler			* m_pRPCHandler;
-
 	CResourceManager			* m_pResourceManager;
 
 	CPlayerManager				* m_pPlayerManager;
@@ -58,6 +51,14 @@ private:
 
 	CNetworkModule				* m_pNetworkModule;
 
+
+	unsigned int				m_uiSyncRate = 20; /** Describes the maximum number of sync packages sent per second per entity */
+	unsigned int				m_uiMaximumFPS = 100;
+
+	bool						m_bShowFPS = true;
+	unsigned long				m_ulLastFPSUpdateTime;
+	unsigned long				m_ulFrameCount;
+	unsigned long				m_ulFramesPerSecond;
 public:
 	CServer();
 	~CServer();
@@ -67,9 +68,6 @@ public:
 	bool	Startup();
 	void	Process();
 	void	Shutdown();
-
-	CNetworkServer		*GetNetServer() { return m_pNetServer; }
-	CServerRPCHandler	*GetRPCHandler() { return m_pRPCHandler; }
 
 	CResourceManager	*GetResourceManager() { return CResourceManager::GetInstance(); }
 
@@ -84,6 +82,12 @@ public:
 	CCheckpointManager	*GetCheckpointManager() { return m_pCheckpointManager; }
 
 	CNetworkModule		*GetNetworkModule() { return m_pNetworkModule; }
+
+	unsigned GetSyncRate() { return m_uiSyncRate; }
+	void	 SetSyncRate(unsigned int uiSyncRate = 20) { m_uiSyncRate = uiSyncRate; }
+
+	unsigned int GetMaximumFPS() { return m_uiMaximumFPS; }
+	void		 SetMaximumFPS(unsigned int uiMaximumFPS = 100) { m_uiMaximumFPS = uiMaximumFPS; }
 };
 
 #endif // CServer_h

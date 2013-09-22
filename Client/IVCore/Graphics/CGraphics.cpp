@@ -71,11 +71,8 @@ CGraphics::CGraphics()
 	m_uiLastCheck = GetTickCount();
 	m_pDevice = NULL;
 
-	// Invalidate the font pointers
-	for(int i = 0; i < NUM_FONTS; i++)
-	{
-		m_pFonts[i] = NULL;
-	}
+	// Invalidate the font pointer
+	m_pFont = NULL;
 }
 
 CGraphics::~CGraphics()
@@ -86,11 +83,8 @@ CGraphics::~CGraphics()
 	// Delete the d3d9 device hook
 	SAFE_DELETE(m_pDeviceHook);
 
-	// Delete the font pointers
-	for(int i = 0; i < NUM_FONTS; i++)
-	{
-		SAFE_DELETE(m_pFonts[i]);
-	}
+	// Delete the font pointer
+	SAFE_DELETE(m_pFont);
 
 	// Delete the sprite
 	SAFE_DELETE(m_pSprite);
@@ -120,23 +114,11 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 
 bool CGraphics::LoadFonts()
 {
-	// Create the font and sprite objects
-	static const sFontInfo fontInfos[] =
-	{
-		{ "default",		15,		FW_NORMAL },
-		{ "default-bold",	15,		FW_BOLD },
-		{ "tahoma",			15,		FW_NORMAL },
-		{ "tahoma-bold",	15,		FW_BOLD },
-		{ "verdana",		15,		FW_NORMAL },
-		{ "arial",			15,		FW_NORMAL }
-	};
-
 	bool bSuccess = true;
-	for(int i = 0; bSuccess && i < NUM_FONTS; i++)
+	for(int i = 0; bSuccess && i < NUM_FONTS; i++) // Leave the loop here incase we add the choice of customizing your font - ViruZz
 	{	
-		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontInfos[i].uiHeight, 0, fontInfos[i].uiWeight, 1, FALSE,
-						DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, fontInfos[i].szFontName,
-                        &m_pFonts[i]));
+		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, 18, 0, FW_BOLD, 1, FALSE,
+			DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
 	}
 
 	// Load texture for radar
@@ -144,8 +126,13 @@ bool CGraphics::LoadFonts()
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
 
+	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+		NULL, NULL, &m_pLoadingBackgroundTexture);
+
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }
+
 
 void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, unsigned int fontIndex, bool bShadow, const char * szText)
 {
@@ -154,7 +141,7 @@ void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int u
 		return;
 
 	// Get the font
-	ID3DXFont * pFont = GetFont(fontIndex);
+	ID3DXFont * pFont = GetFont();
 
 	// Is the font invalid?
 	if(!pFont)
@@ -295,20 +282,14 @@ void CGraphics::DrawLine(float fLeft, float fTop, float fRight, float fBottom, f
 {
 	// TODO
 }
-ID3DXFont * CGraphics::GetFont(unsigned int uiIndex)
+ID3DXFont * CGraphics::GetFont()
 {
-	if(uiIndex > NUM_FONTS)
-		return NULL;
-
-	return m_pFonts[ uiIndex ];
+	return m_pFont;
 }
 
 void CGraphics::OnLostDevice(IDirect3DDevice9 * pDevice)
 {
-	for(int i = 0; i < NUM_FONTS; i++)
-	{
-		m_pFonts[i]->OnLostDevice();
-	}
+	m_pFont->OnLostDevice();
 
 	if(m_pSprite)
 		m_pSprite->OnLostDevice();
@@ -316,10 +297,7 @@ void CGraphics::OnLostDevice(IDirect3DDevice9 * pDevice)
 
 void CGraphics::OnRestoreDevice(IDirect3DDevice9 * pDevice)
 {
-	for(int i = 0; i < NUM_FONTS; i++)
-	{
-		m_pFonts[i]->OnResetDevice();
-	}
+	m_pFont->OnResetDevice();
 
 	if(m_pSprite)
 		m_pSprite->OnResetDevice();
@@ -328,7 +306,7 @@ void CGraphics::OnRestoreDevice(IDirect3DDevice9 * pDevice)
 float CGraphics::GetFontHeight(float fScale)
 {
 	// Get the font
-	LPD3DXFONT pFont = GetFont(0);
+	LPD3DXFONT pFont = GetFont();
 
 	// Is the font valid?
 	if(pFont)
@@ -344,7 +322,7 @@ float CGraphics::GetFontHeight(float fScale)
 float CGraphics::GetCharacterWidth(char c, float fScale)
 {
 	// Get the font
-	LPD3DXFONT pFont = GetFont(0);
+	LPD3DXFONT pFont = GetFont();
 
 	// Is the font valid?
 	if(pFont)

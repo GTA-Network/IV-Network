@@ -57,19 +57,19 @@ public:
 	DWORD m_pNetworkObject;      // 6C-70
 	DWORD m_pEntryInfoNode;      // 70-74
 
-	virtual                         ~IVEntity();
+	virtual					~IVEntity();
 	virtual Matrix34*       SetMatrix(Matrix34* pMatrix, int a2, int a3);
 	virtual Matrix34*       SetCoordinates(Vector4* pCoordinates, bool b2, int a4); 
 	virtual void            SetHeading(float fHeading); // not sure
 	virtual void            Function4(); // 0x10
 	virtual void            Function5(); // 0x14
 	virtual void            Function6(); // 0x18
-	virtual int                     AddToInterior(); // 7
+	virtual int				AddToInterior(); // 7
 	virtual void            RemoveFromInterior();
 	virtual void            Function9(); // return 0;
 	virtual void            Function10(); // return 0;
 	virtual void            Function11(); // return 0;
-	virtual int                     SetUnknownFlag0(unsigned char flag);
+	virtual int				SetUnknownFlag0(unsigned char flag);
 	virtual void            GetModelType(); // return 1;
 	virtual int             SetModelIndex(int modelIndex);
 	virtual int             SetModelByName(const char* modelName);
@@ -111,7 +111,7 @@ public:
 };
 
 
-class CIVEntity{
+class CIVEntity {
 private:
         IVEntity * m_pEntity;
 

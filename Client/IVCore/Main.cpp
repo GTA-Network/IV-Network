@@ -25,8 +25,6 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 	{
 	case DLL_PROCESS_ATTACH:
 		{
-			Sleep(15000);
-
 			// Store the hmodule pointer
 			g_hModule = hModule;
 
