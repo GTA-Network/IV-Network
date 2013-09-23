@@ -12,7 +12,13 @@
 class CGUI 
 {
 public:
-	enum eGUIView { GUI_MAIN = 0, GUI_SERVER = 1, GUI_NONE = 2 };
+	enum eGUIView
+	{
+		GUI_NONE = 0,
+		GUI_SERVER, 
+		GUI_MAIN,
+		TOTAL
+	};
 	CGUI(IDirect3DDevice9* pDevice);
 	~CGUI();
 
@@ -32,7 +38,7 @@ private:
 	Gwen::Renderer::DirectX9* m_pRenderer;
 
 	CGUIView* m_pActiveView;
-	CGUIView* m_pViews[GUI_NONE];
+	CGUIView* m_pViews[TOTAL];
 
 	int m_iScreenWidth;
 	int m_iScreenHeight;
