@@ -188,4 +188,25 @@ void CPatches::Initialize()
 
 	// Allow remote desktop connections pff
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x405D67), (g_pCore->GetBase() + 0x405D6E), 1);
+
+
+	*(WORD *) (g_pCore->GetBase() + 0x472EF1) = 0xC033; //xor eax, eax
+	*(BYTE *) (g_pCore->GetBase() + 0x472EF3) = 0xE9;
+	*(DWORD *) (g_pCore->GetBase() + 0x472EF4) = 0x47316E - (0x472EF3 + 5);
+
+	*(BYTE *) (g_pCore->GetBase() + 0x473207) = 0xE9;
+	*(DWORD *) (g_pCore->GetBase() + 0x473208) = 0x473213 - (0x473207 + 5);
+
+	*(DWORD *) (g_pCore->GetBase() + 0x474160) = 0xC30CC033;
+	*(DWORD *) (g_pCore->GetBase() + 0x474B40) = 0xC30CC033;
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x473402, 14);
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x473607, 14);
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x493D4C, 24);
+
+	*(DWORD *) (g_pCore->GetBase() + 0xC1AD20) = 0x90C301B0;
+	*(DWORD *) (g_pCore->GetBase() + 0xC1AD40) = 0x90C301B0;
+	*(DWORD *) (g_pCore->GetBase() + 0xC1AD50) = 0x90C301B0;
+	*(DWORD *) (g_pCore->GetBase() + 0xC1AD80) = 0x90C301B0;
+
+	*(BYTE *) (g_pCore->GetBase() + 0x15C3398) = 1; //fix random drunk cam
 }
