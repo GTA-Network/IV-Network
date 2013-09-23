@@ -71,7 +71,7 @@ const char setu[] = "setup3.xml";
 void CPatches::Initialize()
 {
 	char szInstallDirectory[MAX_PATH];
-	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL,szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
+	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL, szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
 		ofstream myfile;
 		myfile.open(CString("%s\\TBoGT\\setup3.xml", szInstallDirectory).Get());
 		myfile << TBOGT;
