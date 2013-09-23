@@ -11,9 +11,9 @@
 
 using namespace Gwen;
 
-CGUI::CGUI(IDirect3DDevice9* pDevice)
+CGUI::CGUI(IDirect3DDevice9* pDevice) :
+	m_pActiveView(NULL)
 {
-	m_pActiveView = NULL;
 	memset(m_pViews, 0, sizeof(m_pViews));
 
 	m_pRenderer = new Renderer::DirectX9(pDevice);
@@ -32,7 +32,7 @@ CGUI::CGUI(IDirect3DDevice9* pDevice)
 
 CGUI::~CGUI()
 {
-	for (int i = 0; i < GUI_NONE; ++i)
+	for (int i = 0; i < TOTAL; ++i)
 	{
 		SAFE_DELETE(m_pViews[i]);
 	}
@@ -60,7 +60,7 @@ CGUI::eGUIView CGUI::GetView()
 	if (!m_pActiveView)
 		return GUI_NONE;
 
-	for (int i = 0; i < GUI_NONE; ++i)
+	for (int i = 0; i < TOTAL; ++i)
 	{
 		if (m_pViews[i] == m_pActiveView)
 		{
@@ -72,7 +72,7 @@ CGUI::eGUIView CGUI::GetView()
 
 void CGUI::SetView(eGUIView view)
 {
-	if (view < GUI_NONE)
+	if (view < TOTAL)
 	{
 		m_pActiveView = m_pViews[view];
 	}
@@ -84,7 +84,7 @@ void CGUI::SetView(eGUIView view)
 
 void CGUI::ClearView(eGUIView view)
 {
-	if (view >= GUI_NONE)
+	if (view >= TOTAL)
 		return;
 
 	if (m_pActiveView && m_pActiveView == m_pViews[view])
@@ -101,7 +101,7 @@ void CGUI::ClearView(eGUIView view)
 
 void CGUI::SetScreenSize(int iWidth, int iHeight)
 {
-	for (int i = 0; i < GUI_NONE; ++i)
+	for (int i = 0; i < TOTAL; ++i)
 		m_pViews[i]->SetScreenSize(iWidth, iHeight);
 
 	m_iScreenWidth = iWidth;
@@ -116,7 +116,7 @@ void CGUI::GetScreenSize(int* iWidth, int* iHeight)
 
 Gwen::Controls::Canvas* CGUI::GetCanvas(eGUIView view)
 {
-	if (view < GUI_NONE)
+	if (view < TOTAL)
 		return m_pViews[view]->GetCanvas();
 	return NULL;
 }

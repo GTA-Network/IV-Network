@@ -17,6 +17,7 @@ bool bDuckingState;
 
 CDevelopment::CDevelopment() : bDebugView(false),
 	bDebugPlayerPresent(false),
+	m_pDebugPlayer(0),
 	bHasAimSyncData(false),
 	m_bStoreOnFootSwitch(false),
 	m_iOldMoveStyle(0)
