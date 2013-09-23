@@ -118,7 +118,7 @@ bool CCore::Initialise()
 	CCursorHook::Install();
 	
 	// Setup the game instance
-	//m_pGame->Setup();
+	m_pGame->Setup();
 	
 	// Apply hook's to game
 	CHooks::Intialize();
