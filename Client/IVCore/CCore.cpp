@@ -118,7 +118,7 @@ bool CCore::Initialise()
 	CCursorHook::Install();
 	
 	// Setup the game instance
-	m_pGame->Setup();
+	//m_pGame->Setup();
 	
 	// Apply hook's to game
 	CHooks::Intialize();
@@ -224,14 +224,14 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	OnDevicePreRender();
 
 	// Is the game not loaded?
-	if (!IsGameLoaded() || g_bLoading)
+	/*if (!IsGameLoaded() || g_bLoading)
 	{
 		// Clear the original EFLC Loading Screen
 		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
 		// Render our own Loading Screen
 		RenderLoadingScreen();
-	}
+	}*/
 
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
