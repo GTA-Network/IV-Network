@@ -114,11 +114,34 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 
 bool CGraphics::LoadFonts()
 {
+	int fontsize = NULL;
 	bool bSuccess = true;
 	for(int i = 0; bSuccess && i < NUM_FONTS; i++) // Leave the loop here incase we add the choice of customizing your font - ViruZz
 	{	
-		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, 18, 0, FW_BOLD, 1, FALSE,
+		RECT desktop;
+		const HWND hDesktop = GetDesktopWindow();
+		GetWindowRect(hDesktop, &desktop); 
+
+		if (desktop.right <= 1280 && desktop.bottom <= 1024) // Small Resolution
+		{
+			fontsize = 14;
+		}
+		else if (desktop.right > 1280 && desktop.right <= 1400) // Medium Resolution
+		{
+			fontsize = 16;
+		}
+		else if (desktop.right > 1400) // Large Resolution
+		{
+			fontsize = 18;
+		}
+		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE,
 			DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
+
+		if (fontsize == NULL)
+		{
+			CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
+			return TerminateProcess(GetCurrentProcess, 0);
+		}
 	}
 
 	// Load texture for radar
@@ -126,7 +149,8 @@ bool CGraphics::LoadFonts()
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
 
-	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
+	// Load texture for the Loading Background
+	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\common\\data\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
 		NULL, NULL, &m_pLoadingBackgroundTexture);
 

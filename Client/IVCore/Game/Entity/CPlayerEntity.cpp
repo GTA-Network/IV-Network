@@ -179,7 +179,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	m_byteSeat = 0;
 	memset(&m_lastControlState, NULL, sizeof(CControls));
 	memset(&m_ControlState, NULL, sizeof(CControls));
-	CNetworkEntity::SetType(PLAYER_ENTITY);
+	CNetworkEntity::SetType(PLAYER_ENTITY); // ViruZz: When finishing the Networking, please switch the default value of PLAYER_ENTITY to a boolean to avoid VS Warnings
 
 	// Initialise & Reset all stuff(classes,structs)
 	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
