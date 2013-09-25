@@ -91,28 +91,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// Create basic directories for extracting files(..)
 	SharedUtility::CreateBasicMPDirectories();
-	
-	// Wait a half second ;)
+
 	Sleep(500);
-
-	// Create game-ready process
-	PROCESS_INFORMATION ProcessInfo = PROCESS_INFORMATION();
-	STARTUPINFO StartupInfo;
-	ZeroMemory(&StartupInfo, sizeof(StartupInfo));
-	StartupInfo.cb = sizeof StartupInfo;
-
-	char * szPath = new char[MAX_PATH];
-	sprintf(szPath,CString("%s"MP_GET_GAME_READY_EXECUTABLE,SharedUtility::GetExePath()));
-
-	// Check if IVGameReady.exe exists
-	if(!SharedUtility::Exists(SharedUtility::GetAbsolutePath(MP_GET_GAME_READY_EXECUTABLE).Get()))
-		return ShowMessageBox("Failed to find "MP_GET_GAME_READY_EXECUTABLE". Cannot launch "MOD_NAME".");
-
-	if(!CreateProcess(szPath, NULL, NULL, NULL, FALSE, 0, NULL, FALSE, &StartupInfo, &ProcessInfo))
-		return ShowMessageBox("Failed to start "MP_GET_GAME_READY_EXECUTABLE". Cannot launch "MOD_NAME".");
-
-	// Wait for the process
-	WaitForSingleObject(ProcessInfo.hProcess, INFINITE);
 
 	// Get the full path to LaunchGTAIV.exe
 	CString strApplicationPath("%s\\"GAME_START_EXECUTABLE, szInstallDirectory);
@@ -140,11 +120,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return ShowMessageBox("Failed to find " CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME".");
 
 	// Check if GTAIV is already running
-	if(SharedUtility::IsProcessRunning(GAME_DEFAULT_EXECUTABLE)) {
-		if(ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running and needs to be terminated before "MOD_NAME" can be started. Do you want to do that now?",
-			MB_ICONQUESTION | MB_YESNO ) == IDYES) {
-			if(!SharedUtility::_TerminateProcess(GAME_DEFAULT_EXECUTABLE))
-				return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME".");
+	if (SharedUtility::IsProcessRunning(GAME_DEFAULT_EXECUTABLE))
+	{
+		if (ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running and needs to be terminated before "MOD_NAME" can be started. Do you want to do that now?",
+			MB_ICONQUESTION | MB_YESNO) == IDYES)
+		{
+			if (!SharedUtility::_TerminateProcess(GAME_DEFAULT_EXECUTABLE))
+			{
+				if (ShowMessageBox("Do you want to start it?",
+					MB_ICONQUESTION | MB_YESNO) == IDYES) {
+				}
+				else
+				{
+					return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME".");
+				}
+			}
 		}
 		else
 			return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running. Cannot launch "MOD_NAME".");

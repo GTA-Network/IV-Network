@@ -776,6 +776,38 @@ _declspec(naked) void RenderMap()
 	_asm	retn;
 }
 
+int * physics = 0;
+DWORD sub_44A690 = 0;
+
+void _declspec(naked) PhysicsHook()
+{
+	_asm
+	{
+		mov physics, ecx
+		pushad
+	}
+
+	sub_44A690 = g_pCore->GetBase() + 0x44A690;
+	if (*(DWORD *) (physics + 4) == 0)
+	{
+		_asm popad;
+		_asm retn;
+	}
+	else
+	{
+		_asm popad;
+		_asm call sub_44A690;
+		_asm retn;
+	}
+
+
+	_asm
+	{
+		_asm popad;
+		_asm retn;
+	}
+}
+
 void CHooks::Intialize()
 {
 	// Hook physics update
@@ -805,6 +837,7 @@ void CHooks::Intialize()
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x9D180B, (DWORD) PhysicsHook);
 #ifdef GTAV_MAP
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *)(g_pCore->GetBase() + 0x83C216) = 0xEB;

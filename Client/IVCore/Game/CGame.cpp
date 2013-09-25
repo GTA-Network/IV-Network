@@ -119,8 +119,8 @@ void CGame::Setup()
 	g_pCore->GetChat()->SetVisible(false);
 	
 	// Setup the EFLC support
-	CEFLCSupport::SpecificSupport(true, true, true, true, true);
-	CEFLCSupport::InstallSupport();
+	//CEFLCSupport::SpecificSupport(true, true, true, true, true);
+	//CEFLCSupport::InstallSupport();
 }
 
 void CGame::Initialise()

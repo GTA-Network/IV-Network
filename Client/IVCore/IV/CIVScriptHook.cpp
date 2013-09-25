@@ -559,9 +559,14 @@ void _declspec(naked) CScriptVM__Process()
 	if(thread->m_Context.ScriptHash == 0x8C56D5FD || thread->m_Context.ScriptHash == 0x27EB33D7 || thread->m_Context.ScriptHash == 0x41D6F794) { }
 	else 
 	{
+
+		CScriptVM_Process_JmpBack = g_pCore->GetBase() + 0x4CE0CD;
+		_asm	popad;
+		_asm	jmp CScriptVM_Process_JmpBack;
 		while(i < ARRAY_LENGTH(civScripts))
 		{
-			if(civScripts[i].dwScriptHash == thread->m_Context.ScriptHash) {
+			if(civScripts[i].dwScriptHash == thread->m_Context.ScriptHash) 
+			{
 				bScriptFound = true;
 				switch(civScripts[i].iSlotID)
 				{
@@ -653,7 +658,7 @@ void _declspec(naked) CScriptVM__Process()
 					case 271: 
 					case 281: 
 					case 288: 
-					case 295:
+					case 295: 
 					case 309: 
 					case 310: 
 					case 311: 
@@ -720,9 +725,8 @@ void _declspec(naked) CScriptVM__Process()
 	// Post Process our stuff
 	switch(thread->m_Context.ScriptHash)
 	{
-		case 0x41D6F794:
+		/*case 0x41D6F794:
 		{
-			break;
 			if(bPostStartupLoaded)
 				break;
 			
@@ -827,7 +831,7 @@ void _declspec(naked) CScriptVM__Process()
 			CIVScript::AllocateScriptToRandomPed("ambpreacher", 379171768, 100, 1);
 			CIVScript::AllocateScriptToRandomPed("ambbusker", -1188246269, 100, 1);
 			break;
-		}
+		}*/
 	}
 	
 	_asm	popad;

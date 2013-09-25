@@ -67,6 +67,9 @@ const char TBOGT[] =
 	"</content>"
 "</ini>";
 
+
+
+
 const char setu[] = "setup3.xml";
 void CPatches::Initialize()
 {
@@ -92,7 +95,8 @@ void CPatches::Initialize()
 
 	// Skip main menu #2
 	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitialiseRageGame);
-
+	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x9D180B, 5);
+	
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	//*(DWORD *)COffsets::IV_Hook__PatchRandomTasks = 0x900004C2;
 
@@ -116,12 +120,17 @@ void CPatches::Initialize()
 	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_2, 5);
 	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_3, 5);
 
-	
-		// Disable scenario peds
+	// Disable scenario peds
 	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
 	*(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds +0x1) = 0x0; // 0
 	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds +0x5) = 0xC3; // retn
 
+
+	*(BYTE *)(g_pCore->GetBase() + 0xA66B40) = 0xB8; // mov eax,
+	*(DWORD *)(g_pCore->GetBase() + 0xA66B40 + 0x1) = 0x0; // 0
+	*(BYTE *)(g_pCore->GetBase() + 0xA66B40 + 0x5) = 0xC3; // retn
+
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x83468C, 5);
 #if 0
 #ifndef CHEAP_RELEASE
 	// Replace I Luv "L.C." with "IVMP"

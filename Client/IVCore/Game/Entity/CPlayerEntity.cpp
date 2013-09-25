@@ -952,6 +952,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 	// Are we spawned?
 	if(IsSpawned() && g_pCore->GetGame()->GetLocalPlayer()->GetAdvancedControlState())
 	{
+
 		// Are we not in a vehicle?
 		if(!InternalIsInVehicle())
 		{
@@ -981,6 +982,8 @@ void CPlayerEntity::CheckVehicleEnterExit()
 					// Have we found a vehicle?
 					if(bFound)
 					{
+						if (m_pVehicle)
+							m_pVehicle = NULL;
 						// Enter the vehicle
 						EnterVehicle(pVehicle, byteSeat);
 
