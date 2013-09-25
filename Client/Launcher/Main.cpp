@@ -173,7 +173,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Check if we have an server connect command
 	CString strServer, strPort;
 	std::string strServerCheck = CString(lpCmdLine);
-	std::size_t sizetCMDFound = strServerCheck.find(SHORT_COMMANDLINE_LAUNCH_1);// -[1]i[2]v[3]m[4]p[5]*space*[6]***.***.***.***
+	std::size_t sizetCMDFound = strServerCheck.find(SHORT_COMMANDLINE_LAUNCH_1);
 	int iOffset = 0;
 	bool bCommandFound = false;
 	CString strNewCommandLine = lpCmdLine;
@@ -186,7 +186,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// Check for ivmp protocol
 	if(!bCommandFound) {
-		sizetCMDFound = strServerCheck.find(SHORT_URI_LAUNCH_1); // i[1]v[2]m[3]p[4]:[5]/[6]/[7]***.***.***
+		sizetCMDFound = strServerCheck.find(SHORT_URI_LAUNCH_1); 
 		if(sizetCMDFound != std::string::npos) {
 			iOffset = 7;
 			bCommandFound = true;
@@ -195,7 +195,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// Check for ivmultiplayer protocol
 	if(!bCommandFound) {
-		sizetCMDFound = strServerCheck.find(SHORT_URI_LAUNCH_2);// i[1]v[2]m[3]u[4]l[5]t[6]i[7]p[8]l[9]a[10]y[11]e[12]r[13]:[14]/[15]/[16]***.***.***
+		sizetCMDFound = strServerCheck.find(SHORT_URI_LAUNCH_2);
 		if(sizetCMDFound != std::string::npos) {
 			iOffset = 16;
 			bCommandFound = true;
@@ -240,7 +240,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			else // Terminate IV:MP
 			{
 				if(!SharedUtility::_TerminateProcess(MP_START_EXECUTABLE))
-					return ShowMessageBox(MP_START_EXECUTABLE" could not be terminated. Cannot launch IV: Multiplayer.");
+					return ShowMessageBox(MP_START_EXECUTABLE" could not be terminated. Cannot launch IV:Network.");
 			}
 
 		}
