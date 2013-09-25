@@ -213,7 +213,9 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 
 void CCore::OnDevicePreRender()
 {
-	;
+	// If our network manager exists process it
+	if (g_pCore->GetNetworkManager())
+		g_pCore->GetNetworkManager()->Pulse();
 }
 
 bool g_bLoading = true;
@@ -322,8 +324,8 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render ingame environment
 	m_pGame->ProcessEnvironment();
 
-	// Render ingame ui elements
-	m_pGame->RenderUIElements();
+	//// Render ingame ui elements
+	//m_pGame->RenderUIElements();
 
 	// Render our gui instance
 	if (m_pGUI)

@@ -96,7 +96,7 @@ bool CServer::Startup()
 
 
 	CLogFile::Print(" " VERSION_IDENTIFIER " " OS_STRING " Server");
-	CLogFile::Print(" Copyright (C) 2009-2013 IV:MP Team");
+	CLogFile::Print(" Copyright (C) 2013 GTA-Network Team");
 	CLogFile::Printf(" Port: %d", CVAR_GET_INTEGER("port"));
 	CLogFile::Printf(" HTTP Port: %d", CVAR_GET_INTEGER("httpport"));
 	CLogFile::Printf(" Query Port: %d", (CVAR_GET_INTEGER("queryport")));

@@ -653,7 +653,7 @@ void _declspec(naked) CScriptVM__Process()
 					case 271: 
 					case 281: 
 					case 288: 
-					case 295: 
+					case 295:
 					case 309: 
 					case 310: 
 					case 311: 
@@ -722,6 +722,7 @@ void _declspec(naked) CScriptVM__Process()
 	{
 		case 0x41D6F794:
 		{
+			break;
 			if(bPostStartupLoaded)
 				break;
 			

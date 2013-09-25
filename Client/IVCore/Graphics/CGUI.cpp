@@ -27,7 +27,7 @@ CGUI::CGUI(IDirect3DDevice9* pDevice)
 	// Create the main menu instance
 	new CMainMenu(GetCanvas(GUI_MAIN));
 
-	SetView(GUI_MAIN);
+	SetView(GUI_NONE);
 }
 
 CGUI::~CGUI()

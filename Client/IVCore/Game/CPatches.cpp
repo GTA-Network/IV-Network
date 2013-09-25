@@ -94,11 +94,11 @@ void CPatches::Initialize()
 	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitialiseRageGame);
 
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
-	*(DWORD *)COffsets::IV_Hook__PatchRandomTasks = 0x900004C2;
+	//*(DWORD *)COffsets::IV_Hook__PatchRandomTasks = 0x900004C2;
 
 	// Make the game think we are not connected to the internet
-    *(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
-    *(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
+    //*(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
+    //*(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
 	
 	// Disable(resize to zero) help-message box
 	//*(DWORD *)(COffsets::IV_Hook__PatchHelpMessageBox + 0x9B8) = 0;
@@ -112,6 +112,17 @@ void CPatches::Initialize()
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD)CTaskSimpleStartVehicle__Process);
 
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_1, 5);
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_2, 5);
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_3, 5);
+
+	
+		// Disable scenario peds
+	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
+	*(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds +0x1) = 0x0; // 0
+	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds +0x5) = 0xC3; // retn
+
+#if 0
 #ifndef CHEAP_RELEASE
 	// Replace I Luv "L.C." with "IVMP"
 	CPatcher::Unprotect((g_pCore->GetBase() + 0x19DB0E9),4);
@@ -127,6 +138,7 @@ void CPatches::Initialize()
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DD4 + 0x1)) = (DWORD)szLoadingText; // Replace for caricamento...
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DC5 + 0x1)) = (DWORD)szLoadingText; // Replace for carga...
 	*(DWORD *)(g_pCore->GetBase() + (0x7E2DB6 + 0x1)) = (DWORD)szLoadingText; // Replace for loading...
+#endif
 #endif
 	// === RAGE %% RGSC Stuff
 
@@ -146,10 +158,10 @@ void CPatches::Initialize()
     //*(WORD *)COffsets::IV_Hook__PatchFakeRGSCObject= 0xA390;
 
     // Disable VDS102 error
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchVDS102, 42);
+    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchVDS102, 42);
 
     // Last RGSC init check (NOP*6)
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchRGSCInitCheck, 6);
+    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchRGSCInitCheck, 6);
 
     // Skip missing tests
     //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchMissingTests1, 14);
@@ -172,10 +184,10 @@ void CPatches::Initialize()
 #endif
 
     // Disable startup/runtime resource check
-    *(BYTE*)COffsets::IV_Hook__DisableStartupResourceCheck_1 = 1;
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_2, (COffsets::IV_Hook__DisableStartupResourceCheck_2 + 0x1CB));
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_3, (COffsets::IV_Hook__DisableStartupResourceCheck_3 + 0x2E9));
-    CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (COffsets::IV_Hook__DisableStartupResourceCheck_4 + 0x18F));
+    //*(BYTE*)COffsets::IV_Hook__DisableStartupResourceCheck_1 = 1;
+    //CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_2, (COffsets::IV_Hook__DisableStartupResourceCheck_2 + 0x1CB));
+    //CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_3, (COffsets::IV_Hook__DisableStartupResourceCheck_3 + 0x2E9));
+    //CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (COffsets::IV_Hook__DisableStartupResourceCheck_4 + 0x18F));
 
     // Disable automatic radar turn-on(in vehicle)
     CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)

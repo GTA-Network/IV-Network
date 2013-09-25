@@ -464,7 +464,7 @@ This will multiply the size of the given pools by the value in multi [default: 4
 void CHooks::IncreasePoolSizes(int multi)
 {
 	mulPoolSize = multi;
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, (DWORD)CPool_hook);
+	//CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, (DWORD)CPool_hook);
 }
 
 DWORD PhysicsEAXHandle;
@@ -805,6 +805,7 @@ void CHooks::Intialize()
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
+#ifdef GTAV_MAP
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *)(g_pCore->GetBase() + 0x83C216) = 0xEB;
 	*(BYTE *)(g_pCore->GetBase() + 0x83BFE0) = 0xC3;
@@ -844,6 +845,7 @@ void CHooks::Intialize()
 
 	// Hook render map function
 	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD)RenderMap, 5);
+#endif
 }
 
 	// Make blip small 	

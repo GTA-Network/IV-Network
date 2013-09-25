@@ -760,7 +760,7 @@ bool CPlayerEntity::InternalIsInVehicle()
 {
 	// Are we spawned?
 	if(IsSpawned())
-		return (m_pPlayerPed->IsInVehicle() && m_pPlayerPed->GetCurrentVehicle());
+		return (m_pPlayerPed->IsInVehicle());
 
 	return false;
 }
