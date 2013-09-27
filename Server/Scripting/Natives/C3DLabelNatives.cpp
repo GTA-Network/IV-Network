@@ -1,4 +1,4 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========= IV: Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: C3DLabelNatives.cpp
 // Project: Server.Core

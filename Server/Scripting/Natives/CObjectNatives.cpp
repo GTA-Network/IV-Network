@@ -1,4 +1,4 @@
-//============== IV: Multiplayer - http://code.iv-multiplayer.com ==============
+//========= IV: Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: CObjectNatives.cpp
 // Project: Server.Core
