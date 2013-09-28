@@ -60,7 +60,10 @@ _declspec(naked) void CTask__Destructor_Hook()
 	_asm	push esi;
 	_asm	mov esi, ecx;
 	_asm	push esi;
-	_asm	mov dword ptr [esi], offset COffsets::VAR_CTask__VFTable;
+	_asm	push eax;
+	_asm	mov eax, COffsets::VAR_CTask__VFTable;
+	_asm	mov dword ptr [esi], eax;
+	_asm	pop eax;
 	_asm	jmp COffsets::RETURN_CTask__Destructor;
 }
 
@@ -777,19 +780,32 @@ _declspec(naked) void RenderMap()
 }
 
 int * physics = 0;
+int * ped = 0;
 DWORD sub_44A690 = 0;
-
+DWORD sub_9FFE30 = 0;
 void _declspec(naked) PhysicsHook()
 {
 	_asm
 	{
 		mov physics, ecx
+		mov ped, esi
 		pushad
+	}
+
+	if (*ped == g_pCore->GetBase() + 0xD9ED74)
+	{
+		//_asm { int 3 }
+		//CLogFile::Printf("%p", physics);
 	}
 
 	sub_44A690 = g_pCore->GetBase() + 0x44A690;
 	if (*(DWORD *) (physics + 4) == 0)
 	{
+		//__asm { int 3 }
+		CLogFile::Printf("Fail");
+		sub_9FFE30 = g_pCore->GetBase() + 0x9FFE30;
+		_asm mov ecx, ped;
+		_asm call sub_9FFE30; // Recreate physics instance
 		_asm popad;
 		_asm retn;
 	}
