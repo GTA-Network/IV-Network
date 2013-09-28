@@ -34,6 +34,7 @@ CCore::CCore(void)
 	m_pNetworkManager = NULL;
 	m_pGUI = NULL;
 	m_bLoadingVisibility = 0;
+	m_MainMenuActive = false;
 }
 
 bool CCore::Initialise()
@@ -156,10 +157,14 @@ void CCore::OnGameLoad()
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
+	// Our main menu is now active
+	m_MainMenuActive = true;
+
 	// Mark chat as visible & print welcome message
 	m_pChat->SetVisible(true);
 	m_pChat->Outputf(true, "#ffffff%s  #ff6600%s   #ffffffstarted!", MOD_NAME, MOD_VERSION_STRING );
 
+	/*
 	m_strHost = "127.0.0.1";
 	m_usPort = 9999;
 	m_strNick = "IVPlayer";
@@ -169,9 +174,32 @@ void CCore::OnGameLoad()
 
 	// Connect to the network
 	m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
+	*/
 
 	// Set the initialize time
-	m_uiGameInitializeTime = timeGetTime();
+	m_uiGameInitializeTime = timeGetTime(); 
+
+	// Set the position of the camera
+	static CCamera *m_pCamera;
+	m_pCamera = new CCamera;
+	m_pCamera->SetCameraPosition(CVector3(MAINMENU_CAMERA_POS));
+	m_pCamera->SetLookAtPosition(CVector3(MAINMENU_CAMERA_LOOK_AT));
+	Sleep(10);
+	// Set the main menu gui visible
+	m_pGUI->SetView((CGUI::eGUIView)(m_pGUI->GetView() == CGUI::GUI_MAIN ? CGUI::GUI_NONE : CGUI::GUI_MAIN));
+}
+
+void CCore::ConnectToServer()
+{
+	m_strHost = "127.0.0.1";
+	m_usPort = 9999;
+	m_strNick = "IVPlayer";
+
+	// Startup the network module
+	m_pNetworkManager->Startup();
+
+	// Connect to the network
+	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
 void CCore::OnGamePreLoad()
@@ -228,18 +256,22 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Is the game not loaded?
 	if (!IsGameLoaded() || g_bLoading)
 	{
-		// Clear the original EFLC Loading Screen
-		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+		// Is our main menu not active?
+		if (m_MainMenuActive == false)
+		{
+			// Clear the original EFLC Loading Screen
+			m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
-		// Render our own Loading Screen
-		RenderLoadingScreen();
+			// Render our own Loading Screen
+			RenderLoadingScreen();
+		}
 	}
 
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
 
-	// Print our IVMultiplayer "Identifier" in the left upper corner
+	// Print our IVNetwork "Identifier" in the left upper corner
 	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
 
 	CString strConnection;
@@ -315,8 +347,11 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		m_pFPSCounter->Pulse();
 
 	// Render our development instance
+
 	if(m_pDevelopment)
-		m_pDevelopment->Process();
+		// Is our Main Menu not Active?
+		if (m_MainMenuActive == false)
+			m_pDevelopment->Process();
 
 	// Render our time management
 	m_pTimeManagement->Pulse();
@@ -432,7 +467,7 @@ void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
 }
 
 void CCore::RenderLoadingScreen()
-{
+{	
 	float rotation = 0.0f;
 
 	D3DVIEWPORT9 viewport;

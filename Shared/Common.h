@@ -191,6 +191,10 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define	CHAT_COMMAND_CHAR '/'
 #define	CHAT_MAX_HISTORY 12
 
+// Main Menu Position
+#define MAINMENU_CAMERA_POS -203.221664f, 265.353424f, 86.0f
+#define MAINMENU_CAMERA_LOOK_AT -228.926285f, 458.884644f, 58.0f
+
 // Spawn position
 #define DEVELOPMENT_SPAWN_POSITION -547.40f, -961.30f, 4.84f
 #define GAME_LOAD_CAMERA_POS	488.702759f, 540.719421f, 161.584091f

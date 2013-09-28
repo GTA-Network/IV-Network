@@ -262,9 +262,6 @@ void CGame::Reset()
 	// Re-initialse our client
 	Initialise();
 
-	// Temp
-	g_pCore->GetGUI()->SetView(CGUI::GUI_NONE);
-
 	// Prepare our world
 	PrepareWorld();
 }

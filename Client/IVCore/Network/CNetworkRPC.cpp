@@ -85,6 +85,7 @@ void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
 
 	// Start the game
+	g_pCore->GetGame()->PrepareWorld();
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 }
 
