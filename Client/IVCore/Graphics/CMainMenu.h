@@ -14,6 +14,7 @@ class CMainMenu : public Gwen::Controls::Base
 public:
 	CMainMenu(Gwen::Controls::Canvas* pCanvas);
 
+	void Connect(Gwen::Controls::Base* pControl);
 	void HideAbout(Gwen::Controls::Base* pControl);
 	void ShowAbout(Gwen::Controls::Base* pControl);
 	void Exit(Gwen::Controls::Base* pControl);

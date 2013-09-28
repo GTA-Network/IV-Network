@@ -153,7 +153,6 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 					if (pGUI)
 					{
 						pGUI->SetView((CGUI::eGUIView)(pGUI->GetView() == CGUI::GUI_MAIN ? CGUI::GUI_NONE : CGUI::GUI_MAIN));
-						ShowCursor(true);
 						CLogFile::Print("Setted the GUI View");
 					}
 					else

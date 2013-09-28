@@ -157,9 +157,11 @@ public:
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
 	
 	bool              				m_bLoadingVisibility;
+	bool							m_MainMenuActive;
 	void              				RenderLoadingScreen();
 	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
+	void							ConnectToServer();
 };
 
 #endif // CCore_h
