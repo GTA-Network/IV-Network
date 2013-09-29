@@ -116,7 +116,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     bool bFocused = (GetForegroundWindow() == hWnd);
 
 	// Update HWND state..
-	if(bFocused != g_pCore->GetHWND()) {
+	if(bFocused != g_pCore->GetHWNDFocused()) {
 		g_pCore->SetHWNDFocused(bFocused);
 	}
 
@@ -150,21 +150,11 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_F9:
 				{
-					if (pGUI)
-					{
-						pGUI->SetView((CGUI::eGUIView)(pGUI->GetView() == CGUI::GUI_MAIN ? CGUI::GUI_NONE : CGUI::GUI_MAIN));
-						CLogFile::Print("Setted the GUI View");
-					}
-					else
-					{
-						g_pCore->GetChat()->Output("Wtf the GUI doesn't exist.", false);
-					}
+					g_pCore->GetGUI()->Test();
 				}
 			}
 		}
-		
-		if (pGUI)
-			pGUI->ProcessInput(uMsg, lParam, wParam);
+
 
 		if(g_pCore->GetChat())
 			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);

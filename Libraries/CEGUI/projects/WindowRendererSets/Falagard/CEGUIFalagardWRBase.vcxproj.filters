@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cegui">
+      <UniqueIdentifier>{6ea52b33-c629-46be-b665-8218930a690b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\src">
+      <UniqueIdentifier>{40bbf12d-8731-4ddf-9311-fcb7a6f7a2b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\src\WindowRendererSets">
+      <UniqueIdentifier>{de9a09ca-692c-4089-8f00-69cdf52249bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\src\WindowRendererSets\Falagard">
+      <UniqueIdentifier>{ae44ceff-af2c-4422-9c1d-242ae30a66b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\include">
+      <UniqueIdentifier>{75cc6d61-f9ca-4296-87cc-4bf9236db57b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\include\WindowRendererSets">
+      <UniqueIdentifier>{e369ac8a-d97e-4fc6-af42-63c1626c26f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cegui\include\WindowRendererSets\Falagard">
+      <UniqueIdentifier>{5c224906-a381-4abe-acd3-626eb2494813}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalButton.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalDefault.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalEditbox.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalEditboxProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalFrameWindow.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalItemEntry.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalItemListbox.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalListbox.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalListHeader.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalListHeaderProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalListHeaderSegment.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalMenubar.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalMenuItem.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalModule.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalMultiColumnList.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalMultiLineEditbox.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalMultiLineEditboxProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalPopupMenu.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalProgressBar.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalProgressBarProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalScrollablePane.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalScrollbar.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalScrollbarProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalSlider.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalSliderProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStatic.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStaticImage.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStaticImageProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStaticProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStaticText.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalStaticTextProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalSystemButton.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTabButton.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTabControl.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTabControlProperties.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTitlebar.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalToggleButton.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTooltip.cpp" />
+    <ClCompile Include="..\..\..\cegui\src\WindowRendererSets\Falagard\FalTree.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalButton.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalDefault.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalEditbox.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalEditboxProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalFrameWindow.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalItemEntry.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalItemListbox.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalListbox.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalListHeader.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalListHeaderProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalListHeaderSegment.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalMenubar.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalMenuItem.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalModule.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalMultiColumnList.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalMultiLineEditbox.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalMultiLineEditboxProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalPopupMenu.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalProgressBar.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalProgressBarProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalScrollablePane.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalScrollbar.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalScrollbarProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalSlider.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalSliderProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStatic.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStaticImage.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStaticImageProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStaticProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStaticText.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalStaticTextProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalSystemButton.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTabButton.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTabControl.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTabControlProperties.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTitlebar.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalToggleButton.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTooltip.h" />
+    <ClInclude Include="..\..\..\cegui\include\WindowRendererSets\Falagard\FalTree.h" />
+  </ItemGroup>
+</Project>

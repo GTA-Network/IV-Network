@@ -34,7 +34,6 @@ CCore::CCore(void)
 	m_pNetworkManager = NULL;
 	m_pGUI = NULL;
 	m_bLoadingVisibility = 0;
-	m_MainMenuActive = false;
 }
 
 bool CCore::Initialise()
@@ -143,6 +142,8 @@ bool CCore::Initialise()
 	return true;
 }
 
+
+
 void CCore::OnGameLoad()
 {
 	// Is the game already loaded?
@@ -157,14 +158,15 @@ void CCore::OnGameLoad()
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
-	// Our main menu is now active
-	m_MainMenuActive = true;
-
 	// Mark chat as visible & print welcome message
 	m_pChat->SetVisible(true);
 	m_pChat->Outputf(true, "#ffffff%s  #ff6600%s   #ffffffstarted!", MOD_NAME, MOD_VERSION_STRING );
 
-	/*
+	m_pMainMenu = new CMainMenu(m_pGUI);
+
+	m_pMainMenu->Initialize();
+
+	
 	m_strHost = "127.0.0.1";
 	m_usPort = 9999;
 	m_strNick = "IVPlayer";
@@ -173,31 +175,32 @@ void CCore::OnGameLoad()
 	m_pNetworkManager->Startup();
 
 	// Connect to the network
-	m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
-	*/
+	//m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
+	
+	g_pCore->GetGame()->PrepareWorld();
+	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
-
-	// Set the position of the camera
-	static CCamera *m_pCamera;
-	m_pCamera = new CCamera;
-	m_pCamera->SetCameraPosition(CVector3(MAINMENU_CAMERA_POS));
-	m_pCamera->SetLookAtPosition(CVector3(MAINMENU_CAMERA_LOOK_AT));
-	Sleep(10);
-	// Set the main menu gui visible
-	m_pGUI->SetView((CGUI::eGUIView)(m_pGUI->GetView() == CGUI::GUI_MAIN ? CGUI::GUI_NONE : CGUI::GUI_MAIN));
 }
+
+int iConnectStarted = 0;
+
+void ConnectThread()
+{
+	iConnectStarted = SharedUtility::GetTime();
+	while (!g_pCore->GetNetworkManager()->IsConnected())
+	{
+		if (iConnectStarted + 5000 <= SharedUtility::GetTime())
+			return;
+		g_pCore->GetNetworkManager()->Pulse();
+	}
+}
+
+extern bool waitForConnected;
 
 void CCore::ConnectToServer()
 {
-	m_strHost = "127.0.0.1";
-	m_usPort = 9999;
-	m_strNick = "IVPlayer";
-
-	// Startup the network module
-	m_pNetworkManager->Startup();
-
 	// Connect to the network
 	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
@@ -221,6 +224,7 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 		m_pChat->Setup(pPresentationParameters);
 
 	m_pGUI = new CGUI(pDevice);
+	m_pGUI->Initialize();
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -256,15 +260,11 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Is the game not loaded?
 	if (!IsGameLoaded() || g_bLoading)
 	{
-		// Is our main menu not active?
-		if (m_MainMenuActive == false)
-		{
-			// Clear the original EFLC Loading Screen
-			m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+		// Clear the original EFLC Loading Screen
+		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
-			// Render our own Loading Screen
-			RenderLoadingScreen();
-		}
+		// Render our own Loading Screen
+		RenderLoadingScreen();
 	}
 
 	// Has the device been lost?
@@ -349,9 +349,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render our development instance
 
 	if(m_pDevelopment)
-		// Is our Main Menu not Active?
-		if (m_MainMenuActive == false)
-			m_pDevelopment->Process();
+		m_pDevelopment->Process();
 
 	// Render our time management
 	m_pTimeManagement->Pulse();

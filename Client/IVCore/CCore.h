@@ -45,18 +45,8 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
-#include <gwen/Renderers/DirectX9.h>
-#include <gwen/Controls/ImagePanel.h>
-#include <gwen/Skins/Simple.h>
-#include <gwen/Controls/WindowControl.h>
-#include <gwen/Controls/PanelListPanel.h>
-#include <gwen/Controls/Text.h>
-#include <gwen/Controls.h>
-#include <gwen/Input/Windows.h>
-#include <gwen/Align.h>
-#include <Graphics/CGUIView.h>
-#include <Graphics/CMainMenu.h>
 #include <Graphics/CGUI.h>
+#include <Graphics/CMainMenu.h>
 
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
@@ -92,6 +82,8 @@ private:
 
 	bool							m_hwndFocused;
 	BYTE							m_byteLoadingStyle;
+
+	CMainMenu						* m_pMainMenu;
 
 public:
 									CCore();
@@ -153,11 +145,10 @@ public:
 	{
 		m_hwndFocused = bFocus;
 	}
-	bool							GetHWND() { return m_hwndFocused; }
+	bool							GetHWNDFocused() { return m_hwndFocused; }
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
 	
 	bool              				m_bLoadingVisibility;
-	bool							m_MainMenuActive;
 	void              				RenderLoadingScreen();
 	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }

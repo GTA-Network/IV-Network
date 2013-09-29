@@ -108,8 +108,8 @@ void CNetworkManager::Connect(CString strHost, unsigned short usPort, CString st
 	CGUI* pGUI = g_pCore->GetGUI();
 	if (pGUI)
 	{
-		pGUI->ClearView(CGUI::GUI_SERVER);
-		pGUI->SetView(CGUI::GUI_SERVER);
+		//pGUI->ClearView(CGUI::GUI_SERVER);
+		//pGUI->SetView(CGUI::GUI_SERVER);
 	}
 
 	// Output the connection message

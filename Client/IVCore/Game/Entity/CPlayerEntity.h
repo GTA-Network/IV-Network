@@ -177,7 +177,7 @@ public: // Handles call functions
 		m_bSpawned = true;
 	}
 
-	inline CPlayerEntity			GetPlayerEntityInstance()
+	inline CPlayerEntity			*GetPlayerEntityInstance()
 	{
 		return this;
 	}

@@ -75,47 +75,6 @@ HRESULT STDMETHODCALLTYPE CDirectInputDevice8Proxy::GetDeviceState(DWORD p0, LPV
 	HRESULT hResult			= m_pDevice->GetDeviceState( p0, p1 );
 	char * keyBuffer = (char *) p1;
 
-	if (m_DeviceType == DIDEVICE_TYPE_MOUSE)
-	{
-		DIMOUSESTATE2 state = *(DIMOUSESTATE2*) p1;
-		m_Cursor.y += state.lY * 0.7f;
-		m_Cursor.x += state.lX * 0.7f;
-
-		CGUI* pGUI = g_pCore->GetGUI();
-		if (pGUI)
-		{
-			int width;
-			int height;
-			pGUI->GetScreenSize(&width, &height);
-			m_Cursor.y = max(0, min(m_Cursor.y, height));
-			m_Cursor.x = max(0, min(m_Cursor.x, width));
-
-			pGUI->ProcessInput(WM_MOUSEMOVE, MAKELONG(m_Cursor.x, m_Cursor.y), 0);
-
-			if (state.lZ != 0)
-			{
-				pGUI->ProcessInput(WM_MOUSEWHEEL, 0, MAKELONG(0, state.lZ));
-			}
-
-			for (int i = 0; i < 3; ++i)
-			{
-				if (state.rgbButtons[i] & 0x80)
-				{
-					if (!m_bMouseButtons[i])
-					{
-						m_bMouseButtons[i] = true;
-						pGUI->ProcessInput(WM_LBUTTONDOWN + 3 * i, 0, 0);
-					}
-				}
-				else if (m_bMouseButtons[i])
-				{
-					m_bMouseButtons[i] = false;
-					pGUI->ProcessInput(WM_LBUTTONUP + 3 * i, 0, 0);
-				}
-			}
-		}
-	}
-
 	return hResult;
 }
 

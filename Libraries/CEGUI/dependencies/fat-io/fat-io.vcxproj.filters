@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="fat_access.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_cache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_filelib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_format.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_misc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_string.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_table.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fat_write.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fat_access.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_cache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_filelib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_opts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fat_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d5c5bb62-2d35-4292-a180-7a7186c3986c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8a513ffa-a974-4413-aedb-dc0e52727ab0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

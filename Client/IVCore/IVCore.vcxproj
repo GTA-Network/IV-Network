@@ -55,14 +55,14 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/gwen/include;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/gwen/include;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>RakNet.lib;GWEN-Renderer-DirectX9d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RakNet.lib;GWEN-Renderer-DirectX9d.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;CEGUIBase_d.lib;CEGUIDirect3D9Renderer_d.lib;CEGUIExpatParser_d.lib;CEGUIFalagardWRBase_d.lib;CEGUISILLYImageCodec_d.lib;fat-io.lib;libjpeg_d.lib;libpng_d.lib;SILLY_d.lib;libexpat_d.lib;pcre_d.lib;freetype_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
@@ -76,15 +76,15 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/gwen/include;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;_CRT_SECURE_NO_WARNINGS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/gwen/include;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CLIENT;_CRT_SECURE_NO_WARNINGS;_WINDLL;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>zlib.lib;RakNet.lib;GWEN-Renderer-DirectX9.lib;winmm.lib;d3dx9.lib;ws2_32.lib;dinput8.lib;detours.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;RakNet.lib;winmm.lib;d3dx9.lib;ws2_32.lib;dinput8.lib;detours.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;CEGUIBase.lib;CEGUIDirect3D9Renderer.lib;CEGUIExpatParser.lib;CEGUIFalagardWRBase.lib;CEGUISILLYImageCodec.lib;fat-io.lib;libjpeg.lib;libpng.lib;SILLY.lib;libexpat.lib;pcre.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
@@ -206,7 +206,6 @@
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\CGUI.cpp" />
-    <ClCompile Include="Graphics\CGUIView.cpp" />
     <ClCompile Include="Graphics\CMainMenu.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
@@ -385,7 +384,6 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
-    <ClInclude Include="Graphics\CGUIView.h" />
     <ClInclude Include="Graphics\CMainMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />

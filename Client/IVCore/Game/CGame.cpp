@@ -324,7 +324,6 @@ void CGame::OnClientReadyToGamePlay()
 	CIVHud::SetRadarVisible(true);
 	CIVHud::SetAreaNamesEnabled(true);
 	CIVHud::SetPlayerNamesVisible(true);
-
 	// Update our environment settings and set default timemanagement data
 	//g_pCore->GetTimeManagementInstance()->SetTime(7,0);
 	//g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default

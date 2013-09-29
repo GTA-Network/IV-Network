@@ -1,70 +1,51 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
-//
-// File: CMainMenu.cpp
-// Project: Client.Core
-// Author: ViruZz <blazee14@gmail.com>
-// License: See LICENSE in root directory
-//
-//==============================================================================
 
-#include "CCore.h"
-extern CCore *g_pCore;
+#include "CMainMenu.h"
+#include <CCore.h>
 
-CMainMenu::CMainMenu(Gwen::Controls::Canvas* pCanvas) : Gwen::Controls::Base(pCanvas)
+
+extern CCore* g_pCore;
+
+CMainMenu::CMainMenu(CGUI* pGUI)
+: m_pGUI(pGUI)
 {
-	// Set the default information of the Main Menu
-	SetPadding(Gwen::Padding(0, 0));	
-	SetPos(10, 300);
-	SetSize(1920, 1200);
 
-	// Quick Connect Button
-	Gwen::Controls::Button* pQuickConnect = new Gwen::Controls::Button(this);
-	pQuickConnect->SetText("Quick Connect");
-	pQuickConnect->SetSize(150, 30);
-	pQuickConnect->SetPos(350, 250);
-	pQuickConnect->onPress.Add(this, &CMainMenu::Connect);
-	
-	// Connect Button
-	Gwen::Controls::Button* pConnect =  new Gwen::Controls::Button(this);
-	pConnect->SetText("Connect");
-	pConnect->SetSize(150, 30);
-	pConnect->SetPos(505, 250);
-
-	// About Button
-	Gwen::Controls::Button* pAbout = new Gwen::Controls::Button(this);
-	pAbout->SetText("About");
-	pAbout->SetSize(150, 30);
-	pAbout->SetPos(660, 250);
-	pAbout->IsHovered();
-	pAbout->onPress.Add(this, &CMainMenu::ShowAbout);
-
-	// Exit Button
-	Gwen::Controls::Button* pExit = new Gwen::Controls::Button(this);
-	pExit->SetText("Exit");
-	pExit->SetSize(150, 30);
-	pExit->SetPos(815, 250);
-	pExit->onPress.Add(this, &CMainMenu::Exit);
 }
 
-void CMainMenu::Connect(Gwen::Controls::Base* pControl)
+CMainMenu::~CMainMenu()
+{
+
+}
+
+
+bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	g_pCore->ConnectToServer();
+	m_pWindow->setVisible(false);
+	return true;
 }
 
-void CMainMenu::ShowAbout(Gwen::Controls::Base* pControl)
+bool CMainMenu::Initialize()
 {
-	Gwen::Controls::WindowControl* pAboutWindow = new Gwen::Controls::WindowControl(GetCanvas());
-	pAboutWindow->SetTitle("About IV:Network");
-	pAboutWindow->SetSize(200 + rand() % 100, 200 + rand() % 100);
-	pAboutWindow->MakeModal(true);
-	pAboutWindow->SetDeleteOnClose(true);
+	m_pWindow = m_pGUI->GetWindowManager()->createWindow(STYLE_PREFIX "/FrameWindow", "Keks");
+	if (m_pWindow)
+	{
+		CEGUI::Window * pParent = m_pGUI->GetDefaultWindow();
+		pParent->addChildWindow(m_pWindow);
+		m_pWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 100)));
+		m_pWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 100)));
+	}
+
+	CEGUI::Window* pQuickConnect = m_pGUI->GetWindowManager()->createWindow(STYLE_PREFIX "/Button", "KeksButton");
+	if (pQuickConnect)
+	{
+		pQuickConnect->setSize(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 50)));
+		pQuickConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 50)));
+		//pQuickConnect->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseEnter, this));
+		//pQuickConnect->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseLeave, this));
+		pQuickConnect->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseClick, this));
+		m_pWindow->addChildWindow(pQuickConnect);
+	}
+
+	return true;
 }
 
-void CMainMenu::Exit(Gwen::Controls::Base* pControl)
-{
-	TerminateProcess(GetCurrentProcess(), 0);
-}
-	
-	
-	
-	

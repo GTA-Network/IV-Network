@@ -55,7 +55,7 @@ private:
 	unsigned int                m_uiSyncRate;// Seems VS2013 sometimes does not allow C++11 = 20; /** Describes the maximum number of sync packages sent per second per entity */
     unsigned int                m_uiMaximumFPS;// Seems VS2013 sometimes does not allow C++11 = 100;
 
-    bool                        m_bShowFPS;// Seems VS2013 sometimes does not allow C++11 = true;
+    bool                        m_bShowFPS = true;
 	unsigned long				m_ulLastFPSUpdateTime;
 	unsigned long				m_ulFrameCount;
 	unsigned long				m_ulFramesPerSecond;

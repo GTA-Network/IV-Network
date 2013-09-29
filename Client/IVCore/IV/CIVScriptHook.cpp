@@ -523,6 +523,7 @@ sRAGETHREAD * thread = 0;
 int i = 0;
 bool bPostStartupLoaded = false;
 bool bScriptFound = false;
+
 void _declspec(naked) CScriptVM__Process()
 {
 	_asm	mov thread, ecx;

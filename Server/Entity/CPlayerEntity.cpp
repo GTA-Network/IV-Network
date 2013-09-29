@@ -67,7 +67,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			// Apply current 3D Turnspeed to the sync package
 			GetTurnSpeed(pSyncPacket->vecTurnSpeed);
 
-			CLogFile::Printf("[%i] %f %f %f", GetId(), pSyncPacket->vecTurnSpeed.fX, pSyncPacket->vecTurnSpeed.fY, pSyncPacket->vecTurnSpeed.fZ);
+			//CLogFile::Printf("[%i] %f %f %f", GetId(), pSyncPacket->vecTurnSpeed.fX, pSyncPacket->vecTurnSpeed.fY, pSyncPacket->vecTurnSpeed.fZ);
 
 			// Apply current 3D Directionspeed to the sync package
 			pSyncPacket->vecDirection = m_vecDirection;
