@@ -22,7 +22,7 @@
 ;======================================================
 ; Installer Information
 Name "${NAME} ${VERSION}"
-OutFile "../${NAME}-${VERSION}.exe"
+OutFile "${NAME}-${VERSION}.exe"
 SetCompressor /SOLID lzma
 CRCCheck force
 BrandingText /TRIMCENTER "${NAME} ${VERSION} Setup"
