@@ -154,36 +154,26 @@ void CPatches::Initialize()
     // Don't initialize error reporting
     //CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchErrorReporting);
 
-    // Certificates check (RETN 8)
-    //*(DWORD *)COffsets::IV_Hook__PatchCertificatesCheck = 0x900008C2;
+	*(WORD *) (g_pCore->GetBase() + 0x472EF1) = 0xC033; //xor eax, eax
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x472EF3, g_pCore->GetBase() + 0x47316E);
 
-    // xor eax, eax - address of the RGSC object
-    //*(DWORD *)COffsets::IV_Hook__PatchRGSCObject = 0x4AE9C033;
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x473207, g_pCore->GetBase() + 0x473213);
 
-    // Skip RGSC connect and EFC checks (jmp 40289E)
-    //*(DWORD *)COffsets::IV_Hook__PatchRGSCEFCChecks = 0x90000002;
+	// Skip missing tests
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchMissingTests1, 14);
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchMissingTests2, 14);
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x493D4C, 24);
 
-    // NOP; MOV [g_rgsc], eax
-    //*(WORD *)COffsets::IV_Hook__PatchFakeRGSCObject= 0xA390;
-
-    // Disable VDS102 error
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchVDS102, 42);
-
-    // Last RGSC init check (NOP*6)
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchRGSCInitCheck, 6);
-
-    // Skip missing tests
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchMissingTests1, 14);
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchMissingTests2, 14);
-
-    //*(DWORD *)COffsets::IV_Hook__PatchUnkownAddress1 = 0x90CC033; // xor eax, eax; retn
-    //*(DWORD *)COffsets::IV_Hook__PatchUnkownAddress2 = 0x90CC033; // xor eax, eax; retn
+	*(DWORD *) COffsets::IV_Hook__PatchUnkownAddress1 = 0x90CC033; // xor eax, eax; retn
+	*(DWORD *) COffsets::IV_Hook__PatchUnkownAddress2 = 0x90CC033; // xor eax, eax; retn
 
     // Disable securom spot checks (mov al, 1; retn)
-    //*(DWORD *)COffsets::IV_Hook__PatchSecuromCheck = 0x90C301B0;
-    //*(DWORD *)(COffsets::IV_Hook__PatchSecuromCheck + 20) = 0x90C301B0;
-    //*(DWORD *)(COffsets::IV_Hook__PatchSecuromCheck + 30) = 0x90C301B0;
-    //*(DWORD *)(COffsets::IV_Hook__PatchSecuromCheck + 60) = 0x90C301B0;
+	*(DWORD *) COffsets::IV_Hook__PatchSecuromCheck = 0x90C301B0;
+	*(DWORD *) (COffsets::IV_Hook__PatchSecuromCheck + 0x20) = 0x90C301B0;
+	*(DWORD *) (COffsets::IV_Hook__PatchSecuromCheck + 0x30) = 0x90C301B0;
+	*(DWORD *) (COffsets::IV_Hook__PatchSecuromCheck + 0x60) = 0x90C301B0;
+
+	*(BYTE *) (g_pCore->GetBase() + 0x15C3398) = 1; //fix random drunk cam
 
     // Disables Warning Messages(like "Unkown resource found") -> Disables only the window(and exit code part)...
 	// TODO: Replace with own error code function

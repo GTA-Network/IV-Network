@@ -94,12 +94,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	Sleep(500);
 
-	// Get the full path to LaunchGTAIV.exe
-	CString strApplicationPath("%s\\"GAME_START_EXECUTABLE, szInstallDirectory);
+	// Get the full path to EFLC.exe
+	CString strApplicationPath("%s\\"GAME_DEFAULT_EXECUTABLE, szInstallDirectory);
 
-	// Check if LaunchGTAIV.exe exists
+	// Check if EFLC.exe exists
 	if(!SharedUtility::Exists(strApplicationPath.Get()))
-		return ShowMessageBox("Failed to find "GAME_START_EXECUTABLE". Cannot launch "MOD_NAME".");
+		return ShowMessageBox("Failed to find "GAME_DEFAULT_EXECUTABLE". Cannot launch "MOD_NAME".");
 
 	// If we have a custom directory save it
 	if(bFoundCustomDirectory)
@@ -113,13 +113,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return ShowMessageBox("Failed to find " CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION ". Cannot launch "MOD_NAME".");
 
 	// Get the full path of the launch helper
-	CString strLaunchHelper(SharedUtility::GetAbsolutePath(CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
+	CString strCore(SharedUtility::GetAbsolutePath(CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION));
 
 	// Check if the launch helper exists
-	if(!SharedUtility::Exists(strLaunchHelper.Get()))
-		return ShowMessageBox("Failed to find " CLIENT_LAUNCH_HELPER_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME".");
+	if (!SharedUtility::Exists(strCore.Get()))
+		return ShowMessageBox("Failed to find " CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME".");
 
-	// Check if GTAIV is already running
+	// Check if GTAEFLC is already running
 	if (SharedUtility::IsProcessRunning(GAME_DEFAULT_EXECUTABLE))
 	{
 		if (ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running and needs to be terminated before "MOD_NAME" can be started. Do you want to do that now?",
@@ -138,24 +138,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 			return ShowMessageBox(GAME_DEFAULT_EXECUTABLE" is already running. Cannot launch "MOD_NAME".");
-	}
-
-	// Check if LaunchGTAIV.exe is already running
-	if(SharedUtility::IsProcessRunning(GAME_START_EXECUTABLE)) {
-		if(ShowMessageBox(GAME_START_EXECUTABLE" is already running and needs to be terminated before "MOD_NAME" can be started. Do you want to do that now?",
-			MB_ICONQUESTION | MB_YESNO ) == IDYES) {
-			if(!SharedUtility::_TerminateProcess(GAME_START_EXECUTABLE)) {
-
-				// Wait until we've successfully terminated the process
-				Sleep(3000);
-				if(SharedUtility::IsProcessRunning(GAME_START_EXECUTABLE)) {
-					if(!SharedUtility::_TerminateProcess(GAME_START_EXECUTABLE))
-						return ShowMessageBox(GAME_START_EXECUTABLE" could not be terminated. Cannot launch "MOD_NAME".");
-				}
-			}
-		}
-		else
-			return ShowMessageBox(GAME_START_EXECUTABLE" is already running. Cannot launch "MOD_NAME".");
 	}
 
 	// TODO ADD WINDOW COMMANDLINE SUPPORT!
@@ -255,14 +237,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	memset(&piProcessInfo, 0, sizeof(piProcessInfo));
 	siStartupInfo.cb = sizeof(siStartupInfo);
 
-	if(!CreateProcess(strApplicationPath.Get(), (char *)strCommandLine.Get(), NULL, NULL, TRUE, CREATE_SUSPENDED, NULL,
-		SharedUtility::GetAppPath(), &siStartupInfo, &piProcessInfo)) {
-		ShowMessageBox("Failed to start "MP_START_EXECUTABLE". Cannot launch "MOD_NAME".");
+	if (!CreateProcess(strApplicationPath.Get(), (char *) strCommandLine.Get(), NULL, NULL, TRUE, CREATE_SUSPENDED, NULL, szInstallDirectory, &siStartupInfo, &piProcessInfo)) {
+		ShowMessageBox("Failed to start "GAME_DEFAULT_EXECUTABLE". Cannot launch "MOD_NAME".");
 		return 1;
 	}
 
-	// Inject LauncherLibrary.dll into LaunchGTAIV.exe
-	int iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strLaunchHelper.Get());
+	// Inject IVNetwork.dll into EFLC.exe
+	int iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strCore.Get());
 
 	// Did the injection fail?
 	if(iReturn > 0) {
