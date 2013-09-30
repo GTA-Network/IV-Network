@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CGameFiles.cpp
 // Project: Client.Core
@@ -32,10 +32,10 @@ struct GameFile
 gameFiles [] =
 {
 	// multiplayer includes
-	{0x1B8184BB, "multiplayer\\datafiles\\1.ivmp", true, "multiplayer\\pc\\textures\\loadingscreens.wtd", true},
-	{0x1B8184BB, "multiplayer\\datafiles\\2.ivmp", true, "multiplayer\\common\\data\\loadingscreens_pc_eflc_v2.dat", true},
-	{0x1B8184BB, "multiplayer\\datafiles\\3.ivmp", true, "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd", true},
-	{0x1B8184BB, "multiplayer\\datafiles\\4.ivmp", true, "multiplayer\\common\\data\\hud_eflc.dat", true},
+	{0x1B8184BB, "multiplayer\\datafiles\\1.ivn", true, "multiplayer\\pc\\textures\\loadingscreens.wtd", true},
+	{0x1B8184BB, "multiplayer\\datafiles\\2.ivn", true, "multiplayer\\common\\data\\loadingscreens_pc_eflc_v2.dat", true},
+	{0x1B8184BB, "multiplayer\\datafiles\\3.ivn", true, "multiplayer\\pc\\textures\\radio_hud_noncolored.wtd", true},
+	{0x1B8184BB, "multiplayer\\datafiles\\4.ivn", true, "multiplayer\\common\\data\\hud_eflc.dat", true},
 };
 
 bool CGameFiles::CheckFiles()

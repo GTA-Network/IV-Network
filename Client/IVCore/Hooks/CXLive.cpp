@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CXLive.h
 // Project: Client.Core
@@ -408,7 +408,7 @@ int WINAPI XUserGetName(DWORD dwUserId, char * pBuffer, DWORD dwBufLen)
 	if(dwBufLen < 6)
 		return 1;
 
-	strcpy(pBuffer, "IV:MP");
+	strcpy(pBuffer, "IV:N");
 	return 0;
 }
 

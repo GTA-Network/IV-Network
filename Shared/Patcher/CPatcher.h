@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - http://github.com/IVMultiplayer/Ivmultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CPatcher.h
 // Project: Client.Core

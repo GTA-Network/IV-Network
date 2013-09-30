@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: Common.h
 // Project: (Shared)
@@ -51,8 +51,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 // If compiling in debug mode force mod debug mode
 #ifdef _DEBUG
-#undef IVMP_DEBUG
-#define IVMP_DEBUG 1
+#undef IVN_DEBUG
+#define IVN_DEBUG 1
 #endif
 
 // DirectX Input version
@@ -60,20 +60,20 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 // Forced debug
 #ifdef FORCE_DEBUG
-#ifndef IVMP_DEBUG
-#define IVMP_DEBUG 1
+#ifndef IVN_DEBUG
+#define IVN_DEBUG 1
 #endif
 #endif
 
 // Forced release
 #ifdef FORCE_RELEASE
-#ifdef IVMP_DEBUG
-#undef IVMP_DEBUG
+#ifdef IVN_DEBUG
+#undef IVN_DEBUG
 #endif
 #endif
 
 // Version defines
-#ifdef IVMP_DEBUG
+#ifdef IVN_DEBUG
 #define DEBUG_IDENTIFIER " - Debug"
 #else
 #define DEBUG_IDENTIFIER
@@ -128,11 +128,11 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define GAME_DIRECTORY "GrandTheftAutoDirectory"
 #define MP_START_EXECUTABLE "LaunchIVNetwork.exe"
 #define GAME_DEFAULT_EXECUTABLE "EFLC.exe"
-#define SHORT_URI_LAUNCH_1 "ivmp://"
-#define SHORT_URI_LAUNCH_2 "ivmultiplayer://"
-#define SHORT_URI_LAUNCH_3 "ivmp"
-#define SHORT_URI_LAUNCH_4 "ivmultiplayer"
-#define SHORT_COMMANDLINE_LAUNCH_1 "-ivmp"
+#define SHORT_URI_LAUNCH_1 "ivn://"
+#define SHORT_URI_LAUNCH_2 "ivnetwork://"
+#define SHORT_URI_LAUNCH_3 "ivn"
+#define SHORT_URI_LAUNCH_4 "ivnetwork"
+#define SHORT_COMMANDLINE_LAUNCH_1 "-ivn"
 #define DEFAULT_REGISTRY_GAME_DIRECTORY "Software\\Rockstar Games\\EFLC"
 
 // Library Exports
@@ -169,9 +169,9 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define UNSET_BIT(a, b) a &= ~(b)
 
 // Logfile definitions
-#define CLIENT_LOG_FILE "multiplayer//IVMP-Client.log"
-#define CLIENT_CHATLOG_FILE "multiplayer//IVMP-Chat.log"
-#define CLIENT_SETTINGS_FILE "multiplayer//IVMP-Settings.xml"
+#define CLIENT_LOG_FILE "multiplayer//IVN-Client.log"
+#define CLIENT_CHATLOG_FILE "multiplayer//IVN-Chat.log"
+#define CLIENT_SETTINGS_FILE "multiplayer//IVN-Settings.xml"
 
 // Chat definitions
 #define	NUM_FONTS 1

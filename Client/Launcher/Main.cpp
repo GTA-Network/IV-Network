@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: Main.cpp
 // Project: Client.Launcher
@@ -35,7 +35,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if(strcmp(szProtocolDirectory, strCommand.Get()))
 		bRenewProtocol = true;
 
-	// Check if protocol 'ivmp' and 'ivmultiplayer' is avaiable in registry
+	// Check if protocol 'ivn' and 'ivnetwork' is avaiable in registry
 	if(!SharedUtility::ReadRegistryString(HKEY_CLASSES_ROOT, SHORT_URI_LAUNCH_3, NULL, "", NULL, NULL)
 		|| !SharedUtility::ReadRegistryString(HKEY_CLASSES_ROOT, SHORT_URI_LAUNCH_4, NULL, "", NULL, NULL) || bRenewProtocol) {
 
@@ -156,7 +156,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		bCommandFound = true;
 	}
 
-	// Check for ivmp protocol
+	// Check for ivn protocol
 	if(!bCommandFound) {
 		sizetCMDFound = strServerCheck.find(SHORT_URI_LAUNCH_1); 
 		if(sizetCMDFound != std::string::npos) {
@@ -209,7 +209,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 				strNewCommandLine = lpCmdLine;
 			}
-			else // Terminate IV:MP
+			else // Terminate IV:N
 			{
 				if(!SharedUtility::_TerminateProcess(MP_START_EXECUTABLE))
 					return ShowMessageBox(MP_START_EXECUTABLE" could not be terminated. Cannot launch IV:Network.");

@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: Main.cpp
 // Project: Client.Compressor
@@ -206,10 +206,10 @@ void DecompressFile(const char * szFileName, const char * szOutputName)
 int main(int argc, char **argv)
 {
 	// Compress
-	//CompressFile("multiplayer\\original\\loadingscreens.wtd", "multiplayer\\datafiles\\1.ivmp");
-	//CompressFile("multiplayer\\original\\loadingscreens_pc_eflc_v2.dat", "multiplayer\\datafiles\\2.ivmp");
-	//CompressFile("multiplayer\\original\\radio_hud_noncolored.wtd", "multiplayer\\datafiles\\3.ivmp");
-	CompressFile("multiplayer\\original\\hud_eflc.dat", "multiplayer\\datafiles\\4.ivmp");
+	//CompressFile("multiplayer\\original\\loadingscreens.wtd", "multiplayer\\datafiles\\1.ivn");
+	//CompressFile("multiplayer\\original\\loadingscreens_pc_eflc_v2.dat", "multiplayer\\datafiles\\2.ivn");
+	//CompressFile("multiplayer\\original\\radio_hud_noncolored.wtd", "multiplayer\\datafiles\\3.ivn");
+	CompressFile("multiplayer\\original\\hud_eflc.dat", "multiplayer\\datafiles\\4.ivn");
 
 	printf("FINISHED, type any key to exit...");
 	getchar();
