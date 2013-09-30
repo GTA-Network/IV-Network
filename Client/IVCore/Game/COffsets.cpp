@@ -355,12 +355,6 @@ INIT_OFF(IV_Hook__PatchStartNewGame);
 INIT_OFF(IV_Hook__PatchStartupDOTsco);
 INIT_OFF(IV_Hook__PatchVehicleDriverProcess);
 INIT_OFF(IV_Hook__PatchErrorReporting);
-INIT_OFF(IV_Hook__PatchCertificatesCheck);
-INIT_OFF(IV_Hook__PatchRGSCObject);
-INIT_OFF(IV_Hook__PatchRGSCEFCChecks);
-INIT_OFF(IV_Hook__PatchFakeRGSCObject);
-INIT_OFF(IV_Hook__PatchVDS102);
-INIT_OFF(IV_Hook__PatchRGSCInitCheck);
 INIT_OFF(IV_Hook__PatchMissingTests1);
 INIT_OFF(IV_Hook__PatchMissingTests2);
 
@@ -774,12 +768,6 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_Hook__PatchStartupDOTsco, 0x83409A); // done
 			SET_OFF(IV_Hook__PatchVehicleDriverProcess, 0xAEF300); // done
 			SET_OFF(IV_Hook__PatchErrorReporting, 0x7CA700); // done
-			SET_OFF(IV_Hook__PatchCertificatesCheck, 0x474800); // done
-			SET_OFF(IV_Hook__PatchRGSCObject, 0x472F1D); // done
-			SET_OFF(IV_Hook__PatchRGSCEFCChecks, 0x472F21); // done
-			SET_OFF(IV_Hook__PatchFakeRGSCObject, 0x473173); // done
-			SET_OFF(IV_Hook__PatchVDS102, 0x4731DD); // done
-			SET_OFF(IV_Hook__PatchRGSCInitCheck, 0x47320D); // done
 			SET_OFF(IV_Hook__PatchMissingTests1, 0x473402); // done
 			SET_OFF(IV_Hook__PatchMissingTests2, 0x473607); // done
 
@@ -1168,12 +1156,6 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(IV_Hook__PatchStartupDOTsco, 0x809A8A);
 			SET_OFF(IV_Hook__PatchVehicleDriverProcess, 0xA9F300);
 			SET_OFF(IV_Hook__PatchErrorReporting, 0xD356D0);
-			SET_OFF(IV_Hook__PatchCertificatesCheck, 0x403F10);
-			SET_OFF(IV_Hook__PatchRGSCObject, 0x40262D);
-			SET_OFF(IV_Hook__PatchRGSCEFCChecks, 0x402631);
-			SET_OFF(IV_Hook__PatchFakeRGSCObject, 0x402883);
-			SET_OFF(IV_Hook__PatchVDS102, 0x4028ED);
-			SET_OFF(IV_Hook__PatchRGSCInitCheck, 0x40291D);
 			SET_OFF(IV_Hook__PatchMissingTests1, 0x402B12);
 			SET_OFF(IV_Hook__PatchMissingTests2, 0x402D17);
 

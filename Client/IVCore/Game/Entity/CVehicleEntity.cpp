@@ -23,6 +23,8 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_pVehicle = NULL;
 	m_vehicleId = INVALID_ENTITY_ID;
 	m_pDriver = NULL;
+	m_bSpawned = false;
+	m_pModelInfo = NULL;
 
 	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
@@ -31,6 +33,12 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	// Get the model index
 	int iVehicleModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
+
+	if (iVehicleModelIndex == -1)
+	{
+		g_pCore->GetChat()->Output(CString("!!! 0x%X ModelHash has no model index !!!", dwModelHash).Get());
+		return;
+	}
 
 	// Set the model info
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(iVehicleModelIndex);
@@ -51,9 +59,6 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	// Set the spawn position
 	memcpy(&m_vecSpawnPosition,&vecPos,sizeof(CVector3));
 
-	// Mark as not spawned
-	m_bSpawned = false;
-
 }
 
 CVehicleEntity::~CVehicleEntity()
@@ -68,6 +73,9 @@ CVehicleEntity::~CVehicleEntity()
 
 bool CVehicleEntity::Create()
 {
+	if (m_pModelInfo == NULL)
+		return false;
+
 	// Is the vehicle already spawned?
 	if(IsSpawned())
 		return false;

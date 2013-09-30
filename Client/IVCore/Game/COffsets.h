@@ -386,12 +386,6 @@ public:
 	DEF_OFF(IV_Hook__PatchStartupDOTsco);
 	DEF_OFF(IV_Hook__PatchVehicleDriverProcess);
 	DEF_OFF(IV_Hook__PatchErrorReporting);
-	DEF_OFF(IV_Hook__PatchCertificatesCheck);
-	DEF_OFF(IV_Hook__PatchRGSCObject);
-	DEF_OFF(IV_Hook__PatchRGSCEFCChecks);
-	DEF_OFF(IV_Hook__PatchFakeRGSCObject);
-	DEF_OFF(IV_Hook__PatchVDS102);
-	DEF_OFF(IV_Hook__PatchRGSCInitCheck);
 	DEF_OFF(IV_Hook__PatchMissingTests1);
 	DEF_OFF(IV_Hook__PatchMissingTests2);
 
