@@ -15,7 +15,7 @@ SOURCES+=$(wildcard ../Shared/Scripting/Natives/*.cpp)
 SOURCES+=$(wildcard ../Shared/Scripting/ResourceSystem/*.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 LUA_OBJECTS=$(wildcard ../Libraries/lua/*.o)
-EXECUTABLE=../Binary/ivmp-svr
+EXECUTABLE=../Binary/ivn-svr
 
 all: $(SOURCES) dir $(EXECUTABLE)
 

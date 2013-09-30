@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CWin32MouseHook.h
 // Project: Client.Core

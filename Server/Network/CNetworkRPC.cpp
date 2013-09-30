@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CNetworkRPC.cpp
 // Project: Server.Core
@@ -82,7 +82,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bitStream.Write(0xFFFFFF/*CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->GetColor()*/);
 
 	// Write the server name
-	bitStream.Write(RakNet::RakString("IV:Multiplayer DEV Server"));
+	bitStream.Write(RakNet::RakString("IV:Network DEV Server"));
 
 	// Write the max player count
 	bitStream.Write(CVAR_GET_INTEGER("maxplayers"));

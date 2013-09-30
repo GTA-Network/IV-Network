@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: Main.cpp
 // Project: Client.Core
@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 	CThread inputThread;
 
 	// Start log file
-	CLogFile::Open("ivmp-svr.log");
+	CLogFile::Open("ivn-svr.log");
 
 	// Start server and load all scripts
 	if(!pServer->Startup())

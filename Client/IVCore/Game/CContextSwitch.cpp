@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CContextSwitch.cpp
 // Project: Client.Core

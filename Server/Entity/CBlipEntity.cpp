@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - http://github.com/IVMultiplayer/IVmultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CBlipEntity.cpp
 // Project: Server.Core
