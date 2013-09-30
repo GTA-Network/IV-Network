@@ -17,9 +17,9 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "FileDescription", "IV:MP Server"
+            VALUE "FileDescription", "IV:N Server"
             VALUE "FileVersion", "1, 0, 0, 1"
-            VALUE "LegalCopyright", "Copyright (C) 2013 IV:MP Team"
+            VALUE "LegalCopyright", "Copyright (C) 2013 IV:N Team"
             VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END

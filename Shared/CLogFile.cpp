@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CLogFile.cpp
 // Project: Shared
@@ -85,7 +85,7 @@ void CLogFile::Printf(const char * szFormat, ...)
 
 void CLogFile::PrintDebugf(const char * szFormat, ...)
 {
-#ifdef IVMP_DEBUG
+#ifdef IVN_DEBUG
 	// Lock the mutex
 	m_mutex.TryLock(1);
 

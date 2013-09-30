@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CClientCommands.cpp
 // Project: Client.Core
@@ -265,7 +265,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "ivhelp")
 	{
-		PTR_CHAT->Output(false, "List of Default IV:MP Commands...");
+		PTR_CHAT->Output(false, "List of Default IV:N Commands...");
 		PTR_CHAT->Output(false, "** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
 		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
 		return true;

@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/XForce/ivmultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CDevelopment.cpp
 // Project: Client.Core

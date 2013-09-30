@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: eGame.h
 // Project: Shared
@@ -26,7 +26,7 @@ enum eGAMEStates
 	GAME_STATE_LOADING,
 	GAME_STATE_INGAME,
 	GAME_STATE_PAUSE_MENU,
-	GAME_STATE_IVMP_PAUSE_MENU,
+	GAME_STATE_IVN_PAUSE_MENU,
 };
 
 enum eWeather

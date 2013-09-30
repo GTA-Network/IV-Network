@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CSnapShot.cpp
 // Project: Client.Core
@@ -42,7 +42,7 @@ CString CSnapShot::GetScreenShotPath()
 	// Append the screen shot name to the path
 	SYSTEMTIME systemTime;
 	GetLocalTime(&systemTime);
-	strPath.AppendF("/ivmp-%04d.%02d.%02d-%02d.%02d.%02d.png", systemTime.wYear, systemTime.wMonth, systemTime.wDay, systemTime.wHour, systemTime.wMinute, systemTime.wSecond);
+	strPath.AppendF("/ivn-%04d.%02d.%02d-%02d.%02d.%02d.png", systemTime.wYear, systemTime.wMonth, systemTime.wDay, systemTime.wHour, systemTime.wMinute, systemTime.wSecond);
 	return strPath;
 }
 
