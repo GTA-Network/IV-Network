@@ -9,7 +9,7 @@
 
 ;======================================================
 ; Configuration
-!define NAME 'IVMP'
+!define NAME 'IVNetwork'
 !define VERSION '1.0'
 
 ;======================================================
@@ -36,26 +36,26 @@ Var GTAIVDirectory
 
 Function .onInit
 	; Try to get the GTAIV directory from the registry
-	ReadRegStr $GTAIVDirectory HKLM "Software\Rockstar Games\Grand Theft Auto IV" "InstallFolder"
+	ReadRegStr $GTAIVDirectory HKLM "Software\Rockstar Games\EFLC" "InstallFolder"
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchGTAIV.exe done
+	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
 
 	; Try to get the GTAIV directory from the registry
-	ReadRegStr $GTAIVDirectory HKCU "Software\IVMP" "gtaivdir"
+	ReadRegStr $GTAIVDirectory HKCU "Software\IVNetwork" "GrandTheftAutoDirectory"
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchGTAIV.exe done
+	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
 
 	; Show a dialog to find the GTAIV directory
-	nsDialogs::SelectFolderDialog "Please select your Grand Theft Auto IV directory" ""
+	nsDialogs::SelectFolderDialog "Please select your Grand Theft Auto EFLC directory" ""
 	Pop $GTAIVDirectory
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchGTAIV.exe done
+	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
 
 	; GTAIV directory not found
-	MessageBox MB_OK "Failed to find Grand Theft Auto IV directory. Grand Theft Auto IV must be installed in order to install IV:MP."
+	MessageBox MB_OK "Failed to find Grand Theft Auto EFLC directory. Grand Theft Auto EFLC must be installed in order to install IV:Network."
 	Abort
 
 done:
@@ -67,8 +67,8 @@ FunctionEnd
 ; Get Install Directory Page
 Page directory
 
-DirText "Welcome to the installer for ${NAME} ${VERSION}.$\n$\nYou must have Grand Theft Auto IV installed in order to install ${NAME}." "Please select the directory to install IVMP to."
-InstallDir "$PROGRAMFILES\IVMP"
+DirText "Welcome to the installer for ${NAME} ${VERSION}.$\n$\nYou must have Grand Theft Auto EFLC installed in order to install ${NAME}." "Please select the directory to install IV:Net to."
+InstallDir "$PROGRAMFILES\IVNetwork"
 
 ; Options Page
 
@@ -127,26 +127,28 @@ Section "Install" SecDummy
 	
 	SetOutPath "$INSTDIR"
 
-	File ..\Binary\Client.Launcher.exe
-	File ..\Binary\Client.LaunchHelper.dll
-	File ..\Binary\Client.Core.dll
-
+	File ..\Files\LaunchIVNetwork.exe
+	File ..\Files\IVNetworkLaunchInject.dll
+	File ..\Files\IVNetwork.dll
+	SetOutPath "$INSTDIR\multiplayer\datafiles"
+	File ..\Files\multiplayer\datafiles\loadingbg.png
+	SetOutPath "$INSTDIR"
 	; Create Start Menu Folder
 
-	CreateDirectory "$SMPROGRAMS\IVMP"
+	CreateDirectory "$SMPROGRAMS\IVNetwork"
 
 	; Create Start Menu Shortcuts If Requested
 
 	${If} $CreateStartMenuShortcuts == ${BST_CHECKED}
-		CreateShortCut "$SMPROGRAMS\IVMP\${NAME}.lnk" "$INSTDIR\Client.Launcher.exe"
+		CreateShortCut "$SMPROGRAMS\IVNetwork\${NAME}.lnk" "$INSTDIR\LaunchIVNetwork.exe"
 
-		CreateShortCut "$SMPROGRAMS\IVMP\Uninstall ${NAME}.lnk" "$INSTDIR\Uninstall_${NAME}.exe"
+		CreateShortCut "$SMPROGRAMS\IVNetwork\Uninstall ${NAME}.lnk" "$INSTDIR\Uninstall_${NAME}.exe"
 	${EndIf}
 
 	; Create Desktop Shortcut If Requested
 	
 	${If} $CreateDesktopShortcut == ${BST_CHECKED}
-		CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\Client.Launcher.exe"
+		CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\LaunchIVNetwork.exe"
 	${EndIf}
 
 	; Create Uninstaller
@@ -158,9 +160,10 @@ SectionEnd
 Section "Uninstall"
 	; Delete Files
 
-	Delete "$INSTDIR\Client.Launcher.exe"
-	Delete "$INSTDIR\Client.LaunchHelper.dll"
-	Delete "$INSTDIR\Client.Core.dll"
+	Delete "$INSTDIR\LaunchIVNetwork.exe"
+	Delete "$INSTDIR\IVNetworkLaunchInject.dll"
+	Delete "$INSTDIR\IVNetwork.dll"
+	Delete "$INSTDIR\multiplayer\datafiles\loadingbg.png"
 
 	; Remove Program Files Folder
 
@@ -168,7 +171,7 @@ Section "Uninstall"
 
 	; Remove Start Menu Folder
 
-	RMDIR "$SMPROGRAMS\IVMP"
+	RMDIR "$SMPROGRAMS\IVNetwork"
 
 	; Delete The Desktop Shortcut
 

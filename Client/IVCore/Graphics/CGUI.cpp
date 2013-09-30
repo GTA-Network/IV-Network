@@ -116,11 +116,11 @@ bool CGUI::Initialize()
 		m_pSystem->setDefaultFont(GetFont(CVAR_GET_STRING("chatfont").Get()));
 
 		// Create the input
-		if (FAILED(DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8A, (LPVOID *) &m_pInput, NULL)))
+		if (FAILED(DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8A, (LPVOID *) &m_pInput, nullptr)))
 			return false;
 
 		// Create the input device
-		if (FAILED(m_pInput->CreateDevice(GUID_SysMouse, &m_pInputMouse, NULL)))
+		if (FAILED(m_pInput->CreateDevice(GUID_SysMouse, &m_pInputMouse, nullptr)))
 			return false;
 
 		// Set the input device as a mouse
@@ -376,28 +376,51 @@ void CGUI::SetCursorVisible(bool bVisible)
 	// Are we initalized?
 	if (m_bInitialized)
 	{
-		// If we're not visible, return
-		if (!bVisible)
-			return;
-		
-		// We're visible and we're setting the specific boolean value to the cursor
 		m_pCursor->setVisible(bVisible);
 	}
 }
 
-void CGUI::RemoveGUIWindow(CGUIButton * pButton)
+void CGUI::RemoveGUIWindow(CEGUI::String &sName)
 {
-	RemoveGUIWindow((CEGUI::Window *)pButton);
+	if (m_bInitialized)
+	{
+		m_pDefaultWindow->removeChildWindow(sName);
+		m_pWindowManager->destroyWindow(sName);
+	}
 }
 
-void CGUI::RemoveGUIWindow(CGUIStaticImage * pStaticText)
+void CGUI::RemoveGUIWindow(CEGUI::Window * pWindow)
 {
-	RemoveGUIWindow((CEGUI::Window *)pStaticText);
+	if (m_bInitialized)
+	{
+		// Make sure the window exists
+		if (m_pWindowManager->isWindowPresent(pWindow->getName()))
+		{
+			// Remove the window from the parent window
+			pWindow->getParent()->removeChildWindow(pWindow);
+
+			// Destroy the window
+			m_pWindowManager->destroyWindow(pWindow);
+
+			// Reset the window pointer
+			pWindow = nullptr;
+		}
+	}
 }
 
-void CGUI::RemoveGUIWindow(CGUIProgressBar * pProgressBar)
+CEGUI::Window * CGUI::CreateGUIWindow(const CEGUI::String &sType, const CEGUI::String &sName, CEGUI::Window * pParentWindow)
 {
-	RemoveGUIWindow((CEGUI::Window *)pProgressBar);
+	if (m_bInitialized)
+	{
+		CEGUI::Window * pWindow = m_pWindowManager->createWindow(sType, sName);
+		if (pWindow)
+		{
+			CEGUI::Window * pParent = (pParentWindow == nullptr) ? m_pDefaultWindow : pParentWindow;
+			pParent->addChildWindow(pWindow);
+		}
+		return pWindow;
+	}
+	return nullptr;
 }
 
 CGUIButton * CGUI::CreateGUIButton(CEGUI::String &sName, CEGUI::Window * pParentWindow)

@@ -61,20 +61,20 @@ public:
 	virtual Matrix34*       SetMatrix(Matrix34* pMatrix, int a2, int a3);
 	virtual Matrix34*       SetCoordinates(Vector4* pCoordinates, bool b2, int a4); 
 	virtual void            SetHeading(float fHeading); // not sure
-	virtual void            Function4(); // 0x10
-	virtual void            Function5(); // 0x14
-	virtual void            Function6(); // 0x18
+	virtual void            CreateDoubleNode(); // 0x10
+	virtual void            CreateSingleNode(); // 0x14
+	virtual void            ReleaseNodes(); // 0x18
 	virtual int				AddToInterior(); // 7
 	virtual void            RemoveFromInterior();
 	virtual void            Function9(); // return 0;
 	virtual void            Function10(); // return 0;
 	virtual void            Function11(); // return 0;
-	virtual int				SetUnknownFlag0(unsigned char flag);
-	virtual void            GetModelType(); // return 1;
-	virtual int             SetModelIndex(int modelIndex);
+	virtual int				SetVisible(int flag);
+	virtual bool            IsNotNetwork(); // return 1;
+	virtual int             SetModelIndex(int iModelIndex);
 	virtual int             SetModelByName(const char* modelName);
 	virtual bool            Function16(); // checks something something with model and doing something with ped base
-	virtual int             ReleaseModel(); // return mabye modelInfo
+	virtual int             ResetLivery();
 	virtual int             Function18(int a1); // something with livery
 	virtual int             Function19(int a1); // something with physics
 	virtual void            Function20(); // gets a position relative to model and entity position
@@ -90,19 +90,19 @@ public:
 	virtual void            Function30(Vector4*, float, bool); // return 0;
 	virtual void            Function31(); // something with ped intelligence
 	virtual void            Function32();
-	virtual void            Function33(); // something with model
+	virtual void            Function33(); // process occupents if not pretend
 	virtual void            Function34();
-	virtual void            Function35(); // something with livery and model
+	virtual void            Render(); // something with livery and model
 	virtual void            Function36(); // return 0;
 	virtual void            Function37(); // nullsub
-	virtual void            Function38();
-	virtual Vector4*        GetCoordinates(Vector4* pCoordinates);
-	virtual IVPhysics*      GetPhysics();
-	virtual void            Function41(); // return 0;
-	virtual int             GetModelIndex(); // something with model and physics
+	virtual void            Function38(); // remove reference to all not created by us
+	virtual Vector4*        GetPosition(Vector4* pCoordinates);
+	virtual IVPhysics*      GetfragInst();
+	virtual DWORD           GetphInst();
+	virtual void            CreatePhysics(); // something with model and physics
 	virtual int             Add();
 	virtual int             Remove();
-	virtual Matrix34*       UpdatePhysicsMatrix(bool); // updates physics matrix
+	virtual void			UpdatePhysicsMatrix(bool); // updates physics matrix
 	virtual void            Function46(int a1, int a2, int a3, int a4); 
 	virtual int             CreateNetworkObject(int a2, char a3, int a4, int a5, int a6); /* returns networkobject of entity */
 	virtual void            Function48(); // return 10;

@@ -59,9 +59,6 @@ public:
 	// Later on we'll need to make this a single function with seperate types
 	void                       RemoveGUIWindow(CEGUI::String &sName);
 	void                       RemoveGUIWindow(CEGUI::Window * pWindow);
-	void                       RemoveGUIWindow(CGUIButton * pButton);
-	void                       RemoveGUIWindow(CGUIStaticImage * pStaticText);
-	void                       RemoveGUIWindow(CGUIProgressBar * pProgressBar);
 	CEGUI::Window            * CreateGUIWindow(const CEGUI::String &sType, const CEGUI::String &sName = "", CEGUI::Window * pParentWindow = NULL);
 	CGUIStaticImage          * CreateGUIStaticImage(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
 	CGUIStaticImage          * CreateGUIStaticImage(CEGUI::Window * pParentWindow = NULL);

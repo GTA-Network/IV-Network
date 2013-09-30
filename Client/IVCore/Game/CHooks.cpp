@@ -780,19 +780,38 @@ _declspec(naked) void RenderMap()
 }
 
 int * physics = 0;
-int * ped = 0;
+IVVehicle * pVehicle = 0;
 DWORD sub_44A690 = 0;
 DWORD sub_9FFE30 = 0;
+
+struct fragInstGta
+{
+	char pad[156]; // base stuff 0-A0
+	DWORD unkSize; // A0-A4
+	DWORD unk; // A4-A8;
+};
+
+void RecreatePhysics(IVVehicle* pVehicle)
+{
+#if 0
+	CIVPool<fragInstGta> *pPhysicsPool = new CIVPool<fragInstGta>(*(IVPool**) (g_pCore->GetBase() + 0x166C964));
+	fragInstGta * pfragInst = (fragInstGta*)pVehicle->m_pVehiclePhysics;
+	pPhysicsPool->Release(pfragInst); // Make sure its not in pool anymore [maybe call destructor at AA1E60]
+#endif
+	// Fix for the most complicated crash i've ever had. Took me about 3 months to fix it (with some breaks)
+	pVehicle->CreatePhysics();
+}
+
 void _declspec(naked) PhysicsHook()
 {
 	_asm
 	{
 		mov physics, ecx
-		mov ped, esi
+		mov pVehicle, esi
 		pushad
 	}
 
-	if (*ped == g_pCore->GetBase() + 0xD9ED74)
+	if (*(int*)pVehicle == g_pCore->GetBase() + 0xD9ED74) // IsBike
 	{
 		//_asm { int 3 }
 		//CLogFile::Printf("%p", physics);
@@ -803,9 +822,10 @@ void _declspec(naked) PhysicsHook()
 	{
 		//__asm { int 3 }
 		CLogFile::Printf("Fail");
-		sub_9FFE30 = g_pCore->GetBase() + 0x9FFE30;
-		_asm mov ecx, ped;
-		_asm call sub_9FFE30; // Recreate physics instance
+		//sub_9FFE30 = g_pCore->GetBase() + 0x9FFE30;
+		RecreatePhysics(pVehicle);
+		//_asm mov ecx, pVehicle;
+		//_asm call sub_9FFE30; // Recreate physics instance
 		_asm popad;
 		_asm retn;
 	}
@@ -896,25 +916,3 @@ void CHooks::Intialize()
 	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD)RenderMap, 5);
 #endif
 }
-
-	// Make blip small 	
-	//*(BYTE *)(g_pCore->GetBase() + 0x4B519F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
-	//*(BYTE *)(g_pCore->GetBase() + 0x4B51E8 + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
-
-	// Deactivate development radar calculations
-	//*(WORD *)(g_pCore->GetBase() + 0x83895C) = 0xB001; // mov al, 1
-	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x83895E), 3);
-
-	// Hook gta_createthread to use our own function 
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x452210),(DWORD)GTA_CreateThread,1);
-
-	// Hook GTA IV dev log
-	//CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0xBD6730), (DWORD)GTA_LOG, 1);
-
-	// Enable dev mode
-	//*(DWORD *)(g_pCore->GetBase() + 0x104E11F) = 1;
-	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x7C2088),6);
-	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x7C66BF), 6);
-	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x85A754), 7);
-	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0xA22AA3), 10); // Disables radio logos, hud crosshair
-	//*(BYTE *)(g_pCore->GetBase() + 0x90945E + 0x6) = 0x9; // disable!

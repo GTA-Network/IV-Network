@@ -28,7 +28,9 @@ public:
         BYTE m_byteRadioStation;      // 0D60-0D61
         PAD(IVVehicle, pad1, 0x37);   // 0D61-0D98
         BYTE m_byteSirenWithNoDriver; // 0D98-0D99
-        PAD(IVVehicle, pad2, 0x1CB);  // 0D99-0F64
+		PAD(IVVehicle, pad2, 0x7B);	  // 0D99-0E14
+		DWORD m_pVehiclePhysics;	  // 0E14-0E18
+		PAD(IVVehicle, pad2_1, 0x14C);// 0E18-0F64
         BYTE m_byteFlags1;            // 0F64-0F65 // 128 - Handbrake On
         BYTE m_byteFlags2;            // 0F65-0F66 // 1 - Lights On, 2 - Freebies
         BYTE m_byteFlags3;            // 0F66-0F67 // 1 - Takes Less Damage
