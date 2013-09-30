@@ -19,6 +19,17 @@
 #define STYLE_PREFIX "WindowsLook"
 #define STYLE_IMAGES "WindowsLook"
 
+#define InheritedStruct(inheritFrom, structName) struct structName : inheritFrom { }
+
+struct CGUIWindow : CEGUI::Window
+{
+	std::string getText();
+};
+
+InheritedStruct(CGUIWindow, CGUIButton);
+InheritedStruct(CGUIWindow, CGUIStaticImage);
+InheritedStruct(CGUIWindow, CGUIProgressBar);
+
 class CGUI 
 {
 public:
@@ -37,11 +48,27 @@ public:
 	void			OnLostDevice();
 	void			OnResetDevice();
 
+	void			SetCursorVisible(bool bVisible);
+
 	CEGUI::Direct3D9Renderer * GetRenderer() { return m_pRenderer; }
 	CEGUI::System            * GetSystem() { return m_pSystem; }
 	CEGUI::WindowManager     * GetWindowManager() { return m_pWindowManager; }
 	CEGUI::DefaultWindow     * GetDefaultWindow() { return m_pDefaultWindow; }
 	CEGUI::Font              * GetFont(CString strFont, unsigned int uiSize = 8, bool bScaled = false);
+
+	// Later on we'll need to make this a single function with seperate types
+	void                       RemoveGUIWindow(CEGUI::String &sName);
+	void                       RemoveGUIWindow(CEGUI::Window * pWindow);
+	void                       RemoveGUIWindow(CGUIButton * pButton);
+	void                       RemoveGUIWindow(CGUIStaticImage * pStaticText);
+	void                       RemoveGUIWindow(CGUIProgressBar * pProgressBar);
+	CEGUI::Window            * CreateGUIWindow(const CEGUI::String &sType, const CEGUI::String &sName = "", CEGUI::Window * pParentWindow = NULL);
+	CGUIStaticImage          * CreateGUIStaticImage(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIStaticImage          * CreateGUIStaticImage(CEGUI::Window * pParentWindow = NULL);
+	CGUIButton               * CreateGUIButton(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIButton               * CreateGUIButton(CEGUI::Window * pParentWindow = NULL);
+	CGUIProgressBar			 * CreateGUIProgressBar(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIProgressBar		     * CreateGUIProgressBar(CEGUI::Window * pParentWindow = NULL);
 
 	void Test();
 private:

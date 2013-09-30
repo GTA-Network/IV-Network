@@ -56,6 +56,7 @@ public:
 	void					DrawText(CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char *szFormat, ...);
 	void					DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox);
 	void					DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour);
+	void					DrawRect(float fX, float fY, float fWidth, float fHeight, unsigned long ulColor);
 
 	ID3DXFont				* GetFont();
 

@@ -150,7 +150,17 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_F9:
 				{
-					g_pCore->GetGUI()->Test();
+					CGUI * pGUI = g_pCore->GetGUI();
+
+					float bHeight, fWidth, fHeight;
+					fWidth = (float) pGUI->GetDisplayWidth();
+					fHeight = (float) pGUI->GetDisplayHeight();
+					bHeight = fHeight / 8;
+
+					g_pCore->GetGraphics()->DrawRect(0.0, 0.0, fWidth, bHeight, (0x00000080 >> 8) + ((0x00000080 & 0xFF) << 24));
+					g_pCore->GetGraphics()->DrawRect(0.0, fHeight - bHeight, fWidth, bHeight, (0x00000080 >> 8) + ((0x00000080 & 0xFF) << 24));
+
+					CLogFile::Print("DrawRect has successfully been called/created");
 				}
 			}
 		}

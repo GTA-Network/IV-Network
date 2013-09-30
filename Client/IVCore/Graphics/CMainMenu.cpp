@@ -13,7 +13,6 @@ CMainMenu::CMainMenu(CGUI* pGUI)
 
 CMainMenu::~CMainMenu()
 {
-
 }
 
 
@@ -26,6 +25,22 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 
 bool CMainMenu::Initialize()
 {
+
+	try
+	{
+		CEGUI::ImagesetManager::getSingleton().createFromImageFile("Background", "Background.png");
+	}
+	catch (CEGUI::InvalidRequestException e)
+	{
+		MessageBox(NULL, "Failed to load Main Menu Background", "IV:Network Error", MB_OK || MB_ICONERROR);
+		TerminateProcess(GetCurrentProcess, 0);
+	}
+	catch (CEGUI::Exception e)
+	{
+		MessageBox(NULL, "IV:Network failed to load, please check the CEGUI.log for more details", "IV:Network Error", MB_OK || MB_ICONERROR);
+		TerminateProcess(GetCurrentProcess, 0);
+	}
+
 	m_pWindow = m_pGUI->GetWindowManager()->createWindow(STYLE_PREFIX "/FrameWindow", "Keks");
 	if (m_pWindow)
 	{
@@ -46,6 +61,14 @@ bool CMainMenu::Initialize()
 		m_pWindow->addChildWindow(pQuickConnect);
 	}
 
+	SetVisible(true);
+
 	return true;
 }
 
+void CMainMenu::SetVisible(bool bVisible)
+{
+	m_bVisible = bVisible;
+
+	g_pCore->GetGUI()->SetCursorVisible(bVisible);
+}

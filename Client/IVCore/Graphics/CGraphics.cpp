@@ -140,7 +140,7 @@ bool CGraphics::LoadFonts()
 		if (fontsize == NULL)
 		{
 			CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
-			return TerminateProcess(GetCurrentProcess, 0);
+			return TerminateProcess(GetCurrentProcess(), false);
 		}
 	}
 
@@ -294,12 +294,26 @@ void CGraphics::DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DW
     vertex[1] = D3DVERTEX((fLeft + fWidth), fTop, 0.0f, 1.0f, dwColorBox);
     vertex[2] = D3DVERTEX((fLeft + fWidth), (fTop + fHeight), 0.0f, 1.0f, dwColorBox);
     vertex[3] = D3DVERTEX(fLeft, (fTop + fHeight), 0.0f, 1.0f, dwColorBox);
-    short indices[6] = {0,1,2,0,2,3};
+    short indices[6] = {0, 1 ,2, 0, 2, 3};
 
     m_pDevice->SetTexture(0, NULL);
     m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
     m_pDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, &indices[0], D3DFMT_INDEX16, &vertex[0], sizeof(D3DVERTEX));
  
+}
+
+void CGraphics::DrawRect(float fX, float fY, float fWidth, float fHeight, unsigned long ulColor)
+{
+	D3DVERTEX vertex[4];
+	vertex[0] = D3DVERTEX(fX, fY, 0.0f, 1.0f, ulColor);
+	vertex[1] = D3DVERTEX((fX + fWidth), fY, 0.0f, 1.0f, ulColor);
+	vertex[2] = D3DVERTEX((fX + fWidth), (fY + fHeight), 0.0f, 1.0f, ulColor);
+	vertex[3] = D3DVERTEX(fX, (fY + fHeight), 0.0f, 1.0f, ulColor);
+	short indices[6] = {0, 1, 2, 0, 2, 3};
+
+	m_pDevice->SetTexture(0, NULL);
+	m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+	m_pDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, &indices[0], D3DFMT_INDEX16, &vertex[0], sizeof(D3DVERTEX));
 }
 
 void CGraphics::DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour)

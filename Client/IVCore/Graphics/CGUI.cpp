@@ -188,7 +188,7 @@ void CGUI::Render()
 		if (m_pSystem)
 			m_pSystem->renderGUI();
 
-		m_pCursor->setVisible(true);
+		//m_pCursor->setVisible(true);
 
 		// Process our mouse events
 		if (g_pCore->GetHWNDFocused())
@@ -369,4 +369,63 @@ CEGUI::Font * CGUI::GetFont(CString strFont, unsigned int uiSize, bool bScaled)
 
 	// Font does not exist and font creation failed
 	return NULL;
+}
+
+void CGUI::SetCursorVisible(bool bVisible)
+{
+	// Are we initalized?
+	if (m_bInitialized)
+	{
+		// If we're not visible, return
+		if (!bVisible)
+			return;
+		
+		// We're visible and we're setting the specific boolean value to the cursor
+		m_pCursor->setVisible(bVisible);
+	}
+}
+
+void CGUI::RemoveGUIWindow(CGUIButton * pButton)
+{
+	RemoveGUIWindow((CEGUI::Window *)pButton);
+}
+
+void CGUI::RemoveGUIWindow(CGUIStaticImage * pStaticText)
+{
+	RemoveGUIWindow((CEGUI::Window *)pStaticText);
+}
+
+void CGUI::RemoveGUIWindow(CGUIProgressBar * pProgressBar)
+{
+	RemoveGUIWindow((CEGUI::Window *)pProgressBar);
+}
+
+CGUIButton * CGUI::CreateGUIButton(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIButton *) CreateGUIWindow(STYLE_PREFIX "/Button", sName, pParentWindow);
+}
+
+CGUIButton * CGUI::CreateGUIButton(CEGUI::Window * pParentWindow)
+{
+	return (CGUIButton *) CreateGUIWindow(STYLE_PREFIX "/Button", GetUniqueName(), pParentWindow);
+}
+
+CGUIStaticImage * CGUI::CreateGUIStaticImage(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIStaticImage *) CreateGUIWindow(STYLE_PREFIX "/StaticImage", sName, pParentWindow);
+}
+
+CGUIStaticImage * CGUI::CreateGUIStaticImage(CEGUI::Window * pParentWindow)
+{
+	return (CGUIStaticImage *) CreateGUIWindow(STYLE_PREFIX "/StaticImage", GetUniqueName(), pParentWindow);
+}
+
+CGUIProgressBar * CGUI::CreateGUIProgressBar(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIProgressBar *) CreateGUIWindow(STYLE_PREFIX "/ProgressBar", sName, pParentWindow);
+}
+
+CGUIProgressBar * CGUI::CreateGUIProgressBar(CEGUI::Window * pParentWindow)
+{
+	return (CGUIProgressBar *) CreateGUIWindow(STYLE_PREFIX "/ProgressBar", GetUniqueName(), pParentWindow);
 }
