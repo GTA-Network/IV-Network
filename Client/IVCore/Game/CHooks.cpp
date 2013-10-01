@@ -797,9 +797,10 @@ void RecreatePhysics(IVVehicle* pVehicle)
 	CIVPool<fragInstGta> *pPhysicsPool = new CIVPool<fragInstGta>(*(IVPool**) (g_pCore->GetBase() + 0x166C964));
 	fragInstGta * pfragInst = (fragInstGta*)pVehicle->m_pVehiclePhysics;
 	pPhysicsPool->Release(pfragInst); // Make sure its not in pool anymore [maybe call destructor at AA1E60]
-#endif
+#else
 	// Fix for the most complicated crash i've ever had. Took me about 3 months to fix it (with some breaks)
 	pVehicle->CreatePhysics();
+#endif
 }
 
 void _declspec(naked) PhysicsHook()
@@ -842,6 +843,11 @@ void _declspec(naked) PhysicsHook()
 		_asm popad;
 		_asm retn;
 	}
+}
+
+void showMainMenu()
+{
+	g_pCore->GetMainMenu()->SetVisible(true);
 }
 
 void CHooks::Intialize()
@@ -915,4 +921,6 @@ void CHooks::Intialize()
 	// Hook render map function
 	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD)RenderMap, 5);
 #endif
+
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x4798C0, (DWORD)showMainMenu);
 }

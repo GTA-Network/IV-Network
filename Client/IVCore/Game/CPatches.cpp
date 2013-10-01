@@ -90,19 +90,22 @@ void CPatches::Initialize()
 	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B3DAC, (DWORD)setu);
 	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B4A0E, (DWORD)setu);
 
+#if MAINMENU_BEFORE_GAME_LOAD
 	// Skip main menu #1
 	*(BYTE *)COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 
 	// Skip main menu #2
 	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitialiseRageGame);
 	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x9D180B, 5);
-	
+#else
+	// Make the game think we are not connected to the internet - faster game load into main menu
+	*(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
+	*(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
+#endif
+
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	//*(DWORD *)COffsets::IV_Hook__PatchRandomTasks = 0x900004C2;
 
-	// Make the game think we are not connected to the internet
-    //*(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
-    //*(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
 	
 	// Disable(resize to zero) help-message box
 	//*(DWORD *)(COffsets::IV_Hook__PatchHelpMessageBox + 0x9B8) = 0;
