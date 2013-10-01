@@ -150,17 +150,22 @@ void CCore::OnGameLoad()
 	if(IsGameLoaded())
 		return;
 
-	PRINT_FUNCTION
+	CLogFile::Print(__FUNCTION__);
 
 	// Initialize game instance & respawn local player
 	GetGame()->Initialise();
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
+
+	// Initialize the main menu elements
+	m_pMainMenu = new CMainMenu(m_pGUI);
+	m_pMainMenu->Initialize();
+
 	
-	SetHost("127.0.0.1");
-	SetClientPort(9999);
-	SetNick("IVPlayer");
+	m_strHost = "127.0.0.1";
+	m_usPort = 9999;
+	m_strNick = "IVPlayer";
 
 	// Startup the network module
 	m_pNetworkManager->Startup();
@@ -230,10 +235,6 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
-
-	// Initialize the main menu elements
-	m_pMainMenu = new CMainMenu(m_pGUI);
-	m_pMainMenu->Initialize();
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -266,7 +267,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Prerender devices
 	OnDevicePreRender();
 
-#if !MAINMENU_BEFORE_GAME_LOAD
 	// Is the game not loaded?
 	if (!IsGameLoaded() || g_bLoading)
 	{
@@ -276,7 +276,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		// Render our own Loading Screen
 		RenderLoadingScreen();
 	}
-#endif
 
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)

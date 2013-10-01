@@ -209,6 +209,4 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define CHECK_PTR(x) if(!x) return false;
 #define CHECK_PTR_VOID(x) if(!x) return;
 
-#define MAINMENU_BEFORE_GAME_LOAD 0
-
 #endif // Common_h
