@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CGUI.cpp
 // Project: Client.Core
@@ -29,6 +29,24 @@ struct CGUIWindow : CEGUI::Window
 InheritedStruct(CGUIWindow, CGUIButton);
 InheritedStruct(CGUIWindow, CGUIStaticImage);
 InheritedStruct(CGUIWindow, CGUIProgressBar);
+InheritedStruct(CGUIWindow, CGUIStaticText);
+InheritedStruct(CGUIWindow, CGUIFrameWindow);
+
+enum eGUIMessageBoxType
+{
+	GUI_MESSAGEBOXTYPE_OK,
+	GUI_MESSAGEBOXTYPE_YESNO,
+	GUI_MESSAGEBOXTYPE_YESNOCANCEL
+};
+
+enum eGUIMessageBoxResponse
+{
+	GUI_MESSAGEBOX_YES,
+	GUI_MESSAGEBOX_NO,
+	GUI_MESSAGEBOX_CANCEL
+};
+
+typedef void (*GUIMessageBoxHandler_t)(eGUIMessageBoxResponse type);
 
 class CGUI 
 {
@@ -56,6 +74,14 @@ public:
 	CEGUI::DefaultWindow     * GetDefaultWindow() { return m_pDefaultWindow; }
 	CEGUI::Font              * GetFont(CString strFont, unsigned int uiSize = 8, bool bScaled = false);
 
+	struct
+	{
+		CGUIFrameWindow      * pWindow;
+		CGUIStaticText       * pText;
+		CGUIButton           * pButtons[3];
+		GUIMessageBoxHandler_t pfnHandler;
+	} m_messageBox;
+
 	// Later on we'll need to make this a single function with seperate types
 	void                       RemoveGUIWindow(CEGUI::String &sName);
 	void                       RemoveGUIWindow(CEGUI::Window * pWindow);
@@ -66,6 +92,17 @@ public:
 	CGUIButton               * CreateGUIButton(CEGUI::Window * pParentWindow = NULL);
 	CGUIProgressBar			 * CreateGUIProgressBar(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
 	CGUIProgressBar		     * CreateGUIProgressBar(CEGUI::Window * pParentWindow = NULL);
+	CGUIStaticText           * CreateGUIStaticText(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIStaticText           * CreateGUIStaticText(CEGUI::Window * pParentWindow = NULL);
+	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::Window * pParentWindow = NULL);
+
+	bool                       OnMessageBoxClick(const CEGUI::EventArgs& eventArgs);
+	void                       ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitle = "", eGUIMessageBoxType style = GUI_MESSAGEBOXTYPE_OK, GUIMessageBoxHandler_t pfnHandler = NULL);
+	void                       HideMessageBox();
+
+	static CEGUI::String       AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength);
+	static CEGUI::String       AnsiToCeguiFriendlyString(CString strAnsiString);
 
 	void Test();
 private:

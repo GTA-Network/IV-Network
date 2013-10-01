@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
 //
 // File: CGUI.cpp
 // Project: Client.Core
@@ -380,6 +380,182 @@ void CGUI::SetCursorVisible(bool bVisible)
 	}
 }
 
+void CGUI::ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitle, eGUIMessageBoxType style, GUIMessageBoxHandler_t pfnHandler)
+{
+	// Are we initialized?
+	if (m_bInitialized)
+	{
+		// If we have any current message box, let's hide it
+		HideMessageBox();
+
+		// If any other message box exist, destroy it
+		if (m_messageBox.pWindow)
+		{
+			m_messageBox.pWindow->destroy();
+		}
+
+		// Now lets create our message box
+
+		m_messageBox.pWindow = CreateGUIFrameWindow();
+		((CEGUI::FrameWindow *)m_messageBox.pWindow)->setCloseButtonEnabled(false);
+
+		m_messageBox.pWindow->setText(sTitle);
+		m_messageBox.pWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0.3f, 0), CEGUI::UDim(0.2f, 0)));
+		m_messageBox.pWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0.35f, 0), CEGUI::UDim(0.4f, 0)));
+		m_messageBox.pWindow->setAlwaysOnTop(true);
+		m_messageBox.pWindow->setVisible(true);
+
+		// Create the message box window text
+		m_messageBox.pText = CreateGUIStaticText(m_messageBox.pWindow);
+		m_messageBox.pText->setText(sText);
+		m_messageBox.pText->setSize(CEGUI::UVector2(CEGUI::UDim(0.8f, 0), CEGUI::UDim(0.6f, 0)));
+		m_messageBox.pText->setPosition(CEGUI::UVector2(CEGUI::UDim(0.1f, 0), CEGUI::UDim(0.01f, 0)));
+		m_messageBox.pText->setProperty("FrameEnabled", "false");
+		m_messageBox.pText->setProperty("BackgroundEnabled", "false");
+		m_messageBox.pText->setVisible(true);
+
+		// Create the message box window button(s)
+		if (style == GUI_MESSAGEBOXTYPE_OK)
+		{
+			// Create the 'Ok' button
+			m_messageBox.pButtons[0] = CreateGUIButton(m_messageBox.pWindow);
+			m_messageBox.pButtons[0]->setText("Ok");
+			m_messageBox.pButtons[0]->setSize(CEGUI::UVector2(CEGUI::UDim(0.4f, 0), CEGUI::UDim(0.15f, 0)));
+			m_messageBox.pButtons[0]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.3f, 0), CEGUI::UDim(0.75f, 0)));
+			m_messageBox.pButtons[0]->setVisible(true);
+			m_messageBox.pButtons[0]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CGUI::OnMessageBoxClick, this));
+		}
+		else if (style == GUI_MESSAGEBOXTYPE_YESNO || style == GUI_MESSAGEBOXTYPE_YESNOCANCEL)
+		{
+			// Create the 'Yes' button
+			m_messageBox.pButtons[0] = CreateGUIButton(m_messageBox.pWindow);
+			m_messageBox.pButtons[0]->setText("Yes");
+
+			if (style == GUI_MESSAGEBOXTYPE_YESNO)
+			{
+				m_messageBox.pButtons[0]->setSize(CEGUI::UVector2(CEGUI::UDim(0.25f, 0), CEGUI::UDim(0.15f, 0)));
+				m_messageBox.pButtons[0]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.2f, 0), CEGUI::UDim(0.75f, 0)));
+			}
+			else if (style == GUI_MESSAGEBOXTYPE_YESNOCANCEL)
+			{
+				m_messageBox.pButtons[0]->setSize(CEGUI::UVector2(CEGUI::UDim(0.2f, 0), CEGUI::UDim(0.15f, 0)));
+				m_messageBox.pButtons[0]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.15f, 0), CEGUI::UDim(0.75f, 0)));
+			}
+
+			m_messageBox.pButtons[0]->setVisible(true);
+			m_messageBox.pButtons[0]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CGUI::OnMessageBoxClick, this));
+
+			// Create the 'No' button
+			m_messageBox.pButtons[1] = CreateGUIButton(m_messageBox.pWindow);
+			m_messageBox.pButtons[1]->setText("No");
+
+			if (style == GUI_MESSAGEBOXTYPE_YESNO)
+			{
+				m_messageBox.pButtons[1]->setSize(CEGUI::UVector2(CEGUI::UDim(0.25f, 0), CEGUI::UDim(0.15f, 0)));
+				m_messageBox.pButtons[1]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.55f, 0), CEGUI::UDim(0.75f, 0)));
+			}
+			else if (style == GUI_MESSAGEBOXTYPE_YESNOCANCEL)
+			{
+				m_messageBox.pButtons[1]->setSize(CEGUI::UVector2(CEGUI::UDim(0.2f, 0), CEGUI::UDim(0.15f, 0)));
+				m_messageBox.pButtons[1]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.45f, 0), CEGUI::UDim(0.75f, 0)));
+			}
+
+			m_messageBox.pButtons[1]->setVisible(true);
+			m_messageBox.pButtons[1]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CGUI::OnMessageBoxClick, this));
+
+			if (style == GUI_MESSAGEBOXTYPE_YESNOCANCEL)
+			{
+				// Create the 'Cancel' button
+				m_messageBox.pButtons[2] = CreateGUIButton(m_messageBox.pWindow);
+				m_messageBox.pButtons[2]->setText("Cancel");
+				m_messageBox.pButtons[2]->setSize(CEGUI::UVector2(CEGUI::UDim(0.2f, 0), CEGUI::UDim(0.15f, 0)));
+				m_messageBox.pButtons[2]->setPosition(CEGUI::UVector2(CEGUI::UDim(0.75f, 0), CEGUI::UDim(0.75f, 0)));
+				m_messageBox.pButtons[2]->setVisible(true);
+				m_messageBox.pButtons[2]->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CGUI::OnMessageBoxClick, this));
+			}
+		}
+
+		// Set the handler
+		m_messageBox.pfnHandler = pfnHandler;
+
+		if (!m_pCursor->isVisible())
+		{
+			m_pCursor->setVisible(true);
+		}
+	}
+}
+
+void CGUI::HideMessageBox()
+{
+	// Are we initialized?
+	if (m_bInitialized)
+	{
+		// Perform a loop through all the current message box buttons
+		for (int i = 0; i < ARRAY_LENGTH(m_messageBox.pButtons); i++)
+		{
+			// Does this button exist?
+			if (m_messageBox.pButtons[i])
+			{
+				// Remove this button
+				RemoveGUIWindow(m_messageBox.pButtons[i]);
+				m_messageBox.pButtons[i] = NULL;
+			}
+		}
+
+		// Does the message box text exist?
+		if (m_messageBox.pText)
+		{
+			// Remove the message box text
+			RemoveGUIWindow(m_messageBox.pText);
+			m_messageBox.pText = NULL;
+		}
+
+		// Does the message box window exist?
+		if (m_messageBox.pWindow)
+		{
+			// Remove the message box window
+			RemoveGUIWindow(m_messageBox.pWindow);
+			m_messageBox.pWindow = NULL;
+		}
+
+		// Reset the handler
+		m_messageBox.pfnHandler = NULL;
+	}
+}
+
+bool CGUI::OnMessageBoxClick(const CEGUI::EventArgs &eventArgs)
+{
+	// Get the window
+	CEGUI::Window * pWindow = ((const CEGUI::WindowEventArgs&)eventArgs).window;
+
+	// Get the response
+	eGUIMessageBoxResponse response = GUI_MESSAGEBOX_YES;
+
+	if (pWindow == m_messageBox.pButtons[0])
+	{
+		response = GUI_MESSAGEBOX_YES;
+	}
+	else if (pWindow == m_messageBox.pButtons[1])
+	{
+		response = GUI_MESSAGEBOX_NO;
+	}
+	else if (pWindow == m_messageBox.pButtons[2])
+	{
+		response = GUI_MESSAGEBOX_CANCEL;
+	}
+
+	// Do we have a handler?
+	if (m_messageBox.pfnHandler)
+	{
+		// Call the handler
+		m_messageBox.pfnHandler(response);
+	}
+
+	// Hide the message box
+	HideMessageBox();
+	return true;
+}
+
 void CGUI::RemoveGUIWindow(CEGUI::String &sName)
 {
 	if (m_bInitialized)
@@ -451,4 +627,43 @@ CGUIProgressBar * CGUI::CreateGUIProgressBar(CEGUI::String &sName, CEGUI::Window
 CGUIProgressBar * CGUI::CreateGUIProgressBar(CEGUI::Window * pParentWindow)
 {
 	return (CGUIProgressBar *) CreateGUIWindow(STYLE_PREFIX "/ProgressBar", GetUniqueName(), pParentWindow);
+}
+
+CGUIStaticText * CGUI::CreateGUIStaticText(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIStaticText *) CreateGUIWindow(STYLE_PREFIX "/StaticText", sName, pParentWindow);
+}
+
+CGUIStaticText * CGUI::CreateGUIStaticText(CEGUI::Window * pParentWindow)
+{
+	return (CGUIStaticText *) CreateGUIWindow(STYLE_PREFIX "/StaticText", GetUniqueName(), pParentWindow);
+}
+
+CGUIFrameWindow * CGUI::CreateGUIFrameWindow(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIFrameWindow *) CreateGUIWindow(STYLE_PREFIX "/FrameWindow", sName, pParentWindow);
+}
+
+CGUIFrameWindow * CGUI::CreateGUIFrameWindow(CEGUI::Window * pParentWindow)
+{
+	return (CGUIFrameWindow *) CreateGUIWindow(STYLE_PREFIX "/FrameWindow", GetUniqueName(), pParentWindow);
+}
+
+CEGUI::String CGUI::AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength)
+{
+	wchar_t * wcUnicode = new wchar_t[uiLength + 1];
+	SharedUtility::AnsiToUnicode(szAnsiString, -1, wcUnicode, uiLength);
+	CEGUI::String strCegui;
+	strCegui.resize(uiLength);
+
+	for (size_t i = 0; i < uiLength; i++)
+		strCegui[i] = (CEGUI::utf32)wcUnicode[i];
+
+	delete [] wcUnicode;
+	return strCegui;
+}
+
+CEGUI::String CGUI::AnsiToCeguiFriendlyString(CString strAnsiString)
+{
+	return AnsiToCeguiFriendlyString(strAnsiString.Get(), strAnsiString.GetLength());
 }

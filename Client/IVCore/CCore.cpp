@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CCore.cpp
 // Project: Client.Core
@@ -158,12 +158,8 @@ void CCore::OnGameLoad()
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
-	// Mark chat as visible & print welcome message
-	m_pChat->SetVisible(true);
-	m_pChat->Outputf(true, "#ffffff%s  #ff6600%s   #ffffffstarted!", MOD_NAME, MOD_VERSION_STRING );
-
+	// Initialize the main menu elements
 	m_pMainMenu = new CMainMenu(m_pGUI);
-
 	m_pMainMenu->Initialize();
 
 	
@@ -177,8 +173,22 @@ void CCore::OnGameLoad()
 	// Connect to the network
 	//m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
 	
+	// Prepare the client in game elements
 	g_pCore->GetGame()->PrepareWorld();
+
+	// Fade in the screen to avoid seeing the background work
+	CIVScript::DoScreenFadeIn(3000);
+
+	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
+
+	// Set the main menu visible
+	GetMainMenu()->SetVisible(true);
+
+	// Set the camera to downtown of Liberty City
+	m_pCamera = new CCamera;
+	m_pCamera->SetCameraPosition(CVector3(MAINMENU_CAMERA_POS));
+	m_pCamera->SetLookAtPosition(CVector3(MAINMENU_CAMERA_LOOK_AT));
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
@@ -476,7 +486,7 @@ void CCore::RenderLoadingScreen()
 	D3DXVECTOR2 spriteCentre = D3DXVECTOR2(0, 0);
 	D3DXVECTOR2 trans = D3DXVECTOR2(0, 0);
 	D3DXMATRIX mat;
-	D3DXVECTOR2 scaling2(viewport.Width / 2020.0f, viewport.Height / 2050.0f);
+	D3DXVECTOR2 scaling2(viewport.Width / 2040.0f, viewport.Height / 2050.0f);
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling2, &spriteCentre, rotation, &trans);
 
 	g_pCore->GetGraphics()->GetSprite()->SetTransform(&mat);

@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CCore.h
 // Project: Client.Core
@@ -84,6 +84,7 @@ private:
 	BYTE							m_byteLoadingStyle;
 
 	CMainMenu						* m_pMainMenu;
+	CCamera							*m_pCamera;
 
 public:
 									CCore();
@@ -117,6 +118,7 @@ public:
 	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
 	CGUI                 		 	* GetGUI() { return m_pGUI; }
+	CMainMenu						* GetMainMenu() { return m_pMainMenu;  }
 	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

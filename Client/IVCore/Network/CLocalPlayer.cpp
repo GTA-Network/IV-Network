@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
 //
 // File: CLocalPlayer.cpp
 // Project: Client.Core
@@ -121,6 +121,8 @@ void CLocalPlayer::HandleSpawn()
 	SetPedClothes(2, 1);
 	SetPedClothes(3, 0);
 #endif
+
+	//g_pCore->GetMainMenu()->SetVisible(true);
 
 	// Notify the server 
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);

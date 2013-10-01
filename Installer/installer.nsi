@@ -22,7 +22,7 @@
 ;======================================================
 ; Installer Information
 Name "${NAME} ${VERSION}"
-OutFile "${NAME}-${VERSION}.exe"
+OutFile "../${NAME}-${VERSION}.exe"
 SetCompressor /SOLID lzma
 CRCCheck force
 BrandingText /TRIMCENTER "${NAME} ${VERSION} Setup"
@@ -132,7 +132,48 @@ Section "Install" SecDummy
 	File ..\Files\IVNetwork.dll
 	SetOutPath "$INSTDIR\multiplayer\datafiles"
 	File ..\Files\multiplayer\datafiles\loadingbg.png
+	
+	; CEGUI Stuff
+	CreateDirectory "$INSTDIR\CEGUI"
+	CreateDirectory "$INSTDIR\CEGUI\fonts"
+	CreateDirectory "$INSTDIR\CEGUI\imagesets"
+	CreateDirectory "$INSTDIR\CEGUI\layouts"
+	CreateDirectory "$INSTDIR\CEGUI\looknfeel"
+	CreateDirectory "$INSTDIR\CEGUI\schemes"
+	CreateDirectory "$INSTDIR\CEGUI\xml_schemas"
+	
+	SetOutPath "$INSTDIR\CEGUI\fonts"
+	
+	File ..\..\Binary\CEGUI\fonts\*
+
+	SetOutPath "$INSTDIR\CEGUI\imagesets"
+
+	File ..\..\Binary\CEGUI\imagesets\*
+
+	SetOutPath "$INSTDIR\CEGUI\layouts"
+
+	;
+
+	SetOutPath "$INSTDIR\CEGUI\looknfeel"
+	
+	File ..\..\Binary\CEGUI\looknfeel\WindowsLook.looknfeel
+
+	SetOutPath "$INSTDIR\CEGUI\schemes"
+	
+	File ..\..\Binary\CEGUI\schemes\WindowsLook.scheme
+	File ..\..\Binary\CEGUI\schemes\WindowsLookWidgets.scheme
+
+	SetOutPath "$INSTDIR\CEGUI\xml_schemas"
+	
+	File ..\..\Binary\CEGUI\xml_schemas\CEGUIConfig.xsd
+	File ..\..\Binary\CEGUI\xml_schemas\Falagard.xsd
+	File ..\..\Binary\CEGUI\xml_schemas\Font.xsd
+	File ..\..\Binary\CEGUI\xml_schemas\GUILayout.xsd
+	File ..\..\Binary\CEGUI\xml_schemas\GUIScheme.xsd
+	File ..\..\Binary\CEGUI\xml_schemas\Imageset.xsd
+	
 	SetOutPath "$INSTDIR"
+	
 	; Create Start Menu Folder
 
 	CreateDirectory "$SMPROGRAMS\IVNetwork"
@@ -164,6 +205,15 @@ Section "Uninstall"
 	Delete "$INSTDIR\IVNetworkLaunchInject.dll"
 	Delete "$INSTDIR\IVNetwork.dll"
 	Delete "$INSTDIR\multiplayer\datafiles\loadingbg.png"
+	
+	; Remove CEGUI Folders
+	RMDIR "$INSTDIR\CEGUI\fonts"
+	RMDIR "$INSTDIR\CEGUI\imagesets"
+	RMDIR "$INSTDIR\CEGUI\layouts"
+	RMDIR "$INSTDIR\CEGUI\looknfeel"
+	RMDIR "$INSTDIR\CEGUI\schemes"
+	RMDIR "$INSTDIR\CEGUI\xml_schemas"
+	RMDIR "$INSTDIR\CEGUI"
 
 	; Remove Program Files Folder
 
