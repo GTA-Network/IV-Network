@@ -22,7 +22,7 @@
 ;======================================================
 ; Installer Information
 Name "${NAME} ${VERSION}"
-OutFile "../${NAME}-${VERSION}.exe"
+OutFile "${NAME}-${VERSION}.exe"
 SetCompressor /SOLID lzma
 CRCCheck force
 BrandingText /TRIMCENTER "${NAME} ${VERSION} Setup"
@@ -144,11 +144,11 @@ Section "Install" SecDummy
 	
 	SetOutPath "$INSTDIR\CEGUI\fonts"
 	
-	File ..\..\Binary\CEGUI\fonts\*
+	File ..\Files\CEGUI\fonts\*
 
 	SetOutPath "$INSTDIR\CEGUI\imagesets"
 
-	File ..\..\Binary\CEGUI\imagesets\*
+	File ..\Files\CEGUI\imagesets\*
 
 	SetOutPath "$INSTDIR\CEGUI\layouts"
 
@@ -156,21 +156,21 @@ Section "Install" SecDummy
 
 	SetOutPath "$INSTDIR\CEGUI\looknfeel"
 	
-	File ..\..\Binary\CEGUI\looknfeel\WindowsLook.looknfeel
+	File ..\Files\CEGUI\looknfeel\WindowsLook.looknfeel
 
 	SetOutPath "$INSTDIR\CEGUI\schemes"
 	
-	File ..\..\Binary\CEGUI\schemes\WindowsLook.scheme
-	File ..\..\Binary\CEGUI\schemes\WindowsLookWidgets.scheme
+	File ..\Files\CEGUI\schemes\WindowsLook.scheme
+	File ..\Files\CEGUI\schemes\WindowsLookWidgets.scheme
 
 	SetOutPath "$INSTDIR\CEGUI\xml_schemas"
 	
-	File ..\..\Binary\CEGUI\xml_schemas\CEGUIConfig.xsd
-	File ..\..\Binary\CEGUI\xml_schemas\Falagard.xsd
-	File ..\..\Binary\CEGUI\xml_schemas\Font.xsd
-	File ..\..\Binary\CEGUI\xml_schemas\GUILayout.xsd
-	File ..\..\Binary\CEGUI\xml_schemas\GUIScheme.xsd
-	File ..\..\Binary\CEGUI\xml_schemas\Imageset.xsd
+	File ..\Files\CEGUI\xml_schemas\CEGUIConfig.xsd
+	File ..\Files\CEGUI\xml_schemas\Falagard.xsd
+	File ..\Files\CEGUI\xml_schemas\Font.xsd
+	File ..\Files\CEGUI\xml_schemas\GUILayout.xsd
+	File ..\Files\CEGUI\xml_schemas\GUIScheme.xsd
+	File ..\Files\CEGUI\xml_schemas\Imageset.xsd
 	
 	SetOutPath "$INSTDIR"
 	
