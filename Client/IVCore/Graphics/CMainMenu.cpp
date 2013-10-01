@@ -163,6 +163,7 @@ bool CMainMenu::OnExitButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 
 	// Close IV:Network
 	TerminateProcess(GetCurrentProcess(), 0);
+	return true;
 }
 
 bool CMainMenu::OnQuickConnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
