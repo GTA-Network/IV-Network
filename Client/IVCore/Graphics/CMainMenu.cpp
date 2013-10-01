@@ -106,8 +106,11 @@ bool CMainMenu::Initialize()
 
 void CMainMenu::SetVisible(bool bVisible)
 {
-	m_bVisible = bVisible;
+	if (bVisible == true)
+		g_pCore->GetGraphics()->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
+	m_bVisible = bVisible;
+	
 	g_pCore->GetGUI()->SetCursorVisible(bVisible);
 
 	m_pBackground->setVisible(bVisible);

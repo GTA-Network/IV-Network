@@ -177,18 +177,13 @@ void CCore::OnGameLoad()
 	g_pCore->GetGame()->PrepareWorld();
 
 	// Fade in the screen to avoid seeing the background work
-	CIVScript::DoScreenFadeIn(3000);
+	CIVScript::DoScreenFadeOut(3000);
 
 	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
 	// Set the main menu visible
 	GetMainMenu()->SetVisible(true);
-
-	// Set the camera to downtown of Liberty City
-	m_pCamera = new CCamera;
-	m_pCamera->SetCameraPosition(CVector3(MAINMENU_CAMERA_POS));
-	m_pCamera->SetLookAtPosition(CVector3(MAINMENU_CAMERA_LOOK_AT));
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
