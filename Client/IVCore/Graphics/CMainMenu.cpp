@@ -138,6 +138,7 @@ CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize,
 
 bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
+#if !MAINMENU_BEFORE_GAME_LOAD
 	// Enable the chat
 	g_pCore->GetChat()->SetVisible(true);
 
@@ -146,6 +147,9 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 
 	// Conneting the player to the server
 	g_pCore->ConnectToServer();
+#else
+	//TODO: Start game
+#endif
 
 	// Hide the main menu elements
 	SetVisible(false);
