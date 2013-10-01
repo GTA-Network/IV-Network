@@ -5,8 +5,8 @@
 
 Three quick start options are available:
 
-* [Download the latest release](https://github.com/GTA-Network/V-Network/archive/master.zip).
-* Clone the repo: `https://github.com/GTA-Network/V-Network.git`.
+* [Download the latest release](https://github.com/GTA-Network/IV-Network/archive/master.zip).
+* Clone the repo: `https://github.com/GTA-Network/IV-Network.git`.
 * Install with [Bower](http://bower.io): `bower install bootstrap`.
 
 Visit [GTA-NETWORK.NET | IV](http://iv.gta-network.net) and [GTA-NETWORK.NET | IV-NETWORK](http://iv-network.gta-network.net) to stay up to date!
