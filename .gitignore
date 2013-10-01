@@ -1,6 +1,6 @@
 /IVN.opensdf
 /IVN.sdf
-/IVN.v11.suo
+/IVN.v12.suo
 *.log
 /Binary/Debug
 /Client/Core/Debug
@@ -24,4 +24,5 @@ ipch/
 /Private
 /Files
 /Libraries/gwen/projects/vs2008/obj/debug
-Libraries/gwen/bin
+/Libraries/gwen/bin
+/Libraries/CEGUI/dependencies/expat-2.0.1/tmp
