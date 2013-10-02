@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: CGUI.cpp
 // Project: Client.Core
@@ -154,6 +154,30 @@ bool CGUI::Initialize()
 		}
 
 		m_bInitialized = true;
+
+		try
+		{
+			CEGUI::ImagesetManager::getSingleton().createFromImageFile("Loading", "Loading.png");
+		}
+		catch (CEGUI::InvalidRequestException e)
+		{
+			MessageBox(NULL, "Cannot find the loading screen, IV:Network will now exit.", "IV:Network Error", MB_OK || MB_ICONERROR);
+			ExitProcess(0);
+		}
+		catch (CEGUI::Exception e)
+		{
+			MessageBox(NULL, "IV:Network failed to load, please check the CEGUI.log for more details", "IV:Network Error", MB_OK || MB_ICONERROR);
+			ExitProcess(0);
+		}
+
+		// Create the Loading Screen
+		m_pBackground = CreateGUIStaticImage(GetDefaultWindow());
+		m_pBackground->setProperty("FrameEnabled", "false");
+		m_pBackground->setProperty("BackgroundEnabled", "false");
+		m_pBackground->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
+		m_pBackground->setProperty("Image", "set:Loading image:full_image");
+		m_pBackground->setProperty("InheritsAlpha", "false");
+		m_pBackground->setVisible(false);
 
 		return true;
 	}
@@ -313,19 +337,6 @@ bool CGUI::OnGUIKeyDown(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-
-void CGUI::Test()
-{
-	CEGUI::Window * pWindow = m_pWindowManager->createWindow(STYLE_PREFIX "/FrameWindow", "Keks");
-	if (pWindow)
-	{
-		CEGUI::Window * pParent = m_pDefaultWindow;
-		pParent->addChildWindow(pWindow);
-		pWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 100)));
-		pWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 100), CEGUI::UDim(0, 100)));
-	}
-}
-
 const char * CGUI::GetUniqueName()
 {
 	static char szJenkFag[20];
@@ -378,6 +389,11 @@ void CGUI::SetCursorVisible(bool bVisible)
 	{
 		m_pCursor->setVisible(bVisible);
 	}
+}
+
+void CGUI::SetLoadingScreenVisible(bool bVisible)
+{
+	m_pBackground->setVisible(bVisible);
 }
 
 void CGUI::ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitle, eGUIMessageBoxType style, GUIMessageBoxHandler_t pfnHandler)

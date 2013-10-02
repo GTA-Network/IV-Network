@@ -1,4 +1,4 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: CDevelopment.cpp
 // Project: Client.Core

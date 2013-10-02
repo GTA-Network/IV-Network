@@ -170,9 +170,6 @@ void CGame::Initialise()
 	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pCheckpointManager)
 		m_pCheckpointManager = new CCheckpointManager;
-
-	// Show the chat
-	g_pCore->GetChat()->SetVisible(true);
 	
 	OnEnvironmentStartUp(false);
 

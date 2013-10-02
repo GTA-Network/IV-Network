@@ -1,4 +1,4 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
 //
 // File: CCore.cpp
 // Project: Client.Core
@@ -176,9 +176,6 @@ void CCore::OnGameLoad()
 	// Prepare the client in game elements
 	g_pCore->GetGame()->PrepareWorld();
 
-	// Fade in the screen to avoid seeing the background work
-	CIVScript::DoScreenFadeOut(3000);
-
 	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
@@ -269,7 +266,8 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 
 		// Render our own Loading Screen
-		RenderLoadingScreen();
+		m_pGUI->SetLoadingScreenVisible(true);
+		//RenderLoadingScreen();
 	}
 
 	// Has the device been lost?
@@ -467,27 +465,4 @@ void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
 
 	for(int i = 0; i < iFunctionCount; i++)
 		CLogFile::Printf("VFTable Offset: %d, Function: 0x%p (At Address: 0x%p)", (i * 4), *(PDWORD)(dwAddress + (i * 4)), (dwAddress + (i * 4)));
-}
-
-void CCore::RenderLoadingScreen()
-{	
-	float rotation = 0.0f;
-
-	D3DVIEWPORT9 viewport;
-
-	g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
-	g_pCore->GetGraphics()->GetSprite()->Begin(0);
-
-	D3DXVECTOR2 spriteCentre = D3DXVECTOR2(0, 0);
-	D3DXVECTOR2 trans = D3DXVECTOR2(0, 0);
-	D3DXMATRIX mat;
-	D3DXVECTOR2 scaling2(viewport.Width / 2040.0f, viewport.Height / 2050.0f);
-	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling2, &spriteCentre, rotation, &trans);
-
-	g_pCore->GetGraphics()->GetSprite()->SetTransform(&mat);
-	g_pCore->GetGraphics()->GetSprite()->Draw(g_pCore->GetGraphics()->m_pLoadingBackgroundTexture, NULL, NULL, &D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255, 255, 255, 255));
-	g_pCore->GetGraphics()->GetSprite()->Flush();
-	g_pCore->GetGraphics()->GetSprite()->End();
-
-	g_pCore->GetGUI()->Render();
 }

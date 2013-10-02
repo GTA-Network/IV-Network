@@ -10,7 +10,7 @@
 ;======================================================
 ; Configuration
 !define NAME 'IVNetwork'
-!define VERSION '1.0'
+!define VERSION '1.0.0.DEV'
 
 ;======================================================
 ; Modern Interface Configuration
@@ -92,7 +92,7 @@ Function OptionsPage
 	${NSD_CreateLabel} 0 0 100% 20u "Please select the following installation options, then click Install to proceed with the installation."
 	Pop $OptionsPageText
 
-	${NSD_CreateCheckbox} 0 40u 100% 10u "&Create Start Menu Shortcuts"
+	${NSD_CreateCheckbox} 0 40u 100% 10u "&Create Start Menu Shortcut"
 	Pop $CreateStartMenuShortcutsCheckbox
 
 	${NSD_Check} $CreateStartMenuShortcutsCheckbox
@@ -131,7 +131,6 @@ Section "Install" SecDummy
 	File ..\Files\IVNetworkLaunchInject.dll
 	File ..\Files\IVNetwork.dll
 	SetOutPath "$INSTDIR\multiplayer\datafiles"
-	File ..\Files\multiplayer\datafiles\loadingbg.png
 	
 	; CEGUI Stuff
 	CreateDirectory "$INSTDIR\CEGUI"
@@ -148,7 +147,10 @@ Section "Install" SecDummy
 
 	SetOutPath "$INSTDIR\CEGUI\imagesets"
 
-	File ..\Files\CEGUI\imagesets\*
+	File ..\Files\CEGUI\imagesets\Loading.png
+	File ..\Files\CEGUI\imagesets\Background.png
+	File ..\Files\CEGUI\imagesets\WindowsLook.png
+	File ..\Files\CEGUI\imagesets\WindowsLook.imageset
 
 	SetOutPath "$INSTDIR\CEGUI\layouts"
 

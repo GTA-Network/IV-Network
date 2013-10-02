@@ -1,4 +1,4 @@
-//========== IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ==========
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: CGUI.cpp
 // Project: Client.Core
@@ -68,6 +68,8 @@ public:
 
 	void			SetCursorVisible(bool bVisible);
 
+	void			SetLoadingScreenVisible(bool bVisible);
+
 	CEGUI::Direct3D9Renderer * GetRenderer() { return m_pRenderer; }
 	CEGUI::System            * GetSystem() { return m_pSystem; }
 	CEGUI::WindowManager     * GetWindowManager() { return m_pWindowManager; }
@@ -116,6 +118,7 @@ private:
 	CEGUI::FontManager       * m_pFontManager;
 	CEGUI::GeometryBuffer    * m_pTextDrawingGeometryBuffer;
 	CEGUI::DefaultWindow     * m_pDefaultWindow;
+	CGUIStaticImage			 * m_pBackground;
 
 
 	IDirectInput8            * m_pInput;

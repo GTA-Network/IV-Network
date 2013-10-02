@@ -1,8 +1,15 @@
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ============
+//
+// File: CMainMenu.cpp
+// Project: Client.Core
+// Author: ViruZz <blazee14@gmail.com>
+// License: See LICENSE in root directory
+//
+//==============================================================================
 
 #include "CMainMenu.h"
 #include <CCore.h>
 #include <IV/CIVScript.h>
-
 
 extern CCore* g_pCore;
 
@@ -25,7 +32,7 @@ CMainMenu::~CMainMenu()
 	SAFE_DELETE(m_pExitButton);
 
 	if (m_pBackground)
-		g_pCore->GetGUI()->RemoveGUIWindow(m_pBackground);
+		m_pGUI->RemoveGUIWindow(m_pBackground);
 }
 
 bool CMainMenu::Initialize()
@@ -45,19 +52,18 @@ bool CMainMenu::Initialize()
 		ExitProcess(0);
 	}
 	// Create the main menu gui elements
-	float fWidth = (float) g_pCore->GetGUI()->GetDisplayWidth();
-	float fHeight = (float) g_pCore->GetGUI()->GetDisplayHeight();
+	float fWidth = (float) m_pGUI->GetDisplayWidth();
+	float fHeight = (float) m_pGUI->GetDisplayHeight();
 	float fX = -2.0f;
 	float fY = 0.5f;
 
 	// Create the Main Menu Background
-	m_pBackground = g_pCore->GetGUI()->CreateGUIStaticImage(g_pCore->GetGUI()->GetDefaultWindow());
+	m_pBackground = m_pGUI->CreateGUIStaticImage(m_pGUI->GetDefaultWindow());
 	m_pBackground->setProperty("FrameEnabled", "false");
 	m_pBackground->setProperty("BackgroundEnabled", "false");
 	m_pBackground->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
 	m_pBackground->setProperty("Image", "set:Background image:full_image");
 	m_pBackground->setProperty("InheritsAlpha", "false");
-	m_pBackground->setAlpha(0.975f);
 	m_pBackground->setVisible(false);
 
 	fX = 0.10f;
@@ -99,6 +105,7 @@ bool CMainMenu::Initialize()
 	m_pExitButton = CreateButton("Exit", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(fX + 0.825f, 0), CEGUI::UDim(fY, 0)));
 	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseEnter, this));
 	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseExit, this));
+	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pExitButton);
 
 	return true;
@@ -111,7 +118,7 @@ void CMainMenu::SetVisible(bool bVisible)
 
 	m_bVisible = bVisible;
 	
-	g_pCore->GetGUI()->SetCursorVisible(bVisible);
+	m_pGUI->SetCursorVisible(bVisible);
 
 	m_pBackground->setVisible(bVisible);
 	m_pQuickConnectButton->setVisible(bVisible);
@@ -121,26 +128,26 @@ void CMainMenu::SetVisible(bool bVisible)
 	m_pExitButton->setVisible(bVisible);
 
 	m_pBackground->setProperty("Image", "set:Background image:full_image");
-	m_pBackground->setAlpha(0.95f);
 }
 
 CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
 {
-	CGUI * pGUI = g_pCore->GetGUI();
-
-	CGUIStaticText * pButton = pGUI->CreateGUIStaticText();
+	CGUIStaticText * pButton = m_pGUI->CreateGUIStaticText();
 	pButton->setText(CGUI::AnsiToCeguiFriendlyString(szText, strlen(szText)));
 	pButton->setSize(vecSize);
 	pButton->setPosition(vecPosition);
 	pButton->setProperty("FrameEnabled", "false");
 	pButton->setProperty("BackgroundEnabled", "false");
-	pButton->setFont(pGUI->GetFont("pricedown", 20));
+	pButton->setFont(m_pGUI->GetFont("pricedown", 20));
 	pButton->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF");
 	return pButton;
 }
 
 bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
+	// Clear the loading screen here because it doesn't want to clear in the CCore for some reason
+	m_pGUI->SetLoadingScreenVisible(false);
+
 	// Enable the chat
 	g_pCore->GetChat()->SetVisible(true);
 

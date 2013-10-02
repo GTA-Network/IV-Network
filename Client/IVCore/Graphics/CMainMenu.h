@@ -1,3 +1,11 @@
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ============
+//
+// File: CMainMenu.h
+// Project: Client.Core
+// Author: ViruZz <blazee14@gmail.com>
+// License: See LICENSE in root directory
+//
+//==============================================================================
 
 #ifndef CMainMenu_h
 #define CMainMenu_h
