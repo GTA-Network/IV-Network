@@ -135,7 +135,9 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			{
 				case VK_F12:
 				{
-					TerminateProcess(GetCurrentProcess(), 0);
+					bool bIsMainMenuVisible = g_pCore->GetMainMenu()->IsMainMenuVisible();
+					g_pCore->GetMainMenu()->SetVisible(!bIsMainMenuVisible);
+					break;
 				}
 				case VK_F8:
 				{

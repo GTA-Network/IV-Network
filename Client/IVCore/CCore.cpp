@@ -169,9 +169,6 @@ void CCore::OnGameLoad()
 
 	// Startup the network module
 	m_pNetworkManager->Startup();
-
-	// Connect to the network
-	//m_pNetworkManager->Connect(GetHost(), (unsigned short)GetPort(), GetPass());
 	
 	// Prepare the client in game elements
 	g_pCore->GetGame()->PrepareWorld();
@@ -267,7 +264,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 		// Render our own Loading Screen
 		m_pGUI->SetLoadingScreenVisible(true);
-		//RenderLoadingScreen();
 	}
 
 	// Has the device been lost?
@@ -359,9 +355,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 	// Render ingame environment
 	m_pGame->ProcessEnvironment();
-
-	//// Render ingame ui elements
-	//m_pGame->RenderUIElements();
 
 	// Render our gui instance
 	if (m_pGUI)
