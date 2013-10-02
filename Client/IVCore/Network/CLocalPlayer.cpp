@@ -92,10 +92,6 @@ void CLocalPlayer::HandleSpawn()
 
 	// Reset parachute
 	m_bParachuteCheck = false;
-	
-	// Fade screen in
-	if(m_bFirstSpawn)
-		CIVScript::DoScreenFadeIn(1000);
 
 	// Set first spawn
 	m_bFirstSpawn = true;

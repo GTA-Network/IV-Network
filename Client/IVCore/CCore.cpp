@@ -127,7 +127,7 @@ bool CCore::Initialise()
 	CPatches::Initialize();
 
 	// Install crash fixes
-	CCrashFixes::Install();
+	CCrashFixes::Initialize();
 	
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);
@@ -177,7 +177,7 @@ void CCore::OnGameLoad()
 	g_pCore->GetGame()->PrepareWorld();
 
 	// Fade in the screen to avoid seeing the background work
-	CIVScript::DoScreenFadeOut(3000);
+	//CIVScript::DoScreenFadeOut(3000);
 
 	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();

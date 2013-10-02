@@ -26,4 +26,5 @@ ipch/
 /Libraries/gwen/projects/vs2008/obj/debug
 /Libraries/gwen/bin
 /Libraries/CEGUI/dependencies/expat-2.0.1/tmp
+/Libraries/CEGUI/dependencies/expat-2.0.1/bin
 /Libraries/zlib-1.2.5/projects/Release

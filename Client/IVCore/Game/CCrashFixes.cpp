@@ -57,7 +57,7 @@ keks:
 	}
 }
 
-void CCrashFixes::Install()
+void CCrashFixes::Initialize()
 {
 	// Hook texture select/generate function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD) TextureSelect_Hook);

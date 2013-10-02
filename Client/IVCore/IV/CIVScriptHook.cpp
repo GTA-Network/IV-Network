@@ -503,7 +503,6 @@ void CRageThread_Script_Process()
 	if(g_iRageScriptFrames < 5)
 	{
 		g_iRageScriptFrames++;
-		CIVScript::DoScreenFadeIn(5000);
 		g_pCore->OnGameLoad();
 	}
 
