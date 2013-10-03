@@ -29,6 +29,7 @@ CCore::CCore(void)
 	// Reset instances
 	m_pGame = NULL;
 	m_pGraphics = NULL;
+	//m_pAudioManager = NULL;
 	m_pChat = NULL;
 	m_pFPSCounter = NULL;
 	m_pNetworkManager = NULL;
@@ -221,6 +222,12 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Setup the chat
 	if(m_pChat)
 		m_pChat->Setup(pPresentationParameters);
+
+	// Setup audio manager
+	m_pAudioManager = new CAudioManager();
+
+	if (!m_pAudioManager->Initialize())
+		CLogFile::Printf("CAudioManager::Initialize failed");
 
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
