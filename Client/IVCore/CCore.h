@@ -1,6 +1,6 @@
-//================ IV:Multiplayer - https://github.com/IVMultiplayer/IVMultiplayer ================
+//========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
 //
-// File: CCore.h
+// File: CCore.cpp
 // Project: Client.Core
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
@@ -48,6 +48,8 @@
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
 
+#include <audio\CAudioManager.h>
+
 #include <RAGEEngine/RAGEInterface.h>
 typedef void (* GetInterface_t)(RAGEEngineInterface *);
 
@@ -83,8 +85,10 @@ private:
 	bool							m_hwndFocused;
 	BYTE							m_byteLoadingStyle;
 
-	CMainMenu						* m_pMainMenu;
+	CMainMenu						*m_pMainMenu;
 	CCamera							*m_pCamera;
+
+	CAudioManager					*m_pAudioManager;
 
 public:
 									CCore();
@@ -112,6 +116,7 @@ public:
 
 	CGame							* GetGame() { return m_pGame; }
 	CGraphics						* GetGraphics() { return m_pGraphics; }
+	CAudioManager					* GetAudioManager() { return m_pAudioManager; }
 	CChat							* GetChat() { return m_pChat; }
 	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }

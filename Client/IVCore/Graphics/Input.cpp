@@ -133,6 +133,20 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		{
 			switch(wParam)
 			{
+				case VK_F7:
+				{
+					const char *szSoundName = "test.mp3";
+					szSoundName = SharedUtility::GetAbsolutePath("resources\\%s", szSoundName);
+
+					CAudio  *pAudio = new CAudio(szSoundName, false, false);
+					
+					if (pAudio && pAudio->Load())
+					{
+						g_pCore->GetAudioManager()->Add(pAudio);
+						pAudio->Play();
+					}
+					break;
+				}
 				case VK_F12:
 				{
 					bool bIsMainMenuVisible = g_pCore->GetMainMenu()->IsMainMenuVisible();

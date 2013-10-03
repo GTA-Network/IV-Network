@@ -147,6 +147,12 @@
     <Filter Include="Source Files\Network\Entity">
       <UniqueIdentifier>{622fa046-c92b-4f9f-a76b-fc8b90ad35a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Audio">
+      <UniqueIdentifier>{179c3867-564e-4a8e-96e1-18f627f707d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{e8acafa7-a8cf-4b76-8018-768448e9682e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -532,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="Graphics\CMainMenu.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\audio\CAudio.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\audio\CAudioManager.cpp">
+      <Filter>Source Files\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1089,6 +1101,12 @@
     </ClInclude>
     <ClInclude Include="Graphics\CMainMenu.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\audio\CAudio.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\audio\CAudioManager.h">
+      <Filter>Header Files\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
