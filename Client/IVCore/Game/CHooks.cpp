@@ -53,7 +53,7 @@ _declspec(naked) void CTask__Destructor_Hook()
 	_asm	mov ___pTask, ecx;
 	_asm	pushad;
 
-	if(g_pCore->GetGame()->GetTaskManager())
+	if (g_pCore->GetGame()->GetTaskManager())
 		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(___pTask);
 
 	_asm	popad;
@@ -62,14 +62,14 @@ _declspec(naked) void CTask__Destructor_Hook()
 	_asm	push esi;
 	_asm	push eax;
 	_asm	mov eax, COffsets::VAR_CTask__VFTable;
-	_asm	mov dword ptr [esi], eax;
+	_asm	mov dword ptr[esi], eax;
 	_asm	pop eax;
 	_asm	jmp COffsets::RETURN_CTask__Destructor;
 }
 
 _declspec(naked) void CEpisodes__IsEpisodeAvaliable_Hook()
 {
-	_asm	mov eax, [esp+4];
+	_asm	mov eax, [esp + 4];
 	_asm	test eax, eax;
 	_asm	jnz it_not;
 	_asm	mov al, 1;
@@ -85,12 +85,12 @@ void StartGame_Loading()
 	_asm
 	{
 		push v7
-		mov ecx, COffsets::IV_Hook__StartGameLoading_1
-		call COffsets::IV_Hook__StartGameLoading_2
+			mov ecx, COffsets::IV_Hook__StartGameLoading_1
+			call COffsets::IV_Hook__StartGameLoading_2
 	}
-	*(DWORD*)COffsets::IV_Hook__StartGameLoading_3 = *v7;
-	*(DWORD*)COffsets::IV_Hook__StartGameLoading_4 = *v7;
-	if ( *v7 > 0 )
+	*(DWORD*) COffsets::IV_Hook__StartGameLoading_3 = *v7;
+	*(DWORD*) COffsets::IV_Hook__StartGameLoading_4 = *v7;
+	if (*v7 > 0)
 		_asm call COffsets::IV_Hook__StartGameLoading_5;
 }
 
@@ -102,17 +102,17 @@ void RemoveInitialLoadingScreens()
 	int iLoadScreenType = COffsets::VAR_FirstLoadingScreenType;
 	int iLoadScreenDuration = COffsets::VAR_FirstLoadingScreenDuration;
 
-	for(int i = 0; i < *(int *)iLoadScreens; ++i)
+	for (int i = 0; i < *(int *) iLoadScreens; ++i)
 	{
-		if(i < 4)
+		if (i < 4)
 		{
-			*(DWORD *)(iLoadScreenType + i * 400) = 0;
-			*(DWORD *)(iLoadScreenDuration + i * 400) = 0;
+			*(DWORD *) (iLoadScreenType + i * 400) = 0;
+			*(DWORD *) (iLoadScreenDuration + i * 400) = 0;
 		}
 	}
 
-	*(DWORD *)(iLoadScreenDuration + 400) = 5000; // load directx
-	*(DWORD *)(iLoadScreenDuration + 1600) = 5000; // logo screen
+	*(DWORD *) (iLoadScreenDuration + 400) = 5000; // load directx
+	*(DWORD *) (iLoadScreenDuration + 1600) = 5000; // logo screen
 
 	/*
 	(0)0x0 - 5B - [ - 0xE37048
@@ -147,11 +147,11 @@ IVPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
 	pReturnedPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 
-	if(uiIndex != 0)
+	if (uiIndex != 0)
 	{
 		CContextData * pContextInfo = CContextDataManager::GetContextData(uiIndex);
 
-		if(pContextInfo)
+		if (pContextInfo)
 			pReturnedPlayerInfo = pContextInfo->GetPlayerInfo()->GetPlayerInfo();
 	}
 
@@ -162,11 +162,11 @@ unsigned int GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	uiReturnedIndex = 0;
 
-	if(pPlayerInfo != g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0))
+	if (pPlayerInfo != g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0))
 	{
 		CContextData * pContextInfo = CContextDataManager::GetContextData(pPlayerInfo);
 
-		if(pContextInfo)
+		if (pContextInfo)
 			uiReturnedIndex = pContextInfo->GetPlayerInfo()->GetPlayerNumber();
 	}
 
@@ -178,22 +178,22 @@ IVPlayerPed * GetLocalPlayerPed()
 	// Default to the local player ped (If available)
 	IVPlayerInfo * pPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 
-	if(pPlayerInfo)
+	if (pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
 	else
 		_pPlayerPed = NULL;
 
 	// Is the local player id valid?
-	if(g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex() != -1)
+	if (g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex() != -1)
 	{
 		// Is the player index not the local player?
-		if(g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex() != 0)
+		if (g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex() != 0)
 		{
 			// Get the context info for the player index
-			CContextData * pContextInfo = CContextDataManager::GetContextData((BYTE)g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
+			CContextData * pContextInfo = CContextDataManager::GetContextData((BYTE) g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
 
 			// Is the context info valid?
-			if(pContextInfo)
+			if (pContextInfo)
 			{
 				// Set the player ped to the remote player
 				_pPlayerPed = pContextInfo->GetPlayerPed()->GetPlayerPed();
@@ -202,9 +202,9 @@ IVPlayerPed * GetLocalPlayerPed()
 	}
 
 	// Some code to test a theory
-	if(_pPlayerPed == NULL)
+	if (_pPlayerPed == NULL)
 	{
-		if(!g_bInvalidIndex)
+		if (!g_bInvalidIndex)
 		{
 			CLogFile::Printf("GetLocalPlayerPed Return Is Invalid (Index is %d)", g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex());
 			g_bInvalidIndex = true;
@@ -212,7 +212,7 @@ IVPlayerPed * GetLocalPlayerPed()
 	}
 	else
 	{
-		if(g_bInvalidIndex)
+		if (g_bInvalidIndex)
 		{
 			CLogFile::Printf("GetLocalPlayerPed Return Is Now Valid");
 			g_bInvalidIndex = false;
@@ -226,7 +226,7 @@ IVPlayerPed * GetLocalPlayerPed()
 IVPlayerPed * GetPlayerPedFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
 	// Is the player info pointer valid?
-	if(pPlayerInfo)
+	if (pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
 	else // Player info pointer is invalid, use the local player ped
 		_pPlayerPed = GetLocalPlayerPed();
@@ -236,7 +236,7 @@ IVPlayerPed * GetPlayerPedFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 
 _declspec(naked) void GetPlayerInfoFromIndex_Hook()
 {
-	_asm	mov eax, [esp+4];
+	_asm	mov eax, [esp + 4];
 	_asm	mov uiPlayerInfoIndex, eax;
 	_asm	pushad;
 
@@ -249,7 +249,7 @@ _declspec(naked) void GetPlayerInfoFromIndex_Hook()
 
 _declspec(naked) void GetIndexFromPlayerInfo_Hook()
 {
-	_asm	mov eax, [esp+4];
+	_asm	mov eax, [esp + 4];
 	_asm	mov pReturnedPlayerInfo, eax;
 	_asm	pushad;
 
@@ -273,7 +273,7 @@ _declspec(naked) void GetLocalPlayerPed_Hook()
 
 _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 {
-	_asm	mov eax, [esp+4];
+	_asm	mov eax, [esp + 4];
 	_asm	mov pReturnedPlayerInfo, eax;
 	_asm	pushad;
 
@@ -289,13 +289,13 @@ _declspec(naked) void CFunctionRetnPatch()
 	_asm
 	{
 		xor eax, eax
-		retn
+			retn
 	}
 }
 
 _declspec(naked) void CGameProcessHook()
 {
-	if(!bInitialiseGame && iFrameCalls != 300)
+	if (!bInitialiseGame && iFrameCalls != 300)
 	{
 		iFrameCalls++;
 		_asm	mov ebp, esp;
@@ -310,15 +310,15 @@ _declspec(naked) void CGameProcessHook()
 		_asm	mov ebp, esp;
 		_asm	jmp COffsets::IV_Hook__GameProcess_2;
 
-		BYTE b1 = *(BYTE*)COffsets::IV_Hook__GameProcess_3 = 0;
-		BYTE b2 = *(BYTE*)COffsets::IV_Hook__GameProcess_4 = 1;
-		BYTE b3 = *(BYTE*)COffsets::IV_Hook__GameProcess_5 = 0;
+		BYTE b1 = *(BYTE*) COffsets::IV_Hook__GameProcess_3 = 0;
+		BYTE b2 = *(BYTE*) COffsets::IV_Hook__GameProcess_4 = 1;
+		BYTE b3 = *(BYTE*) COffsets::IV_Hook__GameProcess_5 = 0;
 
-		*(DWORD*)(g_pCore->GetBase()+0x10C7854) = 50;
+		*(DWORD*) (g_pCore->GetBase() + 0x10C7854) = 50;
 
 
-		DWORD keks = *(DWORD *)COffsets::IV_Hook__GameProcess_6; // keks copyright by xforce
-		DWORD g_rgsc = *(DWORD *)COffsets::IV_Hook__GameProcess_7;
+		DWORD keks = *(DWORD *) COffsets::IV_Hook__GameProcess_6; // keks copyright by xforce
+		DWORD g_rgsc = *(DWORD *) COffsets::IV_Hook__GameProcess_7;
 		int iTime = timeGetTime();
 
 		_asm	push 0;
@@ -345,23 +345,23 @@ __declspec(naked) void __stdcall CPool_hook()
 
 int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, int entrySize)
 {
-	IVPool *pPool = (IVPool*)this_;
+	IVPool *pPool = (IVPool*) this_;
 
-	if(pPool)
+	if (pPool)
 	{
 
-		if(!strcmp("PtrNode Double", (const char*)Name)
+		if (!strcmp("PtrNode Double", (const char*) Name)
 			|| !strcmp("EntryInfoNodes", Name)
 			|| !strcmp("PtrNode Single", Name)
-			|| !strcmp("Vehicles", (const char*)Name)
+			|| !strcmp("Vehicles", (const char*) Name)
 			|| !strcmp("VehicleStruct", Name))
 		{
 			CLogFile::Printf("Increaing %sPool from %i Objects to %i Objects", Name, maxObjects, maxObjects*mulPoolSize);
 			maxObjects *= mulPoolSize;
 
 			pPool->m_dwEntrySize = entrySize;
-			pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
-			pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+			pPool->m_pObjects = (BYTE*) CGameFunction::Alloc(entrySize * maxObjects);
+			pPool->m_pFlags = (BYTE*) CGameFunction::Alloc(maxObjects);
 
 			pPool->m_bAllocated = 1;
 			pPool->m_dwCount = maxObjects;
@@ -373,12 +373,12 @@ int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, i
 			BYTE* v8;
 			BYTE v7;
 			BYTE* v6;
-			for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+			for (pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
 			{
 				*(pPool->m_pFlags + v5) |= 0x80;
 				v6 = pPool->m_pFlags;
 				v7 = *(v6 + v5);
-				v8 = v5++ +v6;
+				v8 = v5++ + v6;
 			}
 
 			CLogFile::Printf("Increased %sPool to %i Objects", Name, maxObjects);
@@ -386,8 +386,8 @@ int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, i
 		else
 		{
 			pPool->m_dwEntrySize = entrySize;
-			pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
-			pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+			pPool->m_pObjects = (BYTE*) CGameFunction::Alloc(entrySize * maxObjects);
+			pPool->m_pFlags = (BYTE*) CGameFunction::Alloc(maxObjects);
 
 			pPool->m_bAllocated = 1;
 			pPool->m_dwCount = maxObjects;
@@ -399,15 +399,15 @@ int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, i
 			BYTE* v8;
 			BYTE v7;
 			BYTE* v6;
-			for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+			for (pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
 			{
 				*(pPool->m_pFlags + v5) |= 0x80;
 				v6 = pPool->m_pFlags;
 				v7 = *(v6 + v5);
-				v8 = v5++ +v6;
+				v8 = v5++ + v6;
 			}
 		}
-		return (int)pPool;
+		return (int) pPool;
 	}
 
 	return 0;
@@ -431,8 +431,8 @@ _declspec(naked) void __stdcall SetupPool_Hook()
 	CGameFunction::Free(pPool->m_pObjects);
 	CGameFunction::Free(pPool->m_pFlags);
 
-	pPool->m_pObjects = (BYTE*)CGameFunction::Alloc(entrySize * maxObjects);
-	pPool->m_pFlags = (BYTE*)CGameFunction::Alloc(maxObjects);
+	pPool->m_pObjects = (BYTE*) CGameFunction::Alloc(entrySize * maxObjects);
+	pPool->m_pFlags = (BYTE*) CGameFunction::Alloc(maxObjects);
 
 	pPool->m_bAllocated = 1;
 	pPool->m_dwCount = maxObjects;
@@ -447,12 +447,12 @@ _declspec(naked) void __stdcall SetupPool_Hook()
 	BYTE v7;
 	BYTE* v6;
 
-	for(pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
+	for (pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
 	{
 		*(pPool->m_pFlags + v5) |= 0x80;
 		v6 = pPool->m_pFlags;
 		v7 = *(v6 + v5);
-		v8 = v5++ +v6;
+		v8 = v5++ + v6;
 	}
 
 	_asm	popad;
@@ -478,24 +478,24 @@ __declspec(naked) void __stdcall GTAPhysicsUpdate()
 	_asm pushad;
 
 	// Check PhysicsUpdate
-	if(PhysicsEAXHandle == NULL || (DWORD *)PhysicsEAXHandle == NULL) {
-		
+	if (PhysicsEAXHandle == NULL || (DWORD *) PhysicsEAXHandle == NULL) {
+
 		// Failed to get any eax value, exit.
 		_asm popad;
-		_asm mov eax, [ecx+4];
+		_asm mov eax, [ecx + 4];
 		_asm push ebx;
-		_asm mov ebx, [eax+14h];
+		_asm mov ebx, [eax + 14h];
 		_asm mov PhysicsEAXHandle, ebx;
 		_asm pop ebx;
 		_asm pushad;
 
-		if(PhysicsEAXHandle == NULL || (WORD)PhysicsEAXHandle == NULL)
+		if (PhysicsEAXHandle == NULL || (WORD) PhysicsEAXHandle == NULL)
 		{
 			_asm popad;
 			_asm push ebx;
 			_asm push ebp;
-			_asm mov edi, [eax+4];
-			_asm mov eax, [ecx+0Ch];
+			_asm mov edi, [eax + 4];
+			_asm mov eax, [ecx + 0Ch];
 			_asm mov edx, eax;
 			_asm mov ebx, esi;
 			_asm mov ecx, ebp
@@ -514,8 +514,8 @@ __declspec(naked) void __stdcall GTAPhysicsUpdate()
 			IV_GTAPhysicsUpdate = (g_pCore->GetBase() + 0x0063DD40);
 
 			_asm popad;
-			_asm mov eax, [ecx+14h];
-			_asm mov edx, [ecx+8];
+			_asm mov eax, [ecx + 14h];
+			_asm mov edx, [ecx + 8];
 			_asm push eax;
 			_asm push edx;
 			_asm call IV_GTAPhysicsUpdate;
@@ -526,8 +526,8 @@ __declspec(naked) void __stdcall GTAPhysicsUpdate()
 		IV_GTAPhysicsUpdate = (g_pCore->GetBase() + 0x0063DD40);
 
 		_asm popad;
-		_asm mov eax, [ecx+14h];
-		_asm mov edx, [ecx+8];
+		_asm mov eax, [ecx + 14h];
+		_asm mov edx, [ecx + 8];
 		_asm push eax;
 		_asm push edx;
 		_asm call IV_GTAPhysicsUpdate;
@@ -553,52 +553,52 @@ signed int GTA_CreateThreadHook(int a1, int a2, signed int ThreadId, int iPriori
 	DWORD dwThreadPatchAdd;
 	char * hThreadName;
 	DWORD dwThreadJmpBack;
-	LPVOID lpParameter = *(LPVOID *)(g_pCore->GetBase() + 0x16A9A3C);
+	LPVOID lpParameter = *(LPVOID *) (g_pCore->GetBase() + 0x16A9A3C);
 	DWORD dword_16A9774 = (g_pCore->GetBase() + 0x16A9774);
 	DWORD sub_452030 = (g_pCore->GetBase() + 0x452030);
-	void* sub_452350 = *(VOID **)(g_pCore->GetBase() + 0x452350);
+	void* sub_452350 = *(VOID **) (g_pCore->GetBase() + 0x452350);
 	DWORD dword_16A9A38 = (g_pCore->GetBase() + 0x16A9A38);
-	void* sub_452170 = *(VOID **)(g_pCore->GetBase() + 0x452170);
+	void* sub_452170 = *(VOID **) (g_pCore->GetBase() + 0x452170);
 
 
 	v6 = ThreadId;
-	if((unsigned int)ThreadId < 0x4000)
+	if ((unsigned int) ThreadId < 0x4000)
 		v6 = 16384;
 
 	_asm push dword_16A9774;
 	_asm call sub_452030;
 
-	if(!dword_16A9774)
-		*(void **)(sub_452350);
+	if (!dword_16A9774)
+		*(void **) (sub_452350);
 
 	v7 = lpParameter;
 
-	v8 = *(void **)lpParameter;
+	v8 = *(void **) lpParameter;
 	--dword_16A9A38;
-	
+
 	lpParameter = v8;
 	dword_16A9774 = 0;
 
-	*(DWORD *)v7 = a1;
-	*((DWORD *)v7 + 1) = a2;
-	*((DWORD *)v7 + 2) = *(DWORD *)(*(DWORD *)__readfsdword(44) + 8);
+	*(DWORD *) v7 = a1;
+	*((DWORD *) v7 + 1) = a2;
+	*((DWORD *) v7 + 2) = *(DWORD *) (*(DWORD *) __readfsdword(44) + 8);
 
 	ThreadId = 0;
-	v9 = CreateThread(0, v6, (LPTHREAD_START_ROUTINE)sub_452170, v7, 4u, (LPDWORD)&ThreadId);
+	v9 = CreateThread(0, v6, (LPTHREAD_START_ROUTINE) sub_452170, v7, 4u, (LPDWORD) &ThreadId);
 
 	v10 = v9;
-	
-	if(v9) {
+
+	if (v9) {
 		SetThreadPriority(v9, iPriority);
 		SetThreadPriorityBoost(v10, 1);
 
-		if(a6)
+		if (a6)
 			ResumeThread(v10);
-		result = (signed int)v10;
+		result = (signed int) v10;
 	}
 	else
 	{
-		*(DWORD *)v7 = (DWORD)lpParameter;
+		*(DWORD *) v7 = (DWORD) lpParameter;
 		++dword_16A9A38;
 		lpParameter = v7;
 		result = -1;
@@ -614,23 +614,23 @@ _declspec(naked) signed int GTA_CreateThread()
 	_asm mov ebp, esp;
 	_asm push esi;
 	_asm push edi;
-	_asm mov eax, [ebp+4];
+	_asm mov eax, [ebp + 4];
 	_asm mov Thread_a1, eax;
-	_asm mov eax, [ebp+8];
+	_asm mov eax, [ebp + 8];
 	_asm mov Thread_a2, eax;
-	_asm mov eax, [ebp+0Ch];
+	_asm mov eax, [ebp + 0Ch];
 	_asm mov Thread_ThreadId, eax;
-	_asm mov eax, [ebp+10h];
+	_asm mov eax, [ebp + 10h];
 	_asm mov Thread_iPriority, eax;
-	_asm mov eax, [ebp+18h];
+	_asm mov eax, [ebp + 18h];
 	_asm mov Thread_a5, eax;
-	_asm mov eax, [ebp+14h];
+	_asm mov eax, [ebp + 14h];
 	_asm mov Thread_a6, eax;
 
-	CLogFile::Printf("GTA_CreateThread: %d, %d, %d, %d, %s, %s",Thread_a1, Thread_a2, Thread_ThreadId, Thread_iPriority, Thread_a5, Thread_a6);
+	CLogFile::Printf("GTA_CreateThread: %d, %d, %d, %d, %s, %s", Thread_a1, Thread_a2, Thread_ThreadId, Thread_iPriority, Thread_a5, Thread_a6);
 
 	uiResult = GTA_CreateThreadHook(Thread_a1, Thread_a2, Thread_ThreadId, Thread_iPriority, Thread_a5, *Thread_a6);
-	
+
 	_asm mov eax, uiResult;
 	_asm pop esi;
 	_asm pop edi;
@@ -647,17 +647,17 @@ void GTA_LOG(DWORD a1, int a2, DWORD a3 = NULL, DWORD a4 = NULL, ...)
 	va_list vaArgs;
 	char szBuffer[2048];
 	va_start(vaArgs, a3);
-	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *)a3, vaArgs);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *) a3, vaArgs);
 	va_end(vaArgs);
 
 	// Print for a4
 	vaArgs;
 	szBuffer[2048];
 	va_start(vaArgs, a4);
-	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *)a4, vaArgs);
+	vsnprintf_s(szBuffer, sizeof(szBuffer), (char *) a4, vaArgs);
 	va_end(vaArgs);
 
-	log((const char *)(strlen((char *)a3) != 0 ? a3 : a4));
+	log((const char *) (strlen((char *) a3) != 0 ? a3 : a4));
 }
 
 Vector2 * v12;
@@ -677,7 +677,7 @@ void _declspec(naked) Keks()
 {
 	_asm	mov v12, edx;
 	_asm	push eax; get absolute flag
-	_asm	mov eax, [ebp+14h] ; 3th parameter
+	_asm	mov eax, [ebp + 14h]; 3th parameter
 	_asm	mov bAbsolut, eax;
 	_asm	pop eax;
 
@@ -685,18 +685,18 @@ void _declspec(naked) Keks()
 	fOriginalY = v12->fY;
 
 	// Calculate and check our coordinates 
-	if(!bAbsolut) {
+	if (!bAbsolut) {
 
-		if(v12->fX < MAX_X && v12->fX > MIN_X) { // Check if the X axis is smaller than 1, but still positive
-			if(v12->fY < MAX_Y && v12->fY > MIN_Y) // Check if the Y Acis is smaller than 1, but still positive
+		if (v12->fX < MAX_X && v12->fX > MIN_X) { // Check if the X axis is smaller than 1, but still positive
+			if (v12->fY < MAX_Y && v12->fY > MIN_Y) // Check if the Y Acis is smaller than 1, but still positive
 			{
 				goto out; // Let GTA calc the position on itself
 			}
 			else {
-				if(v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+				if (v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
 					v12->fY = MAX_Y;
 
-				if(v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+				if (v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
 					v12->fY = MIN_Y;
 			}
 
@@ -704,34 +704,34 @@ void _declspec(naked) Keks()
 		}
 		else
 		{
-			if(v12->fX > MAX_X)
+			if (v12->fX > MAX_X)
 				v12->fX = MAX_X; // Check if the X Axis is bigger than 1 (set it -0.05 so it's not cutted of)
 
-			if(v12->fX < MIN_X)
+			if (v12->fX < MIN_X)
 				v12->fX = MIN_X; // Check if the X Axis is smaller than 0 (set it +0.05 so it's not cutted of)
 		}
 
-		if(v12->fY < MAX_Y && v12->fY > MIN_Y) { // Check if the Y Acis is smaller than 1, but still positive
-			if(v12->fX < MAX_X && v12->fX > MIN_X)// Check if the X axis is smaller than 1, but still positive
+		if (v12->fY < MAX_Y && v12->fY > MIN_Y) { // Check if the Y Acis is smaller than 1, but still positive
+			if (v12->fX < MAX_X && v12->fX > MIN_X)// Check if the X axis is smaller than 1, but still positive
 			{
 				goto out;
 			}
 			else
 			{
-				if(v12->fX > MAX_X) // Check if the X Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+				if (v12->fX > MAX_X) // Check if the X Axis is bigger than 1 (set it -0.05 so it's not cutted of)
 					v12->fX = MAX_X;
 
-				if(v12->fX < 0) // Check if the X Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+				if (v12->fX < 0) // Check if the X Axis is smaller than 0 (set it +0.05 so it's not cutted of)
 					v12->fX = MIN_X;
 			}
 
 			goto out;
 		}
 		else {
-			if(v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
+			if (v12->fY > MAX_Y) // Check if the Y Axis is bigger than 1 (set it -0.05 so it's not cutted of)
 				v12->fY = MAX_Y;
 
-			if(v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
+			if (v12->fY < MIN_Y) // Check if the Y Axis is smaller than 0 (set it +0.05 so it's not cutted of)
 				v12->fY = MIN_Y;
 		}
 		goto out;
@@ -750,11 +750,11 @@ int a1, a2, a3;
 _declspec(naked) signed int ResizeMap()
 {
 	_asm push eax;
-	_asm mov eax, [ebp+4];
+	_asm mov eax, [ebp + 4];
 	_asm mov a1, eax;
-	_asm mov eax, [ebp+8];
+	_asm mov eax, [ebp + 8];
 	_asm mov a2, eax;
-	_asm mov eax, [ebp+0Ch];
+	_asm mov eax, [ebp + 0Ch];
 	_asm mov a3, eax;
 	_asm pushad;
 
@@ -762,7 +762,7 @@ _declspec(naked) signed int ResizeMap()
 
 	_asm popad;
 	_asm pop eax;
-	_asm jmp ResizeMapJmpBack; 
+	_asm jmp ResizeMapJmpBack;
 }
 
 DWORD sub_849BC0;
@@ -773,8 +773,8 @@ _declspec(naked) void RenderMap()
 	_asm	add esp, 4;
 	_asm	popad;
 
-	g_pCore->GetGame()->SetRadarVisible(true);
-	
+	//g_pCore->GetGame()->SetRadarVisible(true);
+
 	_asm	pushad;
 	_asm	retn;
 }
@@ -784,22 +784,85 @@ IVVehicle * pVehicle = 0;
 DWORD sub_44A690 = 0;
 DWORD sub_9FFE30 = 0;
 
+// Vehicle + 0xE14 == fragInstGta*
 struct fragInstGta
 {
-	char pad[156]; // base stuff 0-A0
+	DWORD vtable;
+	DWORD dw1;
+	WORD  w1;
+	WORD  w2;
+	IVEntity *	pEntity;
+	Matrix34 m_Matrix; // 16-72
+	char pad1[8]; // 72-80
+	DWORD vtable_destruct; // 80-84
+	char pad2[44]; // 84-128
+	Vector3 m_vecPos; // 128-140
+	char pad3[20]; // 140-160
 	DWORD unkSize; // A0-A4
 	DWORD unk; // A4-A8;
-};
+}; // size = 0xB0 [176]
+
+
+// Vehicle + 0x1480 == phInstGta*
+struct phInstGta
+{
+	DWORD vtable;
+	DWORD dw1;
+	WORD  w1;
+	WORD  w2;
+	IVEntity *	pEntity;
+	Matrix34	m_Matrix;
+	char pad2[4];
+	int			iUnk;
+}; // size = 0x60 [96]
 
 void RecreatePhysics(IVVehicle* pVehicle)
 {
 #if 0
 	CIVPool<fragInstGta> *pPhysicsPool = new CIVPool<fragInstGta>(*(IVPool**) (g_pCore->GetBase() + 0x166C964));
-	fragInstGta * pfragInst = (fragInstGta*)pVehicle->m_pVehiclePhysics;
+	fragInstGta * pfragInst = (fragInstGta*) pVehicle->m_pVehiclePhysics;
 	pPhysicsPool->Release(pfragInst); // Make sure its not in pool anymore [maybe call destructor at AA1E60]
 #endif
+	if (pVehicle->GetfragInst())
+	{
+		if (*(DWORD*) (pVehicle->GetfragInst() + 0x64))
+			CLogFile::Printf("0x%p", *(DWORD*) ((*(DWORD*) (pVehicle->GetfragInst() + 0x64)) + 0x160));
+		else
+		{
+			int v2 = (*(int(__thiscall **)(DWORD))(*(DWORD *) pVehicle + 0xA0))((DWORD) pVehicle);
+			CLogFile::Printf("0x%p", (*(int(__thiscall **)(DWORD))(*(DWORD *) v2 + 0xE0))(v2));
+		}
+	}
+
+	g_pCore->GetGame()->GetStreaming()->RequestResource(eResourceType::RESOURCE_TYPE_WDR, pVehicle->m_wModelIndex);
+	while (!g_pCore->GetGame()->GetStreaming()->HasResourceLoaded(eResourceType::RESOURCE_TYPE_WDR, pVehicle->m_wModelIndex))
+	{
+		g_pCore->GetGame()->GetStreaming()->LoadAllResources();
+		Sleep(10);
+	}
+		
+
+	CLogFile::Printf("Model: %i", pVehicle->m_wModelIndex);
+
+	CLogFile::Printf("PhysicsBefore=>");
+	CLogFile::Printf("[0x38] 0x%p || [0xE14] 0x%p || [0x100] 0x%p", pVehicle->m_pPhysics, pVehicle->m_pVehiclePhysics, *(DWORD*) (pVehicle + 0x40));
+	CLogFile::Printf("<=");
 	// Fix for the most complicated crash i've ever had. Took me about 3 months to fix it (with some breaks)
 	pVehicle->CreatePhysics();
+	CLogFile::Printf("PhysicsAfter=>");
+	CLogFile::Printf("[0x38] 0x%p || [0xE14] 0x%p || [0x100] 0x%p", pVehicle->m_pPhysics, pVehicle->m_pVehiclePhysics, *(DWORD*) (pVehicle + 0x40));
+	CLogFile::Printf("<=");
+
+	if (pVehicle->GetfragInst())
+	{
+		if (*(DWORD*) (pVehicle->GetfragInst() + 0x64))
+			CLogFile::Printf("0x%p", *(DWORD*) ((*(DWORD*) (pVehicle->GetfragInst() + 0x64)) + 0x160));
+		else
+		{
+			int v2 = (*(int(__thiscall **)(DWORD))(*(DWORD *) pVehicle + 0xA0))((DWORD)pVehicle);
+			CLogFile::Printf("0x%p", (*(int(__thiscall **)(DWORD))(*(DWORD *) v2 + 0xE0))(v2));
+		}
+	}
 }
 
 void _declspec(naked) PhysicsHook()
@@ -807,11 +870,11 @@ void _declspec(naked) PhysicsHook()
 	_asm
 	{
 		mov physics, ecx
-		mov pVehicle, esi
-		pushad
+			mov pVehicle, esi
+			pushad
 	}
 
-	if (*(int*)pVehicle == g_pCore->GetBase() + 0xD9ED74) // IsBike
+	if (*(int*) pVehicle == g_pCore->GetBase() + 0xD9ED74) // IsBike
 	{
 		//_asm { int 3 }
 		//CLogFile::Printf("%p", physics);
@@ -821,7 +884,7 @@ void _declspec(naked) PhysicsHook()
 	if (*(DWORD *) (physics + 4) == 0)
 	{
 		//__asm { int 3 }
-		CLogFile::Printf("Fail");
+		CLogFile::Printf("Fail 0x%p", physics);
 		//sub_9FFE30 = g_pCore->GetBase() + 0x9FFE30;
 		RecreatePhysics(pVehicle);
 		//_asm mov ecx, pVehicle;
@@ -844,75 +907,252 @@ void _declspec(naked) PhysicsHook()
 	}
 }
 
+DWORD loc_C42C26 = 0;
+
+void _declspec(naked) VehiclDtorHook()
+{
+	_asm pushad;
+
+	loc_C42C26 = g_pCore->GetBase() + 0xC42C26;
+
+	if (g_pCore)
+		if (g_pCore->GetGUI())
+			g_pCore->GetChat()->Output("VehicleDtor");
+	CLogFile::Printf("VehicleDtor");
+
+	_asm popad;
+	_asm push ebx;
+	_asm push esi;
+	_asm mov esi, ecx;
+	_asm xor ebx, ebx;
+	_asm jmp loc_C42C26;
+}
+int iecx = 0;
+void _declspec(naked) Kekse2()
+{
+	_asm
+	{
+		mov     eax, ecx
+		mov     ecx, [esp + 4]
+		mov		iecx, ecx
+		pushad
+	}
+
+	if (iecx < 0xFFFF)
+		_asm ret 4;
+
+	_asm
+	{
+			popad
+			fld     dword ptr[ecx]
+			fstp    dword ptr[eax]
+			fld     dword ptr[ecx + 4]
+			fstp    dword ptr[eax + 4]
+			fld     dword ptr[ecx + 8]
+			fstp    dword ptr[eax + 8]
+			fld     dword ptr[ecx + 10h]
+			fstp    dword ptr[eax + 10h]
+			fld     dword ptr[ecx + 14h]
+			fstp    dword ptr[eax + 14h]
+			fld     dword ptr[ecx + 18h]
+			fstp    dword ptr[eax + 18h]
+			fld     dword ptr[ecx + 20h]
+			fstp    dword ptr[eax + 20h]
+			fld     dword ptr[ecx + 24h]
+			fstp    dword ptr[eax + 24h]
+			fld     dword ptr[ecx + 28h]
+			fstp    dword ptr[eax + 28h]
+			fld     dword ptr[ecx + 30h]
+			fstp    dword ptr[eax + 30h]
+			fld     dword ptr[ecx + 34h]
+			fstp    dword ptr[eax + 34h]
+			fld     dword ptr[ecx + 38h]
+			fstp    dword ptr[eax + 38h]
+			retn    4
+	}
+}
+
+int iedx = 0;
+
+void _declspec(naked) Kekse3()
+{
+	_asm
+	{
+		movss[esp + 78h + -1Ch], xmm0
+			mov[esp + 78h + -10h], edi
+			mov iedx, edx
+			pushad
+	}
+
+	if (iedx < 0xFFFFF || iedx >(g_pCore->GetBase() + 0x1ADDFFF))
+	{
+		_asm
+		{
+			pop     edi
+				pop     esi
+				pop     ebx
+				mov     esp, ebp
+				pop     ebp
+				retn    10h
+		}
+	}
+
+	_asm
+	{
+		popad
+			call    edx
+
+			pop     edi
+			pop     esi
+			pop     ebx
+			mov     esp, ebp
+			pop     ebp
+			retn    10h
+	}
+}
+
+DWORD loc_4B4836 = 0;
+
+void _declspec(naked) CreateVehicle()
+{
+	_asm pushad;
+
+	loc_4B4836 = g_pCore->GetBase() + 0x4B4836;
+
+	_asm
+	{
+		popad
+		int 3
+		push    ebp
+		push    edi
+		mov     edi, [esp + 8 + 4]
+		jmp		loc_4B4836
+	}
+}
+
+void _declspec(naked) ScriptHook()
+{
+	_asm
+	{
+		mov		iecx, ecx
+		pushad
+	}
+
+	if (iecx)
+	{
+		_asm
+		{
+			popad
+			and     dword ptr[ecx + 0ACh], 0FFFFFFFCh
+			xor     eax, eax
+			mov     dl, 1
+			mov[ecx + 70h], al
+			mov[ecx + 88h], eax
+			mov[ecx + 8Ch], eax
+			mov[ecx + 90h], eax
+			mov[ecx + 94h], al
+			mov[ecx + 95h], al
+			mov[ecx + 96h], al
+			mov[ecx + 97h], dl
+			mov[ecx + 98h], dl
+			mov[ecx + 99h], al
+			mov[ecx + 9Ah], al
+			mov[ecx + 9Bh], al
+			mov[ecx + 9Ch], al
+			mov[ecx + 9Dh], dl
+			mov     byte ptr[ecx + 9Eh], 0FFh
+			mov[ecx + 0A0h], eax
+			mov[ecx + 0A4h], al
+			retn
+		}
+	}
+
+	_asm
+	{
+		popad
+		xor     eax, eax
+		mov     dl, 1
+		retn
+	}
+	
+}
+
 void CHooks::Intialize()
 {
+
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xC2B440, (DWORD) ScriptHook);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x4B4830, (DWORD)CreateVehicle);
+
 	// Hook physics update
 	//CPatcher::InstallJmpPatch((g_pCore->)63DD30), (DWORD)IV_GTAPhysicsUpdate, 3);
-	
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xC42C30, g_pCore->GetBase() + 0xC42DB2);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x712CB2, (DWORD) Kekse3);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x40AC20, (DWORD) Kekse2);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x42C20, (DWORD)VehiclDtorHook);
 	// Hook CEpisodes::IsEpisodeAvaliable to use our own function
 	//CPatcher::InstallJmpPatch(COffsets::FUNC_CEpisodes__IsEpisodeAvaliable, (DWORD)CEpisodes__IsEpisodeAvaliable_Hook);
-	
+
 	// Hook GetPlayerInfoFromIndex to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GetPlayerInfoFromIndex, (DWORD)GetPlayerInfoFromIndex_Hook);
-	
+	CPatcher::InstallJmpPatch(COffsets::FUNC_GetPlayerInfoFromIndex, (DWORD) GetPlayerInfoFromIndex_Hook);
+
 	// Hook GetIndexFromPlayerInfo to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GetIndexFromPlayerInfo, (DWORD)GetIndexFromPlayerInfo_Hook);
-	
+	CPatcher::InstallJmpPatch(COffsets::FUNC_GetIndexFromPlayerInfo, (DWORD) GetIndexFromPlayerInfo_Hook);
+
 	// Hook GetLocalPlayerPed to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GetLocalPlayerPed, (DWORD)GetLocalPlayerPed_Hook);
-	
+	CPatcher::InstallJmpPatch(COffsets::FUNC_GetLocalPlayerPed, (DWORD) GetLocalPlayerPed_Hook);
+
 	// Hook CTask::~CTask to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD)CTask__Destructor_Hook);
-	
+	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD) CTask__Destructor_Hook);
+
 	// Hook initial loading screens
-	CPatcher::InstallCallPatch(COffsets::FUNC_RemoveInitialLoadingScreens, (DWORD)RemoveInitialLoadingScreens);
-	
+	CPatcher::InstallCallPatch(COffsets::FUNC_RemoveInitialLoadingScreens, (DWORD) RemoveInitialLoadingScreens);
+
 	// Always draw vehicle hazzard lights
 	CPatcher::InstallNopPatch(COffsets::PATCH_CVehicle__HazzardLightsOn, 2);
-	
+
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x9D180B, (DWORD) PhysicsHook);
 #ifdef GTAV_MAP
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
-	*(BYTE *)(g_pCore->GetBase() + 0x83C216) = 0xEB;
-	*(BYTE *)(g_pCore->GetBase() + 0x83BFE0) = 0xC3;
+	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
+	*(BYTE *) (g_pCore->GetBase() + 0x83BFE0) = 0xC3;
 
 	// Patch crosshair
 	CPatcher::Unprotect((g_pCore->GetBase() + 0xE35790), 13);
-	*(DWORD *)(g_pCore->GetBase() + 0xE35790) = 0x73706172;
-	*(DWORD *)(g_pCore->GetBase() + 0xE35790 + 0x4) = 0x6B6C6500;
-	*(DWORD *)(g_pCore->GetBase() + 0xE35790 + 0x8) = 0x00000000;
-	*(BYTE*)(g_pCore->GetBase() + 0xE35790 + 0x12) = 0x0;
+	*(DWORD *) (g_pCore->GetBase() + 0xE35790) = 0x73706172;
+	*(DWORD *) (g_pCore->GetBase() + 0xE35790 + 0x4) = 0x6B6C6500;
+	*(DWORD *) (g_pCore->GetBase() + 0xE35790 + 0x8) = 0x00000000;
+	*(BYTE*) (g_pCore->GetBase() + 0xE35790 + 0x12) = 0x0;
 
 	// Patch icons to star
 	CPatcher::Unprotect((g_pCore->GetBase() + 0xFEA8E4), 20);
-	*(DWORD *)(g_pCore->GetBase() + 0xFEA8E4) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
-	*(DWORD *)(g_pCore->GetBase() + 0xFEA8E8) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
-	*(DWORD *)(g_pCore->GetBase() + 0xFEA8EC) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
-	*(DWORD *)(g_pCore->GetBase() + 0xFEA8F0) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
-	*(DWORD *)(g_pCore->GetBase() + 0xFEA8F4) = *(DWORD *)(g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *) (g_pCore->GetBase() + 0xFEA8E4) = *(DWORD *) (g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *) (g_pCore->GetBase() + 0xFEA8E8) = *(DWORD *) (g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *) (g_pCore->GetBase() + 0xFEA8EC) = *(DWORD *) (g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *) (g_pCore->GetBase() + 0xFEA8F0) = *(DWORD *) (g_pCore->GetBase() + 0xC9654C + 0x1);
+	*(DWORD *) (g_pCore->GetBase() + 0xFEA8F4) = *(DWORD *) (g_pCore->GetBase() + 0xC9654C + 0x1);
 
 	// Change calc from circle to square(blips)
-	*(BYTE*)(g_pCore->GetBase() + 0x8385E7 + 0x6) = 0x1;
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8386AB, (DWORD)Keks);
+	*(BYTE*) (g_pCore->GetBase() + 0x8385E7 + 0x6) = 0x1;
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8386AB, (DWORD) Keks);
 
 	// Enable square map(instead of circle map)
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA22C53, g_pCore->GetBase() + 0xA22EF3);
 
 	// Enable big radar
-	*(BYTE *)(g_pCore->GetBase() + 0x08364D0 + 0x6) = 0x1;
+	*(BYTE *) (g_pCore->GetBase() + 0x08364D0 + 0x6) = 0x1;
 
 	// Hook resize map function
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x8364D0), (DWORD)ResizeMap, 5);
-	*(WORD *)(g_pCore->GetBase() + 0x8364D0 + 0x5) = 0x9090;
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x8364D0), (DWORD) ResizeMap, 5);
+	*(WORD *) (g_pCore->GetBase() + 0x8364D0 + 0x5) = 0x9090;
 
 	// Make blip small
-	*(BYTE *)(g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
-	*(BYTE *)(g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+	*(BYTE *) (g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
+	*(BYTE *) (g_pCore->GetBase() + 0x4B516F + 0x6) = 0x1; // cmp VAR_DEVMODE, 1
 
 	// Hook render map function
-	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD)RenderMap, 5);
+	CPatcher::InstallCallPatch((g_pCore->GetBase() + 0xA22E71), (DWORD) RenderMap, 5);
 #endif
 }

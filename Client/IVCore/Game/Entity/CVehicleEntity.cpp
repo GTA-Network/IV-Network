@@ -61,6 +61,8 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 }
 
+#include <Game/IVEngine/CIVVehicleFactory.h>
+
 CVehicleEntity::~CVehicleEntity()
 {
 	// Is the vehicle spawned?
@@ -80,15 +82,206 @@ bool CVehicleEntity::Create()
 	if(IsSpawned())
 		return false;
 
+	//m_pModelInfo->AddReference(true);
+
+	CIVScript::RequestModel(m_pModelInfo->GetHash());
+
+	while (!g_pCore->GetGame()->GetStreaming()->HasResourceLoaded(eResourceType::RESOURCE_TYPE_WDR, m_pModelInfo->GetIndex()))
+	{
+		CIVScript_NativeInvoke::Invoke<unsigned int, int>(CIVScript::NATIVE_LOAD_ALL_OBJECTS_NOW, 0);
+		Sleep(0);
+	}
+	Sleep(10);
+	DWORD dwModelHash = m_pModelInfo->GetHash();
+	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, false);
+	
+	// Create the vehicle instance
+	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));
+	m_pVehicle->GetVehicle()->CreatePhysics();
+#if 0
+	IVVehicleFactory* pVehicleFactory = (IVVehicleFactory*)*(DWORD*) (g_pCore->GetBase() + 0x118A6D4);
+	Matrix34 v125;
+	((char(_cdecl *)(int, Matrix34*, int, int, int, int))(g_pCore->GetBase() + 0x9C6C00))(*(DWORD *) (*(DWORD *) &m_pModelInfo->GetModelInfo()->IVBaseModelInfo_pad0[4] + 236), &v125, 0, 168, 0, 0);
+	IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, (int)&v125, 1);
+	if (pVehicle)
+	{
+		
+
+
+#define CModelInfo__AddReference (g_pCore->GetBase() + 0x83F2E0)
+		pVehicle->Function76(0);
+		//pVehicle->field_41 = 2;
+		//pVehicle->m_byteFlags1 |= 4u;
+		//pVehicle->m_dwFlags1 |= 8u; // Fixed
+		((int(_cdecl *)(IVVehicle*, char))(g_pCore->GetBase() + 0x86C0B0))(pVehicle, 0);
+		pVehicle->CreateDoubleNode();
+		pVehicle->Add();
+		((void(__thiscall *)(IVVehicle*, char))(g_pCore->GetBase() + 0x9FD530))(pVehicle, 1);
+		//pVehicle->m_byteFlags10 |= 8u;
+		double v83 = ((double(_cdecl*)(float, float))(g_pCore->GetBase() + 0x4AA400))(0.0, 1.0);
+		((int(__thiscall *)(IVVehicle*, float))(g_pCore->GetBase() + 0x9F0C20))(pVehicle, v83);
+		// Make visible
+		pVehicle->CreatePhysics();
+		//pVehicle->ProcessInput();
+		
+
+		//((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD) m_pModelInfo->GetModelInfo());
+		/**(WORD *) &pVehicle->IVVehicle_pad14[7] = (signed int) floorf(1.5f);
+		pVehicle->m_byteFlags13 |= 0x10u;
+		pVehicle->m_byteColors[0] = 0;
+		pVehicle->m_byteColors[1] = 0;
+		pVehicle->m_byteColors[2] = 0;
+		pVehicle->m_byteColors[3] = 0;*/
+#define TYPE_DEF_THIS(ret, params, func) ((ret (__thiscall *)(params))func)
+
+#define CModelInfo__AddReference (g_pCore->GetBase() + 0x83F2E0)
+
+		// Livery stuff
+		//((IVVehicle*(__thiscall *)(IVVehicle*))(g_pCore->GetBase() + 0x9EEF70))(pVehicle);
+
+		// sets some flags
+		
+		
+		
+
+		
+
+		// Something with driver at spawn
+		//((int(_cdecl *)(IVVehicle*))(g_pCore->GetBase() + 0xA5F910))(pVehicle);
+
+		//((char(_cdecl *)(IVVehicle*, int))(g_pCore->GetBase() + 0x958940))(pVehicle, -1);
+		//((DWORD(_cdecl *)(IVVehicle*, char, DWORD, DWORD))(g_pCore->GetBase() + 0xC39CA0))(pVehicle, 1, 14, 0);
+#if 0
+
+
+		//((IVVehicle*(__thiscall *)(IVVehicle*))(g_pCore->GetBase() + 0x9EEF70))(pVehicle);
+		//((void(__thiscall *)(IVVehicle*, char))(g_pCore->GetBase() + 0x9FD530))(pVehicle, 1);
+		//((int(_cdecl *)(IVVehicle*, char))(g_pCore->GetBase() + 0x86C0B0))(pVehicle, 0);
+
+		//((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD)m_pModelInfo->GetModelInfo());
+
+		int v81;
+		DWORD v82;
+		IVBaseModelInfo * v76 = m_pModelInfo->GetModelInfo();
+		char v97 = 0;
+
+		/**(WORD *) &pVehicle->IVVehicle_pad14[7] = (signed int) floorf(v110);
+		*(DWORD *)&pVehicle->field_E34 = v120;
+		v78 = v109;
+		*(DWORD *)&pVehicle->field_E28[8] = v119;
+		v79 = v104;
+		*(DWORD *)&pVehicle->field_E28[4] = v118;
+		v80 = v107;
+		pVehicle->field_E28[84] = v107;
+		pVehicle->field_E28[83] = v80;
+		pVehicle->field_E28[82] = v80;
+		v81 = *(DWORD*)pVehicle;
+		*(WORD *)&pVehicle->field_E28[56] = v78;
+		*(WORD *)&pVehicle->field_E28[58] = v79;
+		v73 = v72;
+		*(_DWORD *)&pVehicle->field_E8C[180] = LODWORD(v73);
+		pVehicle->field_E8C[178] = v71;*/
+
+		//(*(void(__thiscall **)(IVVehicle*, DWORD))(v81 + 304))(pVehicle, 0);
+		/*if (sub_D0E5E7() < 16383
+			&& (unsigned __int8) sub_8BDF40(pVehicle->m_wModelIndex))*/
+		{
+			pVehicle->m_byteFlags13 |= 0x10u;
+			pVehicle->m_byteColors[0] = *(BYTE *) (v76 + 304);
+			pVehicle->m_byteColors[1] = *(BYTE *) (v76 + 305);
+			pVehicle->m_byteColors[2] = *(BYTE *) (v76 + 306);
+			pVehicle->m_byteColors[3] = *(BYTE *) (v76 + 307);
+		}
+		/*else
+		{
+			pVehicle->m_byteFlags13 &= 0xEFu;
+			sub_B51890(pVehicle, &v108, &v112, &v113, &v111);
+			pVehicle->m_byteColors[0] = v108;
+			pVehicle->m_byteColors[1] = v112;
+			pVehicle->m_byteColors[2] = v113;
+			pVehicle->m_byteColors[3] = v111;
+		}*/
+		
+		((IVVehicle*(__thiscall *)(IVVehicle*))(g_pCore->GetBase() + 0x9EEF70))(pVehicle);
+		((void(__thiscall *)(IVVehicle*, char))(g_pCore->GetBase() + 0x9FD530))(pVehicle, 1);
+
+		/*if (pVehicle->field_1354 == 2)
+			sub_9D8F50(pVehicle, 0xFFFFFFFFu, -1, -1);
+		else
+			sub_9DC030(dword_10C8610, dword_F13438, -1);*/
+		((int(_cdecl *)(IVVehicle*, char))(g_pCore->GetBase() + 0x86C0B0))(pVehicle, 0);
+
+		//pVehicle->Function71();
+		//if (pVehicle->m_byteFlags13 & 0x10)
+		//{
+		//	((int(__thiscall *)(IVVehicle *, INT16))(g_pCore->GetBase() + 0x9FC930))(pVehicle, 512);
+		//	//pVehicle->Repair();
+		//}
+		/*v84 = BYTE3(v105);
+		if (BYTE3(v105))
+			dword_10C85F4 = LODWORD(qword_116E35C);*/
+		/*if (pVehicle->Function79())
+			pVehicle->Function80();*/
+		int v85 = (*(int(_cdecl **)(IVVehicle*))(g_pCore->GetBase() + 0xA5F910))(pVehicle);
+		/*v86 = sub_C30A40(pVehicle->m_pDriver);
+		if (v106 >= v86)
+			v106 = sub_C30A40(pVehicle->m_pDriver);
+		*(_BYTE *) (v85 + 39) = v106;*/
+		((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD) m_pModelInfo->GetModelInfo());
+		//sub_A6DA90(&pVehicle->field_E8C[12], (void *) v85);
+		/*
+		v87 = *(DWORD *) &pVehicle->field_E28[8];
+		v88 = *(DWORD *) &pVehicle->field_E28[4];
+		*(DWORD *) &pVehicle->field_E28[16] = *(_DWORD *) &pVehicle->field_E28[12];
+		v89 = *(WORD *) &pVehicle->field_E28[58];
+		*(DWORD *) &pVehicle->field_E28[12] = v87;
+		LOWORD(v87) = *(_WORD *) &pVehicle->field_E28[56];
+		*(_DWORD *) &pVehicle->field_E28[8] = v88;
+		LOBYTE(v88) = pVehicle->field_E28[84];
+		*(_WORD *) &pVehicle->field_E28[60] = v89;
+		LOBYTE(v89) = pVehicle->field_E28[83];
+		*(WORD *) &pVehicle->field_E28[58] = v87;
+		pVehicle->field_E28[85] = v88;
+		pVehicle->field_E28[84] = v89;
+		*/
+		((DWORD(_cdecl *)(IVVehicle*, char, DWORD, DWORD))(g_pCore->GetBase() + 0xC39CA0))(pVehicle, 1, 14, 0);
+		//double v90 = ((double(__cdecl *)(DWORD, DWORD))sub_C32CD0)((float) *(BYTE *) (v85 + 39), *(float *) &pVehicle->field_E8C[180]);
+		//*(float *) &v104 = v90;
+		//v91 = v90;
+		((int(_cdecl *)(IVVehicle*))(g_pCore->GetBase() + 0xA5F910))(pVehicle);
+		//*(float *) &v102 = sub_C3DA10(pVehicle, &pVehicle->field_E8C[12], v92, LODWORD(v91));
+		//v93 = sub_A99E30(LODWORD(v129), LODWORD(v130));
+		//v94 = v93;
+		//sub_C366D0((int) pVehicle, v94, v104);
+		//v95 = v93 * *(float *) &v104;
+		//v96 = sub_4752A0(v102, LODWORD(v95));
+		//*(float *) &v114 = v129 * v96;
+		//v115 = v130 * v96;
+		//v116 = v96 * v131;
+		//sub_A7C040(&v114);
+		((char(_cdecl *)(IVVehicle*, int))(g_pCore->GetBase() + 0x958940))(pVehicle, -1);
+#endif
+
+		m_pVehicle = new CIVVehicle(pVehicle);
+		//CIVScript::SetCarCollision(GetScriptingHandle(), 0);
+	}
+#if 0
 	// Load the model
 	m_pModelInfo->AddReference(true);
 
 	DWORD dwModelHash = m_pModelInfo->GetHash();
 
-	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, true);
+
+
+	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, false);
 
     // Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));
+
+	m_pVehicle->GetVehicle()->m_byteCreatedBy = 3;
+
+#endif
+#endif
 
 	// Mark as spawned
 	m_bSpawned = true;
@@ -261,7 +454,8 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 		else
 		{
 			// Set the position in the matrix
-			m_pVehicle->SetPosition(vecPosition);
+			CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+			//m_pVehicle->SetPosition(vecPosition);
 
 			//m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
 		}

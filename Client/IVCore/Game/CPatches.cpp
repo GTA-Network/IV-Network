@@ -116,21 +116,13 @@ void CPatches::Initialize()
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD)CTaskSimpleStartVehicle__Process);
 
-	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_1, 5);
-	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_2, 5);
-	CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_3, 5);
-
-	// Disable scenario peds
-	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
-	*(DWORD *)(COffsets::IV_Hook__DisableScenarioPeds +0x1) = 0x0; // 0
-	*(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds +0x5) = 0xC3; // retn
 
 
-	*(BYTE *)(g_pCore->GetBase() + 0xA66B40) = 0xB8; // mov eax,
-	*(DWORD *)(g_pCore->GetBase() + 0xA66B40 + 0x1) = 0x0; // 0
-	*(BYTE *)(g_pCore->GetBase() + 0xA66B40 + 0x5) = 0xC3; // retn
+	//*(BYTE *)(g_pCore->GetBase() + 0xA66B40) = 0xB8; // mov eax,
+	//*(DWORD *)(g_pCore->GetBase() + 0xA66B40 + 0x1) = 0x0; // 0
+	//*(BYTE *)(g_pCore->GetBase() + 0xA66B40 + 0x5) = 0xC3; // retn
 
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x83468C, 5);
+	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x83468C, 5);
 #if 0
 #ifndef CHEAP_RELEASE
 	// Replace I Luv "L.C." with "IVMP"
@@ -189,11 +181,11 @@ void CPatches::Initialize()
     //CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (COffsets::IV_Hook__DisableStartupResourceCheck_4 + 0x18F));
 
     // Disable automatic radar turn-on(in vehicle)
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_2, 5); // from init blip gtaiv func(startup)
+    //CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)
+    //CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_2, 5); // from init blip gtaiv func(startup)
 
     // Disable weapon when entering vehicle
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x30);
+    //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x30);
 
 	*(BYTE *)COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 

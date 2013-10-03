@@ -2,19 +2,9 @@
 /IVN.sdf
 /IVN.v12.suo
 *.log
-/Binary/Debug
-/Client/Core/Debug
-/Client/Launcher/Debug
-/Client/LaunchHelper/Debug
 /Network/Core/Debug
 /Server/Debug
-/Binary/Release
-/Client/Core/Release
-/Client/Launcher/Release
-/Client/LaunchHelper/Release
-/Network/Core/Release
 /Server/Release
-/Binary/temp
 *.o
 *.vcxproj.user
 *.suo
@@ -27,3 +17,5 @@ ipch/
 /Libraries/gwen/bin
 /Libraries/CEGUI/dependencies/expat-2.0.1/tmp
 /Libraries/zlib-1.2.5/projects/Release
+/Client/Modules/SkyLift/Release
+/Client/Modules/SkyLift/Debug

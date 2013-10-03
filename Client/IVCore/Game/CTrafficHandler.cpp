@@ -69,8 +69,6 @@ void CTrafficHandler::InstallTrafficHook()
 
     // Disable random peds and vehicles
     CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_1, 5);
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_2, 5);
-    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_3, 5);
 
     // Disable scenario peds
     *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds) = 0xB8; // mov eax,
@@ -78,5 +76,5 @@ void CTrafficHandler::InstallTrafficHook()
     *(BYTE *)(COffsets::IV_Hook__DisableScenarioPeds + 0x5) = 0xC3; // retn
 
     // Disable fake cars
-    CPatcher::InstallRetnPatch(COffsets::IV_Hook__DisableFakeCars);
+	CPatcher::InstallRetnPatch(COffsets::IV_Hook__DisableFakeCars);
 }
