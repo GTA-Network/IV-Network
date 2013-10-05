@@ -55,14 +55,14 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>RakNet.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;CEGUIBase_d.lib;CEGUIDirect3D9Renderer_d.lib;CEGUIExpatParser_d.lib;CEGUIFalagardWRBase_d.lib;CEGUISILLYImageCodec_d.lib;fat-io.lib;libjpeg_d.lib;libpng_d.lib;SILLY_d.lib;libexpat_d.lib;pcre_d.lib;freetype_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>RakNet.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;CEGUIBase_d.lib;CEGUIDirect3D9Renderer_d.lib;CEGUIExpatParser_d.lib;CEGUIFalagardWRBase_d.lib;CEGUISILLYImageCodec_d.lib;fat-io.lib;libjpeg_d.lib;libpng_d.lib;SILLY_d.lib;libexpat_d.lib;pcre_d.lib;freetype_d.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;$(SolutionDir)\Libraries\bass;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
