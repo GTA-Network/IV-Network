@@ -25,9 +25,9 @@ void CPatches::Initialize()
 	// Return at start of CTaskSimplePlayRandomAmbients::ProcessPed (Disable random ambient animations)
 	//*(DWORD *)COffsets::IV_Hook__PatchRandomTasks = 0x900004C2;
 
-	// Make the game think we are not connected to the internet
-    //*(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
-    //*(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
+	// Make the game think we are not connected to the internet - Balika011: faster game load
+    *(BYTE *)COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
+    *(DWORD *)COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
 	
 	// Disable(resize to zero) help-message box
 	//*(DWORD *)(COffsets::IV_Hook__PatchHelpMessageBox + 0x9B8) = 0;

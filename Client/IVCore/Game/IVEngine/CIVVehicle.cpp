@@ -422,21 +422,8 @@ void CIVVehicle::SetComponentState(BYTE byteComponent, bool bState)
 	// Do we have a valid vehicle pointer?
 	IVVehicle * pVehicle = GetVehicle();
 
-	if(pVehicle)
-	{
-		byteComponent += 1;
-
-		if((byteComponent - 1) <= 8)
-		{
-			bool _bState = !bState;
-			int _iComponent = (byteComponent + 88);
-
-			_asm	push _bState;
-			_asm	push _iComponent;
-			_asm	mov ecx, pVehicle;
-			_asm	call COffsets::FUNC_CVehicle__SetComponentDisabled;
-		}
-	}
+	if (pVehicle && byteComponent >= 0 && byteComponent <= 8)
+			((int(__thiscall *)(IVVehicle*, BYTE, bool))COffsets::FUNC_CVehicle__SetComponentDisabled)(pVehicle, byteComponent + 89, !bState);
 }
 
 BYTE CIVVehicle::GetTextureVariationCount()
