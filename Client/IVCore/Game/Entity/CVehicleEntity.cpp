@@ -124,8 +124,8 @@ bool CVehicleEntity::Create()
 			pVehicle->ProcessInput();
 		}
 		
-		if (pVehicle->Function79())
-			pVehicle->Function80();
+		//if (pVehicle->Function79())
+		//	pVehicle->Function80();
 		CModelInfo__AddReference(m_pModelInfo->GetModelInfo());
 
 		/* Balika011: Spawn works whitout this lines too. XForce, we need this lines?

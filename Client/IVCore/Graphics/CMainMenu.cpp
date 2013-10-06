@@ -179,6 +179,7 @@ bool CMainMenu::OnSettingsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 
 bool CMainMenu::OnSettingsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
+	m_pGUI->ShowMessageBox("HallO", "Hallo");
 	m_pSettingsButton->setAlpha(1);
 	return true;
 }

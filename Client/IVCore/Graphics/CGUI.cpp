@@ -19,8 +19,21 @@ m_pRenderer(NULL),
 m_pSystem(NULL),
 m_pCursor(NULL),
 m_pWindowManager(NULL),
-m_bInitialized(false)
+m_pDefaultWindow(NULL),
+m_pInput(NULL),
+m_pInputMouse(NULL),
+m_bInitialized(false),
+m_dwDoubleClickTime(GetDoubleClickTime()),
+m_iCurrentId(0),
+m_uiCurrentJenkFag(0)
 {
+
+	memset(&m_messageBox, 0, sizeof(m_messageBox));
+	memset(dwLastClickTime, 0, sizeof(DWORD) * 8);
+	memset(byteButtonWasClicked, 0, sizeof(BYTE) * 8);
+	memset(byteButtonClicked, 0, sizeof(BYTE) * 8);
+	memset(&m_rCursorPosition, 0, sizeof(RECT));
+	memset(&m_clickPosition, 0, sizeof(POINT));
 }
 
 CGUI::~CGUI()
