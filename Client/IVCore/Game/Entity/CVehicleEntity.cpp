@@ -289,11 +289,11 @@ bool CVehicleEntity::Create()
 
 
 	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, false);
-
+	
     // Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));
-
-	m_pVehicle->GetVehicle()->m_byteCreatedBy = 3;
+	CIVScript::MarkModelAsNoLongerNeeded(m_pModelInfo->GetHash());
+	m_pVehicle->SetColors(m_byteColor[0], m_byteColor[1], m_byteColor[2], m_byteColor[3]);
 
 #endif
 #endif

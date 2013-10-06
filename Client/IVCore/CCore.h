@@ -1,6 +1,6 @@
 //========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
 //
-// File: CCore.cpp
+// File: CCore.h
 // Project: Client.Core
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
@@ -47,6 +47,7 @@
 
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
+#include <Graphics/CLoadingScreen.h>
 
 #include <audio\CAudioManager.h>
 
@@ -90,6 +91,8 @@ private:
 
 	CAudioManager					*m_pAudioManager;
 
+	CLoadingScreen					*m_pLoadingScreen;
+
 public:
 									CCore();
 									~CCore() { };							
@@ -97,7 +100,6 @@ public:
 	bool							Initialise();
 
 	void							OnGameLoad();
-	void							OnGamePreLoad();
 
 	void							SetGameLoaded(bool bLoaded) { m_bGameLoaded = bLoaded; }
 	bool							IsGameLoaded() { return m_bGameLoaded; }
@@ -156,10 +158,11 @@ public:
 	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
 	
 	bool              				m_bLoadingVisibility;
-	void              				RenderLoadingScreen();
 	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
+
 	void							ConnectToServer();
+	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
 };
 
 #endif // CCore_h

@@ -7,7 +7,7 @@
 class CCrashFixes
 {
 public:
-	static void Install();
+	static void Initialize();
 };
 
 

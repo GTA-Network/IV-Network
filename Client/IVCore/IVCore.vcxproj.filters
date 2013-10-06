@@ -545,6 +545,9 @@
     <ClCompile Include="..\..\Libraries\audio\CAudioManager.cpp">
       <Filter>Source Files\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\CLoadingScreen.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1107,6 +1110,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Libraries\audio\CAudioManager.h">
       <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CLoadingScreen.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

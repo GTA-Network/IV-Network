@@ -13,83 +13,8 @@
 #include <Ptrs.h>
 #include <CXML.h>
 
-_declspec(naked) void CTaskSimpleStartVehicle__Process()
-{
-	_asm xor eax, eax;
-	_asm retn 4;
-}
-
-const char TLAD[] = 
-"<ini>"
-	"<device>e1</device>"
-	"<content>"
-		"<name>The Lost and Damned Radio</name>"
-		"<id>1</id>"
-		"<audiometadata>e1_radio.xml</audiometadata>"
-		"<enabled />"
-	"</content>"
-	"<content>"
-		"<name>The Lost and Damned</name>"
-		"<id>2</id>"
-		"<episode>2</episode>"
-		"<datfile>content.dat</datfile>"
-		"<audiometadata>e1_audio.xml</audiometadata>"
-		"<loadingscreens>pc/textures/loadingscreens.wtd</loadingscreens>"
-		"<loadingscreensdat>common\\data\\loadingscreens.dat</loadingscreensdat>"
-		"<loadingscreensingame>pc/textures/loadingscreens_ingame.wtd</loadingscreensingame>"
-		"<loadingscreensingamedat>common\\data\\loadingscreens_ingame.dat</loadingscreensingamedat>"
-		"<texturepath>pc/textures/</texturepath>"
-		"<!-- <enabled /> -->"
-	"</content>	"
-"</ini>";
-
-const char TBOGT[] = 
-"<ini>"
-	"<device>e2</device>"	
-	"<content>"
-		"<name>The Ballad of Gay Tony</name>"
-		"<id>3</id>"
-		"<audiometadata>e2_radio.xml</audiometadata> "
-		"<enabled />"
-	"</content>"
-	"<content>"
-		"<name>The Ballad of Gay Tony</name>"
-		"<id>4</id>"
-		"<episode>1</episode>"
-		"<datfile>content.dat</datfile>"
-		"<audiometadata>e2_audio.xml</audiometadata>"
-		"<loadingscreens>pc/textures/loadingscreens.wtd</loadingscreens>"
-		"<loadingscreensdat>common\\data\\loadingscreens.dat</loadingscreensdat>"
-		"<loadingscreensingame>pc/textures/loadingscreens_ingame.wtd</loadingscreensingame>"
-		"<loadingscreensingamedat>common\\data\\loadingscreens_ingame.dat</loadingscreensingamedat>"
-		"<texturepath>pc/textures/</texturepath>"
-		"<!-- <enabled /> -->"
-	"</content>"
-"</ini>";
-
-
-
-
-const char setu[] = "setup3.xml";
 void CPatches::Initialize()
 {
-	char szInstallDirectory[MAX_PATH];
-	if(SharedUtility::ReadRegistryString(HKEY_CURRENT_USER, REGISTRY_AREA, GAME_DIRECTORY, NULL,szInstallDirectory, sizeof(szInstallDirectory)) || SharedUtility::Exists(szInstallDirectory)) {
-		ofstream myfile;
-		myfile.open(CString("%s\\TBoGT\\setup3.xml", szInstallDirectory).Get());
-		myfile << TBOGT;
-		myfile.close();
-
-		myfile.open(CString("%s\\TLAD\\setup3.xml", szInstallDirectory).Get());
-		myfile << TLAD;
-		myfile.close();
-
-	}
-
-	// Patch setup files
-	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B3DAC, (DWORD)setu);
-	CPatcher::InstallPushPatch(g_pCore->GetBase() + 0x8B4A0E, (DWORD)setu);
-
 	// Skip main menu #1
 	*(BYTE *)COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 
@@ -113,14 +38,9 @@ void CPatches::Initialize()
 	// Always start a new game
 	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
 
-	// Disable automatic vehicle engine turn-on
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD)CTaskSimpleStartVehicle__Process);
-
-
-
-	//*(BYTE *)(g_pCore->GetBase() + 0xA66B40) = 0xB8; // mov eax,
-	//*(DWORD *)(g_pCore->GetBase() + 0xA66B40 + 0x1) = 0x0; // 0
-	//*(BYTE *)(g_pCore->GetBase() + 0xA66B40 + 0x5) = 0xC3; // retn
+	/**(BYTE *)(g_pCore->GetBase() + 0xA66B40) = 0xB8; // mov eax,
+	*(DWORD *)(g_pCore->GetBase() + 0xA66B40 + 0x1) = 0x0; // 0
+	*(BYTE *)(g_pCore->GetBase() + 0xA66B40 + 0x5) = 0xC3; // retn*/
 
 	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x83468C, 5);
 #if 0
@@ -181,8 +101,8 @@ void CPatches::Initialize()
     //CPatcher::InstallJmpPatch(COffsets::IV_Hook__DisableStartupResourceCheck_4, (COffsets::IV_Hook__DisableStartupResourceCheck_4 + 0x18F));
 
     // Disable automatic radar turn-on(in vehicle)
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)
-    //CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_2, 5); // from init blip gtaiv func(startup)
+    /*CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_1, 7); // initialize or render(seems to be a render func)
+    CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableAutomaticRadarTurnon_2, 5); // from init blip gtaiv func(startup)*/
 
     // Disable weapon when entering vehicle
     //CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchWeaponGiveWhenEnterVehicle, 0x30);
@@ -191,4 +111,6 @@ void CPatches::Initialize()
 
 	// Allow remote desktop connections pff
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x405D67), (g_pCore->GetBase() + 0x405D6E), 1);
+
+	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD) MOD_NAME;// Set the window text
 }

@@ -19,7 +19,6 @@
 #include <IV/CIVScript.h>
 
 extern	CCore				* g_pCore;
-extern bool					  g_bInvalidIndex;
 bool bHudImageInitialized	= false;
 
 CLocalPlayer				*CGame::m_pLocalPlayer = 0;
@@ -43,27 +42,12 @@ CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
 CIVStreaming				*CGame::m_pStream = 0;
 CTrafficLights				*CGame::m_pTrafficLights = 0;
 CString						CGame::m_strEFLCDirectory = 0;
-HWND						CGame::m_hwndGameWindow = 0;
 IVManagement				*CGame::m_pManagement = 0;
 InternalThread				CGame::m_Threads[254];
 bool						CGame::m_bRadarVisibility = 0;
 
-/*
-	==== Why WaitForGameStartup ====
-	We can load/start the game in the background and request all resources while the player is in the main menu.
-	So GTA IV loads all resources and when our player connects to a server, we have check if the game(resources are) is ready.
-	If the Wrapperlist is ready, we can spawn the localplayer
-*/
-
-DWORD WINAPI WaitForGameStartup(LPVOID lpParam)
-{
-	return 1;
-}
-
 void CGame::Setup()
 {
-	//CreateThread(0, 0, (LPTHREAD_START_ROUTINE)WaitForGameStartup, 0, 0, 0); // Destroy Thread?(after he has finished)
-	
 	// Mark client-state as world-game loading
 	g_pCore->SetClientState(GAME_STATE_LOADING);
 	
@@ -189,7 +173,7 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 		_pPlayerPed = NULL;
 
 	// If no index was found and the param bForce isn't given, return
-	if(!g_bInvalidIndex || m_pPool->GetLocalPlayerIndex() == -1) {
+	if(m_pPool->GetLocalPlayerIndex() == -1) {
 		if(!bForce)
 			return;
 	}
@@ -197,7 +181,6 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	// We should force to create the localplayer so continue.. Setting initialise pointer to opposit value(false->true)
 	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
 
-	CLogFile::Printf("[%s] GetLocalPlayerPed returns %d -> Valid -> Patching...", __FUNCTION__, g_bInvalidIndex);
 	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
 
 	// Check if our local player class not existing, otherwise create it
@@ -436,6 +419,7 @@ void CGame::SetupGame()
 	//g_pCore->GetGame()->PrepareWorld();
 }
 
+#ifdef GTAV_MAP
 void CGame::RenderUIElements()
 {
 	if(!CGameFunction::IsRadarVisible() && m_bRadarVisibility) {
@@ -494,6 +478,7 @@ void CGame::RenderUIElements()
 		g_pCore->GetGraphics()->GetSprite()->End();
 	}
 }
+#endif
 
 BYTE CGame::CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int siThreadId, int iPriority, const char * szThreadName, const char *szComment)
 {

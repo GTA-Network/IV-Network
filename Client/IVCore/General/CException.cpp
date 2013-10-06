@@ -204,7 +204,7 @@ LONG WINAPI apiExceptionHandler(_EXCEPTION_POINTERS * apiExceptionInf)
 {
 	pContextRecord = apiExceptionInf->ContextRecord;
 
-	ShowWindow(g_pCore->GetGame()->GetWindow(),SW_MINIMIZE);
+	ShowWindow(*(HWND*) (g_pCore->GetBase() + 0x16A9A54), SW_MINIMIZE);
 	HINSTANCE hInst = (HINSTANCE)g_hModule;
 	DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), NULL, ExceptionProc);
 

@@ -59,7 +59,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
 			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
 			pVehicle->Create();
-			pVehicle->SetPosition(vecCreatePos);
+			pVehicle->SetPosition(vecCreatePos, true);
 		}
 		return true;
 	}
