@@ -1,0 +1,677 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Shared">
+      <UniqueIdentifier>{6d4173c9-1ed8-41f4-a1be-49a8be44eebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Threading">
+      <UniqueIdentifier>{8dbf3979-002f-425e-a759-005ff26867c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{e5eb6bcc-58d5-462b-afe5-450e5ea84136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\tinyxml">
+      <UniqueIdentifier>{b78a73f4-f916-4edd-a5d8-301fb04d7744}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting">
+      <UniqueIdentifier>{d87a78f7-4e6a-40aa-8152-f37f40148b06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting">
+      <UniqueIdentifier>{ae4d5c2d-faa3-4636-9d70-b75bcb66945b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\Squirrel">
+      <UniqueIdentifier>{ac71d78d-41aa-4f52-ae48-ddf989fb58d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared">
+      <UniqueIdentifier>{c9e3186c-5f40-4e37-84cc-feff00fcadc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting">
+      <UniqueIdentifier>{1670928c-85d5-4798-be1b-fc633f1c209c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting">
+      <UniqueIdentifier>{54ae9526-7f9c-4272-9a7a-f3e23dacddf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Network">
+      <UniqueIdentifier>{08309c4c-74e2-4adf-a80f-6fbeece83831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Network">
+      <UniqueIdentifier>{9744e6a8-035a-45af-9b03-8b131a9277b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entity">
+      <UniqueIdentifier>{c8fa35ce-24c9-4700-9069-30b09927b20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{e9184cd3-a5a3-482e-850f-691615fee643}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Natives">
+      <UniqueIdentifier>{e826b532-889c-47ed-882e-1c045e008c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Natives">
+      <UniqueIdentifier>{da2dbf92-1ad0-4999-a772-a54824126988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Network">
+      <UniqueIdentifier>{392fdcb6-0134-41e2-93be-f2521ce87a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Network">
+      <UniqueIdentifier>{ff853314-74c0-48bb-9934-3898f08b5438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting\ResourceSystem">
+      <UniqueIdentifier>{556caa7b-466d-4d36-9aca-8b6859ead223}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting\ResourceSystem">
+      <UniqueIdentifier>{804c1256-cfc8-4099-9f93-5667c626465f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\lua">
+      <UniqueIdentifier>{e83b612e-94b3-42d3-9b83-9659fe2534b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{400c18e6-82f2-468d-91e4-7bebee13869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{3ea42e43-390e-4c30-beec-db4e4b50f43a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\SQLite">
+      <UniqueIdentifier>{1aaec118-aff2-4a1b-b3e4-7652306705c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\CLogFile.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\CString.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\SharedUtility.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Threading\CMutex.cpp">
+      <Filter>Source Files\Shared\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Threading\CThread.cpp">
+      <Filter>Source Files\Shared\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\CSettings.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\ticpp.cpp">
+      <Filter>Libraries\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinystr.cpp">
+      <Filter>Libraries\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxml.cpp">
+      <Filter>Libraries\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlerror.cpp">
+      <Filter>Libraries\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\tinyxml\tinyxmlparser.cpp">
+      <Filter>Libraries\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqapi.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqbaselib.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqclass.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqcompiler.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqdebug.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqfuncstate.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqlexer.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqmem.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqobject.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstate.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdaux.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdblob.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdio.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdmath.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdrex.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstream.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdstring.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqstdsystem.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqtable.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Squirrel\sqvm.cpp">
+      <Filter>Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\CXML.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Network\CBitStream.cpp">
+      <Filter>Source Files\Shared\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CVehicleNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CActorNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CBlipNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CCheckpointNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CObjectNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CPickupNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CServerNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\C3DLabelEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CActorEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CBlipEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CCheckpointEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CFireEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CNetworkEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CObjectEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CPickupEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CPlayerEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity\CVehicleEntity.cpp">
+      <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CLuaVM.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lapi.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lauxlib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lbaselib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lbitlib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lcode.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lcorolib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lctype.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ldblib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ldebug.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ldo.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ldump.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lfunc.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lgc.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\linit.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\liolib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\llex.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lmathlib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lmem.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\loadlib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lobject.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lopcodes.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\loslib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lparser.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lstate.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lstring.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lstrlib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ltable.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ltablib.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\ltm.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lundump.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lvm.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lua\lzio.c">
+      <Filter>Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScript.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceClientScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CSystemNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CEntityNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CEvents.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CFireNatives.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\Sqlite\sqlite3.c">
+      <Filter>Libraries\SQLite</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CNetworkModule.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\CNetworkRPC.cpp">
+      <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\Natives\CMathNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\ApplyTuple.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\CBitStream.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\PacketIdentifiers.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Network\RPCIdentifiers.h">
+      <Filter>Header Files\Shared\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CPlayerNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\C3DLabelNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CActorNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CBlipNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CCheckpointNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CObjectNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CPickupNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CServerNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CVehicleNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CPlayerEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CNetworkEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\C3DLabelEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CActorEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CBlipEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CCheckpointEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CEntityManager.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CFireEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CObjectEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CPickupEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\CVehicleEntity.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity\Entities.h">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScriptVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResource.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceManager.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CLuaVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceClientScript.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceClientFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ResourceSystem\CIncludedResource.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScriptArgument.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScriptArguments.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CEvents.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CEventHandler.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScript.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lapi.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lauxlib.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lcode.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lctype.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\ldebug.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\ldo.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lfunc.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lgc.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\llex.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\llimits.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lmem.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lobject.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lopcodes.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lparser.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lstate.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lstring.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\ltable.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\ltm.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lua.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lua.hpp">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\luaconf.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lualib.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lundump.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lvm.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libraries\lua\lzio.h">
+      <Filter>Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\Natives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CEntityNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CFireNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CNetworkModule.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\CNetworkRPC.h">
+      <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\ApplyTuple.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\CScriptClass.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\Natives_Server.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Server.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="makefile" />
+  </ItemGroup>
+</Project>

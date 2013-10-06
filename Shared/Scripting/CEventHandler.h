@@ -63,17 +63,32 @@ public:
 		} else {
 			SQObjectPtr res;
 			int iTop = sq_gettop(((CSquirrelVM*)m_pVM)->GetVM());
-			for (auto it : pArguments->m_Arguments)
+			if (pArguments)
 			{
-				it->Push(m_pVM);
-			}
-			if (((CSquirrelVM*) m_pVM)->GetVM()->Call(m_func, pArguments->m_Arguments.size() + 1, ((CSquirrelVM*) m_pVM)->GetVM()->_top - (pArguments->m_Arguments.size() + 1), res, true))
-			{
-				if(pReturn)
+				for (auto it : pArguments->m_Arguments)
 				{
-					pReturn->pushFromStack(m_pVM, -1);
+					it->Push(m_pVM);
+				}
+
+				if (((CSquirrelVM*) m_pVM)->GetVM()->Call(m_func, pArguments->m_Arguments.size() + 1, ((CSquirrelVM*) m_pVM)->GetVM()->_top - (pArguments->m_Arguments.size() + 1), res, true))
+				{
+					if (pReturn)
+					{
+						pReturn->pushFromStack(m_pVM, -1);
+					}
 				}
 			}
+			else
+			{
+				if (((CSquirrelVM*) m_pVM)->GetVM()->Call(m_func, 1, ((CSquirrelVM*) m_pVM)->GetVM()->_top - 1, res, true))
+				{
+					if (pReturn)
+					{
+						pReturn->pushFromStack(m_pVM, -1);
+					}
+				}
+			}
+			
 			sq_settop(((CSquirrelVM*)m_pVM)->GetVM(), iTop);
 		}
 	}
