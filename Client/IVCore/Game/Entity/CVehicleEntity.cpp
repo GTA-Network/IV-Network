@@ -139,7 +139,8 @@ bool CVehicleEntity::Create()
 			pVehicle->ProcessInput();
 		}
 		
-
+		if (pVehicle->Function79())
+			pVehicle->Function80();
 		((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD) m_pModelInfo->GetModelInfo());
 		/**(WORD *) &pVehicle->IVVehicle_pad14[7] = (signed int) floorf(1.5f);
 		pVehicle->m_byteFlags13 |= 0x10u;

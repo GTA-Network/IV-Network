@@ -445,6 +445,8 @@ void CChat::ProcessInput()
 						continue;
 					if(Checkstring[i] == '.' || Checkstring[i] == ':' || Checkstring[i] == ',' || Checkstring[i] == ';')
 						continue;
+					if (Checkstring[i] == '/')
+						continue;
 
 					return Output("Unkown message input, please use only words from a-z", false);
 				}

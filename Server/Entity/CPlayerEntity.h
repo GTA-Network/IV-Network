@@ -96,6 +96,8 @@ public:
 	void		SetControlState(const CControls& controlState) { m_controlState = controlState; }
 	void		GetControlState(CControls& controlState) { controlState = m_controlState; }
 
+	void		SetPosition(const CVector3& vecPosition);
+
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
 };
@@ -105,7 +107,7 @@ class CScriptPlayer : public CScriptEntity
 {
 public:
 	CScriptPlayer() { /*SetEntity(new CPlayerEntity);*/ };
-	~CScriptPlayer() { delete GetEntity(); };
+	~CScriptPlayer() { /*delete GetEntity();*/ };
 
 	inline CPlayerEntity* GetEntity() { return (CPlayerEntity*) CScriptEntity::GetEntity(); }
 
@@ -154,7 +156,9 @@ public:
 	void		 SetWantedLevel(char cWantedLevel) { }
 
 	float		 GetHealth() { return GetEntity()->GetHealth(); }
-	void		 SetHealth(float fHealth) { GetEntity()->SetHealth(fHealth); }
+	void		 SetHealth(float fHealth);
+
+	void		SetPosition(float fX, float fY, float fZ);
 };
 
 #endif // CPlayerEntity_h

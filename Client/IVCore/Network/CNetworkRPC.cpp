@@ -205,7 +205,44 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	}
 }
 
+void SetPlayerPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
 
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CVector3 vecPos;
+
+		pBitStream->Read(vecPos);
+
+		pPlayer->SetPosition(vecPos);
+	}
+}
+
+void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		float fHealth;
+
+		pBitStream->Read(fHealth);
+
+		pPlayer->SetHealth(fHealth);
+	}
+}
 
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
@@ -218,6 +255,10 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
+
+
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -235,6 +276,9 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
+
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH));
 
 		// Mark as not registered
 		m_bRegistered = false;

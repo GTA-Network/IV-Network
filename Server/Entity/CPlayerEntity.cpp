@@ -43,6 +43,35 @@ void CPlayerEntity::Pulse()
 };
 
 
+void CPlayerEntity::SetPosition(const CVector3& vecPosition)
+{
+	{
+		CNetworkEntity::SetPosition(vecPosition);
+		
+	}
+}
+
+void CScriptPlayer::SetPosition(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetPosition(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetHealth(float fHealth)
+{
+	GetEntity()->SetHealth(fHealth);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(fHealth);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+
+
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
 	switch (pType)
