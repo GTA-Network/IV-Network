@@ -102,7 +102,7 @@ void CDevelopment::Process()
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetArmUpDown(fArmDown);
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponShotSource(vecShotSource);
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponShotTarget(vecShotTarget);
-		bool fHealth = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetHealth();
+		float fHealth = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetHealth();
 		bDuckingState = g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPlayerHandle().bDuckState;
 		fHeading = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetRotation();
 		CVector3 vecDirection;

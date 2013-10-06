@@ -13,11 +13,6 @@
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
 
-DWORD WINAPI WaitForGame(LPVOID lpParam)
-{
-	return 1;
-}
-
 CCore::CCore(void)
 {
 	// Mark as not initialised
@@ -35,6 +30,8 @@ CCore::CCore(void)
 	m_pNetworkManager = NULL;
 	m_pGUI = NULL;
 	m_bLoadingVisibility = 0;
+	m_byteLoadingStyle = 0;
+	m_uiGameInitializeTime = 0;
 }
 
 bool CCore::Initialise()
@@ -128,7 +125,7 @@ bool CCore::Initialise()
 	CPatches::Initialize();
 
 	// Install crash fixes
-	CCrashFixes::Install();
+	CCrashFixes::Initialize();
 	
 	// Setup the development instance
 	m_pDevelopment->SetDebugView(true);
@@ -142,8 +139,6 @@ bool CCore::Initialise()
 	CLogFile::Printf("Done!");
 	return true;
 }
-
-
 
 void CCore::OnGameLoad()
 {
@@ -159,15 +154,6 @@ void CCore::OnGameLoad()
 	// Mark the game as loaded
 	SetGameLoaded(true);
 
-	// Initialize the main menu elements
-	m_pMainMenu = new CMainMenu(m_pGUI);
-	m_pMainMenu->Initialize();
-
-	
-	m_strHost = "127.0.0.1";
-	m_usPort = 9999;
-	m_strNick = "IVPlayer";
-
 	// Startup the network module
 	m_pNetworkManager->Startup();
 	
@@ -177,8 +163,11 @@ void CCore::OnGameLoad()
 	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
+	// Set the loading screen not visible
+	m_pLoadingScreen->SetVisible(false);
+
 	// Set the main menu visible
-	GetMainMenu()->SetVisible(true);
+	m_pMainMenu->SetVisible(true);
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
@@ -197,22 +186,20 @@ void ConnectThread()
 	}
 }
 
-extern bool waitForConnected;
-
 void CCore::ConnectToServer()
 {
 	// Connect to the network
 	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
-void CCore::OnGamePreLoad()
+void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
 {
-	// Is the game loaded?
-	if(IsGameLoaded())
-		return;
+	SetHost(strHost);
+	SetClientPort(usPort);
+	SetPass(strPass);
 
-	// Create a thread to wait for the game
-	CreateThread(0, 0, WaitForGame, 0, 0, 0); // Remove thread ? 
+	// Connect to the network
+	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
 void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
@@ -231,6 +218,15 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
+
+	// Initialize the main menu elements
+	m_pMainMenu = new CMainMenu(m_pGUI);
+	m_pMainMenu->Initialize();
+
+	// Initialize the loading screen elements
+	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
+	m_pLoadingScreen->Initialize();
+	m_pLoadingScreen->SetVisible(true);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -256,35 +252,34 @@ void CCore::OnDevicePreRender()
 		g_pCore->GetNetworkManager()->Pulse();
 }
 
-bool g_bLoading = true;
-
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Prerender devices
 	OnDevicePreRender();
 
-	// Is the game not loaded?
-	if (!IsGameLoaded() || g_bLoading)
-	{
-		// Clear the original EFLC Loading Screen
-		m_pGraphics->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
-
-		// Render our own Loading Screen
-		m_pGUI->SetLoadingScreenVisible(true);
-	}
-
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
+
+	// Render our chat instance
+	if (m_pChat && m_pChat->IsVisible())
+		m_pChat->Render();
+
+	// Render our gui instance
+	if (m_pGUI)
+		m_pGUI->Render();
 
 	// Print our IVNetwork "Identifier" in the left upper corner
 	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
 
 	CString strConnection;
-	int iConnectTime = (int)((timeGetTime() - GetGameLoadInitializeTime())/1000);
+	int iConnectTime = GetGameLoadInitializeTime() != 0 ? (int)((timeGetTime() - GetGameLoadInitializeTime()) / 1000) : 0;
 
 	CString strSeconds;
-	if(iConnectTime > 0) {
+	if (iConnectTime > 0)
+	{
+		strSeconds.AppendF(" | Running since ");
+
 		int iSeconds = iConnectTime % 60;
 		int iMinutes = (iConnectTime / 60) % 60;
 		int iHours = (iConnectTime / 60 / 60) % 24;
@@ -293,57 +288,60 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		if(iDays > 0)
 		{
 			if(iDays > 9)
-				strSeconds.AppendF("%d Days,", iDays);
+				strSeconds.AppendF("%d Days, ", iDays);
 			else
-				strSeconds.AppendF("%d Day%s,", iDays, iDays > 1 ? "s" : "");
+				strSeconds.AppendF("%d Day%s, ", iDays, iDays > 1 ? "s" : "");
 		}
 		if(iHours > 0)
 		{
 			if(iHours > 9)
-				strSeconds.AppendF(" %d Hours,",iHours);
+				strSeconds.AppendF("%d Hours, ",iHours);
 			else
-				strSeconds.AppendF(" 0%d Hour%s,",iHours, iHours > 1 ? "s" : "");
+				strSeconds.AppendF("0%d Hour%s, ",iHours, iHours > 1 ? "s" : "");
 		}
 		if(iMinutes > 0)
 		{
 			if(iMinutes > 9)
-				strSeconds.AppendF(" %d Minutes,",iMinutes);
+				strSeconds.AppendF("%d Minutes, ",iMinutes);
 			else
-				strSeconds.AppendF(" 0%d Minute%s,",iMinutes, iMinutes > 1 ? "s" : "");
+				strSeconds.AppendF("0%d Minute%s, ",iMinutes, iMinutes > 1 ? "s" : "");
 		}
 
-		strSeconds.AppendF("%d Second%s",iSeconds, iSeconds > 1 ? "s" : "");
+		if (iSeconds > 9)
+			strSeconds.AppendF("%d Seconds", iSeconds);
+		else
+			strSeconds.AppendF("0%d Second%s", iSeconds, iSeconds > 1 ? "s" : "");
+
 	}
 
 	// Simulate temporary loading symbol
 	m_byteLoadingStyle++;
 	CString strLoadingInformation;
-	if(m_byteLoadingStyle >= 10 && m_byteLoadingStyle < 20)
+	if(m_byteLoadingStyle >= 0 && m_byteLoadingStyle < 10)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on /").Get();
+	else if(m_byteLoadingStyle >= 10 && m_byteLoadingStyle < 20)
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
 	else if(m_byteLoadingStyle >= 20 && m_byteLoadingStyle < 30)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
-	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on \\").Get();
-	else if(m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
+	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
-	else if(m_byteLoadingStyle == 50) {
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on").Get();
-		m_byteLoadingStyle = 9;
+	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
+	{
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on |").Get();
+		if (m_byteLoadingStyle == 49)
+			m_byteLoadingStyle = 0;
 	}
 
-	CString strInformation = CString("%s | Running since %s | Ping %hu", VERSION_IDENTIFIER, strSeconds.Get(), usPing);
+	CString strInformation = usPing == 0xFFFF ? CString("%s%s", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get()) : CString("%s%s | Ping %hu", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get(), usPing);
 	
 	if(!g_pCore->GetGame()->GetLocalPlayer())
-		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, 5, DT_NOCLIP, (bool)true, strLoadingInformation.Get());
+		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, 5, DT_NOCLIP, (bool)true, strLoadingInformation.Get());
 	else
-		m_pGraphics->DrawText(55.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, 5, DT_NOCLIP, (bool)true, strInformation.Get());
+		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, 5, DT_NOCLIP, (bool)true, strInformation.Get());
 	
 	strSeconds.Clear();
+	strLoadingInformation.Clear();
 	strInformation.Clear();
-
-	// Render our chat instance
-	if(m_pChat && m_pChat->IsVisible())
-		m_pChat->Render();
 
 	// Before rendering FPS-Counter instance, update FPS display
 	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
@@ -352,10 +350,11 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(m_pFPSCounter)
 		m_pFPSCounter->Pulse();
 
+#ifdef _DEBUG
 	// Render our development instance
-
 	if(m_pDevelopment)
 		m_pDevelopment->Process();
+#endif
 
 	// Render our time management
 	m_pTimeManagement->Pulse();
@@ -363,9 +362,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render ingame environment
 	m_pGame->ProcessEnvironment();
 
-	// Render our gui instance
-	if (m_pGUI)
-		m_pGUI->Render();
+#ifdef GTAV_MAP
+	// Render ingame ui elements
+	m_pGame->RenderUIElements();
+#endif
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())

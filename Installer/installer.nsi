@@ -39,20 +39,20 @@ Function .onInit
 	ReadRegStr $GTAIVDirectory HKLM "Software\Rockstar Games\EFLC" "InstallFolder"
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
+	IfFileExists $GTAIVDirectory\EFLC.exe done
 
 	; Try to get the GTAIV directory from the registry
 	ReadRegStr $GTAIVDirectory HKCU "Software\IVNetwork" "GrandTheftAutoDirectory"
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
+	IfFileExists $GTAIVDirectory\EFLC.exe done
 
 	; Show a dialog to find the GTAIV directory
 	nsDialogs::SelectFolderDialog "Please select your Grand Theft Auto EFLC directory" ""
 	Pop $GTAIVDirectory
 
 	; Did we find it?
-	IfFileExists $GTAIVDirectory\LaunchEFLC.exe done
+	IfFileExists $GTAIVDirectory\EFLC.exe done
 
 	; GTAIV directory not found
 	MessageBox MB_OK "Failed to find Grand Theft Auto EFLC directory. Grand Theft Auto EFLC must be installed in order to install IV:Network."
@@ -128,7 +128,6 @@ Section "Install" SecDummy
 	SetOutPath "$INSTDIR"
 
 	File ..\Files\LaunchIVNetwork.exe
-	File ..\Files\IVNetworkLaunchInject.dll
 	File ..\Files\IVNetwork.dll
 	SetOutPath "$INSTDIR\multiplayer\datafiles"
 	
@@ -204,9 +203,7 @@ Section "Uninstall"
 	; Delete Files
 
 	Delete "$INSTDIR\LaunchIVNetwork.exe"
-	Delete "$INSTDIR\IVNetworkLaunchInject.dll"
 	Delete "$INSTDIR\IVNetwork.dll"
-	Delete "$INSTDIR\multiplayer\datafiles\loadingbg.png"
 	
 	; Remove CEGUI Folders
 	RMDIR "$INSTDIR\CEGUI\fonts"

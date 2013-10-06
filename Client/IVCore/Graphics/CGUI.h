@@ -68,8 +68,6 @@ public:
 
 	void			SetCursorVisible(bool bVisible);
 
-	void			SetLoadingScreenVisible(bool bVisible);
-
 	CEGUI::Direct3D9Renderer * GetRenderer() { return m_pRenderer; }
 	CEGUI::System            * GetSystem() { return m_pSystem; }
 	CEGUI::WindowManager     * GetWindowManager() { return m_pWindowManager; }
@@ -106,7 +104,6 @@ public:
 	static CEGUI::String       AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength);
 	static CEGUI::String       AnsiToCeguiFriendlyString(CString strAnsiString);
 
-	void Test();
 private:
 	IDirect3DDevice9		 * m_pD3DDevice;
 	// DX-based renderer
@@ -118,7 +115,6 @@ private:
 	CEGUI::FontManager       * m_pFontManager;
 	CEGUI::GeometryBuffer    * m_pTextDrawingGeometryBuffer;
 	CEGUI::DefaultWindow     * m_pDefaultWindow;
-	CGUIStaticImage			 * m_pBackground;
 
 
 	IDirectInput8            * m_pInput;

@@ -82,11 +82,10 @@ public:
 	LPDIRECT3DTEXTURE9		pLoadingScreenTexture;
 	LPD3DXSPRITE			GetSprite() { return m_pSprite; }
 
+#ifdef GTAV_MAP
 	// Radar texture
 	LPDIRECT3DTEXTURE9		m_pRadarOverlayTexture;
-	
-	// Loading Screen Texture
-	LPDIRECT3DTEXTURE9    	m_pLoadingBackgroundTexture;
+#endif
 };
 
 #endif // CGraphics_h

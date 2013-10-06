@@ -140,19 +140,17 @@ bool CGraphics::LoadFonts()
 		if (fontsize == NULL)
 		{
 			CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
-			return TerminateProcess(GetCurrentProcess(), false);
+			TerminateProcess(GetCurrentProcess(), false);
+			return false;
 		}
 	}
 
+#ifdef GTAV_MAP
 	// Load texture for radar
 	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\hud.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, 
 		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
 		NULL, NULL, &m_pRadarOverlayTexture);
-
-	// Load texture for the Loading Background
-	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\LoadingBG.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0,
-		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT, D3DX_DEFAULT, 0,
-		NULL, NULL, &m_pLoadingBackgroundTexture);
+#endif
 
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }
