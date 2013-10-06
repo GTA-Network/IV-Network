@@ -55,13 +55,19 @@ public:
 	{
 		if(m_pVM->GetVMType() == LUA_VM)
 		{
+			// TODO: push arguments
+			CLogFile::Printf("[TODO] Push arguments [%s | %i]", __FILE__, __LINE__);
 			lua_rawgeti(((CLuaVM*)m_pVM)->GetVM(), LUA_REGISTRYINDEX, m_iRef);
 			lua_pcall(((CLuaVM*)m_pVM)->GetVM(), 0, LUA_MULTRET, NULL);
 			lua_settop(((CLuaVM*)m_pVM)->GetVM(), 0);
 		} else {
 			SQObjectPtr res;
 			int iTop = sq_gettop(((CSquirrelVM*)m_pVM)->GetVM());
-			if(((CSquirrelVM*)m_pVM)->GetVM()->Call(m_func, 1, ((CSquirrelVM*)m_pVM)->GetVM()->_top-1, res, true))
+			for (auto it : pArguments->m_Arguments)
+			{
+				it->Push(m_pVM);
+			}
+			if (((CSquirrelVM*) m_pVM)->GetVM()->Call(m_func, pArguments->m_Arguments.size() + 1, ((CSquirrelVM*) m_pVM)->GetVM()->_top - (pArguments->m_Arguments.size() + 1), res, true))
 			{
 				if(pReturn)
 				{

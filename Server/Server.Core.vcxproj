@@ -48,6 +48,7 @@
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
     <TargetName>IVNetworkDedicatedServer</TargetName>
     <IntDir>$(SolutionDir)Build\$(Configuration)\temp\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

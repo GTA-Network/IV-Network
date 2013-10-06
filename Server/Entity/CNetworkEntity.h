@@ -68,4 +68,23 @@ public:
 	void				SetType(eEntityType eType) { m_eType = eType; }
 };
 
+class CScriptEntity
+{
+	CNetworkEntity* m_pEntity;
+public:
+	CScriptEntity() { };
+	~CScriptEntity() { };
+
+	virtual const char* GetScriptClassName() { return "Keks"; }
+
+	CNetworkEntity* GetEntity() { return m_pEntity; }
+	void SetEntity(CNetworkEntity* pEntity) { m_pEntity = pEntity; }
+
+
+	void SetPosition(float fX, float fY, float fZ) { m_pEntity->SetPosition(CVector3(fX, fY, fZ)); }
+	void SetRotation(float fX, float fY, float fZ) { m_pEntity->SetRotation(CVector3(fX, fY, fZ)); }
+	void SetMoveSpeed(float fX, float fY, float fZ) { m_pEntity->SetMoveSpeed(CVector3(fX, fY, fZ)); }
+	void SetTurnSpeed(float fX, float fY, float fZ) { m_pEntity->SetTurnSpeed(CVector3(fX, fY, fZ)); }
+};
+
 #endif // CNetworkEntity_h

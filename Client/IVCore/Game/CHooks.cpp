@@ -1030,8 +1030,41 @@ void _declspec(naked) CreateVehicle()
 	}
 }
 
+DWORD sub_C2B440 = 0;
+
 void _declspec(naked) ScriptHook()
 {
+
+	_asm
+	{
+		mov     ecx, eax
+		mov		iecx, ecx
+		pushad
+	}
+
+	sub_C2B440 = g_pCore->GetBase() + 0xC2B440;
+
+	if (iecx)
+	{
+		_asm popad
+		_asm call sub_C2B440;
+		_asm mov     eax, esi;
+		_asm pop     esi;
+		_asm retn;
+	}
+	else
+	{
+
+
+		_asm
+		{
+			popad
+			mov     eax, esi
+				pop     esi
+				retn
+		}
+	}
+#if 0
 	_asm
 	{
 		mov		iecx, ecx
@@ -1074,13 +1107,13 @@ void _declspec(naked) ScriptHook()
 		mov     dl, 1
 		retn
 	}
-	
+#endif
 }
 
 void CHooks::Intialize()
 {
 
-	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xC2B440, (DWORD) ScriptHook);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x833A94, (DWORD) ScriptHook);
 	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x4B4830, (DWORD)CreateVehicle);
 
 	// Hook physics update

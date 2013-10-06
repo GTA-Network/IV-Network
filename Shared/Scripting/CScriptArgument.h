@@ -17,6 +17,8 @@
 class CScriptVM;
 class CScriptArguments;
 
+class CScriptEntity;
+
 class CScriptArgument {
 public:
 	enum ArgumentType
@@ -28,6 +30,7 @@ public:
 		ST_STRING,
 		ST_ARRAY,
 		ST_TABLE,
+		ST_ENTITY,
 	};
 private:
 	ArgumentType m_eType;
@@ -40,6 +43,7 @@ public:
 		float f;
 		CString * str;
 		CScriptArguments * pArray;
+		CScriptEntity * pEntity;
 	} data;
 
 	CScriptArgument() { m_eType = ST_INVALID;}
@@ -49,6 +53,7 @@ public:
 	CScriptArgument(const CScriptArgument& p);
 	CScriptArgument(CString str) { m_eType = ST_STRING; data.str = new CString(str); }
 	CScriptArgument(const CScriptArguments& array, bool isArray = true) { m_eType = (isArray ? ST_ARRAY : ST_TABLE); data.pArray = new CScriptArguments(array); }
+	CScriptArgument(CScriptEntity* pEntity) { m_eType = ST_ENTITY; data.pEntity = pEntity; }
 	~CScriptArgument();
 
 	ArgumentType		 GetType() const { return m_eType; }

@@ -158,13 +158,96 @@ SQInteger deleteClassInstance(SQUserPointer ptr, SQInteger size)
 
 void CSquirrelVM::SetClassInstance(const char* szClassName, void * pInstance)
 {
-	sq_setinstanceup(m_pVM, 1, (SQUserPointer *)pInstance);
+	sq_setinstanceup(m_pVM, 1, (SQUserPointer *) pInstance);
 	sq_setreleasehook(m_pVM, 1, deleteClassInstance);
 
 	HSQOBJECT instance;
 	sq_resetobject(&instance);
 	sq_getstackobj(m_pVM, 1, &instance);
 	sq_addref(m_pVM, &instance);
+}
+
+
+BOOL CreateNativeClassInstance(HSQUIRRELVM v,
+	const SQChar *classname,
+	SQUserPointer ud,
+	SQRELEASEHOOK hook)
+	 {
+			// If we don't do this, SquirrelVM keeps an old pointer around and this 
+				// will be used by SquirrelObject. That crashes when using several VMs.
+			
+			int oldtop = sq_gettop(v);
+		sq_pushroottable(v);
+		sq_pushstring(v, classname, -1);
+		if (SQ_FAILED(sq_rawget(v, -2))){ //Get the class (created with sq_newclass()).
+			sq_settop(v, oldtop);
+			return FALSE;
+			
+		}
+			//sq_pushroottable(v);
+			if (SQ_FAILED(sq_createinstance(v, -1))) {
+				sq_settop(v, oldtop);
+				return FALSE;
+				
+			}
+		
+			#ifdef SQ_USE_CLASS_INHERITANCE
+			 HSQOBJECT ho;
+		sq_getstackobj(v, -1, &ho); // OT_INSTANCE
+		SquirrelObject instance(ho);
+		SqPlus::PopulateAncestry(v, instance, ud);
+		#endif
+			
+			sq_remove(v, -3); //removes the root table
+		sq_remove(v, -2); //removes the class
+		if (SQ_FAILED(sq_setinstanceup(v, -1, ud))) {
+			sq_settop(v, oldtop);
+			return FALSE;
+			
+		}
+		sq_setreleasehook(v, -1, hook);
+		return TRUE;
+		}
+
+
+BOOL CreateConstructNativeClassInstance(HSQUIRRELVM v, const SQChar * className) {
+	int oldtop = sq_gettop(v);
+	sq_pushroottable(v);
+	sq_pushstring(v, className, -1);
+	if (SQ_FAILED(sq_rawget(v, -2))) { // Get the class (created with sq_newclass()).
+		sq_settop(v, oldtop);
+		return FALSE;
+		
+	} // if
+	#if 0
+		 sq_remove(v, -3); // Remove the root table.
+	sq_push(v, 1);    // Push the 'this'.
+	#else // Kamaitati's change. 5/28/06 jcs.
+		 sq_remove(v, -2); // Remove the root table.
+	sq_pushroottable(v); // Push the 'this'.
+	#endif
+		 if (SQ_FAILED(sq_call(v, 1, SQTrue, false))) { // Call ClassName(): creates new instance and calls constructor (instead of sq_createinstance() where constructor is not called).
+			sq_settop(v, oldtop);
+			return FALSE;
+			
+		} // if
+	sq_remove(v, -2); // Remove the class.
+		//  int newtop = sq_gettop(v);
+		return TRUE;
+	
+} // CreateConstructNativeClassInstance
+
+void CSquirrelVM::PushInstance(const char* szClassName, void * pInstance)
+{
+	CreateConstructNativeClassInstance(m_pVM, szClassName);
+
+	sq_setinstanceup(m_pVM, -1, (SQUserPointer *) pInstance);
+	sq_setreleasehook(m_pVM, -1, deleteClassInstance);
+
+	//HSQOBJECT instance;
+	//sq_resetobject(&instance);
+	//sq_getstackobj(m_pVM, -1, &instance);
+	//sq_addref(m_pVM, &instance);
 }
 
 void* CSquirrelVM::GetClassInstance(const char* szClassName)

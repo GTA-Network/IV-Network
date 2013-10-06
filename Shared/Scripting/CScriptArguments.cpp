@@ -75,6 +75,12 @@ void CScriptArguments::push(CScriptArguments* pArray, bool isArray)
 	m_Arguments.push_back(new CScriptArgument(*pArray, isArray));
 }
 
+
+void CScriptArguments::push(CScriptEntity* pEntity)
+{
+	m_Arguments.push_back(new CScriptArgument(pEntity));
+}
+
 void CScriptArguments::pushVector3(const CVector3 &vec3)
 {
 	m_Arguments.push_back(new CScriptArgument(vec3.fX));

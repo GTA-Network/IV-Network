@@ -16,6 +16,8 @@
 class CScriptArgument;
 class CScriptVM;
 
+class CScriptEntity;
+
 class CScriptArguments {
 
 private:
@@ -35,6 +37,7 @@ public:
 	void push(const CScriptArgument &arg);
 	void push(const CScriptArguments &array, bool isArray);
 	void push(CScriptArguments* pArray, bool isArray);
+	void push(CScriptEntity* pEntity);
 	void pushVector3(const CVector3 &vec3);
 
 	CScriptArgument pop();

@@ -203,9 +203,9 @@ bool CServer::Startup()
 
 	return true;
 }
-
-
 unsigned long m_ulLastProcess = 0;
+float delay;
+#include <thread>
 void CServer::Process()
 {
 	m_pNetworkModule->Pulse();
@@ -267,9 +267,10 @@ void CServer::Process()
 		m_ulFrameCount++;
 	}
 
-	int delay = 1000.0f / m_uiMaximumFPS - (float) (ulTime - m_ulLastProcess);
+	// This only works for 1-1000 but this is good
+	delay = (1000.0f / (float)m_uiMaximumFPS) - (float) (ulTime - m_ulLastProcess);
 	if (delay > 0)
-		Sleep(delay);
+		std::this_thread::sleep_for(std::chrono::microseconds((long long)(delay*1000)));
 
 	
 

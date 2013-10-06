@@ -50,6 +50,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// TODO
 	}
 
+	
+
 	// Is the nickname already in use?
 	// TODO: check is nick in use
 
@@ -64,13 +66,15 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
+	playerId = pPlayer->GetId();
+
 	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
 
-	// Add everyone else connected for this player
-	// TODO: handle client join
-
-	// Handle this player with the client scripting manager
-	//pCore->GetClientScriptingManager()->HandlePlayerJoin(playerId);
+	CScriptArguments args;
+	CScriptPlayer * pScriptPlayer = new CScriptPlayer();
+	pScriptPlayer->SetEntity(pPlayer);
+	args.push(pScriptPlayer);
+	CEvents::GetInstance()->Call("playerJoin", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
 
 	// Construct a new bitstream
 	RakNet::BitStream bitStream;
@@ -163,6 +167,13 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			else
 			{
 				CLogFile::Printf("[command] %s: %s", pPlayer->GetName().Get(), strInput.C_String());
+
+				CScriptArguments args;
+				args.push(strInput);
+				CScriptPlayer *pScriptPlayer = new CScriptPlayer();
+				pScriptPlayer->SetEntity(pPlayer);
+				args.push(pScriptPlayer);
+				CEvents::GetInstance()->Call("onCommand", &args, CEventHandler::eEventType::GLOBAL_EVENT, nullptr);
 			}
 		}
 	}

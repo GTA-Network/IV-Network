@@ -92,40 +92,55 @@ bool CVehicleEntity::Create()
 		Sleep(0);
 	}
 	Sleep(10);
+#if 0
 	DWORD dwModelHash = m_pModelInfo->GetHash();
 	CIVScript::CreateCar(dwModelHash, 0.0f, 0.0f, 0.0f, &m_uiVehicleHandle, false);
 	
 	// Create the vehicle instance
 	m_pVehicle = new CIVVehicle(g_pCore->GetGame()->GetPools()->GetVehiclePool()->AtHandle(m_uiVehicleHandle));
+
+	//if (*(DWORD*)(m_pVehicle->GetVehicle() + 0x1480))
+	//{
+	//	int v13 = *(DWORD*) (m_pVehicle->GetVehicle() + 0x1480);
+	//	if (v13)
+	//		(**(void(__stdcall ***)(DWORD))v13)(1);
+	//}
+
 	m_pVehicle->GetVehicle()->CreatePhysics();
-#if 0
+#endif
+#if 1
 	IVVehicleFactory* pVehicleFactory = (IVVehicleFactory*)*(DWORD*) (g_pCore->GetBase() + 0x118A6D4);
 	Matrix34 v125;
 	((char(_cdecl *)(int, Matrix34*, int, int, int, int))(g_pCore->GetBase() + 0x9C6C00))(*(DWORD *) (*(DWORD *) &m_pModelInfo->GetModelInfo()->IVBaseModelInfo_pad0[4] + 236), &v125, 0, 168, 0, 0);
-	IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, (int)&v125, 1);
+	//*(WORD*) (g_pCore->GetBase() + 0x4B48D5) = 0x9090;
+	IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, /*(int)&v125*/0, 1);
 	if (pVehicle)
 	{
 		
-
-
 #define CModelInfo__AddReference (g_pCore->GetBase() + 0x83F2E0)
 		pVehicle->Function76(0);
 		//pVehicle->field_41 = 2;
-		//pVehicle->m_byteFlags1 |= 4u;
-		//pVehicle->m_dwFlags1 |= 8u; // Fixed
+		pVehicle->m_byteFlags1 |= 4u;
+		pVehicle->m_dwFlags1 |= 8u; // Fixed
 		((int(_cdecl *)(IVVehicle*, char))(g_pCore->GetBase() + 0x86C0B0))(pVehicle, 0);
 		pVehicle->CreateDoubleNode();
 		pVehicle->Add();
 		((void(__thiscall *)(IVVehicle*, char))(g_pCore->GetBase() + 0x9FD530))(pVehicle, 1);
-		//pVehicle->m_byteFlags10 |= 8u;
+		pVehicle->m_byteFlags10 |= 8u;
 		double v83 = ((double(_cdecl*)(float, float))(g_pCore->GetBase() + 0x4AA400))(0.0, 1.0);
 		((int(__thiscall *)(IVVehicle*, float))(g_pCore->GetBase() + 0x9F0C20))(pVehicle, v83);
 		// Make visible
-		pVehicle->CreatePhysics();
-		//pVehicle->ProcessInput();
+		// This maybe cause pool overflow if much vehicles are created and destroyed [NEED TEST]
+		// If this cause overflow try to delete the create physics before call or disable the call in VehicleFactory::Create
+		// Using this above *(WORD*) (g_pCore->GetBase() + 0x4B48D5) = 0x9090; before call to vehiclefactory
+		if (*(DWORD*) pVehicle != COffsets::VAR_CBoat__VFTable)
+		{
+			pVehicle->CreatePhysics();
+			pVehicle->ProcessInput();
+		}
 		
 
-		//((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD) m_pModelInfo->GetModelInfo());
+		((int(__thiscall *)(DWORD))(CModelInfo__AddReference))((DWORD) m_pModelInfo->GetModelInfo());
 		/**(WORD *) &pVehicle->IVVehicle_pad14[7] = (signed int) floorf(1.5f);
 		pVehicle->m_byteFlags13 |= 0x10u;
 		pVehicle->m_byteColors[0] = 0;
@@ -149,8 +164,8 @@ bool CVehicleEntity::Create()
 		// Something with driver at spawn
 		//((int(_cdecl *)(IVVehicle*))(g_pCore->GetBase() + 0xA5F910))(pVehicle);
 
-		//((char(_cdecl *)(IVVehicle*, int))(g_pCore->GetBase() + 0x958940))(pVehicle, -1);
-		//((DWORD(_cdecl *)(IVVehicle*, char, DWORD, DWORD))(g_pCore->GetBase() + 0xC39CA0))(pVehicle, 1, 14, 0);
+		((char(_cdecl *)(IVVehicle*, int))(g_pCore->GetBase() + 0x958940))(pVehicle, -1);
+		((DWORD(_cdecl *)(IVVehicle*, char, DWORD, DWORD))(g_pCore->GetBase() + 0xC39CA0))(pVehicle, 1, 14, 0);
 #if 0
 
 
@@ -286,6 +301,10 @@ bool CVehicleEntity::Create()
 	// Mark as spawned
 	m_bSpawned = true;
 
+	CVector3 vecPos;
+	GetPosition(vecPos);
+	vecPos.fZ = ((double(__cdecl*)(int, int))(g_pCore->GetBase() + 0x9C69F0))(vecPos.fX, vecPos.fY);
+	SetPosition(vecPos, true);
 	// Reset the vehicle
 	Reset();
 
@@ -453,11 +472,20 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 			CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 		else
 		{
-			// Set the position in the matrix
-			CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
-			//m_pVehicle->SetPosition(vecPosition);
+			//m_pVehicle->RemoveFromWorld();
 
+			//// Set the position in the matrix
+			////CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+			//CVector3 vecPos = vecPosition;
+			//vecPos.fZ = ((double(__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0))(vecPos.fX, vecPos.fY);
+			//m_pVehicle->SetPosition(vecPos);
+
+
+			//m_pVehicle->AddToWorld();
 			//m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+			//m_pVehicle->GetVehicle()->ProcessInput();
+
+			CIVScript::SetCarCoordinates(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 		}
 	}
 

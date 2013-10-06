@@ -11,6 +11,8 @@
 #include "CScriptVM.h"
 #include <assert.h>
 
+#include "../Server/Entity/Entities.h"
+
 CScriptArgument::~CScriptArgument()
 {
 	reset();
@@ -64,6 +66,11 @@ void CScriptArgument::Push(CScriptVM * pVM)
 	case CScriptArgument::ArgumentType::ST_TABLE:
 		{
 			pVM->PushTable(*GetTable());
+		}
+		break;
+	case CScriptArgument::ArgumentType::ST_ENTITY:
+		{
+			pVM->PushInstance(data.pEntity->GetScriptClassName(), data.pEntity);
 		}
 		break;
 	default:

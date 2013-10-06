@@ -24,4 +24,13 @@ public:
 	bool Destroy() {return true;}
 };
 
+class CScriptVehicle : public CScriptEntity
+{
+public:
+	CScriptVehicle() { SetEntity(new CVehicleEntity); };
+	~CScriptVehicle() { delete GetEntity(); };
+
+	virtual const char* GetScriptClassName() { return "CVehicleEntity"; }
+};
+
 #endif // CVehicleEntity_h

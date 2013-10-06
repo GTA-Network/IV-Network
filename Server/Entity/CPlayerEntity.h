@@ -24,7 +24,7 @@ private:
 	unsigned long m_ulLastSyncSent;
 	ePackageType m_eLastSyncPackageType;
 
-	CString		m_strName;
+	
 	CVector3	m_vecDirection;
 	CVector3	m_vecRoll;
 	bool		m_bDuckState;
@@ -45,6 +45,7 @@ private:
 		CVector3		vecLookAtCoordinates;
 	} m_weaponData;
 public:
+	CString		m_strName;
 	CPlayerEntity();
 	~CPlayerEntity();
 
@@ -97,6 +98,63 @@ public:
 
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
+};
+
+
+class CScriptPlayer : public CScriptEntity
+{
+public:
+	CScriptPlayer() { /*SetEntity(new CPlayerEntity);*/ };
+	~CScriptPlayer() { delete GetEntity(); };
+
+	inline CPlayerEntity* GetEntity() { return (CPlayerEntity*) CScriptEntity::GetEntity(); }
+
+	virtual const char* GetScriptClassName() { return "CPlayerEntity"; }
+
+	float GetArmour(void) {
+		return GetEntity()->GetArmour();
+	}
+
+	void  SetArmour(float fArmour) {
+		GetEntity()->SetArmour(fArmour);
+	}
+
+	DWORD GetColor(void) {
+		return GetEntity()->GetColor();
+	}
+	void  SetColor(DWORD dwColor) {
+		GetEntity()->SetColor(dwColor);
+	}
+
+	float GetHeading() {
+		return GetEntity()->GetHeading();
+	}
+	void  SetHeading(float fHeading) {
+		GetEntity()->SetHeading(fHeading);
+	}
+
+	const char* GetName() {
+		return GetEntity()->m_strName.Get();
+	}
+	void		SetName(const char* szName) {
+		GetEntity()->SetName(CString(szName));
+		free((void*) szName);
+	}
+
+	int	GetMoney() { return 0; }
+	void SetMoney(int iMoney) { }
+
+	int GetModel() { return 0; }
+	void SetModel(int iModel) { }
+
+	unsigned int GetDimension() { return 0; }
+	void		 SetDimension(unsigned int uiDimension) { }
+
+	char		 GetWantedLevel() { return 0; }
+	void		 SetWantedLevel(char cWantedLevel) { }
+
+	float		 GetHealth() { return GetEntity()->GetHealth(); }
+	void		 SetHealth(float fHealth) { GetEntity()->SetHealth(fHealth); }
 };
 
 #endif // CPlayerEntity_h
