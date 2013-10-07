@@ -163,6 +163,12 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 						g_pCore->GetChat()->Outputf(false, "Screen shot capture failed (%s).", CSnapShot::GetError().Get());
 						CSnapShot::Reset();
 					}
+					break;
+				}
+				case VK_ESCAPE:
+				{
+					g_pCore->GetChat()->Outputf(false, "WIP!!! >:(");
+					break;
 				}
 			}
 		}

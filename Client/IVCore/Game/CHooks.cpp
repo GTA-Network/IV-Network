@@ -676,6 +676,23 @@ void CHookDummy::loadEbisodes()
 	*(BYTE *) (this + 358) = 0;
 }
 
+void __cdecl renderMenus() //render Main and pause menu
+{
+	//g_pCore->GetChat()->Outputf(false, "sub_4774A0()");
+	//*(DWORD*) (g_pCore->GetBase() + 0x104E130) = 0; // 1 = blink, but i wagt hide it.
+	//*(BYTE*) (g_pCore->GetBase() + 0x104E1D8) = 1;
+}
+
+void __cdecl sub_47F080()
+{
+	//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
+}
+
+void __cdecl sub_47BA60()
+{
+	//g_pCore->GetChat()->Outputf(false, "sub_47BA60()");
+}
+
 template <typename _Ret, typename _Class, typename... _Args>
 DWORD GetClassMemberAddress(_Ret(_Class::*Function)(_Args...))
 {
@@ -715,6 +732,12 @@ void CHooks::Intialize()
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
 	*(BYTE *) (g_pCore->GetBase() + 0x83BFE0) = 0xC3;
+
+	//CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x47BFED, (DWORD) renderMenus);
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
+
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47BA60, (DWORD) sub_47BA60);
 
 #ifdef GTAV_MAP
 	// Patch crosshair

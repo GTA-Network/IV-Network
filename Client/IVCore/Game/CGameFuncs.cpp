@@ -59,16 +59,6 @@ sRadioInfo radioArray[] = {
 	{255, "Radio turned off.." },
 };
 
-bool CGameFunction::IsMenuActive()
-{
-	DWORD dwMenuActive1 = (COffsets::VAR_MenuActive_1);
-
-	if(dwMenuActive1 == 2 || dwMenuActive1 == 6)
-		return false;
-
-	return *(bool *)(COffsets::VAR_MenuActive_2);
-}
-
 void CGameFunction::SetTimeOfDay(int iHour, int iMinute)
 {
 	_asm	push -1;
