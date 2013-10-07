@@ -12,12 +12,25 @@
 
 #include <Network/NetCommon.h>
 
+#include <RakNet/NetworkIDManager.h>
+#include <RakNet/ReplicaManager3.h>
+
+
+/*
+Client adds local player replica to replica manager
+This will be synced to server and all client
+Local player serialize itself so PlayerReplica is a LocalPlayerReplica
+*/
+
+
 class CNetworkModule {
 
 private:
 
 	RakNet::RakPeerInterface				* m_pRakPeer;
-	static RakNet::RPC4						* m_pRPC;
+	RakNet::RPC4							* m_pRPC;
+	//RakNet::NetworkIDManager				* m_pNetworkIdManager;
+	//ReplicaManagerMP						* m_pReplicaManager;
 
 	eNetworkState							m_eNetworkState;
 
@@ -39,7 +52,7 @@ public:
 	int										GetPlayerPing(EntityId playerId );
 
 	RakNet::RakPeerInterface				* GetRakPeer(void ) { return m_pRakPeer; }
-	static RakNet::RPC4						* GetRPC(void ) { return m_pRPC; }
+	RakNet::RPC4							* GetRPC(void ) { return m_pRPC; }
 
 };
 

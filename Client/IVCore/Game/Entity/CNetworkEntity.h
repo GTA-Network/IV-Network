@@ -108,7 +108,6 @@ public:
 
 class CNetworkEntity {
 private:
-	CControls						m_pControls;
 	eEntityType						m_eType;
 	EntityId						m_entityId;
 	CVector3						m_vecPosition;
@@ -117,15 +116,6 @@ private:
 	CVector3						m_vecTurnSpeed;
 	CVector3						m_vecDirection;
 	CVector3						m_vecRoll;
-
-	CNetworkEntitySync				m_pEntitySync;
-	CNetworkEntitySync				m_pEntityLastSync;
-
-	CNetworkEntitySubPlayer			m_pPlayerHandle;
-	CNetworkEntitySubVehicle		m_pVehicleHandle;
-
-	CPlayerEntity					*m_pPlayerEntity;
-
 public:
 									CNetworkEntity();
 									CNetworkEntity(eEntityType eType);
@@ -135,8 +125,7 @@ public:
 	virtual bool					Create() = 0;
 	virtual bool					Destroy() = 0;
 
-	virtual void					Pulse(CPlayerEntity * pPlayer);
-	virtual void					Pulse(CVehicleEntity * pVehicle);
+	virtual void					Pluse() {};
 	
 	virtual void					GetPosition(CVector3& vecPos);
 	virtual void					SetPosition(const CVector3& vecPos);
@@ -164,9 +153,8 @@ public:
 	virtual	bool					IsMoving();
 	virtual void					StopMoving();
 
-	virtual void					Serialize(ePackageType pType);
-	virtual RakNet::BitStream		ManualSerialize(ePackageType pType);
-	virtual void					Deserialize(RakNet::BitStream * pBitStream, ePackageType pType);
+	virtual void					Serialize(RakNet::BitStream * pBitStream) {};
+	virtual void					Deserialize(RakNet::BitStream * pBitStream) {};
 
 	virtual void					AddToWorld() { /* Nothing can be done here */ };
 	virtual void					RemoveFromWorld(bool bStopMoving = true) { /* Nothing can be done here */ };
@@ -176,14 +164,6 @@ public:
 
 	eEntityType						GetType() { return m_eType; }
 	void							SetType(eEntityType eType) { m_eType = eType; }
-
-	CNetworkEntitySync				GetLatestSyncPackage() { return m_pEntitySync; }
-	CNetworkEntitySync				GetOldestSyncPackage() { return m_pEntityLastSync; }
-
-	CNetworkEntitySubPlayer			GetPlayerHandle() { return m_pPlayerHandle; }
-	CNetworkEntitySubPlayer			*GetPlayerHandlePtr() { return &m_pPlayerHandle; }
-	CNetworkEntitySubVehicle		GetVehicleHandle() { return m_pVehicleHandle; }
-	CNetworkEntitySubVehicle		*GetVehicleHandlePtr() { return &m_pVehicleHandle; }
 };
 
 #endif // CNetworkEntity_h

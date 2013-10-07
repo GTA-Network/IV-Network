@@ -16,8 +16,6 @@
 #include <Common.h>
 #include <SharedUtility.h>
 
-RakNet::RPC4			* CNetworkModule::m_pRPC = NULL;
-
 CNetworkModule::CNetworkModule(void)
 {
 	// Get the RakPeerInterface instance
@@ -25,6 +23,14 @@ CNetworkModule::CNetworkModule(void)
 
 	// Get the RPC4 instance
 	m_pRPC = RakNet::RPC4::GetInstance();
+
+	/*m_pNetworkIdManager = new RakNet::NetworkIDManager();
+	
+	m_pReplicaManager = new ReplicaManagerMP();
+	m_pReplicaManager->SetNetworkIDManager(m_pNetworkIdManager);
+	m_pReplicaManager->SetAutoManageConnections(false, true);
+
+	m_pRakPeer->AttachPlugin(m_pReplicaManager);*/
 
 	// Attact RPC4 to RakPeerInterface
 	m_pRakPeer->AttachPlugin(m_pRPC);

@@ -73,10 +73,12 @@ CVehicleEntity::~CVehicleEntity()
 	}
 }
 
-#define CModelInfo__AddReference ((int(__thiscall *)(IVBaseModelInfo *))(g_pCore->GetBase() + 0x83F2E0))
-//#define GetWordZByXY ((float (__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0)) - good to know this, but now not needed
-#define XForce_What_The_Name_Of_This_Functon_1 ((int(_cdecl *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x86C0B0))
-#define XForce_What_The_Name_Of_This_Functon_2 ((void(__thiscall *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
+#define CVehicleModelInfo__AddReference ((int(__thiscall *)(IVBaseModelInfo *))(g_pCore->GetBase() + 0x83F2E0))
+#define CWorld__GetGroundZ ((float (__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0))
+#define CWorld__AddEntity ((int(_cdecl *)(IVVehicle*, bool bDontAdd))(g_pCore->GetBase() + 0x86C0B0))
+// Seems to be setup audio or something like that
+#define CVehicle__TurnEngineOn ((void(__thiscall *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
+#define sub_B40B30 ((void(__thiscall *)(IVVehicle*, char, char))(g_pCore->GetBase() + 0xB40B30))
 
 bool CVehicleEntity::Create()
 {
@@ -100,40 +102,31 @@ bool CVehicleEntity::Create()
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
-
 		pVehicle->m_byteFlags1 |= 4u;
-		pVehicle->m_dwFlags1 |= 8u; // Fixed
-		
-		XForce_What_The_Name_Of_This_Functon_1(pVehicle, false);
+		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision
 
-		//XForce_What_The_Name_Of_This_Functon_2(pVehicle, true); Balika011: Spawn works whitout this line too. XForce, we need this line?
+		// This maybe fix the crash if boat is not in water
+		/*bool isBoat = pVehicle->m_eVehicleType == 2;
+		pVehicle->field_41 = 2;
+		if (isBoat)
+			sub_B40B30(pVehicle, 1, 0);*/
 
+		CWorld__AddEntity(pVehicle, false);
+		CVehicleModelInfo__AddReference(m_pModelInfo->GetModelInfo());
+		// we dont want to turn on the engine
+		// CVehicle__TurnEngineOn(pVehicle, true);
 		pVehicle->m_byteFlags10 |= 8u;
 
-		/* Balika011: Spawn works whitout this lines too. XForce, we need this lines?
-		double v83 = ((double(_cdecl*)(float, float))(g_pCore->GetBase() + 0x4AA400))(0.0, 1.0);
-		((int(__thiscall *)(IVVehicle*, float))(g_pCore->GetBase() + 0x9F0C20))(pVehicle, v83);
-		*/
-
-		// Make visible
 		// This maybe cause pool overflow if much vehicles are created and destroyed [NEED TEST]
 		// If this cause overflow try to delete the create physics before call or disable the call in VehicleFactory::Create
-		// Using this above *(WORD*) (g_pCore->GetBase() + 0x4B48D5) = 0x9090; before call to vehiclefactory
-		if (*(DWORD*) pVehicle != COffsets::VAR_CBoat__VFTable)
+		// Using this above *(WORD*) (g_pCore->GetBase() + 0x4B48D5) = 0x9090; before call to vehiclefactory [TESTED => crash]
+		// Can someone confirm if this cause pool overflow or not
+		if (*(DWORD*) pVehicle != COffsets::VAR_CBoat__VFTable) // Otherwise client crash if boat is on ground (not in water)
 		{
 			pVehicle->CreatePhysics();
 			pVehicle->ProcessInput();
 		}
 		
-		//if (pVehicle->Function79())
-		//	pVehicle->Function80();
-		CModelInfo__AddReference(m_pModelInfo->GetModelInfo());
-
-		/* Balika011: Spawn works whitout this lines too. XForce, we need this lines?
-		((char(_cdecl *)(IVVehicle*, int))(g_pCore->GetBase() + 0x958940))(pVehicle, -1);
-		((DWORD(_cdecl *)(IVVehicle*, char, DWORD, DWORD))(g_pCore->GetBase() + 0xC39CA0))(pVehicle, 1, 14, 0);
-		*/
-
 		CIVScript::MarkModelAsNoLongerNeeded(m_pModelInfo->GetHash());
 
 		m_pVehicle = new CIVVehicle(pVehicle);
@@ -596,7 +589,7 @@ void CVehicleEntity::Process()
 {
 	Interpolate();
 
-	CNetworkEntity::Pulse(this);
+	Pulse();
 }
 
 void CVehicleEntity::UpdateTargetPosition()

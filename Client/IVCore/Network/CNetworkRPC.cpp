@@ -109,9 +109,6 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Notify the playermanager that we're having a new player
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, pEntity);
 
-	// Update the network entity to fetch the class and the scripting index
-	pEntity->CNetworkEntity::Pulse(pEntity);
-
 	// Temporary set the position to our dev spawn
 	pEntity->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 }
@@ -185,14 +182,45 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			}
 
 			ePackageType eType;
-			pBitStream->Read<ePackageType>(eType);
+			pBitStream->Read(eType);
 
-			switch ((int) eType)
+			switch (eType)
 			{
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 				{
 					// Process player deserialise package
-					pPlayer->Deserialize(pBitStream, eType);
+					CNetworkEntitySubPlayer PlayerPacket;
+
+					pBitStream->Read(PlayerPacket);
+
+					pPlayer->ApplySyncData(
+						// Apply current Position to the sync package
+						PlayerPacket.vecPosition,
+
+						// Apply current Movement to the sync package
+						PlayerPacket.vecMovementSpeed,
+
+						// Apply current Turnspeed to the sync package
+						PlayerPacket.vecTurnSpeed,
+
+						// Apply current Directionspeed to the sync package
+						PlayerPacket.vecDirection,
+
+						// Apply current Rollspeed to the sync package
+						PlayerPacket.vecRoll,
+
+						// Apply current duckstate to the sync package
+						PlayerPacket.bDuckState,
+
+						// Apply current heading to the sync package
+						PlayerPacket.fHeading,
+
+						//Apply current weapon sync data to the sync package
+						0,
+						0);
+
+					pPlayer->SetControlState(&PlayerPacket.pControlState);
+					//pPlayer->Deserialize(pBitStream);
 					break;
 				}
 			default:
@@ -253,6 +281,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
 
@@ -274,6 +303,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_START_GAME));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
 
