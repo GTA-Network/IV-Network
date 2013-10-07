@@ -109,9 +109,6 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Notify the playermanager that we're having a new player
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, pEntity);
 
-	// Update the network entity to fetch the class and the scripting index
-	pEntity->CNetworkEntity::Pulse(pEntity);
-
 	// Temporary set the position to our dev spawn
 	pEntity->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 }
