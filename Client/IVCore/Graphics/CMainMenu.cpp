@@ -140,7 +140,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	g_pCore->SetNick("Player");
 
 	// Conneting the player to the server
-	g_pCore->ConnectToServer("127.0.0.1", 9999);
+	g_pCore->ConnectToServer("217.87.226.42", 9999);
 
 	// Hide the main menu elements
 	SetVisible(false);

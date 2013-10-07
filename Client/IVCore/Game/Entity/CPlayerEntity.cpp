@@ -487,14 +487,10 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 		// Are we not in a vehicle and not entering a vehicle?
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
-			// Remove the player ped from the world
-			m_pPlayerPed->RemoveFromWorld();
-
 			// Set the position in the matrix
 			m_pPlayerPed->SetPosition(vecPosition);
 
-			// Re add the ped to the world to apply the matrix change
-			m_pPlayerPed->AddToWorld();
+			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 		}
 	}
 
