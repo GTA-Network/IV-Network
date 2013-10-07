@@ -68,19 +68,11 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->Respawn();
 		return true;
 	}
-	else if(strCommand == "debug")
-	{
-		g_pCore->GetDevelopmentInstance()->CreateDebugPlayer();
-		return true;
-	}
 	else if(strCommand == "weapon")
 	{
 		int iWeapon = atoi(strParameters.c_str());
 
-		if(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed())
-			CIVScript::GiveWeaponToChar(g_pCore->GetDevelopmentInstance()->GetDebugPlayerPed()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon,50,true);
-		
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon,50,true);
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), iWeapon, 50, true);
 		return true;
 	}
 	else if(strCommand == "cp")

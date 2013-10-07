@@ -16,7 +16,6 @@ class CDevelopment {
 private:
 	bool				bDebugView;
 	bool				bDebugPlayerPresent;
-	CPlayerEntity		*m_pDebugPlayer;
 	bool				bHasAimSyncData;
 	bool				m_bStoreOnFootSwitch;
 	int					m_iOldMoveStyle;
@@ -29,9 +28,6 @@ public:
 	void				DumpTasks(CIVPedTaskManager * pPedTaskManager, int iType);
 	void				SetDebugView(bool bView) { bDebugView = bView; }
 	bool				GetDebugView() { return bDebugView; }
-
-	void				CreateDebugPlayer();
-	CPlayerEntity		*GetDebugPlayerPed() { return m_pDebugPlayer; }
 };
 
 #endif // CDevelopment_h

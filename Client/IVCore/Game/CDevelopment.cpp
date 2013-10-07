@@ -17,7 +17,6 @@ bool bDuckingState;
 
 CDevelopment::CDevelopment() : bDebugView(false),
 	bDebugPlayerPresent(false),
-	m_pDebugPlayer(nullptr),
 	bHasAimSyncData(false),
 	m_bStoreOnFootSwitch(false),
 	m_iOldMoveStyle(0)
@@ -228,31 +227,8 @@ void CDevelopment::Process()
 	CControls controlState;
 	g_pCore->GetGame()->GetPad()->GetCurrentControlState(controlState);
 
-	m_pDebugPlayer->SetControlState(&controlState);
 	if(controlState.IsAiming() || controlState.IsFiring())
 		bHasAimSyncData = true;
 	else
 		bHasAimSyncData = false;
-		
-	m_pDebugPlayer->PreStoreIVSynchronization(bHasAimSyncData,true,g_pCore->GetGame()->GetLocalPlayer());
-}
-
-void CDevelopment::CreateDebugPlayer()
-{
-	CVector3 vecCreatePos = g_pCore->GetGame()->GetLocalPlayer()->GetPosition();
-	m_pDebugPlayer = new CPlayerEntity(false);
-
-	m_pDebugPlayer->SetModel(0);
-	m_pDebugPlayer->Create();
-	m_pDebugPlayer->Teleport(vecCreatePos);
-	m_pDebugPlayer->SetPedClothes(0, 0);
-	m_pDebugPlayer->SetPedClothes(1, 1);
-	m_pDebugPlayer->SetPedClothes(2, 1);
-	m_pDebugPlayer->SetPedClothes(3, 0);
-	PTR_LOCALPLAYER->SetPedClothes(0, 0);
-	PTR_LOCALPLAYER->SetPedClothes(1, 1);
-	PTR_LOCALPLAYER->SetPedClothes(2, 1);
-	PTR_LOCALPLAYER->SetPedClothes(3, 0);
-
-	bDebugPlayerPresent = true;
 }
