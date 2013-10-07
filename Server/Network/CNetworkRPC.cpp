@@ -75,6 +75,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pScriptPlayer->SetEntity(pPlayer);
 	args.push(pScriptPlayer);
 	CEvents::GetInstance()->Call("playerJoin", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
+	delete pScriptPlayer;
 
 	// Construct a new bitstream
 	RakNet::BitStream bitStream;

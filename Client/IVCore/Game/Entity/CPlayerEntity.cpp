@@ -160,7 +160,7 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(PLAYER_ENTITY)
 {
 	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");
@@ -179,15 +179,10 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 	m_byteSeat = 0;
 	memset(&m_lastControlState, NULL, sizeof(CControls));
 	memset(&m_ControlState, NULL, sizeof(CControls));
-	CNetworkEntity::SetType(PLAYER_ENTITY); // ViruZz: When finishing the Networking, please switch the default value of PLAYER_ENTITY to a boolean to avoid VS Warnings
 
 	// Initialise & Reset all stuff(classes,structs)
 	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
 	m_pInterpolationData = new sPlayerEntity_InterpolationData;
-	m_pIVSync = new sIVSynchronization;
-	m_pIVSyncHandle = new sPlayerEntity_StoreIVSynchronization;
-	m_pIVSyncHandle->pControls = new CControls;
-	m_pPlayerEntity = this;
 	m_pVehicle = NULL;
 	ResetVehicleEnterExit();
 
@@ -219,9 +214,6 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
 		// Set our localplayer invincible during development mode
 		//CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), false);
 
-		// Set or local player index
-		m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
-
 		// Mark as spawned
 		m_bSpawned = true;
 
@@ -247,6 +239,9 @@ CPlayerEntity::~CPlayerEntity()
 	// Is this not the localplayer?
 	if(!IsLocalPlayer())
 		Destroy();
+
+	delete m_pVehicleEnterExit;
+	delete m_pInterpolationData;
 }
 
 unsigned short CPlayerEntity::GetPing()
@@ -280,26 +275,26 @@ void CPlayerEntity::Pulse()
 			// Process vehicle enter/exit
 			ProcessVehicleEnterExit();
 
+			RakNet::BitStream bitStream;
 			// Are we on-foot?
 			if(IsOnFoot())
 			{
-				// Send on foot sync data
-				Serialize(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
+				Serialize(&bitStream);
 			}
 			else
 			{
 				// Are we the vehicle driver?
-				if(!IsPassenger())
+				if(IsPassenger())
 				{
-					// Send in vehicle data
-					Serialize(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
+					Serialize(&bitStream);
 				}
 				else
 				{
-					// Send passenger data
-					Serialize(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
+					m_pVehicle->Serialize(&bitStream);
 				}
 			}
+			// Send package to network
+			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
 		}
 		else
 		{
@@ -311,8 +306,6 @@ void CPlayerEntity::Pulse()
 			}
 		}
 	}
-
-	CNetworkEntity::Pulse(this);
 }
 
 bool CPlayerEntity::Create()
@@ -412,9 +405,6 @@ bool CPlayerEntity::Create()
 	// Disable shot los
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
 
-	// Set our player index
-	m_pIVSyncHandle->uiPlayerIndex = GetScriptingHandle();
-
 	// Mark as spawned
 	Spawn();
 
@@ -509,7 +499,8 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 	}
 
 	// Just update the position
-	if (bForce) {
+	if (bForce) 
+	{
 		RemoveTargetPosition();
 		m_vecPosition = vecPosition;
 	}
@@ -767,7 +758,7 @@ bool CPlayerEntity::InternalIsInVehicle()
 
 CVehicleEntity * CPlayerEntity::InternalGetVehicle()
 {
-
+	//m_pPlayerPed->GetCurrentVehicle();
 	return NULL;
 }
 
@@ -1345,239 +1336,58 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 		vecDirection.fX, vecDirection.fY, vecDirection.fZ,
 		bDuck, fHeading);
 
-	m_pIVSyncHandle->vecPosition = vecPosition;
-	m_pIVSyncHandle->vecMovementSpeed = vecMovement;
-	m_pIVSyncHandle->vecTurnSpeed = vecTurnSpeed;
-	m_pIVSyncHandle->vecRoll = vecRoll;
-	m_pIVSyncHandle->vecDirection = vecDirection;
-	m_pIVSyncHandle->bDuckState = bDuck;
-	m_pIVSyncHandle->fHeading = fHeading;
-	m_pIVSyncHandle->vecAimAtCoordinates = vecWeaponData[0];
-	m_pIVSyncHandle->vecShotAtCoordinates = vecWeaponData[1];
-	m_pIVSyncHandle->vecShotAtTarget = vecWeaponData[2];
-	m_pIVSyncHandle->fArmsHeadingCircle = fAimData[0];
-	m_pIVSyncHandle->fArmsUpDownRotation = fAimData[1];
-}
+	unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
+	SetTargetPosition(vecPosition, interpolationTime);
+	SetRotation(fHeading);
+	SetMoveSpeed(vecMovement);
+	SetTurnSpeed(vecTurnSpeed);
+	m_pPlayerPed->SetDirection(vecDirection);
+	m_pPlayerPed->SetRoll(vecRoll);
 
-int iCount = -1;
-void CPlayerEntity::PreStoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
-{
-	iCount++;
-	/*if (g_pCore->GetChat())
-		g_pCore->GetChat()->Outputf(false, "Recieving sync.. %d", iCount);
-	*/
-	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
-	if(!IsSpawned() || m_pPlayerPed->GetPed()->m_bytePlayerNumber < 0 || uiPlayerIndex < 1)
-		return;
+	unsigned int uiPlayerIndex = GetScriptingHandle();
 
-	// First update onfoot movement(stand still, walk, run, jump etc.)
-	if(!bHasWeaponData) {
-		m_pIVSync->bStoreOnFootSwitch = false;
-
-		if(m_pIVSyncHandle->vecMovementSpeed.Length() < 1.0)
-			m_pIVSync->byteMoveStyle = 0;
-		else if(m_pIVSyncHandle->vecMovementSpeed.Length() < 3.0 && m_pIVSyncHandle->vecMovementSpeed.Length() >= 1.0)
-			m_pIVSync->byteMoveStyle = 1;
-		else if(m_pIVSyncHandle->vecMovementSpeed.Length() < 5.0 && m_pIVSyncHandle->vecMovementSpeed.Length() > 3.0)
-			m_pIVSync->byteMoveStyle = 2;
-		else
-			m_pIVSync->byteMoveStyle = 3;
-
-		switch(m_pIVSync->byteMoveStyle)
-		{
-			case IVSYNC_ONFOOT_STANDSTILL:
-			{
-				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*4);
-				SetCurrentSyncHeading(m_pIVSyncHandle->fHeading);
-
-				if(m_pIVSync->byteOldMoveStyle != 0)  {
-					m_pIVSync->bStoreOnFootSwitch = false;
-					
-					// Delete any task lol 
-					_asm	push 17;
-					_asm	push 0;
-					_asm	push uiPlayerIndex;
-					_asm	call COffsets::IV_Func__DeletePedTaskID;
-					_asm	add esp, 0Ch;
-
-					// Deltete shot at coord task if the player stop moving or the state has changed
-					_asm	push 36;
-					_asm	push 0;
-					_asm	push uiPlayerIndex;
-					_asm	call COffsets::IV_Func__DeletePedTaskID;
-					_asm	add esp, 0Ch;
-
-					// Delete aim at coord task if the player stops moving or the state has changed
-					_asm	push 35;
-					_asm	push 0;
-					_asm	push uiPlayerIndex;
-					_asm	call COffsets::IV_Func__DeletePedTaskID;
-					_asm	add esp, 0Ch;
-
-				}
-				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
-				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
-				break;
-			}
-			case IVSYNC_ONFOOT_WALK:
-			{
-				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
-				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
-
-				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE);
-				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMovementSpeed, 2);
-				break;
-			}
-			case IVSYNC_ONFOOT_SWITCHSTATE:
-			{
-				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
-				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
-
-				SetTargetPosition(m_pIVSyncHandle->vecPosition,IVSYNC_TICKRATE*2);
-				SetMoveToDirection(m_pIVSyncHandle->vecPosition, m_pIVSyncHandle->vecMovementSpeed, 3);
-				break;
-			}
-			case IVSYNC_ONFOOT_RUN:
-			{
-				CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-				CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-				CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
-				CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
-
-				SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*3);
-				SetMoveToDirection(m_pIVSyncHandle->vecPosition, CVector3(m_pIVSyncHandle->vecMovementSpeed.fX * 1.1, m_pIVSyncHandle->vecMovementSpeed.fY * 1.1, m_pIVSyncHandle->vecMovementSpeed.fZ), 4);
-				break;
-			}
-		}
-	} 
-	else {
-		if(!m_pIVSync->bStoreOnFootSwitch) {
-			m_pIVSync->bStoreOnFootSwitch = true;
-
-			_asm	push 17;
-			_asm	push 0;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_Func__DeletePedTaskID;
-			_asm	add  esp, 0Ch;
-
-			_asm	push 1;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_Func__DeletePedTaskJump;
-			_asm	add	 esp, 8;
-		}
-		SetTargetPosition(m_pIVSyncHandle->vecPosition, IVSYNC_TICKRATE*4);
-		SetRotation(m_pIVSyncHandle->fHeading);
-		SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecMovementSpeed : CVector3());
-		SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed.Length() > 0.1 ? m_pIVSyncHandle->vecTurnSpeed : CVector3());
-		CPlayerEntity::SetMoveSpeed(m_pIVSyncHandle->vecMovementSpeed);
-		CPlayerEntity::SetTurnSpeed(m_pIVSyncHandle->vecTurnSpeed);
-		CPlayerEntity::m_pPlayerPed->SetDirection(m_pIVSyncHandle->vecDirection);
-		CPlayerEntity::m_pPlayerPed->SetRoll(m_pIVSyncHandle->vecRoll);
-	}
-	
-	// Set the ammunation and weapon data
-
-
-	// Apply the move state
-	m_pIVSync->byteOldMoveStyle = m_pIVSync->byteMoveStyle;
-	
-	// Now store context data
-	StoreIVContextSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
-}
-
-void CPlayerEntity::StoreIVContextSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
-{
-	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
-
-	// First check if we're having any weapon data
-	if(bHasWeaponData) {
-		
-		if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsAiming() : m_ControlState.IsAiming()
-			&& m_bLocalPlayer == 1 ? !m_pIVSyncHandle->pControls->IsFiring() : !m_ControlState.IsFiring()) {
-			PTR_CHAT->Output("Settings weapon aim..");
-			//SetWeaponAimAtTask(m_pIVSyncHandle->vecAimTarget);
-			
-			m_pContextData->SetWeaponAimTarget(m_pIVSyncHandle->vecAimAtCoordinates);
-			m_pContextData->SetArmHeading(m_pIVSyncHandle->fArmsHeadingCircle);
-			m_pContextData->SetArmUpDown(m_pIVSyncHandle->fArmsUpDownRotation);
-			//CIVScript::TaskAimGunAtCoord(uiPlayerIndex, m_pIVSyncHandle->vecAimAtCoordinates.fX, m_pIVSyncHandle->vecAimAtCoordinates.fY, m_pIVSyncHandle->vecAimAtCoordinates.fZ, 45000);
-		}
-		else if(m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsFiring() : m_ControlState.IsFiring()) {
-			PTR_CHAT->Output("Settings weapon shot..");
-
-			m_pContextData->SetWeaponShotSource(m_pIVSyncHandle->vecShotAtCoordinates);
-			m_pContextData->SetWeaponShotTarget(m_pIVSyncHandle->vecShotAtTarget);
-		}
-		else {
-			// Destroy shotat task
-			_asm	push 36;
-			_asm	push 0;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_Func__DeletePedTaskID;
-			_asm	add esp, 0Ch;
-
-			// Destroy aimat task
-			_asm	push 35;
-			_asm	push 0;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_Func__DeletePedTaskID;
-			_asm	add esp, 0Ch;
-		}
-	}
-
-	// Second check if we have to apply the control states
-	if(m_bLocalPlayer)
-		pCopy->GetControlState(&m_ControlState);
-
-	// Now store the normal ivsync data
-	StoreIVSynchronization(bHasWeaponData, bCopyLocalPlayer, pCopy);
-}
-
-void CPlayerEntity::StoreIVSynchronization(bool bHasWeaponData, bool bCopyLocalPlayer, CPlayerEntity * pCopy)
-{
-	unsigned uiPlayerIndex = m_pIVSyncHandle->uiPlayerIndex;
-
-	// Third check if we're jumping
-	if(!m_pIVSync->bStoreOnFootSwitch && m_bLocalPlayer == 1 ? m_pIVSyncHandle->pControls->IsJumping() : m_ControlState.IsJumping()) {
-
-		// Before checking which jump style should be selected, set to unkown(if we failed to get our state)
-		char iJumpStyle = 0;
-		m_pIVSyncHandle->uiJumpTime = timeGetTime();
-
-		if(m_pIVSyncHandle->vecMovementSpeed.Length() < 1.0)
-			iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-		else if(m_pIVSyncHandle->vecMovementSpeed.Length() >= 1.0)
-			iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
-
-		_asm	push iJumpStyle;
-		_asm	push uiPlayerIndex;
-		_asm	call COffsets::IV_FUNC__TaskPedJump;
-		_asm	add esp, 8;
-	}
-
-	// Fourth and a half, check if we have to delete the jump task
-	if(m_pIVSyncHandle->uiJumpTime < timeGetTime()-1250 && m_pIVSyncHandle->uiJumpTime != 0) // Animation time(jump) needs ~1sec
+	char chMoveStyle = 0;
+	if (vecMovement.Length() < 1.0)
 	{
-		m_pIVSyncHandle->uiJumpTime = 0;
-
-		// Delete the task(animation will be still displayed)
-		_asm	push 3;
+		// Delete any task lol 
+		_asm	push 17;
 		_asm	push 0;
 		_asm	push uiPlayerIndex;
-		_asm	call COffsets::IV_Func__DeletePedTaskJump;
+		_asm	call COffsets::IV_Func__DeletePedTaskID;
 		_asm	add esp, 0Ch;
+		chMoveStyle = 0;
 	}
+	else if (vecMovement.Length() < 3.0 && vecMovement.Length() >= 1.0)
+		chMoveStyle = 1;
+	else if (vecMovement.Length() < 5.0 && vecMovement.Length() > 3.0)
+		chMoveStyle = 2;
+	else
+		chMoveStyle = 3;
 
-	// Fifth check if we have to update the duck state
-	if ((m_bLocalPlayer == true ? pCopy->CPlayerEntity::GetPlayerPed()->IsDucking() : CPlayerEntity::GetPlayerPed()->IsDucking()) != m_pIVSyncHandle->bDuckState)
-		CPlayerEntity::GetPlayerPed()->SetDucking(m_pIVSyncHandle->bDuckState);
+	SetMoveToDirection(vecPosition, vecMovement, chMoveStyle+1);
+
+	GetPlayerPed()->SetDucking(bDuck);
+
+	int iJumpStyle = 0;
+	if (vecMovement.Length() < 1.0)
+		iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
+	else if (vecMovement.Length() >= 1.0)
+		iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
+
+	_asm	push iJumpStyle;
+	_asm	push uiPlayerIndex;
+	_asm	call COffsets::IV_FUNC__TaskPedJump;
+	_asm	add esp, 8;
+
+	m_ulLastSyncReceived = SharedUtility::GetTime();
 }
+
+#if 0
+void CPlayerEntity::ApplyWeaponSync()
+{
+
+}
+#endif
 
 void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)
 {
@@ -1611,17 +1421,13 @@ void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iM
 {
 	if(IsSpawned()) {
 
-		float tX = (vecPos.fX + (vecMove.fX * (iMoveType == 3 ? 10 : 10)));
-		float tY = (vecPos.fY + (vecMove.fY * (iMoveType == 3 ? 10 : 10)));
-		float tZ = (vecPos.fZ + (vecMove.fZ * (iMoveType == 3 ? 10 : 10)));
+		float tX = (vecPos.fX + (vecMove.fX * (10)));
+		float tY = (vecPos.fY + (vecMove.fY * (10)));
+		float tZ = (vecPos.fZ + (vecMove.fZ * (10)));
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
-		// Create the task
-		if(iMoveType == 3)
-			_asm push 500;
-		else
-			_asm push 1000;
 
+		_asm	push 1000;
 		_asm	push iMoveType;
 		_asm	push tZ;
 		_asm	push tY;
@@ -1895,11 +1701,28 @@ void CPlayerEntity::SetWeaponAimAtTask(CVector3 vecAimAt)
 {
 	if(IsSpawned())
 	{
-		// Create the death task
-		CIVTaskSimpleFireGun * pTask = new CIVTaskSimpleFireGun(vecAimAt.fX, vecAimAt.fY, vecAimAt.fZ, 10000, 4, -4);
+		CIVTaskSimpleAimGun * pTask = new CIVTaskSimpleAimGun(vecAimAt.fX, vecAimAt.fY, vecAimAt.fZ, 10000, 4, -4);
 
 		// Was the task created?
 		if(pTask)
+		{
+			// Process the ped
+			pTask->ProcessPed(m_pPlayerPed);
+
+			// Destroy the task
+			pTask->Destroy();
+		}
+	}
+}
+
+void CPlayerEntity::SetWeaponShotAtTask(CVector3 vecAimAt)
+{
+	if (IsSpawned())
+	{
+		CIVTaskSimpleFireGun * pTask = new CIVTaskSimpleFireGun(vecAimAt.fX, vecAimAt.fY, vecAimAt.fZ, 10000, 4, -4);
+
+		// Was the task created?
+		if (pTask)
 		{
 			// Process the ped
 			pTask->ProcessPed(m_pPlayerPed);
@@ -2023,4 +1846,74 @@ unsigned CPlayerEntity::GetMaxAmmunationInClip(unsigned uiWeapon)
 		return 0;
 
 	return 0;
+}
+
+void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
+{
+	if (!IsPassenger())
+	{
+		CNetworkEntitySubPlayer PlayerPacket;
+
+		// Apply current 3D Position to the sync package
+		GetPosition(PlayerPacket.vecPosition);
+		GetMoveSpeed(PlayerPacket.vecMovementSpeed);
+		GetTurnSpeed(PlayerPacket.vecTurnSpeed);
+		GetDirectionSpeed(PlayerPacket.vecDirection);
+		GetRollSpeed(PlayerPacket.vecRoll);
+		PlayerPacket.bDuckState = m_pPlayerPed->IsDucking();
+		PlayerPacket.fHeading = GetRotation();
+		m_pContextData->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
+
+		//// Apply current weapon sync data to the sync package
+		//m_pEntitySync.pPlayerPacket.sWeaponData.fArmsHeadingCircle = m_pPlayerHandle.sWeaponData.fArmsHeadingCircle;
+		//m_pEntitySync.pPlayerPacket.sWeaponData.fArmsUpDownRotation = m_pPlayerHandle.sWeaponData.fArmsUpDownRotation;
+		//m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+		//m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtCoordinates = m_pPlayerHandle.sWeaponData.vecShotAtCoordinates;
+		//m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtTarget = m_pPlayerHandle.sWeaponData.vecShotAtTarget;
+		//m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
+
+		// Write player onfoot flag into raknet bitstream
+		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
+		pBitStream->Write(PlayerPacket);
+	}
+}
+
+void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
+{
+	CNetworkEntitySubPlayer PlayerPacket;
+
+	ePackageType eType;
+	pBitStream->Read(eType);
+	if (eType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
+	{
+		pBitStream->Read(PlayerPacket);
+
+		ApplySyncData(
+			// Apply current Position to the sync package
+			PlayerPacket.vecPosition,
+
+			// Apply current Movement to the sync package
+			PlayerPacket.vecMovementSpeed,
+
+			// Apply current Turnspeed to the sync package
+			PlayerPacket.vecTurnSpeed,
+
+			// Apply current Directionspeed to the sync package
+			PlayerPacket.vecDirection,
+
+			// Apply current Rollspeed to the sync package
+			PlayerPacket.vecRoll,
+
+			// Apply current duckstate to the sync package
+			PlayerPacket.bDuckState,
+
+			// Apply current heading to the sync package
+			PlayerPacket.fHeading,
+
+			//Apply current weapon sync data to the sync package
+			0,
+			0);
+
+		SetControlState(&PlayerPacket.pControlState);
+	}
 }

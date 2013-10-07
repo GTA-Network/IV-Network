@@ -23,11 +23,35 @@ CNetworkEntity::CNetworkEntity()
 	m_vecDirection(CVector3()),
 	m_vecRoll(CVector3()),
 	m_entityId(INVALID_ENTITY),
-	m_eType(UNKNOWN_ENTITY),
-	m_pPlayerEntity(NULL)
+	m_eType(UNKNOWN_ENTITY)
 {
 
 }
+
+CNetworkEntity::CNetworkEntity(eEntityType eType)
+: m_vecPosition(CVector3()),
+m_vecRotation(CVector3()),
+m_vecMoveSpeed(CVector3()),
+m_vecTurnSpeed(CVector3()),
+m_vecDirection(CVector3()),
+m_vecRoll(CVector3()),
+m_entityId(INVALID_ENTITY),
+m_eType(eType)
+{
+}
+
+CNetworkEntity::CNetworkEntity(eEntityType eType, EntityId entityId)
+: m_vecPosition(CVector3()),
+m_vecRotation(CVector3()),
+m_vecMoveSpeed(CVector3()),
+m_vecTurnSpeed(CVector3()),
+m_vecDirection(CVector3()),
+m_vecRoll(CVector3()),
+m_entityId(entityId),
+m_eType(eType)
+{
+}
+
 
 CNetworkEntity::~CNetworkEntity()
 {
@@ -106,6 +130,7 @@ void CNetworkEntity::StopMoving()
 	m_vecMoveSpeed = CVector3();
 }
 
+#if 0
 /*
  * @ This function handles the current packages from the network entity
  * @ So it stores the current values, which are used in the sync package
@@ -173,12 +198,13 @@ void CNetworkEntity::Pulse(CPlayerEntity * pPlayer)
 		g_pCore->GetGame()->GetCamera()->GetAimPosition(&m_pPlayerHandle.sWeaponData.vecAimAtCoordinates);
 	}
 }
-
+#endif
+#if 0
 /*
  * @ This function handles the current packages from the network entity
  * @ So it stores the current values, which are used in the sync package
 */
-void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
+//void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 {
 	// Check if our player ptr
 	if(pVehicle)
@@ -199,261 +225,5 @@ void CNetworkEntity::Pulse(CVehicleEntity * pVehicle)
 		pVehicle->GetGameVehicle()->GetRoll(m_vecRoll);
 	}
 }
+#endif 
 
-/*
- * @ This function fetches the data and creates the packages, which gets send to the server
-*/
-void CNetworkEntity::Serialize(ePackageType pType)
-{
-	// Create Sync package here and send it to the server
-	RakNet::BitStream * pBitStream = new BitStream;
-
-	// Backup old sync
-	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
-
-	// Create package
-	m_pEntitySync = *(new CNetworkEntitySync);
-
-	switch(m_eType)
-	{
-		case PLAYER_ENTITY:
-		{
-			// If we already set data for our next sync packet, copy the data
-			CNetworkEntitySubPlayer * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
-
-			// Apply entity type to package
-			m_pEntitySync.pEntityType = PLAYER_ENTITY;
-
-			// Apply current 3D Position to the sync package
-			pSyncPacket->vecPosition = m_vecPosition;
-
-			// Apply current 3D Movement to the sync package
-			pSyncPacket->vecMovementSpeed = m_vecMoveSpeed;
-
-			// Apply current 3D Turnspeed to the sync package
-			pSyncPacket->vecTurnSpeed = m_vecTurnSpeed;
-
-			// Apply current 3D Directionspeed to the sync package
-			pSyncPacket->vecDirection = m_vecDirection;
-
-			// Apply current 3D Rollspeed to the sync package
-			pSyncPacket->vecRoll = m_vecRoll;
-
-			// Apply current duckstate to the sync package
-			m_pEntitySync.pPlayerPacket.bDuckState = m_pPlayerHandle.bDuckState;
-
-			// Apply current heading to the sync package
-			m_pEntitySync.pPlayerPacket.fHeading = m_pPlayerHandle.fHeading;
-
-			// Get the control state
-			m_pEntitySync.pPlayerPacket.pControlState = m_pPlayerHandle.pControlState;
-			
-			// Apply current weapon sync data to the sync package
-			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsHeadingCircle = m_pPlayerHandle.sWeaponData.fArmsHeadingCircle;
-			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsUpDownRotation = m_pPlayerHandle.sWeaponData.fArmsUpDownRotation;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtCoordinates = m_pPlayerHandle.sWeaponData.vecShotAtCoordinates;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtTarget = m_pPlayerHandle.sWeaponData.vecShotAtTarget;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
-
-			// Merge EntitySync packet with our packet
-			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(CNetworkEntitySync));
-
-			// Write player onfoot flag into raknet bitstream
-			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
-			break;
-
-		}
-
-		case VEHICLE_ENTITY:
-		{
-			// If we already set data for our next sync packet, copy the data
-			CNetworkEntitySubVehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
-
-			// Apply entity type to package
-			m_pEntitySync.pEntityType = VEHICLE_ENTITY;
-
-			// Apply current 3D Position to the sync package
-			pSyncPacket->vecPosition = m_vecPosition;
-
-			// Merge EntitySync packet with our packet
-			memcpy(&m_pEntitySync.pVehiclePacket, pSyncPacket, sizeof(CNetworkEntitySubVehicle));
-
-			// Stop current case
-			break;
-		}
-
-		default:
-		{
-			CLogFile::Print("Failed to get entity type from current entitiy. Sync canceled..");
-			break;
-		}
-	}
-
-	// Write our Entity-Sync to the bitstream
-	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
-
-	// Send package to network
-	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
-}
-
-RakNet::BitStream CNetworkEntity::ManualSerialize(ePackageType pType)
-{
-	// Create Sync package here and send it to the server
-	RakNet::BitStream * pBitStream = new BitStream;
-
-	// Backup old sync
-	memcpy(&m_pEntityLastSync, &m_pEntitySync, sizeof(CNetworkEntitySync));
-
-	// Create package
-	m_pEntitySync = *(new CNetworkEntitySync);
-
-	switch(m_eType)
-	{
-		case PLAYER_ENTITY:
-		{
-			// If we already set data for our next sync packet, copy the data
-			CNetworkEntitySubPlayer * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
-
-			// Apply entity type to package
-			m_pEntitySync.pEntityType = PLAYER_ENTITY;
-
-			// Apply current 3D Position to the sync package
-			pSyncPacket->vecPosition = m_vecPosition;
-
-			// Apply current 3D Movement to the sync package
-			pSyncPacket->vecMovementSpeed = m_vecMoveSpeed;
-
-			// Apply current 3D Turnspeed to the sync package
-			pSyncPacket->vecTurnSpeed = m_vecTurnSpeed;
-
-			// Apply current 3D Directionspeed to the sync package
-			pSyncPacket->vecDirection = m_vecDirection;
-
-			// Apply current 3D Rollspeed to the sync package
-			pSyncPacket->vecRoll = m_vecRoll;
-
-			// Apply current duckstate to the sync package
-			m_pEntitySync.pPlayerPacket.bDuckState = m_pPlayerHandle.bDuckState;
-
-			// Apply current heading to the sync package
-			m_pEntitySync.pPlayerPacket.fHeading = m_pPlayerHandle.fHeading;
-
-			// Get control state
-			m_pEntitySync.pPlayerPacket.pControlState = m_pPlayerHandle.pControlState;
-			
-			// Apply current weapon sync data to the sync package
-			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsHeadingCircle = m_pPlayerHandle.sWeaponData.fArmsHeadingCircle;
-			m_pEntitySync.pPlayerPacket.sWeaponData.fArmsUpDownRotation = m_pPlayerHandle.sWeaponData.fArmsUpDownRotation;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtCoordinates = m_pPlayerHandle.sWeaponData.vecShotAtCoordinates;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecShotAtTarget = m_pPlayerHandle.sWeaponData.vecShotAtTarget;
-			m_pEntitySync.pPlayerPacket.sWeaponData.vecAimAtCoordinates = m_pPlayerHandle.sWeaponData.vecAimAtCoordinates;
-
-			// Merge EntitySync packet with our packet
-			memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(CNetworkEntitySubPlayer));
-
-			// Write player onfoot flag into raknet bitstream
-			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
-			break;
-
-		}
-
-		case VEHICLE_ENTITY:
-		{
-			// If we already set data for our next sync packet, copy the data
-			CNetworkEntitySubVehicle * pSyncPacket = &(m_pEntitySync.pVehiclePacket);
-
-			// Apply entity type to package
-			m_pEntitySync.pEntityType = VEHICLE_ENTITY;
-
-			// Apply current 3D Position to the sync package
-			pSyncPacket->vecPosition = m_vecPosition;
-
-			// Merge EntitySync packet with our packet
-			memcpy(&m_pEntitySync.pVehiclePacket, pSyncPacket, sizeof(CNetworkEntitySubVehicle));
-
-			// Stop current case
-			break;
-		}
-
-		default:
-		{
-			CLogFile::Print("Failed to get entity type from current entitiy. Sync canceled..");
-			break;
-		}
-	}
-
-	// Write our Entity-Sync to the bitstream
-	pBitStream->Write((char *)&m_pEntitySync, sizeof(CNetworkEntitySync));
-
-	// return bitstream package
-	return (pBitStream != NULL);
-}
-
-
-void CNetworkEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pType)
-{
-	// Get Sync package here and recieve it to the server
-	
-	CNetworkEntitySync * pSyncPackage = new CNetworkEntitySync;
-	pBitStream->Read((char *)pSyncPackage, sizeof(CNetworkEntitySync));
-	
-	switch(pSyncPackage->pEntityType)
-	{
-		case PLAYER_ENTITY:
-		{
-			if(!m_pPlayerEntity)
-				return;
-
-			// Pack stuff temporary in local variables
-			float fAimHeading[2];
-			fAimHeading[0] = pSyncPackage->pPlayerPacket.sWeaponData.fArmsHeadingCircle;
-			fAimHeading[1] = pSyncPackage->pPlayerPacket.sWeaponData.fArmsUpDownRotation;
-
-			CVector3 vecWeaponData[3];
-			vecWeaponData[0] = pSyncPackage->pPlayerPacket.sWeaponData.vecAimAtCoordinates;
-			vecWeaponData[1] = pSyncPackage->pPlayerPacket.sWeaponData.vecShotAtCoordinates;
-			vecWeaponData[2] = pSyncPackage->pPlayerPacket.sWeaponData.vecShotAtTarget;
-
-			m_pPlayerEntity->ApplySyncData(
-				// Apply current 3D Position to the sync package
-				pSyncPackage->pPlayerPacket.vecPosition,
-
-				// Apply current 3D Movement to the sync package
-				pSyncPackage->pPlayerPacket.vecMovementSpeed,
-
-				// Apply current 3D Turnspeed to the sync package
-				pSyncPackage->pPlayerPacket.vecTurnSpeed,
-
-				// Apply current 3D Directionspeed to the sync package
-				pSyncPackage->pPlayerPacket.vecDirection,
-
-				// Apply current 3D Rollspeed to the sync package
-				pSyncPackage->pPlayerPacket.vecRoll,
-
-				// Apply current duckstate to the sync package
-				pSyncPackage->pPlayerPacket.bDuckState,
-
-				// Apply current heading to the sync package
-				pSyncPackage->pPlayerPacket.fHeading,
-
-				//Apply current weapon sync data to the sync package
-				fAimHeading,
-
-				vecWeaponData);
-
-			m_pPlayerEntity->PreStoreIVSynchronization(false, false, NULL);
-			m_pPlayerEntity->SetControlState(&pSyncPackage->pPlayerPacket.pControlState);
-			// Finished deserialize, break!
-			break;
-		}
-		default:
-		{
-			CLogFile::Printf("[%s]: Unkown entity type, process...",__FUNCTION__);
-			break;
-		}
-	}
-
-	// TODO: apply the data from the syncpackage to the vehicles/peds
-}

@@ -185,14 +185,14 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			}
 
 			ePackageType eType;
-			pBitStream->Read<ePackageType>(eType);
+			pBitStream->Read(eType);
 
-			switch ((int) eType)
+			switch (eType)
 			{
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 				{
 					// Process player deserialise package
-					pPlayer->Deserialize(pBitStream, eType);
+					pPlayer->Deserialize(pBitStream);
 					break;
 				}
 			default:
