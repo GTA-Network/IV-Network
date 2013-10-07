@@ -194,12 +194,12 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 					// Process player deserialise package
 					pPlayer->Deserialize(pBitStream, eType);
 					break;
-											   }
+				}
 			default:
 				{
 					CLogFile::Print("Unkown package type, process...");
 					break;
-				   }
+				}
 			}
 		}
 	}
