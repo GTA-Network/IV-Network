@@ -155,7 +155,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectWindow->setVisible(true);
 
 	m_pQuickConnectIPStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
-	m_pQuickConnectIPStaticText->setText("IP Address:");
+	m_pQuickConnectIPStaticText->setText("Hostname / IP Address:");
 	m_pQuickConnectIPStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
 	m_pQuickConnectIPStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
 	m_pQuickConnectIPStaticText->setProperty("FrameEnabled", "false");
@@ -295,18 +295,43 @@ bool CMainMenu::OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
+int findCharInCharP(char* CharP, char Char)
+{
+	for (int i = 0; i < strlen(CharP); ++i)
+	{
+		if (CharP[i] == Char)
+			return i;
+	}
+	return -1;
+}
+
 void CMainMenu::OnQuickConnectSubmit()
 {
-	CString strHost;
+	char* cpHost;
 	unsigned short usPort = 9999;
 
-	// Get the password
-	CString strPassword(m_pQuickConnectPasswordEditBox->getText().c_str());
+	if (strlen(m_pQuickConnectIPEditBox->getText()) == 0)
+	{
+		m_pQuickConnectIPEditBox->setText("127.0.0.1:9999");
+	}
+
+	int colon = findCharInCharP(m_pQuickConnectIPEditBox->getText(), ':');
+	if (colon == -1)
+	{
+		cpHost = m_pQuickConnectIPEditBox->getText();
+		m_pQuickConnectIPEditBox->setText(CString("%s:9999", m_pQuickConnectIPEditBox->getText()).Get());
+	}
+	else
+	{
+		cpHost = m_pQuickConnectIPEditBox->getText();
+		cpHost[colon] = '\0';
+		usPort = atoi(m_pQuickConnectIPEditBox->getText() + colon + 1);
+	}
 
 	// Set the ip, port and password
-	CVAR_SET_STRING("ip", strHost);
+	CVAR_SET_STRING("ip", cpHost);
 	CVAR_SET_INTEGER("port", usPort);
-	CVAR_SET_STRING("pass", strPassword);
+	CVAR_SET_STRING("pass", m_pQuickConnectPasswordEditBox->getText());
 
 	// Hide the quick connect window
 	SetVisible(false);
@@ -320,7 +345,7 @@ void CMainMenu::OnQuickConnectSubmit()
 	g_pCore->SetNick("Player"); // TODO: Make it so you can change your name
 
 	// Conneting the player to the server
-	g_pCore->ConnectToServer(strHost, usPort);
+	g_pCore->ConnectToServer(cpHost, usPort, m_pQuickConnectPasswordEditBox->getText());
 
 	// Hide the main menu elements
 	SetVisible(false);

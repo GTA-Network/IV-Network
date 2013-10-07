@@ -23,7 +23,7 @@
 
 struct CGUIWindow : CEGUI::Window
 {
-	std::string getText();
+	char* getText();
 };
 
 InheritedStruct(CGUIWindow, CGUIButton);
@@ -51,6 +51,38 @@ typedef void (*GUIMessageBoxHandler_t)(eGUIMessageBoxResponse type);
 
 class CGUI 
 {
+private:
+	IDirect3DDevice9		 * m_pD3DDevice;
+	// DX-based renderer
+	CEGUI::Direct3D9Renderer * m_pRenderer;
+	CEGUI::System            * m_pSystem;
+	CEGUI::Scheme            * m_pScheme;
+	CEGUI::MouseCursor       * m_pCursor;
+	CEGUI::WindowManager     * m_pWindowManager;
+	CEGUI::FontManager       * m_pFontManager;
+	CEGUI::GeometryBuffer    * m_pTextDrawingGeometryBuffer;
+	CEGUI::DefaultWindow     * m_pDefaultWindow;
+
+
+	IDirectInput8            * m_pInput;
+	IDirectInputDevice8      * m_pInputMouse;
+	bool                       m_bInitialized;
+	bool					   m_bScriptedCursorVisible;
+	DWORD                      m_dwInputAxes;
+	DWORD                      m_dwInputButtons;
+	DIMOUSESTATE2              m_MouseState;
+	DWORD                      dwLastClickTime[8];
+	BYTE                       byteButtonWasClicked[8];
+	BYTE                       byteButtonClicked[8];
+	RECT                       m_rCursorPosition;
+	int                        m_iCurrentId;
+	DWORD                      m_dwDoubleClickTime;
+	POINT                      m_clickPosition;
+	unsigned int               m_uiCurrentJenkFag;
+
+	int m_iScreenWidth;
+	int m_iScreenHeight;
+
 public:
 	CGUI(IDirect3DDevice9* pDevice);
 	~CGUI();
@@ -107,37 +139,7 @@ public:
 	static CEGUI::String       AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength);
 	static CEGUI::String       AnsiToCeguiFriendlyString(CString strAnsiString);
 
-private:
-	IDirect3DDevice9		 * m_pD3DDevice;
-	// DX-based renderer
-	CEGUI::Direct3D9Renderer * m_pRenderer;
-	CEGUI::System            * m_pSystem;
-	CEGUI::Scheme            * m_pScheme;
-	CEGUI::MouseCursor       * m_pCursor;
-	CEGUI::WindowManager     * m_pWindowManager;
-	CEGUI::FontManager       * m_pFontManager;
-	CEGUI::GeometryBuffer    * m_pTextDrawingGeometryBuffer;
-	CEGUI::DefaultWindow     * m_pDefaultWindow;
-
-
-	IDirectInput8            * m_pInput;
-	IDirectInputDevice8      * m_pInputMouse;
-	bool                       m_bInitialized;
-	bool					   m_bScriptedCursorVisible;
-	DWORD                      m_dwInputAxes;
-	DWORD                      m_dwInputButtons;
-	DIMOUSESTATE2              m_MouseState;
-	DWORD                      dwLastClickTime[8];
-	BYTE                       byteButtonWasClicked[8];
-	BYTE                       byteButtonClicked[8];
-	RECT                       m_rCursorPosition;
-	int                        m_iCurrentId;
-	DWORD                      m_dwDoubleClickTime;
-	POINT                      m_clickPosition;
-	unsigned int               m_uiCurrentJenkFag;
-
-	int m_iScreenWidth;
-	int m_iScreenHeight;
+	bool                       CGUI::HandleUserInput(UINT uMsg, WPARAM wParam);
 };
 
 #endif

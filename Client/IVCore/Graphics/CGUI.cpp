@@ -319,13 +319,13 @@ void CGUI::OnResetDevice()
 	}
 }
 
-std::string CGUIWindow::getText()
+char* CGUIWindow::getText()
 {
 	CEGUI::String str = CEGUI::Window::getText();
 	int len = str.length();
 
 	if (len == 0)
-		return std::string();
+		return "";
 
 	char *Ansi = new char[str.length() + 1];
 	wchar_t *Unicode = new wchar_t[str.length() + 1];
@@ -335,12 +335,9 @@ std::string CGUIWindow::getText()
 
 	WideCharToMultiByte(CP_ACP, NULL, Unicode, -1, Ansi, len, NULL, NULL);
 
-	Ansi[str.size()] = 0;
-	std::string out = Ansi;
-	delete [] Ansi;
 	delete [] Unicode;
 
-	return out;
+	return Ansi;
 }
 
 bool CGUI::OnGUIKeyDown(const CEGUI::EventArgs &eventArgs)
@@ -808,4 +805,103 @@ CEGUI::String CGUI::AnsiToCeguiFriendlyString(const char * szAnsiString, unsigne
 CEGUI::String CGUI::AnsiToCeguiFriendlyString(CString strAnsiString)
 {
 	return AnsiToCeguiFriendlyString(strAnsiString.Get(), strAnsiString.GetLength());
+}
+
+DWORD ScanCodeToDIK(WORD wScanCode)
+{
+	switch (wScanCode)
+	{
+	case 0x41: return DIK_A;               // Control + A (Select All)
+	case 0x43: return DIK_C;               // Control + C (Copy)
+	case 0x58: return DIK_X;               // Control + X (Cut)
+	case 0x56: return DIK_V;               // Control + V (Paste)
+	case VK_TAB: return DIK_TAB;           // Tab
+	case VK_HOME: return DIK_HOME;         // Home
+	case VK_END: return DIK_END;           // End
+	case VK_INSERT: return DIK_INSERT;     // Insert
+	case VK_DELETE: return DIK_DELETE;     // Delete
+	case VK_UP: return DIK_UP;             // Arrow Up
+	case VK_DOWN: return DIK_DOWN;         // Arrow Down
+	case VK_LEFT: return DIK_LEFT;         // Arrow Left
+	case VK_RIGHT: return DIK_RIGHT;       // Arrow Right
+	case VK_SHIFT: return DIK_LSHIFT;      // Shift
+	case VK_LSHIFT: return DIK_LSHIFT;     // Left Shift
+	case VK_RSHIFT: return DIK_RSHIFT;     // Right Shift
+	case VK_BACK: return DIK_BACK;         // Backspace
+	case VK_RETURN: return DIK_RETURN;     // Enter
+	case VK_CONTROL: return DIK_LCONTROL;  // Control
+	case VK_LCONTROL: return DIK_LCONTROL; // Left Control
+	case VK_RCONTROL: return DIK_RCONTROL; // Right Control
+	}
+
+	return 0;
+}
+
+bool CGUI::HandleUserInput(UINT uMsg, WPARAM wParam)
+{
+	if (m_bInitialized)
+	{
+		// Is this a mouse event?
+		switch (uMsg)
+		{
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_XBUTTONDOWN:
+		case WM_XBUTTONUP:
+		case WM_LBUTTONDBLCLK:
+		case WM_MBUTTONDBLCLK:
+		case WM_RBUTTONDBLCLK:
+		case WM_MOUSEWHEEL:
+			{
+				// We handle the mouse manually with direct input
+				return false;
+			}
+		}
+
+		// Is it a char?
+		if (uMsg == WM_CHAR)
+		{
+			// Temporary strings for unicode conversion
+			unsigned char ucAnsi = wParam;
+			WCHAR wcUnicode = 0;
+			SharedUtility::AnsiToUnicode((const char *) &ucAnsi, 1, &wcUnicode, 1);
+
+			if (m_pSystem->injectChar((CEGUI::utf32)wcUnicode))
+				return true;
+		}
+
+		// Is it a key down or key up?
+		else if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP)
+		{
+			// For some reason when you press ALT it sends 3 messages: (WM_KEYDOWN VK_CONTROL), (WM_KEYDOWN VK_MENU) and (WM_KEYUP VK_MENU)
+			// This caused that after ALT has been pressed CEGUI thought control(VK_CONTROL) is always down
+			if (wParam == VK_MENU && uMsg == WM_KEYDOWN)
+				return m_pSystem->injectKeyUp(DIK_LCONTROL);
+
+			// Convert it to a CEGUI scan code
+			DWORD dwKey = ScanCodeToDIK(wParam);
+
+			// Do we have a valid scan code?
+			if (dwKey)
+			{
+				// Pass it to the GUI
+				if (uMsg == WM_KEYDOWN)
+				{
+					if (m_pSystem->injectKeyDown(dwKey))
+						return true;
+				}
+				else
+				{
+					if (m_pSystem->injectKeyUp(dwKey))
+						return true;
+				}
+			}
+		}
+	}
+	return true;
 }

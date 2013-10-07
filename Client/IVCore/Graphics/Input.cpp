@@ -123,7 +123,9 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     // Are we focused?
     if(bFocused)
     {
-		CGUI* pGUI = g_pCore->GetGUI();
+		if (g_pCore->GetGUI())
+			g_pCore->GetGUI()->HandleUserInput(uMsg, wParam);
+
 		if(uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE))
 		{
 			return true;
