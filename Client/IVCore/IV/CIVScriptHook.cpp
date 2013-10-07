@@ -15,7 +15,6 @@ extern	CCore				* g_pCore;
 sRAGETHREAD *	g_pRageScriptThread = NULL;
 bool			g_bRageScriptLoaded = false;
 int				g_iRageScriptFrames = 0;
-bool			bScriptProcssSwitch = false;
 
 __declspec(naked) int GetRunningScriptThread()
 {
@@ -38,22 +37,17 @@ int sOUR_RAGETHREAD::Process_Hook(int a1)
 	/*
 	Disable a script:
 	if (strcmp(GetScriptName(this), "drunkcontroller") == 0) //This stolen by XForce x)
-		return 2;
+	return 2;
 	*/
 
 	if (strcmp(GetScriptName(this), "main") == 0)
 	{
-		//GameScriptProcess();
-		if (g_iRageScriptFrames < 5)
-		{
-			g_iRageScriptFrames++;
-			g_pCore->OnGameLoad();
-		}
-
 		if (!g_bRageScriptLoaded)
 		{
 			// Mark RageScriptThread as loaded
 			g_bRageScriptLoaded = !g_bRageScriptLoaded;
+
+			g_pCore->OnGameLoad();
 			g_pCore->SetClientState(GAME_STATE_INGAME);
 		}
 		else
@@ -83,14 +77,12 @@ void CIVScriptingHook::InstallScriptHooks()
 	g_pRageScriptThread = new sRAGETHREAD;
 	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
 
-	bScriptProcssSwitch = false;
-
 	*(BYTE*) (g_pCore->GetBase() + 0x4CE0BE) = 0x57; //push edi
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x4CE0BF, CPatcher::GetClassMemberAddress(&sOUR_RAGETHREAD::Process_Hook));
-	*(WORD*) (g_pCore->GetBase() + 0x4CE0C4) = 0x9090;
+	*(WORD*) (g_pCore->GetBase() + 0x4CE0C4) = 0x9090; //nop; nop
 
 	// Disable check to invalid threads
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD)GetRunningScriptThread, 5);
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD) GetRunningScriptThread, 5);
 	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0x830DE1), 39);
 	//CPatcher::InstallNopPatch((g_pCore->GetBase() + 0830E64), 22);
 }
