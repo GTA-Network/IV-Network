@@ -34,8 +34,7 @@ void CPlayerEntity::Pulse()
 		RakNet::BitStream bitStream;
 		bitStream.Write(GetId());
 		bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
-		CServer::GetInstance()->GetPlayerManager()->GetAt(GetId())->Serialize(&bitStream, m_eLastSyncPackageType);
-
+		CServer::GetInstance()->GetPlayerManager()->GetAt(GetId())->Serialize(&bitStream, RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
 
 		m_ulLastSyncSent = SharedUtility::GetTime();
@@ -50,6 +49,7 @@ void CPlayerEntity::SetPosition(const CVector3& vecPosition)
 		
 	}
 }
+
 
 void CScriptPlayer::SetPosition(float fX, float fY, float fZ)
 {
@@ -78,45 +78,40 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkEntitySync m_pEntitySync;
+			CNetworkEntitySubPlayer pSyncPacket;
 
-			CNetworkEntitySubPlayer * pSyncPacket = &(m_pEntitySync.pPlayerPacket);
-
-			// Apply entity type to package
-			m_pEntitySync.pEntityType = PLAYER_ENTITY;
-
-			GetControlState(pSyncPacket->pControlState);
+			GetControlState(pSyncPacket.pControlState);
 
 			// Apply current 3D Position to the sync package
-			GetPosition(pSyncPacket->vecPosition);
+			GetPosition(pSyncPacket.vecPosition);
 
 			// Apply current 3D Movement to the sync package
-			GetMoveSpeed(pSyncPacket->vecMovementSpeed);
+			GetMoveSpeed(pSyncPacket.vecMovementSpeed);
 
 			// Apply current 3D Turnspeed to the sync package
-			GetTurnSpeed(pSyncPacket->vecTurnSpeed);
+			GetTurnSpeed(pSyncPacket.vecTurnSpeed);
 
 			//CLogFile::Printf("[%i] %f %f %f", GetId(), pSyncPacket->vecTurnSpeed.fX, pSyncPacket->vecTurnSpeed.fY, pSyncPacket->vecTurnSpeed.fZ);
 
 			// Apply current 3D Directionspeed to the sync package
-			pSyncPacket->vecDirection = m_vecDirection;
+			pSyncPacket.vecDirection = m_vecDirection;
 
 			// Apply current 3D Rollspeed to the sync package
-			pSyncPacket->vecRoll = m_vecRoll;
+			pSyncPacket.vecRoll = m_vecRoll;
 
 			// Apply current duckstate to the sync package
-			pSyncPacket->bDuckState = m_bDuckState;
+			pSyncPacket.bDuckState = m_bDuckState;
 
 			// Apply current heading to the sync package
-			pSyncPacket->fHeading = m_fHeading;
+			pSyncPacket.fHeading = m_fHeading;
 
 			// Apply current weapon sync data to the sync package
-			pSyncPacket->sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
-			pSyncPacket->sWeaponData.fArmsUpDownRotation = m_weaponData.fArmsUpDownRotation;
-			pSyncPacket->sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
-			pSyncPacket->sWeaponData.vecShotAtCoordinates = m_weaponData.vecShotAtCoordinates;
-			pSyncPacket->sWeaponData.vecShotAtTarget = m_weaponData.vecShotAtTarget;
-			pSyncPacket->sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
+			pSyncPacket.sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
+			pSyncPacket.sWeaponData.fArmsUpDownRotation = m_weaponData.fArmsUpDownRotation;
+			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
+			pSyncPacket.sWeaponData.vecShotAtCoordinates = m_weaponData.vecShotAtCoordinates;
+			pSyncPacket.sWeaponData.vecShotAtTarget = m_weaponData.vecShotAtTarget;
+			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
 
 			// Merge EntitySync packet with our packet
 			//memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
@@ -125,7 +120,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 
 			// Write our Entity-Sync to the bitstream
-			pBitStream->Write((char *) &m_pEntitySync, sizeof(CNetworkEntitySync));
+			pBitStream->Write(pSyncPacket);
 		}
 		break;
 	default:
@@ -136,31 +131,29 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 
 void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
-	CNetworkEntitySync * pSyncPackage = new CNetworkEntitySync;
-	pBitStream->Read((char *) pSyncPackage, sizeof(CNetworkEntitySync));
-
 	switch (pType)
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkEntitySubPlayer * pSyncPlayer = &pSyncPackage->pPlayerPacket;
+			CNetworkEntitySubPlayer pSyncPlayer;
+			pBitStream->Read(pSyncPlayer);
 
-			SetControlState(pSyncPlayer->pControlState);
-			SetPosition(pSyncPlayer->vecPosition);
+			SetControlState(pSyncPlayer.pControlState);
+			SetPosition(pSyncPlayer.vecPosition);
 
-			SetMoveSpeed(pSyncPlayer->vecMovementSpeed);
-			SetTurnSpeed(pSyncPlayer->vecTurnSpeed);
-			SetDirection(pSyncPlayer->vecDirection);
-			SetRoll(pSyncPlayer->vecRoll);
-			SetDucking(pSyncPlayer->bDuckState);
-			SetHeading(pSyncPlayer->fHeading);
+			SetMoveSpeed(pSyncPlayer.vecMovementSpeed);
+			SetTurnSpeed(pSyncPlayer.vecTurnSpeed);
+			SetDirection(pSyncPlayer.vecDirection);
+			SetRoll(pSyncPlayer.vecRoll);
+			SetDucking(pSyncPlayer.bDuckState);
+			SetHeading(pSyncPlayer.fHeading);
 
 			// Save weapon sync
-			SetArmHeading(pSyncPlayer->sWeaponData.fArmsHeadingCircle);
-			SetArmUpDown(pSyncPlayer->sWeaponData.fArmsUpDownRotation);
-			SetWeaponAimTarget(pSyncPlayer->sWeaponData.vecAimAtCoordinates);
-			SetWeaponShotSource(pSyncPlayer->sWeaponData.vecShotAtCoordinates);
-			SetWeaponShotTarget(pSyncPlayer->sWeaponData.vecShotAtTarget);
+			SetArmHeading(pSyncPlayer.sWeaponData.fArmsHeadingCircle);
+			SetArmUpDown(pSyncPlayer.sWeaponData.fArmsUpDownRotation);
+			SetWeaponAimTarget(pSyncPlayer.sWeaponData.vecAimAtCoordinates);
+			SetWeaponShotSource(pSyncPlayer.sWeaponData.vecShotAtCoordinates);
+			SetWeaponShotTarget(pSyncPlayer.sWeaponData.vecShotAtTarget);
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

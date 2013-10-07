@@ -56,13 +56,7 @@ private:
 	sWeaponStructure						m_aimData;
 	sWeaponStructure						m_shotData;
 
-	CControlState							m_previousControlState;
-    CControlState							m_currentControlState;
-
-	sIVSynchronization						* m_pIVSync;
-
-	sPlayerEntity_StoreIVSynchronization	* m_pIVSyncHandle;
-	CPlayerEntity							* m_pPlayerEntity;
+	unsigned long							m_ulLastSyncReceived;
 
 	struct 
 	{
@@ -79,7 +73,7 @@ private:
 		unsigned char	ucFace;
 	}										m_sClothes;
 
-	BYTE									GetClothesValueFromSlot(BYTE bodyPart)
+	inline BYTE									GetClothesValueFromSlot(BYTE bodyPart)
 	{
 		switch(bodyPart)
 		{
@@ -98,7 +92,7 @@ private:
 		}
 	}
 
-	void									SetClothesValue(BYTE bodyPart, BYTE byteValue)
+	inline void									SetClothesValue(BYTE bodyPart, BYTE byteValue)
 	{
 		switch(bodyPart)
 		{
@@ -175,11 +169,6 @@ public: // Handles call functions
 	inline void						Spawn() 
 	{
 		m_bSpawned = true;
-	}
-
-	inline CPlayerEntity			*GetPlayerEntityInstance()
-	{
-		return this;
 	}
 
 	void							SetNetworked(bool bNetworked) { m_bNetworked = bNetworked; }
@@ -263,6 +252,9 @@ public: // Handles call functions
 	unsigned						GetAmmunationInClip(unsigned uiWeapon);
 	void							SetAmmunationInClip(unsigned uiAmmunationInClip);
 	unsigned						GetMaxAmmunationInClip(unsigned uiWeapon);
+
+	virtual void					Serialize(RakNet::BitStream * pBitStream);
+	virtual void					Deserialize(RakNet::BitStream * pBitStream);
 };
 
 #endif // CPlayerEntity_h

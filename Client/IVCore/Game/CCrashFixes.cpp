@@ -70,4 +70,6 @@ void CCrashFixes::Initialize()
 
 	// Disables zone population calcs fixes crash with some vehicles
 	CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchEnableAndFixVehicleModels);
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA6180C, g_pCore->GetBase() + 0xA619F7);
 }
