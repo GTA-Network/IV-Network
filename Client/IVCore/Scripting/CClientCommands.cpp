@@ -17,7 +17,6 @@
 #include <IV/CIVScript_FunctionInvoke.h>
 #include <Game/IVEngine/CIVStreaming.h>
 #include <Ptrs.h>
-#include <Game/CEFLCSupport.h>
 #include <Game/IVEngine/CIVTrain.h>
 
 extern unsigned int l_U40;

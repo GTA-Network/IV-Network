@@ -150,7 +150,6 @@
     <ClCompile Include="Game\CContextSwitch.cpp" />
     <ClCompile Include="Game\CCrashFixes.cpp" />
     <ClCompile Include="Game\CDevelopment.cpp" />
-    <ClCompile Include="Game\CEFLCSupport.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
@@ -324,7 +323,6 @@
     <ClInclude Include="Game\CContextSwitch.h" />
     <ClInclude Include="Game\CCrashFixes.h" />
     <ClInclude Include="Game\CDevelopment.h" />
-    <ClInclude Include="Game\CEFLCSupport.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />

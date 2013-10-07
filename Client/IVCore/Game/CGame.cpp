@@ -13,7 +13,6 @@
 #include <Game/IVEngine/CIVHud.h>
 #include <Game/IVEngine/CIVWeather.h>
 #include <Game/IVEngine/CIVModelInfo.h>
-#include <Game/CEFLCSupport.h>
 #include <General/CException.h>
 #include <Game/CGameFiles.h>
 #include <IV/CIVScript.h>
@@ -101,10 +100,6 @@ void CGame::Setup()
 	
 	// Hide the chat
 	g_pCore->GetChat()->SetVisible(false);
-	
-	// Setup the EFLC support
-	//CEFLCSupport::SpecificSupport(true, true, true, true, true);
-	//CEFLCSupport::InstallSupport();
 }
 
 void CGame::Initialise()
@@ -312,7 +307,6 @@ void CGame::OnClientReadyToGamePlay()
 void CGame::OnClientPastGameJoin()
 {
 	// Preload world stuff
-	CEFLCSupport::InstallPreGameLoad();
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)

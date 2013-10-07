@@ -497,9 +497,6 @@
     <ClCompile Include="Hooks\CWin32MouseHook.cpp">
       <Filter>Source Files\Hooks\CWin32MouseHook</Filter>
     </ClCompile>
-    <ClCompile Include="Game\CEFLCSupport.cpp">
-      <Filter>Source Files\Game\IV</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\CZlib.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
@@ -1059,9 +1056,6 @@
     </ClInclude>
     <ClInclude Include="Hooks\CWin32MouseHook.h">
       <Filter>Header Files\Hooks\CWin32MouseHook</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\CEFLCSupport.h">
-      <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\CZlib.h">
       <Filter>Header Files\Shared</Filter>
