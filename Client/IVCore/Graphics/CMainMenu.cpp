@@ -13,8 +13,8 @@
 
 extern CCore* g_pCore;
 
-CMainMenu::CMainMenu(CGUI* pGUI)
-: m_pGUI(pGUI)
+CMainMenu::CMainMenu(CGUI* pGUI) :
+	m_pGUI(pGUI)
 {
 
 }

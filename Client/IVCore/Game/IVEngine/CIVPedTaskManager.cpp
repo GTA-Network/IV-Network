@@ -12,9 +12,8 @@
 #include "CIVPed.h"
 extern CCore * g_pCore;
 
-CIVPedTaskManager::CIVPedTaskManager(IVPedTaskManager * pPedTaskManager, CIVPed * pPed)
-	: m_pPedTaskManager(pPedTaskManager),
-	m_pPed(pPed)
+CIVPedTaskManager::CIVPedTaskManager(IVPedTaskManager * pPedTaskManager, CIVPed * pPed) :
+	m_pPedTaskManager(pPedTaskManager), m_pPed(pPed)
 {
 }
 

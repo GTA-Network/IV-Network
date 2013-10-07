@@ -11,8 +11,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CDirectInputDevice8Proxy::CDirectInputDevice8Proxy(IDirectInputDevice8 * pDevice, eDIDeviceType DeviceType)
-	: m_pDevice(pDevice),
+CDirectInputDevice8Proxy::CDirectInputDevice8Proxy(IDirectInputDevice8 * pDevice, eDIDeviceType DeviceType) :
+	m_pDevice(pDevice),
 	m_DeviceType(DeviceType)
 {
 	m_Cursor.x = 0;

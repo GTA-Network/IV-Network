@@ -27,11 +27,9 @@ extern CCore * g_pCore;
 #define GET_BINARY_KEY(key, binary) \
 	if(bCurrent) { m_pPad->m_padData[key].m_byteCurrentValue = (binary ? MAX_INPUT_VALUE : DEFAULT_BINARY_INPUT_VALUE); } else { m_pPad->m_padData[key].m_byteLastValue = (binary ? MAX_INPUT_VALUE : DEFAULT_BINARY_INPUT_VALUE); }
 
-CIVPad::CIVPad()
+CIVPad::CIVPad() :
+	m_bCreatedByUs(true)
 {
-	// Mark as created by us
-	m_bCreatedByUs = true;
-
 	// Allocate the new pad
 	m_pPad = new IVPad;
 

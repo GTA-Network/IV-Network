@@ -20,7 +20,8 @@ extern CCore * g_pCore;
 // Disable C4748 warning...
 #pragma warning( disable : 4748 )
 
-CIVTrain::CIVTrain() : CVehicleEntity(126, CVector3(), 0, 0, 0 , 0, 0)
+CIVTrain::CIVTrain() :
+	CVehicleEntity(126, CVector3(), 0, 0, 0 , 0, 0)
 {
 	CVehicleEntity::Destroy();
 

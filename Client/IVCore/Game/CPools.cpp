@@ -14,8 +14,8 @@ extern CCore * g_pCore;
 
 #define INVALID_PLAYER_PED 255
 
-CPools::CPools()
-	: m_pPedPool(NULL),
+CPools::CPools() :
+	m_pPedPool(NULL),
 	m_pVehiclePool(NULL),
 	m_pTaskPool(NULL),
 	m_pCamPool(NULL),

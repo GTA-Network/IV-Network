@@ -11,17 +11,15 @@
 #include <Common.h>
 #include <CLogFile.h>
 
-CIVCheckpoint::CIVCheckpoint()
-	:m_bCreatedByUs(true),
-	m_pCheckpoint(new IVCheckpoint)
+CIVCheckpoint::CIVCheckpoint() :
+	m_bCreatedByUs(true), m_pCheckpoint(new IVCheckpoint)
 {
 	memset(m_pCheckpoint, 0, sizeof(IVCheckpoint));
 }
 
-CIVCheckpoint::CIVCheckpoint(IVCheckpoint * pCheckpoint)
-	: m_bCreatedByUs(false)
+CIVCheckpoint::CIVCheckpoint(IVCheckpoint * pCheckpoint) :
+	m_bCreatedByUs(false), m_pCheckpoint(pCheckpoint)
 {
-	SetCheckpoint(pCheckpoint);
 }
 
 CIVCheckpoint::~CIVCheckpoint()

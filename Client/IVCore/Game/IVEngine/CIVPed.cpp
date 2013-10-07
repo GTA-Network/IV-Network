@@ -12,12 +12,14 @@
 #include "CIVPedTaskManager.h"
 extern CCore * g_pCore;
 
-CIVPed::CIVPed() : CIVPhysical()
+CIVPed::CIVPed() :
+	CIVPhysical()
 {
 
 }
 
-CIVPed::CIVPed(IVPed * pPed) : CIVPhysical(pPed)
+CIVPed::CIVPed(IVPed * pPed) :
+	CIVPhysical(pPed)
 {
 	// Reset the task manager
 	m_pPedTaskManager = NULL;

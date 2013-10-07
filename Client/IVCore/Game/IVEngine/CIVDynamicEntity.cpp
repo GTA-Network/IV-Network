@@ -9,12 +9,14 @@
 
 #include "CIVDynamicEntity.h"
 
-CIVDynamicEntity::CIVDynamicEntity( ) : CIVEntity( )
+CIVDynamicEntity::CIVDynamicEntity( ) :
+	CIVEntity( )
 {
 
 }
 
-CIVDynamicEntity::CIVDynamicEntity( IVDynamicEntity * pDynamicEntity ) : CIVEntity( pDynamicEntity )
+CIVDynamicEntity::CIVDynamicEntity( IVDynamicEntity * pDynamicEntity ) :
+	CIVEntity( pDynamicEntity )
 {
 
 }

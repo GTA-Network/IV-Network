@@ -9,12 +9,14 @@
 
 #include "CIVPlayerPed.h"
 
-CIVPlayerPed::CIVPlayerPed( ) : CIVPed( )
+CIVPlayerPed::CIVPlayerPed( ) :
+	CIVPed( )
 {
 
 }
 
-CIVPlayerPed::CIVPlayerPed( IVPlayerPed * pPlayerPed ) : CIVPed( pPlayerPed )
+CIVPlayerPed::CIVPlayerPed( IVPlayerPed * pPlayerPed ) :
+	CIVPed( pPlayerPed )
 {
 
 }

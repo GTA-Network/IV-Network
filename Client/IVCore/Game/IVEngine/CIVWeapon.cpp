@@ -13,7 +13,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CIVWeapon::CIVWeapon(IVWeapon * pWeapon) : m_pWeapon(pWeapon)
+CIVWeapon::CIVWeapon(IVWeapon * pWeapon) :
+	m_pWeapon(pWeapon)
 {
 
 }

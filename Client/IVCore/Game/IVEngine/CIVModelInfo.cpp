@@ -13,16 +13,16 @@
 
 extern CCore * g_pCore;
 
-CIVModelInfo::CIVModelInfo( )
+CIVModelInfo::CIVModelInfo() :
+	m_iModelIndex(-1)
 {
 	// Reset the model index
 	m_iModelIndex = -1;
 }
 
-CIVModelInfo::CIVModelInfo( int iModelIndex )
+CIVModelInfo::CIVModelInfo(int iModelIndex) :
+	m_iModelIndex(iModelIndex)
 {
-	// Set the model index
-	SetIndex( iModelIndex );
 }
 
 CIVModelInfo::~CIVModelInfo( )

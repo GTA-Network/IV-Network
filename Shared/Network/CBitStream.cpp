@@ -14,8 +14,8 @@
 #endif
 #include <assert.h>
 
-CBitStream::CBitStream()
-	: m_pData(m_stackData),
+CBitStream::CBitStream() :
+	m_pData(m_stackData),
 	m_uiBufferSizeInBits((BUFFER_STACK_ALLOCATION_SIZE * 8)),
 	m_uiWriteOffsetInBits(0),
 	m_uiReadOffsetInBits(0),

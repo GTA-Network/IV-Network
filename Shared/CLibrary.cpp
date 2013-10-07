@@ -15,9 +15,9 @@
 #include <stdio.h>
 #endif
 
-CLibrary::CLibrary()
+CLibrary::CLibrary() :
+	m_pLibrary(NULL)
 {
-	m_pLibrary = NULL;
 }
 
 CLibrary::~CLibrary()

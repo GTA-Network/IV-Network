@@ -13,9 +13,9 @@
 
 CDirect3D9Hook::Direct3DCreate9_t CDirect3D9Hook::m_pfnDirect3DCreate9;
 
-CDirect3D9Hook::CDirect3D9Hook()
+CDirect3D9Hook::CDirect3D9Hook() :
+	m_bHookInstalled(false)
 {
-	m_bHookInstalled = false;
 	m_pfnDirect3DCreate9 = NULL;
 }
 

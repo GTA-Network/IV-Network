@@ -15,12 +15,11 @@
 #define Sleep usleep
 #endif
 
-CThread::CThread()
+CThread::CThread() :
+	m_bStarted(false),
+	m_bRunning(false),
+	m_pUserData(NULL)
 {
-	// Set the class variables to their default values
-	m_bStarted = false;
-	m_bRunning = false;
-	m_pUserData = NULL;
 }
 
 CThread::~CThread()

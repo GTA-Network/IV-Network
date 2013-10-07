@@ -10,7 +10,7 @@
 #include "CPatcher.h"
 #include <malloc.h>
 
-#ifndef _WIN32 // Why do we need CPatcher for Linux?! Should the server hook himself or what?! :-P
+#ifndef _WIN32 // Why do we need CPatcher for Linux?! Should the server hook itself or what?! :-P
 #include <sys/mman.h>
 #ifndef PAGESIZE
 #define PAGESIZE 4096

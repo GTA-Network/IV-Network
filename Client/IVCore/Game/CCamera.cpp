@@ -13,17 +13,11 @@
 #include "IV/CIVScript.h"
 #include <Ptrs.h>
 
-CCamera::CCamera()
+CCamera::CCamera() :
+	m_bUsingScriptingCam(false)
 {
-	// Get the game cam pointer
-	IVCam * pCam = NULL;
-	void * unkn = (void **) COffsets::RAGE_Camera__UnkownVoidPtr;
-	_asm	mov ecx, unkn;
-	_asm	mov eax, [ecx + 0Ch];
-	_asm	mov pCam, eax;
-
 	// Create the game cam instance
-	m_pGameCam = new CIVCam(pCam);
+	m_pGameCam = new CIVCam(*(IVCam**) ((unsigned char*) COffsets::RAGE_Camera__UnkownVoidPtr + 12));
 
 	// Create the script cam
 	unsigned int uiScriptCam;
@@ -32,8 +26,6 @@ CCamera::CCamera()
 
 	// Create the script cam instance
 	m_pScriptCam = new CIVCam(g_pCore->GetGame()->GetPools()->GetCamPool()->AtHandle(uiScriptCam));
-
-	m_bUsingScriptingCam = false;
 }
 
 CCamera::~CCamera()

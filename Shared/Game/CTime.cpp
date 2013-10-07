@@ -13,8 +13,8 @@
 CTime            * CTime::m_pInstance = NULL;
 const unsigned int CTime::DEFAULT_MINUTE_DURATION = 2000;
 
-CTime::CTime()
-	: m_ulTimeSet(SharedUtility::GetTime()),
+CTime::CTime() :
+	m_ulTimeSet(SharedUtility::GetTime()),
 	m_ucHour(12),
 	m_ucMinute(0),
 	m_ucDayOfWeek(0),

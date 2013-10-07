@@ -9,7 +9,8 @@
 
 #include "CIVObject.h"
 
-CIVObject::CIVObject(IVObject * pObject) : m_pObject(pObject)
+CIVObject::CIVObject(IVObject * pObject) :
+	m_pObject(pObject)
 {
 	m_pWeapon = new CIVWeapon(pObject ? pObject->m_pWeapon : NULL);
 }

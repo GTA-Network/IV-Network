@@ -11,8 +11,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-IDirect3DDevice9Proxy::IDirect3DDevice9Proxy(IDirect3DDevice9 *pDevice)
-	: m_pDevice(pDevice)
+IDirect3DDevice9Proxy::IDirect3DDevice9Proxy(IDirect3DDevice9 *pDevice) :
+	m_pDevice(pDevice)
 {
 
 }

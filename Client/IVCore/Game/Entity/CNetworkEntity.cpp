@@ -15,8 +15,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CNetworkEntity::CNetworkEntity()
-	: m_vecPosition(CVector3()),
+CNetworkEntity::CNetworkEntity() :
+	m_vecPosition(CVector3()),
 	m_vecRotation(CVector3()),
 	m_vecMoveSpeed(CVector3()),
 	m_vecTurnSpeed(CVector3()),

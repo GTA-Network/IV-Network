@@ -13,8 +13,8 @@
 
 extern CCore * g_pCore;
 
-CChat::CChat(float fX, float fY) : m_fX(fX),
-	m_fY(fY)
+CChat::CChat(float fX, float fY) :
+	m_fX(fX), m_fY(fY)
 {
 	Reset();
 }

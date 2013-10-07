@@ -13,19 +13,19 @@ extern CCore* g_pCore;
 
 #include <Shlobj.h>
 
-CGUI::CGUI(IDirect3DDevice9* pDevice)
-: m_pD3DDevice(pDevice),
-m_pRenderer(NULL),
-m_pSystem(NULL),
-m_pCursor(NULL),
-m_pWindowManager(NULL),
-m_pDefaultWindow(NULL),
-m_pInput(NULL),
-m_pInputMouse(NULL),
-m_bInitialized(false),
-m_dwDoubleClickTime(GetDoubleClickTime()),
-m_iCurrentId(0),
-m_uiCurrentJenkFag(0)
+CGUI::CGUI(IDirect3DDevice9* pDevice) :
+	m_pD3DDevice(pDevice),
+	m_pRenderer(NULL),
+	m_pSystem(NULL),
+	m_pCursor(NULL),
+	m_pWindowManager(NULL),
+	m_pDefaultWindow(NULL),
+	m_pInput(NULL),
+	m_pInputMouse(NULL),
+	m_bInitialized(false),
+	m_dwDoubleClickTime(GetDoubleClickTime()),
+	m_iCurrentId(0),
+	m_uiCurrentJenkFag(0)
 {
 
 	memset(&m_messageBox, 0, sizeof(m_messageBox));

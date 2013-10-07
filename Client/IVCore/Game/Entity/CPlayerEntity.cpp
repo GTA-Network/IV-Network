@@ -160,7 +160,8 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity()
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
+	CNetworkEntity()
 {
 	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");

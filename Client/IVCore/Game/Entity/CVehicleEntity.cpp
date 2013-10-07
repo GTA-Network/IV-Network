@@ -19,7 +19,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4) : CNetworkEntity()
+CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4) :
+	CNetworkEntity()
 {
 	m_pVehicle = NULL;
 	m_vehicleId = INVALID_ENTITY_ID;

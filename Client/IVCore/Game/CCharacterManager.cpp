@@ -194,9 +194,8 @@ DWORD CCharacterManager::VehicleIdToModelHash(int iModelId)
 		case 176: return CIVScript::MODEL_REVENANT;
 		case 177: return CIVScript::MODEL_WAYFARER;
 		case 178: return CIVScript::MODEL_WOLFSBANE;
+		default: return 0;
 	}
-
-	return 0x00;
 }
 
 int CCharacterManager::ModelHashToVehicleId(DWORD dwModelHash)

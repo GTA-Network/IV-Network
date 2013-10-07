@@ -12,12 +12,14 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CIVVehicle::CIVVehicle() : CIVPhysical()
+CIVVehicle::CIVVehicle() :
+	CIVPhysical()
 {
 
 }
 
-CIVVehicle::CIVVehicle(IVVehicle * pVehicle) : CIVPhysical(pVehicle)
+CIVVehicle::CIVVehicle(IVVehicle * pVehicle) :
+	CIVPhysical(pVehicle)
 {
 
 }

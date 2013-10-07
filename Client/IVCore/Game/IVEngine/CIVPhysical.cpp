@@ -10,12 +10,14 @@
 #include "CIVPhysical.h"
 #include <Game/COffsets.h>
 
-CIVPhysical::CIVPhysical() : CIVDynamicEntity()
+CIVPhysical::CIVPhysical() :
+	CIVDynamicEntity()
 {
 
 }
 
-CIVPhysical::CIVPhysical(IVPhysical * pPhysical) : CIVDynamicEntity(pPhysical)
+CIVPhysical::CIVPhysical(IVPhysical * pPhysical) :
+	CIVDynamicEntity(pPhysical)
 {
 
 }

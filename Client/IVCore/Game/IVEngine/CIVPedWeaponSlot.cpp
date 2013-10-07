@@ -15,9 +15,8 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CIVPedWeaponSlot::CIVPedWeaponSlot(IVPedWeaponSlot * pWeapon, CIVPedWeapons * pPedWeapons)
-	: m_pPedWeaponSlot(pWeapon),
-	m_pPedWeapons(pPedWeapons)
+CIVPedWeaponSlot::CIVPedWeaponSlot(IVPedWeaponSlot * pWeapon, CIVPedWeapons * pPedWeapons) :
+	m_pPedWeaponSlot(pWeapon), m_pPedWeapons(pPedWeapons)
 {
 }
 

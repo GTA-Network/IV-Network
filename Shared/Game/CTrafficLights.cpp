@@ -12,8 +12,8 @@
 
 CTrafficLights * CTrafficLights::m_pInstance;
 
-CTrafficLights::CTrafficLights()
-	: 	m_ulTimeSet(SharedUtility::GetTime()),
+CTrafficLights::CTrafficLights() :
+	m_ulTimeSet(SharedUtility::GetTime()),
 	m_bIsLocked(false),
 	m_eStateSet(TRAFFIC_LIGHT_STATE_GREEN_RED),
 	m_uiGreenDuration(DEFAULT_GREEN_DURATION),

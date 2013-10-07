@@ -17,7 +17,8 @@
 #include <IV/CIVScript.h>
 extern CCore * g_pCore;
 
-CIVPedWeapons::CIVPedWeapons(IVPedWeapons * pPedWeapons, CIVPed * pPed) : m_pPedWeapons(pPedWeapons), m_pPed(pPed)
+CIVPedWeapons::CIVPedWeapons(IVPedWeapons * pPedWeapons, CIVPed * pPed) :
+	m_pPedWeapons(pPedWeapons), m_pPed(pPed)
 {
 	m_pWeaponObject = new CIVObject(pPedWeapons->m_pWeaponObject);
 	m_pSpecialWeapon = new CIVWeapon(m_pPedWeapons->m_pSpecialWeapon);

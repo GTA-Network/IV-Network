@@ -11,13 +11,13 @@
 #include <Game/COffsets.h>
 #include "CIVWorld.h"
 
-CIVEntity::CIVEntity()
-	: m_pEntity(NULL)
+CIVEntity::CIVEntity() :
+	m_pEntity(NULL)
 {
 }
 
-CIVEntity::CIVEntity(IVEntity * pEntity)
-	: m_pEntity(pEntity)
+CIVEntity::CIVEntity(IVEntity * pEntity) :
+	m_pEntity(pEntity)
 {
 }
 

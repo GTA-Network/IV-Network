@@ -12,7 +12,8 @@
 
 extern CCore * g_pCore;
 
-CAudioManager::CAudioManager() : m_bMuted(false)
+CAudioManager::CAudioManager() :
+	m_bMuted(false)
 {
 	
 }

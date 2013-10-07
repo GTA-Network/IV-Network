@@ -11,16 +11,13 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CIVPlayerInfo::CIVPlayerInfo()
+CIVPlayerInfo::CIVPlayerInfo() :
+	m_bCreatedByUs(false), m_pPlayerInfo(NULL)
 {
-	// Mark as not created by us
-	m_bCreatedByUs = false;
-
-	// Set the player info
-	SetPlayerInfo(NULL);
 }
 
-CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber)
+CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber) :
+	m_bCreatedByUs(true)
 {
 	IVPlayerInfo * pPlayerInfo = (IVPlayerInfo *)CGameFunction::Alloc(sizeof(IVPlayerInfo));
 
@@ -37,7 +34,6 @@ CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber)
 	*(BYTE *)(pPlayerInfo + 0x15D) = 0;
 	*(DWORD *)(pPlayerInfo + 0x137) = 2;
 
-	m_bCreatedByUs = true;
 	m_pPlayerInfo = pPlayerInfo;
 }
 

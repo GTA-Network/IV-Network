@@ -48,7 +48,9 @@ const unsigned char g_szPixel [] = { 0x42, 0x4D, 0x3A, 0, 0, 0, 0, 0, 0, 0, 0x36
                                     0x4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0xFF, 0xFF, 0xFF, 0 };
 
-CGraphics::CGraphics()
+CGraphics::CGraphics() :
+	m_bInitialised(false), m_uiFramesPerSecond(0), m_uiCurrentFPS(0),
+	m_uiLastCheck(0), m_pDevice(NULL), m_pFont(NULL)
 {
 	// Create the d3d9 device hook
 	m_pDeviceHook = new CDirect3D9Hook;
@@ -64,15 +66,7 @@ CGraphics::CGraphics()
 	if(!m_pDirectInput8Hook || !m_pDirectInput8Hook->Install())
 		return;
 
-	// Reset variables
-	m_bInitialised = false;
-	m_uiFramesPerSecond = NULL;
-	m_uiCurrentFPS = 0;
 	m_uiLastCheck = GetTickCount();
-	m_pDevice = NULL;
-
-	// Invalidate the font pointer
-	m_pFont = NULL;
 }
 
 CGraphics::~CGraphics()

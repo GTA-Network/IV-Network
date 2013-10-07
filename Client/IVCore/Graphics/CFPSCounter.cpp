@@ -10,9 +10,9 @@
 #include "CFPSCounter.h"
 #include <SharedUtility.h>
 
-CFPSCounter::CFPSCounter()
+CFPSCounter::CFPSCounter() :
+	m_ulLastTime(0), m_uiCurrentFrames(0), m_uiFramesPerSecond(0)
 {
-	Reset();
 }
 
 void CFPSCounter::Pulse()

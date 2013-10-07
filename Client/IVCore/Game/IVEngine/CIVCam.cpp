@@ -9,13 +9,13 @@
 
 #include "CIVCam.h"
 
-CIVCam::CIVCam()
-	: m_pCam(NULL)
+CIVCam::CIVCam() :
+	m_pCam(NULL)
 {
 }
 
-CIVCam::CIVCam(IVCam * pCam)
-	: m_pCam(pCam)
+CIVCam::CIVCam(IVCam * pCam) :
+	m_pCam(pCam)
 {
 }
 

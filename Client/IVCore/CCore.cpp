@@ -13,25 +13,13 @@
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
 
-CCore::CCore(void)
+CCore::CCore(void) :
+	m_bInitialised(false), m_bGameLoaded(false), m_pGame(NULL),
+	m_pGraphics(NULL), m_pChat(NULL), m_pFPSCounter(NULL),
+	m_pNetworkManager(NULL), m_pGUI(NULL), m_bLoadingVisibility(0),
+	m_byteLoadingStyle(0), m_uiGameInitializeTime(0)//, m_pAudioManager(NULL)
 {
-	// Mark as not initialised
-	m_bInitialised = false;
 
-	// Mark the game as not loaded
-	SetGameLoaded(false);
-
-	// Reset instances
-	m_pGame = NULL;
-	m_pGraphics = NULL;
-	//m_pAudioManager = NULL;
-	m_pChat = NULL;
-	m_pFPSCounter = NULL;
-	m_pNetworkManager = NULL;
-	m_pGUI = NULL;
-	m_bLoadingVisibility = 0;
-	m_byteLoadingStyle = 0;
-	m_uiGameInitializeTime = 0;
 }
 
 bool CCore::Initialise()

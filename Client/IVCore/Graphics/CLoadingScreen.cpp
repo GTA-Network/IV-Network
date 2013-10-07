@@ -4,8 +4,8 @@
 
 extern CCore* g_pCore;
 
-CLoadingScreen::CLoadingScreen(CGUI* pGUI)
-: m_pGUI(pGUI)
+CLoadingScreen::CLoadingScreen(CGUI* pGUI) :
+	m_pGUI(pGUI)
 {
 
 }
