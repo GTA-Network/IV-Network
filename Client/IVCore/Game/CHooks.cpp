@@ -693,12 +693,6 @@ void __cdecl sub_47BA60()
 	//g_pCore->GetChat()->Outputf(false, "sub_47BA60()");
 }
 
-template <typename _Ret, typename _Class, typename... _Args>
-DWORD GetClassMemberAddress(_Ret(_Class::*Function)(_Args...))
-{
-	return (DWORD) (void*&) Function;
-}
-
 void CHooks::Intialize()
 {
 	// Hook GetPlayerInfoFromIndex to use our own function
@@ -727,7 +721,7 @@ void CHooks::Intialize()
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
 
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, GetClassMemberAddress(&CHookDummy::loadEbisodes));
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEbisodes));
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;

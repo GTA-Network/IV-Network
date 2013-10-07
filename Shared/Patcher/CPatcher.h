@@ -45,6 +45,8 @@ public:
 	static void				UninstallDetourPatch(void * pTrampoline, DWORD dwFunctionAddress);
 	static void				InstallPushPatch(DWORD dwAddress, DWORD dwFunctionAddress);
 	static void				InstallHookCall(DWORD dwAddr, DWORD dwFunc);
+	template <typename _Ret, typename _Class, typename... _Args>
+	static DWORD				GetClassMemberAddress(_Ret(_Class::*Function)(_Args...)) { return (DWORD) (void*&) Function; }
 };	
 
 #endif // CPatcher_h

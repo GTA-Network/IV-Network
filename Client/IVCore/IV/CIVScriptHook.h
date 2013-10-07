@@ -93,6 +93,12 @@ public:
 	unsigned int m_nFlags;						// AC-B0 m_nFlags    dd ?
 };
 
+class sOUR_RAGETHREAD : public sRAGETHREAD
+{
+public:
+	int Process_Hook(int);
+};
+
 class CIVScriptingHook {
 private:
 
