@@ -1368,6 +1368,7 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 
 	GetPlayerPed()->SetDucking(bDuck);
 
+#if 0
 	int iJumpStyle = 0;
 	if (vecMovement.Length() < 1.0)
 		iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
@@ -1378,6 +1379,7 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 	_asm	push uiPlayerIndex;
 	_asm	call COffsets::IV_FUNC__TaskPedJump;
 	_asm	add esp, 8;
+#endif
 
 	m_ulLastSyncReceived = SharedUtility::GetTime();
 }
@@ -1886,34 +1888,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	pBitStream->Read(eType);
 	if (eType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
 	{
-		pBitStream->Read(PlayerPacket);
-
-		ApplySyncData(
-			// Apply current Position to the sync package
-			PlayerPacket.vecPosition,
-
-			// Apply current Movement to the sync package
-			PlayerPacket.vecMovementSpeed,
-
-			// Apply current Turnspeed to the sync package
-			PlayerPacket.vecTurnSpeed,
-
-			// Apply current Directionspeed to the sync package
-			PlayerPacket.vecDirection,
-
-			// Apply current Rollspeed to the sync package
-			PlayerPacket.vecRoll,
-
-			// Apply current duckstate to the sync package
-			PlayerPacket.bDuckState,
-
-			// Apply current heading to the sync package
-			PlayerPacket.fHeading,
-
-			//Apply current weapon sync data to the sync package
-			0,
-			0);
-
-		SetControlState(&PlayerPacket.pControlState);
+		
 	}
 }

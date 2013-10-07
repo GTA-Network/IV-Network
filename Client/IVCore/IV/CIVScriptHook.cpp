@@ -559,10 +559,6 @@ void _declspec(naked) CScriptVM__Process()
 	if(thread->m_Context.ScriptHash == 0x8C56D5FD || thread->m_Context.ScriptHash == 0x27EB33D7 || thread->m_Context.ScriptHash == 0x41D6F794) { }
 	else 
 	{
-
-		CScriptVM_Process_JmpBack = g_pCore->GetBase() + 0x4CE0CD;
-		_asm	popad;
-		_asm	jmp CScriptVM_Process_JmpBack;
 		while(i < ARRAY_LENGTH(civScripts))
 		{
 			if(civScripts[i].dwScriptHash == thread->m_Context.ScriptHash) 
@@ -570,7 +566,7 @@ void _declspec(naked) CScriptVM__Process()
 				bScriptFound = true;
 				switch(civScripts[i].iSlotID)
 				{
-					case 7:
+				/*	case 7:
 					case 8:
 					case 9:
 					case 10:
@@ -658,11 +654,11 @@ void _declspec(naked) CScriptVM__Process()
 					case 271: 
 					case 281: 
 					case 288: 
-					case 295: 
+					case 295: */
 					case 309: 
 					case 310: 
 					case 311: 
-					case 312: 
+					/*case 312: 
 					case 313: 
 					case 314: 
 					case 315: 
@@ -688,7 +684,7 @@ void _declspec(naked) CScriptVM__Process()
 					case 425: 
 					case 426: 
 					case 432: 
-					case 464:
+					case 464:*/
 					{
 						//CLogFile::Printf("Process script %s",civScripts[i].strScriptName.Get());
 						break;

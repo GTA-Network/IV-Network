@@ -34,8 +34,7 @@ void CPlayerEntity::Pulse()
 		RakNet::BitStream bitStream;
 		bitStream.Write(GetId());
 		bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
-		CServer::GetInstance()->GetPlayerManager()->GetAt(GetId())->Serialize(&bitStream, m_eLastSyncPackageType);
-
+		CServer::GetInstance()->GetPlayerManager()->GetAt(GetId())->Serialize(&bitStream, RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
 
 		m_ulLastSyncSent = SharedUtility::GetTime();
