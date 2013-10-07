@@ -319,11 +319,143 @@ void CGUI::OnResetDevice()
 	}
 }
 
+std::string CGUIWindow::getText()
+{
+	CEGUI::String str = CEGUI::Window::getText();
+	int len = str.length();
+
+	if (len == 0)
+		return std::string();
+
+	char *Ansi = new char[str.length() + 1];
+	wchar_t *Unicode = new wchar_t[str.length() + 1];
+
+	for (size_t i = 0; i < str.size(); i++)
+		Unicode[i] = str[i];
+
+	WideCharToMultiByte(CP_ACP, NULL, Unicode, -1, Ansi, len, NULL, NULL);
+
+	Ansi[str.size()] = 0;
+	std::string out = Ansi;
+	delete [] Ansi;
+	delete [] Unicode;
+
+	return out;
+}
 
 bool CGUI::OnGUIKeyDown(const CEGUI::EventArgs &eventArgs)
 {
+	// Cast the argument to a key event args structure
+	const CEGUI::KeyEventArgs &keyEventArgs = (const CEGUI::KeyEventArgs &)eventArgs;
 
-	return true;
+	// Check if the left or right control key is held down
+	if (keyEventArgs.sysKeys & CEGUI::Control)
+	{
+		// Check if its the a key that was pressed
+		if (keyEventArgs.scancode == CEGUI::Key::A)
+		{
+			// Make sure its an edit box that is selected
+			if (keyEventArgs.window->getType() == STYLE_PREFIX "/Editbox")
+			{
+				// Get the edit box pointer
+				CEGUI::Editbox * pEditBox = (CEGUI::Editbox *)keyEventArgs.window;
+
+				// Set the selection start to 0 and end to the edit box text length
+				pEditBox->setSelection(0, pEditBox->getText().size());
+			}
+		}
+		else if (keyEventArgs.scancode == CEGUI::Key::C || keyEventArgs.scancode == CEGUI::Key::X)
+		{
+			// Make sure its an edit box that is selected
+			if (keyEventArgs.window->getType() == STYLE_PREFIX "/Editbox")
+			{
+				// Get the edit box pointer
+				if (keyEventArgs.window->getType() == STYLE_PREFIX "/Editbox")
+				{
+					CEGUI::Editbox * pEditBox = (CEGUI::Editbox *)keyEventArgs.window;
+					// Get the edit box selection length
+					size_t sSelectionLength = pEditBox->getSelectionLength();
+					if (sSelectionLength > 0)
+					{
+						// Get the edit box selection start index
+						size_t sSelectionStartIndex = pEditBox->getSelectionStartIndex();
+
+						// Get the edit box selection end index
+						size_t sSelectionEndIndex = (sSelectionStartIndex + sSelectionLength);
+
+						// Get the edit box text
+						CEGUI::String sEditBoxText = pEditBox->getText();
+
+						// Get the text we wish to copy from the edit box text
+						CEGUI::String sSelectionText = sEditBoxText.substr(sSelectionStartIndex, sSelectionEndIndex);
+
+						// Set the clipboard text
+						SharedUtility::SetClipboardText(sSelectionText.c_str(), (sSelectionText.length() + 1));
+
+						// If its the control + x key cut the selection from the edit box text
+						if (keyEventArgs.scancode == CEGUI::Key::X)
+						{
+							// Cut the text from the edit box text
+							sEditBoxText.replace(sSelectionStartIndex, sSelectionEndIndex, "");
+
+							// Set the edit box text to the new cut text
+							pEditBox->setText(sEditBoxText);
+						}
+					}
+				}
+			}
+		}
+		else if (keyEventArgs.scancode == CEGUI::Key::V)
+		{
+			// Make sure its an edit box that is selected
+			if (keyEventArgs.window->getType() == STYLE_PREFIX "/Editbox")
+			{
+				// If its an edit box
+				if (keyEventArgs.window->getType() == STYLE_PREFIX "/Editbox")
+				{
+					// Get the edit box pointer
+					CEGUI::Editbox * pEditBox = (CEGUI::Editbox *)keyEventArgs.window;
+
+					// Get the edit box selection length
+					size_t sSelectionLength = pEditBox->getSelectionLength();
+
+					// Get the edit box selection start index
+					size_t sSelectionStartIndex = pEditBox->getSelectionStartIndex();
+
+					// Get the edit box text
+					CEGUI::String sEditBoxText = pEditBox->getText();
+
+					// Get the clipboard text
+					const char * szClipboardText = SharedUtility::GetClipboardText();
+
+					// Do we have any clipboard text?
+					if (szClipboardText)
+					{
+						// Get the caret index
+						size_t sCaretIndex = pEditBox->getCaratIndex();
+
+						// Add the clipboard text length to the caret index
+						sCaretIndex += strlen(szClipboardText);
+
+						// If we don't have a selection just insert the text
+						if (sSelectionLength == 0)
+							sEditBoxText.insert(sSelectionStartIndex, szClipboardText);
+						// If we do have a selection overwrite the selected text
+						else
+							sEditBoxText.replace(sSelectionStartIndex, sSelectionLength, szClipboardText);
+
+						// Set the edit box text to the string with the pasted text
+						pEditBox->setText(sEditBoxText);
+
+						// Set the edit box caret index to the new index after the pasted text
+						pEditBox->setCaratIndex(sCaretIndex);
+					}
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 const char * CGUI::GetUniqueName()
@@ -647,6 +779,16 @@ CGUIFrameWindow * CGUI::CreateGUIFrameWindow(CEGUI::String &sName, CEGUI::Window
 CGUIFrameWindow * CGUI::CreateGUIFrameWindow(CEGUI::Window * pParentWindow)
 {
 	return (CGUIFrameWindow *) CreateGUIWindow(STYLE_PREFIX "/FrameWindow", GetUniqueName(), pParentWindow);
+}
+
+CGUIEditBox * CGUI::CreateGUIEditBox(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIEditBox *) CreateGUIWindow(STYLE_PREFIX "/Editbox", sName, pParentWindow);
+}
+
+CGUIEditBox * CGUI::CreateGUIEditBox(CEGUI::Window * pParentWindow)
+{
+	return (CGUIEditBox *) CreateGUIWindow(STYLE_PREFIX "/Editbox", GetUniqueName(), pParentWindow);
 }
 
 CEGUI::String CGUI::AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength)

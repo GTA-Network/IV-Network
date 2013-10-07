@@ -33,6 +33,9 @@ CMainMenu::~CMainMenu()
 
 	if (m_pBackground)
 		m_pGUI->RemoveGUIWindow(m_pBackground);
+
+	if (m_pQuickConnectWindow)
+		m_pGUI->RemoveGUIWindow(m_pQuickConnectWindow);
 }
 
 bool CMainMenu::Initialize()
@@ -116,6 +119,15 @@ void CMainMenu::SetVisible(bool bVisible)
 	m_pExitButton->setVisible(bVisible);
 }
 
+void CMainMenu::SetQuickConnectVisible(bool bVisible)
+{
+	m_pQuickConnectWindow->setVisible(bVisible);
+	m_pQuickConnectWindow->setProperty("AlwaysOnTop", "true");
+	m_pQuickConnectWindow->activate();
+
+	m_bVisibleEx = bVisible;
+}
+
 CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
 {
 	CGUIStaticText * pButton = m_pGUI->CreateGUIStaticText();
@@ -131,19 +143,51 @@ CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize,
 
 bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	CIVScript::DoScreenFadeIn(1000); //TODO: do this after connected to the sever
+	float fWidth = (float) m_pGUI->GetDisplayWidth();
+	float fHeight = (float) m_pGUI->GetDisplayHeight();
 
-	// Enable the chat
-	g_pCore->GetChat()->SetVisible(true);
+	m_pQuickConnectWindow = m_pGUI->CreateGUIFrameWindow();
+	m_pQuickConnectWindow->setText("IV:Network Quick Connect");
+	m_pQuickConnectWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 240)));
+	m_pQuickConnectWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
+	m_pQuickConnectWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectCloseClick, this));
+	m_pQuickConnectWindow->setProperty("FrameEnabled", "false");
+	m_pQuickConnectWindow->setVisible(true);
 
-	// Set nickname
-	g_pCore->SetNick("Player");
+	m_pQuickConnectIPStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
+	m_pQuickConnectIPStaticText->setText("IP Address:");
+	m_pQuickConnectIPStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
+	m_pQuickConnectIPStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
+	m_pQuickConnectIPStaticText->setProperty("FrameEnabled", "false");
+	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
+	//m_pQuickConnectIPStaticText->setFont(m_pGUI->GetFont("tahoma-bold"));
 
-	// Conneting the player to the server
-	g_pCore->ConnectToServer("217.87.226.42", 9999);
+	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
+	m_pQuickConnectIPEditBox->setText("");
+	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
+	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
+	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
 
-	// Hide the main menu elements
-	SetVisible(false);
+	m_pQuickConnectPasswordStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
+	m_pQuickConnectPasswordStaticText->setText("Password:");
+	m_pQuickConnectPasswordStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
+	m_pQuickConnectPasswordStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 90)));
+	m_pQuickConnectPasswordStaticText->setProperty("FrameEnabled", "false");
+	m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
+	//m_pQuickConnectPasswordStaticText->setFont(m_pGUI->GetFont("tahoma-bold"));
+
+	m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
+	m_pQuickConnectPasswordEditBox->setText("");
+	m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
+	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
+	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
+	m_pQuickConnectPasswordEditBox->setProperty("MaskText", "true");
+
+	m_pQuickConnectConnectButton = m_pGUI->CreateGUIButton(m_pQuickConnectWindow);
+	m_pQuickConnectConnectButton->setText("Connect");
+	m_pQuickConnectConnectButton->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
+	m_pQuickConnectConnectButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 160)));
+	m_pQuickConnectConnectButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectConnectButtonClick, this));
 	return true;
 }
 
@@ -179,7 +223,6 @@ bool CMainMenu::OnSettingsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 
 bool CMainMenu::OnSettingsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
-	m_pGUI->ShowMessageBox("HallO", "Hallo");
 	m_pSettingsButton->setAlpha(1);
 	return true;
 }
@@ -208,16 +251,84 @@ bool CMainMenu::OnExitButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
+void CMainMenu::OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type)
+{
+	if (type == GUI_MESSAGEBOX_YES)
+	{
+		// Are we connected to the network?
+		if (g_pCore->GetNetworkManager()->IsConnected())
+		{
+			// Disconnect and shutdown RakNet
+			g_pCore->GetNetworkManager()->Shutdown(500, true);
+		}
+
+		// Close IV:Network
+		ExitProcess(0);
+	}
+}
+
 bool CMainMenu::OnExitButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	// Are we connected to the network?
-	if (g_pCore->GetNetworkManager()->IsConnected())
-	{
-		// Disconnect and shutdown RakNet
-		g_pCore->GetNetworkManager()->Shutdown(500, true);
-	}
+	m_pGUI->ShowMessageBox("Are you sure you want to leave IV:Network?", "Leaving IV:Network", GUI_MESSAGEBOXTYPE_YESNO, OnExitButtonMouseClickConfirm);
+	return true;
+}
 
-	// Close IV:Network
-	ExitProcess(0);
+bool CMainMenu::OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs)
+{
+	// Hide the whole Quick Connect Box
+	SetQuickConnectVisible(false);
+
+	// Set the password to nothing for security purposes
+	m_pQuickConnectPasswordEditBox->setText("");
+
+	return true;
+}
+
+bool CMainMenu::OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
+{
+	const CEGUI::KeyEventArgs& key_args = static_cast<const CEGUI::KeyEventArgs&>(eventArgs);
+	if (key_args.scancode == CEGUI::Key::Return)
+	{
+		OnQuickConnectSubmit();
+		return true;
+	}
+	return true;
+}
+
+void CMainMenu::OnQuickConnectSubmit()
+{
+	CString strHost;
+	unsigned short usPort = 9999;
+
+	// Get the password
+	CString strPassword(m_pQuickConnectPasswordEditBox->getText().c_str());
+
+	// Set the ip, port and password
+	CVAR_SET_STRING("ip", strHost);
+	CVAR_SET_INTEGER("port", usPort);
+	CVAR_SET_STRING("pass", strPassword);
+
+	// Hide the quick connect window
+	SetVisible(false);
+
+	CIVScript::DoScreenFadeIn(1000); //TODO: do this after connected to the sever
+
+	// Enable the chat
+	g_pCore->GetChat()->SetVisible(true);
+
+	// Set nickname
+	g_pCore->SetNick("Player"); // TODO: Make it so you can change your name
+
+	// Conneting the player to the server
+	g_pCore->ConnectToServer(strHost, usPort);
+
+	// Hide the main menu elements
+	SetVisible(false);
+	SetQuickConnectVisible(false);
+}
+
+bool CMainMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs)
+{
+	OnQuickConnectSubmit();
 	return true;
 }

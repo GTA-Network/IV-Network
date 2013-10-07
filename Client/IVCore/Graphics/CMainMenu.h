@@ -18,6 +18,7 @@ class CMainMenu
 private:
 	CGUI * m_pGUI;
 	bool			  m_bVisible;
+	bool			  m_bVisibleEx;
 
 	// Main Menu Stuff
 	CGUIStaticImage	* m_pBackground;
@@ -27,6 +28,16 @@ private:
 	CGUIStaticText  * m_pCreditsButton;
 	CGUIStaticText  * m_pExitButton;
 	CGUIStaticText	* CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition);
+
+	// Quick Connect Stuff
+	CGUIFrameWindow	* m_pQuickConnectWindow;
+	CGUIStaticText	* m_pQuickConnectNicknameText;
+	CGUIEditBox		* m_pQuickConnectNamenameEditBox;
+	CGUIStaticText	* m_pQuickConnectIPStaticText;
+	CGUIEditBox		* m_pQuickConnectIPEditBox;
+	CGUIStaticText	* m_pQuickConnectPasswordStaticText;
+	CGUIEditBox		* m_pQuickConnectPasswordEditBox;
+	CGUIButton		* m_pQuickConnectConnectButton;
 
 	bool OnQuickConnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnQuickConnectButtonMouseExit(const CEGUI::EventArgs &eventArgs);
@@ -40,6 +51,10 @@ private:
 	bool OnExitButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnExitButtonMouseExit(const CEGUI::EventArgs &eventArgs);
 	bool OnExitButtonMouseClick(const CEGUI::EventArgs &eventArgs);
+	bool OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs);
+	bool OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs);
+	bool OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs);
+	void OnQuickConnectSubmit();
 
 public:
 	CMainMenu(CGUI * pGUI);
@@ -48,7 +63,10 @@ public:
 	bool Initialize();
 
 	void SetVisible(bool bVisible);
+	void SetQuickConnectVisible(bool bVisible);
 	bool IsMainMenuVisible() { return m_bVisible; }
+
+	static void OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type);
 };
 
 #endif

@@ -31,6 +31,7 @@ InheritedStruct(CGUIWindow, CGUIStaticImage);
 InheritedStruct(CGUIWindow, CGUIProgressBar);
 InheritedStruct(CGUIWindow, CGUIStaticText);
 InheritedStruct(CGUIWindow, CGUIFrameWindow);
+InheritedStruct(CGUIWindow, CGUIEditBox);
 
 enum eGUIMessageBoxType
 {
@@ -96,6 +97,8 @@ public:
 	CGUIStaticText           * CreateGUIStaticText(CEGUI::Window * pParentWindow = NULL);
 	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
 	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::Window * pParentWindow = NULL);
+	CGUIEditBox              * CreateGUIEditBox(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIEditBox              * CreateGUIEditBox(CEGUI::Window * pParentWindow = NULL);
 
 	bool                       OnMessageBoxClick(const CEGUI::EventArgs& eventArgs);
 	void                       ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitle = "", eGUIMessageBoxType style = GUI_MESSAGEBOXTYPE_OK, GUIMessageBoxHandler_t pfnHandler = NULL);
