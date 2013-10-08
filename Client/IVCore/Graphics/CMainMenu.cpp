@@ -66,6 +66,14 @@ bool CMainMenu::Initialize()
 
 #define fY 0.5f
 
+	// Create the Disconnect Button & hide it
+	m_pDisconnectButton = CreateButton("Disconnect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
+	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseEnter, this));
+	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseExit, this));
+	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseClick, this));
+	m_pBackground->addChildWindow(m_pDisconnectButton);
+	m_pDisconnectButton->setVisible(false);
+
 	// Create the Quick Connect Button
 	m_pQuickConnectButton = CreateButton("Quick Connect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
 	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseEnter, this));
@@ -113,7 +121,31 @@ void CMainMenu::SetVisible(bool bVisible)
 	m_pGUI->SetCursorVisible(bVisible);
 
 	m_pBackground->setVisible(bVisible);
-	m_pQuickConnectButton->setVisible(bVisible);
+
+	// Are we setting it to true?
+	if (bVisible == true)
+	{
+		// Are we connected to the network?
+		if (g_pCore->GetNetworkManager()->IsConnected())
+		{
+			// If yes, hide the Quick Connect button and show the disconnect one
+			m_pQuickConnectButton->setVisible(false);
+			m_pDisconnectButton->setVisible(true);
+
+			// Set our main menu background transparent
+			m_pBackground->setAlpha(0.975f);
+		}
+		else
+		{
+			m_pQuickConnectButton->setVisible(true);
+		}
+	}
+	else
+	{
+		m_pQuickConnectButton->setVisible(false);
+		m_pDisconnectButton->setVisible(false);
+	}
+
 	m_pServerBrowserButton->setVisible(bVisible);
 	m_pSettingsButton->setVisible(bVisible);
 	m_pCreditsButton->setVisible(bVisible);
@@ -172,7 +204,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
 
 	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectIPEditBox->setText("");
+	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip"), CVAR_GET_INTEGER("port")).Get());
 	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
@@ -185,7 +217,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
 
 	m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectPasswordEditBox->setText("");
+	m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
 	m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
 	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
@@ -201,10 +233,6 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 
 bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	// Does the Settings GUI already exists? If yes, delete it
-	if (m_pSettingsWindow)
-		m_pGUI->RemoveGUIWindow(m_pSettingsWindow);
-
 	float fWidth = (float) m_pGUI->GetDisplayWidth();
 	float fHeight = (float) m_pGUI->GetDisplayHeight();
 
@@ -234,6 +262,33 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 	m_pSettingsButtonEx->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
 	m_pSettingsButtonEx->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 100)));
 	m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsMouseClick, this));
+	return true;
+}
+
+bool CMainMenu::OnDisconnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+{
+	m_pDisconnectButton->setAlpha(0.5f);
+	return true;
+}
+
+bool CMainMenu::OnDisconnectButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+{
+	m_pDisconnectButton->setAlpha(1);
+	return true;
+}
+
+bool CMainMenu::OnDisconnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+{
+	// Are we connected?
+	if (g_pCore->GetNetworkManager()->IsConnected())
+	{
+		g_pCore->GetNetworkManager()->Shutdown(500, true);
+
+		m_pDisconnectButton->setVisible(false);
+		m_pQuickConnectButton->setVisible(true);
+
+		m_pGUI->ShowMessageBox("You have successfully disconnected from the server.", "Disconnected", GUI_MESSAGEBOXTYPE_OK);
+	}
 	return true;
 }
 
@@ -347,9 +402,6 @@ bool CMainMenu::OnSettingsCloseClick(const CEGUI::EventArgs &eventArgs)
 	// Hide the whole Quick Connect Box
 	SetSettingsVisible(false);
 
-	// Set the password to nothing for security purposes
-	m_pSettingsEditBox->setText("");
-
 	return true;
 }
 
@@ -375,7 +427,8 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-
+<<<<<<< HEAD
+=======
 int findCharInCharP(char* CharP, char Char)
 {
 	for (int i = 0; i < strlen(CharP); ++i)
@@ -386,6 +439,7 @@ int findCharInCharP(char* CharP, char Char)
 	return -1;
 }
 
+>>>>>>> Replaced the GTA IV Menu with our own (Escape).
 void CMainMenu::OnSettingsApply()
 {
 	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());
@@ -403,7 +457,16 @@ void CMainMenu::OnQuickConnectSubmit()
 		m_pQuickConnectIPEditBox->setText("127.0.0.1:9999");
 	}
 
-	int colon = findCharInCharP(m_pQuickConnectIPEditBox->getText(), ':');
+	int colon = -1;
+	for (int i = 0; i < strlen(m_pQuickConnectIPEditBox->getText()); ++i)
+	{
+		if (m_pQuickConnectIPEditBox->getText()[i] == ':')
+		{
+			colon = i;
+			break;
+		}
+	}
+
 	if (colon == -1)
 	{
 		cpHost = m_pQuickConnectIPEditBox->getText();

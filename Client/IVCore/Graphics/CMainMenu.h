@@ -23,6 +23,7 @@ private:
 
 	// Main Menu Stuff
 	CGUIStaticImage	* m_pBackground;
+	CGUIStaticText	* m_pDisconnectButton;
 	CGUIStaticText	* m_pQuickConnectButton;
 	CGUIStaticText  * m_pServerBrowserButton;
 	CGUIStaticText  * m_pSettingsButton;
@@ -46,6 +47,9 @@ private:
 	CGUIEditBox     * m_pSettingsEditBox;
 	CGUIButton      * m_pSettingsButtonEx;
 
+	bool OnDisconnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
+	bool OnDisconnectButtonMouseExit(const CEGUI::EventArgs &eventArgs);
+	bool OnDisconnectButtonMouseClick(const CEGUI::EventArgs &eventArgs);
 	bool OnQuickConnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnQuickConnectButtonMouseExit(const CEGUI::EventArgs &eventArgs);
 	bool OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs);
