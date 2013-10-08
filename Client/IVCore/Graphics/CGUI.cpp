@@ -334,6 +334,7 @@ char* CGUIWindow::getText()
 		Unicode[i] = str[i];
 
 	WideCharToMultiByte(CP_ACP, NULL, Unicode, -1, Ansi, len, NULL, NULL);
+	Ansi[str.length()] = '\0';
 
 	delete [] Unicode;
 

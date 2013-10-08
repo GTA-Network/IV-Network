@@ -39,7 +39,7 @@ bool CCore::Initialise()
 	m_uiBaseAddress -= 0x400000;
 	
 	// Open the settings file
-	CSettings::Open(SharedUtility::GetAbsolutePath(CLIENT_SETTINGS_FILE), true, false, true);
+	CSettings::Open(SharedUtility::GetAbsolutePath(CLIENT_SETTINGS_FILE), true, true, true);
 	
 	// Parse the command line
 	CSettings::ParseCommandLine(GetCommandLine());

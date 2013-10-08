@@ -151,8 +151,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_ESCAPE: // Our own main menu
 				{
-					bool bIsMainMenuVisible = g_pCore->GetMainMenu()->IsMainMenuVisible();
-					g_pCore->GetMainMenu()->SetVisible(!bIsMainMenuVisible);
+					g_pCore->GetMainMenu()->SetVisible(!g_pCore->GetMainMenu()->IsMainMenuVisible());
 					break;
 				}
 				case VK_F8:

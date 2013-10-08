@@ -55,6 +55,7 @@ void CSettings::LoadDefaults(bool bClient)
 	else {
 		// Load client settings
 		AddString("ip", "127.0.0.1");
+		AddInteger("port", 9999, 1, 65535);
 		AddString("nick", "player");
 		AddString("pass", "");
 		AddBool("windowed", false);
