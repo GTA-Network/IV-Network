@@ -427,8 +427,6 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-<<<<<<< HEAD
-=======
 int findCharInCharP(char* CharP, char Char)
 {
 	for (int i = 0; i < strlen(CharP); ++i)
@@ -439,7 +437,6 @@ int findCharInCharP(char* CharP, char Char)
 	return -1;
 }
 
->>>>>>> Replaced the GTA IV Menu with our own (Escape).
 void CMainMenu::OnSettingsApply()
 {
 	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());

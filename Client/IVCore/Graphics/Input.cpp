@@ -149,15 +149,12 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 					}
 					break;
 				}
-<<<<<<< HEAD
-=======
 				case VK_ESCAPE: // Our own main menu
 				{
 					bool bIsMainMenuVisible = g_pCore->GetMainMenu()->IsMainMenuVisible();
 					g_pCore->GetMainMenu()->SetVisible(!bIsMainMenuVisible);
 					break;
 				}
->>>>>>> Replaced the GTA IV Menu with our own (Escape).
 				case VK_F8:
 				{
 					// Take a screen shot
@@ -170,14 +167,6 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 					}
 					break;
 				}
-<<<<<<< HEAD
-				case VK_ESCAPE:
-				{
-					g_pCore->GetPauseMenu()->SetVisible(!g_pCore->GetPauseMenu()->IsPauseMenuVisible());
-					break;
-				}
-=======
->>>>>>> Replaced the GTA IV Menu with our own (Escape).
 			}
 		}
 
