@@ -117,9 +117,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 				pVehicle->GetPosition(vecPosition);
 				CVector3 vecRotation;
 				pVehicle->GetRotation(vecRotation);
-				DWORD dwColors[4];
-				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3]);
-				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+				DWORD dwColors[5];
+				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4]);
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
 			}
 		}
 		else

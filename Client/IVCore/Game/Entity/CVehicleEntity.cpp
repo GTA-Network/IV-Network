@@ -19,7 +19,7 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD color1, DWORD color2, DWORD color3, DWORD color4) :
+CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD color1, DWORD color2, DWORD color3, DWORD color4, DWORD color5) :
 	CNetworkEntity()
 {
 	m_pVehicle = NULL;
@@ -50,6 +50,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_dwColor[1] = color2;
 	m_dwColor[2] = color3;
 	m_dwColor[3] = color4;
+	m_dwColor[4] = color5;
 
 	// Set the interpolate variables
 	m_interp.pos.ulFinishTime = 0;
@@ -132,7 +133,7 @@ bool CVehicleEntity::Create()
 		m_pVehicle = new CIVVehicle(pVehicle);
 
 		//set the vehicle's color
-		SetColors(m_dwColor[0], m_dwColor[1], m_dwColor[2], m_dwColor[3]);
+		SetColors(m_dwColor[0], m_dwColor[1], m_dwColor[2], m_dwColor[3], m_dwColor[4]);
 
 		//fix: no more random components
 		for (int i = 0; i < 9; ++i)
@@ -282,64 +283,76 @@ void CVehicleEntity::SetModel(DWORD dwModelHash)
 	CLogFile::Printf("CClientVehicle::SetModel Stream In Complete");
 }
 
-void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4)
+class ColorStuff
+{
+public:
+	float red;
+	float green;
+	float blue;
+	DWORD color;
+};
+
+class IVVehicleColors {
+public:
+	unsigned char pad_0[16];
+	ColorStuff field_10;
+	ColorStuff field_20;
+	ColorStuff field_30;
+	ColorStuff field_40;
+	ColorStuff field_50;
+	ColorStuff field_60;
+};
+
+float colorMultiplier = 0.003922f;
+
+void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4, DWORD dwColor5)
 {
 	if (!GetGameVehicle())
 		return;
 
 	IVVehicle * pVehicle = GetGameVehicle()->GetVehicle();
 
-	if (pVehicle)
-	{
-		DWORD origColors[4];
-		DWORD* colors = (DWORD*) (g_pCore->GetBase() + 0x1606B58);
+	IVVehicleColors* VehicleColors = *(IVVehicleColors**) (pVehicle->m_pLivery + 4);
 
-		// Store original colors
-		origColors[0] = colors[0];
-		origColors[1] = colors[1];
-		origColors[2] = colors[2];
-		origColors[3] = colors[3];
+	VehicleColors->field_10.red = ((unsigned int) ((dwColor1 >> 16) & 0xFF) * 0.0039215689);
+	VehicleColors->field_10.green = ((unsigned int) ((dwColor1 >> 8) & 0xFF) * colorMultiplier);
+	VehicleColors->field_10.blue = (unsigned int) (dwColor1 & 0xFF)* colorMultiplier;
+	VehicleColors->field_10.color = dwColor4;
 
-		// Switch to our rgba colors
-		colors[0] = dwColor1;
-		colors[1] = dwColor2;
-		colors[2] = dwColor3;
-		colors[3] = dwColor4;
+	VehicleColors->field_20.red = ((unsigned int) ((dwColor2 >> 16) & 0xFF) * 0.0039215689);
+	VehicleColors->field_20.green = ((unsigned int) ((dwColor2 >> 8) & 0xFF) * colorMultiplier);
+	VehicleColors->field_20.blue = (unsigned int) (dwColor2 & 0xFF)* colorMultiplier;
+	VehicleColors->field_20.color = dwColor4;
 
-		// Set the vehicle colors to our changed colors
-		pVehicle->m_byteColors[0] = 0;
-		pVehicle->m_byteColors[1] = 1;
-		pVehicle->m_byteColors[2] = 2;
-		pVehicle->m_byteColors[3] = 3;
+	VehicleColors->field_30.red = ((unsigned int) ((dwColor3 >> 16) & 0xFF) * 0.0039215689);
+	VehicleColors->field_30.green = ((unsigned int) ((dwColor3 >> 8) & 0xFF) * colorMultiplier);
+	VehicleColors->field_30.blue = (unsigned int) (dwColor3 & 0xFF)* colorMultiplier;
+	VehicleColors->field_30.color = dwColor4;
 
-		// Now apply color to vehicle
-		_asm
-		{
-			mov ecx, pVehicle
-			call COffsets::FUNC_CVehicle__RefreshColours
-		}
+	VehicleColors->field_40.red = ((unsigned int) ((dwColor4 >> 16) & 0xFF) * 0.0039215689);
+	VehicleColors->field_40.green = ((unsigned int) ((dwColor4 >> 8) & 0xFF) * colorMultiplier);
+	VehicleColors->field_40.blue = (unsigned int) (dwColor4 & 0xFF)* colorMultiplier;
+	VehicleColors->field_40.color = dwColor4;
 
-		// Switch back to original colors
-		colors[0] = origColors[0];
-		colors[1] = origColors[1];
-		colors[2] = origColors[2];
-		colors[3] = origColors[3];
+	VehicleColors->field_50.red = (unsigned int) ((dwColor5 >> 16) & 0xFF) * colorMultiplier;
+	VehicleColors->field_50.green = (unsigned int) ((dwColor5 >> 8) & 0xFF) * colorMultiplier;
+	VehicleColors->field_50.blue = (unsigned int) (dwColor5 & 0xFF) * colorMultiplier;
+	VehicleColors->field_50.color = dwColor4;
 
-
-		m_dwColor[0] = dwColor1;
-		m_dwColor[1] = dwColor2;
-		m_dwColor[2] = dwColor3;
-		m_dwColor[3] = dwColor4;
-	}
+	VehicleColors->field_60.red = (unsigned int) ((dwColor3 >> 16) & 0xFF) * colorMultiplier;
+	VehicleColors->field_60.green = (unsigned int) ((dwColor3 >> 8) & 0xFF) * colorMultiplier;
+	VehicleColors->field_60.blue = (unsigned int) (dwColor3 & 0xFF) * colorMultiplier;
+	VehicleColors->field_60.color = dwColor4;
 }
 
-void CVehicleEntity::GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3, DWORD &dwColor4)
+void CVehicleEntity::GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3, DWORD &dwColor4, DWORD &dwColor5)
 {
 	{
 		dwColor1 = m_dwColor[0];
 		dwColor2 = m_dwColor[1];
 		dwColor3 = m_dwColor[2];
 		dwColor4 = m_dwColor[3];
+		dwColor5 = m_dwColor[4];
 	}
 }
 
