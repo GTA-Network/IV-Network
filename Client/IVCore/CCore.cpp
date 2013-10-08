@@ -209,6 +209,10 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
 	m_pLoadingScreen->Initialize();
 	m_pLoadingScreen->SetVisible(true);
+
+	// Initialize the pause menu elements
+	m_pPauseMenu = new CPauseMenu(m_pGUI);
+	m_pPauseMenu->Initialize();
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)

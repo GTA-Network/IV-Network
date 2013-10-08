@@ -545,6 +545,9 @@
     <ClCompile Include="Graphics\CLoadingScreen.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\CPauseMenu.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -1106,6 +1109,9 @@
       <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\CLoadingScreen.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\CPauseMenu.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>

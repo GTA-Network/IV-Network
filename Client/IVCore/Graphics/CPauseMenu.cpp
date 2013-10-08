@@ -1,25 +1,25 @@
 //========== IV:Network - https://github.com/GTA-Network/IV-Network ============
 //
-// File: CMainMenu.cpp
+// File: CPauseMenu.cpp
 // Project: Client.Core
 // Author: ViruZz <blazee14@gmail.com>
 // License: See LICENSE in root directory
 //
 //==============================================================================
 
-#include "CMainMenu.h"
+#include "CPauseMenu.h"
 #include <CCore.h>
 #include <IV/CIVScript.h>
 
 extern CCore* g_pCore;
 
-CMainMenu::CMainMenu(CGUI* pGUI) :
-	m_pGUI(pGUI)
+CPauseMenu::CPauseMenu(CGUI* pGUI) :
+m_pGUI(pGUI)
 {
 
 }
 
-CMainMenu::~CMainMenu()
+CPauseMenu::~CPauseMenu()
 {
 	SAFE_DELETE(m_pQuickConnectButton);
 
@@ -38,8 +38,8 @@ CMainMenu::~CMainMenu()
 		m_pGUI->RemoveGUIWindow(m_pQuickConnectWindow);
 }
 
-bool CMainMenu::Initialize()
-{	
+bool CPauseMenu::Initialize()
+{
 	try
 	{
 		CEGUI::ImagesetManager::getSingleton().createFromImageFile("Background", "Background.png");
@@ -68,37 +68,37 @@ bool CMainMenu::Initialize()
 
 	// Create the Quick Connect Button
 	m_pQuickConnectButton = CreateButton("Quick Connect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
-	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseEnter, this));
-	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseExit, this));
-	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseClick, this));
+	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectButtonMouseEnter, this));
+	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectButtonMouseExit, this));
+	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pQuickConnectButton);
 
 	// Create the Server Browser Button
 	m_pServerBrowserButton = CreateButton("Server Browser", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.275f, 0), CEGUI::UDim(fY, 0)));
-	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseEnter, this));
-	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseExit, this));
-	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseClick, this));
+	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CPauseMenu::OnServerBrowserButtonMouseEnter, this));
+	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CPauseMenu::OnServerBrowserButtonMouseExit, this));
+	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CPauseMenu::OnServerBrowserButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pServerBrowserButton);
 
 	// Create the Settings Button
 	m_pSettingsButton = CreateButton("Settings", CEGUI::UVector2(CEGUI::UDim(0.162f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.525f, 0), CEGUI::UDim(fY, 0)));
-	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseEnter, this));
-	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseExit, this));
-	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseClick, this));
+	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsButtonMouseEnter, this));
+	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsButtonMouseExit, this));
+	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pSettingsButton);
 
 	// Create the Credits Button
 	m_pCreditsButton = CreateButton("Credits", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.75f, 0), CEGUI::UDim(fY, 0)));
-	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseEnter, this));
-	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseExit, this));
-	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseClick, this));
+	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CPauseMenu::OnCreditsButtonMouseEnter, this));
+	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CPauseMenu::OnCreditsButtonMouseExit, this));
+	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CPauseMenu::OnCreditsButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pCreditsButton);
 
 	// Create the Exit Button
 	m_pExitButton = CreateButton("Exit", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.925f, 0), CEGUI::UDim(fY, 0)));
-	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseEnter, this));
-	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseExit, this));
-	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseClick, this));
+	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CPauseMenu::OnExitButtonMouseEnter, this));
+	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CPauseMenu::OnExitButtonMouseExit, this));
+	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CPauseMenu::OnExitButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pExitButton);
 
 #undef fY
@@ -106,10 +106,10 @@ bool CMainMenu::Initialize()
 	return true;
 }
 
-void CMainMenu::SetVisible(bool bVisible)
+void CPauseMenu::SetVisible(bool bVisible)
 {
 	m_bVisible = bVisible;
-	
+
 	m_pGUI->SetCursorVisible(bVisible);
 
 	m_pBackground->setVisible(bVisible);
@@ -120,7 +120,7 @@ void CMainMenu::SetVisible(bool bVisible)
 	m_pExitButton->setVisible(bVisible);
 }
 
-void CMainMenu::SetQuickConnectVisible(bool bVisible)
+void CPauseMenu::SetQuickConnectVisible(bool bVisible)
 {
 	m_pQuickConnectWindow->setVisible(bVisible);
 	m_pQuickConnectWindow->setProperty("AlwaysOnTop", "true");
@@ -129,7 +129,7 @@ void CMainMenu::SetQuickConnectVisible(bool bVisible)
 	m_bQuickConnectVisible = bVisible;
 }
 
-void CMainMenu::SetSettingsVisible(bool bVisible)
+void CPauseMenu::SetSettingsVisible(bool bVisible)
 {
 	m_pSettingsWindow->setVisible(bVisible);
 	m_pSettingsWindow->setProperty("AlwaysOnTop", "true");
@@ -138,7 +138,7 @@ void CMainMenu::SetSettingsVisible(bool bVisible)
 	m_bSettingsVisible = bVisible;
 }
 
-CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
+CGUIStaticText * CPauseMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
 {
 	CGUIStaticText * pButton = m_pGUI->CreateGUIStaticText();
 	pButton->setText(CGUI::AnsiToCeguiFriendlyString(szText, strlen(szText)));
@@ -151,7 +151,7 @@ CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize,
 	return pButton;
 }
 
-bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	float fWidth = (float) m_pGUI->GetDisplayWidth();
 	float fHeight = (float) m_pGUI->GetDisplayHeight();
@@ -160,7 +160,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectWindow->setText("IV:Network Quick Connect");
 	m_pQuickConnectWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 250)));
 	m_pQuickConnectWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
-	m_pQuickConnectWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectCloseClick, this));
+	m_pQuickConnectWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectCloseClick, this));
 	m_pQuickConnectWindow->setProperty("FrameEnabled", "false");
 	m_pQuickConnectWindow->setVisible(true);
 
@@ -175,7 +175,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip"), CVAR_GET_INTEGER("port")).Get());
 	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
-	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
+	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectIPEditBoxKeyUp, this));
 
 	m_pQuickConnectPasswordStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
 	m_pQuickConnectPasswordStaticText->setText("Password:");
@@ -188,18 +188,18 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
 	m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
-	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
+	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectIPEditBoxKeyUp, this));
 	m_pQuickConnectPasswordEditBox->setProperty("MaskText", "true");
 
 	m_pQuickConnectConnectButton = m_pGUI->CreateGUIButton(m_pQuickConnectWindow);
 	m_pQuickConnectConnectButton->setText("Connect");
 	m_pQuickConnectConnectButton->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
 	m_pQuickConnectConnectButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 160)));
-	m_pQuickConnectConnectButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectConnectButtonClick, this));
+	m_pQuickConnectConnectButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CPauseMenu::OnQuickConnectConnectButtonClick, this));
 	return true;
 }
 
-bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	// Does the Settings GUI already exists? If yes, delete it
 	if (m_pSettingsWindow)
@@ -212,7 +212,7 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 	m_pSettingsWindow->setText("IV:Network Settings");
 	m_pSettingsWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 220)));
 	m_pSettingsWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
-	m_pSettingsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsCloseClick, this));
+	m_pSettingsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsCloseClick, this));
 	m_pSettingsWindow->setProperty("FrameEnabled", "false");
 	m_pSettingsWindow->setVisible(true);
 
@@ -227,89 +227,89 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 	m_pSettingsEditBox->setText("");
 	m_pSettingsEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pSettingsEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
-	m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsEditBoxKeyUp, this));
+	m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsEditBoxKeyUp, this));
 
 	m_pSettingsButtonEx = m_pGUI->CreateGUIButton(m_pSettingsWindow);
 	m_pSettingsButtonEx->setText("Apply");
 	m_pSettingsButtonEx->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
 	m_pSettingsButtonEx->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 100)));
-	m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsMouseClick, this));
+	m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CPauseMenu::OnSettingsMouseClick, this));
 	return true;
 }
 
-bool CMainMenu::OnQuickConnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 {
 	m_pQuickConnectButton->setAlpha(0.5f);
 	return true;
 }
 
-bool CMainMenu::OnQuickConnectButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
 	m_pQuickConnectButton->setAlpha(1);
 	return true;
 }
 
-bool CMainMenu::OnServerBrowserButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnServerBrowserButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 {
 	m_pServerBrowserButton->setAlpha(0.5f);
 	return true;
 }
 
-bool CMainMenu::OnServerBrowserButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnServerBrowserButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
 	m_pServerBrowserButton->setAlpha(1);
 	return true;
 }
 
-bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	m_pGUI->ShowMessageBox("This feature is temporary disabled.", "Server Browser", GUI_MESSAGEBOXTYPE_OK);
 	return true;
 }
 
-bool CMainMenu::OnSettingsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 {
 	m_pSettingsButton->setAlpha(0.5f);
 	return true;
 }
 
-bool CMainMenu::OnSettingsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
 	m_pSettingsButton->setAlpha(1);
 	return true;
 }
 
-bool CMainMenu::OnCreditsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnCreditsButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 {
 	m_pCreditsButton->setAlpha(0.5f);
 	return true;
 }
 
-bool CMainMenu::OnCreditsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnCreditsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
 	m_pCreditsButton->setAlpha(1);
 	return true;
 }
 
-bool CMainMenu::OnCreditsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnCreditsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	m_pGUI->ShowMessageBox("This feature is temporary disabled.", "IV:Network Credits", GUI_MESSAGEBOXTYPE_OK);
 	return true;
 }
 
-bool CMainMenu::OnExitButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnExitButtonMouseEnter(const CEGUI::EventArgs &eventArgs)
 {
 	m_pExitButton->setAlpha(0.5f);
 	return true;
 }
 
-bool CMainMenu::OnExitButtonMouseExit(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnExitButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 {
 	m_pExitButton->setAlpha(1);
 	return true;
 }
 
-void CMainMenu::OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type)
+void CPauseMenu::OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type)
 {
 	if (type == GUI_MESSAGEBOX_YES)
 	{
@@ -325,13 +325,13 @@ void CMainMenu::OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type)
 	}
 }
 
-bool CMainMenu::OnExitButtonMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnExitButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	m_pGUI->ShowMessageBox("Are you sure you want to leave IV:Network?", "Leaving IV:Network", GUI_MESSAGEBOXTYPE_YESNO, OnExitButtonMouseClickConfirm);
 	return true;
 }
 
-bool CMainMenu::OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs)
 {
 	// Hide the whole Quick Connect Box
 	SetQuickConnectVisible(false);
@@ -342,7 +342,7 @@ bool CMainMenu::OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-bool CMainMenu::OnSettingsCloseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsCloseClick(const CEGUI::EventArgs &eventArgs)
 {
 	// Hide the whole Quick Connect Box
 	SetSettingsVisible(false);
@@ -353,7 +353,7 @@ bool CMainMenu::OnSettingsCloseClick(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-bool CMainMenu::OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 {
 	const CEGUI::KeyEventArgs& key_args = static_cast<const CEGUI::KeyEventArgs&>(eventArgs);
 	if (key_args.scancode == CEGUI::Key::Return)
@@ -364,7 +364,7 @@ bool CMainMenu::OnQuickConnectIPEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 {
 	const CEGUI::KeyEventArgs& key_args = static_cast<const CEGUI::KeyEventArgs&>(eventArgs);
 	if (key_args.scancode == CEGUI::Key::Return)
@@ -375,14 +375,14 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-void CMainMenu::OnSettingsApply()
+void CPauseMenu::OnSettingsApply()
 {
 	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());
 
 	m_pGUI->ShowMessageBox(CString("You have changed your name to %s.", m_pSettingsEditBox->getText()).Get(), "Applying Settings", GUI_MESSAGEBOXTYPE_OK);
 }
 
-void CMainMenu::OnQuickConnectSubmit()
+void CPauseMenu::OnQuickConnectSubmit()
 {
 	char* cpHost;
 	unsigned short usPort = 9999;
@@ -435,13 +435,13 @@ void CMainMenu::OnQuickConnectSubmit()
 	SetQuickConnectVisible(false);
 }
 
-bool CMainMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs)
 {
 	OnQuickConnectSubmit();
 	return true;
 }
 
-bool CMainMenu::OnSettingsMouseClick(const CEGUI::EventArgs &eventArgs)
+bool CPauseMenu::OnSettingsMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	OnSettingsApply();
 	return true;

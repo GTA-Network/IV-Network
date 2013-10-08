@@ -149,12 +149,6 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 					}
 					break;
 				}
-				case VK_F12:
-				{
-					bool bIsMainMenuVisible = g_pCore->GetMainMenu()->IsMainMenuVisible();
-					g_pCore->GetMainMenu()->SetVisible(!bIsMainMenuVisible);
-					break;
-				}
 				case VK_F8:
 				{
 					// Take a screen shot
@@ -169,7 +163,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_ESCAPE:
 				{
-					g_pCore->GetChat()->Outputf(false, "WIP!!! >:(");
+					g_pCore->GetPauseMenu()->SetVisible(!g_pCore->GetPauseMenu()->IsPauseMenuVisible());
 					break;
 				}
 			}
