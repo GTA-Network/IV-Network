@@ -52,7 +52,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		vecCreatePos.fX += 4;
 		vecCreatePos.fY += 1;
 
-		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFFFFFFF);
+		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0xFFFF0000,0xFF00FF000,0xFF0000FF,0xFFFFFFFF);
 		if(pVehicle) {
 			// Add our vehicle
 			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
