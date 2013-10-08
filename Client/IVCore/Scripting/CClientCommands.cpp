@@ -52,7 +52,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		vecCreatePos.fX += 4;
 		vecCreatePos.fY += 1;
 
-		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFFFFFFF);
+		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 		if(pVehicle) {
 			// Add our vehicle
 			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
@@ -231,7 +231,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 
 		for(int i = 0; i < 179; i++) {
 			vecPos.fX += 5;
-			CVehicleEntity * pVehicle = new CVehicleEntity(i,vecPos,0.0f,0,0,0,0);
+			CVehicleEntity * pVehicle = new CVehicleEntity(i, vecPos, 0.0f, 0, 0, 0, 0, 0xFFFFFF);
 			if(pVehicle)
 			{
 				// Add our vehicle

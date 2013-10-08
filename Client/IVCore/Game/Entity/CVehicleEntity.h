@@ -71,7 +71,7 @@ private:
 
 public:
 
-	CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD bColor1, DWORD bColor2, DWORD bColor3, DWORD bColor4, DWORD bColor5 = 0xFFFFFF);
+	CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD bColor1, DWORD bColor2, DWORD bColor3, DWORD bColor4, DWORD bColor5);
 	~CVehicleEntity();
 
 	bool								Create();
@@ -90,7 +90,7 @@ public:
 
     void								SetModel(DWORD dwModelHash);
 
-	void								SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4, DWORD dwColor5 = 0xFFFFFFFF);
+	void								SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4, DWORD dwColor5);
 	void								GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3, DWORD &dwColor4, DWORD &dwColor5);
 
     void								SetPosition(const CVector3& vecPosition, bool bDontCancelTasks = false, bool bResetInterpolation = true);

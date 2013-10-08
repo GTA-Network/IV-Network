@@ -21,7 +21,7 @@ extern CCore * g_pCore;
 #pragma warning( disable : 4748 )
 
 CIVTrain::CIVTrain() :
-	CVehicleEntity(126, CVector3(), 0, 0, 0 , 0, 0)
+	CVehicleEntity(126, CVector3(), 0, 0, 0, 0, 0, 0xFFFFFF)
 {
 	CVehicleEntity::Destroy();
 
@@ -35,7 +35,7 @@ CIVTrain::CIVTrain() :
 }
 void CIVTrain::CreateTrain()
 {
-	CVehicleEntity * pVehicle = new CVehicleEntity(126, CVector3(), 0.0f, 0, 0, 0, 0);
+	CVehicleEntity * pVehicle = new CVehicleEntity(126, CVector3(), 0.0f, 0, 0, 0, 0, 0xFFFFFF);
 	
 	m_eTrainType = TYPE_MAIN;
 	pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
@@ -54,7 +54,7 @@ void CIVTrain::CreateWagons(BYTE iWagons)
 	int iWagonCount = 0;
 	while(iWagonCount < iWagons)
 	{
-		CVehicleEntity * pVehicle = new CVehicleEntity(127, CVector3(), 0.0f, 0, 0, 0, 0);
+		CVehicleEntity * pVehicle = new CVehicleEntity(127, CVector3(), 0.0f, 0, 0, 0, 0, 0xFFFFFF);
 		m_pWagonEntity[iWagonCount] = new CIVTrain;
 		m_pWagonEntity[iWagonCount]->m_eTrainType = TYPE_WAGON;
 		m_pWagonEntity[iWagonCount]->m_pVehicle = pVehicle;
