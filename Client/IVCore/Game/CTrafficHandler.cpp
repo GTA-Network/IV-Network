@@ -67,6 +67,9 @@ void CTrafficHandler::InstallTrafficHook()
     // Disable vehicle exits
     *(BYTE *)(COffsets::IV_Hook__DisableVehicleExists) = 0xEB;
 
+	// Disables some stuff like police helis, ambient planes, emergency services, garbage trucks and random trains
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x49454F, 5);
+
     // Disable random peds and vehicles
     CPatcher::InstallNopPatch(COffsets::IV_Hook__DisableRandomPedsAndVehicles_1, 5);
 
