@@ -48,7 +48,6 @@
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
 #include <Graphics/CLoadingScreen.h>
-#include <Graphics/CPauseMenu.h>
 
 #include <audio\CAudioManager.h>
 
@@ -93,8 +92,6 @@ private:
 	CAudioManager					*m_pAudioManager;
 
 	CLoadingScreen					*m_pLoadingScreen;
-
-	CPauseMenu						*m_pPauseMenu;
 
 public:
 									CCore();
@@ -165,9 +162,6 @@ public:
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 
 	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
-
-	CLoadingScreen						* GetLoadingScreen() { return m_pLoadingScreen; }
-	CPauseMenu						* GetPauseMenu() { return m_pPauseMenu; }
 };
 
 #endif // CCore_h

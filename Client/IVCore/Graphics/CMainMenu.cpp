@@ -172,7 +172,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
 
 	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip"), CVAR_GET_INTEGER("port")).Get());
+	m_pQuickConnectIPEditBox->setText("");
 	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
@@ -185,7 +185,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
 
 	m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
+	m_pQuickConnectPasswordEditBox->setText("");
 	m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
 	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
@@ -375,6 +375,17 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
+
+int findCharInCharP(char* CharP, char Char)
+{
+	for (int i = 0; i < strlen(CharP); ++i)
+	{
+		if (CharP[i] == Char)
+			return i;
+	}
+	return -1;
+}
+
 void CMainMenu::OnSettingsApply()
 {
 	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());
@@ -392,16 +403,7 @@ void CMainMenu::OnQuickConnectSubmit()
 		m_pQuickConnectIPEditBox->setText("127.0.0.1:9999");
 	}
 
-	int colon = -1;
-	for (int i = 0; i < strlen(m_pQuickConnectIPEditBox->getText()); ++i)
-	{
-		if (m_pQuickConnectIPEditBox->getText()[i] == ':')
-		{
-			colon = i;
-			break;
-		}
-	}
-
+	int colon = findCharInCharP(m_pQuickConnectIPEditBox->getText(), ':');
 	if (colon == -1)
 	{
 		cpHost = m_pQuickConnectIPEditBox->getText();

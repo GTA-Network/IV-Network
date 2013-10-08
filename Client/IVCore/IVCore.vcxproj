@@ -209,7 +209,6 @@
     <ClCompile Include="Graphics\CGUI.cpp" />
     <ClCompile Include="Graphics\CLoadingScreen.cpp" />
     <ClCompile Include="Graphics\CMainMenu.cpp" />
-    <ClCompile Include="Graphics\CPauseMenu.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
     <ClCompile Include="Graphics\IDirect3DDevice9Proxy.cpp" />
@@ -390,7 +389,6 @@
     <ClInclude Include="Graphics\CGraphics.h" />
     <ClInclude Include="Graphics\CLoadingScreen.h" />
     <ClInclude Include="Graphics\CMainMenu.h" />
-    <ClInclude Include="Graphics\CPauseMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
