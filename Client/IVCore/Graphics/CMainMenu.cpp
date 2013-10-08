@@ -14,7 +14,8 @@
 extern CCore* g_pCore;
 
 CMainMenu::CMainMenu(CGUI* pGUI) :
-	m_pGUI(pGUI)
+	m_pGUI(pGUI),
+	m_pSettingsWindow(NULL)
 {
 
 }
@@ -204,7 +205,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
 
 	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip"), CVAR_GET_INTEGER("port")).Get());
+	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip").Get(), CVAR_GET_INTEGER("port")).Get());
 	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
@@ -233,35 +234,39 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 
 bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	float fWidth = (float) m_pGUI->GetDisplayWidth();
-	float fHeight = (float) m_pGUI->GetDisplayHeight();
+	// Does the Settings GUI already exists? If yes, use it
+	if (!m_pSettingsWindow)
+	{
+		float fWidth = (float) m_pGUI->GetDisplayWidth();
+		float fHeight = (float) m_pGUI->GetDisplayHeight();
 
-	m_pSettingsWindow = m_pGUI->CreateGUIFrameWindow();
-	m_pSettingsWindow->setText("IV:Network Settings");
-	m_pSettingsWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 220)));
-	m_pSettingsWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
-	m_pSettingsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsCloseClick, this));
-	m_pSettingsWindow->setProperty("FrameEnabled", "false");
-	m_pSettingsWindow->setVisible(true);
+		m_pSettingsWindow = m_pGUI->CreateGUIFrameWindow();
+		m_pSettingsWindow->setText("IV:Network Settings");
+		m_pSettingsWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 220)));
+		m_pSettingsWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
+		m_pSettingsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsCloseClick, this));
+		m_pSettingsWindow->setProperty("FrameEnabled", "false");
+		m_pSettingsWindow->setVisible(true);
 
-	m_pSettingsStaticText = m_pGUI->CreateGUIStaticText(m_pSettingsWindow);
-	m_pSettingsStaticText->setText("Username:");
-	m_pSettingsStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
-	m_pSettingsStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
-	m_pSettingsStaticText->setProperty("FrameEnabled", "false");
-	m_pSettingsStaticText->setProperty("BackgroundEnabled", "false");
+		m_pSettingsStaticText = m_pGUI->CreateGUIStaticText(m_pSettingsWindow);
+		m_pSettingsStaticText->setText("Username:");
+		m_pSettingsStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
+		m_pSettingsStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
+		m_pSettingsStaticText->setProperty("FrameEnabled", "false");
+		m_pSettingsStaticText->setProperty("BackgroundEnabled", "false");
 
-	m_pSettingsEditBox = m_pGUI->CreateGUIEditBox(m_pSettingsWindow);
-	m_pSettingsEditBox->setText("");
-	m_pSettingsEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
-	m_pSettingsEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
-	m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsEditBoxKeyUp, this));
+		m_pSettingsEditBox = m_pGUI->CreateGUIEditBox(m_pSettingsWindow);
+		m_pSettingsEditBox->setText(CVAR_GET_STRING("nick").Get());
+		m_pSettingsEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
+		m_pSettingsEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
+		m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsEditBoxKeyUp, this));
 
-	m_pSettingsButtonEx = m_pGUI->CreateGUIButton(m_pSettingsWindow);
-	m_pSettingsButtonEx->setText("Apply");
-	m_pSettingsButtonEx->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
-	m_pSettingsButtonEx->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 100)));
-	m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsMouseClick, this));
+		m_pSettingsButtonEx = m_pGUI->CreateGUIButton(m_pSettingsWindow);
+		m_pSettingsButtonEx->setText("Apply");
+		m_pSettingsButtonEx->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
+		m_pSettingsButtonEx->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 100)));
+		m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsMouseClick, this));
+	}
 	return true;
 }
 
@@ -427,19 +432,14 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 	return true;
 }
 
-int findCharInCharP(char* CharP, char Char)
-{
-	for (int i = 0; i < strlen(CharP); ++i)
-	{
-		if (CharP[i] == Char)
-			return i;
-	}
-	return -1;
-}
-
 void CMainMenu::OnSettingsApply()
 {
 	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());
+
+	CVAR_SET_STRING("nick", m_pSettingsEditBox->getText());
+
+	// Save the settings
+	CSettings::Save();
 
 	m_pGUI->ShowMessageBox(CString("You have changed your name to %s.", m_pSettingsEditBox->getText()).Get(), "Applying Settings", GUI_MESSAGEBOXTYPE_OK);
 }
@@ -481,6 +481,9 @@ void CMainMenu::OnQuickConnectSubmit()
 	CVAR_SET_INTEGER("port", usPort);
 	CVAR_SET_STRING("pass", m_pQuickConnectPasswordEditBox->getText());
 
+	// Save the settings
+	CSettings::Save();
+
 	// Hide the quick connect window
 	SetVisible(false);
 
@@ -488,6 +491,9 @@ void CMainMenu::OnQuickConnectSubmit()
 
 	// Enable the chat
 	g_pCore->GetChat()->SetVisible(true);
+
+	// Set Nickname
+	g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
 
 	// Conneting the player to the server
 	g_pCore->ConnectToServer(cpHost, usPort, m_pQuickConnectPasswordEditBox->getText());
