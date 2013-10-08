@@ -32,7 +32,7 @@ private:
 	float								m_fSpawnAngle;
 	float								m_uiHealth;
 	float								m_fPetrolTankHealth;
-	BYTE								m_byteColor[4];
+	DWORD								m_dwColor[4];
 	bool								m_bIndicatorState[4];
 	float								m_fDoor[6];
     bool								m_bSirenState;
@@ -71,7 +71,7 @@ private:
 
 public:
 
-	CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE bColor1, BYTE bColor2, BYTE bColor3, BYTE bColor4);
+	CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD bColor1, DWORD bColor2, DWORD bColor3, DWORD bColor4);
 	~CVehicleEntity();
 
 	bool								Create();
@@ -90,8 +90,8 @@ public:
 
     void								SetModel(DWORD dwModelHash);
 
-    void								SetColors(BYTE byteColor1, BYTE byteColor2, BYTE byteColor3, BYTE byteColor4);
-    void								GetColors(BYTE &byteColor1, BYTE &byteColor2, BYTE &byteColor3, BYTE &byteColor4);
+	void								SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4);
+	void								GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3, DWORD &dwColor4);
 
     void								SetPosition(const CVector3& vecPosition, bool bDontCancelTasks = false, bool bResetInterpolation = true);
     void								GetPosition(CVector3& vecPosition);
@@ -131,11 +131,10 @@ public:
     void								Interpolate();
     void								ResetInterpolation();
 
-	void								Pulse() { };
+	void								Pulse();
 
     void								UpdateInterior(bool bHasDriver = false);
 
-    void								Process();
     void								UpdateTargetPosition();
     void								UpdateTargetRotation();
         

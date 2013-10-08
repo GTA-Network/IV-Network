@@ -112,12 +112,13 @@ void DumpMain(BOOL bIncModules)
 	int x=0;
 
 	sprintf(szErrorString,
-		"Exception At Address: 0x%08X\r\n\r\n"
+		"Exception At Address: 0x%08X (0x%p)\r\n\r\n"
 		"Registers:\r\n"
 		"EAX: 0x%08X\tEBX: 0x%08X\tECX: 0x%08X\tEDX: 0x%08X\r\n"
 		"ESI: 0x%08X\tEDI: 0x%08X\tEBP: 0x%08X\tESP: 0x%08X\r\n"
-		"EFLAGS: 0x%08X\r\n\r\nStack:\r\n",
+		"EFLAGS: 0x%08X\r\n\r\n\r\nStack:\r\n",
 		pContextRecord->Eip,
+		pContextRecord->Eip - g_pCore->GetBase(),
 		pContextRecord->Eax,
 		pContextRecord->Ebx,
 		pContextRecord->Ecx,
@@ -161,6 +162,10 @@ BOOL CALLBACK ExceptionProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			DumpMain(FALSE);
 			SetDlgItemText(hDlg,IDC_EDIT1,szErrorString);
+		
+			/* Now we are going to write a minidump and the dumped info to a file/dir */
+			//WirteCrashInfo(stErrorString);
+
 			SetForegroundWindow(GetDlgItem(hDlg,IDD_DIALOG1));
 			SetFocus(GetDlgItem(hDlg,IDC_BUTTON1));
 			break;
