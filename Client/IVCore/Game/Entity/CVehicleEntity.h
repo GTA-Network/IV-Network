@@ -131,11 +131,10 @@ public:
     void								Interpolate();
     void								ResetInterpolation();
 
-	void								Pulse() { };
+	void								Pulse();
 
     void								UpdateInterior(bool bHasDriver = false);
 
-    void								Process();
     void								UpdateTargetPosition();
     void								UpdateTargetRotation();
         

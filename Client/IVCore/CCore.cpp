@@ -364,8 +364,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// If our local player exists, pulse him
 	if (m_pGame->GetLocalPlayer())
 		m_pGame->GetLocalPlayer()->Pulse();
-
-	pDevice->Present(NULL,NULL,NULL,NULL);
 }
 
 void CCore::GetLoadedModulesList()

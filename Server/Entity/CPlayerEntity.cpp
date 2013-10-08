@@ -78,7 +78,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkEntitySubPlayer pSyncPacket;
+			CNetworkPlayerSyncPacket pSyncPacket;
 
 			GetControlState(pSyncPacket.pControlState);
 
@@ -106,12 +106,12 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			pSyncPacket.fHeading = m_fHeading;
 
 			// Apply current weapon sync data to the sync package
-			pSyncPacket.sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
+			/*pSyncPacket.sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
 			pSyncPacket.sWeaponData.fArmsUpDownRotation = m_weaponData.fArmsUpDownRotation;
 			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
 			pSyncPacket.sWeaponData.vecShotAtCoordinates = m_weaponData.vecShotAtCoordinates;
 			pSyncPacket.sWeaponData.vecShotAtTarget = m_weaponData.vecShotAtTarget;
-			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
+			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;*/
 
 			// Merge EntitySync packet with our packet
 			//memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
@@ -135,7 +135,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkEntitySubPlayer pSyncPlayer;
+			CNetworkPlayerSyncPacket pSyncPlayer;
 			pBitStream->Read(pSyncPlayer);
 
 			SetControlState(pSyncPlayer.pControlState);
@@ -149,11 +149,11 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetHeading(pSyncPlayer.fHeading);
 
 			// Save weapon sync
-			SetArmHeading(pSyncPlayer.sWeaponData.fArmsHeadingCircle);
+			/*SetArmHeading(pSyncPlayer.sWeaponData.fArmsHeadingCircle);
 			SetArmUpDown(pSyncPlayer.sWeaponData.fArmsUpDownRotation);
 			SetWeaponAimTarget(pSyncPlayer.sWeaponData.vecAimAtCoordinates);
 			SetWeaponShotSource(pSyncPlayer.sWeaponData.vecShotAtCoordinates);
-			SetWeaponShotTarget(pSyncPlayer.sWeaponData.vecShotAtTarget);
+			SetWeaponShotTarget(pSyncPlayer.sWeaponData.vecShotAtTarget);*/
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

@@ -585,11 +585,9 @@ DWORD CVehicleEntity::GetDoorLockState()
 	return dwState;
 }
 
-void CVehicleEntity::Process()
+void CVehicleEntity::Pulse()
 {
 	Interpolate();
-
-	Pulse();
 }
 
 void CVehicleEntity::UpdateTargetPosition()

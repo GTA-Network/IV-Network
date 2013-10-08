@@ -36,7 +36,7 @@ public:
         PAD(IVPhysical, pad3, 0x1C);    // 1F4-210
 
         virtual					~IVPhysical();
-        virtual void			Function55(); 
+        virtual bool			Function55(); 
         virtual void			Function56(); // seems get flag
         virtual void			Function57(); // something with bound or so
         virtual void			Function58(); // nullsub

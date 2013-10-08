@@ -487,9 +487,9 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 		// Are we not in a vehicle and not entering a vehicle?
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
-			// Set the position in the matrix
-			m_pPlayerPed->SetPosition(vecPosition);
+			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
 
+			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
 			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 		}
 	}
@@ -1850,7 +1850,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 {
 	if (!IsPassenger())
 	{
-		CNetworkEntitySubPlayer PlayerPacket;
+		CNetworkPlayerSyncPacket PlayerPacket;
 
 		// Apply current 3D Position to the sync package
 		GetPosition(PlayerPacket.vecPosition);
@@ -1878,12 +1878,64 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 
 void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 {
-	CNetworkEntitySubPlayer PlayerPacket;
+	CNetworkPlayerSyncPacket PlayerPacket;
 
 	ePackageType eType;
 	pBitStream->Read(eType);
 	if (eType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
 	{
-		
+		// Process player deserialise package
+		CNetworkPlayerSyncPacket PlayerPacket;
+
+		// TODO: this is crap take a look at mta they only send changed values
+		// I started working on such sync for IVMP but never finished so i will do it later
+		// For now this is goood
+
+		pBitStream->Read(PlayerPacket);
+
+		ApplySyncData(
+			// Apply current Position to the sync package
+			PlayerPacket.vecPosition,
+
+			// Apply current Movement to the sync package
+			PlayerPacket.vecMovementSpeed,
+
+			// Apply current Turnspeed to the sync package
+			PlayerPacket.vecTurnSpeed,
+
+			// Apply current Directionspeed to the sync package
+			PlayerPacket.vecDirection,
+
+			// Apply current Rollspeed to the sync package
+			PlayerPacket.vecRoll,
+
+			// Apply current duckstate to the sync package
+			PlayerPacket.bDuckState,
+
+			// Apply current heading to the sync package
+			PlayerPacket.fHeading,
+
+			//Apply current weapon sync data to the sync package
+			// Weapon sync will be moved to another sync package
+			0,
+			0);
+
+		SetControlState(&PlayerPacket.pControlState);
+
+		unsigned int uiPlayerIndex = GetScriptingHandle();
+
+		if (PlayerPacket.pControlState.IsJumping())
+		{
+			char iJumpStyle = 0;
+			if (PlayerPacket.vecMovementSpeed.Length() < 1.0)
+				iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
+			else if (PlayerPacket.vecMovementSpeed.Length() >= 1.0)
+				iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
+
+			_asm	push iJumpStyle;
+			_asm	push uiPlayerIndex;
+			_asm	call COffsets::IV_FUNC__TaskPedJump;
+			_asm	add esp, 8;
+		}
 	}
 }
