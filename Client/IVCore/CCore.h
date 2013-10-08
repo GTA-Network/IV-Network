@@ -161,7 +161,6 @@ public:
 	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 
-	void							ConnectToServer();
 	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
 };
 

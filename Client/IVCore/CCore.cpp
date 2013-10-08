@@ -174,12 +174,6 @@ void ConnectThread()
 	}
 }
 
-void CCore::ConnectToServer()
-{
-	// Connect to the network
-	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
-}
-
 void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
 {
 	SetHost(strHost);
