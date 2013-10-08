@@ -52,7 +52,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		vecCreatePos.fX += 4;
 		vecCreatePos.fY += 1;
 
-		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0xFFFF0000,0xFF00FF000,0xFF0000FF,0xFFFFFFFF);
+		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType,vecCreatePos,0.0f,0,0,0,0);
 		if(pVehicle) {
 			// Add our vehicle
 			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
@@ -117,9 +117,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 				pVehicle->GetPosition(vecPosition);
 				CVector3 vecRotation;
 				pVehicle->GetRotation(vecRotation);
-				DWORD dwColors[4];
-				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3]);
-				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+				BYTE byteColors[4];
+				pVehicle->GetColors(byteColors[0], byteColors[1], byteColors[2], byteColors[3]);
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, byteColors[0], byteColors[1], byteColors[2], byteColors[3], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
 			}
 		}
 		else

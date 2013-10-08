@@ -125,7 +125,7 @@ public:
 	virtual bool					Create() = 0;
 	virtual bool					Destroy() = 0;
 
-	virtual void					Pulse() {};
+	virtual void					Pluse() {};
 	
 	virtual void					GetPosition(CVector3& vecPos);
 	virtual void					SetPosition(const CVector3& vecPos);

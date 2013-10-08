@@ -19,7 +19,7 @@
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD color1, DWORD color2, DWORD color3, DWORD color4) :
+CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, BYTE color1, BYTE color2, BYTE color3, BYTE color4) :
 	CNetworkEntity()
 {
 	m_pVehicle = NULL;
@@ -46,10 +46,10 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(iVehicleModelIndex);
 
 	// Set the color
-	m_dwColor[0] = color1;
-	m_dwColor[1] = color2;
-	m_dwColor[2] = color3;
-	m_dwColor[3] = color4;
+	m_byteColor[0] = color1;
+	m_byteColor[1] = color2;
+	m_byteColor[2] = color3;
+	m_byteColor[3] = color4;
 
 	// Set the interpolate variables
 	m_interp.pos.ulFinishTime = 0;
@@ -132,7 +132,7 @@ bool CVehicleEntity::Create()
 		m_pVehicle = new CIVVehicle(pVehicle);
 
 		//set the vehicle's color
-		SetColors(m_dwColor[0], m_dwColor[1], m_dwColor[2], m_dwColor[3]);
+		m_pVehicle->SetColors(m_byteColor[0], m_byteColor[1], m_byteColor[2], m_byteColor[3]);
 
 		//fix: no more random components
 		for (int i = 0; i < 9; ++i)
@@ -282,65 +282,6 @@ void CVehicleEntity::SetModel(DWORD dwModelHash)
 	CLogFile::Printf("CClientVehicle::SetModel Stream In Complete");
 }
 
-void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4)
-{
-	IVVehicle * pVehicle = GetGameVehicle()->GetVehicle();
-
-	if (pVehicle)
-	{
-		DWORD origColors[4];
-		DWORD* colors = (DWORD*) (g_pCore->GetBase() + 0x1606B58);
-
-		// Store original colors
-		origColors[0] = colors[0];
-		origColors[1] = colors[1];
-		origColors[2] = colors[2];
-		origColors[3] = colors[3];
-
-		// Switch to our rgba colors
-		colors[0] = dwColor1;
-		colors[1] = dwColor2;
-		colors[2] = dwColor3;
-		colors[3] = dwColor4;
-
-		// Set the vehicle colors to our changed colors
-		pVehicle->m_byteColors[0] = 0;
-		pVehicle->m_byteColors[1] = 1;
-		pVehicle->m_byteColors[2] = 2;
-		pVehicle->m_byteColors[3] = 3;
-
-		// Now apply color to vehicle
-		_asm
-		{
-			mov ecx, pVehicle
-			call COffsets::FUNC_CVehicle__RefreshColours
-		}
-
-		// Switch back to original colors
-		colors[0] = origColors[0];
-		colors[1] = origColors[1];
-		colors[2] = origColors[2];
-		colors[3] = origColors[3];
-
-
-		m_dwColor[0] = dwColor1;
-		m_dwColor[1] = dwColor2;
-		m_dwColor[2] = dwColor3;
-		m_dwColor[3] = dwColor4;
-	}
-}
-
-void CVehicleEntity::GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3, DWORD &dwColor4)
-{
-	{
-		dwColor1 = m_dwColor[0];
-		dwColor2 = m_dwColor[1];
-		dwColor3 = m_dwColor[2];
-		dwColor4 = m_dwColor[3];
-	}
-}
-
-/*
 void CVehicleEntity::SetColors(BYTE byteColor1, BYTE byteColor2, BYTE byteColor3, BYTE byteColor4)
 {
 	if(IsSpawned())
@@ -364,7 +305,6 @@ void CVehicleEntity::GetColors(BYTE &byteColor1, BYTE &byteColor2, BYTE &byteCol
 		byteColor4 = m_byteColor[3];
 	}
 }
-*/
 
 void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTasks, bool bResetInterpolation)
 {
@@ -645,13 +585,11 @@ DWORD CVehicleEntity::GetDoorLockState()
 	return dwState;
 }
 
-void CVehicleEntity::Pulse()
+void CVehicleEntity::Process()
 {
 	Interpolate();
 
-	// update the color otherwise it will be overwritten with the array color
-	// TODO: find call which updates the color instead of leaving it as it is
-	SetColors(m_dwColor[0], m_dwColor[1], m_dwColor[2], m_dwColor[3]);
+	Pulse();
 }
 
 void CVehicleEntity::UpdateTargetPosition()

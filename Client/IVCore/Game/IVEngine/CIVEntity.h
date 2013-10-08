@@ -58,11 +58,11 @@ public:
 	DWORD m_pEntryInfoNode;      // 70-74
 
 	virtual					~IVEntity();
-	virtual Matrix34*       SetMatrix(Matrix34* pMatrix, bool bForceUpdate, int UpdatePhysicsMatrix);
-	virtual Matrix34*       SetCoordinates(Vector4* pCoordinates, bool bForceUpdate, int UpdatePhysicsMatrix);
+	virtual Matrix34*       SetMatrix(Matrix34* pMatrix, int a2, int a3);
+	virtual Matrix34*       SetCoordinates(Vector4* pCoordinates, bool b2, int a4); 
 	virtual void            SetHeading(float fHeading); // not sure
 	virtual void            CreateDoubleNode(); // 0x10
-	virtual void            CreateSingleNode(int a1); // 0x14
+	virtual void            CreateSingleNode(); // 0x14
 	virtual void            ReleaseNodes(); // 0x18
 	virtual int				AddToInterior(); // 7
 	virtual void            RemoveFromInterior();
@@ -73,22 +73,22 @@ public:
 	virtual bool            IsNotNetwork(); // return 1;
 	virtual int             SetModelIndex(int iModelIndex);
 	virtual int             SetModelByName(const char* modelName);
-	virtual bool            Function16();
+	virtual bool            Function16(); // checks something something with model and doing something with ped base
 	virtual int             ResetLivery();
-	virtual int             Function18(int);
-	virtual int             Function19(int);
-	virtual Vector4*		Function20(Vector4*); // 20 and 21 do the same lol
-	virtual Vector4*		Function21(Vector4*);
-	virtual float	        GetModelInfo_field10_f4(); // gets field 1c of model info
-	virtual float           Function23(Vector4*); // similar to 20 and 21 but a bit different maybe get bound or dimension
-	virtual Vector4*        GetModelInfo_field20();
-	virtual Vector3*        GetModelInfo_field30();
-	virtual Vector4*		Function26(Vector4*);
+	virtual int             Function18(int a1); // something with livery
+	virtual int             Function19(int a1); // something with physics
+	virtual void            Function20(); // gets a position relative to model and entity position
+	virtual void            Function21(); // gets a position relative to model and entity position
+	virtual CVector3*       GetModelForwardMatrix(); // gets field 1c of model info
+	virtual void            Function23(); // gets a position relative to model and entity position and return field 1c of model
+	virtual void            Function24(); // get vec1 of model
+	virtual void            Function25(); // get vec2 of model
+	virtual void            Function26(); // something with model and entity position
 	virtual void            Function27(); // something with model and entity position
 	virtual void            ProcessInput(); // ProcessInput
-	virtual char            Function29(); // return 0;
-	virtual void            Function30(int a1, int a2, int a3); // return 0;
-	virtual void            Function31(Vector4* pCoordinates, float fHeading, bool); // in Vehicle fHeading >= -3.1415927 && fHeading <= 6.2831855
+	virtual char            Function29(int a1, int a2, int a3); // return 0;
+	virtual void            Function30(Vector4*, float, bool); // return 0;
+	virtual void            Function31(); // something with ped intelligence
 	virtual void            Function32();
 	virtual void            Function33(); // process occupents if not pretend
 	virtual void            Function34();

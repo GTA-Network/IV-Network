@@ -180,17 +180,47 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 				CLogFile::Printf("FATAL ERROR: Tried to sync a ped to localplayer! (LocalPlayer: %d, Player: %d)", g_pCore->GetGame()->GetLocalPlayer()->GetId(), playerId);
 				return;
 			}
-			auto oldReadOffset = pBitStream->GetReadOffset();
+
 			ePackageType eType;
 			pBitStream->Read(eType);
-			// Set it back so that the deserialize function can identify which packet is incoming
-			// I dont want to pass a argument to Deserialize it should do what the name says deserialize a bitstream this means also the package id 
-			pBitStream->SetReadOffset(oldReadOffset);
+
 			switch (eType)
 			{
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 				{
-					pPlayer->Deserialize(pBitStream);
+					// Process player deserialise package
+					CNetworkEntitySubPlayer PlayerPacket;
+
+					pBitStream->Read(PlayerPacket);
+
+					pPlayer->ApplySyncData(
+						// Apply current Position to the sync package
+						PlayerPacket.vecPosition,
+
+						// Apply current Movement to the sync package
+						PlayerPacket.vecMovementSpeed,
+
+						// Apply current Turnspeed to the sync package
+						PlayerPacket.vecTurnSpeed,
+
+						// Apply current Directionspeed to the sync package
+						PlayerPacket.vecDirection,
+
+						// Apply current Rollspeed to the sync package
+						PlayerPacket.vecRoll,
+
+						// Apply current duckstate to the sync package
+						PlayerPacket.bDuckState,
+
+						// Apply current heading to the sync package
+						PlayerPacket.fHeading,
+
+						//Apply current weapon sync data to the sync package
+						0,
+						0);
+
+					pPlayer->SetControlState(&PlayerPacket.pControlState);
+					//pPlayer->Deserialize(pBitStream);
 					break;
 				}
 			default:
