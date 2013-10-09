@@ -597,7 +597,9 @@ void __cdecl renderMenus() //render Main and pause menu
 
 void __cdecl sub_47F080()
 {
-	//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
+	if (g_pCore->GetNetworkManager())
+		g_pCore->GetNetworkManager()->Pulse();
+		//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
 }
 
 void __cdecl sub_47BA60()

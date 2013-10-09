@@ -105,7 +105,9 @@ bool CVehicleEntity::Create()
 
 	IVVehicleFactory* pVehicleFactory = *(IVVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4);
 
-	IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 1);
+	//IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
+
+	IVVehicle * pVehicle = ((IVVehicle*(__thiscall *)(void*, int modelIndex, int creator, int a3, int network))(g_pCore->GetBase() + 0x04B4830))((void*) (g_pCore->GetBase() + 0x118A6D4), m_pModelInfo->GetIndex(), 1, 0, 0);
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
@@ -151,7 +153,7 @@ bool CVehicleEntity::Create()
 		// Reset the vehicle
 		Reset();
 
-		CLogFile::Printf("Created vehicle! (Id: %d, Handle: %d)", m_vehicleId, m_uiVehicleHandle);
+		CLogFile::Printf("Created vehicle! (Id: %d, Handle: %X)", m_vehicleId, g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(pVehicle));
 		return true;
 	}
 	else

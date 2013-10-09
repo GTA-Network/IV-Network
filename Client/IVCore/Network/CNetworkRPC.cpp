@@ -276,11 +276,15 @@ void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	CVector3 vecPosition;
 	pBitStream->Read(vecPosition);
+	vecPosition.fZ += 1.0f;
+
+
+	g_pCore->GetChat()->Outputf(false, "%i %i %f %f %f", vehicleId, vehicleModel, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 
 	CVehicleEntity * pVehicle = new CVehicleEntity(vehicleModel, vecPosition, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 	if (pVehicle) 
 	{
-		// Add our vehicle
+	//	// Add our vehicle
 		g_pCore->GetGame()->GetVehicleManager()->Add(vehicleId, pVehicle);
 		pVehicle->SetId(vehicleId);
 		pVehicle->Create();

@@ -1845,7 +1845,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		GetRollSpeed(PlayerPacket.vecRoll);
 		PlayerPacket.bDuckState = m_pPlayerPed->IsDucking();
 		PlayerPacket.fHeading = GetRotation();
-		m_pContextData->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
+		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
 
 		// Write player onfoot flag into raknet bitstream
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
@@ -1874,6 +1874,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 			m_pContextData->GetArmHeading(WeaponPacket.fArmsHeadingCircle);
 			m_pContextData->GetArmUpDown(WeaponPacket.fArmsUpDownRotation);
 
+			g_pCore->GetChat()->Output("Weapon sync");
+
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
 		}
@@ -1885,7 +1887,9 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 		m_pVehicle->GetRotation(VehiclePacket.vecRotation);
-		m_pContextData->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
+		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
+
+		g_pCore->GetChat()->Output("Vehicle sync");
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
@@ -1945,7 +1949,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring()) 
 		{
 				PTR_CHAT-> Output("Settings weapon aim..");
-				//SetWeaponAimAtTask(m_pIVSyncHandle>vecAimTarget);
+				SetWeaponAimAtTask(AimSync.vecAimShotAtCoordinates);
 
 				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
 				m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
@@ -1961,6 +1965,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
+			SetWeaponShotAtTask(AimSync.vecAimShotAtCoordinates);
 		}
 		else 
 		{

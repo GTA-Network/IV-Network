@@ -11,11 +11,11 @@
 #define GameLimits_h
 
 #define MAX_PLAYERS 32/*128*/ // Player Info Array Size: 32 // Ped Pool Size: ~200
-#define MAX_VEHICLES 0xFFFE // Streamed. See note on Pickups. Vehicle Pool Size: 140
-#define MAX_OBJECTS 0xFFFE // Streamed. See note on Pickups. Object Pool Size: 1300
-#define MAX_CHECKPOINTS 0xFFFE // Streamed. Checkpoint Pool Size: See CStreamer.h
+#define MAX_VEHICLES 0x1000 // Streamed. See note on Pickups. Vehicle Pool Size: 140
+#define MAX_OBJECTS 0x1000 // Streamed. See note on Pickups. Object Pool Size: 1300
+#define MAX_CHECKPOINTS 0x1000 // Streamed. Checkpoint Pool Size: See CStreamer.h
 #define MAX_BLIPS 1300 // Blip Pool Size: 1500
-#define MAX_PICKUPS 0xFFFE // Streamed. Pickup Pool Size: TODO: 1500?
+#define MAX_PICKUPS 0x1000 // Streamed. Pickup Pool Size: TODO: 1500?
 #define MAX_FIRE 32
 #define MAX_ACTORS 85
 #define MAX_3D_LABELS 512

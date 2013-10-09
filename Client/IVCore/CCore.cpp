@@ -238,9 +238,6 @@ void CCore::OnDevicePreRender()
 
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
-	// Prerender devices
-	OnDevicePreRender();
-
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
 		return;

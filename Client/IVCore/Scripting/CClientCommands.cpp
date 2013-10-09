@@ -55,8 +55,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 		if(pVehicle) {
 			// Add our vehicle
-			g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
-			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
+			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle));
 			pVehicle->Create();
 			pVehicle->SetPosition(vecCreatePos, true);
 		}

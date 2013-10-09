@@ -56,7 +56,6 @@ int CreateVehicle(int * VM)
 	CScriptVehicle * pScriptVehicle = new CScriptVehicle();
 	pScriptVehicle->SetEntity(pVehicle);
 	pVM->PushInstance("CVehicleEntity", pScriptVehicle);
-
 	return 1;
 }
 

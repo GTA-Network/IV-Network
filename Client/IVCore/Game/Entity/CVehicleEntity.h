@@ -19,7 +19,6 @@ class CPlayerEntity;
 class CVehicleEntity : public CNetworkEntity {
 private:
 
-	unsigned int						m_uiVehicleHandle;
 	CIVVehicle							*m_pVehicle;
 	EntityId							m_vehicleId;
 	CIVModelInfo						*m_pModelInfo;
