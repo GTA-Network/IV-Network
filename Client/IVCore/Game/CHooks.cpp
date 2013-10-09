@@ -693,6 +693,17 @@ void __cdecl sub_47BA60()
 	//g_pCore->GetChat()->Outputf(false, "sub_47BA60()");
 }
 
+#include <IV/CIVScript.h>
+
+void __cdecl runStartupScript()
+{
+	unsigned int pid = 0;
+	CIVScript::CreatePlayer(0, 1498.8f, -1661.3f,  12.5f, &pid);
+
+	g_pCore->OnGameLoad();
+	g_pCore->SetClientState(GAME_STATE_INGAME);
+}
+
 void CHooks::Intialize()
 {
 	// Hook GetPlayerInfoFromIndex to use our own function
@@ -732,6 +743,9 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
 
 	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47BA60, (DWORD) sub_47BA60);
+
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
 
 #ifdef GTAV_MAP
 	// Patch crosshair
