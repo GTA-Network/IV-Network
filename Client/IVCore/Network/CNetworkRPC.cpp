@@ -190,6 +190,8 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			switch (eType)
 			{
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
+			case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
+			case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
 				{
 					pPlayer->Deserialize(pBitStream);
 					break;
@@ -243,6 +245,49 @@ void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int id;
+		unsigned int uiAmmo;
+		pBitStream->Read(id);
+		pBitStream->Read(uiAmmo);
+
+		pPlayer->GiveWeapon(id, uiAmmo);
+	}
+}
+
+void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	int vehicleModel;
+	pBitStream->Read(vehicleModel);
+
+	CVector3 vecPosition;
+	pBitStream->Read(vecPosition);
+
+	CVehicleEntity * pVehicle = new CVehicleEntity(vehicleModel, vecPosition, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
+	if (pVehicle) 
+	{
+		// Add our vehicle
+		g_pCore->GetGame()->GetVehicleManager()->Add(vehicleId, pVehicle);
+		pVehicle->SetId(vehicleId);
+		pVehicle->Create();
+		pVehicle->SetPosition(vecPosition, true);
+	}
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -255,10 +300,12 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE), CreateVehicle);
 
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), GivePlayerWeapon);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -277,6 +324,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE));
 
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH));

@@ -167,22 +167,11 @@ bool CVehicleEntity::Destroy()
 	if(!IsSpawned())
 		return false;
 
-	// Remove the vehicle from the world
-	m_pVehicle->RemoveFromWorld();
+	IVVehicleFactory* pVehicleFactory = *(IVVehicleFactory**) (g_pCore->GetBase() + 0x118A6D4);
+	pVehicleFactory->Delete(m_pVehicle->GetVehicle());
 
-	// Remove the vehicle reference
+	// Remove the vehicle model reference
 	m_pModelInfo->RemoveReference();
-
-	// Release the entity
-	m_pVehicle->GetEntity()->Remove();
-
-	// Mark vehicle as no longer needed
-	IVVehicle * pVehicle = m_pVehicle->GetVehicle();
-	*(BYTE *)(pVehicle + 3949) |= 8u;
-	*(BYTE *)(pVehicle + 4360) = 1; // Disable function call(some loops through arrays..)
-
-	// Destroy the vehicle
-	CIVScript::DeleteCar(&m_uiVehicleHandle);
 
 	// Delete the vehicle instance
 	SAFE_DELETE(m_pVehicle);
@@ -1093,7 +1082,14 @@ bool CVehicleEntity::GetVehicleGPSState()
 
 void CVehicleEntity::Fix()
 {
-
+	if (m_pVehicle)
+	{
+		IVVehicle* pVehicle = m_pVehicle->GetVehicle();
+		if (pVehicle)
+		{
+			pVehicle->Repair();
+		}
+	}
 }
 
 void CVehicleEntity::SetOccupant(BYTE byteSeatId, CPlayerEntity * pOccupant)

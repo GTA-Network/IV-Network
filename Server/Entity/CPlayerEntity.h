@@ -159,6 +159,8 @@ public:
 	void		 SetHealth(float fHealth);
 
 	void		SetPosition(float fX, float fY, float fZ);
+
+	void		GiveWeapon(int id, unsigned int uiAmmo);
 };
 
 #endif // CPlayerEntity_h
