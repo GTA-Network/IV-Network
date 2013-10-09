@@ -160,7 +160,7 @@ public:
 
 	void		SetPosition(float fX, float fY, float fZ);
 
-	void		GiveWeapon(int id, unsigned int uiAmmo);
+	void		GiveWeapon(int id, int uiAmmo);
 };
 
 #endif // CPlayerEntity_h

@@ -82,7 +82,7 @@ void CScriptPlayer::SetHealth(float fHealth)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
-void CScriptPlayer::GiveWeapon(int id, unsigned int uiAmmo)
+void CScriptPlayer::GiveWeapon(int id, int uiAmmo)
 {
 	//GetEntity()->GiveWeapon(id, uiAmmo);
 

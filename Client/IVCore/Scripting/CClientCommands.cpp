@@ -67,13 +67,6 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->Respawn();
 		return true;
 	}
-	else if(strCommand == "weapon")
-	{
-		int iWeapon = atoi(strParameters.c_str());
-
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), iWeapon, 50, true);
-		return true;
-	}
 	else if(strCommand == "cp")
 	{
 		CVector3 vecCreatePos; 

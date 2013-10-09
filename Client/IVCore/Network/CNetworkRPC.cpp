@@ -258,7 +258,7 @@ void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if (pPlayer)
 	{
 		int id;
-		unsigned int uiAmmo;
+		int uiAmmo;
 		pBitStream->Read(id);
 		pBitStream->Read(uiAmmo);
 
