@@ -221,9 +221,6 @@
     <ClCompile Include="Network\CLocalPlayer.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
-    <ClCompile Include="IV\CIVScriptHook.cpp">
-      <Filter>Source Files\Game\IV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="Hooks\CXLive.cpp">
       <Filter>Source Files\Hooks\XLive</Filter>
     </ClCompile>
@@ -545,6 +542,9 @@
     <ClCompile Include="Graphics\CLoadingScreen.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="IV\CIVStartupScript.cpp">
+      <Filter>Source Files\Game\IV\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">
@@ -618,9 +618,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h">
       <Filter>Header Files\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="IV\CIVScriptHook.h">
-      <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\Game\eGame.h">
       <Filter>Header Files\Shared\Game</Filter>
@@ -1107,6 +1104,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\CLoadingScreen.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CIVStartupScript.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

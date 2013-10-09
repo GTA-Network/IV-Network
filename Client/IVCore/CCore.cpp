@@ -90,6 +90,8 @@ bool CCore::Initialise()
 	
 	// Create the chat instance
 	m_pChat = new CChat(30, 80);
+
+	m_pIVStartupScript = new CIVStartupScript;
 	
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();

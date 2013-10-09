@@ -74,9 +74,6 @@ void CGame::Setup()
 	// Install our switches/patches
 	CContextSwitch::InstallKeySyncHooks();
 	
-	// Install the RAGEScriptThread hook..
-	CIVScriptingHook::InstallScriptHooks();
-	
 	// Setup the weapon handle hook
 	CWeaponHandler::InstallAimSyncHooks();
 	

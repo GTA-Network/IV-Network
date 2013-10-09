@@ -697,11 +697,7 @@ void __cdecl sub_47BA60()
 
 void __cdecl runStartupScript()
 {
-	unsigned int pid = 0;
-	CIVScript::CreatePlayer(0, 1498.8f, -1661.3f,  12.5f, &pid);
-
-	g_pCore->OnGameLoad();
-	g_pCore->SetClientState(GAME_STATE_INGAME);
+	g_pCore->GetIVStartupScript()->Process();
 }
 
 void CHooks::Intialize()

@@ -215,8 +215,8 @@
     <ClCompile Include="Graphics\Input.cpp" />
     <ClCompile Include="Hooks\CWin32MouseHook.cpp" />
     <ClCompile Include="Hooks\CXLive.cpp" />
-    <ClCompile Include="IV\CIVScriptHook.cpp" />
     <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp" />
+    <ClCompile Include="IV\CIVStartupScript.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CLocalPlayer.cpp" />
     <ClCompile Include="Network\CNetworkManager.cpp" />
@@ -400,10 +400,10 @@
     <ClInclude Include="IV\CIVExternalScriptCall.h" />
     <ClInclude Include="IV\CIVScript.h" />
     <ClInclude Include="IV\CIVScriptEnums.h" />
-    <ClInclude Include="IV\CIVScriptHook.h" />
     <ClInclude Include="IV\CIVScript_FunctionContext.h" />
     <ClInclude Include="IV\CIVScript_FunctionInvoke.h" />
     <ClInclude Include="IV\CIVScript_FunctionList.h" />
+    <ClInclude Include="IV\CIVStartupScript.h" />
     <ClInclude Include="IV\IVCommon.h" />
     <ClInclude Include="IV\IVData.h" />
     <ClInclude Include="Network\CNetworkManager.h" />

@@ -19,7 +19,6 @@
 #include <Patcher/CPatcher.h>
 
 #include <Game/eGame.h>
-#include <IV/CIVScriptHook.h>
 
 #include <Hooks/CXLive.h>
 #include <Hooks/CWin32MouseHook.h>
@@ -52,7 +51,9 @@
 #include <audio\CAudioManager.h>
 
 #include <RAGEEngine/RAGEInterface.h>
-typedef void (* GetInterface_t)(RAGEEngineInterface *);
+typedef void(*GetInterface_t)(RAGEEngineInterface *);
+
+#include <IV/CIVStartupScript.h>
 
 class CCore {
 private:
@@ -92,6 +93,8 @@ private:
 	CAudioManager					*m_pAudioManager;
 
 	CLoadingScreen					*m_pLoadingScreen;
+
+	CIVStartupScript				*m_pIVStartupScript;
 
 public:
 									CCore();
@@ -162,6 +165,8 @@ public:
 	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 
 	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
+
+	CIVStartupScript				*GetIVStartupScript() { return m_pIVStartupScript; };
 };
 
 #endif // CCore_h
