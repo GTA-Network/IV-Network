@@ -1878,7 +1878,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 			pBitStream->Write(WeaponPacket);
 		}
 	}
-	else if (IsInVehicle && !IsPassenger())
+	else if (IsInVehicle() && !IsPassenger())
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		m_pVehicle->GetPosition(VehiclePacket.vecPosition);
@@ -1964,6 +1964,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		}
 		else 
 		{
+			unsigned int uiPlayerIndex = GetScriptingHandle();
+
 			// Destroy shotat task
 			_asm  push 36;
 			_asm  push 0;

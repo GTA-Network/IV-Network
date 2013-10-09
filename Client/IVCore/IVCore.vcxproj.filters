@@ -500,9 +500,6 @@
     <ClCompile Include="General\CException.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>
-    <ClCompile Include="IV\CIVScript_FunctionInvoke.cpp">
-      <Filter>Source Files\Game\IV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="General\CModuleManager.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>

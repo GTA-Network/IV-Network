@@ -23,10 +23,14 @@
 
 class CIVScript_NativeInvoke
 {
+#ifndef _CLIENT
 public:
 	static void				InitialiseOffset(DWORD dwOffset2) { dwInvokeOffset = dwOffset2; }
+#endif
 private:
-	static DWORD			dwInvokeOffset;
+#ifndef _CLIENT
+	DWORD			dwInvokeOffset;
+#endif
 
 	typedef void (_cdecl * NativeCall)(IVNativeCallContext * pNativeContext);
 

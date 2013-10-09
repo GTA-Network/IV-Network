@@ -31,9 +31,7 @@ IVPool* IVPoolOwns::IVPoolHook(int maxElements, const char* Name, int elementSiz
 	m_dwUsed = 0;
 
 	for (int i = 0; i < maxElements; ++i)
-	{
 		*(m_pFlags + i) |= 0x80;
-	}
 
 	return this;
 }
