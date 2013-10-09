@@ -31,13 +31,26 @@ void CPlayerEntity::Pulse()
 	// Example  
 	if (m_ulLastSyncSent + (1000 / CServer::GetInstance()->GetSyncRate()) <= SharedUtility::GetTime())
 	{
-		RakNet::BitStream bitStream;
-		bitStream.Write(GetId());
-		bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
-		CServer::GetInstance()->GetPlayerManager()->GetAt(GetId())->Serialize(&bitStream, RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
+		if (m_eLastSyncPackageType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
+		{
+			RakNet::BitStream bitStream;
+			bitStream.Write(GetId());
+			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
+			Serialize(&bitStream, m_eLastSyncPackageType);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
 
-		m_ulLastSyncSent = SharedUtility::GetTime();
+			m_ulLastSyncSent = SharedUtility::GetTime();
+		}
+
+		if (m_controlState.IsAiming() || m_controlState.IsFiring())
+		{
+			RakNet::BitStream bitStream;
+			CNetworkPlayerWeaponSyncPacket WeaponPacket;
+			bitStream.Write(GetId());
+			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
+			Serialize(&bitStream, RPC_PACKAGE_TYPE_PLAYER_WEAPON);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
+		}
 	}
 };
 
@@ -46,7 +59,6 @@ void CPlayerEntity::SetPosition(const CVector3& vecPosition)
 {
 	{
 		CNetworkEntity::SetPosition(vecPosition);
-		
 	}
 }
 
@@ -70,7 +82,16 @@ void CScriptPlayer::SetHealth(float fHealth)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
+void CScriptPlayer::GiveWeapon(int id, unsigned int uiAmmo)
+{
+	//GetEntity()->GiveWeapon(id, uiAmmo);
 
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(id);
+	bitStream.Write(uiAmmo);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
 
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
@@ -123,6 +144,27 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			pBitStream->Write(pSyncPacket);
 		}
 		break;
+	case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
+		{
+			CNetworkPlayerWeaponSyncPacket WeaponPacket;
+
+			if (m_controlState.IsFiring())
+			{
+				WeaponPacket.vecAimShotAtCoordinates = GetWeaponShotTarget();
+			}
+			else
+			{
+				WeaponPacket.vecAimShotAtCoordinates = GetWeaponAimTarget();
+			}
+
+			WeaponPacket.vecShotSource = GetWeaponShotSource();
+			WeaponPacket.fArmsHeadingCircle = GetArmHeading();
+			WeaponPacket.fArmsUpDownRotation = GetArmUpDown();
+
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
+			pBitStream->Write(WeaponPacket);
+		}
+		break;
 	default:
 		CLogFile::Printf("Warning: Sync Package type not implemented");
 		break;
@@ -148,15 +190,36 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetDucking(pSyncPlayer.bDuckState);
 			SetHeading(pSyncPlayer.fHeading);
 
-			// Save weapon sync
-			/*SetArmHeading(pSyncPlayer.sWeaponData.fArmsHeadingCircle);
-			SetArmUpDown(pSyncPlayer.sWeaponData.fArmsUpDownRotation);
-			SetWeaponAimTarget(pSyncPlayer.sWeaponData.vecAimAtCoordinates);
-			SetWeaponShotSource(pSyncPlayer.sWeaponData.vecShotAtCoordinates);
-			SetWeaponShotTarget(pSyncPlayer.sWeaponData.vecShotAtTarget);*/
-
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
+		}
+		break;
+	case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
+		{
+			CNetworkPlayerVehicleSyncPacket VehiclePacket;
+			SetControlState(VehiclePacket.ControlState);
+			
+#if 0
+
+			m_pVehicle->SetPosition(VehiclePacket.vecPosition);
+			m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
+			m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+			m_pVehicle->SetRotation(VehiclePacket.vecRotation);
+
+#endif
+		}
+		break;
+	case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
+		{
+			CNetworkPlayerWeaponSyncPacket WeaponPacket;
+
+			pBitStream->Read(WeaponPacket);
+
+			SetWeaponShotTarget(WeaponPacket.vecAimShotAtCoordinates);
+			SetWeaponAimTarget(WeaponPacket.vecAimShotAtCoordinates);
+			SetWeaponShotSource(WeaponPacket.vecShotSource);
+			SetArmHeading(WeaponPacket.fArmsHeadingCircle);
+			SetArmUpDown(WeaponPacket.fArmsUpDownRotation);
 		}
 		break;
 	default:

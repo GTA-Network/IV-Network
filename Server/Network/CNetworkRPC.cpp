@@ -196,9 +196,9 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		switch (eType)
 		{
 		case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
+		case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
 			{
 				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
-				pBitStream->Reset();
 
 				// TODO: dont send the sync directly store (queue) it make some interpolation or somthing and then send it to get a nice and smooth sync
 				break;

@@ -176,7 +176,7 @@ public: // Handles call functions
 	void							SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }
 	void							SetPing(unsigned short usPing) { m_usPing = usPing; }
 
-	void							ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading, float fAimData[2], CVector3 vecWeaponData[3]);
+	void							ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading);
 	void							SetPosition(CVector3 &vecPosition, bool bForce = false);
 	void							SetRotation(float fAngle);
 	void							SetHealth(float fHealth);

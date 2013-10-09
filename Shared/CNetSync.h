@@ -64,9 +64,8 @@ enum eEntityType
 // Handles data between client ped and network sync(stores the values)
 class CNetworkPlayerSyncPacket {
 private:
-
 public:
-	CControls					pControlState;
+	CControls					pControlState; 
 	CVector3					vecPosition;
 	CVector3					vecMovementSpeed;
 	CVector3					vecTurnSpeed;
@@ -78,8 +77,25 @@ public:
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
 
+class CNetworkPlayerWeaponSyncPacket {
+public:
+	CVector3       vecAimShotAtCoordinates; // When fire this is shot at when aiming this is Aim at
+	float          fArmsHeadingCircle;
+	float          fArmsUpDownRotation;
+	CVector3       vecShotSource;
+};
+
+class CNetworkPlayerVehicleSyncPacket {
+public:
+	CControls					ControlState;
+	CVector3					vecPosition;
+	CVector3					vecRotation;
+	CVector3					vecMoveSpeed;
+	CVector3					vecTurnSpeed;
+};
+
 // Handles data between client ped and network sync(stores the values)
-class CNetworkEntitySubVehicle {
+class CNetworkEntityVehicleSyncPacket {
 private:
 
 public:

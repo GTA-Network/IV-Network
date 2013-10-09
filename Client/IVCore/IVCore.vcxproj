@@ -305,6 +305,7 @@
     <ClInclude Include="..\..\Libraries\zlib-1.2.5\zlib.h" />
     <ClInclude Include="..\..\Libraries\zlib-1.2.5\zutil.h" />
     <ClInclude Include="..\..\Shared\CLibrary.h" />
+    <ClInclude Include="..\..\Shared\CNetSync.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\CZlib.h" />
     <ClInclude Include="..\..\Shared\Game\CTime.h" />
