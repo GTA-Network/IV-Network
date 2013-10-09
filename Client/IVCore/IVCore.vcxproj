@@ -186,6 +186,7 @@
     <ClCompile Include="Game\IVEngine\CIVPhysical.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPlayerInfo.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPlayerPed.cpp" />
+    <ClCompile Include="Game\IVEngine\CIVPool.cpp" />
     <ClCompile Include="Game\IVEngine\CIVStreaming.cpp" />
     <ClCompile Include="Game\IVEngine\CIVTask.cpp" />
     <ClCompile Include="Game\IVEngine\CIVTrain.cpp" />

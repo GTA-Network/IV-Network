@@ -545,6 +545,9 @@
     <ClCompile Include="IV\CIVStartupScript.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Game\IVEngine\CIVPool.cpp">
+      <Filter>Source Files\Game\IVEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdInc.h">

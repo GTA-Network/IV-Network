@@ -254,94 +254,6 @@ _declspec(naked) void CGameProcessHook()
 	}
 }
 
-
-static int mulPoolSize = 1;
-int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, int entrySize);
-__declspec(naked) void __stdcall CPool_hook()
-{
-	_asm	pop eax
-	_asm	push ecx
-	_asm	push eax
-	_asm	jmp CPool_hook_chunk
-}
-
-int __stdcall  CPool_hook_chunk(void* this_, int maxObjects, const char* Name, int entrySize)
-{
-	IVPool *pPool = (IVPool*) this_;
-
-	if (pPool)
-	{
-
-		if (!strcmp("PtrNode Double", (const char*) Name)
-			|| !strcmp("EntryInfoNodes", Name)
-			|| !strcmp("PtrNode Single", Name)
-			|| !strcmp("Vehicles", (const char*) Name)
-			|| !strcmp("VehicleStruct", Name))
-		{
-			CLogFile::Printf("Increaing %sPool from %i Objects to %i Objects", Name, maxObjects, maxObjects*mulPoolSize);
-			maxObjects *= mulPoolSize;
-
-			pPool->m_dwEntrySize = entrySize;
-			pPool->m_pObjects = (BYTE*) CGameFunction::Alloc(entrySize * maxObjects);
-			pPool->m_pFlags = (BYTE*) CGameFunction::Alloc(maxObjects);
-
-			pPool->m_bAllocated = 1;
-			pPool->m_dwCount = maxObjects;
-			pPool->m_nTop = -1;
-
-			int n = 0;
-			int v5 = 0;
-			BYTE* v8;
-			BYTE v7;
-			BYTE* v6;
-			for (pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
-			{
-				*(pPool->m_pFlags + v5) |= 0x80;
-				v6 = pPool->m_pFlags;
-				v7 = *(v6 + v5);
-				v8 = v5++ + v6;
-			}
-
-			CLogFile::Printf("Increased %sPool to %i Objects", Name, maxObjects);
-		}
-		else
-		{
-			pPool->m_dwEntrySize = entrySize;
-			pPool->m_pObjects = (BYTE*) CGameFunction::Alloc(entrySize * maxObjects);
-			pPool->m_pFlags = (BYTE*) CGameFunction::Alloc(maxObjects);
-
-			pPool->m_bAllocated = 1;
-			pPool->m_dwCount = maxObjects;
-			pPool->m_nTop = -1;
-
-			int n = 0;
-			int v5 = 0;
-			BYTE* v8;
-			BYTE v7;
-			BYTE* v6;
-			for (pPool->m_dwUsed = 0; v5 < maxObjects; *v8 = v7 & 0x81 | 1)
-			{
-				*(pPool->m_pFlags + v5) |= 0x80;
-				v6 = pPool->m_pFlags;
-				v7 = *(v6 + v5);
-				v8 = v5++ + v6;
-			}
-		}
-		return (int) pPool;
-	}
-
-	return 0;
-}
-
-/*
-This will multiply the size of the given pools by the value in multi [default: 4]
-*/
-void CHooks::IncreasePoolSizes(int multi)
-{
-	mulPoolSize = multi;
-	//CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, (DWORD)CPool_hook); Balika011: this is why outlined?
-}
-
 #ifdef GTAV_MAP
 Vector2 * v12;
 Vector2 * pViewportSize = new Vector2();
@@ -827,7 +739,9 @@ void CHooks::Intialize()
 	// Disable check to invalid threads
 	g_pRageScriptThread = new sRAGETHREAD;
 	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD) GetRunningScriptThread, 5); 
+	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD) GetRunningScriptThread, 5);
+
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&IVPoolOwns::IVPoolHook));
 
 #ifdef GTAV_MAP
 	// Patch crosshair

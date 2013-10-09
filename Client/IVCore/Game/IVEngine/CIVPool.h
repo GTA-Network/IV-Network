@@ -17,16 +17,22 @@
 
 class IVPool {
 public:
-	BYTE *  m_pObjects;
+	BYTE *  m_pElements;
 	BYTE *  m_pFlags;
 	DWORD   m_dwCount;
-	DWORD   m_dwEntrySize;
+	DWORD   m_dwElementSize;
 	int     m_nTop;
 	DWORD   m_dwUsed;
 	BYTE    m_bAllocated;
 	BYTE    _f19;
 	BYTE    _f1A;
 	BYTE    _f1B;
+};
+
+class IVPoolOwns : IVPool
+{
+public:
+	IVPool* __thiscall IVPoolHook(int maxElements, const char* Name, int elementSize);
 };
 
 template <class T>

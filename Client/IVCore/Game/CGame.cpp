@@ -81,9 +81,6 @@ void CGame::Setup()
 	CTrafficHandler::InstallTrafficHook();
 	CTrafficHandler::InstallTrafficLightsHook();
 	
-	// Setup pool limits
-	CHooks::IncreasePoolSizes(8);
-	
 	// Initialise our model info array
 	for(int i = 0; i < NUM_ModelInfos; i++)
 		m_modelInfos[i].SetIndex(i);

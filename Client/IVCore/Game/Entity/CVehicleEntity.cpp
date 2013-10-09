@@ -30,6 +30,12 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
+	if (iVehicleModel == 125 || iVehicleModel == 126 || iVehicleModel == 127)
+	{
+		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes big FPS drop (%i) !!!", iVehicleModel).Get());
+		return;
+	}
+
 	// Get the model hash from the model id
 	DWORD dwModelHash = CIVModelManager::VehicleIdToModelHash(iVehicleModel);
 

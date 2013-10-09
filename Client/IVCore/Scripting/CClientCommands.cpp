@@ -224,21 +224,22 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::SetPosition(vecPos);
 		return true;
 	}
-	else if(strCommand == "spawnvehicles")
+	else if(strCommand == "spawnvehs")
 	{
 		CVector3 vecPos;
 		PTR_LOCALPLAYER->GetPosition(vecPos);
 
-		for(int i = 0; i < 179; i++) {
+		for (int i = 0; i < 179; i++)
+		{
 			vecPos.fX += 5;
-			CVehicleEntity * pVehicle = new CVehicleEntity(i, vecPos, 0.0f, 0, 0, 0, 0, 0xFFFFFF);
+			CVehicleEntity * pVehicle = new CVehicleEntity(i, vecPos, 0.0f, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
 			if(pVehicle)
 			{
 				// Add our vehicle
 				g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle);
 				pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->FindFreeSlot());
 				pVehicle->Create();
-				pVehicle->SetPosition(vecPos);
+				pVehicle->SetPosition(vecPos, true);
 			}
 		}
 		return true;
