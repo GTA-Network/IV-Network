@@ -203,13 +203,14 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectIPStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
 	m_pQuickConnectIPStaticText->setProperty("FrameEnabled", "false");
 	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
+	m_pQuickConnectIPStaticText->setFont(m_pGUI->GetFont("arial", 20));
 
 	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
 	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip").Get(), CVAR_GET_INTEGER("port")).Get());
 	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
-	m_pQuickConnectIPEditBox->setFont(m_pGUI->GetFont("arial"));
+	m_pQuickConnectIPEditBox->setFont(m_pGUI->GetFont("arial", 20));
 
 	m_pQuickConnectPasswordStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
 	m_pQuickConnectPasswordStaticText->setText("Password:");
@@ -217,6 +218,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectPasswordStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 90)));
 	m_pQuickConnectPasswordStaticText->setProperty("FrameEnabled", "false");
 	m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
+	m_pQuickConnectPasswordStaticText->setFont(m_pGUI->GetFont("arial", 20));
 
 	m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
 	m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
@@ -224,7 +226,7 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
 	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
 	m_pQuickConnectPasswordEditBox->setProperty("MaskText", "true");
-	m_pQuickConnectPasswordEditBox->setFont(m_pGUI->GetFont("arial"));
+	m_pQuickConnectPasswordEditBox->setFont(m_pGUI->GetFont("arial", 20));
 
 	m_pQuickConnectConnectButton = m_pGUI->CreateGUIButton(m_pQuickConnectWindow);
 	m_pQuickConnectConnectButton->setText("Connect");
@@ -262,7 +264,7 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 		m_pSettingsEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 		m_pSettingsEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 		m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsEditBoxKeyUp, this));
-		m_pSettingsEditBox->setFont(m_pGUI->GetFont("arial"));
+		m_pSettingsEditBox->setFont(m_pGUI->GetFont("arial", 20));
 
 		m_pSettingsButtonEx = m_pGUI->CreateGUIButton(m_pSettingsWindow);
 		m_pSettingsButtonEx->setText("Apply");
