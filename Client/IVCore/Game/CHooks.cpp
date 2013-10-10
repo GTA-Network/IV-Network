@@ -523,7 +523,6 @@ struct RegEpisodeStruct
 
 void CHookDummy::registerEpisodes()
 {
-	
 	char* GameFolder = GTA_malloc(MAX_PATH);
 	getGameFolderFromRegistry(GameFolder);
 
@@ -651,7 +650,7 @@ struct stXMLData
 char CHookDummy::loadEpisodes(int id)
 {
 	CheckDLCs(this);
-	RegEpisodeStruct* reg = (RegEpisodeStruct*) *(DWORD *) (this + 332) + 360 * id;
+	RegEpisodeStruct* reg = (RegEpisodeStruct*) *(DWORD *) (this + 332) + sizeof(RegEpisodeStruct) * id;
 	sub_8B3620(this, id);
 	SetGTAWorkdir(GTAWorkdirUknownPVOID, "extra:/");
 	stXMLNode ** pNodes = CXML__Load((void *) dword_1924E38, "setup2.xml", "xml");
