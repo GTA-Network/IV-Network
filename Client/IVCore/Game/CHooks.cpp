@@ -22,7 +22,8 @@
 class CHookDummy
 {
 public:
-	void __thiscall loadEbisodes();
+	void __thiscall registerEpisodes();
+	char __thiscall loadEpisodes(int id);
 };
 
 extern	CCore* g_pCore;
@@ -521,7 +522,7 @@ struct RegEpisodeStruct
 };
 #pragma pack(pop)
 
-void CHookDummy::loadEbisodes()
+void CHookDummy::registerEpisodes()
 {
 	
 	char* GameFolder = GTA_malloc(MAX_PATH);
@@ -602,6 +603,325 @@ void CHookDummy::loadEbisodes()
 
 
 	*(BYTE *) (this + 358) = 0;
+}
+
+/*   69 */
+#pragma pack(push, 1)
+struct stXMLNode
+{
+	char field_0[32];
+	char *pData;
+	int bFound;
+};
+#pragma pack(pop)
+
+/*   70 */
+#pragma pack(push, 1)
+struct stXMLData
+{
+	int iEpisodeId;
+	char szName[64];
+	char szDatFile[32];
+	char szAudioFolder[64];
+	char szAudioMetaData[64];
+	char szLoadingScreens[64];
+	char szLoadingScreensDat[64];
+	char szLoadingScreensIngame[64];
+	char szLoadingScreensIngameDat[64];
+	char szTexturePath[64];
+	char bRequiredForSave;
+	char bEnabled;
+	char field_222;
+	char networkGame;
+	char id;
+	char episode;
+};
+#pragma pack(pop)
+
+#define _DWORD DWORD
+#define _BYTE BYTE
+#define CXML__FindNode ((stXMLNode *(__thiscall*)(stXMLNode *pParent, const char *szNodeName, int a3))(g_pCore->GetBase() + 0x456A80))
+#define dword_1924E38 *(DWORD*)(g_pCore->GetBase() + 0x1924E38)
+#define CXML__Load ((stXMLNode** (__thiscall*) (void *this_, char *a2, char *a3))(g_pCore->GetBase() + 0x4585C0))
+#define sub_8B3620 ((char (__thiscall*) (int, int a2))(g_pCore->GetBase() + 0x8B3620))
+#define CheckDLCs ((char ( __thiscall*)(void*))(g_pCore->GetBase() + 0x8B4210))
+#define sub_8B3AE0 ((int (__thiscall*) (int, stXMLData *pXMLData))(g_pCore->GetBase() + 0x8B3AE0))
+#define sub_454D70 ((int (__thiscall*) (int ))(g_pCore->GetBase() + 0x454D70))
+#define sub_401210 ((int (__cdecl*) (int a1))(g_pCore->GetBase() + 0x401210))
+#define sub_45AFB0 ((void (__thiscall*)(int ))(g_pCore->GetBase() + 0x45AFB0))
+#define sub_8B34D0 ((char (__thiscall*) (int, int a2))(g_pCore->GetBase() + 0x8B34D0))
+
+char CHookDummy::loadEpisodes(int id)
+{
+	int v2; // ebp@1
+	int v3; // esi@1
+	stXMLNode **v4; // eax@1
+	int v5; // edi@1
+	stXMLNode *v6; // eax@3
+	char *v7; // eax@4
+	int v8; // ebp@6
+	stXMLNode *pContentNode; // edi@6
+	stXMLNode *pNameNode; // eax@7
+	char *pName; // eax@8
+	stXMLNode *pIdNode; // eax@10
+	char *pId; // eax@12
+	stXMLNode *pNetworkGameNode; // eax@18
+	char *pNetworkGame; // eax@20
+	stXMLNode *pEpisodeNode; // eax@24
+	char *pEpisode; // eax@26
+	stXMLNode *pDatFileNode; // eax@30
+	char *pDatFile; // eax@32
+	stXMLNode *pLoadingScreenNode; // eax@36
+	int v21; // ecx@37
+	char v22; // dl@38
+	char *pLoadingScreens; // eax@40
+	stXMLNode *pLoadingScreenDatNode; // eax@43
+	int v25; // ecx@44
+	char v26; // dl@45
+	char *pLoadingScreensDat; // eax@47
+	stXMLNode *pLoadingScreensIngameNode; // eax@50
+	int v29; // ecx@51
+	char v30; // dl@52
+	char *pLoadingScreensIngame; // eax@54
+	stXMLNode *pLoadingScreensIngameDatNode; // eax@57
+	int v33; // ecx@58
+	char v34; // dl@59
+	char *pLoadingScreensIngameDat; // eax@61
+	stXMLNode *pTexturePathNode; // eax@64
+	int v37; // ecx@65
+	char v38; // dl@66
+	char *pTexturePath; // eax@68
+	stXMLNode *pAudioFolderNode; // eax@71
+	char *pAudioFolder; // eax@73
+	stXMLNode *pAudioMetaDataNode; // eax@76
+	char *pAudioMetaData; // eax@78
+	char result; // al@87
+	int v45; // [sp+10h] [bp-240h]@1
+	int v46; // [sp+14h] [bp-23Ch]@1
+	stXMLNode *thisa; // [sp+18h] [bp-238h]@2
+	int v48; // [sp+1Ch] [bp-234h]@1
+	stXMLData xmlData; // [sp+20h] [bp-230h]@7
+
+	v2 = (int)this;
+	v45 = (int)this;
+	CheckDLCs(this);
+	v3 = *(_DWORD *) (v2 + 332) + 360 * id;
+	v48 = *(_DWORD *) (v2 + 332) + 360 * id;
+	sub_8B3620(v2, id);
+	SetGTAWorkdir((void*)(g_pCore->GetBase() + 0x1003C10), "extra:/");
+	v4 = (stXMLNode **)CXML__Load((void *) dword_1924E38, "setup2.xml", "xml");
+	v5 = (int) v4;
+	v46 = (int) v4;
+	if (v4)
+	{
+		thisa = *v4;
+		if (!CXML__FindNode(*v4, "testmarketplace", 0))
+		{
+			v6 = CXML__FindNode(thisa, "device", 0);
+			if (v6->bFound)
+				v7 = v6->pData;
+			else
+				v7 = 0;
+			v8 = v3 + 324;
+			GTA_memcpy((char *) (v3 + 324), v7, 0x10u);
+			GTA_strcat((char *) (v3 + 324), ":/", 0x10u);
+			pContentNode = CXML__FindNode(thisa, "content", 0);
+			if (pContentNode)
+			{
+				do
+				{
+					xmlData.bRequiredForSave = 0;
+					xmlData.bEnabled = 0;
+					xmlData.field_222 = 0;
+					xmlData.id = 0;
+					xmlData.episode = 0;
+					xmlData.szName[0] = 0;
+					xmlData.szDatFile[0] = 0;
+					xmlData.szAudioMetaData[0] = 0;
+					xmlData.szAudioFolder[0] = 0;
+					xmlData.szLoadingScreens[0] = 0;
+					xmlData.szLoadingScreensDat[0] = 0;
+					xmlData.szLoadingScreensIngame[0] = 0;
+					xmlData.szLoadingScreensIngameDat[0] = 0;
+					xmlData.networkGame = -1;
+					xmlData.szTexturePath[0] = 0;
+					xmlData.iEpisodeId = id;
+					pNameNode = CXML__FindNode(pContentNode, "name", 0);
+					if (pNameNode->bFound)
+						pName = pNameNode->pData;
+					else
+						pName = 0;
+					GTA_memcpy(xmlData.szName, pName, 64u);
+					pIdNode = CXML__FindNode(pContentNode, "id", 0);
+					if (pIdNode)
+					{
+						if (pIdNode->bFound)
+							pId = pIdNode->pData;
+						else
+							pId = 0;
+						xmlData.id = atoi(pId);
+					}
+					else
+					{
+						xmlData.id = 0;
+					}
+					if (CXML__FindNode(pContentNode, "requiredForSave", 0))
+						xmlData.bRequiredForSave = 1;
+					pNetworkGameNode = CXML__FindNode(pContentNode, "networkgame", 0);
+					if (pNetworkGameNode)
+					{
+						if (pNetworkGameNode->bFound)
+							pNetworkGame = pNetworkGameNode->pData;
+						else
+							pNetworkGame = 0;
+						xmlData.networkGame = atoi(pNetworkGame);
+					}
+					else
+					{
+						xmlData.networkGame = -1;
+					}
+					pEpisodeNode = CXML__FindNode(pContentNode, "episode", 0);
+					if (pEpisodeNode)
+					{
+						if (pEpisodeNode->bFound)
+							pEpisode = pEpisodeNode->pData;
+						else
+							pEpisode = 0;
+						xmlData.episode = atoi(pEpisode);
+						xmlData.bRequiredForSave = 1;
+					}
+					else
+					{
+						xmlData.episode = 0;
+					}
+					pDatFileNode = CXML__FindNode(pContentNode, "datfile", 0);
+					if (pDatFileNode)
+					{
+						if (pDatFileNode->bFound)
+							pDatFile = pDatFileNode->pData;
+						else
+							pDatFile = 0;
+						GTA_memcpy(xmlData.szDatFile, pDatFile, 32u);
+					}
+					else
+					{
+						xmlData.szDatFile[0] = 0;
+					}
+					pLoadingScreenNode = CXML__FindNode(pContentNode, "loadingscreens", 0);
+					if (pLoadingScreenNode)
+					{
+						v21 = v3 + 324;
+						do
+						{
+							v22 = *(_BYTE *) v21;
+							*(&xmlData.szLoadingScreens[v21] - v8) = *(_BYTE *) v21;
+							++v21;
+						} while (v22);
+						if (pLoadingScreenNode->bFound)
+							pLoadingScreens = pLoadingScreenNode->pData;
+						else
+							pLoadingScreens = 0;
+						GTA_strcat(xmlData.szLoadingScreens, pLoadingScreens, 64u);
+					}
+					pLoadingScreenDatNode = CXML__FindNode(pContentNode, "loadingscreensdat", 0);
+					if (pLoadingScreenDatNode)
+					{
+						v25 = v3 + 324;
+						do
+						{
+							v26 = *(_BYTE *) v25;
+							*(&xmlData.szLoadingScreensDat[v25] - v8) = *(_BYTE *) v25;
+							++v25;
+						} while (v26);
+						if (pLoadingScreenDatNode->bFound)
+							pLoadingScreensDat = pLoadingScreenDatNode->pData;
+						else
+							pLoadingScreensDat = 0;
+						GTA_strcat(xmlData.szLoadingScreensDat, pLoadingScreensDat, 64u);
+					}
+					pLoadingScreensIngameNode = CXML__FindNode(pContentNode, "loadingscreensingame", 0);
+					if (pLoadingScreensIngameNode)
+					{
+						v29 = v3 + 324;
+						do
+						{
+							v30 = *(_BYTE *) v29;
+							*(&xmlData.szLoadingScreensIngame[v29] - v8) = *(_BYTE *) v29;
+							++v29;
+						} while (v30);
+						if (pLoadingScreensIngameNode->bFound)
+							pLoadingScreensIngame = pLoadingScreensIngameNode->pData;
+						else
+							pLoadingScreensIngame = 0;
+						GTA_strcat(xmlData.szLoadingScreensIngame, pLoadingScreensIngame, 0x40u);
+					}
+					pLoadingScreensIngameDatNode = CXML__FindNode(pContentNode, "loadingscreensingamedat", 0);
+					if (pLoadingScreensIngameDatNode)
+					{
+						v33 = v3 + 324;
+						do
+						{
+							v34 = *(_BYTE *) v33;
+							*(&xmlData.szLoadingScreensIngameDat[v33] - v8) = *(_BYTE *) v33;
+							++v33;
+						} while (v34);
+						if (pLoadingScreensIngameDatNode->bFound)
+							pLoadingScreensIngameDat = pLoadingScreensIngameDatNode->pData;
+						else
+							pLoadingScreensIngameDat = 0;
+						GTA_strcat(xmlData.szLoadingScreensIngameDat, pLoadingScreensIngameDat, 0x40u);
+					}
+					pTexturePathNode = CXML__FindNode(pContentNode, "texturepath", 0);
+					if (pTexturePathNode)
+					{
+						v37 = v3 + 324;
+						do
+						{
+							v38 = *(_BYTE *) v37;
+							*(&xmlData.szTexturePath[v37] - v8) = *(_BYTE *) v37;
+							++v37;
+						} while (v38);
+						if (pTexturePathNode->bFound)
+							pTexturePath = pTexturePathNode->pData;
+						else
+							pTexturePath = 0;
+						GTA_strcat(xmlData.szTexturePath, pTexturePath, 0x40u);
+					}
+					pAudioFolderNode = CXML__FindNode(pContentNode, "audiofolder", 0);
+					if (pAudioFolderNode)
+					{
+						if (pAudioFolderNode->bFound)
+							pAudioFolder = pAudioFolderNode->pData;
+						else
+							pAudioFolder = 0;
+						GTA_memcpy(xmlData.szAudioFolder, pAudioFolder, 64u);
+					}
+					pAudioMetaDataNode = CXML__FindNode(pContentNode, "audiometadata", 0);
+					if (pAudioMetaDataNode)
+					{
+						if (pAudioMetaDataNode->bFound)
+							pAudioMetaData = pAudioMetaDataNode->pData;
+						else
+							pAudioMetaData = 0;
+						GTA_memcpy(xmlData.szAudioMetaData, pAudioMetaData, 0x40u);
+					}
+					if (CXML__FindNode(pContentNode, "enabled", 0))
+						xmlData.bEnabled = 1;
+					sub_8B3AE0(v45, &xmlData);
+					pContentNode = CXML__FindNode(thisa, "content", (int) pContentNode);
+				} while (pContentNode);
+				v3 = v48;
+			}
+			v5 = v46;
+			v2 = v45;
+		}
+		sub_454D70(v5);
+		sub_401210(v5);
+	}
+	sub_45AFB0((int) (g_pCore->GetBase() + 0x1003C10));
+	result = sub_8B34D0(v2, id);
+	*(_BYTE *) (v3 + 357) = 1;
+	return result;
 }
 
 void __cdecl renderMenus() //render Main and pause menu
@@ -739,7 +1059,8 @@ void CHooks::Intialize()
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
 
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEbisodes));
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::registerEpisodes));
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes));
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
