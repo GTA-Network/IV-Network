@@ -280,6 +280,7 @@ void CVehicleEntity::SetModel(DWORD dwModelHash)
 	CLogFile::Printf("CClientVehicle::SetModel Stream In Complete");
 }
 
+#pragma pack(push, 1)
 class ColorStuff
 {
 public:
@@ -299,6 +300,7 @@ public:
 	ColorStuff field_50;
 	ColorStuff field_60;
 };
+#pragma pack(pop)
 
 float colorMultiplier = 0.003922f;
 

@@ -501,7 +501,25 @@ _declspec(naked) void CTaskSimpleStartVehicle__Process()
 #define IsFileExistInWorkdir (*(bool(__thiscall *)(void *, char *, int)) (g_pCore->GetBase() + 0x45B070))
 #define WorkdirUnknownFunc (*(void(__thiscall *)(void *)) (g_pCore->GetBase() + 0x45AFB0))
 #define UnknownFuncWhitGameDir (*(int(__cdecl *)(char *)) (g_pCore->GetBase() + 0x401210)) //Maybe delete the char*?
-#define RegisterFolder (*(int(__thiscall *)(void *, char *)) (g_pCore->GetBase() + 0x8B3BB0))
+#define RegisterFolder (*(int(__thiscall *)(void *, RegEpisodeStruct*)) (g_pCore->GetBase() + 0x8B3BB0))
+
+#pragma pack(push, 1)
+struct RegEpisodeStruct
+{
+	char path[MAX_PATH];
+	PAD(RegEpisode, pad0, 64);
+	BYTE field_144;
+	PAD(RegEpisode, pad1, 15);
+	DWORD field_154;
+	DWORD field_158;
+	DWORD field_15C;
+	DWORD field_160;
+	BYTE field_164;
+	BYTE field_165;
+	PAD(RegEpisode, pad3, 1);
+	BYTE field_167;
+};
+#pragma pack(pop)
 
 void CHookDummy::loadEbisodes()
 {
@@ -521,18 +539,17 @@ void CHookDummy::loadEbisodes()
 
 		if (IsFileExistInWorkdir(GTAWorkdirUknownPVOID, "setup2.xml", NULL))
 		{
-			char reg[360];
-			memset(reg, 0, MAX_PATH);
-			strcpy(reg, TLADFolder);
-			*(BYTE *) (reg + 260) = 0;
-			*(BYTE *) (reg + 324) = 0;
-			*(DWORD *) (reg + 340) = 0;
-			*(DWORD *) (reg + 344) = 1;
-			*(DWORD *) (reg + 348) = 0;
-			*(DWORD *) (reg + 352) = 0;
-			*(BYTE *) (reg + 356) = 0;
-			*(BYTE *) (reg + 357) = 0;
-			*(BYTE *) (reg + 359) = 0;
+			RegEpisodeStruct* reg = new RegEpisodeStruct;
+			memset(reg->path, 0, MAX_PATH);
+			strcpy(reg->path, TLADFolder);
+			reg->field_144 = 0;
+			reg->field_154 = 0;
+			reg->field_158 = 1;
+			reg->field_15C = 0;
+			reg->field_160 = 0;
+			reg->field_164 = 0;
+			reg->field_165 = 0;
+			reg->field_167 = 0;
 
 			*(DWORD *) (this + 364 + pointer) = RegisterFolder(this, reg);
 			pointer += 4;
@@ -554,18 +571,17 @@ void CHookDummy::loadEbisodes()
 
 		if (IsFileExistInWorkdir(GTAWorkdirUknownPVOID, "setup2.xml", NULL))
 		{
-			char reg[360];
-			memset(reg, 0, MAX_PATH);
-			strcpy(reg, TBoGTFolder);
-			*(BYTE *) (reg + 260) = 0;
-			*(BYTE *) (reg + 324) = 0;
-			*(DWORD *) (reg + 340) = 0;
-			*(DWORD *) (reg + 344) = 1;
-			*(DWORD *) (reg + 348) = 0;
-			*(DWORD *) (reg + 352) = 0;
-			*(BYTE *) (reg + 356) = 0;
-			*(BYTE *) (reg + 357) = 0;
-			*(BYTE *) (reg + 359) = 0;
+			RegEpisodeStruct* reg = new RegEpisodeStruct;
+			memset(reg->path, 0, MAX_PATH);
+			strcpy(reg->path, TBoGTFolder);
+			reg->field_144 = 0;
+			reg->field_154 = 0;
+			reg->field_158 = 1;
+			reg->field_15C = 0;
+			reg->field_160 = 0;
+			reg->field_164 = 0;
+			reg->field_165 = 0;
+			reg->field_167 = 0;
 
 			*(DWORD *) (this + 364 + pointer) = RegisterFolder(this, reg);
 			pointer += 4;
