@@ -103,7 +103,7 @@ bool CCore::Initialise()
 	CXLiveHook::Install();
 	
 	// Install the cursor hook
-	CCursorHook::Install();
+	//CCursorHook::Install();
 	
 	// Setup the game instance
 	m_pGame->Setup();
