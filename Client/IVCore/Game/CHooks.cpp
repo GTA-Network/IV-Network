@@ -910,7 +910,7 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
 
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::registerEpisodes));
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes));
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes)); - TMP disabled
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
