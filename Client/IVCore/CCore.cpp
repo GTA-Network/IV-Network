@@ -299,16 +299,16 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	m_byteLoadingStyle++;
 	CString strLoadingInformation;
 	if(m_byteLoadingStyle >= 0 && m_byteLoadingStyle < 10)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on /").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on .").Get();
 	else if(m_byteLoadingStyle >= 10 && m_byteLoadingStyle < 20)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ..").Get();
 	else if(m_byteLoadingStyle >= 20 && m_byteLoadingStyle < 30)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on \\").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ...").Get();
 	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on -").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
 	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
 	{
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on |").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
 		if (m_byteLoadingStyle == 49)
 			m_byteLoadingStyle = 0;
 	}

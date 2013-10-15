@@ -29,7 +29,6 @@ private:
 	CGUIStaticText  * m_pSettingsButton;
 	CGUIStaticText  * m_pCreditsButton;
 	CGUIStaticText  * m_pExitButton;
-	CGUIStaticText	* CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition);
 
 	// Quick Connect Stuff
 	CGUIFrameWindow	* m_pQuickConnectWindow;

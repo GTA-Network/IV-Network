@@ -25,7 +25,7 @@ CGUI::CGUI(IDirect3DDevice9* pDevice) :
 	m_bInitialized(false),
 	m_dwDoubleClickTime(GetDoubleClickTime()),
 	m_iCurrentId(0),
-	m_uiCurrentJenkFag(0)
+	m_uiCurrentName(0)
 {
 
 	memset(&m_messageBox, 0, sizeof(m_messageBox));
@@ -458,10 +458,10 @@ bool CGUI::OnGUIKeyDown(const CEGUI::EventArgs &eventArgs)
 
 const char * CGUI::GetUniqueName()
 {
-	static char szJenkFag[20];
-	sprintf(szJenkFag, "window%d", m_uiCurrentJenkFag);
-	m_uiCurrentJenkFag++;
-	return szJenkFag;
+	static char szName[20];
+	sprintf(szName, "window%d", m_uiCurrentName);
+	m_uiCurrentName++;
+	return szName;
 }
 
 CEGUI::Font * CGUI::GetFont(CString strFont, unsigned int uiSize, bool bScaled)
@@ -905,4 +905,17 @@ bool CGUI::HandleUserInput(UINT uMsg, WPARAM wParam)
 		}
 	}
 	return true;
+}
+
+CGUIStaticText * CGUI::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
+{
+	CGUIStaticText * pButton = CreateGUIStaticText();
+	pButton->setText(CGUI::AnsiToCeguiFriendlyString(szText, strlen(szText)));
+	pButton->setSize(vecSize);
+	pButton->setPosition(vecPosition);
+	pButton->setProperty("FrameEnabled", "false");
+	pButton->setProperty("BackgroundEnabled", "false");
+	pButton->setFont(GetFont("pricedown", 20));
+	pButton->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF");
+	return pButton;
 }

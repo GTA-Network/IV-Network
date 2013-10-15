@@ -63,7 +63,6 @@ private:
 	CEGUI::GeometryBuffer    * m_pTextDrawingGeometryBuffer;
 	CEGUI::DefaultWindow     * m_pDefaultWindow;
 
-
 	IDirectInput8            * m_pInput;
 	IDirectInputDevice8      * m_pInputMouse;
 	bool                       m_bInitialized;
@@ -78,7 +77,7 @@ private:
 	int                        m_iCurrentId;
 	DWORD                      m_dwDoubleClickTime;
 	POINT                      m_clickPosition;
-	unsigned int               m_uiCurrentJenkFag;
+	unsigned int               m_uiCurrentName;
 
 	int m_iScreenWidth;
 	int m_iScreenHeight;
@@ -131,6 +130,7 @@ public:
 	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::Window * pParentWindow = NULL);
 	CGUIEditBox              * CreateGUIEditBox(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
 	CGUIEditBox              * CreateGUIEditBox(CEGUI::Window * pParentWindow = NULL);
+	CGUIStaticText			 * CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition);
 
 	bool                       OnMessageBoxClick(const CEGUI::EventArgs& eventArgs);
 	void                       ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitle = "", eGUIMessageBoxType style = GUI_MESSAGEBOXTYPE_OK, GUIMessageBoxHandler_t pfnHandler = NULL);
