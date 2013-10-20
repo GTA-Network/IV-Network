@@ -84,6 +84,7 @@ public:
 	virtual void FinishRegisterScriptClass() {}
 	virtual void* GetUserData(int idx) { return 0; }
 
+	virtual void * PopInstance(const char szClassName) { return nullptr; }
 	virtual void PushInstance(const char* szClassName, void * pInstance) { } 
 	virtual void SetClassInstance(const char* szClassName, void * pInstance) { }
 	virtual void* GetClassInstance(const char* szClassName) {return 0;}

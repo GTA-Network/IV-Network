@@ -44,6 +44,9 @@ private:
 		CVector3		vecShotAtTarget;
 		CVector3		vecLookAtCoordinates;
 	} m_weaponData;
+
+
+	EntityId		m_vehicleId;
 public:
 	CString		m_strName;
 	CPlayerEntity();

@@ -61,6 +61,8 @@ public:
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	void		 FinishRegisterScriptClass();
 	void		*GetUserData(int idx);
+
+	void *		PopInstance(const char *szClassName);
 	void		PushInstance(const char* szClassName, void * pInstance);
 
 	void		 SetClassInstance(const char* szClassName, void * pInstance);

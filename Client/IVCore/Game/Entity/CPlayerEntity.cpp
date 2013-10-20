@@ -1176,7 +1176,10 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 				// Has the exit vehicle task finished?
 				if(!IsGettingOutOfAVehicle())
 				{
+					RakNet::BitStream bitStream;
+
 					// Send to the server
+					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_VEHICLE_ENTER_EXIT), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
@@ -1883,13 +1886,13 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	else if (IsInVehicle() && !IsPassenger())
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
+		VehiclePacket.vehicleId = m_pVehicle->GetId();
 		m_pVehicle->GetPosition(VehiclePacket.vecPosition);
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 		m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
 
-		g_pCore->GetChat()->Output("Vehicle sync");
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
@@ -1904,7 +1907,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	if (eType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
 	{
 		CNetworkPlayerSyncPacket PlayerPacket;
-
+		if (IsInVehicle())
+			m_pVehicle = nullptr;
 		// TODO: this is crap take a look at mta they only send changed values
 		// I started working on such sync for IVMP but never finished so i will do it later
 		// For now this is goood
@@ -1949,7 +1953,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring()) 
 		{
 				PTR_CHAT-> Output("Settings weapon aim..");
-				g_pCore->GetChat()->Output("Set weapon aim");
 				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
 				m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 				m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
@@ -1960,7 +1963,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		else if (m_ControlState.IsFiring()) 
 		{
 			PTR_CHAT->Output("Settings weapon shot..");
-			g_pCore->GetChat()->Output("Set weapon shot");
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
@@ -2000,19 +2002,31 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		pBitStream->Read(VehiclePacket);
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-
+		g_pCore->GetChat()->Output("Vehicle sync");
 		if (IsInVehicle())
 		{
-			m_pVehicle->SetTargetPosition(VehiclePacket.vecPosition, interpolationTime);
-			m_pVehicle->SetTargetRotation(VehiclePacket.vecRotation, interpolationTime);
-			m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
-			m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
+			{
 
-			SetControlState(&VehiclePacket.ControlState);
+				m_pVehicle->SetTargetPosition(VehiclePacket.vecPosition, interpolationTime);
+				m_pVehicle->SetTargetRotation(VehiclePacket.vecRotation, interpolationTime);
+				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
+				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+
+				SetControlState(&VehiclePacket.ControlState);
+			}
+			else
+			{
+				g_pCore->GetChat()->Output("mhm player is not in the correct vehicle");
+			}
 		}
 		else
 		{
-			CLogFile::Printf("Epic fail");
+			ResetVehicleEnterExit();
+
+			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
+			CIVScript::WarpCharIntoCar(GetScriptingHandle(), g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId)->GetScriptingHandle());
+			m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
 		}
 
 

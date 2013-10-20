@@ -44,14 +44,15 @@ int CreateVehicle(int * VM)
 	pVM->Pop(color5)
 #endif
 	CVehicleEntity * pVehicle = new CVehicleEntity();
-	pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));
-
+	pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->FindFreeSlot());
+	CServer::GetInstance()->GetVehicleManager()->Add(pVehicle->GetId(), pVehicle);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(pVehicle->GetId());
 	bitStream.Write(vehicleModel);
 	bitStream.Write(vecPosition);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+	pVehicle->SetPosition(vecPosition);
 
 	CScriptVehicle * pScriptVehicle = new CScriptVehicle();
 	pScriptVehicle->SetEntity(pVehicle);
@@ -169,9 +170,9 @@ int CScriptClasses::CreateEntity(int * VM)
 			//pVM->Pop(vecRot);
 
 			//// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
-			pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));
+			//pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->Add(pVehicle));
 			//
-			pVM->SetClassInstance("CVehicleEntity", (void*)pVehicle);
+			//pVM->SetClassInstance("CVehicleEntity", (void*)pVehicle);
 			//CEntityNatives::Register(pVM);
 			//CVehicleNatives::Register(pVM);
 

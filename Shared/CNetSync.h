@@ -88,6 +88,7 @@ public:
 class CNetworkPlayerVehicleSyncPacket {
 public:
 	CControls					ControlState;
+	EntityId					vehicleId;
 	CVector3					vecPosition;
 	CVector3					vecRotation;
 	CVector3					vecMoveSpeed;

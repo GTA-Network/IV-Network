@@ -15,7 +15,7 @@
 CVehicleEntity::CVehicleEntity()
 {
 	// Add the vehicle to the vehicle manager and set its id
-	SetId(CServer::GetInstance()->GetVehicleManager()->Add(this));
+	//SetId(CServer::GetInstance()->GetVehicleManager()->Add(this));
 }
 
 CVehicleEntity::~CVehicleEntity()

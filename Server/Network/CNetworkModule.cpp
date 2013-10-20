@@ -130,6 +130,10 @@ void CNetworkModule::UpdateNetwork(void)
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
 					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(1).Get());
 					
+					RakNet::BitStream bitStream;
+					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DELETE_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+					
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
 				}
@@ -144,6 +148,10 @@ void CNetworkModule::UpdateNetwork(void)
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
 					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(0).Get());
 					
+					RakNet::BitStream bitStream;
+					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DELETE_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
 

@@ -124,6 +124,22 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 
 
+	for (EntityId i = 0; i < CServer::GetInstance()->GetVehicleManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetVehicleManager()->DoesExists(i))
+		{
+			bitStream.Reset();
+			CVehicleEntity * pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(i);
+			bitStream.Write(pVehicle->GetId());
+			bitStream.Write(/*pVehicle->GetModelId()*/90);
+
+			CVector3 vecPosition;
+			pVehicle->GetPosition(vecPosition);
+			bitStream.Write(vecPosition);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+		}
+	}
+
 	bitStream.Reset();
 
 	bitStream.WriteCompressed(playerId);

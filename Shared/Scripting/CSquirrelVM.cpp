@@ -250,6 +250,18 @@ void CSquirrelVM::PushInstance(const char* szClassName, void * pInstance)
 	//sq_addref(m_pVM, &instance);
 }
 
+void* CSquirrelVM::PopInstance(const char * szClassName)
+{
+
+	SQUserPointer pInstance = nullptr;
+	SQObjectType type = sq_gettype(m_pVM, m_iStackIndex);
+	assert(type == SQObjectType::OT_INSTANCE);
+	if (SQ_FAILED(sq_getinstanceup(m_pVM, m_iStackIndex++, &pInstance, nullptr)))
+		pInstance = nullptr;
+
+	return pInstance;
+}
+
 void* CSquirrelVM::GetClassInstance(const char* szClassName)
 {
 	SQUserPointer pInstance = nullptr;
