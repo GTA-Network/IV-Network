@@ -128,7 +128,7 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
-					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(1).Get());
+					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(1).Get());
 					
 					RakNet::BitStream bitStream;
 					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
@@ -146,7 +146,7 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
-					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(0).Get());
+					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(0).Get());
 					
 					RakNet::BitStream bitStream;
 					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());

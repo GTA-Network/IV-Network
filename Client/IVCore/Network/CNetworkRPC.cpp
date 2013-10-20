@@ -92,8 +92,10 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->ReadCompressed(playerId);
 
 	// Read the player name
-	CString strPlayerName;
-	pBitStream->Read(strPlayerName);
+	// Read the player name
+	RakNet::RakString _strName;
+	pBitStream->Read(_strName);
+	CString strPlayerName(_strName.C_String());
 
 	// Check if we are the local player(thx for broadcasting to XForce, *keks*)
 	if (g_pCore->GetGame()->GetLocalPlayer()->GetId() == playerId)
@@ -250,8 +252,6 @@ void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	EntityId playerId;
 	pBitStream->Read(playerId);
-	
-	g_pCore->GetChat()->Output("Kekse");
 
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);

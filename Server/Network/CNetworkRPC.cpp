@@ -118,7 +118,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		{
 			bitStream.Reset();
 			bitStream.WriteCompressed(playerId);
-			bitStream.Write(_strName.C_String());
+			bitStream.Write(strName.Get());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
 		}
 	}
