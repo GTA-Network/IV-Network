@@ -42,10 +42,17 @@ private:
 	CString							m_strResourceName;
 	CString							m_strAbsPath;
 	CString							m_strResourceDirectoryPath;
+
+	typedef void (*CreateVM_t)(CScriptVM*);
+	CreateVM_t						m_fnCreateVM = nullptr;
 public:
 	CResource();
 	CResource(CString strAbsPath, CString strResourceName);
 	~CResource();
+
+	void				SetCreateVMCallback(CreateVM_t fnCreateVM) {
+		m_fnCreateVM = fnCreateVM;
+	}
 
 	eResourceScriptType	GetResourceScriptType() { return m_resourceScriptType; }
 	bool				IsLoaded() { return m_bLoaded; }

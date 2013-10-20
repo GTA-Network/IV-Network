@@ -1949,23 +1949,30 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring()) 
 		{
 				PTR_CHAT-> Output("Settings weapon aim..");
-				SetWeaponAimAtTask(AimSync.vecAimShotAtCoordinates);
-
+				g_pCore->GetChat()->Output("Set weapon aim");
 				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
 				m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 				m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
-				//CIVScript::TaskAimGunAtCoord(uiPlayerIndex, m_pIVSyncHandle>vecAimAtCoordinates.fX, m_pIVSyncHandle>vecAimAtCoordinates.fY, m_pIVSyncHandle>vecAimAtCoordinates.fZ, 45000);
+
+				CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
 
 		}
 		else if (m_ControlState.IsFiring()) 
 		{
 			PTR_CHAT->Output("Settings weapon shot..");
-
+			g_pCore->GetChat()->Output("Set weapon shot");
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
-			SetWeaponShotAtTask(AimSync.vecAimShotAtCoordinates);
+
+			unsigned int st = 0;
+			CIVScript::OpenSequenceTask(&st);
+			CIVScript::TaskShootAtCoord(0, AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000, 5); // 3 - fake shot
+			CIVScript::CloseSequenceTask(st);
+			if (!CIVScript::IsCharInjured(GetScriptingHandle()))
+				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
+			CIVScript::ClearSequenceTask(st);
 		}
 		else 
 		{

@@ -48,6 +48,15 @@ CServer::~CServer()
 
 #include <Scripting/CEvents.h>
 
+#include "Scripting/Natives/Natives_Server.h"
+
+void OnCreateVM(CScriptVM* pVM)
+{
+	CPlayerNatives::Register(pVM);
+	CVehicleNatives::Register(pVM);
+	CScriptClasses::Register(pVM);
+}
+
 bool CServer::Startup()
 {
 	// Register our RPCs before set the NetServer´s rpc handler
@@ -149,6 +158,7 @@ bool CServer::Startup()
 		CLogFile::Print("");
 	}
 	m_pResourceManager = new CResourceManager("resources");
+	m_pResourceManager->SetCreateVMCallback(OnCreateVM);
 
 	// Loading resources
 #ifdef _WIN32

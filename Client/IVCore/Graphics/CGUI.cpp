@@ -543,6 +543,7 @@ void CGUI::ShowMessageBox(const CEGUI::String &sText, const CEGUI::String &sTitl
 		m_messageBox.pText->setProperty("FrameEnabled", "false");
 		m_messageBox.pText->setProperty("BackgroundEnabled", "false");
 		m_messageBox.pText->setVisible(true);
+		m_messageBox.pText->setFont(GetFont("arial", 15));
 
 		// Create the message box window button(s)
 		if (style == GUI_MESSAGEBOXTYPE_OK)

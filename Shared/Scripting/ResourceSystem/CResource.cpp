@@ -272,11 +272,11 @@ bool CResource::CreateVM()
 			return false;
 		}
 		
-#ifdef _SERVER
-		CScriptClasses::Register(m_pVM);
-		CServerNatives::Register(m_pVM);
-#endif
+		// Register Server/Client natives
+		if (m_fnCreateVM)
+			m_fnCreateVM(m_pVM);
 
+		// Default shared natives
 		CEventNatives::Register(m_pVM);
 		CSystemNatives::Register(m_pVM);
 		CMathNatives::Register(m_pVM); 

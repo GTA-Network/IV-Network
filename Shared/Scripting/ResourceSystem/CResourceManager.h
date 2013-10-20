@@ -19,10 +19,18 @@ private:
 	CString					m_strResourceDirectory;
 	std::list<CResource*>	m_resources;
 	static CResourceManager*s_pInstance;
+
+	typedef void(*CreateVM_t)(CScriptVM*);
+	CreateVM_t						m_fnCreateVM = nullptr;
+
 public:
 	CResourceManager();
 	CResourceManager(CString strResourceDirectory);
 	~CResourceManager();
+
+	void				SetCreateVMCallback(CreateVM_t fnCreateVM) {
+		m_fnCreateVM = fnCreateVM;
+	}
 
 	static CResourceManager * GetInstance() { return s_pInstance; }
 

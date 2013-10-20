@@ -507,18 +507,18 @@ _declspec(naked) void CTaskSimpleStartVehicle__Process()
 #pragma pack(push, 1)
 struct RegEpisodeStruct
 {
-	char szPath[MAX_PATH];
-	PAD(RegEpisode, pad0, 64);
-	char szDevice[16];
-	DWORD field_154;
-	DWORD field_158;
-	DWORD field_15C;
-	DWORD field_160;
-	BYTE field_164;
-	BYTE field_165;
-	PAD(RegEpisode, pad3, 1);
-	BYTE field_167;
-};
+	char szPath[MAX_PATH]; // 0-260
+	PAD(RegEpisode, pad0, 64); // 260-324
+	char szDevice[16]; // 324-340
+	DWORD field_154; // 340-344
+	DWORD field_158; // 344-348
+	DWORD field_15C; // 348-352
+	DWORD field_160; // 352-356
+	BYTE field_164; // 356-357
+	BYTE field_165; // 357-358
+	PAD(RegEpisode, pad3, 1); // 358-359
+	BYTE field_167; // 359-360
+}; // size = 360
 #pragma pack(pop)
 
 void CHookDummy::registerEpisodes()
@@ -541,7 +541,7 @@ void CHookDummy::registerEpisodes()
 			RegEpisodeStruct* reg = new RegEpisodeStruct;
 			memset(reg->szPath, 0, MAX_PATH);
 			strcpy(reg->szPath, TLADFolder);
-			reg->szDevice[0] = '\0';
+			memset(reg->szDevice, 0, 16);
 			reg->field_154 = 0;
 			reg->field_158 = 1;
 			reg->field_15C = 0;
@@ -573,7 +573,7 @@ void CHookDummy::registerEpisodes()
 			RegEpisodeStruct* reg = new RegEpisodeStruct;
 			memset(reg->szPath, 0, MAX_PATH);
 			strcpy(reg->szPath, TBoGTFolder);
-			reg->szDevice[0] = '\0';
+			memset(reg->szDevice, 0, 16);
 			reg->field_154 = 0;
 			reg->field_158 = 1;
 			reg->field_15C = 0;
@@ -647,10 +647,70 @@ struct stXMLData
 #define sub_45AFB0 ((void (__thiscall*) (void*))(g_pCore->GetBase() + 0x45AFB0))
 #define sub_8B34D0 ((char (__thiscall*) (void*, int a2))(g_pCore->GetBase() + 0x8B34D0))
 
+BYTE loadTLAD(void* pthis)
+{
+	CheckDLCs(pthis);
+	RegEpisodeStruct* reg = (RegEpisodeStruct*) (*(DWORD*) ((char*)pthis + 332) + sizeof(RegEpisodeStruct) * 0);
+	sub_8B3620(pthis, 0);
+	SetGTAWorkdir(GTAWorkdirUknownPVOID, "extra:/");
+	
+	GTA_memcpy(reg->szDevice, "e1:/", 16);
+
+	stXMLData radio;
+
+	radio.bRequiredForSave = 0;
+	radio.field_222 = 0;
+	radio.episode = 0;
+	radio.szName[0] = 0;
+	radio.szDatFile[0] = 0;
+	radio.szAudioFolder[0] = 0;
+	radio.szLoadingScreens[0] = 0;
+	radio.szLoadingScreensDat[0] = 0;
+	radio.szLoadingScreensIngame[0] = 0;
+	radio.szLoadingScreensIngameDat[0] = 0;
+	radio.networkGame = -1;
+	radio.szTexturePath[0] = 0;
+	radio.iEpisodeId = 0;
+
+	GTA_memcpy(radio.szName, "The Lost and Damned Radio", 64);
+	radio.id = 1;
+	GTA_memcpy(radio.szAudioMetaData, "e1_radio.xml", 64);
+	radio.bEnabled = 1;
+	sub_8B3AE0(pthis, &radio);
+
+	stXMLData xmlData;
+
+	xmlData.bEnabled = 0;
+	xmlData.field_222 = 0;
+	xmlData.szAudioFolder[0] = 0;
+	xmlData.networkGame = -1;
+	xmlData.iEpisodeId = 0;
+
+	GTA_memcpy(xmlData.szName, "TLAD", 64);
+	xmlData.id = 2;
+	xmlData.bRequiredForSave = 1;
+	xmlData.episode = 1;
+	GTA_memcpy(xmlData.szDatFile, "content.dat", 32);
+	GTA_memcpy(xmlData.szLoadingScreens, "e1:/pc/textures/loadingscreens.wtd", 64);
+	GTA_memcpy(xmlData.szLoadingScreensDat, "e1:/common\data\loadingscreens.dat", 64);
+	GTA_memcpy(xmlData.szLoadingScreensIngame, "e1:/pc/textures/loadingscreens_ingame.wtd", 64);
+	GTA_memcpy(xmlData.szLoadingScreensIngameDat, "e1:/common\data\loadingscreens_ingame.dat", 64);
+	GTA_memcpy(xmlData.szTexturePath, "e1:/pc/textures/", 64);
+	GTA_memcpy(xmlData.szAudioMetaData, "e1_audio.xml", 64);
+
+	sub_8B3AE0(pthis, &xmlData);
+
+	sub_45AFB0(GTAWorkdirUknownPVOID);
+	reg->field_165 = 1;
+	return sub_8B34D0(pthis, 0);
+}
+
+bool bLoadTbogt = true;
+
 char CHookDummy::loadEpisodes(int id)
 {
 	CheckDLCs(this);
-	RegEpisodeStruct* reg = (RegEpisodeStruct*) *(DWORD *) (this + 332) + sizeof(RegEpisodeStruct) * id;
+	RegEpisodeStruct* reg = (RegEpisodeStruct*) (*(DWORD*)(this + 332) + sizeof(RegEpisodeStruct) * id);
 	sub_8B3620(this, id);
 	SetGTAWorkdir(GTAWorkdirUknownPVOID, "extra:/");
 	stXMLNode ** pNodes = CXML__Load((void *) dword_1924E38, "setup2.xml", "xml");
@@ -659,6 +719,7 @@ char CHookDummy::loadEpisodes(int id)
 		if (!CXML__FindNode(*pNodes, "testmarketplace", 0))
 		{
 			stXMLNode * pDeviceNode = CXML__FindNode(*pNodes, "device", 0);
+
 			GTA_memcpy(reg->szDevice, pDeviceNode->bFound ? pDeviceNode->pData : '\0', 16);
 			GTA_strcat(reg->szDevice, ":/", 16);
 			stXMLNode * pContentNode = CXML__FindNode(*pNodes, "content", 0);
@@ -686,7 +747,7 @@ char CHookDummy::loadEpisodes(int id)
 					xmlData.iEpisodeId = id;
 
 					stXMLNode * pNameNode = CXML__FindNode(pContentNode, "name", 0);
-					GTA_memcpy(xmlData.szName, pNameNode->bFound ? pNameNode->pData : '\0', 64u);
+					GTA_memcpy(xmlData.szName, pNameNode->bFound ? pNameNode->pData : '\0', 64);
 					stXMLNode * pIdNode = CXML__FindNode(pContentNode, "id", 0);
 					xmlData.id = (pIdNode && pIdNode->bFound) ? atoi(pIdNode->pData) : 0;
 
@@ -707,6 +768,18 @@ char CHookDummy::loadEpisodes(int id)
 					}
 					else
 						xmlData.episode = 0;
+					
+					if (bLoadTbogt)
+					{
+						if (xmlData.episode == 1)
+						{
+							xmlData.episode = 2;
+						}
+						else if (xmlData.episode == 2)
+						{
+							xmlData.episode = 1;
+						}
+					}
 
 					stXMLNode * pDatFileNode = CXML__FindNode(pContentNode, "datfile", 0);
 					if (pDatFileNode)
@@ -761,6 +834,7 @@ char CHookDummy::loadEpisodes(int id)
 
 					if (CXML__FindNode(pContentNode, "enabled", 0))
 						xmlData.bEnabled = 1;
+
 					sub_8B3AE0(this, &xmlData);
 					pContentNode = CXML__FindNode(*pNodes, "content", (int) pContentNode);
 				} while (pContentNode);
@@ -769,6 +843,8 @@ char CHookDummy::loadEpisodes(int id)
 		sub_454D70(pNodes);
 		sub_401210(pNodes);
 	}
+
+
 	sub_45AFB0(GTAWorkdirUknownPVOID);
 	reg->field_165 = 1;
 	return sub_8B34D0(this, id);
@@ -910,7 +986,7 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
 
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::registerEpisodes));
-	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes)); - TMP disabled
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes));
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;

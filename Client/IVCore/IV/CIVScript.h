@@ -282,6 +282,7 @@ namespace CIVScript
     static unsigned int GetNumberOfCharTextureVariations(unsigned int ped, ePedComponent component, unsigned int unknown1) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_NUMBER_OF_CHAR_TEXTURE_VARIATIONS, ped, component, unknown1); }
 
 	static void TaskAimGunAtCoord(unsigned int ped, float tX, float tY, float tZ, unsigned int duration) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_TASK_AIM_GUN_AT_COORD, ped, tX, tY, tZ, duration); }
+	static void TaskShootAtCoord(unsigned int ped, float x, float y, float z, unsigned int p4, unsigned int p5) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_TASK_SHOOT_AT_COORD, ped, x, y, z, p4, p5); }
 	
 	// unsigned int
     static void CreateMissionTrain(unsigned int unknown1, float x, float y, float z, bool unknown2, unsigned int *pTrain) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_MISSION_TRAIN, unknown1, x, y, z, unknown2, pTrain); }

@@ -250,6 +250,8 @@ void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	EntityId playerId;
 	pBitStream->Read(playerId);
+	
+	g_pCore->GetChat()->Output("Kekse");
 
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
