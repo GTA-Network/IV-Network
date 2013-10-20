@@ -65,24 +65,6 @@ void CPlayerEntity::Pulse()
 	}
 };
 
-bool CPlayerEntity::SetName(CString strName)
-{
-
-
-	if (strName.GetLength() < 2 || strName.GetLength() > MAX_NAME_LENGTH)
-		return false;
-
-	//if (strName == m_strName || CServer::GetInstance()->GetPlayerManager()->IsNameInUse(strName))
-	//	return false;
-
-	m_strName = strName;
-
-	RakNet::BitStream bitStream;
-	bitStream.Write(GetId());
-	bitStream.Write(strName);
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
-}
-
 
 void CPlayerEntity::SetPosition(const CVector3& vecPosition)
 {
@@ -109,6 +91,17 @@ void CScriptPlayer::SetHealth(float fHealth)
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(fHealth);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetName(const char* szName)
+{
+		GetEntity()->SetName(CString(szName));
+		free((void*)szName);
+
+		RakNet::BitStream bitStream;
+		bitStream.Write(GetEntity()->GetId());
+		bitStream.Write(szName);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
 void CScriptPlayer::GiveWeapon(int id, int uiAmmo)

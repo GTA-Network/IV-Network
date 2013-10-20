@@ -66,8 +66,7 @@ public:
 	DWORD		GetColor() { return m_dwColor; }
 	void		SetColor(DWORD dwColor) { m_dwColor = dwColor; }
 
-	//void		SetName(const CString& strName) { m_strName = strName; }
-	bool		SetName(CString& strName);
+	void		SetName(const CString& strName) { m_strName = strName; }
 	CString		GetName() { return m_strName; }
 
 	void		SetDirection(const CVector3& vecDirection) { m_vecDirection = vecDirection; }
@@ -142,10 +141,7 @@ public:
 	const char* GetName() {
 		return GetEntity()->m_strName.Get();
 	}
-	void		SetName(const char* szName) {
-		GetEntity()->SetName(CString(szName));
-		free((void*) szName);
-	}
+	void		SetName(const char* szName);
 
 	int	GetMoney() { return 0; }
 	void SetMoney(int iMoney) { }
