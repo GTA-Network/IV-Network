@@ -65,6 +65,24 @@ void CPlayerEntity::Pulse()
 	}
 };
 
+bool CPlayerEntity::SetName(CString strName)
+{
+
+
+	if (strName.GetLength() < 2 || strName.GetLength() > MAX_NAME_LENGTH)
+		return false;
+
+	//if (strName == m_strName || CServer::GetInstance()->GetPlayerManager()->IsNameInUse(strName))
+	//	return false;
+
+	m_strName = strName;
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetId());
+	bitStream.Write(strName);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
 
 void CPlayerEntity::SetPosition(const CVector3& vecPosition)
 {

@@ -66,7 +66,8 @@ public:
 	DWORD		GetColor() { return m_dwColor; }
 	void		SetColor(DWORD dwColor) { m_dwColor = dwColor; }
 
-	void		SetName(const CString& strName) { m_strName = strName; }
+	//void		SetName(const CString& strName) { m_strName = strName; }
+	bool		SetName(CString& strName);
 	CString		GetName() { return m_strName; }
 
 	void		SetDirection(const CVector3& vecDirection) { m_vecDirection = vecDirection; }
