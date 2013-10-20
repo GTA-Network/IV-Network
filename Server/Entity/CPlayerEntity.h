@@ -141,10 +141,7 @@ public:
 	const char* GetName() {
 		return GetEntity()->m_strName.Get();
 	}
-	void		SetName(const char* szName) {
-		GetEntity()->SetName(CString(szName));
-		free((void*) szName);
-	}
+	void		SetName(const char* szName);
 
 	int	GetMoney() { return 0; }
 	void SetMoney(int iMoney) { }

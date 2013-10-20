@@ -7,6 +7,7 @@
 //
 //==============================================================================
 
+#include "CServer.h"
 #include "CPlayerNatives.h"
 #include <Scripting/CLuaVM.h>
 #include <Scripting/CSquirrelVM.h>
@@ -15,7 +16,67 @@
 
 void CPlayerNatives::Register(CScriptVM * pVM)
 {
+	pVM->RegisterFunction("isPlayerConnected", IsConnected, 1, "i");
+	pVM->RegisterFunction("getPlayerName", GetName, 1, "i");
+	pVM->RegisterFunction("setPlayerName", SetName, 2, "is");
+}
 
+int CPlayerNatives::IsConnected(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int playerId;
+	pVM->Pop(playerId);
+
+	pVM->Push(CServer::GetInstance()->GetPlayerManager()->DoesExists((EntityId)playerId));
+
+	return 1;
+}
+
+int CPlayerNatives::GetName(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int playerId;
+	pVM->Pop(playerId);
+
+	auto pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)playerId);
+
+	if (pPlayer) {
+		pVM->Push(pPlayer->GetName());
+	}
+	else {
+		pVM->Push(false);
+	}
+
+	return 1;
+}
+
+int CPlayerNatives::SetName(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int playerId;
+	pVM->Pop(playerId);
+
+	CString pName;
+	pVM->Pop(pName);
+
+	auto pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)playerId);
+
+	if (pPlayer) {
+		pVM->Push(pPlayer->SetName(pName));
+	}
+	else {
+		pVM->Push(false);
+	}
+	return 1;
 }
 
 int CPlayerNatives::GetArmour(int * VM)
@@ -103,19 +164,6 @@ int CPlayerNatives::GetModel(int * VM)
 }
 
 int CPlayerNatives::SetModel(int * VM)
-{
-
-	return 1;
-}
-
-
-int CPlayerNatives::GetName(int * VM)
-{
-
-	return 1;
-}
-
-int CPlayerNatives::SetName(int * VM)
 {
 
 	return 1;
