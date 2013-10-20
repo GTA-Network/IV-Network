@@ -73,9 +73,9 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CScriptArguments args;
 	CScriptPlayer * pScriptPlayer = new CScriptPlayer();
 	pScriptPlayer->SetEntity(pPlayer);
+	pPlayer->SetScriptPlayer(pScriptPlayer);
 	args.push(pScriptPlayer);
 	CEvents::GetInstance()->Call("playerJoin", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
-	delete pScriptPlayer;
 
 	// Construct a new bitstream
 	RakNet::BitStream bitStream;
@@ -187,11 +187,8 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 				CScriptArguments args;
 				args.push(strInput);
-				CScriptPlayer *pScriptPlayer = new CScriptPlayer();
-				pScriptPlayer->SetEntity(pPlayer);
-				args.push(pScriptPlayer);
+				args.push(pPlayer->GetScriptPlayer());
 				CEvents::GetInstance()->Call("onCommand", &args, CEventHandler::eEventType::GLOBAL_EVENT, nullptr);
-				delete pScriptPlayer;
 			}
 		}
 	}
@@ -284,11 +281,8 @@ void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// Spawn everyone else connected for this player
 		//CServer::GetInstance()->GetPlayerManager()->HandlePlayerSpawn(playerId);
 		CScriptArguments args;
-		CScriptPlayer* pScriptPlayer = new CScriptPlayer();
-		pScriptPlayer->SetEntity(pPlayer);
-		args.push(pScriptPlayer);
+		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("onSpawn", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
-		delete pScriptPlayer;
 		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get());
 	}
 	CLogFile::Printf("%s", __FUNCTION__);

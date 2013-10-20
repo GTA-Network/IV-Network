@@ -58,24 +58,24 @@ int CPlayerNatives::GetName(int * VM)
 
 int CPlayerNatives::SetName(int * VM)
 {
-	GET_SCRIPT_VM_SAFE;
+	//GET_SCRIPT_VM_SAFE;
 
-	pVM->ResetStackIndex();
+	//pVM->ResetStackIndex();
 
-	int playerId;
-	pVM->Pop(playerId);
+	//int playerId;
+	//pVM->Pop(playerId);
 
-	CString pName;
-	pVM->Pop(pName);
+	//CString pName;
+	//pVM->Pop(pName);
 
-	auto pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)playerId);
+	//auto pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)playerId);
 
-	if (pPlayer) {
-		pVM->Push(pPlayer->SetName(pName));
-	}
-	else {
-		pVM->Push(false);
-	}
+	//if (pPlayer) {
+	//	pVM->Push(pPlayer->SetName(pName));
+	//}
+	//else {
+	//	pVM->Push(false);
+	//}
 	return 1;
 }
 

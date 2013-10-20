@@ -15,6 +15,8 @@
 #include <Common.h>
 #include "Game/eInput.h"
 
+class CScriptPlayer;
+
 class CPlayerEntity : public CNetworkEntity {
 public:
 
@@ -45,7 +47,7 @@ private:
 		CVector3		vecLookAtCoordinates;
 	} m_weaponData;
 
-
+	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
 public:
 	CString		m_strName;
@@ -56,6 +58,9 @@ public:
 	bool Destroy() { return true; }
 
 	void		Pulse();
+
+	CScriptPlayer*  GetScriptPlayer() { return m_pScriptPlayer; }
+	void			SetScriptPlayer(CScriptPlayer* pScriptPlayer) { m_pScriptPlayer = pScriptPlayer; }
 
 	float		GetHealth() { return m_fHealth; }
 	void		SetHealth(float fHealth) { m_fHealth = fHealth; }

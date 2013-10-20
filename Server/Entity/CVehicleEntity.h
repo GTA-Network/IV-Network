@@ -15,6 +15,7 @@
 class CVehicleEntity : public CNetworkEntity
 {
 private:
+	CScriptVehicle*	m_pScriptVehicle;
 
 public:
 	CVehicleEntity();
@@ -22,6 +23,9 @@ public:
 
 	bool Create() {return true;}
 	bool Destroy() {return true;}
+
+	CScriptVehicle*  GetScriptVehicle() { return m_pScriptVehicle; }
+	void			SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }
 };
 
 class CScriptVehicle : public CScriptEntity
