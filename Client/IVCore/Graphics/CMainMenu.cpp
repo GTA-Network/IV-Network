@@ -230,8 +230,8 @@ bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs
 	}
 	else
 	{
-		m_pQuickConnectWindow->activate();
 		m_pQuickConnectWindow->setVisible(true);
+		m_pQuickConnectWindow->activate();
 	}
 	return true;
 }
@@ -275,8 +275,8 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 	}
 	else
 	{
-		m_pSettingsWindow->activate();
 		m_pSettingsWindow->setVisible(true);
+		m_pSettingsWindow->activate();
 	}
 	return true;
 }
@@ -451,7 +451,8 @@ void CMainMenu::OnSettingsApply()
 
 	// Save the settings
 	CSettings::Save();
-
+	m_pSettingsWindow->deactivate();
+	m_pSettingsWindow->setVisible(false);
 	m_pGUI->ShowMessageBox(CString("You have changed your name to %s.", m_pSettingsEditBox->getText()).Get(), "Applying Settings", GUI_MESSAGEBOXTYPE_OK);
 }
 

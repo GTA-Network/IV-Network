@@ -12,6 +12,8 @@
 
 #include "CNetworkEntity.h"
 
+class CScriptVehicle;
+
 class CVehicleEntity : public CNetworkEntity
 {
 private:
