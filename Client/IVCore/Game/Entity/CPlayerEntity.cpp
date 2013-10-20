@@ -2002,7 +2002,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		pBitStream->Read(VehiclePacket);
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-		g_pCore->GetChat()->Output("Vehicle sync");
+
 		if (IsInVehicle())
 		{
 			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
