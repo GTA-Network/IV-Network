@@ -15,7 +15,8 @@ extern CCore* g_pCore;
 
 CMainMenu::CMainMenu(CGUI* pGUI) :
 	m_pGUI(pGUI),
-	m_pSettingsWindow(NULL)
+	m_pSettingsWindow(nullptr),
+	m_pQuickConnectWindow(nullptr)
 {
 
 }
@@ -38,6 +39,8 @@ CMainMenu::~CMainMenu()
 	if (m_pQuickConnectWindow)
 		m_pGUI->RemoveGUIWindow(m_pQuickConnectWindow);
 }
+
+//////////////////[The Actual Main Menu]//////////////////
 
 bool CMainMenu::Initialize()
 {	
@@ -68,7 +71,7 @@ bool CMainMenu::Initialize()
 #define fY 0.5f
 
 	// Create the Disconnect Button & hide it
-	m_pDisconnectButton = CreateButton("Disconnect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
+	m_pDisconnectButton = m_pGUI->CreateButton("Disconnect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
 	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseEnter, this));
 	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseExit, this));
 	m_pDisconnectButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnDisconnectButtonMouseClick, this));
@@ -76,35 +79,35 @@ bool CMainMenu::Initialize()
 	m_pDisconnectButton->setVisible(false);
 
 	// Create the Quick Connect Button
-	m_pQuickConnectButton = CreateButton("Quick Connect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
+	m_pQuickConnectButton = m_pGUI->CreateButton("Quick Connect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
 	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseEnter, this));
 	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseExit, this));
 	m_pQuickConnectButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pQuickConnectButton);
 
 	// Create the Server Browser Button
-	m_pServerBrowserButton = CreateButton("Server Browser", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.275f, 0), CEGUI::UDim(fY, 0)));
+	m_pServerBrowserButton = m_pGUI->CreateButton("Server Browser", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.275f, 0), CEGUI::UDim(fY, 0)));
 	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseEnter, this));
 	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseExit, this));
 	m_pServerBrowserButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pServerBrowserButton);
 
 	// Create the Settings Button
-	m_pSettingsButton = CreateButton("Settings", CEGUI::UVector2(CEGUI::UDim(0.162f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.525f, 0), CEGUI::UDim(fY, 0)));
+	m_pSettingsButton = m_pGUI->CreateButton("Settings", CEGUI::UVector2(CEGUI::UDim(0.162f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.525f, 0), CEGUI::UDim(fY, 0)));
 	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseEnter, this));
 	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseExit, this));
 	m_pSettingsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pSettingsButton);
 
 	// Create the Credits Button
-	m_pCreditsButton = CreateButton("Credits", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.75f, 0), CEGUI::UDim(fY, 0)));
+	m_pCreditsButton = m_pGUI->CreateButton("Credits", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.75f, 0), CEGUI::UDim(fY, 0)));
 	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseEnter, this));
 	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseExit, this));
 	m_pCreditsButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnCreditsButtonMouseClick, this));
 	m_pBackground->addChildWindow(m_pCreditsButton);
 
 	// Create the Exit Button
-	m_pExitButton = CreateButton("Exit", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.925f, 0), CEGUI::UDim(fY, 0)));
+	m_pExitButton = m_pGUI->CreateButton("Exit", CEGUI::UVector2(CEGUI::UDim(0.08f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.925f, 0), CEGUI::UDim(fY, 0)));
 	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseEnters, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseEnter, this));
 	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseLeaves, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseExit, this));
 	m_pExitButton->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnExitButtonMouseClick, this));
@@ -114,6 +117,8 @@ bool CMainMenu::Initialize()
 
 	return true;
 }
+
+//////////////////[Set Visible Stuff]//////////////////
 
 void CMainMenu::SetVisible(bool bVisible)
 {
@@ -171,68 +176,63 @@ void CMainMenu::SetSettingsVisible(bool bVisible)
 	m_bSettingsVisible = bVisible;
 }
 
-CGUIStaticText * CMainMenu::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition)
-{
-	CGUIStaticText * pButton = m_pGUI->CreateGUIStaticText();
-	pButton->setText(CGUI::AnsiToCeguiFriendlyString(szText, strlen(szText)));
-	pButton->setSize(vecSize);
-	pButton->setPosition(vecPosition);
-	pButton->setProperty("FrameEnabled", "false");
-	pButton->setProperty("BackgroundEnabled", "false");
-	pButton->setFont(m_pGUI->GetFont("pricedown", 20));
-	pButton->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF");
-	return pButton;
-}
-
 bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	float fWidth = (float) m_pGUI->GetDisplayWidth();
 	float fHeight = (float) m_pGUI->GetDisplayHeight();
 
-	m_pQuickConnectWindow = m_pGUI->CreateGUIFrameWindow();
-	m_pQuickConnectWindow->setText("IV:Network Quick Connect");
-	m_pQuickConnectWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 250)));
-	m_pQuickConnectWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
-	m_pQuickConnectWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectCloseClick, this));
-	m_pQuickConnectWindow->setProperty("FrameEnabled", "false");
-	m_pQuickConnectWindow->setVisible(true);
+	if (!m_pQuickConnectWindow)
+	{
+		m_pQuickConnectWindow = m_pGUI->CreateGUIFrameWindow();
+		m_pQuickConnectWindow->setText("Quick Connect");
+		m_pQuickConnectWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 250)));
+		m_pQuickConnectWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
+		m_pQuickConnectWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectCloseClick, this));
+		m_pQuickConnectWindow->setProperty("FrameEnabled", "false");
+		m_pQuickConnectWindow->setVisible(true);
 
-	m_pQuickConnectIPStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
-	m_pQuickConnectIPStaticText->setText("Hostname / IP Address:");
-	m_pQuickConnectIPStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
-	m_pQuickConnectIPStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
-	m_pQuickConnectIPStaticText->setProperty("FrameEnabled", "false");
-	m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
-	m_pQuickConnectIPStaticText->setFont(m_pGUI->GetFont("arial", 15));
+		m_pQuickConnectIPStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
+		m_pQuickConnectIPStaticText->setText("Hostname / IP Address:");
+		m_pQuickConnectIPStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
+		m_pQuickConnectIPStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
+		m_pQuickConnectIPStaticText->setProperty("FrameEnabled", "false");
+		m_pQuickConnectIPStaticText->setProperty("BackgroundEnabled", "false");
+		m_pQuickConnectIPStaticText->setFont(m_pGUI->GetFont("arial", 15));
 
-	m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip").Get(), CVAR_GET_INTEGER("port")).Get());
-	m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
-	m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
-	m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
-	m_pQuickConnectIPEditBox->setFont(m_pGUI->GetFont("arial", 15));
+		m_pQuickConnectIPEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
+		m_pQuickConnectIPEditBox->setText(CString("%s:%i", CVAR_GET_STRING("ip").Get(), CVAR_GET_INTEGER("port")).Get());
+		m_pQuickConnectIPEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
+		m_pQuickConnectIPEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
+		m_pQuickConnectIPEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
+		m_pQuickConnectIPEditBox->setFont(m_pGUI->GetFont("arial", 15));
 
-	m_pQuickConnectPasswordStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
-	m_pQuickConnectPasswordStaticText->setText("Password:");
-	m_pQuickConnectPasswordStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
-	m_pQuickConnectPasswordStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 90)));
-	m_pQuickConnectPasswordStaticText->setProperty("FrameEnabled", "false");
-	m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
-	m_pQuickConnectPasswordStaticText->setFont(m_pGUI->GetFont("arial", 15));
+		m_pQuickConnectPasswordStaticText = m_pGUI->CreateGUIStaticText(m_pQuickConnectWindow);
+		m_pQuickConnectPasswordStaticText->setText("Password:");
+		m_pQuickConnectPasswordStaticText->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 20)));
+		m_pQuickConnectPasswordStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 90)));
+		m_pQuickConnectPasswordStaticText->setProperty("FrameEnabled", "false");
+		m_pQuickConnectPasswordStaticText->setProperty("BackgroundEnabled", "false");
+		m_pQuickConnectPasswordStaticText->setFont(m_pGUI->GetFont("arial", 15));
 
-	m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
-	m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
-	m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
-	m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
-	m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
-	m_pQuickConnectPasswordEditBox->setProperty("MaskText", "true");
-	m_pQuickConnectPasswordEditBox->setFont(m_pGUI->GetFont("arial", 15));
+		m_pQuickConnectPasswordEditBox = m_pGUI->CreateGUIEditBox(m_pQuickConnectWindow);
+		m_pQuickConnectPasswordEditBox->setText(CVAR_GET_STRING("pass").Get());
+		m_pQuickConnectPasswordEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
+		m_pQuickConnectPasswordEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 120)));
+		m_pQuickConnectPasswordEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectIPEditBoxKeyUp, this));
+		m_pQuickConnectPasswordEditBox->setProperty("MaskText", "true");
+		m_pQuickConnectPasswordEditBox->setFont(m_pGUI->GetFont("arial", 15));
 
-	m_pQuickConnectConnectButton = m_pGUI->CreateGUIButton(m_pQuickConnectWindow);
-	m_pQuickConnectConnectButton->setText("Connect");
-	m_pQuickConnectConnectButton->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
-	m_pQuickConnectConnectButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 160)));
-	m_pQuickConnectConnectButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectConnectButtonClick, this));
+		m_pQuickConnectConnectButton = m_pGUI->CreateGUIButton(m_pQuickConnectWindow);
+		m_pQuickConnectConnectButton->setText("Connect");
+		m_pQuickConnectConnectButton->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
+		m_pQuickConnectConnectButton->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 160)));
+		m_pQuickConnectConnectButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnQuickConnectConnectButtonClick, this));
+	}
+	else
+	{
+		m_pQuickConnectWindow->setVisible(true);
+		m_pQuickConnectWindow->activate();
+	}
 	return true;
 }
 
@@ -245,7 +245,7 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 		float fHeight = (float) m_pGUI->GetDisplayHeight();
 
 		m_pSettingsWindow = m_pGUI->CreateGUIFrameWindow();
-		m_pSettingsWindow->setText("IV:Network Settings");
+		m_pSettingsWindow->setText("Settings");
 		m_pSettingsWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 300), CEGUI::UDim(0, 220)));
 		m_pSettingsWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fWidth / 2 - 150.0f), CEGUI::UDim(0, fHeight / 2 - 120.0f)));
 		m_pSettingsWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsCloseClick, this));
@@ -258,19 +258,25 @@ bool CMainMenu::OnSettingsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 		m_pSettingsStaticText->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 20)));
 		m_pSettingsStaticText->setProperty("FrameEnabled", "false");
 		m_pSettingsStaticText->setProperty("BackgroundEnabled", "false");
+		m_pSettingsStaticText->setFont(m_pGUI->GetFont("arial", 15));
 
 		m_pSettingsEditBox = m_pGUI->CreateGUIEditBox(m_pSettingsWindow);
 		m_pSettingsEditBox->setText(CVAR_GET_STRING("nick").Get());
 		m_pSettingsEditBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 260), CEGUI::UDim(0, 30)));
 		m_pSettingsEditBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 20), CEGUI::UDim(0, 50)));
 		m_pSettingsEditBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsEditBoxKeyUp, this));
-		m_pSettingsEditBox->setFont(m_pGUI->GetFont("arial", 20));
+		m_pSettingsEditBox->setFont(m_pGUI->GetFont("arial", 15));
 
 		m_pSettingsButtonEx = m_pGUI->CreateGUIButton(m_pSettingsWindow);
 		m_pSettingsButtonEx->setText("Apply");
 		m_pSettingsButtonEx->setSize(CEGUI::UVector2(CEGUI::UDim(0, 200), CEGUI::UDim(0, 40)));
 		m_pSettingsButtonEx->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 50), CEGUI::UDim(0, 100)));
 		m_pSettingsButtonEx->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&CMainMenu::OnSettingsMouseClick, this));
+	}
+	else
+	{
+		m_pSettingsWindow->setVisible(true);
+		m_pSettingsWindow->activate();
 	}
 	return true;
 }
@@ -445,7 +451,8 @@ void CMainMenu::OnSettingsApply()
 
 	// Save the settings
 	CSettings::Save();
-
+	m_pSettingsWindow->deactivate();
+	m_pSettingsWindow->setVisible(false);
 	m_pGUI->ShowMessageBox(CString("You have changed your name to %s.", m_pSettingsEditBox->getText()).Get(), "Applying Settings", GUI_MESSAGEBOXTYPE_OK);
 }
 

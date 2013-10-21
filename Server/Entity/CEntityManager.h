@@ -21,7 +21,10 @@ public:
 	CEntityManager()
 	{
 		// Set all entities invalid
-		memset(&m_pEntities, 0, sizeof(m_pEntities));
+		for (EntityId id = 0; id < max; ++id)
+		{
+			m_pEntities[id] = nullptr;
+		}
 	}
 	~CEntityManager()
 	{
@@ -99,7 +102,7 @@ public:
 		delete m_pEntities[entityId];
 
 		// mark the slot as free
-		m_pEntities[entityId] = 0;
+		m_pEntities[entityId] = nullptr;
 
 		return true;
 	}
@@ -111,14 +114,14 @@ public:
 
 	inline bool		Exists(EntityId entityId)
 	{
-		return (entityId < max && m_pEntities[entityId] != 0);
+		return (entityId < max && m_pEntities[entityId] != nullptr);
 	}
 
 	inline EntityId	FindFreeSlot()
 	{
-		for(EntityId i = 0; i < max; i++)
+		for(EntityId i = 0; i < max; ++i)
 		{
-			if(!DoesExists(i))
+			if(!Exists(i))
 				return i;
 		}
 

@@ -92,8 +92,10 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->ReadCompressed(playerId);
 
 	// Read the player name
-	CString strPlayerName;
-	pBitStream->Read(strPlayerName);
+	// Read the player name
+	RakNet::RakString _strName;
+	pBitStream->Read(_strName);
+	CString strPlayerName(_strName.C_String());
 
 	// Check if we are the local player(thx for broadcasting to XForce, *keks*)
 	if (g_pCore->GetGame()->GetLocalPlayer()->GetId() == playerId)
@@ -206,6 +208,25 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	}
 }
 
+void SetPlayerName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CString strName;
+		pBitStream->Read(strName);
+
+		pPlayer->SetNick(strName);
+	}
+}
+
 void SetPlayerPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
@@ -226,6 +247,85 @@ void SetPlayerPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SetPlayerRotation(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CVector3 vecPos;
+
+		pBitStream->Read(vecPos);
+
+		pPlayer->SetRotation(vecPos);
+	}
+}
+
+void SetPlayerMoveSpeed(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CVector3 vecPos;
+
+		pBitStream->Read(vecPos);
+
+		pPlayer->SetMoveSpeed(vecPos);
+	}
+}
+
+void SetPlayerTurnSpeed(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CVector3 vecPos;
+
+		pBitStream->Read(vecPos);
+
+		pPlayer->SetTurnSpeed(vecPos);
+	}
+}
+
+void SetPlayerHeading(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		float fHeading;
+
+		pBitStream->Read(fHeading);
+
+		pPlayer->SetHeading(fHeading);
+	}
+}
+
 void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
@@ -242,6 +342,82 @@ void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(fHealth);
 
 		pPlayer->SetHealth(fHealth);
+	}
+}
+
+void SetPlayerArmour(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		float fArmour;
+
+		pBitStream->Read(fArmour);
+
+		pPlayer->SetArmour(fArmour);
+	}
+}
+
+void SetPlayerModel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iModel;
+
+		pBitStream->Read(iModel);
+
+		pPlayer->SetModel(iModel);
+	}
+}
+
+void SetPlayerMoney(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iMoney;
+
+		pBitStream->Read(iMoney);
+
+		pPlayer->SetMoney(iMoney);
+	}
+}
+
+void SetPlayerWantedLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iWantedLevel;
+
+		pBitStream->Read(iWantedLevel);
+
+		pPlayer->SetWantedLevel(iWantedLevel);
 	}
 }
 
@@ -306,9 +482,17 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE), CreateVehicle);
 
-
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), SetPlayerName);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ROTATION), SetPlayerRotation);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEADING), SetPlayerHeading);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED), SetPlayerMoveSpeed);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED), SetPlayerTurnSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), SetPlayerArmour);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), SetPlayerModel);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), SetPlayerMoney);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), SetPlayerWantedLevel);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), GivePlayerWeapon);
 		
 		// Mark as registered

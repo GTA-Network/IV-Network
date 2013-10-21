@@ -42,6 +42,17 @@ void CPlayerEntity::Pulse()
 			m_ulLastSyncSent = SharedUtility::GetTime();
 		}
 
+		if (m_eLastSyncPackageType == RPC_PACKAGE_TYPE_PLAYER_VEHICLE)
+		{
+			RakNet::BitStream bitStream;
+			bitStream.Write(GetId());
+			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
+			Serialize(&bitStream, m_eLastSyncPackageType);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
+
+			m_ulLastSyncSent = SharedUtility::GetTime();
+		}
+
 		if (m_controlState.IsAiming() || m_controlState.IsFiring())
 		{
 			RakNet::BitStream bitStream;
@@ -72,6 +83,35 @@ void CScriptPlayer::SetPosition(float fX, float fY, float fZ)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
+void CScriptPlayer::SetRotation(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetRotation(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ROTATION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetMoveSpeed(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetMoveSpeed(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetTurnSpeed(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetTurnSpeed(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+
+
 void CScriptPlayer::SetHealth(float fHealth)
 {
 	GetEntity()->SetHealth(fHealth);
@@ -80,6 +120,67 @@ void CScriptPlayer::SetHealth(float fHealth)
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(fHealth);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetArmour(float fArmour)
+{
+	GetEntity()->SetArmour(fArmour);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(fArmour);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetWantedLevel(int iWantedLevel)
+{
+	GetEntity()->SetWantedLevel(iWantedLevel);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iWantedLevel);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
+void CScriptPlayer::SetHeading(float fHeading)
+{
+	GetEntity()->SetHeading(fHeading);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(fHeading);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEADING), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetModel(int iModel)
+{
+	GetEntity()->SetModel(iModel);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iModel);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
+void CScriptPlayer::SetMoney(int iMoney)
+{
+	GetEntity()->SetMoney(iMoney);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iMoney);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
+void CScriptPlayer::SetName(const char* szName)
+{
+	GetEntity()->SetName(CString(szName));
+	free((void*)szName);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(szName);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
 void CScriptPlayer::GiveWeapon(int id, int uiAmmo)
@@ -165,6 +266,24 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			pBitStream->Write(WeaponPacket);
 		}
 		break;
+	case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
+		{
+			CNetworkPlayerVehicleSyncPacket VehiclePacket;
+			CVehicleEntity * pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(m_vehicleId);
+			if (pVehicle)
+			{
+				VehiclePacket.vehicleId = pVehicle->GetId();
+				pVehicle->GetPosition(VehiclePacket.vecPosition);
+				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
+				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
+				pVehicle->GetRotation(VehiclePacket.vecRotation);
+				
+			}
+			GetControlState(VehiclePacket.ControlState);
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
+			pBitStream->Write(VehiclePacket);
+		}
+		break;
 	default:
 		CLogFile::Printf("Warning: Sync Package type not implemented");
 		break;
@@ -197,16 +316,20 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 	case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
 		{
 			CNetworkPlayerVehicleSyncPacket VehiclePacket;
+			pBitStream->Read(VehiclePacket);
 			SetControlState(VehiclePacket.ControlState);
-			
-#if 0
+			CVehicleEntity* pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
+			m_vehicleId = VehiclePacket.vehicleId;
+			if (pVehicle)
+			{
 
-			m_pVehicle->SetPosition(VehiclePacket.vecPosition);
-			m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
-			m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-			m_pVehicle->SetRotation(VehiclePacket.vecRotation);
-
-#endif
+				pVehicle->SetPosition(VehiclePacket.vecPosition);
+				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
+				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+				pVehicle->SetRotation(VehiclePacket.vecRotation);
+			}
+			m_eLastSyncPackageType = pType;
+			m_ulLastSyncReceived = SharedUtility::GetTime();
 		}
 		break;
 	case RPC_PACKAGE_TYPE_PLAYER_WEAPON:

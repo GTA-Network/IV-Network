@@ -8,6 +8,7 @@
 //==========================================================================================
 
 #include "CXLive.h"
+#include <Patcher/CPatcher.h>
 
 // XLive Functions
 int WINAPI XWSAStartup(WORD wVersionRequested, LPWSADATA lpWsaData)

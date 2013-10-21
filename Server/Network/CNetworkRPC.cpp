@@ -73,9 +73,9 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CScriptArguments args;
 	CScriptPlayer * pScriptPlayer = new CScriptPlayer();
 	pScriptPlayer->SetEntity(pPlayer);
+	pPlayer->SetScriptPlayer(pScriptPlayer);
 	args.push(pScriptPlayer);
 	CEvents::GetInstance()->Call("playerJoin", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
-	delete pScriptPlayer;
 
 	// Construct a new bitstream
 	RakNet::BitStream bitStream;
@@ -118,11 +118,27 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		{
 			bitStream.Reset();
 			bitStream.WriteCompressed(playerId);
-			bitStream.Write(_strName.C_String());
+			bitStream.Write(strName.Get());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
 		}
 	}
 
+
+	for (EntityId i = 0; i < CServer::GetInstance()->GetVehicleManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetVehicleManager()->DoesExists(i))
+		{
+			bitStream.Reset();
+			CVehicleEntity * pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(i);
+			bitStream.Write(pVehicle->GetId());
+			bitStream.Write(/*pVehicle->GetModelId()*/90);
+
+			CVector3 vecPosition;
+			pVehicle->GetPosition(vecPosition);
+			bitStream.Write(vecPosition);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+		}
+	}
 
 	bitStream.Reset();
 
@@ -171,11 +187,8 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 				CScriptArguments args;
 				args.push(strInput);
-				CScriptPlayer *pScriptPlayer = new CScriptPlayer();
-				pScriptPlayer->SetEntity(pPlayer);
-				args.push(pScriptPlayer);
+				args.push(pPlayer->GetScriptPlayer());
 				CEvents::GetInstance()->Call("onCommand", &args, CEventHandler::eEventType::GLOBAL_EVENT, nullptr);
-				delete pScriptPlayer;
 			}
 		}
 	}
@@ -268,11 +281,8 @@ void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// Spawn everyone else connected for this player
 		//CServer::GetInstance()->GetPlayerManager()->HandlePlayerSpawn(playerId);
 		CScriptArguments args;
-		CScriptPlayer* pScriptPlayer = new CScriptPlayer();
-		pScriptPlayer->SetEntity(pPlayer);
-		args.push(pScriptPlayer);
+		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("onSpawn", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
-		delete pScriptPlayer;
 		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get());
 	}
 	CLogFile::Printf("%s", __FUNCTION__);

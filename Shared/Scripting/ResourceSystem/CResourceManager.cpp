@@ -148,9 +148,11 @@ CResource* CResourceManager::Load(CString strAbsPath, CString strResourceName)
         SAFE_DELETE(loadResource);
     } else {
 		CLogFile::Printf("Resource loaded (%s)", strResourceName.Get());
+		loadResource->SetCreateVMCallback(m_fnCreateVM);
 		AddResource(loadResource);
 		return loadResource;
 	}
+
 
 	return 0;
 }

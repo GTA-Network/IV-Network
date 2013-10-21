@@ -128,7 +128,11 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
-					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(1).Get());
+					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(1).Get());
+					
+					RakNet::BitStream bitStream;
+					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DELETE_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 					
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
@@ -142,8 +146,12 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
-					CLogFile::Printf("[quit] %d has left the server (%s).", pPlayer->GetId(), SharedUtility::DiconnectReasonToString(0).Get());
+					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(0).Get());
 					
+					RakNet::BitStream bitStream;
+					bitStream.WriteCompressed(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DELETE_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
 

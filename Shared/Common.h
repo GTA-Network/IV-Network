@@ -157,10 +157,10 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 // Macros
 #define ARRAY_LENGTH(array)	(sizeof(array) / sizeof(array[0]))
-#define	SAFE_DELETE(memory)	{ delete memory; memory = NULL; }
-#define	SAFE_RELEASE(p)	{ if ( (p) ) { (p)->Release(); (p) = NULL; } }
-#define SAFE_DELETE_ARRAY(memory) if(memory) { delete [] memory; memory = NULL; }
-#define SAFE_FREE(memory) if(memory) { free(memory); memory = NULL; }
+#define	SAFE_DELETE(memory)	{ delete memory; memory = nullptr; }
+#define	SAFE_RELEASE(p)	{ if ( (p) ) { (p)->Release(); (p) = nullptr; } }
+#define SAFE_DELETE_ARRAY(memory) if(memory) { delete [] memory; memory = nullptr; }
+#define SAFE_FREE(memory) if(memory) { free(memory); memory = nullptr; }
 #define	PAD(prefix, name, size) unsigned char prefix##_##name##[size]
 
 // Bit manipulation macros

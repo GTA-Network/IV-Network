@@ -11,7 +11,6 @@
 #define CXLive_h
 
 #include <Common.h>
-#include <CCore.h>
 #include <malloc.h>
 
 // XLive Structure Replacements

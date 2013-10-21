@@ -160,7 +160,8 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(PLAYER_ENTITY)
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
+	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0)
 {
 	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");
@@ -473,7 +474,6 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
 			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
-
 			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
 			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 		}
@@ -587,6 +587,17 @@ float CPlayerEntity::GetHealth()
 	return (float)fHealth;
 }
 
+void CPlayerEntity::SetArmour(float fnewArmour)
+{
+	if (IsSpawned())
+	{
+		unsigned int uiArmour;
+		CIVScript::GetCharArmour(GetScriptingHandle(), &uiArmour);
+
+		CIVScript::AddCharArmour(GetScriptingHandle(), fnewArmour - uiArmour);
+	}
+}
+
 float CPlayerEntity::GetArmour()
 {
 	// Are we spawned?
@@ -601,8 +612,53 @@ float CPlayerEntity::GetArmour()
     return 0;
 }
 
+void CPlayerEntity::SetRotation(CVector3& vecRotation)
+{
+	if (IsSpawned())
+	{
+		// Get the player matrix
+		Matrix matMatrix;
+		m_pPlayerPed->GetMatrix(matMatrix);
 
-void CPlayerEntity::SetRotation(float fAngle)
+		// Convert the rotation from degrees to radians
+		CVector3 vecNewRotation = Math::ConvertDegreesToRadians(vecRotation);
+
+		// Apply the rotation to the vehicle matrix
+		CGameFunction::ConvertEulerAnglesToRotationMatrix(vecNewRotation, matMatrix);
+
+		// Set the new vehicle matrix
+		m_pPlayerPed->SetMatrix(matMatrix);
+	}
+
+	m_vecRotation = vecRotation;
+}
+
+void CPlayerEntity::GetRotation(CVector3& vecRotation)
+{
+	if (IsSpawned())
+	{
+		// Get the player matrix
+		Matrix matMatrix;
+		m_pPlayerPed->GetMatrix(matMatrix);
+
+		// Convert the matrix to euler angles
+		CVector3 vecNewRotation;
+		CGameFunction::ConvertRotationMatrixToEulerAngles(matMatrix, vecNewRotation);
+
+		// Flip the rotation
+		vecNewRotation.fX = ((2 * PI) - vecNewRotation.fX);
+		vecNewRotation.fY = ((2 * PI) - vecNewRotation.fY);
+		vecNewRotation.fZ = ((2 * PI) - vecNewRotation.fZ);
+
+		// Convert the rotation from radians to degrees
+		vecRotation = Math::ConvertRadiansToDegrees(vecNewRotation);
+	}
+	else
+		vecRotation = m_vecRotation;
+}
+
+
+void CPlayerEntity::SetHeading(float fAngle)
 {
 	IVPed * pPed = m_pPlayerPed->GetPed();
 
@@ -610,7 +666,7 @@ void CPlayerEntity::SetRotation(float fAngle)
 		pPed->m_fCurrentHeading = fAngle;
 }
 
-float CPlayerEntity::GetRotation()
+float CPlayerEntity::GetHeading()
 {
 	IVPed * pPed = m_pPlayerPed->GetPed();
 
@@ -643,6 +699,23 @@ void CPlayerEntity::SetModel(int iModelId)
 		CIVScript::ChangePlayerModel(m_bytePlayerNumber,(CIVScript::eModel)dwModelHash);
 
 		m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+	}
+}
+
+void CPlayerEntity::SetWantedLevel(int iWantedLevel)
+{
+	if (IsSpawned())
+	{
+		m_iWantedLevel = iWantedLevel;
+		CIVScript::SetFakeWantedLevel(iWantedLevel);
+	}
+}
+
+int CPlayerEntity::GetWantedLevel()
+{
+	if (IsSpawned())
+	{
+		return m_iWantedLevel;
 	}
 }
 
@@ -1176,7 +1249,10 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 				// Has the exit vehicle task finished?
 				if(!IsGettingOutOfAVehicle())
 				{
+					RakNet::BitStream bitStream;
+
 					// Send to the server
+					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_VEHICLE_ENTER_EXIT), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
@@ -1319,7 +1395,7 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 
 	unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
 	SetTargetPosition(vecPosition, interpolationTime);
-	SetRotation(fHeading);
+	SetHeading(fHeading);
 	SetMoveSpeed(vecMovement);
 	SetTurnSpeed(vecTurnSpeed);
 	m_pPlayerPed->SetDirection(vecDirection);
@@ -1431,39 +1507,6 @@ void CPlayerEntity::ResetInterpolation()
 	RemoveTargetPosition();
 }
 
-void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
-{
-	if(IsSpawned())
-	{
-		// Check if the player has already the same pos
-		if(GetRotation() == fHeading)
-			return;
-
-		// Check if the player isn't moving
-		CVector3 vecMoveSpeed; m_pPlayerPed->GetMoveSpeed(vecMoveSpeed);
-		if(vecMoveSpeed.Length() < 2.0f)
-		{
-			m_pPlayerPed->SetHeading(fHeading);
-			m_pPlayerPed->SetCurrentHeading(fHeading);
-		}
-		else
-		{
-			float fHeadingFinal;
-			if(fHeading > GetRotation())
-				fHeadingFinal = fHeading-GetRotation();
-			else if(GetRotation() > fHeading)
-				fHeadingFinal = GetRotation()-fHeading;
-
-			for(int i = 0; i < 10; i++)
-			{
-				if(fHeading > GetRotation())
-					m_pPlayerPed->SetCurrentHeading(GetRotation()+fHeadingFinal/10);
-				else if(GetRotation() > fHeading)
-					m_pPlayerPed->SetCurrentHeading(GetRotation()-fHeadingFinal/10);
-			}
-		}
-	}
-}
 
 void CPlayerEntity::SetAimData(bool bSwitch, CVector3 vecPosition)
 {
@@ -1524,13 +1567,13 @@ void CPlayerEntity::UpdateTargetRotation()
 			m_pInterpolationData->pRotation.ulFinishTime = 0;
 
 		// Get our rotation
-		float fCurrentHeading = GetRotation();
+		float fCurrentHeading = GetHeading();
 
 		// Calculate the new rotation
 		float fNewRotation = (fCurrentHeading + fCompensation);
 
 		// Set our new rotation
-		SetRotation(fNewRotation);
+		SetHeading(fNewRotation);
 	}
 }
 
@@ -1844,7 +1887,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		GetDirectionSpeed(PlayerPacket.vecDirection);
 		GetRollSpeed(PlayerPacket.vecRoll);
 		PlayerPacket.bDuckState = m_pPlayerPed->IsDucking();
-		PlayerPacket.fHeading = GetRotation();
+		PlayerPacket.fHeading = GetHeading();
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
 
 		// Write player onfoot flag into raknet bitstream
@@ -1883,13 +1926,13 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	else if (IsInVehicle() && !IsPassenger())
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
+		VehiclePacket.vehicleId = m_pVehicle->GetId();
 		m_pVehicle->GetPosition(VehiclePacket.vecPosition);
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 		m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
 
-		g_pCore->GetChat()->Output("Vehicle sync");
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
@@ -1904,7 +1947,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	if (eType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
 	{
 		CNetworkPlayerSyncPacket PlayerPacket;
-
+		if (IsInVehicle())
+			m_pVehicle = nullptr;
 		// TODO: this is crap take a look at mta they only send changed values
 		// I started working on such sync for IVMP but never finished so i will do it later
 		// For now this is goood
@@ -1949,23 +1993,28 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring()) 
 		{
 				PTR_CHAT-> Output("Settings weapon aim..");
-				SetWeaponAimAtTask(AimSync.vecAimShotAtCoordinates);
-
 				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
 				m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 				m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
-				//CIVScript::TaskAimGunAtCoord(uiPlayerIndex, m_pIVSyncHandle>vecAimAtCoordinates.fX, m_pIVSyncHandle>vecAimAtCoordinates.fY, m_pIVSyncHandle>vecAimAtCoordinates.fZ, 45000);
+
+				CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
 
 		}
 		else if (m_ControlState.IsFiring()) 
 		{
 			PTR_CHAT->Output("Settings weapon shot..");
-
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
-			SetWeaponShotAtTask(AimSync.vecAimShotAtCoordinates);
+
+			unsigned int st = 0;
+			CIVScript::OpenSequenceTask(&st);
+			CIVScript::TaskShootAtCoord(0, AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000, 5); // 3 - fake shot
+			CIVScript::CloseSequenceTask(st);
+			if (!CIVScript::IsCharInjured(GetScriptingHandle()))
+				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
+			CIVScript::ClearSequenceTask(st);
 		}
 		else 
 		{
@@ -1996,16 +2045,28 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 		if (IsInVehicle())
 		{
-			m_pVehicle->SetTargetPosition(VehiclePacket.vecPosition, interpolationTime);
-			m_pVehicle->SetTargetRotation(VehiclePacket.vecRotation, interpolationTime);
-			m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
-			m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
+			{
 
-			SetControlState(&VehiclePacket.ControlState);
+				m_pVehicle->SetTargetPosition(VehiclePacket.vecPosition, interpolationTime);
+				m_pVehicle->SetTargetRotation(VehiclePacket.vecRotation, interpolationTime);
+				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
+				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+
+				SetControlState(&VehiclePacket.ControlState);
+			}
+			else
+			{
+				g_pCore->GetChat()->Output("mhm player is not in the correct vehicle");
+			}
 		}
 		else
 		{
-			CLogFile::Printf("Epic fail");
+			ResetVehicleEnterExit();
+
+			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
+			CIVScript::WarpCharIntoCar(GetScriptingHandle(), g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId)->GetScriptingHandle());
+			m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
 		}
 
 

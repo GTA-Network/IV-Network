@@ -17,6 +17,7 @@
 #include <SharedUtility.h>
 #include <CXML.h>
 #include <Scripting/Natives/Natives.h>
+#include <Scripting/CEvents.h>
 #include <algorithm>
 
 #ifdef _CLIENT
@@ -77,9 +78,9 @@ bool CResource::Load()
 		// Not really important coming soon
 		// Well its important to specify the script type so you can use any file ending
 		CString strScriptType = pMetaXML->getAttribute("scriptType");
-		if(strScriptType == "Lua")
+		/*if(strScriptType == "Lua")
 			m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
-		else if(strScriptType == "Squirrel")
+		else*/ if(strScriptType == "Squirrel")
 			m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
 		else 
 			m_resourceScriptType = eResourceScriptType::UNKNOWN;
@@ -127,9 +128,9 @@ bool CResource::Load()
 					if (m_resourceScriptType == eResourceScriptType::UNKNOWN)
 					{
 						// Try to detect the resource script type
-						if (strScript.EndsWith(".lua")) {
+						/*if (strScript.EndsWith(".lua")) {
 							m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
-						} else if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
+						} else*/ if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
 							m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
 						} else {
 							CLogFile::Printf("Unknown script type! Please specify the script type you use!");
@@ -232,6 +233,10 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 			}
 		}
 
+		// Call the scripting event
+		CScriptArguments args;
+		args.push(m_strResourceName);
+		CEvents::GetInstance()->Call("resourceStarted", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
 		return true;
 	}
 
@@ -272,11 +277,11 @@ bool CResource::CreateVM()
 			return false;
 		}
 		
-#ifdef _SERVER
-		CScriptClasses::Register(m_pVM);
-		CServerNatives::Register(m_pVM);
-#endif
+		// Register Server/Client natives
+		if (m_fnCreateVM)
+			m_fnCreateVM(m_pVM);
 
+		// Default shared natives
 		CEventNatives::Register(m_pVM);
 		CSystemNatives::Register(m_pVM);
 		CMathNatives::Register(m_pVM); 

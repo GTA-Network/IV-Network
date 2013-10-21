@@ -10,27 +10,7 @@
 #ifndef NativesServer_h
 #define NativesServer_h
 
-#include "CPlayerNatives.h"
-
-#include "CVehicleNatives.h"
-
-#include "CActorNatives.h"
-
-#include "CBlipNatives.h"
-
-#include "CCheckpointNatives.h"
-
-#include "CObjectNatives.h"
-
-#include "CPickupNatives.h"
-
 #include "CServerNatives.h"
-
-#include "C3DLabelNatives.h"
-
-#include "CEntityNatives.h"
-
-#include "CFireNatives.h"
 
 #include "CScriptClasses.h"
 

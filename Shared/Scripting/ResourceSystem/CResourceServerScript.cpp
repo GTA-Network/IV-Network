@@ -10,6 +10,7 @@
 #include "CResourceServerScript.h"
 
 #include "CResource.h"
+#include <Scripting/CEvents.h>
 
 CResourceServerScript::CResourceServerScript(CResource * resource, const char * szShortName, const char * szResourceFileName)
 	: CResourceScriptFile(resource, szShortName, szResourceFileName)
@@ -25,6 +26,11 @@ CResourceServerScript::~CResourceServerScript()
 bool CResourceServerScript::Start()
 {
 	m_resource->GetVM()->LoadScript(m_strShortName);
+
+	// Call the scripting event
+	CScriptArguments args;
+	args.push(m_strShortName.Get());
+	CEvents::GetInstance()->Call("scriptLoaded", &args, CEventHandler::eEventType::RESOURCE_EVENT, m_resource->GetVM());
 	return true;
 }
 
