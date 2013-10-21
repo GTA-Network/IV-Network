@@ -22,7 +22,9 @@ CIVPed::CIVPed(IVPed * pPed) :
 	CIVPhysical(pPed)
 {
 	// Reset the task manager
-	m_pPedTaskManager = NULL;
+	m_pPedTaskManager = nullptr;
+
+	m_pPedWeapons = nullptr;
 
 	// Set the ped
 	SetPed(pPed);
@@ -31,7 +33,7 @@ CIVPed::CIVPed(IVPed * pPed) :
 CIVPed::~CIVPed()
 {
 	// Set the ped
-	SetPed(NULL);
+	SetPed(nullptr);
 }
 
 void CIVPed::SetPed(IVPed * pPed)
@@ -50,6 +52,8 @@ void CIVPed::SetPed(IVPed * pPed)
 	{
 		// Create the ped task manager
 		m_pPedTaskManager = new CIVPedTaskManager(&pPed->m_pPedIntelligence->m_pedTaskManager, this);
+
+		m_pPedWeapons = new CIVPedWeapons(&pPed->m_weapons, this);
 	}
 }
 
@@ -77,7 +81,7 @@ IVPlayerInfo * CIVPed::GetPlayerInfo()
 	if(pPed)
 		return pPed->m_pPlayerInfo;
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPed::SetCurrentHeading(float fCurrentHeading)
@@ -168,7 +172,7 @@ IVVehicle * CIVPed::GetCurrentVehicle()
 	if(pPed)
 		return pPed->m_pCurrentVehicle;
 
-	return NULL;
+	return nullptr;
 }
 
 unsigned int CIVPed::GetNumberOfCharDrawableVariations(unsigned int ucBodyLocation)

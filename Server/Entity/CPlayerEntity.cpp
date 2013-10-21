@@ -198,6 +198,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				pVehicle->GetRotation(VehiclePacket.vecRotation);
+				
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);

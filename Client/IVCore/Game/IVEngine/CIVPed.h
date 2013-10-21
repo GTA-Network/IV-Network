@@ -17,6 +17,7 @@
 #include "CIVPhysical.h"
 #include "CIVEntity.h"
 #include "CIVPedTaskManager.h"
+#include "CIVPedWeapons.h"
 
 enum ePedType
 {
@@ -131,7 +132,7 @@ public:
 	PAD(IVPed, pad3, 0x3C);                 // 230-26C
 	BYTE m_byteUnknown;                     // 26C-26D - Bits 4: in vehicle
 	PAD(IVPed, pad4, 0x43);                 // 26D-2B0
-	PAD(IVPed, pad19, 0x11A);  //IVPedWeapons m_weapons;                 // 2B0-3CA
+	IVPedWeapons m_weapons;                 // 2B0-3CA
 	// 0x3A8 - IVEntity * pTargetEntity;
 	// 0x3D0 - audPedAudioEntity
 	// 0x580 - audSpeechAudioEntity
@@ -185,6 +186,7 @@ public:
 class CIVPed : public CIVPhysical {
 private:
 	CIVPedTaskManager	* m_pPedTaskManager;
+	CIVPedWeapons		* m_pPedWeapons;
 	
 public:
 	CIVPed();
