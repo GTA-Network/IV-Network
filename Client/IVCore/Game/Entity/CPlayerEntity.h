@@ -33,6 +33,7 @@ private:
 	unsigned								m_uiBlip;
 	CString									m_strNick;
 	CVector3								m_vecPosition;
+	CVector3								m_vecRotation;
 	CVector3								m_vecMoveSpeed;
 	CVector3								m_vecTurnSpeed;
 	CVector3								m_vecDirection;
@@ -138,10 +139,11 @@ public: // Handles "GET" functions
 		
 	unsigned short					GetPing();
 	EntityId						GetPlayerId() { return CNetworkEntity::GetId(); }
-	float							GetRotation();
+	float							GetHeading();
 	
 	void							GetMoveSpeed(CVector3& vecMoveSpeed);
 	void							GetPosition(CVector3 &vecPosition);
+	void							GetRotation(CVector3 &vecRotation);
 	CVector3						GetPosition();
 	void							GetTurnSpeed(CVector3& vecTurnSpeed);
 	
@@ -178,7 +180,8 @@ public: // Handles call functions
 
 	void							ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading);
 	void							SetPosition(CVector3 &vecPosition, bool bForce = false);
-	void							SetRotation(float fAngle);
+	void							SetRotation(CVector3 &vecRotation);
+	void							SetHeading(float fAngle);
 	void							SetHealth(float fHealth);
 	void							SetModel(int iModelId);
 	void							Teleport(CVector3 vecPosition);
@@ -222,7 +225,6 @@ public: // Handles call functions
 	void							RemoveTargetPosition();
 	void							SetTargetPosition(const CVector3& vecPosition, unsigned long ulDelay);
 	void							SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
-	void							SetCurrentSyncHeading(float fHeading);
 
 	void							ClearWeaponAimAtTask();
 	void							ClearWeaponShotAtTask();

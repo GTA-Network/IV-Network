@@ -473,7 +473,6 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
 			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
-
 			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
 			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 		}
@@ -601,8 +600,53 @@ float CPlayerEntity::GetArmour()
     return 0;
 }
 
+void CPlayerEntity::SetRotation(CVector3& vecRotation)
+{
+	if (IsSpawned())
+	{
+		// Get the player matrix
+		Matrix matMatrix;
+		m_pPlayerPed->GetMatrix(matMatrix);
 
-void CPlayerEntity::SetRotation(float fAngle)
+		// Convert the rotation from degrees to radians
+		CVector3 vecNewRotation = Math::ConvertDegreesToRadians(vecRotation);
+
+		// Apply the rotation to the vehicle matrix
+		CGameFunction::ConvertEulerAnglesToRotationMatrix(vecNewRotation, matMatrix);
+
+		// Set the new vehicle matrix
+		m_pPlayerPed->SetMatrix(matMatrix);
+	}
+
+	m_vecRotation = vecRotation;
+}
+
+void CPlayerEntity::GetRotation(CVector3& vecRotation)
+{
+	if (IsSpawned())
+	{
+		// Get the player matrix
+		Matrix matMatrix;
+		m_pPlayerPed->GetMatrix(matMatrix);
+
+		// Convert the matrix to euler angles
+		CVector3 vecNewRotation;
+		CGameFunction::ConvertRotationMatrixToEulerAngles(matMatrix, vecNewRotation);
+
+		// Flip the rotation
+		vecNewRotation.fX = ((2 * PI) - vecNewRotation.fX);
+		vecNewRotation.fY = ((2 * PI) - vecNewRotation.fY);
+		vecNewRotation.fZ = ((2 * PI) - vecNewRotation.fZ);
+
+		// Convert the rotation from radians to degrees
+		vecRotation = Math::ConvertRadiansToDegrees(vecNewRotation);
+	}
+	else
+		vecRotation = m_vecRotation;
+}
+
+
+void CPlayerEntity::SetHeading(float fAngle)
 {
 	IVPed * pPed = m_pPlayerPed->GetPed();
 
@@ -610,7 +654,7 @@ void CPlayerEntity::SetRotation(float fAngle)
 		pPed->m_fCurrentHeading = fAngle;
 }
 
-float CPlayerEntity::GetRotation()
+float CPlayerEntity::GetHeading()
 {
 	IVPed * pPed = m_pPlayerPed->GetPed();
 
@@ -1322,7 +1366,7 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 
 	unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
 	SetTargetPosition(vecPosition, interpolationTime);
-	SetRotation(fHeading);
+	SetHeading(fHeading);
 	SetMoveSpeed(vecMovement);
 	SetTurnSpeed(vecTurnSpeed);
 	m_pPlayerPed->SetDirection(vecDirection);
@@ -1434,39 +1478,6 @@ void CPlayerEntity::ResetInterpolation()
 	RemoveTargetPosition();
 }
 
-void CPlayerEntity::SetCurrentSyncHeading(float fHeading)
-{
-	if(IsSpawned())
-	{
-		// Check if the player has already the same pos
-		if(GetRotation() == fHeading)
-			return;
-
-		// Check if the player isn't moving
-		CVector3 vecMoveSpeed; m_pPlayerPed->GetMoveSpeed(vecMoveSpeed);
-		if(vecMoveSpeed.Length() < 2.0f)
-		{
-			m_pPlayerPed->SetHeading(fHeading);
-			m_pPlayerPed->SetCurrentHeading(fHeading);
-		}
-		else
-		{
-			float fHeadingFinal;
-			if(fHeading > GetRotation())
-				fHeadingFinal = fHeading-GetRotation();
-			else if(GetRotation() > fHeading)
-				fHeadingFinal = GetRotation()-fHeading;
-
-			for(int i = 0; i < 10; i++)
-			{
-				if(fHeading > GetRotation())
-					m_pPlayerPed->SetCurrentHeading(GetRotation()+fHeadingFinal/10);
-				else if(GetRotation() > fHeading)
-					m_pPlayerPed->SetCurrentHeading(GetRotation()-fHeadingFinal/10);
-			}
-		}
-	}
-}
 
 void CPlayerEntity::SetAimData(bool bSwitch, CVector3 vecPosition)
 {
@@ -1527,13 +1538,13 @@ void CPlayerEntity::UpdateTargetRotation()
 			m_pInterpolationData->pRotation.ulFinishTime = 0;
 
 		// Get our rotation
-		float fCurrentHeading = GetRotation();
+		float fCurrentHeading = GetHeading();
 
 		// Calculate the new rotation
 		float fNewRotation = (fCurrentHeading + fCompensation);
 
 		// Set our new rotation
-		SetRotation(fNewRotation);
+		SetHeading(fNewRotation);
 	}
 }
 
@@ -1847,7 +1858,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		GetDirectionSpeed(PlayerPacket.vecDirection);
 		GetRollSpeed(PlayerPacket.vecRoll);
 		PlayerPacket.bDuckState = m_pPlayerPed->IsDucking();
-		PlayerPacket.fHeading = GetRotation();
+		PlayerPacket.fHeading = GetHeading();
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
 
 		// Write player onfoot flag into raknet bitstream
