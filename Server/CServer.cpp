@@ -52,8 +52,6 @@ CServer::~CServer()
 
 void OnCreateVM(CScriptVM* pVM)
 {
-	CPlayerNatives::Register(pVM);
-	CVehicleNatives::Register(pVM);
 	CScriptClasses::Register(pVM);
 }
 

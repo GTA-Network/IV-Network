@@ -209,18 +209,8 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CNetworkModule.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
-    <ClCompile Include="Scripting\Natives\C3DLabelNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CActorNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CBlipNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CCheckpointNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CEntityNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CFireNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CObjectNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CPickupNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CPlayerNatives.cpp" />
     <ClCompile Include="Scripting\Natives\CScriptClasses.cpp" />
     <ClCompile Include="Scripting\Natives\CServerNatives.cpp" />
-    <ClCompile Include="Scripting\Natives\CVehicleNatives.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libraries\lua\lapi.h" />
@@ -289,19 +279,9 @@
     <ClInclude Include="Entity\Entities.h" />
     <ClInclude Include="Network\CNetworkModule.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
-    <ClInclude Include="Scripting\Natives\C3DLabelNatives.h" />
-    <ClInclude Include="Scripting\Natives\CActorNatives.h" />
-    <ClInclude Include="Scripting\Natives\CBlipNatives.h" />
-    <ClInclude Include="Scripting\Natives\CCheckpointNatives.h" />
-    <ClInclude Include="Scripting\Natives\CEntityNatives.h" />
-    <ClInclude Include="Scripting\Natives\CFireNatives.h" />
-    <ClInclude Include="Scripting\Natives\CObjectNatives.h" />
-    <ClInclude Include="Scripting\Natives\CPickupNatives.h" />
-    <ClInclude Include="Scripting\Natives\CPlayerNatives.h" />
     <ClInclude Include="Scripting\Natives\CScriptClasses.h" />
     <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
     <ClInclude Include="Scripting\Natives\CServerNatives.h" />
-    <ClInclude Include="Scripting\Natives\CVehicleNatives.h" />
     <ClInclude Include="Scripting\Natives\Natives_Server.h" />
   </ItemGroup>
   <ItemGroup>
