@@ -18,6 +18,10 @@ void CIVStartupScript::Process()
 	unsigned int pid = 0;
 	CIVScript::CreatePlayer(0, DEVELOPMENT_SPAWN_POSITION, &pid);
 
+	//disable police
+	CIVScript::SetMaxWantedLevel(0);
+	CIVScript::SetWantedMultiplier(0.0f);
+
 	g_pCore->OnGameLoad();
 	g_pCore->SetClientState(GAME_STATE_INGAME);
 }

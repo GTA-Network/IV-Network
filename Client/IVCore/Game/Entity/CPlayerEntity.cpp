@@ -160,7 +160,8 @@ DWORD SkinIdToModelHash(int modelid)
 	return 0x00;
 }
 
-CPlayerEntity::CPlayerEntity(bool bLocalPlayer) : CNetworkEntity(PLAYER_ENTITY)
+CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
+	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0)
 {
 	m_bLocalPlayer = bLocalPlayer;
 	m_strNick.Set("Player");
@@ -586,6 +587,17 @@ float CPlayerEntity::GetHealth()
 	return (float)fHealth;
 }
 
+void CPlayerEntity::SetArmour(float fnewArmour)
+{
+	if (IsSpawned())
+	{
+		unsigned int uiArmour;
+		CIVScript::GetCharArmour(GetScriptingHandle(), &uiArmour);
+
+		CIVScript::AddCharArmour(GetScriptingHandle(), fnewArmour - uiArmour);
+	}
+}
+
 float CPlayerEntity::GetArmour()
 {
 	// Are we spawned?
@@ -687,6 +699,23 @@ void CPlayerEntity::SetModel(int iModelId)
 		CIVScript::ChangePlayerModel(m_bytePlayerNumber,(CIVScript::eModel)dwModelHash);
 
 		m_pPlayerPed->SetPed(m_pPlayerInfo->GetPlayerPed());
+	}
+}
+
+void CPlayerEntity::SetWantedLevel(int iWantedLevel)
+{
+	if (IsSpawned())
+	{
+		m_iWantedLevel = iWantedLevel;
+		CIVScript::SetFakeWantedLevel(iWantedLevel);
+	}
+}
+
+int CPlayerEntity::GetWantedLevel()
+{
+	if (IsSpawned())
+	{
+		return m_iWantedLevel;
 	}
 }
 

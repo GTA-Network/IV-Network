@@ -307,6 +307,25 @@ void SetPlayerTurnSpeed(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	}
 }
 
+void SetPlayerHeading(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		float fHeading;
+
+		pBitStream->Read(fHeading);
+
+		pPlayer->SetHeading(fHeading);
+	}
+}
+
 void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
@@ -323,6 +342,82 @@ void SetPlayerHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(fHealth);
 
 		pPlayer->SetHealth(fHealth);
+	}
+}
+
+void SetPlayerArmour(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		float fArmour;
+
+		pBitStream->Read(fArmour);
+
+		pPlayer->SetArmour(fArmour);
+	}
+}
+
+void SetPlayerModel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iModel;
+
+		pBitStream->Read(iModel);
+
+		pPlayer->SetModel(iModel);
+	}
+}
+
+void SetPlayerMoney(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iMoney;
+
+		pBitStream->Read(iMoney);
+
+		pPlayer->SetMoney(iMoney);
+	}
+}
+
+void SetPlayerWantedLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iWantedLevel;
+
+		pBitStream->Read(iWantedLevel);
+
+		pPlayer->SetWantedLevel(iWantedLevel);
 	}
 }
 
@@ -390,9 +485,14 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), SetPlayerName);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ROTATION), SetPlayerRotation);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEADING), SetPlayerHeading);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED), SetPlayerMoveSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED), SetPlayerTurnSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), SetPlayerArmour);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), SetPlayerModel);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), SetPlayerMoney);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), SetPlayerWantedLevel);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), GivePlayerWeapon);
 		
 		// Mark as registered

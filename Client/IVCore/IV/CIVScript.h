@@ -298,6 +298,12 @@ namespace CIVScript
 	static void DrawRect(unsigned int p0, unsigned int p1, unsigned int p2, unsigned int p3, unsigned int p4, unsigned int p5, unsigned int p6, unsigned int p7) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DRAW_RECT, p0, p1, p2, p3, p4, p5, p6, p7); }
 
 	static void GetCharArmour(unsigned int ped, unsigned int *pArmour) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GET_CHAR_ARMOUR, ped, pArmour); }
+	static void AddCharArmour(unsigned int ped, unsigned int pArmour) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_ARMOUR_TO_CHAR, ped, pArmour); }
+
+	static void SetFakeWantedLevel(unsigned int pLevel) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_FAKE_WANTED_LEVEL, pLevel); }
+
+	static void SetMaxWantedLevel(int iMaxWantedLevel) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_MAX_WANTED_LEVEL, iMaxWantedLevel); }
+	static void SetWantedMultiplier(float fMulti) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_WANTED_MULTIPLIER, fMulti); }
 };
 
 #endif // CIVScript_h

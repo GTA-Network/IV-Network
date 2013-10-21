@@ -59,6 +59,8 @@ private:
 
 	unsigned long							m_ulLastSyncReceived;
 
+	int										m_iWantedLevel;
+
 	struct 
 	{
 		unsigned char	ucHead;
@@ -154,6 +156,7 @@ public: // Handles "GET" functions
 	unsigned						GetColor() { return m_uiColor; }
 	float							GetHealth();
 	float							GetArmour();
+	int								GetWantedLevel();
 
 	CContextData					* GetContextData() { return m_pContextData; }
 	CVehicleEntity					* InternalGetVehicle();
@@ -183,7 +186,9 @@ public: // Handles call functions
 	void							SetRotation(CVector3 &vecRotation);
 	void							SetHeading(float fAngle);
 	void							SetHealth(float fHealth);
+	void							SetArmour(float fArmour);
 	void							SetModel(int iModelId);
+	void							SetWantedLevel(int iWantedLevel);
 	void							Teleport(CVector3 vecPosition);
 	void							SetMoveSpeed(const CVector3& vecMoveSpeed);
 	void							SetTurnSpeed(const CVector3& vecTurnSpeed);

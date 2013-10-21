@@ -111,6 +111,7 @@ void CScriptPlayer::SetTurnSpeed(float fX, float fY, float fZ)
 }
 
 
+
 void CScriptPlayer::SetHealth(float fHealth)
 {
 	GetEntity()->SetHealth(fHealth);
@@ -121,15 +122,65 @@ void CScriptPlayer::SetHealth(float fHealth)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
+void CScriptPlayer::SetArmour(float fArmour)
+{
+	GetEntity()->SetArmour(fArmour);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(fArmour);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetWantedLevel(int iWantedLevel)
+{
+	GetEntity()->SetWantedLevel(iWantedLevel);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iWantedLevel);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
+void CScriptPlayer::SetHeading(float fHeading)
+{
+	GetEntity()->SetHeading(fHeading);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(fHeading);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HEADING), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetModel(int iModel)
+{
+	GetEntity()->SetModel(iModel);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iModel);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
+void CScriptPlayer::SetMoney(int iMoney)
+{
+	GetEntity()->SetMoney(iMoney);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iMoney);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
 void CScriptPlayer::SetName(const char* szName)
 {
-		GetEntity()->SetName(CString(szName));
-		free((void*)szName);
+	GetEntity()->SetName(CString(szName));
+	free((void*)szName);
 
-		RakNet::BitStream bitStream;
-		bitStream.Write(GetEntity()->GetId());
-		bitStream.Write(szName);
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(szName);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
 void CScriptPlayer::GiveWeapon(int id, int uiAmmo)

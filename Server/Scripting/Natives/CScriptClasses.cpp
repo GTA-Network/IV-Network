@@ -72,22 +72,22 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setRotation", &CScriptPlayer::SetRotation). // Synced
 			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed). // Synced
 			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed). // Synced
-			AddMethod("getArmour", &CScriptPlayer::GetArmour).
-			AddMethod("setArmour", &CScriptPlayer::SetArmour).
-			AddMethod("getHealth", &CScriptPlayer::GetHealth).
+			AddMethod("getArmour", &CScriptPlayer::GetArmour). // Synced
+			AddMethod("setArmour", &CScriptPlayer::SetArmour). // Synced
+			AddMethod("getHealth", &CScriptPlayer::GetHealth). // Synced
 			AddMethod("setHealth", &CScriptPlayer::SetHealth). // Synced
-			AddMethod("getHeading", &CScriptPlayer::GetHeading).
-			AddMethod("setHeading", &CScriptPlayer::SetHeading).
-			AddMethod("getModel", &CScriptPlayer::GetModel).
-			AddMethod("setModel", &CScriptPlayer::SetModel).
+			AddMethod("getHeading", &CScriptPlayer::GetHeading). // Synced
+			AddMethod("setHeading", &CScriptPlayer::SetHeading). // Synced
+			AddMethod("getModel", &CScriptPlayer::GetModel). // Synced
+			AddMethod("setModel", &CScriptPlayer::SetModel). // Synced
 			AddMethod("getDimension", &CScriptPlayer::GetDimension).
 			AddMethod("setDimension", &CScriptPlayer::SetDimension).
-			AddMethod("getName", &CScriptPlayer::GetName).
-			AddMethod("setName", &CScriptPlayer::SetName).
-			AddMethod("getMoney", &CScriptPlayer::GetMoney).
-			AddMethod("setMoney", &CScriptPlayer::SetMoney).
-			AddMethod("getWantedLevel", &CScriptPlayer::GetWantedLevel).
-			AddMethod("setWantedLevel", &CScriptPlayer::SetWantedLevel).
+			AddMethod("getName", &CScriptPlayer::GetName). // Synced
+			AddMethod("setName", &CScriptPlayer::SetName). // Synced
+			AddMethod("getMoney", &CScriptPlayer::GetMoney). // Synced
+			AddMethod("setMoney", &CScriptPlayer::SetMoney). // Synced
+			AddMethod("getWantedLevel", &CScriptPlayer::GetWantedLevel). // Synced
+			AddMethod("setWantedLevel", &CScriptPlayer::SetWantedLevel). // Synced
 			AddMethod("giveWeapon", &CScriptPlayer::GiveWeapon). // Synced
 			//AddMethod("sendMessage", &CScriptPlayer::SendMessage).
 		Register(pVM);

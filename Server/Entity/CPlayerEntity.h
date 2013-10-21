@@ -38,6 +38,10 @@ private:
 
 	DWORD		m_dwColor;
 
+	int			m_iModel;
+	int			m_iMoney;
+	int			m_iWantedLevel;
+
 	struct {
 		CVector3		vecAimAtCoordinates;
 		float			fArmsHeadingCircle;
@@ -86,6 +90,15 @@ public:
 	void		SetHeading(float fHeading) { m_fHeading = fHeading; }
 	float		GetHeading() { return m_fHeading; }
 
+	void		SetModel(int iModel) { m_iModel = iModel; }
+	int			GetModel() { return m_iModel; }
+
+	void		SetMoney(int iMoney) { m_iMoney = iMoney; }
+	int			GetMoney() { return m_iMoney; }
+
+	void		SetWantedLevel(int iWantedLevel) { m_iWantedLevel = iWantedLevel; }
+	int			GetWantedLevel() { return m_iWantedLevel; }
+
 	void		SetArmHeading(float fArmHeading) { m_weaponData.fArmsHeadingCircle = fArmHeading; }
 	float		GetArmHeading() { return m_weaponData.fArmsHeadingCircle; }
 
@@ -125,9 +138,7 @@ public:
 		return GetEntity()->GetArmour();
 	}
 
-	void  SetArmour(float fArmour) {
-		GetEntity()->SetArmour(fArmour);
-	}
+	void  SetArmour(float fArmour);
 
 	DWORD GetColor(void) {
 		return GetEntity()->GetColor();
@@ -139,26 +150,35 @@ public:
 	float GetHeading() {
 		return GetEntity()->GetHeading();
 	}
-	void  SetHeading(float fHeading) {
-		GetEntity()->SetHeading(fHeading);
-	}
+
+	void  SetHeading(float fHeading);
 
 	const char* GetName() {
 		return GetEntity()->m_strName.Get();
 	}
+
 	void		SetName(const char* szName);
 
-	int	GetMoney() { return 0; }
-	void SetMoney(int iMoney) { }
+	int GetModel() { 
+		return GetEntity()->GetModel();
+	}
 
-	int GetModel() { return 0; }
-	void SetModel(int iModel) { }
+	void SetModel(int iModel);
+
+	int	GetMoney() { 
+		return GetEntity()->GetMoney();
+	}
+
+	void SetMoney(int iMoney);
 
 	unsigned int GetDimension() { return 0; }
 	void		 SetDimension(unsigned int uiDimension) { }
 
-	char		 GetWantedLevel() { return 0; }
-	void		 SetWantedLevel(char cWantedLevel) { }
+	int		 GetWantedLevel() { 
+		return GetEntity()->GetWantedLevel();
+	}
+
+	void		 SetWantedLevel(int iWantedLevel);
 
 	float		 GetHealth() { return GetEntity()->GetHealth(); }
 	void		 SetHealth(float fHealth);
