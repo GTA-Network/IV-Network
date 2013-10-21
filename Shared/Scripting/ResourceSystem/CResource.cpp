@@ -17,6 +17,7 @@
 #include <SharedUtility.h>
 #include <CXML.h>
 #include <Scripting/Natives/Natives.h>
+#include <Scripting/CEvents.h>
 #include <algorithm>
 
 #ifdef _CLIENT
@@ -232,6 +233,10 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 			}
 		}
 
+		// Call the scripting event
+		CScriptArguments args;
+		args.push(m_strResourceName);
+		CEvents::GetInstance()->Call("resourceStarted", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
 		return true;
 	}
 
