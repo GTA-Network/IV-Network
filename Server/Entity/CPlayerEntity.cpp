@@ -83,6 +83,34 @@ void CScriptPlayer::SetPosition(float fX, float fY, float fZ)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
+void CScriptPlayer::SetRotation(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetRotation(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ROTATION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetMoveSpeed(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetMoveSpeed(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetTurnSpeed(float fX, float fY, float fZ)
+{
+	CScriptEntity::SetTurnSpeed(fX, fY, fZ);
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(CVector3(fX, fY, fZ));
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+
 void CScriptPlayer::SetHealth(float fHealth)
 {
 	GetEntity()->SetHealth(fHealth);

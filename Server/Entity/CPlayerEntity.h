@@ -165,6 +165,12 @@ public:
 
 	void		SetPosition(float fX, float fY, float fZ);
 
+	void		SetRotation(float fX, float fY, float fZ);
+
+	void		SetMoveSpeed(float fX, float fY, float fZ);
+
+	void		SetTurnSpeed(float fX, float fY, float fZ);
+
 	void		GiveWeapon(int id, int uiAmmo);
 };
 

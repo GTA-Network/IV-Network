@@ -69,9 +69,9 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		// TODO: fix memory leak
 		(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->
 			AddMethod("setPosition", &CScriptPlayer::SetPosition). // Synced
-			AddMethod("setRotation", &CScriptPlayer::SetRotation).
-			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed).
-			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed).
+			AddMethod("setRotation", &CScriptPlayer::SetRotation). // Synced
+			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed). // Synced
+			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed). // Synced
 			AddMethod("getArmour", &CScriptPlayer::GetArmour).
 			AddMethod("setArmour", &CScriptPlayer::SetArmour).
 			AddMethod("getHealth", &CScriptPlayer::GetHealth).

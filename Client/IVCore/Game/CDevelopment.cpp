@@ -103,7 +103,7 @@ void CDevelopment::Process()
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetWeaponShotTarget(vecShotTarget);
 		float fHealth = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetHealth();
 		bDuckingState = g_pCore->GetGame()->GetLocalPlayer()->GetPlayerPed()->IsDucking();
-		fHeading = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetRotation();
+		//fHeading = g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetRotation();
 		CVector3 vecDirection;
 		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::GetContextData()->GetPlayerPed()->GetDirection(vecDirection);
 		CVector3 vecRoll;
@@ -217,8 +217,8 @@ void CDevelopment::Process()
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Ducking: %d", bDuckingState).Get());
 		fCurrentLine += 15;
 		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Health: %f", fHealth).Get());
-		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Rotation: %.2f", fHeading).Get());
+		//fCurrentLine += 15;
+		//g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Rotation: %.2f", fHeading).Get());
 		
 	}
 

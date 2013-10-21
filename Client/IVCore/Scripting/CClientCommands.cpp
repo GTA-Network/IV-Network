@@ -118,7 +118,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		{
 			pLocalPlayer->GetPosition(vecPosition);
 			int iModelId = pLocalPlayer->GetPlayerPed()->GetModelIndex();
-			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetRotation() ,strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetHeading() ,strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
 		}
 
 		fclose(file);
