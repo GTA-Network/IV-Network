@@ -1,0 +1,467 @@
+[16:9]
+
+[BEGIN]
+Flag : INITIAL_MAIN
+Objects : 0
+Duration : 0
+Fade : NONE
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 5_1 BEFORE
+Texture 2 : 5_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.3 0.53
+MoveAmount 1 : 0.00    0.00
+MoveAmount 2 : 0.00015  0.000
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.0007 -0.0007
+ScaleAmount 2 : 0.0001  0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 7_1 BEFORE
+Texture 2 : 7_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.7 0.53
+MoveAmount 1 : 0.000   0.0001
+MoveAmount 2 : -0.0001 -0.0001
+StartSize 1 : 1.05 1.05
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : 0.0000  0.0000
+ScaleAmount 2 : 0.0001  0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 6_1 BEFORE
+Texture 2 : 6_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.55
+MoveAmount 1 : 0.000 -0.00005
+MoveAmount 2 : 0.000 0.0003
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.0007 -0.0007
+ScaleAmount 2 : 0.0005 0.0010
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 3_1 BEFORE
+Texture 2 : 3_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.3 0.53
+MoveAmount 1 : 0.00    0.00
+MoveAmount 2 : 0.00015  0.000
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.0007 -0.0007
+ScaleAmount 2 : 0.0001  0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 4_1 BEFORE
+Texture 2 : 4_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.64 0.52
+MoveAmount 1 : -0.00005  0.000
+MoveAmount 2 : 0.00015 0.000
+StartSize 1 : 1.05 1.05
+StartSize 2 : 0.42 1.00
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.000 0.000
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 2_1 BEFORE
+Texture 2 : 2_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.52
+MoveAmount 1 : 0.000 -0.00005
+MoveAmount 2 : 0.000 0.0003
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.0007 -0.0007
+ScaleAmount 2 : 0.0003 0.0005
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 8_1 BEFORE
+Texture 2 : 8_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.65 0.50
+MoveAmount 1 : 0.000   0.0001
+MoveAmount 2 : -0.0001 0.0001
+StartSize 1 : 1.05 1.05
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : 0.0000  0.0000
+ScaleAmount 2 : 0.0001  0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 9_1 BEFORE
+Texture 2 : 9_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.3 0.53
+MoveAmount 1 : 0.000 -0.00005
+MoveAmount 2 : 0.00015 0.0001
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.0003 0.0005
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 1_1 BEFORE
+Texture 2 : 1_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.55
+MoveAmount 1 : 0.000 -0.00005
+MoveAmount 2 : 0.000 0.0003
+StartSize 1 : 1.2 1.2
+StartSize 2 : 0.42 1.0
+ScaleAmount 1 : -0.0007 -0.0007
+ScaleAmount 2 : 0.0005 0.0010
+[END]
+
+[4:3]
+
+[BEGIN]
+Flag : INITIAL_MAIN
+Objects : 0
+Duration : 0
+Fade : NONE
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 5_1 BEFORE
+Texture 2 : 5_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.53
+MoveAmount 1 : 0.00    0.00
+MoveAmount 2 : 0.00015  0.000
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.00014  0.000105
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 7_1 BEFORE
+Texture 2 : 7_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.7 0.53
+MoveAmount 1 : 0.000 0.000
+MoveAmount 2 : -0.0001 -0.0001
+StartSize 1 : 1.44 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.000198 0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 6_1 BEFORE
+Texture 2 : 6_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.47 0.5
+StartPos 2 : 0.46 0.53
+MoveAmount 1 : 0.00001 0.0
+MoveAmount 2 : -0.00008 0.0
+StartSize 1 : 1.6 1.2
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.0001 -0.0001
+ScaleAmount 2 : 0.00028 0.00021
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 3_1 BEFORE
+Texture 2 : 3_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.53
+MoveAmount 1 : 0.00    0.00
+MoveAmount 2 : 0.00015  0.000
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.00014  0.000105
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 4_1 BEFORE
+Texture 2 : 4_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.57 0.54
+MoveAmount 1 : -0.00005 0.000
+MoveAmount 2 : 0.00015 0.0001
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.0 0.0
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 2_1 BEFORE
+Texture 2 : 2_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.51
+StartPos 2 : 0.5 0.53
+MoveAmount 1 : 0.000 0.000
+MoveAmount 2 : 0.000 0.0004
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.0006 0.0010
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 8_1 BEFORE
+Texture 2 : 8_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.65 0.53
+MoveAmount 1 : 0.000 0.000
+MoveAmount 2 : -0.0001 0.0001
+StartSize 1 : 1.44 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : -0.000198 -0.0002
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 9_1 BEFORE
+Texture 2 : 9_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.30 0.53
+MoveAmount 1 : -0.00005 0.000
+MoveAmount 2 : 0.00015 0.0001
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.00028 0.00021
+[END]
+
+[BEGIN]
+Flag : NONE
+Objects : 2
+Duration : 8000
+Fade : IN_OUT
+Texture 1 : 1_1 BEFORE
+Texture 2 : 1_2 BEFORE
+StartTime 1 : 0
+StartTime 2 : 0
+EndTime 1 : 8000
+EndTime 2 : 8000
+MoveTime 1 : 20
+MoveTime 2 : 20
+ScaleTime 1 : 20
+ScaleTime 2 : 20
+StartPos 1 : 0.5 0.5
+StartPos 2 : 0.5 0.53
+MoveAmount 1 : 0.000 0.000
+MoveAmount 2 : 0.000 0.0004
+StartSize 1 : 1.4 1.05
+StartSize 2 : 0.6 1.05
+ScaleAmount 1 : -0.00014 -0.0001
+ScaleAmount 2 : 0.0006 0.0010
+[END]

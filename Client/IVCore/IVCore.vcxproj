@@ -170,6 +170,7 @@
     <ClCompile Include="Game\Entity\CPickupEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
+    <ClCompile Include="Game\EpisodeManager.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCheckpoint.cpp" />
     <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp" />
@@ -346,6 +347,7 @@
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
+    <ClInclude Include="Game\EpisodeManager.h" />
     <ClInclude Include="Game\IVEngine\CIVCam.h" />
     <ClInclude Include="Game\IVEngine\CIVCheckpoint.h" />
     <ClInclude Include="Game\IVEngine\CIVDynamicEntity.h" />

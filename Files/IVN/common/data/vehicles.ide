@@ -1,0 +1,97 @@
+#
+# see default.ide for id ranges
+#
+# flags:
+# 0x01 gets streamed out after 1 car is generated (for dumpsters, MrWoopy etc)
+# 0x02 Don't use. Used by code internally.
+#
+# isvan - vehicle has van style rear doors.
+#
+# DefDirtLevel:
+# describes default level of dirt on newly created cars:
+# 0.0  -> dirt range is <0.0; 1.0> (full range - default)
+# 0.5  -> dirt range is <0.5; 1.0>
+# 0.75 -> dirt range is <0.75;1.0>
+# etc.
+#
+#
+cars
+# Model name,   Txd name,	Type 		HandlingId	Game name, 	Anims	 	Anims2	Frq	MaxNum	WheelSc Rear	DefDirtLevel	lodMult
+#																						Swankness	flags
+# cars have two extra fields wheelmodelId and wheel scale
+# planes have one extra field model id of low level of detail
+gburrito,	gburrito,	car,		GBURRITO,	GBURRITO,	VEH@VAN,	NULL,		10,	999,	0.1949,  0.1949,	0.7,	1,	1.5,	0,	noboot+isvan+truckfirefx
+towtruck, 	towtruck,	car,		TOWTRUCK,	TOWTRUCK,	VEH@STD,	NULL,		10,	1,	0.2142, 0.2142,		0.5,	1,	1.0,	2,	noboot+ext_strong+ext_requi
+packer2,	packer2,	car,		PACKER,		PACKER,		VEH@TRUCK,	NULL,		10,	999,	0.3523,	0.3508,		0.5,	2,	1.5,	1,	noboot+big+avoidturns+ext_strong+ext_script+truckfirefx+truckexhaustfx+truckenginefx
+pbus, 		pbus,		car,		PBUS,		PBUS,		VEH@BUS,	NULL,		10,	999,	0.3238,	0.3238,		0.5,	2,	1.5,	1,	noboot+big+avoidturns+truckfirefx+truckenginefx
+yankee2,	yankee2,	car,		YANKEE2,	YANKEE2,	VEH@TRUCK,	NULL,		10,	999,	0.3141,	0.3141,		0.6,	2,	1.5,	1,	noboot+avoidturns+truckfirefx+truckenginefx
+rhapsody,	rhapsody,	car,		RHAPSODY,	RHAPSODY,	VEH@STD,	NULL,		100,	999,	0.2225,	0.2225,		0.3,	5,	1.0,	0,	ext_gang+ext_all+ext_strong
+regina,	 	regina,		car,		SOLAIR,		REGINA,		VEH@LOW,	NULL,		100,	999,	0.2225,	0.2225,		0.3,	2,	1.0,	1,	-
+slamvan, 	slamvan,	car,		SLAMVAN,	SLAMVAN,	VEH@VAN,	NULL,		100,	5,		0.2142, 0.2142,		0.5,	3,	1.0,	0	noboot+ext_strong+ext_requi+isvan
+caddy,		caddy,		car,		CADDY,		CADDY,		VEH@VAN,	NULL,		100,	999,		0.1400,	0.1400,		1.0,	2,	1.0,	0	noboot+ext_script
+apc,		apc,		car,		APC,		APC,		VEH@VAN,	NULL,		1,	1,		0.3552,	0.3552,		0.3,	2,	1.5,	0	noboot+big+avoidturns+truckfirefx+truckenginefx
+superd,		superd,		car,		SUPERD,		SUPERD,		VEH@STD,	NULL,		50,	2,		0.3072,	0.3072,		0,	5,	1.0,	0	-
+superd2,	superd2,	car,		SUPERD,		SUPERD2,	VEH@LOW,	VEH@LOW_CONV,	1,	1,		0.3080,	0.3080,		0,	5,	1.0,	0	ext_conv+ext_strong
+serrano,	serrano,	car,		SERRANO,	SERRANO,	VEH@STD,	NULL,		100,	999,		0.3153,	0.3153,		0,	3,	1.5,	0	-
+serrano2,	serrano2,	car,		SERRANO,	SERRANO,	VEH@STD,	NULL,		100,	999,		0.3299,	0.3299,		0,	3,	1.5,	0	-
+buffalo,	buffalo,	car,		BUFFALO,	BUFFALO,	VEH@STD,	NULL,		50,	999,		0.2974, 0.2974,		0,	5,	1.0,	0	-
+avan,		avan,		car,		AVAN,		AVAN,		VEH@TRUCK,	NULL,		1,	1,		0.3144,	0.3144,		0.3,	2,	1.5,	0	noboot+big+isvan+avoidturns+truckfirefx+truckenginefx
+schafter2, 	schafter2,	car,		SCHAFTER,	SCHAFTE2,	VEH@STD,	NULL,		100,	999,		0.3105,	0.3105,		0,	1,	1.0,	0	-
+schafter3, 	schafter3,	car,		SCHAFTER,	SCHAFTE3,	VEH@STD,	NULL,		100,	999,		0.2833,	0.2833,		0,	1,	1.0,	0	-
+bullet,		bullet,		car,		BULLET,		BULLET,		VEH@LOW,	NULL,		50,	5,		0.2725,	0.2725,		0,	5,	1.0,	0	sports+ext_requi
+tampa, 		tampa,		car,		TAMPA,		TAMPA,		VEH@LOW,	NULL,		100,	999,		0.2081,	0.2081,		0,	5,	1.0,	0	-
+cavalcade2,	cavalcade2,	car,		CAVCADE,	CAVCADE,	VEH@VAN,	NULL,		100,	999,		0.3248,	0.3248,		0,	3,	1.5,	0	-
+f620,		f620,		car,		SUPERGT,	F620,		VEH@LOW,	NULL,		50,	3,		0.2738,	0.2738,		0,	5,	1.0,	0	sports
+limo2,		limo2,		car,		STRETCH,	LIMO2,		VEH@STD,	NULL,		50,	999,		0.2439,	0.2439,		0,	4,	1.0,	0	ext_requi
+police3,	police3,	car,		FBI,		POLICE3,	VEH@STD,	NULL,		100,	999,		0.2610, 0.2610,		0,	5,	1.0,	0	ext_strong+ext_requi
+policew,	policew,	car,		FBI,		POLICE3,	VEH@STD,	NULL,		100,	999,		0.2610, 0.2610,		0,	5,	1.0,	0	ext_strong+ext_requi
+police4, 	police4,	car,		POLICE4,	POLICE4,	VEH@STD,	NULL,		100,	999,		0.2774,	0.2774,		0,	2,	1.0,	0	-
+
+# Bikes
+#
+angel,		angel,		bike,		ANGEL,		ANGEL,		veh@bike_chopper,	NULL,	100,	999,	0.2526, 0.2303,		0,	4,	1.0,	1,	noboot
+bati,		bati,		bike,		BATI,		BATI,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2175, 0.2175,		0,	5,	1.0,	0,	noboot
+daemon,		daemon,		bike,		DAEMON,		DAEMON,		veh@bike_chopper,	NULL,	100,	999,	0.2526, 0.1964,		0,	4,	1.0,	0,	noboot
+diabolus,	diabolus,	bike,		DIABO,		DIABO,		veh@bike_freeway,	NULL,	100,	999,	0.2507, 0.2345,		0,	4,	1.0,	0,	noboot
+double2,	double2,	bike,		DOUBLE2,	DOUBLE2,	VEH@BIKE_SPT,	        NULL,	100,	999,	0.2307, 0.2307,		0,	5,	1.0,	0,	noboot
+hakuchou2,	hakuchou2,	bike,		HAKUCH2,	HAKUCH2,	VEH@BIKE_SPT,	        NULL,	100,	999,	0.2287, 0.2246,		0,	5,	1.0,	0,	noboot
+innovation,	innovation,	bike,		INNOV,		INNOV,		veh@bike_freeway,	NULL,	100,	999,	0.2287, 0.2251,		0,	4,	1.0,	0,	noboot
+lycan,		lycan,		bike,		LYCAN,		LYCAN,		veh@bike_freeway,	NULL,	100,	999,	0.2601, 0.2397,		0,	4,	1.0,	0,	noboot
+nightblade,	nightblade,	bike,		NIGHTBL,	NIGHTBL		veh@bike_freeway,	NULL,	100,	999,	0.2526, 0.2303,		0,	4,	1.0,	0,	noboot
+revenant,	revenant,	bike,		REVENANT,	REVENANT,	veh@bike_freeway,	NULL,	100,	999,	0.2185, 0.2152,		0,	4,	1.0,	0,	noboot
+wayfarer,	wayfarer,	bike,		WAYFARER,	WAYFAR,		veh@bike_chopper,	NULL,	100,	999,	0.2526, 0.1964,		0,	4,	1.0,	0,	noboot
+wolfsbane,	wolfsbane,	bike,		WOLFS,		WOLFS,		veh@bike_freeway,	NULL,	100,	999,	0.2304, 0.1933,		0,	4,	1.0,	0,	noboot
+policeb,	policeb,	bike,		POLICEB,	POLICEB,	veh@bike_chopper,	NULL,	100,	999,	0.2294, 0.1987,		0,	4,	1.0,	0	noboot
+hexer,		hexer,		bike,		HEXER,		HEXER,		veh@bike_freeway,	NULL,	100,	999,	0.2408, 0.2311,		0,	4,	1.0,	0	noboot
+faggio2,	faggio2,	bike,		FAGGIO,		FAGGIO,		VEH@BIKE_SCOOTER,  	NULL,	50,	999,	0.1510,	0.1510,		0,	5,	1.0,	0	noboot+livery
+bati2,		bati2,		bike,		BATI2,		BATI2,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2175, 0.2175,		0,	5,	1.0,	0	noboot
+#vader,		vader,		bike,		VADER,		VADER,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2306, 0.2306,		0,	5,	1.0,	0	noboot
+akuma,		akuma,		bike,		AKUMA,		AKUMA,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2311, 0.2311,		0,	5,	1.0,	0	noboot
+#hakuchou,	hakuchou,	bike,		HAKUCH,		HAKUCH,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2287, 0.2246,		0,	5,	1.0,	0	noboot
+double,		double,		bike,		DOUBLE,		DOUBLE,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2307, 0.2307,		0,	5,	1.0,	0	noboot
+
+# Heli's
+#
+buzzard,	buzzard,	heli,		BUZZARD,	BUZZARD,	VEH@HELICOPTER,	NULL,		100,	999,		0.2001, 0.1176,	 	0.3,	4,	2.0,	0	noboot
+swift,		swift,		heli,		SWIFT,		SWIFT,		VEH@HELICOPTER,	NULL,		100,	999,		0.1368, 0.1368,	 	0.3,	4,	1.5,	0	noboot
+skylift,	skylift,	heli,		SKYLIFT,	SKYLIFT,	VEH@HELICOPTER,	NULL,		100,	999,		0.1871, 0.1871,	 	1.0,	4,	1.5,	0	noboot
+
+#boats
+#
+smuggler,	smuggler,	boat,		SMUGGLER,	SMUGGLER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+floater,	floater,	boat,		FLOATER,	FLOATER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+blade,		blade,		boat,		BLADE,		BLADE,		veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+end
+
+
+txdp
+
+vehshare_truck, vehshare
+yankee2, vehshare_truck
+gburrito, vehshare_truck
+pbus, vehshare_truck
+smuggler, vehshare_truck
+blade, vehshare_truck
+apc, vehshare_truck
+avan, vehshare_truck
+skylift, vehshare_truck

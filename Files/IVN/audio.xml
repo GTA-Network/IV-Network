@@ -1,0 +1,9 @@
+<EpisodeOne>
+<game content="ascii">e1:/pc/audio/config/ep1_game.dat</game> 
+<sounds content="ascii">e1:/pc/audio/config/ep1_sounds.dat</sounds>
+<curves content="ascii">e1:/pc/audio/config/ep1_curves.dat</curves>
+<speech content="ascii">e1:/pc/audio/config/ep1_speech.dat</speech>
+<wavepack content="ascii">e1:/pc/audio/sfx/EP1_SPEECH.rpf</wavepack>
+<wavepack content="ascii">e1:/pc/audio/sfx/EP1_SCRIPTED_SPEECH.rpf</wavepack>
+<staticbank content="ascii">EP1_SFX\RESIDENT_WEAPON</staticbank>
+</EpisodeOne>

@@ -19,13 +19,6 @@
 #include <IV/CIVScriptEnums.h>
 #include <IV/CIVScript_FunctionList.h>
 
-class CHookDummy
-{
-public:
-	void __thiscall registerEpisodes();
-	char __thiscall loadEpisodes(int id);
-};
-
 extern	CCore* g_pCore;
 
 IVTask       * ___pTask = NULL;
@@ -76,6 +69,8 @@ void RemoveLoadingScreens()
 		*(DWORD *) (iLoadScreenType + i * 400) = 0;
 		*(DWORD *) (iLoadScreenDuration + i * 400) = 0;
 	}
+
+	CPatcher::InstallNopPatch(COffsets::FUNC_RemoveInitialLoadingScreens, 5);
 }
 
 IVPlayerInfo * pReturnedPlayerInfo = NULL;
@@ -493,287 +488,6 @@ _declspec(naked) void CTaskSimpleStartVehicle__Process()
 	_asm retn 4;
 }
 
-#define GTA_malloc (*(char *(__cdecl *)(int)) (g_pCore->GetBase() + 0x4011D0))
-#define getGameFolderFromRegistry (*(bool(__stdcall *)(char *)) (g_pCore->GetBase() + 0x8B3260))
-#define GTA_memcpy (*(int(__cdecl *)(char *, char *, int)) (g_pCore->GetBase() + 0xD0BC80))
-#define GTA_strcat (*(int(__cdecl *)(char*, char*, int)) (g_pCore->GetBase() + 0xD0C2B0))
-#define SetGTAWorkdir (*(int(__thiscall *)(void *, char *)) (g_pCore->GetBase() + 0x45AEF0))
-#define GTAWorkdirUknownPVOID (void *) (g_pCore->GetBase() + 0x1003C10)
-#define IsFileExistInWorkdir (*(bool(__thiscall *)(void *, char *, int)) (g_pCore->GetBase() + 0x45B070))
-#define WorkdirUnknownFunc (*(void(__thiscall *)(void *)) (g_pCore->GetBase() + 0x45AFB0))
-#define UnknownFuncWhitGameDir (*(int(__cdecl *)(char *)) (g_pCore->GetBase() + 0x401210)) //Maybe delete the char*?
-#define RegisterFolder (*(int(__thiscall *)(void *, RegEpisodeStruct*)) (g_pCore->GetBase() + 0x8B3BB0))
-
-#pragma pack(push, 1)
-struct RegEpisodeStruct
-{
-	char szPath[MAX_PATH];
-	PAD(RegEpisode, pad0, 64);
-	char szDevice[16];
-	DWORD field_154;
-	DWORD field_158;
-	DWORD field_15C;
-	DWORD field_160;
-	BYTE field_164;
-	BYTE field_165;
-	PAD(RegEpisode, pad3, 1);
-	BYTE field_167;
-};
-#pragma pack(pop)
-
-void CHookDummy::registerEpisodes()
-{
-	char* GameFolder = GTA_malloc(MAX_PATH);
-	getGameFolderFromRegistry(GameFolder);
-
-	if (*(DWORD *) (this + 364) == -1)
-	{
-		int pointer = 0;
-
-		char* TLADFolder = new char[MAX_PATH];
-		GTA_memcpy(TLADFolder, GameFolder, strlen(GameFolder) + 1 > MAX_PATH ? MAX_PATH : strlen(GameFolder) + 1);
-		GTA_strcat(TLADFolder, "\\TLAD\\", 6);
-
-		SetGTAWorkdir(GTAWorkdirUknownPVOID, TLADFolder);
-
-		if (IsFileExistInWorkdir(GTAWorkdirUknownPVOID, "setup2.xml", NULL))
-		{
-			RegEpisodeStruct* reg = new RegEpisodeStruct;
-			memset(reg->szPath, 0, MAX_PATH);
-			strcpy(reg->szPath, TLADFolder);
-			reg->szDevice[0] = '\0';
-			reg->field_154 = 0;
-			reg->field_158 = 1;
-			reg->field_15C = 0;
-			reg->field_160 = 0;
-			reg->field_164 = 0;
-			reg->field_165 = 0;
-			reg->field_167 = 0;
-
-			*(DWORD *) (this + 364 + pointer) = RegisterFolder(this, reg);
-			pointer += 4;
-
-			*(BYTE *) (this + 361) = 1;
-			*(DWORD *) (g_pCore->GetBase() + 0x10619D8) = 1;
-
-			if (*(DWORD *) (g_pCore->GetBase() + 0x10619A4) > 0)
-				*(DWORD *) (g_pCore->GetBase() + 0x10619BC) = *(DWORD *) (g_pCore->GetBase() + 0x10619A4);
-			else
-				*(DWORD *) (g_pCore->GetBase() + 0x10619BC) = 1;
-		}
-
-		char* TBoGTFolder = new char[MAX_PATH];
-		GTA_memcpy(TBoGTFolder, GameFolder, strlen(GameFolder) + 1 > MAX_PATH ? MAX_PATH : strlen(GameFolder) + 1);
-		GTA_strcat(TBoGTFolder, "\\TBoGT\\", 7);
-
-		SetGTAWorkdir(GTAWorkdirUknownPVOID, TBoGTFolder);
-
-		if (IsFileExistInWorkdir(GTAWorkdirUknownPVOID, "setup2.xml", NULL))
-		{
-			RegEpisodeStruct* reg = new RegEpisodeStruct;
-			memset(reg->szPath, 0, MAX_PATH);
-			strcpy(reg->szPath, TBoGTFolder);
-			reg->szDevice[0] = '\0';
-			reg->field_154 = 0;
-			reg->field_158 = 1;
-			reg->field_15C = 0;
-			reg->field_160 = 0;
-			reg->field_164 = 0;
-			reg->field_165 = 0;
-			reg->field_167 = 0;
-
-			*(DWORD *) (this + 364 + pointer) = RegisterFolder(this, reg);
-			pointer += 4;
-
-			*(BYTE *) (this + 361) = 1;
-			*(DWORD *) (g_pCore->GetBase() + 0x10619D8) = 1;
-
-			if (*(DWORD *) (g_pCore->GetBase() + 0x10619A4) > 0)
-				*(DWORD *) (g_pCore->GetBase() + 0x10619BC) = *(DWORD *) (g_pCore->GetBase() + 0x10619A4);
-			else
-				*(DWORD *) (g_pCore->GetBase() + 0x10619BC) = 1;
-		}
-	}
-
-	WorkdirUnknownFunc(GTAWorkdirUknownPVOID);
-	if (GameFolder)
-		UnknownFuncWhitGameDir(GameFolder);
-
-
-	*(BYTE *) (this + 358) = 0;
-}
-
-/*   69 */
-#pragma pack(push, 1)
-struct stXMLNode
-{
-	char field_0[32];
-	char *pData;
-	int bFound;
-};
-#pragma pack(pop)
-
-/*   70 */
-#pragma pack(push, 1)
-struct stXMLData
-{
-	int iEpisodeId;
-	char szName[64];
-	char szDatFile[32];
-	char szAudioFolder[64];
-	char szAudioMetaData[64];
-	char szLoadingScreens[64];
-	char szLoadingScreensDat[64];
-	char szLoadingScreensIngame[64];
-	char szLoadingScreensIngameDat[64];
-	char szTexturePath[64];
-	char bRequiredForSave;
-	char bEnabled;
-	char field_222;
-	char networkGame;
-	char id;
-	char episode;
-};
-#pragma pack(pop)
-
-#define CXML__FindNode ((stXMLNode *(__thiscall*) (stXMLNode *pParent, const char *szNodeName, int a3))(g_pCore->GetBase() + 0x456A80))
-#define dword_1924E38 *(DWORD*)(g_pCore->GetBase() + 0x1924E38)
-#define CXML__Load ((stXMLNode** (__thiscall*) (void *this_, char *a2, char *a3))(g_pCore->GetBase() + 0x4585C0))
-#define sub_8B3620 ((char (__thiscall*) (void*, int a2))(g_pCore->GetBase() + 0x8B3620))
-#define CheckDLCs ((char ( __thiscall*)(void*))(g_pCore->GetBase() + 0x8B4210))
-#define sub_8B3AE0 ((int (__thiscall*) (void*, stXMLData *pXMLData))(g_pCore->GetBase() + 0x8B3AE0))
-#define sub_454D70 ((int (__thiscall*) (stXMLNode**))(g_pCore->GetBase() + 0x454D70))
-#define sub_401210 ((int (__cdecl*) (stXMLNode**))(g_pCore->GetBase() + 0x401210))
-#define sub_45AFB0 ((void (__thiscall*) (void*))(g_pCore->GetBase() + 0x45AFB0))
-#define sub_8B34D0 ((char (__thiscall*) (void*, int a2))(g_pCore->GetBase() + 0x8B34D0))
-
-char CHookDummy::loadEpisodes(int id)
-{
-	CheckDLCs(this);
-	RegEpisodeStruct* reg = (RegEpisodeStruct*) *(DWORD *) (this + 332) + sizeof(RegEpisodeStruct) * id;
-	sub_8B3620(this, id);
-	SetGTAWorkdir(GTAWorkdirUknownPVOID, "extra:/");
-	stXMLNode ** pNodes = CXML__Load((void *) dword_1924E38, "setup2.xml", "xml");
-	if (pNodes)
-	{
-		if (!CXML__FindNode(*pNodes, "testmarketplace", 0))
-		{
-			stXMLNode * pDeviceNode = CXML__FindNode(*pNodes, "device", 0);
-			GTA_memcpy(reg->szDevice, pDeviceNode->bFound ? pDeviceNode->pData : '\0', 16);
-			GTA_strcat(reg->szDevice, ":/", 16);
-			stXMLNode * pContentNode = CXML__FindNode(*pNodes, "content", 0);
-			if (pContentNode)
-			{
-				do
-				{
-					stXMLData xmlData;
-
-					xmlData.bRequiredForSave = 0;
-					xmlData.bEnabled = 0;
-					xmlData.field_222 = 0;
-					xmlData.id = 0;
-					xmlData.episode = 0;
-					xmlData.szName[0] = 0;
-					xmlData.szDatFile[0] = 0;
-					xmlData.szAudioMetaData[0] = 0;
-					xmlData.szAudioFolder[0] = 0;
-					xmlData.szLoadingScreens[0] = 0;
-					xmlData.szLoadingScreensDat[0] = 0;
-					xmlData.szLoadingScreensIngame[0] = 0;
-					xmlData.szLoadingScreensIngameDat[0] = 0;
-					xmlData.networkGame = -1;
-					xmlData.szTexturePath[0] = 0;
-					xmlData.iEpisodeId = id;
-
-					stXMLNode * pNameNode = CXML__FindNode(pContentNode, "name", 0);
-					GTA_memcpy(xmlData.szName, pNameNode->bFound ? pNameNode->pData : '\0', 64u);
-					stXMLNode * pIdNode = CXML__FindNode(pContentNode, "id", 0);
-					xmlData.id = (pIdNode && pIdNode->bFound) ? atoi(pIdNode->pData) : 0;
-
-					if (CXML__FindNode(pContentNode, "requiredForSave", 0))
-						xmlData.bRequiredForSave = 1;
-
-					stXMLNode * pNetworkGameNode = CXML__FindNode(pContentNode, "networkgame", 0);
-					if (pNetworkGameNode)
-						xmlData.networkGame = pNetworkGameNode->bFound ? atoi(pNetworkGameNode->pData) : 0;
-					else
-						xmlData.networkGame = -1;
-
-					stXMLNode * pEpisodeNode = CXML__FindNode(pContentNode, "episode", 0);
-					if (pEpisodeNode)
-					{
-						xmlData.episode = pEpisodeNode->bFound ? atoi(pEpisodeNode->pData) : 0;
-						xmlData.bRequiredForSave = 1;
-					}
-					else
-						xmlData.episode = 0;
-
-					stXMLNode * pDatFileNode = CXML__FindNode(pContentNode, "datfile", 0);
-					if (pDatFileNode)
-						GTA_memcpy(xmlData.szDatFile, pDatFileNode->bFound ? pDatFileNode->pData : '\0', 32);
-					else
-						xmlData.szDatFile[0] = 0;
-
-					stXMLNode * pLoadingScreenNode = CXML__FindNode(pContentNode, "loadingscreens", 0);
-					if (pLoadingScreenNode)
-					{
-						GTA_memcpy(xmlData.szLoadingScreens, reg->szDevice, 16);
-						GTA_strcat(xmlData.szLoadingScreens, pLoadingScreenNode->bFound ? pLoadingScreenNode->pData : '\0', 64);
-					}
-
-					stXMLNode * pLoadingScreenDatNode = CXML__FindNode(pContentNode, "loadingscreensdat", 0);
-					if (pLoadingScreenDatNode)
-					{
-						GTA_memcpy(xmlData.szLoadingScreensDat, reg->szDevice, 16);
-						GTA_strcat(xmlData.szLoadingScreensDat, pLoadingScreenDatNode->bFound ? pLoadingScreenDatNode->pData : '\0', 64);
-					}
-
-					stXMLNode * pLoadingScreensIngameNode = CXML__FindNode(pContentNode, "loadingscreensingame", 0);
-					if (pLoadingScreensIngameNode)
-					{
-						GTA_memcpy(xmlData.szLoadingScreensIngame, reg->szDevice, 16);
-						GTA_strcat(xmlData.szLoadingScreensIngame, pLoadingScreensIngameNode->bFound ? pLoadingScreensIngameNode->pData : '\0', 64);
-					}
-
-					stXMLNode * pLoadingScreensIngameDatNode = CXML__FindNode(pContentNode, "loadingscreensingamedat", 0);
-					if (pLoadingScreensIngameDatNode)
-					{
-						GTA_memcpy(xmlData.szLoadingScreensIngameDat, reg->szDevice, 16);
-						GTA_strcat(xmlData.szLoadingScreensIngameDat, pLoadingScreensIngameDatNode->bFound ? pLoadingScreensIngameDatNode->pData : '\0', 64);
-					}
-
-					stXMLNode * pTexturePathNode = CXML__FindNode(pContentNode, "texturepath", 0);
-					if (pTexturePathNode)
-					{
-						GTA_memcpy(xmlData.szTexturePath, reg->szDevice, 16);
-						GTA_strcat(xmlData.szTexturePath, pTexturePathNode->bFound ? pTexturePathNode->pData : '\0', 64);
-					}
-
-					stXMLNode * pAudioFolderNode = CXML__FindNode(pContentNode, "audiofolder", 0);
-					if (pAudioFolderNode)
-						GTA_memcpy(xmlData.szAudioFolder, pAudioFolderNode->bFound ? pAudioFolderNode->pData : '\0', 64);
-
-					stXMLNode * pAudioMetaDataNode = CXML__FindNode(pContentNode, "audiometadata", 0);
-					if (pAudioMetaDataNode)
-					{
-						GTA_memcpy(xmlData.szAudioMetaData, pAudioMetaDataNode->bFound ? pAudioMetaDataNode->pData : '\0', 64);
-					}
-
-					if (CXML__FindNode(pContentNode, "enabled", 0))
-						xmlData.bEnabled = 1;
-					sub_8B3AE0(this, &xmlData);
-					pContentNode = CXML__FindNode(*pNodes, "content", (int) pContentNode);
-				} while (pContentNode);
-			}
-		}
-		sub_454D70(pNodes);
-		sub_401210(pNodes);
-	}
-	sub_45AFB0(GTAWorkdirUknownPVOID);
-	reg->field_165 = 1;
-	return sub_8B34D0(this, id);
-}
-
 void __cdecl renderMenus() //render Main and pause menu
 {
 	//g_pCore->GetChat()->Outputf(false, "sub_4774A0()");
@@ -783,9 +497,9 @@ void __cdecl renderMenus() //render Main and pause menu
 
 void __cdecl sub_47F080()
 {
-	if (g_pCore->GetNetworkManager())
+	if (g_pCore->GetNetworkManager()) //TODO: move this to a better place.
 		g_pCore->GetNetworkManager()->Pulse();
-		//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
+	//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
 }
 
 void __cdecl sub_47BA60()
@@ -908,9 +622,6 @@ void CHooks::Intialize()
 
 	// Disable automatic vehicle engine turn-on
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
-
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&CHookDummy::registerEpisodes));
-	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B49B0, CPatcher::GetClassMemberAddress(&CHookDummy::loadEpisodes)); - TMP disabled
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;

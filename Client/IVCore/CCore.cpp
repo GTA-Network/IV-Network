@@ -126,6 +126,8 @@ bool CCore::Initialise()
 	// Register module manager
 	CModuleManager::FetchModules();
 	
+	EpisodeManager::Initialize();
+
 	CLogFile::Printf("Done!");
 	return true;
 }
@@ -210,7 +212,7 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Initialize the loading screen elements
 	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
 	m_pLoadingScreen->Initialize();
-	m_pLoadingScreen->SetVisible(true);
+	//m_pLoadingScreen->SetVisible(true);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)

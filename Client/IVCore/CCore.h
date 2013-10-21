@@ -55,6 +55,8 @@ typedef void(*GetInterface_t)(RAGEEngineInterface *);
 
 #include <IV/CIVStartupScript.h>
 
+#include "Game/EpisodeManager.h"
+
 class CCore {
 private:
 

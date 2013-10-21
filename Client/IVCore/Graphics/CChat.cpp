@@ -433,7 +433,7 @@ void CChat::ProcessInput()
 				Checkstring.append(m_strInputText.Get());
 				for(int i = 0; i < m_strInputText.GetLength(); i++)
 				{
-					if(Checkstring[i] >= 'a' && Checkstring[i] <= 'z')
+					/*if(Checkstring[i] >= 'a' && Checkstring[i] <= 'z')
 						continue;
 					if(Checkstring[i] >= 'A' && Checkstring[i] <= 'Z')
 						continue;
@@ -446,7 +446,7 @@ void CChat::ProcessInput()
 					if(Checkstring[i] == '.' || Checkstring[i] == ':' || Checkstring[i] == ',' || Checkstring[i] == ';')
 						continue;
 					if (Checkstring[i] == '/')
-						continue;
+						continue;*/
 
 					return Output("Unkown message input, please use only words from a-z", false);
 				}
