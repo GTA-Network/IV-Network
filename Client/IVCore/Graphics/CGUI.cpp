@@ -790,6 +790,16 @@ CGUIEditBox * CGUI::CreateGUIEditBox(CEGUI::Window * pParentWindow)
 	return (CGUIEditBox *) CreateGUIWindow(STYLE_PREFIX "/Editbox", GetUniqueName(), pParentWindow);
 }
 
+CGUIMultiColumnList * CGUI::CreateGUIMultiColumnList(CEGUI::String &sName, CEGUI::Window * pParentWindow)
+{
+	return (CGUIMultiColumnList *) CreateGUIWindow(STYLE_PREFIX "/MultiColumnList", sName, pParentWindow);
+}
+
+CGUIMultiColumnList * CGUI::CreateGUIMultiColumnList(CEGUI::Window * pParentWindow)
+{
+	return (CGUIMultiColumnList *) CreateGUIWindow(STYLE_PREFIX "/MultiColumnList", GetUniqueName(), pParentWindow);
+}
+
 CEGUI::String CGUI::AnsiToCeguiFriendlyString(const char * szAnsiString, unsigned int uiLength)
 {
 	wchar_t * wcUnicode = new wchar_t[uiLength + 1];

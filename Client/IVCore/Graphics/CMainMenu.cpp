@@ -16,7 +16,8 @@ extern CCore* g_pCore;
 CMainMenu::CMainMenu(CGUI* pGUI) :
 	m_pGUI(pGUI),
 	m_pSettingsWindow(nullptr),
-	m_pQuickConnectWindow(nullptr)
+	m_pQuickConnectWindow(nullptr),
+	m_pBrowserWindow(nullptr)
 {
 
 }
@@ -38,6 +39,12 @@ CMainMenu::~CMainMenu()
 
 	if (m_pQuickConnectWindow)
 		m_pGUI->RemoveGUIWindow(m_pQuickConnectWindow);
+
+	if (m_pSettingsWindow)
+		m_pGUI->RemoveGUIWindow(m_pSettingsWindow);
+
+	if (m_pBrowserWindow)
+		m_pGUI->RemoveGUIWindow(m_pBrowserWindow);
 }
 
 //////////////////[The Actual Main Menu]//////////////////
@@ -68,7 +75,7 @@ bool CMainMenu::Initialize()
 	m_pBackground->setProperty("Image", "set:Background image:full_image");
 	m_pBackground->setVisible(false);
 
-#define fY 0.5f
+#define fY 0.7f
 
 	// Create the Disconnect Button & hide it
 	m_pDisconnectButton = m_pGUI->CreateButton("Disconnect", CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.030f, 0)), CEGUI::UVector2(CEGUI::UDim(0.025f, 0), CEGUI::UDim(fY, 0)));
@@ -334,7 +341,46 @@ bool CMainMenu::OnServerBrowserButtonMouseExit(const CEGUI::EventArgs &eventArgs
 
 bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	m_pGUI->ShowMessageBox("This feature is temporary disabled.", "Server Browser", GUI_MESSAGEBOXTYPE_OK);
+	if (!m_pBrowserWindow)
+	{
+		// Get our Screen Information
+		float fW = (float) m_pGUI->GetDisplayWidth();
+		float fH = (float) m_pGUI->GetDisplayHeight();
+
+		// Create the GUI Frame
+		m_pBrowserWindow = m_pGUI->CreateGUIFrameWindow();
+		m_pBrowserWindow->setText("Server Browser");
+		m_pBrowserWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 900.0f), CEGUI::UDim(0, 500.0f)));
+		m_pBrowserWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, fW / 2 - 450.0f), CEGUI::UDim(0, fH / 2 - 250.0f)));
+		m_pBrowserWindow->subscribeEvent(CEGUI::FrameWindow::EventCloseClicked, CEGUI::Event::Subscriber(&CMainMenu::OnServerBrowserExit, this));
+
+		// Create the GUI Items
+		m_pBrowserList = m_pGUI->CreateGUIMultiColumnList(m_pBrowserWindow);
+		m_pBrowserList->setText("Server Browser");
+		m_pBrowserList->setSize(CEGUI::UVector2(CEGUI::UDim(0.950f, 0), CEGUI::UDim(0.8250f, 0)));
+		m_pBrowserList->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0250f, 0), CEGUI::UDim(0.0250f, 0)));
+		m_pBrowserList->setProperty("ColumnHeader", "text:Locked width:{0.09,0} id:0");
+		m_pBrowserList->setProperty("ColumnHeader", "text:Hostname width:{0.3,0} id:1");
+		m_pBrowserList->setProperty("ColumnHeader", "text:IP Address width:{0.2,0} id:2");
+		m_pBrowserList->setProperty("ColumnHeader", "text:Players width:{0.1,0} id:3");
+		m_pBrowserList->setProperty("ColumnHeader", "text:Ping width:{0.1,0} id:4");
+		m_pBrowserList->setProperty("ColumnHeader", "text:Mode width:{0.1,0} id:5");
+		m_pBrowserList->setFont(m_pGUI->GetFont("Arial", 10));
+		m_pBrowserList->subscribeEvent(CEGUI::Window::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerClicked, this));
+
+		m_pBrowserConnect = m_pGUI->CreateGUIButton(m_pBrowserWindow);
+		m_pBrowserConnect->setText("Connect");
+		m_pBrowserConnect->setSize(CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.10f, 0)));
+		m_pBrowserConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0.550f, 0), CEGUI::UDim(0.8750f, 0)));
+		m_pBrowserConnect->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerClicked, this));
+
+		// Flag our Server Browser as visible
+		m_bServerBrowserVisible = true;
+	}
+	else
+	{
+		m_pBrowserWindow->activate();
+	}
 	return true;
 }
 
@@ -513,6 +559,9 @@ void CMainMenu::OnQuickConnectSubmit()
 	// Hide the main menu elements
 	SetVisible(false);
 	SetQuickConnectVisible(false);
+
+	if (m_pBrowserWindow)
+		m_pBrowserWindow->destroy();
 }
 
 bool CMainMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs)
@@ -524,5 +573,43 @@ bool CMainMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventAr
 bool CMainMenu::OnSettingsMouseClick(const CEGUI::EventArgs &eventArgs)
 {
 	OnSettingsApply();
+	return true;
+}
+
+bool CMainMenu::OnServerBrowserExit(const CEGUI::EventArgs &eventArgs)
+{
+	m_pBrowserWindow->destroy();
+	return true;
+}
+
+bool CMainMenu::OnServerClicked(const CEGUI::EventArgs &eventArgs)
+{
+	// Grab our stuff from the selected row of the Server Browser
+	CEGUI::MultiColumnList * pMultiColumnList = (CEGUI::MultiColumnList *)m_pBrowserList;
+	CEGUI::ListboxItem * pLocked = pMultiColumnList->getFirstSelectedItem();
+	CEGUI::ListboxItem * pHostname = pMultiColumnList->getNextSelected(pLocked);
+	CEGUI::ListboxItem * pAddress = pMultiColumnList->getNextSelected(pHostname);
+	CEGUI::ListboxItem * pPlayerCount = pMultiColumnList->getNextSelected(pAddress);
+	CEGUI::ListboxItem * pMaxPlayers = pMultiColumnList->getNextSelected(pPlayerCount);
+	CEGUI::ListboxItem * pPing = pMultiColumnList->getNextSelected(pMaxPlayers);
+	CEGUI::ListboxItem * pMode = pMultiColumnList->getNextSelected(pPing);
+
+	if (pLocked->getText() == "yes")
+	{
+		m_pGUI->ShowMessageBox("Sorry, this server is locked.");
+	}
+	else
+	{
+		CIVScript::DoScreenFadeIn(1000);
+
+		g_pCore->GetChat()->SetVisible(true);
+
+		g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
+
+		//g_pCore->ConnectToServer(strAddress, usPort, ""); // The server password is empty if the player is able to get to this stage
+
+		m_pBrowserWindow->destroy();
+	}
+
 	return true;
 }
