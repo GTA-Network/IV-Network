@@ -209,7 +209,6 @@
     <ClCompile Include="Graphics\CFPSCounter.cpp" />
     <ClCompile Include="Graphics\CGraphics.cpp" />
     <ClCompile Include="Graphics\CGUI.cpp" />
-    <ClCompile Include="Graphics\CLoadingScreen.cpp" />
     <ClCompile Include="Graphics\CMainMenu.cpp" />
     <ClCompile Include="Graphics\CSnapShot.cpp" />
     <ClCompile Include="Graphics\IDirect3D9Proxy.cpp" />
@@ -391,7 +390,6 @@
     <ClInclude Include="Graphics\CDirectInputDevice8Proxy.h" />
     <ClInclude Include="Graphics\CFPSCounter.h" />
     <ClInclude Include="Graphics\CGraphics.h" />
-    <ClInclude Include="Graphics\CLoadingScreen.h" />
     <ClInclude Include="Graphics\CMainMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />

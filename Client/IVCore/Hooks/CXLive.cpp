@@ -10,6 +10,9 @@
 #include "CXLive.h"
 #include <Patcher/CPatcher.h>
 
+#include <CCore.h>
+extern CCore * g_pCore;
+
 // XLive Functions
 int WINAPI XWSAStartup(WORD wVersionRequested, LPWSADATA lpWsaData)
 {
@@ -226,14 +229,18 @@ int WINAPI XLiveUninitialize()
 	return 0;
 }
 
-int WINAPI XLiveOnCreateDevice(DWORD, DWORD)
+HRESULT WINAPI XLiveOnCreateDevice(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPresentationParameters)
 {
-	return 0;
+	CLogFile::Printf("XLiveOnCreateDevice(%p, %p)", pDevice, pPresentationParameters);
+
+	return ERROR_SUCCESS;
 }
 
-int WINAPI XLiveOnResetDevice(DWORD)
+HRESULT WINAPI XLiveOnResetDevice(D3DPRESENT_PARAMETERS* pPresentationParameters)
 {
-	return 0;
+	CLogFile::Printf("XLiveOnResetDevice(%p)", pPresentationParameters);
+
+	return ERROR_SUCCESS;
 }
 
 int WINAPI XHVCreateEngine(DWORD, DWORD, DWORD)
