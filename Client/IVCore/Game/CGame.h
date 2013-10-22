@@ -100,9 +100,6 @@ public:
 	static void							OnClientPastGameJoin();
 	static void							Setup();
 	static void							RenderRAGEScripts();
-#ifdef GTAV_MAP
-	static void							RenderUIElements();
-#endif
 	static void							ProcessEnvironment();
 	static void							UnprotectMemory();
 	static bool							CheckInstances(bool bInitialised = false);

@@ -212,7 +212,7 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Initialize the loading screen elements
 	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
 	m_pLoadingScreen->Initialize();
-	//m_pLoadingScreen->SetVisible(true);
+	m_pLoadingScreen->SetVisible(true);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -344,11 +344,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 	// Render ingame environment
 	m_pGame->ProcessEnvironment();
-
-#ifdef GTAV_MAP
-	// Render ingame ui elements
-	m_pGame->RenderUIElements();
-#endif
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())

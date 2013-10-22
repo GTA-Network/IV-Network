@@ -139,13 +139,6 @@ bool CGraphics::LoadFonts()
 		}
 	}
 
-#ifdef GTAV_MAP
-	// Load texture for radar
-	D3DXCreateTextureFromFileExA(m_pDevice, SharedUtility::GetAbsolutePath("multiplayer\\datafiles\\hud.png").Get(), D3DX_DEFAULT, D3DX_DEFAULT, D3DX_DEFAULT, 0, 
-		D3DFMT_UNKNOWN, D3DPOOL_MANAGED, D3DX_DEFAULT,D3DX_DEFAULT, 0, 
-		NULL, NULL, &m_pRadarOverlayTexture);
-#endif
-
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
 }
 

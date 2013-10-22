@@ -410,67 +410,6 @@ void CGame::SetupGame()
 	//g_pCore->GetGame()->PrepareWorld();
 }
 
-#ifdef GTAV_MAP
-void CGame::RenderUIElements()
-{
-	if(!CGameFunction::IsRadarVisible() && m_bRadarVisibility) {
-		// Clear the device
-		m_bRadarVisibility = false;
-		g_pCore->GetGraphics()->GetDevice()->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0,0,0),1.0f,0);
-	}
-	else {
-		if(!CGameFunction::IsRadarVisible())
-			return;
-
-		m_bRadarVisibility = true;
-
-		// Render Images
-		float fX, fY, sX, sY;
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GET_VIEWPORT_POS_AND_SIZE, 3, &fX, &fY, &sX, &sY);
-
-		D3DVIEWPORT9 viewport;
-		g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
-		g_pCore->GetGraphics()->GetSprite()->Begin(0);
-		D3DXVECTOR2 spriteCentre = D3DXVECTOR2(0, 0);
-		D3DXVECTOR2 trans= D3DXVECTOR2(viewport.Width * fX - 6.5, viewport.Height * fY - 6.5);
-
-		D3DXMATRIX mat;
-		D3DXVECTOR2 scaling2((viewport.Width * sX) / 990, (viewport.Height*sY) / 460);
-		float rotation=0.0f;
-		D3DXMatrixTransformation2D(&mat,NULL,0.0,&scaling2,&spriteCentre,rotation,&trans);
-
-		g_pCore->GetGraphics()->GetSprite()->SetTransform(&mat);
-		g_pCore->GetGraphics()->GetSprite()->Draw(g_pCore->GetGraphics()->m_pRadarOverlayTexture,NULL, NULL,&D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DCOLOR_ARGB(255,255,255,255));
-
-		// Draw health bar
-		float fxPos = viewport.Width * fX - 6.5;
-		float fyPos = viewport.Height * fY - 6.5;
-		;//g_pCore->GetGraphics()->
-
-		float fWidth = viewport.Width/12.4;
-		float fHeight = viewport.Height/50;
-
-		D3DXVECTOR2 scaling3((viewport.Width * sX) / 1000, (viewport.Height*sY) / 460);
-		CVector3 vecScreen = CVector3(trans.x, (trans.y+scaling3.y), 0.0f);
-		vecScreen.fY += (viewport.Height/10)*2;
-		
-		if(m_pLocalPlayer && m_pLocalPlayer->IsSpawned()) {
-			//g_pCore->GetGraphics()->DrawBox((vecScreen.fX + 4), (vecScreen.fY + 16), fWidth, fHeight, D3DCOLOR_ARGB(160, 0, 0, 0) );
-			g_pCore->GetGraphics()->DrawBox(((vecScreen.fX + 6)), (vecScreen.fY + 18), (fWidth - 4), (fHeight - 4), D3DCOLOR_ARGB(120, 125, 157, 120) );
-			g_pCore->GetGraphics()->DrawBox(((vecScreen.fX + 6)), (vecScreen.fY + 18), (((Math::Clamp( 0.0f, m_pLocalPlayer->GetHealth(), 720.0f ) * 100.0f) / 720.0f) / 100 * (fWidth - 4)), (fHeight - 4), D3DCOLOR_ARGB(255, 125, 157, 120) );
-	
-			vecScreen.fX += fWidth;
-			//g_pCore->GetGraphics()->DrawBox((vecScreen.fX + 4), (vecScreen.fY + 16), fWidth, fHeight, D3DCOLOR_ARGB(160, 0, 0, 0) );
-			g_pCore->GetGraphics()->DrawBox(((vecScreen.fX + 6)), (vecScreen.fY + 18), (fWidth - 4), (fHeight - 4), D3DCOLOR_ARGB(210, 0, 79, 96) );
-			g_pCore->GetGraphics()->DrawBox(((vecScreen.fX + 6)), (vecScreen.fY + 18), (((Math::Clamp( 0.0f, m_pLocalPlayer->GetHealth(), 720.0f ) * 100.0f) / 720.0f) / 100 * (fWidth - 4)), (fHeight - 4), D3DCOLOR_ARGB(255, 0, 79, 96) );
-		}
-
-		g_pCore->GetGraphics()->GetSprite()->Flush();
-		g_pCore->GetGraphics()->GetSprite()->End();
-	}
-}
-#endif
-
 BYTE CGame::CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int siThreadId, int iPriority, const char * szThreadName, const char *szComment)
 {
 	CLogFile::Printf("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment);
