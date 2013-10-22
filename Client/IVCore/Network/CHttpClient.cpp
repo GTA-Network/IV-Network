@@ -25,7 +25,7 @@
 #define MAX_BUFFER 8192
 #define DEFAULT_PORT 80
 #define DEFAULT_USER_AGENT "IV:Network/1.0.0"
-#define DEFAULT_REFERER "http://gta-network.net/ivn"
+#define DEFAULT_REFERER "http://gta-network.net/"
 
 CHttpClient::CHttpClient()
 : m_iSocket(INVALID_SOCKET),
