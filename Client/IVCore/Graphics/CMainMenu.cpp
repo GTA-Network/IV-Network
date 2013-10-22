@@ -169,7 +169,11 @@ void CMainMenu::SetQuickConnectVisible(bool bVisible)
 {
 	m_pQuickConnectWindow->setVisible(bVisible);
 	m_pQuickConnectWindow->setProperty("AlwaysOnTop", "true");
-	m_pQuickConnectWindow->activate();
+
+	if (bVisible == true)
+		m_pQuickConnectWindow->activate();
+	else if (bVisible == false)
+		m_pQuickConnectWindow->deactivate();
 
 	m_bQuickConnectVisible = bVisible;
 }
@@ -178,9 +182,26 @@ void CMainMenu::SetSettingsVisible(bool bVisible)
 {
 	m_pSettingsWindow->setVisible(bVisible);
 	m_pSettingsWindow->setProperty("AlwaysOnTop", "true");
-	m_pSettingsWindow->activate();
+
+	if (bVisible == true)
+		m_pSettingsWindow->activate();
+	else if (bVisible == false)
+		m_pSettingsWindow->deactivate();
 
 	m_bSettingsVisible = bVisible;
+}
+
+void CMainMenu::SetBrowserVisible(bool bVisible)
+{
+	m_pBrowserWindow->setVisible(bVisible);
+	m_pBrowserWindow->setProperty("AlwaysOnTop", "true");
+
+	if (bVisible == true)
+		m_pBrowserWindow->activate();
+	else if (bVisible == false)
+		m_pBrowserWindow->deactivate();
+
+	m_bServerBrowserVisible = bVisible;
 }
 
 bool CMainMenu::OnQuickConnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
@@ -360,8 +381,8 @@ bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArg
 		m_pBrowserList->setSize(CEGUI::UVector2(CEGUI::UDim(0.950f, 0), CEGUI::UDim(0.8250f, 0)));
 		m_pBrowserList->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0250f, 0), CEGUI::UDim(0.0250f, 0)));
 		m_pBrowserList->setProperty("ColumnHeader", "text:Locked width:{0.09,0} id:0");
-		m_pBrowserList->setProperty("ColumnHeader", "text:Hostname width:{0.3,0} id:1");
-		m_pBrowserList->setProperty("ColumnHeader", "text:IP Address width:{0.2,0} id:2");
+		m_pBrowserList->setProperty("ColumnHeader", "text:Hostname width:{0.4.5,0} id:1");
+		m_pBrowserList->setProperty("ColumnHeader", "text:IP Address width:{0.2.3,0} id:2");
 		m_pBrowserList->setProperty("ColumnHeader", "text:Players width:{0.1,0} id:3");
 		m_pBrowserList->setProperty("ColumnHeader", "text:Ping width:{0.1,0} id:4");
 		m_pBrowserList->setProperty("ColumnHeader", "text:Mode width:{0.1,0} id:5");
@@ -371,14 +392,18 @@ bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArg
 		m_pBrowserConnect = m_pGUI->CreateGUIButton(m_pBrowserWindow);
 		m_pBrowserConnect->setText("Connect");
 		m_pBrowserConnect->setSize(CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.10f, 0)));
-		m_pBrowserConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0.550f, 0), CEGUI::UDim(0.8790f, 0)));
+		m_pBrowserConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0.775f, 0), CEGUI::UDim(0.8750f, 0)));
 		m_pBrowserConnect->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerClicked, this));
+
+		// Set our Server Browser Visible
+		m_pBrowserWindow->setVisible(true);
 
 		// Flag our Server Browser as visible
 		m_bServerBrowserVisible = true;
 	}
 	else
 	{
+		m_pBrowserWindow->setVisible(true);
 		m_pBrowserWindow->activate();
 	}
 	return true;
@@ -461,7 +486,7 @@ bool CMainMenu::OnQuickConnectCloseClick(const CEGUI::EventArgs &eventArgs)
 
 bool CMainMenu::OnSettingsCloseClick(const CEGUI::EventArgs &eventArgs)
 {
-	// Hide the whole Quick Connect Box
+	// Hide the whole Settings Box
 	SetSettingsVisible(false);
 
 	return true;
@@ -497,8 +522,7 @@ void CMainMenu::OnSettingsApply()
 
 	// Save the settings
 	CSettings::Save();
-	m_pSettingsWindow->deactivate();
-	m_pSettingsWindow->setVisible(false);
+	SetSettingsVisible(false);
 	m_pGUI->ShowMessageBox(CString("You have changed your name to %s.", m_pSettingsEditBox->getText()).Get(), "Applying Settings", GUI_MESSAGEBOXTYPE_OK);
 }
 
@@ -558,10 +582,15 @@ void CMainMenu::OnQuickConnectSubmit()
 
 	// Hide the main menu elements
 	SetVisible(false);
-	SetQuickConnectVisible(false);
+
+	if (m_pQuickConnectWindow)
+		SetQuickConnectVisible(false);
+
+	if (m_pSettingsWindow)
+		SetSettingsVisible(false);
 
 	if (m_pBrowserWindow)
-		m_pBrowserWindow->destroy();
+		SetBrowserVisible(false);
 }
 
 bool CMainMenu::OnQuickConnectConnectButtonClick(const CEGUI::EventArgs &eventArgs)
@@ -578,7 +607,7 @@ bool CMainMenu::OnSettingsMouseClick(const CEGUI::EventArgs &eventArgs)
 
 bool CMainMenu::OnServerBrowserExit(const CEGUI::EventArgs &eventArgs)
 {
-	m_pBrowserWindow->destroy();
+	SetBrowserVisible(false);
 	return true;
 }
 
@@ -608,7 +637,7 @@ bool CMainMenu::OnServerClicked(const CEGUI::EventArgs &eventArgs)
 
 		//g_pCore->ConnectToServer(strAddress, usPort, ""); // The server password is empty if the player is able to get to this stage
 
-		m_pBrowserWindow->destroy();
+		SetBrowserVisible(false);
 	}
 
 	return true;
