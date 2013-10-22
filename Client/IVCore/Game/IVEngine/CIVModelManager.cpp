@@ -17,56 +17,30 @@ extern CCore * g_pCore;
 int CIVModelManager::GetModelIndexFromHash( DWORD dwModelHash )
 {
 	int iModelIndex = -1;
-	int * pModelIndex = &iModelIndex;
 
-	_asm	push pModelIndex;
-	_asm	push dwModelHash;
-	_asm	call COffsets::FUNC_GetModelIndexFromHash;
-	_asm	add esp, 8;
+	((int(__cdecl *) (int, int*))(COffsets::FUNC_GetModelIndexFromHash))(dwModelHash, &iModelIndex);
 
 	return iModelIndex;
 }
 
-void CIVModelManager::RequestModel( int iModelIndex, DWORD dwFlags )
+void CIVModelManager::RequestModel(int iModelIndex, DWORD dwFlags)
 {
-	unsigned int uiFileTypeIndex = *(unsigned int *)COffsets::VAR_ResourceTypeWdrIndex;
-
-	_asm	push dwFlags;
-	_asm	push uiFileTypeIndex;
-	_asm	push iModelIndex;
-	_asm	call COffsets::FUNC_RequestResource;
-	_asm	add esp, 0Ch;
+	((bool(__cdecl *) (int, unsigned int, int))(COffsets::FUNC_RequestResource))(iModelIndex, *(unsigned int *) COffsets::VAR_ResourceTypeWdrIndex, dwFlags);
 }
 
 void CIVModelManager::LoadRequestedModels( )
 {
-	_asm	push 1;
-	_asm	call COffsets::FUNC_LoadAllResources;
-	_asm	add esp, 4;
+	((int(__cdecl *) (bool))(COffsets::FUNC_LoadAllResources))(true);
 }
 
 bool CIVModelManager::HasModelLoaded( int iModelIndex )
 {
-	unsigned int uiFileTypeIndex = *(unsigned int *)COffsets::VAR_ResourceTypeWdrIndex;
-	bool bLoaded = false;
-
-	_asm	push uiFileTypeIndex;
-	_asm	push iModelIndex;
-	_asm	call COffsets::FUNC_HasResourceLoaded;
-	_asm	add esp, 8;
-	_asm	mov bLoaded, al;
-
-	return bLoaded;
+	return ((bool(__cdecl *) (int, unsigned int))(COffsets::FUNC_HasResourceLoaded))(iModelIndex, *(unsigned int *) COffsets::VAR_ResourceTypeWdrIndex);
 }
 
 void CIVModelManager::ReleaseModel( int iModelIndex )
 {
-	unsigned int uiFileTypeIndex = *(unsigned int *)COffsets::VAR_ResourceTypeWdrIndex;
-
-	_asm	push uiFileTypeIndex;
-	_asm	push iModelIndex;
-	_asm	call COffsets::FUNC_ReleaseResource;
-	_asm	add esp, 8;
+	((void(__cdecl *) (int, unsigned int))(COffsets::FUNC_ReleaseResource))(iModelIndex, *(unsigned int *) COffsets::VAR_ResourceTypeWdrIndex);
 }
 
 DWORD CIVModelManager::VehicleIdToModelHash(int iModelId)

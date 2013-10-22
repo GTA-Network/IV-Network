@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.20827.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client - @Responsible FRi", "Client - @Responsible FRi", "{B595E6DA-BAB2-43D5-B5FB-23D511693726}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B595E6DA-BAB2-43D5-B5FB-23D511693726}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{FF6C4EC1-6142-4E00-BCB6-28EAAF9A1DE8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server - @Responsible XForce", "Server - @Responsible XForce", "{88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{88789B31-3AF1-49EC-8DA3-44DF7AA1F5B1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{85B22AE1-C342-472E-AD5A-51388EC1DD0D}"
 	ProjectSection(SolutionItems) = preProject

@@ -16,28 +16,23 @@
 #include <Game/eGame.h>
 #include <IV/IVData.h>
 
-class IVBaseModelInfoVFTable {
-public:
-	DWORD ScalarDeletingDestructor;
-	DWORD m4;
-	DWORD m8;
-	DWORD GetType;
-	DWORD m10;
-	DWORD m14;
-	DWORD m18;
-	DWORD m1C;
-	DWORD m20;
-	DWORD m24;
-	DWORD m28;
-	DWORD m2C;
-	DWORD m30;
-	DWORD m34;
-	DWORD m38;
-};
-
 class IVBaseModelInfo {
 public:
-	IVBaseModelInfoVFTable * m_VFTable;
+	virtual DWORD ScalarDeletingDestructor() = 0;
+	virtual DWORD F_m4() = 0;
+	virtual DWORD F_m8() = 0;
+	virtual byte __thiscall GetType() = 0;
+	virtual DWORD F_m10() = 0;
+	virtual DWORD F_m14() = 0;
+	virtual DWORD F_m18() = 0;
+	virtual DWORD F_m1C() = 0;
+	virtual DWORD F_m20() = 0;
+	virtual DWORD F_m24() = 0;
+	virtual DWORD F_m28() = 0;
+	virtual DWORD F_m2C() = 0;
+	virtual DWORD F_m30() = 0;
+	virtual DWORD F_m34() = 0;
+	virtual DWORD F_m38() = 0;
 	PAD(IVBaseModelInfo, pad0, 0x38);
 	DWORD dwHash;
 	PAD(IVBaseModelInfo, pad1, 0x4);

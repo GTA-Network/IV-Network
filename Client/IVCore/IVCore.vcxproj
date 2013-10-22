@@ -147,7 +147,6 @@
     <ClCompile Include="Game\CCamera.cpp" />
     <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Game\CContextData.cpp" />
-    <ClCompile Include="Game\CContextSwitch.cpp" />
     <ClCompile Include="Game\CCrashFixes.cpp" />
     <ClCompile Include="Game\CDevelopment.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
@@ -159,7 +158,6 @@
     <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
     <ClCompile Include="Game\CTrafficHandler.cpp" />
-    <ClCompile Include="Game\CWeaponHandler.cpp" />
     <ClCompile Include="Game\Entity\C3DLabelEntity.cpp" />
     <ClCompile Include="Game\Entity\CActorEntity.cpp" />
     <ClCompile Include="Game\Entity\CBlipEntity.cpp" />
@@ -322,7 +320,6 @@
     <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CContextData.h" />
-    <ClInclude Include="Game\CContextSwitch.h" />
     <ClInclude Include="Game\CCrashFixes.h" />
     <ClInclude Include="Game\CDevelopment.h" />
     <ClInclude Include="Game\CGame.h" />
@@ -334,7 +331,6 @@
     <ClInclude Include="Game\CPools.h" />
     <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\CTrafficHandler.h" />
-    <ClInclude Include="Game\CWeaponHandler.h" />
     <ClInclude Include="Game\Entity\C3DLabelEntity.h" />
     <ClInclude Include="Game\Entity\CActorEntity.h" />
     <ClInclude Include="Game\Entity\CBlipEntity.h" />

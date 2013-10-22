@@ -43,14 +43,9 @@ BYTE CIVModelInfo::GetType( )
 	IVBaseModelInfo * pModelInfo = GetModelInfo( );
 	if( pModelInfo )
 	{
-		DWORD dwFunctionAddress = pModelInfo->m_VFTable->GetType;
-		BYTE byteType = 0;
-
-		_asm	mov ecx, pModelInfo;
-		_asm	call dwFunctionAddress;
-		_asm	mov byteType, al;
-
-		return byteType;
+		CLogFile::Printf("Am I Crashed? (%s %i)", __FILE__, __LINE__);
+		
+		return pModelInfo->GetType();
 	}
 
 	return 0;

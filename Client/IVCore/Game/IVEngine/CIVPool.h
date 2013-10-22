@@ -49,20 +49,10 @@ public:
 
 	T * Allocate()
 	{
-		T * pObject = NULL;
-
 		if (m_pPool)
-		{
-			IVPool * pPool = m_pPool;
-			_asm
-			{
-				mov ecx, pPool
-				call COffsets::FUNC_CPool__Allocate
-				mov pObject, eax
-			}
-		}
+			return (*(T*(__thiscall *)(IVPool *)) (COffsets::FUNC_CPool__Allocate))(m_pPool);
 
-		return pObject;
+		return NULL;
 	}
 
 	DWORD		GetCount()
@@ -91,55 +81,24 @@ public:
 
 	unsigned int HandleOf(T * pObject)
 	{
-		unsigned int uiHandle = 0;
-
 		if(m_pPool)
-		{
-			T * _pObject = pObject;
-			IVPool * pPool = m_pPool;
-			_asm
-			{
-				push _pObject
-				mov ecx, pPool
-				call COffsets::FUNC_CPool__HandleOf
-				mov uiHandle, eax
-			}
-		}
+			return (*(unsigned int(__thiscall *)(IVPool *, T*)) (COffsets::FUNC_CPool__HandleOf))(m_pPool, pObject);
 
-		return uiHandle;
+		return 0;
 	}
 
 	T * AtHandle(unsigned int uiHandle)
 	{
-		T * pObject = NULL;
-
 		if(m_pPool)
-		{
-			IVPool * pPool = m_pPool;
-			_asm
-			{
-				mov ecx, pPool
-				push uiHandle
-				call COffsets::FUNC_CPool__AtHandle
-				mov pObject, eax
-			}
-		}
+			return (*(T*(__thiscall *)(IVPool *, unsigned int)) (COffsets::FUNC_CPool__AtHandle))(m_pPool, uiHandle);
 
-		return pObject;
+		return 0;
 	}
 
 	void Release(T * pObject)
 	{
 		if(m_pPool)
-		{
-			IVPool * pPool = m_pPool;
-			_asm
-			{
-				mov ecx, pPool
-				push pObject
-				call COffsets::FUNC_CPool__Release
-			}
-		}
+			return (*(void(__thiscall *)(IVPool *, T*)) (COffsets::FUNC_CPool__Release))(m_pPool, pObject);
 	}
 };
 

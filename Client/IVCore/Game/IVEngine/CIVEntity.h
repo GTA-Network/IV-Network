@@ -136,7 +136,6 @@ public:
 	WORD       GetModelIndex();
 	void       SetAlpha(BYTE byteAlpha);
 	BYTE       GetAlpha();
-	bool       IsTouchingEntity(CIVEntity * pTouchingEntity);
 	void       AddToWorld();
 	void       RemoveFromWorld();
 };

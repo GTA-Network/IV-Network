@@ -38,7 +38,6 @@
 
 #include <Network/CNetworkManager.h>
 #include <Game/CDevelopment.h>
-#include <Game/CWeaponHandler.h>
 #include <Graphics/CSnapShot.h>
 
 #include <General/CModuleManager.h>

@@ -140,25 +140,6 @@ BYTE CIVEntity::GetAlpha()
 	return 0;
 }
 
-bool CIVEntity::IsTouchingEntity(CIVEntity * pTouchingEntity)
-{
-	if(m_pEntity)
-	{
-		IVEntity * pGameEntity = m_pEntity;
-		IVEntity * pTouchingGameEntity = pTouchingEntity->GetEntity();
-		bool bResult = false;
-
-		_asm	push pTouchingGameEntity;
-		_asm	push pGameEntity;
-		_asm	call COffsets::FUNC_CEntity__IsTouchingEntity;
-		_asm	mov bResult, al;
-		
-		return bResult;
-	}
-
-	return false;
-}
-
 void  CIVEntity::AddToWorld()
 {
 	if(m_pEntity)

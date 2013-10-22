@@ -33,16 +33,9 @@ CIVPad::CIVPad() :
 	// Allocate the new pad
 	m_pPad = new IVPad;
 
-	// Construct the pad
-	IVPad * pPad = m_pPad;
-	
-	_asm	mov ecx, pPad;
-	_asm	call COffsets::FUNC_CPad__Constructor;
+	((IVPad*(__thiscall *) (IVPad *))(COffsets::FUNC_CPad__Constructor))(m_pPad);
 
-	// Initialise the pad
-	_asm	push 0;
-	_asm	mov ecx, pPad;
-	_asm	call COffsets::FUNC_CPad__Initialize;
+	((void(__thiscall *) (IVPad *, bool))(COffsets::FUNC_CPad__Initialize))(m_pPad, false);
 
 	// Initialise values
 	for(int i = 0; i < INPUT_COUNT; i++)
@@ -56,7 +49,7 @@ CIVPad::CIVPad() :
 		}
 	}
 
-	CLogFile::Printf("Remote pad created! (0x%p)", pPad);
+	CLogFile::Printf("Remote pad created! (0x%p)", m_pPad);
 }
 
 CIVPad::CIVPad(IVPad * pPad)
@@ -77,11 +70,7 @@ CIVPad::~CIVPad()
 	{
 		CLogFile::Printf("Remote pad destroyed! (0x%p)", m_pPad);
 
-		// Deconstruct the pad
-		IVPad * pPad = m_pPad;
-
-		_asm	mov ecx, pPad;
-		_asm	call COffsets::FUNC_CPad__Destructor;
+		((int(__thiscall *) (IVPad *))(COffsets::FUNC_CPad__Destructor))(m_pPad);
 
 		// Delete the pad
 		SAFE_DELETE(m_pPad);

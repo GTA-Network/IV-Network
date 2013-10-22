@@ -36,24 +36,22 @@ private:
 
 	static inline void Invoke(unsigned int uiHash, NativeContext * pNativeContext)
 	{
-#ifdef _CLIENT
-		DWORD dwFunctionAddress = COffsets::FUNC_ScrVM__FindNativeAddress;
-#else
-		DWORD dwFunctionAddress = dwInvokeOffset;
-#endif
-
-		DWORD dwNativeFunc = NULL;
+		NativeCall ncNativeCall = NULL;
 		_asm
 		{
-			push esi
+			pushad
 			mov esi, uiHash
-			call dwFunctionAddress
-			pop esi
-			mov dwNativeFunc, eax
+#ifdef _CLIENT
+			call COffsets::FUNC_ScrVM__FindNativeAddress
+#else
+			call dwInvokeOffset;
+#endif
+			mov ncNativeCall, eax
+			popad
 		}
 
-		if(dwNativeFunc != NULL)
-			((NativeCall)dwNativeFunc)(pNativeContext);
+		if (ncNativeCall != NULL)
+			ncNativeCall(pNativeContext);
 		else
 		{
 #ifdef _CLIENT
