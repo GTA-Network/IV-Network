@@ -91,6 +91,7 @@ public:
 	void SetVisible(bool bVisible);
 	void SetQuickConnectVisible(bool bVisible);
 	void SetSettingsVisible(bool bVisible);
+	void SetBrowserVisible(bool bVisible);
 	bool IsMainMenuVisible() { return m_bVisible; }
 
 	static void OnExitButtonMouseClickConfirm(eGUIMessageBoxResponse type);
