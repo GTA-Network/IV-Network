@@ -27,7 +27,6 @@ struct XUSER_READ_PROFILE_SETTINGS
 	BYTE *	pSettings;
 };
 
-#if 0
 // XLive Functions
 int WINAPI XWSAStartup(WORD wVersionRequested, LPWSADATA lpWsaData);
 void WINAPI XWSACleanup();
@@ -77,10 +76,8 @@ DWORD WINAPI XLivePBufferAllocate(int size, FakeProtectedBuffer ** pBuffer);
 DWORD WINAPI XLivePBufferFree(FakeProtectedBuffer * pBuffer);
 DWORD WINAPI XLivePBufferGetByte(FakeProtectedBuffer * pBuffer, int offset, BYTE * value);
 DWORD WINAPI XLivePBufferSetByte(FakeProtectedBuffer * pBuffer, int offset, BYTE value);
-#endif
 DWORD WINAPI XLivePBufferGetDWORD(FakeProtectedBuffer * pBuffer, DWORD dwOffset, DWORD * pdwValue);
 DWORD WINAPI XLivePBufferSetDWORD(FakeProtectedBuffer * pBuffer, DWORD dwOffset, DWORD dwValue);
-#if 0
 int WINAPI XLiveGetUpdateInformation(DWORD);
 int WINAPI XLiveUpdateSystem(DWORD);
 int WINAPI XLivePreTranslateMessage(DWORD);
@@ -152,7 +149,6 @@ DWORD WINAPI XLiveContentRetrieveOffersByDate(DWORD dwUserIndex, DWORD dwOffserI
 DWORD WINAPI XShowMarketplaceUI(DWORD dwUserIndex, DWORD dwEntryPoint, ULONGLONG dwOfferId, DWORD dwContentCategories);
 DWORD WINAPI xlive_5367(HANDLE, DWORD, DWORD, BYTE *, DWORD);
 DWORD WINAPI xlive_5372(HANDLE, DWORD, DWORD, DWORD, BYTE *, HANDLE);
-#endif
 
 // Hook Class
 class CXLiveHook {

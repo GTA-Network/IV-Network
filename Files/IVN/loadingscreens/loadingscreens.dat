@@ -9,22 +9,6 @@ Fade : NONE
 
 [BEGIN]
 Flag : NONE
-Objects : 1
-Duration : 5000
-Fade : IN_OUT
-Texture 1 : ivn BEFORE
-StartTime 1 : 0
-EndTime 1 : 5000
-MoveTime 1 : 20
-ScaleTime 1 : 20
-StartPos 1 : 0.5 0.5
-MoveAmount 1 : 0.0 0.0
-StartSize 1 : 1.0 1.0
-ScaleAmount 1 : 0.00 0.00
-[END]
-
-[BEGIN]
-Flag : NONE
 Objects : 2
 Duration : 8000
 Fade : IN_OUT
@@ -255,22 +239,6 @@ Flag : INITIAL_MAIN
 Objects : 0
 Duration : 0
 Fade : NONE
-[END]
-
-[BEGIN]
-Flag : NONE
-Objects : 1
-Duration : 5000
-Fade : IN_OUT
-Texture 1 : ivn BEFORE
-StartTime 1 : 0
-EndTime 1 : 5000
-MoveTime 1 : 20
-ScaleTime 1 : 20
-StartPos 1 : 0.5 0.5
-MoveAmount 1 : 0.0 0.0
-StartSize 1 : 1.0 1.0
-ScaleAmount 1 : 0.00 0.00
 [END]
 
 [BEGIN]
