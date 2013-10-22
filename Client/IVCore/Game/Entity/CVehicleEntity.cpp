@@ -86,6 +86,7 @@ CVehicleEntity::~CVehicleEntity()
 // Seems to be setup audio or something like that
 #define CVehicle__TurnEngineOn ((void(__thiscall *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
 #define sub_B40B30 ((void(__thiscall *)(IVVehicle*, char, char))(g_pCore->GetBase() + 0xB40B30))
+#define pIVVehicleFactory (*(IVVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4))
 
 bool CVehicleEntity::Create()
 {
@@ -96,29 +97,17 @@ bool CVehicleEntity::Create()
 	if(IsSpawned())
 		return false;
 
-	//m_pModelInfo->AddReference(true);
-
 	CIVScript::RequestModel(m_pModelInfo->GetHash());
 
-	while (!g_pCore->GetGame()->GetStreaming()->HasResourceLoaded(eResourceType::RESOURCE_TYPE_WDR, m_pModelInfo->GetIndex()))
-		CIVScript_NativeInvoke::Invoke<unsigned int, int>(CIVScript::NATIVE_LOAD_ALL_OBJECTS_NOW, 0);
+	while (!CIVScript::HasModelLoaded(m_pModelInfo->GetHash()))
+		CIVScript::LoadAllObjectsNow(false);
 
-	IVVehicleFactory* pVehicleFactory = *(IVVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4);
-
-	//IVVehicle * pVehicle = pVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
-
-	IVVehicle * pVehicle = ((IVVehicle*(__thiscall *)(void*, int modelIndex, int creator, int a3, int network))(g_pCore->GetBase() + 0x04B4830))((void*) (g_pCore->GetBase() + 0x118A6D4), m_pModelInfo->GetIndex(), 1, 0, 0);
+	IVVehicle * pVehicle = pIVVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
 		pVehicle->m_byteFlags1 |= 4u;
-		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision
-
-		// This maybe fix the crash if boat is not in water
-		/*bool isBoat = pVehicle->m_eVehicleType == 2;
-		pVehicle->field_41 = 2;
-		if (isBoat)
-			sub_B40B30(pVehicle, 1, 0);*/
+		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
 
 		CWorld__AddEntity(pVehicle, false);
 		CVehicleModelInfo__AddReference(m_pModelInfo->GetModelInfo());
@@ -169,8 +158,9 @@ bool CVehicleEntity::Destroy()
 	if(!IsSpawned())
 		return false;
 
-	IVVehicleFactory* pVehicleFactory = *(IVVehicleFactory**) (g_pCore->GetBase() + 0x118A6D4);
-	pVehicleFactory->Delete(m_pVehicle->GetVehicle());
+	unsigned int handle = g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(m_pVehicle->GetVehicle());
+	CIVScript::MarkCarAsNoLongerNeeded(&handle);
+	pIVVehicleFactory->Delete(m_pVehicle->GetVehicle());
 
 	// Remove the vehicle model reference
 	m_pModelInfo->RemoveReference();

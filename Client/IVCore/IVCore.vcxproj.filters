@@ -350,9 +350,6 @@
     <ClCompile Include="Game\IVEngine\CIVTrain.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Game\IVEngine\CIVStreaming.cpp">
-      <Filter>Source Files\Game\IVEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Game\IVEngine\CIVPedWeaponSlot.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
@@ -538,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="Network\CHttpClient.cpp">
       <Filter>Source Files\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CContextData.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -767,9 +767,6 @@
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Game\IVEngine\CIVTrain.h">
-      <Filter>Header Files\Game\IVEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\IVEngine\CIVStreaming.h">
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Game\IVEngine\CIVPedWeaponSlot.h">
@@ -1098,6 +1095,9 @@
     </ClInclude>
     <ClInclude Include="Network\CHttpClient.h">
       <Filter>Source Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CContextData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

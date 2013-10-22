@@ -15,7 +15,6 @@
 #include <IV/CIVScriptEnums.h>
 #include <Game/IVEngine/CIVWeather.h>
 #include <IV/CIVScript_FunctionInvoke.h>
-#include <Game/IVEngine/CIVStreaming.h>
 #include <Ptrs.h>
 #include <Game/IVEngine/CIVTrain.h>
 

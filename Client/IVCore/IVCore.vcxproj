@@ -186,7 +186,6 @@
     <ClCompile Include="Game\IVEngine\CIVPlayerInfo.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPlayerPed.cpp" />
     <ClCompile Include="Game\IVEngine\CIVPool.cpp" />
-    <ClCompile Include="Game\IVEngine\CIVStreaming.cpp" />
     <ClCompile Include="Game\IVEngine\CIVTask.cpp" />
     <ClCompile Include="Game\IVEngine\CIVTrain.cpp" />
     <ClCompile Include="Game\IVEngine\CIVVehicle.cpp" />
@@ -364,7 +363,6 @@
     <ClInclude Include="Game\IVEngine\CIVPlayerInfo.h" />
     <ClInclude Include="Game\IVEngine\CIVPlayerPed.h" />
     <ClInclude Include="Game\IVEngine\CIVPool.h" />
-    <ClInclude Include="Game\IVEngine\CIVStreaming.h" />
     <ClInclude Include="Game\IVEngine\CIVTask.h" />
     <ClInclude Include="Game\IVEngine\CIVTrain.h" />
     <ClInclude Include="Game\IVEngine\CIVVehicle.h" />
