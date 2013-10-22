@@ -20,6 +20,7 @@ private:
 	bool			  m_bVisible;
 	bool			  m_bQuickConnectVisible;
 	bool			  m_bSettingsVisible;
+	bool			  m_bServerBrowserVisible;
 
 	// Main Menu Stuff
 	CGUIStaticImage	* m_pBackground;
@@ -46,6 +47,11 @@ private:
 	CGUIEditBox     * m_pSettingsEditBox;
 	CGUIButton      * m_pSettingsButtonEx;
 
+	// Server Browser Stuff
+	CGUIFrameWindow		* m_pBrowserWindow;
+	CGUIMultiColumnList * m_pBrowserList;
+	CGUIButton			* m_pBrowserConnect;
+
 	bool OnDisconnectButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnDisconnectButtonMouseExit(const CEGUI::EventArgs &eventArgs);
 	bool OnDisconnectButtonMouseClick(const CEGUI::EventArgs &eventArgs);
@@ -55,6 +61,8 @@ private:
 	bool OnServerBrowserButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnServerBrowserButtonMouseExit(const CEGUI::EventArgs &eventArgs);
 	bool OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArgs);
+	bool OnServerBrowserExit(const CEGUI::EventArgs &eventArgs);
+	bool OnServerClicked(const CEGUI::EventArgs &eventArgs);
 	bool OnSettingsButtonMouseEnter(const CEGUI::EventArgs &eventArgs);
 	bool OnSettingsButtonMouseExit(const CEGUI::EventArgs &eventArgs);
 	bool OnCreditsButtonMouseEnter(const CEGUI::EventArgs &eventArgs);

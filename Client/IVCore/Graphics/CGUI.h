@@ -32,6 +32,7 @@ InheritedStruct(CGUIWindow, CGUIProgressBar);
 InheritedStruct(CGUIWindow, CGUIStaticText);
 InheritedStruct(CGUIWindow, CGUIFrameWindow);
 InheritedStruct(CGUIWindow, CGUIEditBox);
+InheritedStruct(CGUIWindow, CGUIMultiColumnList);
 
 enum eGUIMessageBoxType
 {
@@ -130,6 +131,8 @@ public:
 	CGUIFrameWindow          * CreateGUIFrameWindow(CEGUI::Window * pParentWindow = NULL);
 	CGUIEditBox              * CreateGUIEditBox(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
 	CGUIEditBox              * CreateGUIEditBox(CEGUI::Window * pParentWindow = NULL);
+	CGUIMultiColumnList      * CreateGUIMultiColumnList(CEGUI::String &sName, CEGUI::Window * pParentWindow = NULL);
+	CGUIMultiColumnList      * CreateGUIMultiColumnList(CEGUI::Window * pParentWindow = NULL);
 	CGUIStaticText			 * CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGUI::UVector2 vecPosition);
 
 	bool                       OnMessageBoxClick(const CEGUI::EventArgs& eventArgs);
