@@ -19,22 +19,21 @@ CIVPlayerInfo::CIVPlayerInfo() :
 CIVPlayerInfo::CIVPlayerInfo(BYTE bytePlayerNumber) :
 	m_bCreatedByUs(true)
 {
-	IVPlayerInfo * pPlayerInfo = (IVPlayerInfo *)CGameFunction::Alloc(sizeof(IVPlayerInfo));
+	unsigned char * pPlayerInfo = (unsigned char *) CGameFunction::Alloc(sizeof(IVPlayerInfo));
 
 	if(!pPlayerInfo)
 		CLogFile::Print("ERROR: CIVPlayerInfo::CIVPlayerInfo - Alloc fail!");
 
-	_asm	mov ecx, pPlayerInfo;
-	_asm	call COffsets::FUNC_CPlayerInfo__Constructor;
+	((IVPlayerInfo *(__thiscall *) (IVPlayerInfo *))(COffsets::FUNC_CPlayerInfo__Constructor))((IVPlayerInfo *) pPlayerInfo);
 
-	pPlayerInfo->m_bytePlayerNumber = bytePlayerNumber;
+	((IVPlayerInfo *)pPlayerInfo)->m_bytePlayerNumber = bytePlayerNumber;
 
 	*(BYTE *)(pPlayerInfo + 0x15B) = 0;
 	*(BYTE *)(pPlayerInfo + 0x15C) = 0;
 	*(BYTE *)(pPlayerInfo + 0x15D) = 0;
 	*(DWORD *)(pPlayerInfo + 0x137) = 2;
 
-	m_pPlayerInfo = pPlayerInfo;
+	m_pPlayerInfo = (IVPlayerInfo *) pPlayerInfo;
 }
 
 CIVPlayerInfo::CIVPlayerInfo(IVPlayerInfo * pPlayerInfo)
@@ -57,10 +56,7 @@ void CIVPlayerInfo::SetPlayerInfo(IVPlayerInfo * pPlayerInfo)
 	// Was this created by us?
 	if(m_bCreatedByUs)
 	{
-		IVPlayerInfo * pPlayerInfo = m_pPlayerInfo;
-
-		_asm	mov ecx, pPlayerInfo;
-		_asm	call COffsets::FUNC_CPlayerInfo__SetPlayerInfo;
+		((void(__thiscall *) (IVPlayerInfo *))(COffsets::FUNC_CPlayerInfo__Deconstructor))(m_pPlayerInfo);
 
 		CGameFunction::Free(pPlayerInfo);
 	}

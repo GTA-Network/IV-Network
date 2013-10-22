@@ -67,7 +67,7 @@ CIVWeapon * CIVPedWeapons::GetCurrentWeapon()
 	return NULL;
 }
 
-void CIVPedWeapons::GiveWeapon(eWeaponType weaponType, DWORD dwAmmo)
+void CIVPedWeapons::GiveWeapon(eWeaponType weaponType, int dwAmmo)
 {
 	if(m_pPedWeapons)
 		; //CIVScript::GiveWeaponToChar();
@@ -99,26 +99,12 @@ eWeaponType CIVPedWeapons::GetCurrentWeaponType()
 
 void CIVPedWeapons::SetCurrentWeaponBySlot(eWeaponSlot weaponSlot)
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
 		if(weaponSlot >= WEAPON_SLOT_MAX)
 			return;
 
-		int iUnknown = 0;
-
-		if(m_pPed->IsInVehicle())
-			iUnknown = 19;
-
-		IVPed * pGamePed = m_pPed->GetPed();
-
-		_asm	push pGamePed;
-		_asm	push 1;
-		_asm	push weaponSlot;
-		_asm	push iUnknown;
-		_asm	mov ecx, pPedWeapons;
-		_asm	call COffsets::FUNC_CPedWeapon__SetCurrentWeapon;
+		((void(__thiscall *) (IVPedWeapons *, int, eWeaponSlot, bool, IVPed *))(COffsets::FUNC_CPedWeapon__SetCurrentWeapon))(m_pPedWeapons, m_pPed->IsInVehicle() ? 19 : 0, weaponSlot, true, m_pPed->GetPed());
 	}
 }
 
@@ -140,73 +126,41 @@ void CIVPedWeapons::SetCurrentWeaponByType(eWeaponType weaponType)
 
 void CIVPedWeapons::SetCurrentWeaponVisible(bool bVisible)
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
-		IVPed * pGamePed = m_pPed->GetPed();
-
 		if(bVisible)
 		{
-			DWORD dwFunctionAddress = COffsets::FUNC_CPedWeapon__ShowWeapon;
-
-			_asm	push 0;
-			_asm	push -1;
-			_asm	push pGamePed;
-			_asm	mov ecx, pPedWeapons;
-			_asm	call COffsets::FUNC_CPedWeapon__ShowWeapon;
+			((void(__thiscall *) (IVPedWeapons *, IVPed *, int, int))(COffsets::FUNC_CPedWeapon__ShowWeapon))(m_pPedWeapons, m_pPed->GetPed(), -1, 0);
 		}
 		else
 		{
-			if(pPedWeapons->m_pWeaponObject)
+			if (m_pPedWeapons->m_pWeaponObject)
 			{
-				DWORD dwFunctionAddress = COffsets::FUNC_CPedWeapon__HideWeapon;
-
-				_asm	push 0;
-				_asm	push 0;
-				_asm	push pGamePed;
-				_asm	mov ecx, pPedWeapons;
-				_asm	call COffsets::FUNC_CPedWeapon__HideWeapon;
+				((void(__thiscall *) (IVPedWeapons *, IVPed *, int, int))(COffsets::FUNC_CPedWeapon__HideWeapon))(m_pPedWeapons, m_pPed->GetPed(), 0, 0);
 			}
 		}
 	}
 }
 
-void CIVPedWeapons::RemoveWeapon(eWeaponType weaponType, int iUnknown)
+void CIVPedWeapons::RemoveWeapon(eWeaponType weaponType, bool bUnknown)
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
-		IVPed * pGamePed = m_pPed->GetPed();
-
-		_asm	push iUnknown;
-		_asm	push weaponType;
-		_asm	push pGamePed;
-		_asm	mov ecx, pPedWeapons;
-		_asm	call COffsets::FUNC_CPedWeapons__RemoveWeapon;
+		((void(__thiscall *) (IVPedWeapons *, IVPed *, eWeaponType, bool))(COffsets::FUNC_CPedWeapons__RemoveWeapon))(m_pPedWeapons, m_pPed->GetPed(), weaponType, bUnknown);
 	}
 }
 
 void CIVPedWeapons::RemoveAllWeapons()
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
-		IVPed * pGamePed = m_pPed->GetPed();
-
-		_asm	push pGamePed;
-		_asm	mov ecx, pPedWeapons;
-		_asm	call COffsets::FUNC_CPedWeapons__RemoveAllWeapons;
+		((void(__thiscall *) (IVPedWeapons *, IVPed *))(COffsets::FUNC_CPedWeapons__RemoveAllWeapons))(m_pPedWeapons, m_pPed->GetPed());
 	}
 }
 
 DWORD CIVPedWeapons::GetAmmoBySlot(eWeaponSlot weaponSlot)
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
 		if(weaponSlot >= WEAPON_SLOT_MAX)
 			return 0;
@@ -240,7 +194,7 @@ DWORD CIVPedWeapons::GetAmmoByType(eWeaponType weaponType)
 	return 0;
 }
 
-void CIVPedWeapons::SetAmmoBySlot(eWeaponSlot weaponSlot, DWORD dwAmmo)
+void CIVPedWeapons::SetAmmoBySlot(eWeaponSlot weaponSlot, int dwAmmo)
 {
 	if(m_pPedWeapons)
 	{
@@ -251,16 +205,11 @@ void CIVPedWeapons::SetAmmoBySlot(eWeaponSlot weaponSlot, DWORD dwAmmo)
 	}
 }
 
-void CIVPedWeapons::SetAmmoByType(eWeaponType weaponType, DWORD dwAmmo)
+void CIVPedWeapons::SetAmmoByType(eWeaponType weaponType, int dwAmmo)
 {
-	IVPedWeapons * pPedWeapons = m_pPedWeapons;
-
-	if(pPedWeapons)
+	if (m_pPedWeapons)
 	{
-		_asm	push dwAmmo;
-		_asm	push weaponType;
-		_asm	mov ecx, pPedWeapons;
-		_asm	call COffsets::FUNC_CPedWeapon__SetAmmoByType;
+		((void(__thiscall *) (IVPedWeapons *, eWeaponType, int))(COffsets::FUNC_CPedWeapon__SetAmmoByType))(m_pPedWeapons, weaponType, dwAmmo);
 	}
 }
 

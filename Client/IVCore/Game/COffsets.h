@@ -297,7 +297,7 @@ public:
 	DEF_OFF(FUNC_CPedWeapon__SetAmmoByType);
 
 	DEF_OFF(FUNC_CPlayerInfo__Constructor);
-	DEF_OFF(FUNC_CPlayerInfo__SetPlayerInfo);
+	DEF_OFF(FUNC_CPlayerInfo__Deconstructor);
 
 	DEF_OFF(FUNC_IV_LOADWORLDATPOS_BYTE);
 

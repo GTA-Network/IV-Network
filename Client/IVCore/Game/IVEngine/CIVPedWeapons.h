@@ -58,19 +58,19 @@ public:
 	CIVPedWeaponSlot * GetWeapon(eWeaponSlot slot) { return m_pWeaponSlots[slot]; }
 	CIVPedWeaponSlot * GetWeapon() { return m_pWeapon; }
 
-	void               GiveWeapon(eWeaponType weaponType, DWORD dwAmmo);
+	void               GiveWeapon(eWeaponType weaponType, int dwAmmo);
 	eWeaponType        GetWeaponInSlot(eWeaponSlot weaponSlot);
 	eWeaponSlot        GetCurrentWeaponSlot();
 	eWeaponType        GetCurrentWeaponType();
 	void               SetCurrentWeaponBySlot(eWeaponSlot weaponSlot);
 	void               SetCurrentWeaponByType(eWeaponType weaponType);
-	void               RemoveWeapon(eWeaponType weaponType, int iUnknown = 1);
+	void               RemoveWeapon(eWeaponType weaponType, bool bUnknown = true);
 	void               RemoveAllWeapons();
 	void               SetCurrentWeaponVisible(bool bVisible);
 	DWORD              GetAmmoBySlot(eWeaponSlot weaponSlot);
 	DWORD              GetAmmoByType(eWeaponType weaponType);
-	void               SetAmmoBySlot(eWeaponSlot weaponSlot, DWORD dwAmmo);
-	void               SetAmmoByType(eWeaponType weaponType, DWORD dwAmmo);
+	void               SetAmmoBySlot(eWeaponSlot weaponSlot, int dwAmmo);
+	void               SetAmmoByType(eWeaponType weaponType, int dwAmmo);
 	DWORD              GetAmmoInClip();
 	void               SetAmmoInClip(DWORD dwAmmoInClip);
 };

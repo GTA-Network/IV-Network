@@ -266,7 +266,7 @@ INIT_OFF(FUNC_CPedWeapon__HideWeapon);
 INIT_OFF(FUNC_CPedWeapon__SetAmmoByType);
 
 INIT_OFF(FUNC_CPlayerInfo__Constructor);
-INIT_OFF(FUNC_CPlayerInfo__SetPlayerInfo);
+INIT_OFF(FUNC_CPlayerInfo__Deconstructor);
 
 INIT_OFF(FUNC_IV_LOADWORLDATPOS_BYTE);
 
@@ -632,7 +632,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CPedWeapon__SetAmmoByType, 0x9DD6D0); // done
 
 			SET_OFF(FUNC_CPlayerInfo__Constructor,  0x849140); // done
-			SET_OFF(FUNC_CPlayerInfo__SetPlayerInfo,  0x8470C0); // done
+			SET_OFF(FUNC_CPlayerInfo__Deconstructor,  0x8470C0); // done
 
 			SET_OFF(FUNC_IV_LOADWORLDATPOS_BYTE,  0x110DFAC); // done
 
@@ -1020,7 +1020,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CPedWeapon__SetAmmoByType, 0x9A9D60);
 
 			SET_OFF(FUNC_CPlayerInfo__Constructor,  0x87AB70);
-			SET_OFF(FUNC_CPlayerInfo__SetPlayerInfo,  0x878AF0);
+			SET_OFF(FUNC_CPlayerInfo__Deconstructor,  0x878AF0);
 
 			SET_OFF(FUNC_IV_LOADWORLDATPOS_BYTE,  0x11DC444);
 
