@@ -176,8 +176,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Network", "Network", "{56F1
 	ProjectSection(SolutionItems) = preProject
 		Shared\Network\CBitStream.cpp = Shared\Network\CBitStream.cpp
 		Shared\Network\CBitStream.h = Shared\Network\CBitStream.h
+		Client\IVCore\CHttpClient.cpp = Client\IVCore\CHttpClient.cpp
+		Client\IVCore\CHttpClient.h = Client\IVCore\CHttpClient.h
 		Shared\Network\PacketIdentifiers.h = Shared\Network\PacketIdentifiers.h
 		Shared\Network\RPCIdentifiers.h = Shared\Network\RPCIdentifiers.h
+		Client\IVCore\Source.cpp = Client\IVCore\Source.cpp
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lua", "Lua", "{424EB0F4-53F8-4A1F-98EE-E1A1A94A8A04}"

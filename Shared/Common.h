@@ -85,6 +85,10 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 // Mod version string
 #define MOD_VERSION_STRING "1.0.0 DEV EFLC"
 
+// Masterlist Information
+#define MASTERLIST_URL 		"www.gta-network.net/masterlist/iv"
+#define MASTERLIST_TIMEOUT	50000
+
 // Version identifiers
 #define VERSION_IDENTIFIER MOD_VERSION_STRING DEBUG_IDENTIFIER " [" __DATE__ ", " __TIME__ "]"
 #define VERSION_IDENTIFIER_2 MOD_VERSION_STRING DEBUG_IDENTIFIER

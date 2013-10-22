@@ -110,33 +110,31 @@ bool CGraphics::LoadFonts()
 {
 	int fontsize = NULL;
 	bool bSuccess = true;
-	for(int i = 0; bSuccess && i < NUM_FONTS; i++) // Leave the loop here incase we add the choice of customizing your font - ViruZz
-	{	
-		RECT desktop;
-		const HWND hDesktop = GetDesktopWindow();
-		GetWindowRect(hDesktop, &desktop); 
 
-		if (desktop.right <= 1280 && desktop.bottom <= 1024) // Small Resolution
-		{
-			fontsize = 14;
-		}
-		else if (desktop.right > 1280 && desktop.right <= 1400) // Medium Resolution
-		{
-			fontsize = 16;
-		}
-		else if (desktop.right > 1400) // Large Resolution
-		{
-			fontsize = 18;
-		}
-		bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE,
-			DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
+	RECT desktop;
+	const HWND hDesktop = GetDesktopWindow();
+	GetWindowRect(hDesktop, &desktop); 
 
-		if (fontsize == NULL)
-		{
-			CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
-			TerminateProcess(GetCurrentProcess(), false);
-			return false;
-		}
+	if (desktop.right <= 1280 && desktop.bottom <= 1024) // Small Resolution
+	{
+		fontsize = 14;
+	}
+	else if (desktop.right > 1280 && desktop.right <= 1400) // Medium Resolution
+	{
+		fontsize = 16;
+	}
+	else if (desktop.right > 1400) // Large Resolution
+	{
+		fontsize = 18;
+	}
+	bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE,
+		DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
+
+	if (fontsize == NULL)
+	{
+		CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
+		TerminateProcess(GetCurrentProcess(), false);
+		return false;
 	}
 
 	return bSuccess && SUCCEEDED(D3DXCreateSprite(m_pDevice, &m_pSprite));
@@ -257,23 +255,6 @@ void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulCol
 
 void CGraphics::DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox)
 {
-	/*
-	// Begin the sprite
-	m_pSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
-
-	// Generate the matrix
-	D3DXMATRIX matrix;
-	D3DXMatrixTransformation2D( &matrix, NULL, 0.0f, &D3DXVECTOR2( fWidth, fHeight ), NULL, 0.0f, &D3DXVECTOR2( fLeft, fTop ) );
-
-	// Set the sprite transform
-	m_pSprite->SetTransform( &matrix );
-
-	// Draw the box
-	m_pSprite->Draw( m_pPixelTexture, NULL, NULL, NULL, dwColorBox );
-
-	// End the sprite*
-	m_pSprite->End( );*/
-
     D3DVERTEX vertex[4];
 	vertex[0] = D3DVERTEX(fLeft, fTop, 0.0f, 1.0f, dwColorBox);
     vertex[1] = D3DVERTEX((fLeft + fWidth), fTop, 0.0f, 1.0f, dwColorBox);
@@ -303,7 +284,13 @@ void CGraphics::DrawRect(float fX, float fY, float fWidth, float fHeight, unsign
 
 void CGraphics::DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour)
 {
-	// TODO
+	D3DVERTEX vertex[2];
+	vertex[0] = D3DVERTEX(fLeft, fTop, 0.0f, 1.0f, dwColour);
+	vertex[1] = D3DVERTEX(fRight, fBottom, 0.0f, 1.0f, dwColour);
+
+	m_pDevice->SetTexture(0, NULL);
+	m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+	m_pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, &vertex[0], sizeof(D3DVERTEX));
 }
 ID3DXFont * CGraphics::GetFont()
 {

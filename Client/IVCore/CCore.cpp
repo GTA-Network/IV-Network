@@ -128,6 +128,11 @@ bool CCore::Initialise()
 	
 	EpisodeManager::Initialize();
 
+	// Initialize our HTTP Connection
+	m_pHttpClient = new CHttpClient();
+	m_pHttpClient->SetRequestTimeout(10000);
+	m_pHttpClient->SetHost(MASTERLIST_URL);
+
 	CLogFile::Printf("Done!");
 	return true;
 }

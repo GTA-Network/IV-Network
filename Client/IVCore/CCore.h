@@ -57,6 +57,8 @@ typedef void(*GetInterface_t)(RAGEEngineInterface *);
 
 #include "Game/EpisodeManager.h"
 
+#include <Network/CHttpClient.h>
+
 class CCore {
 private:
 
@@ -91,6 +93,8 @@ private:
 
 	CMainMenu						*m_pMainMenu;
 	CCamera							*m_pCamera;
+
+	CHttpClient						* m_pHttpClient;
 
 	CAudioManager					*m_pAudioManager;
 
