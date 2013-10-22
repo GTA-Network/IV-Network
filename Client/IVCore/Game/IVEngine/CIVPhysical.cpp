@@ -39,71 +39,41 @@ IVPhysical * CIVPhysical::GetPhysical()
 
 void CIVPhysical::SetMoveSpeed(const CVector3& vecMoveSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
-
-	if(pPhysical)
+	if (GetEntity())
 	{
-		const CVector3 * pVecMoveSpeed = &vecMoveSpeed;
-
-		_asm	push pVecMoveSpeed;
-		_asm	mov ecx, pPhysical;
-		_asm	call COffsets::FUNC_CPhysical__SetMoveSpeed;
+		((void(__thiscall *) (IVPhysical *, const CVector3 *))(COffsets::FUNC_CPhysical__SetMoveSpeed))((IVPhysical *) GetEntity(), &vecMoveSpeed);
 	}
 }
 
 void CIVPhysical::GetMoveSpeed(CVector3& vecMoveSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
-
-	if(pPhysical)
+	if (GetEntity())
 	{
-		CVector3 * pVecMoveSpeed = &vecMoveSpeed;
-
-		_asm	push pVecMoveSpeed;
-		_asm	mov ecx, pPhysical;
-		_asm	call COffsets::FUNC_CPhysical__GetMoveSpeed;
+		((void(__thiscall *) (IVPhysical *, const CVector3 *))(COffsets::FUNC_CPhysical__GetMoveSpeed))((IVPhysical *) GetEntity(), &vecMoveSpeed);
 	}
 }
 
 void CIVPhysical::SetTurnSpeed(const CVector3& vecTurnSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
-
-	if(pPhysical)
+	if (GetEntity())
 	{
-		const CVector3 * pVecTurnSpeed = &vecTurnSpeed;
-
-		_asm	push pVecTurnSpeed;
-		_asm	mov ecx, pPhysical;
-		_asm	call COffsets::FUNC_CPhysical__SetTurnSpeed;
+		((void(__thiscall *) (IVPhysical *, const CVector3 *))(COffsets::FUNC_CPhysical__SetTurnSpeed))((IVPhysical *) GetEntity(), &vecTurnSpeed);
 	}
 }
 
 void CIVPhysical::GetTurnSpeed(CVector3& vecTurnSpeed)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
-
-	if(pPhysical)
+	if (GetEntity())
 	{
-		CVector3 * pVecTurnSpeed = &vecTurnSpeed;
-
-		_asm	push pVecTurnSpeed;
-		_asm	mov ecx, pPhysical;
-		_asm	call COffsets::FUNC_CPhysical__GetTurnSpeed;
+		((void(__thiscall *) (IVPhysical *, const CVector3 *))(COffsets::FUNC_CPhysical__GetTurnSpeed))((IVPhysical *) GetEntity(), &vecTurnSpeed);
 	}
 }
 
 void CIVPhysical::SetLastDamageEntity(IVEntity * pLastDamageEntity)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
-
-	if(pPhysical)
+	if (GetEntity())
 	{
-		IVEntity * _pLastDamageEntity = pLastDamageEntity;
-
-		_asm	push _pLastDamageEntity;
-		_asm	mov ecx, pPhysical;
-		_asm	call COffsets::FUNC_CPhysical__SetLastDamageEntity;
+		((void(__thiscall *) (IVPhysical *, IVEntity *))(COffsets::FUNC_CPhysical__GetTurnSpeed))((IVPhysical *) GetEntity(), pLastDamageEntity);
 	}
 }
 
