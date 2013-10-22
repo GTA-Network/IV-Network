@@ -371,7 +371,7 @@ bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArg
 		m_pBrowserConnect = m_pGUI->CreateGUIButton(m_pBrowserWindow);
 		m_pBrowserConnect->setText("Connect");
 		m_pBrowserConnect->setSize(CEGUI::UVector2(CEGUI::UDim(0.20f, 0), CEGUI::UDim(0.10f, 0)));
-		m_pBrowserConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0.550f, 0), CEGUI::UDim(0.8750f, 0)));
+		m_pBrowserConnect->setPosition(CEGUI::UVector2(CEGUI::UDim(0.550f, 0), CEGUI::UDim(0.8790f, 0)));
 		m_pBrowserConnect->subscribeEvent(CEGUI::PushButton::EventMouseClick, CEGUI::Event::Subscriber(&CMainMenu::OnServerClicked, this));
 
 		// Flag our Server Browser as visible
