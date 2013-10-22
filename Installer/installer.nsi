@@ -150,7 +150,6 @@ Section "Install" SecDummy
 
 	SetOutPath "$INSTDIR\CEGUI\imagesets"
 
-	File ..\Files\CEGUI\imagesets\Loading.png
 	File ..\Files\CEGUI\imagesets\Background.png
 	File ..\Files\CEGUI\imagesets\WindowsLook.png
 	File ..\Files\CEGUI\imagesets\WindowsLook.imageset
@@ -176,6 +175,32 @@ Section "Install" SecDummy
 	File ..\Files\CEGUI\xml_schemas\GUILayout.xsd
 	File ..\Files\CEGUI\xml_schemas\GUIScheme.xsd
 	File ..\Files\CEGUI\xml_schemas\Imageset.xsd
+	
+	; EpisodeManager Files
+	
+	CreateDirectory "$INSTDIR\IVN"
+	CreateDirectory "$INSTDIR\IVN\common"
+	CreateDirectory "$INSTDIR\IVN\common\data"
+	CreateDirectory "$INSTDIR\IVN\loadingscreens"
+	
+	SetOutPath "$INSTDIR\IVN"
+	File ..\Files\IVN\audio.xml
+	File ..\Files\IVN\content.dat
+	File ..\Files\IVN\ControlMap.dat
+	File ..\Files\IVN\images.txt
+	File ..\Files\IVN\radio.xml
+	
+	SetOutPath "$INSTDIR\IVN\common\data"
+	File ..\Files\IVN\common\data\carcols.dat
+	File ..\Files\IVN\common\data\cargrp.dat
+	File ..\Files\IVN\common\data\handling.dat
+	File ..\Files\IVN\common\data\vehicles.ide
+	
+	SetOutPath "$INSTDIR\IVN\loadingscreens"
+	File ..\Files\IVN\loadingscreens\loadingscreens.dat
+	File ..\Files\IVN\loadingscreens\loadingscreens.wtd
+	File ..\Files\IVN\loadingscreens\loadingscreens_ingame.dat
+	File ..\Files\IVN\loadingscreens\loadingscreens_ingame.wtd
 	
 	SetOutPath "$INSTDIR"
 	
@@ -220,6 +245,13 @@ Section "Uninstall"
 	RMDIR "$INSTDIR\CEGUI\xml_schemas"
 	RMDIR "$INSTDIR\CEGUI"
 
+	; Remove EpisodeManager Folders
+	
+	CreateDirectory "$INSTDIR\IVN\loadingscreens"
+	CreateDirectory "$INSTDIR\IVN\common\data"
+	CreateDirectory "$INSTDIR\IVN\common"
+	CreateDirectory "$INSTDIR\IVN"
+	
 	; Remove Program Files Folder
 
 	RMDIR "$INSTDIR\"

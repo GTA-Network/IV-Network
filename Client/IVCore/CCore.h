@@ -45,7 +45,6 @@
 
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
-#include <Graphics/CLoadingScreen.h>
 
 #include <audio\CAudioManager.h>
 
@@ -96,8 +95,6 @@ private:
 	CHttpClient						* m_pHttpClient;
 
 	CAudioManager					*m_pAudioManager;
-
-	CLoadingScreen					*m_pLoadingScreen;
 
 	CIVStartupScript				*m_pIVStartupScript;
 
