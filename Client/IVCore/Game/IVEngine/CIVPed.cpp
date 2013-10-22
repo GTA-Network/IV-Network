@@ -64,113 +64,64 @@ IVPed * CIVPed::GetPed()
 
 void CIVPed::SetPlayerInfo(IVPlayerInfo * pPlayerInfo)
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	// Set the player info
-	if(pPed)
-		pPed->m_pPlayerInfo = pPlayerInfo;
+	if (GetPed())
+		GetPed()->m_pPlayerInfo = pPlayerInfo;
 }
 
 IVPlayerInfo * CIVPed::GetPlayerInfo()
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	// Get the player info
-	if(pPed)
-		return pPed->m_pPlayerInfo;
+	if (GetPed())
+		return GetPed()->m_pPlayerInfo;
 
 	return nullptr;
 }
 
 void CIVPed::SetCurrentHeading(float fCurrentHeading)
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	// Set the current heading
-	if(pPed)
-		pPed->m_fCurrentHeading = fCurrentHeading;
+	if (GetPed())
+		GetPed()->m_fCurrentHeading = fCurrentHeading;
 }
 
 float CIVPed::GetCurrentHeading()
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	// Get the current heading
-	if(pPed)
-		return pPed->m_fCurrentHeading;
+	if (GetPed())
+		return GetPed()->m_fCurrentHeading;
 
 	return 0.0f;
 }
 
 void CIVPed::SetDucking(bool bDucking)
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	if(pPed)
-	{
-		int iDuck = (int)bDucking;
-
-		_asm	push -1;
-		_asm	push iDuck;
-		_asm	mov ecx, pPed;
-		_asm	call COffsets::FUNC_CPed__SetDucking;
-	}
+	if (GetPed())
+		((void(__thiscall *) (IVPed *, bool, int))(COffsets::FUNC_CPed__SetDucking))(GetPed(), bDucking, -1);
 }
 
 bool CIVPed::IsDucking()
 {
-	// Get the ped
-	IVPed * pPed = GetPed();
-
-	if(pPed)
-	{
-		bool bDucking = false;
-
-		_asm	mov ecx, pPed;
-		_asm	call COffsets::FUNC_CPed__IsDucking;
-		_asm	mov bDucking, al;
-
-		return bDucking;
-	}
+	if (GetPed())
+		return ((bool(__thiscall *) (IVPed *))(COffsets::FUNC_CPed__IsDucking))(GetPed());
 
 	return false;
 }
 
 bool CIVPed::IsInVehicle()
 {
-	// Get the ped pointer
-	IVPed * pPed = GetPed();
-
-	// Is the ped pointer valid?
-	if(pPed)
-		return ((pPed->m_byteUnknown & 4) != 0);
+	if (GetPed())
+		return ((GetPed()->m_byteUnknown & 4) != 0);
 
 	return false;
 }
 
 void CIVPed::SetCurrentVehicle(IVVehicle * pVehicle)
 {
-	// Get the ped pointer
-	IVPed * pPed = GetPed();
-
-	// Is the ped pointer valid?
-	if(pPed)
-		pPed->m_pCurrentVehicle = pVehicle;
+	if (GetPed())
+		GetPed()->m_pCurrentVehicle = pVehicle;
 }
 
 IVVehicle * CIVPed::GetCurrentVehicle()	
 {
-	// Get the ped pointer
-	IVPed * pPed = GetPed();
-
-	// Is the ped pointer valid?
-	if(pPed)
-		return pPed->m_pCurrentVehicle;
+	if (GetPed())
+		return GetPed()->m_pCurrentVehicle;
 
 	return nullptr;
 }

@@ -25,14 +25,7 @@ void CIVPedTaskManager::SetTask(CIVTask * pTask, int iType, bool bForceNewTask)
 		// Ensure the task type is valid
 		if(iType < TASK_PRIORITY_MAX)
 		{
-			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
-			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
-
-			_asm	push bForceNewTask;
-			_asm	push iType;
-			_asm	push pGameTask;
-			_asm	mov ecx, pPedTaskManager;
-			_asm	call COffsets::FUNC_CPedTaskManager__SetTaskPriority;
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int, byte))(COffsets::FUNC_CPedTaskManager__SetTaskPriority))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType, bForceNewTask);
 		}
 	}
 }
@@ -73,15 +66,7 @@ void CIVPedTaskManager::SetTaskSecondary(CIVTask * pTask, int iType)
 		// Ensure the task type is valid
 		if(iType < TASK_SECONDARY_MAX)
 		{
-			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
-			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
-			_asm
-			{
-				push iType
-				push pGameTask
-				mov ecx, pPedTaskManager
-				call COffsets::FUNC_CPedTaskManager__SetTaskSecondary
-			}
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskSecondary))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType);
 		}
 	}
 }
@@ -118,15 +103,7 @@ void CIVPedTaskManager::SetTaskMovement(CIVTask * pTask, int iType)
 		// Ensure the task type is valid
 		if(iType < TASK_MOVEMENT_MAX)
 		{
-			IVPedTaskManager * pPedTaskManager = m_pPedTaskManager;
-			IVTask * pGameTask = (pTask ? pTask->GetTask() : NULL);
-			_asm
-			{
-				push iType
-				push pGameTask
-				mov ecx, pPedTaskManager
-				call COffsets::FUNC_CPedTaskManager__SetTaskMovement
-			}
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskMovement))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType);
 		}
 	}
 }
