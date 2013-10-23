@@ -191,8 +191,6 @@ Section "Install" SecDummy
 	File ..\Files\IVN\radio.xml
 	
 	SetOutPath "$INSTDIR\IVN\common\data"
-	File ..\Files\IVN\common\data\carcols.dat
-	File ..\Files\IVN\common\data\cargrp.dat
 	File ..\Files\IVN\common\data\handling.dat
 	File ..\Files\IVN\common\data\vehicles.ide
 	
