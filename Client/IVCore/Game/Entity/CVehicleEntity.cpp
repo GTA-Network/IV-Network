@@ -30,9 +30,15 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
-	if (iVehicleModel == 125 || iVehicleModel == 126 || iVehicleModel == 127)
+	if (iVehicleModel == 124 || iVehicleModel == 125 || iVehicleModel == 126)
 	{
-		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes big FPS drop (%i) !!!", iVehicleModel).Get());
+		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes big FPS drop and invisible (%i) !!!", iVehicleModel).Get());
+		return;
+	}
+
+	if (iVehicleModel == 157 || iVehicleModel == 158 || iVehicleModel == 159)
+	{
+		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes crash we will fix it (%i) (disabled boat in TBoGT) !!!", iVehicleModel).Get());
 		return;
 	}
 
