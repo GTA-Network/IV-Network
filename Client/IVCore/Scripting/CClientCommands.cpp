@@ -45,14 +45,13 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CVector3 vecCreatePos; 
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
 		vecCreatePos.fX += 4;
-		vecCreatePos.fY += 1;
 
 		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 		if(pVehicle) {
 			// Add our vehicle
 			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle));
 			pVehicle->Create();
-			pVehicle->SetPosition(vecCreatePos, true);
+			g_pCore->GetGame()->GetLocalPlayer()->WarpIntoVehicle(pVehicle);
 		}
 		return true;
 	}
@@ -207,8 +206,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "bahama")
 	{
-		CVector3 vecPos = CVector3(-15.9453f, -13.5865f, -11.7456f);
-		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::SetPosition(vecPos);
+		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::SetPosition(CVector3(-15.9453f, -13.5865f, -11.7456f));
 		return true;
 	}
 	else if(strCommand == "spawnvehs")

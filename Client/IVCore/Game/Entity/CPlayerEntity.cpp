@@ -2073,3 +2073,17 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		m_ulLastSyncReceived = SharedUtility::GetTime();
 	}
 }
+
+void CPlayerEntity::WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat)
+{
+	if (seat > 3)
+		return;
+
+	if (seat == 0)
+		CIVScript::WarpCharIntoCar(GetScriptingHandle(), pVehicle->GetScriptingHandle());
+	else
+		CIVScript::WarpCharIntoCarAsPassenger(GetScriptingHandle(), pVehicle->GetScriptingHandle(), seat - 1);
+
+	m_pVehicle = pVehicle;
+	m_byteSeat = seat;
+}

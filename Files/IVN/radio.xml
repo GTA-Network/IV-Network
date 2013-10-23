@@ -1,7 +1,7 @@
-<EpisodeOneRadio>
+<IVNetworkRadio>
 <noloadingtune />
 <game content="ascii">e1:/pc/audio/config/ep1_radio_game.dat</game> 
 <sounds content="ascii">e1:/pc/audio/config/ep1_radio_sounds.dat</sounds>
 <speech content="ascii">e1:/pc/audio/config/ep1_radio_speech.dat</speech>
 <wavepack content="ascii">e1:/pc/audio/sfx/EP1_SFX.rpf</wavepack>
-</EpisodeOneRadio>
+</IVNetworkRadio>

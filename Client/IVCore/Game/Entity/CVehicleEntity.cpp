@@ -148,6 +148,8 @@ bool CVehicleEntity::Create()
 		// Reset the vehicle
 		Reset();
 
+		SetPosition(m_vecSpawnPosition, true);
+
 		CLogFile::Printf("Created vehicle! (Id: %d, Handle: %X)", m_vehicleId, g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(pVehicle));
 		return true;
 	}
