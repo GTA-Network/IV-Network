@@ -18,6 +18,10 @@
 #include <Ptrs.h>
 #include <Game/IVEngine/CIVTrain.h>
 
+extern unsigned int l_U40;
+unsigned int pObj;
+CIVTrain * pTrain;
+
 bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
 {
 	if(strCommand == "q"  || strCommand == "quit")

@@ -160,6 +160,9 @@ void CCore::OnGameLoad()
 	// Finalize the client in game elements
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
+	// Set the loading screen not visible
+	m_pLoadingScreen->SetVisible(false);
+
 	// Set the main menu visible
 	m_pMainMenu->SetVisible(true);
 
@@ -213,6 +216,11 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Initialize the main menu elements
 	m_pMainMenu = new CMainMenu(m_pGUI);
 	m_pMainMenu->Initialize();
+
+	// Initialize the loading screen elements
+	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
+	m_pLoadingScreen->Initialize();
+	m_pLoadingScreen->SetVisible(true);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
