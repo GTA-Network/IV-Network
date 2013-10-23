@@ -41,6 +41,7 @@ private:
 	int			m_iModel;
 	int			m_iMoney;
 	int			m_iWantedLevel;
+	int			m_iDimension;
 
 	struct {
 		CVector3		vecAimAtCoordinates;
@@ -99,6 +100,9 @@ public:
 	void		SetWantedLevel(int iWantedLevel) { m_iWantedLevel = iWantedLevel; }
 	int			GetWantedLevel() { return m_iWantedLevel; }
 
+	void		SetDimension(int iDimension) { m_iDimension = iDimension; }
+	int			GetDimension() { return m_iDimension; }
+
 	void		SetArmHeading(float fArmHeading) { m_weaponData.fArmsHeadingCircle = fArmHeading; }
 	float		GetArmHeading() { return m_weaponData.fArmsHeadingCircle; }
 
@@ -143,9 +147,8 @@ public:
 	DWORD GetColor(void) {
 		return GetEntity()->GetColor();
 	}
-	void  SetColor(DWORD dwColor) {
-		GetEntity()->SetColor(dwColor);
-	}
+
+	void  SetColor(DWORD dwColor);
 
 	float GetHeading() {
 		return GetEntity()->GetHeading();
@@ -171,8 +174,13 @@ public:
 
 	void SetMoney(int iMoney);
 
-	unsigned int GetDimension() { return 0; }
-	void		 SetDimension(unsigned int uiDimension) { }
+	void GiveMoney(int iMoney);
+
+	unsigned int GetDimension() { 
+		return GetEntity()->GetDimension();
+	}
+
+	void		 SetDimension(int iDimension);
 
 	int		 GetWantedLevel() { 
 		return GetEntity()->GetWantedLevel();

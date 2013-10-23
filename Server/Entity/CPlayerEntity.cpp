@@ -172,6 +172,16 @@ void CScriptPlayer::SetMoney(int iMoney)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
+void CScriptPlayer::SetDimension(int iDimension)
+{
+	GetEntity()->SetDimension(iDimension);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iDimension);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
 void CScriptPlayer::SetName(const char* szName)
 {
 	GetEntity()->SetName(CString(szName));
@@ -192,6 +202,26 @@ void CScriptPlayer::GiveWeapon(int id, int uiAmmo)
 	bitStream.Write(id);
 	bitStream.Write(uiAmmo);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::GiveMoney(int iMoney)
+{
+	GetEntity()->SetMoney(GetEntity()->GetMoney() + iMoney);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iMoney);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptPlayer::SetColor(DWORD dwColor)
+{
+	GetEntity()->SetColor(dwColor);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(dwColor);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)
