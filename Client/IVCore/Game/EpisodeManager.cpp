@@ -196,10 +196,10 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 		GTA_memcpy(episode.szDatFile, "content.dat", 32);
 		episode.szAudioFolder[0] = 0;
 		GTA_memcpy(episode.szAudioMetaData, "audio.xml", 64);
-		GTA_memcpy(episode.szLoadingScreens, "e0:/loadingscreens/loadingscreens.wtd", 64);
-		GTA_memcpy(episode.szLoadingScreensDat, "e0:/loadingscreens/loadingscreens.dat", 64);
-		GTA_memcpy(episode.szLoadingScreensIngame, "e0:/loadingscreens/loadingscreens_ingame.wtd", 64);
-		GTA_memcpy(episode.szLoadingScreensIngameDat, "e0:/loadingscreens/loadingscreens_ingame.dat", 64);
+		GTA_memcpy(episode.szLoadingScreens, "e1:/pc/textures/loadingscreens.wtd", 64);
+		GTA_memcpy(episode.szLoadingScreensDat, "e1:/common/data/loadingscreens.dat", 64);
+		GTA_memcpy(episode.szLoadingScreensIngame, "e1:/pc/textures/loadingscreens_ingame.wtd", 64);
+		GTA_memcpy(episode.szLoadingScreensIngameDat, "e1:/common/data/loadingscreens_ingame.dat", 64);
 		GTA_memcpy(episode.szTexturePath, "e1:/pc/textures/", 64);
 		episode.bRequiredForSave = 1;
 		episode.bEnabled = 0;
