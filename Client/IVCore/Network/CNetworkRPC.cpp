@@ -421,6 +421,25 @@ void SetPlayerWantedLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPack
 	}
 }
 
+void SetPlayerDimension(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	//EntityId playerId;
+	//pBitStream->Read(playerId);
+
+	//// Get a pointer to the player
+	//CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	//// Is the player pointer valid?
+	//if (pPlayer)
+	//{
+	//	int iDimension;
+
+	//	pBitStream->Read(iDimension);
+
+	//	pPlayer->SetDimension(iDimension);
+	//}
+}
+
 void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 
@@ -439,6 +458,44 @@ void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(uiAmmo);
 
 		pPlayer->GiveWeapon(id, uiAmmo);
+	}
+}
+
+void GivePlayerMoney(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iMoney;
+		pBitStream->Read(iMoney);
+
+		pPlayer->GiveMoney(iMoney);
+	}
+}
+
+void SetPlayerColor(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		DWORD dwColor;
+
+		pBitStream->Read(dwColor);
+
+		pPlayer->SetColor(dwColor);
 	}
 }
 
@@ -493,7 +550,10 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), SetPlayerModel);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), SetPlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), SetPlayerWantedLevel);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION), SetPlayerDimension);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), GivePlayerWeapon);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), GivePlayerMoney);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		
 		// Mark as registered
 		m_bRegistered = true;

@@ -89,6 +89,9 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("getWantedLevel", &CScriptPlayer::GetWantedLevel). // Synced
 			AddMethod("setWantedLevel", &CScriptPlayer::SetWantedLevel). // Synced
 			AddMethod("giveWeapon", &CScriptPlayer::GiveWeapon). // Synced
+			AddMethod("giveWeapon", &CScriptPlayer::GiveMoney). // Synced
+			AddMethod("setColor", &CScriptPlayer::SetColor). // Synced
+			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
 			//AddMethod("sendMessage", &CScriptPlayer::SendMessage).
 		Register(pVM);
 	}
