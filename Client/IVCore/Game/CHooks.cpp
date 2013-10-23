@@ -285,6 +285,7 @@ struct phInstGta
 	int	iUnk;
 }; // size = 0x60 [96]
 
+#include <IV/CIVScript.h>
 void _declspec(naked) PhysicsHook()
 {
 	_asm
@@ -316,12 +317,9 @@ void _declspec(naked) PhysicsHook()
 			}
 		}
 
-		g_pCore->GetGame()->GetStreaming()->RequestResource(eResourceType::RESOURCE_TYPE_WDR, pVehicle->m_wModelIndex);
-		while (!g_pCore->GetGame()->GetStreaming()->HasResourceLoaded(eResourceType::RESOURCE_TYPE_WDR, pVehicle->m_wModelIndex))
-		{
-			g_pCore->GetGame()->GetStreaming()->LoadAllResources();
-			Sleep(10);
-		}
+		CIVScript::RequestModel(pVehicle->m_wModelIndex);
+		while (!CIVScript::HasModelLoaded(pVehicle->m_wModelIndex))
+			CIVScript::LoadAllObjectsNow(false);
 
 		CLogFile::Printf("Model: %i", pVehicle->m_wModelIndex);
 

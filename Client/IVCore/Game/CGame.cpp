@@ -38,7 +38,6 @@ CCharacterManager			*CGame::m_pCharacterManager = 0;
 bool						CGame::m_LocalPlayerInitialised = 0;
 CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
 CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
-CIVStreaming				*CGame::m_pStream = 0;
 CTrafficLights				*CGame::m_pTrafficLights = 0;
 CString						CGame::m_strEFLCDirectory = 0;
 IVManagement				*CGame::m_pManagement = 0;
@@ -52,9 +51,6 @@ void CGame::Setup()
 	
 	// Create new civpad instance
 	m_pPad = new CIVPad((IVPad *)COffsets::VAR_Pads);
-	
-	// Create new civstream instance
-	m_pStream = new CIVStreaming;
 	
 	// Create task manager instance
 	m_pTaskManager = new CTaskManager;

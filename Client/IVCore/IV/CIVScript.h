@@ -304,6 +304,8 @@ namespace CIVScript
 
 	static void SetMaxWantedLevel(int iMaxWantedLevel) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_MAX_WANTED_LEVEL, iMaxWantedLevel); }
 	static void SetWantedMultiplier(float fMulti) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_WANTED_MULTIPLIER, fMulti); }
+	
+	static void LoadAllObjectsNow(bool bunknown) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_LOAD_ALL_OBJECTS_NOW, bunknown); }
 };
 
 #endif // CIVScript_h
