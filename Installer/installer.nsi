@@ -194,12 +194,6 @@ Section "Install" SecDummy
 	File ..\Files\IVN\common\data\handling.dat
 	File ..\Files\IVN\common\data\vehicles.ide
 	
-	SetOutPath "$INSTDIR\IVN\loadingscreens"
-	File ..\Files\IVN\loadingscreens\loadingscreens.dat
-	File ..\Files\IVN\loadingscreens\loadingscreens.wtd
-	File ..\Files\IVN\loadingscreens\loadingscreens_ingame.dat
-	File ..\Files\IVN\loadingscreens\loadingscreens_ingame.wtd
-	
 	SetOutPath "$INSTDIR"
 	
 	; Create Start Menu Folder
