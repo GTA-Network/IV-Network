@@ -14,7 +14,7 @@
 IVPool* IVPoolOwns::IVPoolHook(int maxElements, const char* Name, int elementSize)
 {
 	if (strcmp(Name, "VehicleStruct") == 0)
-		maxElements = 400;
+		maxElements = 140;
 
 	CLogFile::Printf("IVPoolHook(%i, %s, %i)", maxElements, Name, elementSize);
 

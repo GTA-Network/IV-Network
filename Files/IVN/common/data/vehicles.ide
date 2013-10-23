@@ -65,9 +65,9 @@ policeb,	policeb,	bike,		POLICEB,	POLICEB,	veh@bike_chopper,	NULL,	100,	999,	0.2
 hexer,		hexer,		bike,		HEXER,		HEXER,		veh@bike_freeway,	NULL,	100,	999,	0.2408, 0.2311,		0,	4,	1.0,	0	noboot
 faggio2,	faggio2,	bike,		FAGGIO,		FAGGIO,		VEH@BIKE_SCOOTER,  	NULL,	50,	999,	0.1510,	0.1510,		0,	5,	1.0,	0	noboot+livery
 bati2,		bati2,		bike,		BATI2,		BATI2,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2175, 0.2175,		0,	5,	1.0,	0	noboot
-#vader,		vader,		bike,		VADER,		VADER,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2306, 0.2306,		0,	5,	1.0,	0	noboot
+vader,		vader,		bike,		VADER,		VADER,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2306, 0.2306,		0,	5,	1.0,	0	noboot
 akuma,		akuma,		bike,		AKUMA,		AKUMA,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2311, 0.2311,		0,	5,	1.0,	0	noboot
-#hakuchou,	hakuchou,	bike,		HAKUCH,		HAKUCH,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2287, 0.2246,		0,	5,	1.0,	0	noboot
+hakuchou,	hakuchou,	bike,		HAKUCH,		HAKUCH,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2287, 0.2246,		0,	5,	1.0,	0	noboot
 double,		double,		bike,		DOUBLE,		DOUBLE,		VEH@BIKE_SPT,	        NULL,	100,	999,	0.2307, 0.2307,		0,	5,	1.0,	0	noboot
 
 # Heli's
@@ -78,9 +78,9 @@ skylift,	skylift,	heli,		SKYLIFT,	SKYLIFT,	VEH@HELICOPTER,	NULL,		100,	999,		0.1
 
 #boats
 #
-smuggler,	smuggler,	boat,		SMUGGLER,	SMUGGLER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
-floater,	floater,	boat,		FLOATER,	FLOATER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
-blade,		blade,		boat,		BLADE,		BLADE,		veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+#smuggler,	smuggler,	boat,		SMUGGLER,	SMUGGLER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+#floater,	floater,	boat,		FLOATER,	FLOATER,	veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
+#blade,		blade,		boat,		BLADE,		BLADE,		veh@boat_speed,	NULL,		100,	999,		0.50,	0.50,		0,	5,	1.5,	0	noboot
 end
 
 
@@ -90,8 +90,10 @@ vehshare_truck, vehshare
 yankee2, vehshare_truck
 gburrito, vehshare_truck
 pbus, vehshare_truck
-smuggler, vehshare_truck
-blade, vehshare_truck
+#smuggler, vehshare_truck
+#blade, vehshare_truck
 apc, vehshare_truck
 avan, vehshare_truck
 skylift, vehshare_truck
+
+end
