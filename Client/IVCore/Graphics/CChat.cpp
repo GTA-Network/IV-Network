@@ -32,8 +32,8 @@ void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
 	float fY = 50.0f;
 
 	// Work out the maximum coordinates
-	float fMaxX = (1920.0f - CHAT_WIDTH);
-	float fMaxY = (1200.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
+	float fMaxX = (1920.0f - CHAT_WIDTH); // Or should we use already 2500 ?
+	float fMaxY = (1080.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
 
 	// Clamp the coordinates
 	fX = Math::Clamp(0.0f, fX, fMaxX);
@@ -52,8 +52,8 @@ void CChat::Reset()
 	m_bInputBlocked = false;
 	m_bMap = false;
 	m_bOldState = false;
-	m_uiNumLines = 128;
-	m_uiMostRecentLine = 128 - 1;
+	m_uiNumLines = CHAT_MAX_LINES;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_TextColor = CHAT_TEXT_COLOR;
 	m_InputTextColor = CColor(255, 255, 255, 255);
 	m_iRenderLines = 10;
@@ -101,7 +101,7 @@ void CChat::Render()
 		uiLinesDrawn++;
 
 		// Is this line the end?
-		if(uiLine >= 128)
+		if(uiLine >= CHAT_MAX_LINES)
 			break;
 	}
 
@@ -127,10 +127,10 @@ void CChat::Output(const char * szTextOld, bool bColorCoded)
 	{
 		if (m_uiMostRecentLine == 0)
 		{
-			m_Lines [128 - 1].SetActive (false);
+			m_Lines [CHAT_MAX_LINES - 1].SetActive (false);
 
 			// Making space for the new line
-			for (int i = 128 - 2; i >= 0; i--)
+			for (int i = CHAT_MAX_LINES - 2; i >= 0; i--)
 				m_Lines [i + 1] = m_Lines [i];
 
 			m_uiMostRecentLine = 0;
@@ -174,12 +174,12 @@ void CChat::Outputf(bool bColorCoded, const char * szFormat, ...)
 
 void CChat::Clear()
 {
-	for(int i = 0; i < 128; i++)
+	for(int i = 0; i < CHAT_MAX_LINES; i++)
 	{
 		m_Lines[i].SetActive(false);
 	}
 
-	m_uiMostRecentLine = 128 - 1;
+	m_uiMostRecentLine = CHAT_MAX_LINES - 1;
 	m_fSmoothScroll = 0;
 }
 
@@ -421,15 +421,14 @@ void CChat::ProcessInput()
 				RakNet::BitStream bitStream;
 				RakNet::RakString strInput;
 
-				std::string checkString = checkString.append(m_strInputText.Get());
+				std::string checkString;
+				checkString.append(m_strInputText.Get());
 
-				// Loop through all the characters of the string
-				for (int i = 0; i < m_strInputText.GetLength(); i++)
+				for(int i = 0; i < m_strInputText.GetLength(); i++)
 				{
-					// Check to see if our string contains %
 					if (checkString[i] == '%')
 					{
-						return Output("You cannot use the percentage character in chat for security purposes.");
+						return Output("Unkown message input, please use only words from a-z", false);
 					}
 					else
 						continue;
@@ -496,7 +495,7 @@ void CChat::SetInput(CString strText)
 void CChat::ScrollUp()
 {
 	// Are there enough lines to scroll up?
-	if (m_uiMostRecentLine + m_iRenderLines + m_uiScrollOffset < 128)
+	if (m_uiMostRecentLine + m_iRenderLines + m_uiScrollOffset < CHAT_MAX_LINES)
 		m_uiScrollOffset = m_uiScrollOffset + m_iRenderLines;
 }
 
@@ -635,6 +634,9 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 		CChatLineSection section;
 
 		section.SetColor(color);
+
+		//if((m_Sections.size() +1) > 1 && bColorCoded)
+		//	szSectionEnd += 7;
 		 
 		szSectionStart = szSectionEnd;
 		szLastWrapPoint = szSectionStart;
@@ -672,7 +674,7 @@ const char * CChatLine::Format(const char * szText, float fWidth, CColor& color,
 		if(section.m_strText != "")
 			m_Sections.push_back(section);
 
-		if(m_Sections.size() > 128)
+		if(m_Sections.size() > CHAT_MAX_LINES)
 		{
 			m_Sections.pop_front();
 		}
@@ -760,12 +762,12 @@ void CChatInputLine::Draw(float fX, float fY, unsigned char ucAlpha, bool bShado
 		// Cleanup lines 
 
 
-		//if(m_Sections.size() > 128) {
+		//if(m_Sections.size() > CHAT_MAX_LINES) {
 		//	int iCount = 0;
 		//	for(auto pLine : m_Sections) {
 		//		iCount++;
 
-		//		if(iCount > 128)
+		//		if(iCount > CHAT_MAX_LINES)
 		//			m_Sections.remove(pLine);
 		//	}
 		//}

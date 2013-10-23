@@ -182,11 +182,12 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 
 #define	CHAT_TEXT_COLOR CColor(255, 255, 255, 255)
 #define	CHAT_WIDTH 480
-#define	CHAT_MAX_CHAT_LENGTH 96
+#define	CHAT_MAX_CHAT_LENGTH 128
 #define	CHAT_BUFFER	1024
 
 #define	CHAT_LINE_SPACING 3
 #define	CHAT_RENDER_LINES 20
+#define	CHAT_MAX_LINES 200
 
 #define	CHAT_COMMAND_CHAR '/'
 #define	CHAT_MAX_HISTORY 12
