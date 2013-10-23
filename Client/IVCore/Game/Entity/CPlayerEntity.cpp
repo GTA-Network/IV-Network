@@ -164,7 +164,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0)
 {
 	m_bLocalPlayer = bLocalPlayer;
-	m_strNick.Set("Player");
+	m_strNick.Set(CVAR_GET_STRING("nick").Get());
 	m_usPlayerId = INVALID_ENTITY_ID;
 	m_usPing = 0;
 	m_bNetworked = false;
