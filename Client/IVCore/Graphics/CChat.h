@@ -91,7 +91,7 @@ class CChat
 
 private:
 	
-	CChatLine				m_Lines[ CHAT_MAX_LINES ];
+	CChatLine				m_Lines[ 128 ];
 	CChatInputLine			m_InputLine;
 
 	unsigned int			m_uiScrollOffset;
