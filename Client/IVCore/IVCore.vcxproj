@@ -406,7 +406,6 @@
     <ClInclude Include="Network\CNetworkManager.h" />
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />
-    <ClInclude Include="StdInc.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
   </ItemGroup>
   <ItemGroup>

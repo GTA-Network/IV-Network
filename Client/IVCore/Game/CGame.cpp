@@ -371,7 +371,7 @@ void CGame::ProcessEnvironment()
 	if (m_pVehicleManager)
 		m_pVehicleManager->Pulse();
 
-	unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
+	/*unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
 	int uGameHour = 0, uGameMinute = 0; // deleted by jmpback from func
 
 	// Grab the latest time from our time interface
@@ -392,7 +392,7 @@ void CGame::ProcessEnvironment()
 	else {
 		// Let the game render the time by itself(so it's not so buggy when updating the time)
 		;
-	}
+	}*/
 }
 
 void CGame::SetupGame()

@@ -105,6 +105,7 @@ public:
 	bool							Initialise();
 
 	void							OnGameLoad();
+	void							OnGameUpdate();
 
 	void							SetGameLoaded(bool bLoaded) { m_bGameLoaded = bLoaded; }
 	bool							IsGameLoaded() { return m_bGameLoaded; }
@@ -112,7 +113,6 @@ public:
 	void							OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
 	void							OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
-	void							OnDevicePreRender();
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
 	
 	void							OnNetworkShutDown();

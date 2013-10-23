@@ -374,8 +374,7 @@ void __cdecl renderMenus() //render Main and pause menu
 
 void __cdecl sub_47F080()
 {
-	if (g_pCore->GetNetworkManager()) //TODO: move this to a better place.
-		g_pCore->GetNetworkManager()->Pulse();
+	g_pCore->OnGameUpdate();
 	//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
 }
 

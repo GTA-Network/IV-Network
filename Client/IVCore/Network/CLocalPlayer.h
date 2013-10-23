@@ -25,7 +25,6 @@ private:
         unsigned 						m_uiLastInterior;
         bool                            m_bDisableVehicleInfo;
         bool                            m_bFirstSpawn;
-        bool                            m_bSpawnMarked;
         bool                            m_bFinishedInitialize;
         unsigned short					m_uiPing;
         bool                            m_bRadarVisible;
@@ -33,8 +32,6 @@ private:
 		bool							m_bDead;
 		bool							m_bAdvancedControlState;
 		bool							m_bAdvancedCameraState;
-		bool							m_bParachuteCheck;
-		bool							m_bParachuteIntitialised;
 		unsigned						m_pObj;
 
 public:

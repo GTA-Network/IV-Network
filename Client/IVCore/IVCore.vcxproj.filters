@@ -537,13 +537,10 @@
       <Filter>Source Files\Network</Filter>
     </ClCompile>
     <ClCompile Include="Game\CContextData.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StdInc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -633,9 +630,6 @@
     </ClInclude>
     <ClInclude Include="Hooks\CXLive.h">
       <Filter>Header Files\Hooks\XLive</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Input.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game\CGameFuncs.h">
       <Filter>Header Files\Game</Filter>
@@ -1097,7 +1091,10 @@
       <Filter>Source Files\Network</Filter>
     </ClInclude>
     <ClInclude Include="Game\CContextData.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Game\IVEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Input.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

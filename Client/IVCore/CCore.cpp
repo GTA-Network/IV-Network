@@ -167,17 +167,20 @@ void CCore::OnGameLoad()
 	m_uiGameInitializeTime = timeGetTime(); 
 }
 
-int iConnectStarted = 0;
-
-void ConnectThread()
+void CCore::OnGameUpdate()
 {
-	iConnectStarted = SharedUtility::GetTime();
-	while (!g_pCore->GetNetworkManager()->IsConnected())
-	{
-		if (iConnectStarted + 5000 <= SharedUtility::GetTime())
-			return;
+	if (g_pCore->GetNetworkManager())
 		g_pCore->GetNetworkManager()->Pulse();
-	}
+
+	g_pCore->GetTimeManagementInstance()->Pulse();
+
+	g_pCore->GetGame()->ProcessEnvironment();
+
+	if (g_pCore->GetFPSCounter())
+		g_pCore->GetFPSCounter()->Pulse();
+
+	if (g_pCore->GetGame()->GetLocalPlayer())
+		g_pCore->GetGame()->GetLocalPlayer()->Pulse();
 }
 
 void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
@@ -226,13 +229,6 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 
 	// Mark as not lost device
 	g_bDeviceLost = false;
-}
-
-void CCore::OnDevicePreRender()
-{
-	// If our network manager exists process it
-	if (g_pCore->GetNetworkManager())
-		g_pCore->GetNetworkManager()->Pulse();
 }
 
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
@@ -326,21 +322,11 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Before rendering FPS-Counter instance, update FPS display
 	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
-	// Render our FPS-Counter instance
-	if(m_pFPSCounter)
-		m_pFPSCounter->Pulse();
-
 #ifdef _DEBUG
 	// Render our development instance
 	if(m_pDevelopment)
 		m_pDevelopment->Process();
 #endif
-
-	// Render our time management
-	m_pTimeManagement->Pulse();
-
-	// Render ingame environment
-	m_pGame->ProcessEnvironment();
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
@@ -352,11 +338,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 		CSnapShot::Reset();
 	}
-	
-
-	// If our local player exists, pulse him
-	if (m_pGame->GetLocalPlayer())
-		m_pGame->GetLocalPlayer()->Pulse();
 }
 
 void CCore::GetLoadedModulesList()

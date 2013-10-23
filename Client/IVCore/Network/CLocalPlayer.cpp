@@ -48,12 +48,9 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
         m_bDisableVehicleInfo(false),
         m_bFirstSpawn(false),
         m_bFinishedInitialize(false),
-        m_bSpawnMarked(false),
         m_bRadarVisible(true),
 		m_bAdvancedControlState(true),
-		m_bAdvancedCameraState(true),
-		m_bParachuteCheck(false),
-		m_bParachuteIntitialised(false)
+		m_bAdvancedCameraState(true)
 {
 	// Temporary spawn position for development
 	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
@@ -85,9 +82,6 @@ void CLocalPlayer::HandleSpawn()
 
 	// Reset vehicle enter/exit
 	ResetVehicleEnterExit();
-
-	// Reset parachute
-	m_bParachuteCheck = false;
 
 	// Set first spawn
 	m_bFirstSpawn = true;
@@ -158,22 +152,10 @@ void CLocalPlayer::DoDeathCheck()
 	
 void CLocalPlayer::Pulse()
 {
-
 	CPlayerEntity::Pulse();
 
-	if(IsSpawned()) {
+	if(IsSpawned())
 		DoDeathCheck();
-		
-		if(!m_bParachuteCheck)
-			m_bParachuteCheck = true;
-
-		if(!m_bParachuteIntitialised)
-		{
-			//g_pCore->GetGame()->OnClientPastGameJoin();
-			m_bParachuteIntitialised = true;
-		}
-	}
-	m_bSpawnMarked = true;
 }
 
 void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
@@ -225,5 +207,4 @@ void CLocalPlayer::Reset()
 {
     m_bFirstSpawn = false;
     m_bFinishedInitialize = false;
-    m_bSpawnMarked = false;
 }
