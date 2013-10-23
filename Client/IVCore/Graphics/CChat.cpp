@@ -33,7 +33,7 @@ void CChat::Setup(D3DPRESENT_PARAMETERS * pPresentParameters)
 
 	// Work out the maximum coordinates
 	float fMaxX = (1920.0f - CHAT_WIDTH); // Or should we use already 2500 ?
-	float fMaxY = (1080.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
+	float fMaxY = (1200.0f - (m_iRenderLines * (CChat::GetFontHeight() + 2.0f) + 10.0f + 30.0f));
 
 	// Clamp the coordinates
 	fX = Math::Clamp(0.0f, fX, fMaxX);
@@ -428,7 +428,7 @@ void CChat::ProcessInput()
 				{
 					if (checkString[i] == '%')
 					{
-						return Output("Unkown message input, please use only words from a-z", false);
+						return Output("For Security Reasons, the percentage sign has been blocked from the chat.", false);
 					}
 					else
 						continue;
