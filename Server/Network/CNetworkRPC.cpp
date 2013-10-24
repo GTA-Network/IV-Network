@@ -136,7 +136,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CVector3 vecPosition;
 			pVehicle->GetPosition(vecPosition);
 			bitStream.Write(vecPosition);
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 	}
 

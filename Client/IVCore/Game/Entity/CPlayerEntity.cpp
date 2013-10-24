@@ -1892,16 +1892,16 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		//m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
 
+		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
+		pBitStream->Write(VehiclePacket);
+
 		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
 
 		pBitStream->Write1();
 		pBitStream->Write(m_pVehicle->GetHealth());
-		
+
 		pBitStream->Write1();
 		pBitStream->Write(m_pVehicle->GetPetrolTankHealth());
-
-		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
-		pBitStream->Write(VehiclePacket);
 	}
 }
 
@@ -2016,7 +2016,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
 			{
 				Matrix matrix;
-				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
+				
 				m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
 				matrix.vecForward = VehiclePacket.matrix.vecForward;
 				matrix.vecRight = VehiclePacket.matrix.vecRight;
@@ -2025,7 +2025,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-
+				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
 				SetControlState(&VehiclePacket.ControlState);
 
 				m_pVehicle->SetEngineState(pBitStream->ReadBit());

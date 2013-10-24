@@ -309,6 +309,14 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				pVehicle->GetMatrix(VehiclePacket.matrix);
 				
+
+			}
+			GetControlState(VehiclePacket.ControlState);
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
+			pBitStream->Write(VehiclePacket);
+
+			if (pVehicle)
+			{
 				pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
 
 				pBitStream->Write1();
@@ -317,9 +325,6 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				pBitStream->Write1();
 				pBitStream->Write(pVehicle->GetPetrolTankHealth());
 			}
-			GetControlState(VehiclePacket.ControlState);
-			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
-			pBitStream->Write(VehiclePacket);
 		}
 		break;
 	default:
@@ -366,7 +371,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				pVehicle->SetMatrix(VehiclePacket.matrix);
-
+				CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
 				pVehicle->SetEngineState(pBitStream->ReadBit());
 
 				if (pBitStream->ReadBit())
