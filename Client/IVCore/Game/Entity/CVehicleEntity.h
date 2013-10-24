@@ -99,8 +99,8 @@ public:
     void								SetRotation(const CVector3& vecRotation, bool bResetInterpolation = true);
     void								GetRotation(CVector3& vecRotation);
 
-    void								SetHealth(unsigned int uiHealth);
-    unsigned int						GetHealth();
+    void								SetHealth(float uiHealth);
+    float								GetHealth();
 
     void								SetPetrolTankHealth(float fHealth);
     float								GetPetrolTankHealth();

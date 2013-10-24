@@ -454,20 +454,20 @@ void CVehicleEntity::GetRotation(CVector3& vecRotation)
 		vecRotation = m_vecRotation;
 }
 
-void CVehicleEntity::SetHealth(unsigned int uiHealth)
+void CVehicleEntity::SetHealth(float uiHealth)
 	{
 	// Are we spawned?
 	if(IsSpawned())
-		m_pVehicle->SetEngineHealth((float)uiHealth);
+		m_pVehicle->SetEngineHealth(uiHealth);
 
 	m_uiHealth = uiHealth;
 }
 
-unsigned int CVehicleEntity::GetHealth()
+float CVehicleEntity::GetHealth()
 {
 	// Are we spawned?
 	if(IsSpawned())
-		return (unsigned int)m_pVehicle->GetEngineHealth();
+		return m_pVehicle->GetEngineHealth();
 
 	return m_uiHealth;
 }

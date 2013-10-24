@@ -345,7 +345,7 @@ bool CPlayerEntity::Create()
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
 
 	// Mark as spawned
-	Spawn();
+	m_bSpawned = true;
 
 	return true;
 }
@@ -1888,17 +1888,13 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 		//m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
+		VehiclePacket.health = m_pVehicle->GetHealth();
+		VehiclePacket.petrol = m_pVehicle->GetPetrolTankHealth();
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
 
-		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
-
-		pBitStream->Write1();
-		pBitStream->Write(m_pVehicle->GetHealth());
-
-		pBitStream->Write1();
-		pBitStream->Write(m_pVehicle->GetPetrolTankHealth());
+		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0(); //TODO: get engine state form server, but do not send to server form client
 	}
 }
 
@@ -2024,22 +2020,9 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
 				SetControlState(&VehiclePacket.ControlState);
-
+				m_pVehicle->SetHealth(VehiclePacket.health);
+				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				m_pVehicle->SetEngineState(pBitStream->ReadBit());
-
-				if (pBitStream->ReadBit())
-				{
-					unsigned int uiHealth;
-					pBitStream->Read(uiHealth);
-					m_pVehicle->SetHealth(uiHealth);
-				}
-
-				if (pBitStream->ReadBit())
-				{
-					float fHealth;
-					pBitStream->Read(fHealth);
-					m_pVehicle->SetPetrolTankHealth(fHealth);
-				}
 			}
 			else
 			{

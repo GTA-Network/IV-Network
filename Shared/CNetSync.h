@@ -93,6 +93,8 @@ public:
 	Matrix						matrix;
 	CVector3					vecMoveSpeed;
 	CVector3					vecTurnSpeed;
+	float						health;
+	float						petrol;
 };
 
 // Handles data between client ped and network sync(stores the values)

@@ -171,11 +171,6 @@ public: // Handles call functions
 									CPlayerEntity(bool bLocalPlayer = false);
 									~CPlayerEntity();
 
-	inline void						Spawn() 
-	{
-		m_bSpawned = true;
-	}
-
 	void							SetNetworked(bool bNetworked) { m_bNetworked = bNetworked; }
 	void							SetId(unsigned short usPlayerId) { m_usPlayerId = usPlayerId; }
 	void							SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }

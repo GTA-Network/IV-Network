@@ -86,6 +86,7 @@
       <AdditionalDependencies>zlib.lib;RakNet.lib;winmm.lib;d3dx9.lib;ws2_32.lib;dinput8.lib;detours.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;CEGUIBase.lib;CEGUIDirect3D9Renderer.lib;CEGUIExpatParser.lib;CEGUIFalagardWRBase.lib;CEGUISILLYImageCodec.lib;fat-io.lib;libjpeg.lib;libpng.lib;SILLY.lib;libexpat.lib;pcre.lib;freetype.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;$(SolutionDir)Libraries/bass;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
