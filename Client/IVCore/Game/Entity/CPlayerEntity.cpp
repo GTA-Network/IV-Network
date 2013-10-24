@@ -161,28 +161,20 @@ DWORD SkinIdToModelHash(int modelid)
 }
 
 CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
-	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0), m_bLocalPlayer(bLocalPlayer)
+	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0), m_bLocalPlayer(bLocalPlayer),
+	m_usPlayerId(INVALID_ENTITY_ID), m_usPing(0), m_bNetworked(false),
+	m_uiColor(0xFFFFFFFF), m_bSpawned(false), m_pPlayerPed(NULL),
+	m_pPlayerInfo(NULL), m_bytePlayerNumber(INVALID_PLAYER_PED), m_pContextData(NULL),
+	m_pVehicle(NULL), m_byteSeat(0)
 {
-	m_usPlayerId = INVALID_ENTITY_ID;
-	m_usPing = 0;
-	m_bNetworked = false;
-	m_uiColor = 0xFFFFFFFF;
-	m_bSpawned = false;
-	m_pPlayerPed = NULL;
-	m_pPlayerInfo = NULL;
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(INVALID_PLAYER_PED);
-	m_bytePlayerNumber = INVALID_PLAYER_PED;
-	m_pContextData = NULL;
 	m_vecPosition = CVector3();
-	m_pVehicle = NULL;
-	m_byteSeat = 0;
 	memset(&m_lastControlState, NULL, sizeof(CControls));
 	memset(&m_ControlState, NULL, sizeof(CControls));
 
 	// Initialise & Reset all stuff(classes,structs)
 	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
 	m_pInterpolationData = new sPlayerEntity_InterpolationData;
-	m_pVehicle = NULL;
 	ResetVehicleEnterExit();
 
 	// Is this the localplayer?
@@ -192,11 +184,10 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 		m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex();
 
 		// Create a new player ped instance
-		IVPlayerInfo * pInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
-		m_pPlayerPed = new CIVPlayerPed(pInfo->m_pPlayerPed);
+		m_pPlayerPed = new CIVPlayerPed(g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(m_bytePlayerNumber)->m_pPlayerPed);
 
 		// Get the localplayer info pointer
-		m_pPlayerInfo = new CIVPlayerInfo(g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0));
+		m_pPlayerInfo = new CIVPlayerInfo(g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(m_bytePlayerNumber));
 
 		// Create a new context data instance with the local player info
 		m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
@@ -210,26 +201,10 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 		// Set the localplayer name
 		SetNick(g_pCore->GetNick());
 
-		// Set our localplayer invincible during development mode
-		//CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_INVINCIBLE, GetScriptingHandle(), false);
-
 		// Mark as spawned
 		m_bSpawned = true;
 
 		CLogFile::Printf("LOCALPLAYER: m_bytePlayerNumber: %d, m_pPlayerPed: 0x%p, m_pPlayerInfo: 0x%p", m_bytePlayerNumber, m_pPlayerPed, m_pPlayerInfo);
-	}
-	else
-	{
-		// Set the player ped instance to NULL
-		m_pPlayerPed = NULL;
-
-		// Set the player info instance to NULL
-		m_pPlayerInfo = NULL;
-
-		// Set the context data instance to NULL
-		m_pContextData = NULL;
-
-		m_bytePlayerNumber = INVALID_PLAYER_PED;
 	}
 }
 
@@ -308,9 +283,6 @@ bool CPlayerEntity::Create()
 	if(m_bytePlayerNumber == INVALID_PLAYER_PED)
 		return false;
 
-	// Get the model index
-	int iModelIndex = m_pModelInfo->GetIndex();
-
 	// Create the player info instance
 	m_pPlayerInfo = new CIVPlayerInfo(m_bytePlayerNumber);
 
@@ -329,32 +301,23 @@ bool CPlayerEntity::Create()
 	if(!pPlayerPed)
 		return false;
 
-	// Create the ped
-	unsigned int uiPlayerIndex = (unsigned)m_bytePlayerNumber;
-	WORD wPlayerData = MAKEWORD(0, 1);
-	WORD * pwPlayerData = &wPlayerData;
+	// Get the model index
+	int iModelIndex = m_pModelInfo->GetIndex();
 
-	_asm	push uiPlayerIndex;
-	_asm	push iModelIndex;
-	_asm	push pwPlayerData;
-	_asm	mov ecx, pPlayerPed;
-	_asm	call COffsets::IV_Func__CreatePed;
+	// Create the ped
+	WORD wPlayerData = MAKEWORD(0, 1);
+	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
 
 	// Setup the ped
-	Matrix34 * pMatrix = NULL;
-
-	_asm	push iModelIndex;
-	_asm	push COffsets::IV_Var__PedFactory;
-	_asm	mov edi, pMatrix;
-	_asm	mov esi, pPlayerPed;
-	_asm	call COffsets::IV_Func__SetupPed;
+	_asm	mov edi, 0;
+	((void(__thiscall*) (IVPed *, DWORD, int)) (COffsets::IV_Func__SetupPed))(pPlayerPed, COffsets::IV_Var__PedFactory, m_pModelInfo->GetIndex());
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
 
 	// Set the player state to spawned
 	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
-	*(DWORD *)(pPlayerPed + 0x260) |= 1u;
+	*(DWORD *)((char*)pPlayerPed + 0x260) |= 1u;
 
 	// Set our player info with the ped
 	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
@@ -366,9 +329,7 @@ bool CPlayerEntity::Create()
 	m_pContextData->SetPlayerPed(m_pPlayerPed);
 
 	// Setup ped intelligence
-	_asm	push 2;
-	_asm	mov ecx, pPlayerPed;
-	_asm	call COffsets::IV_Func__SetupPedIntelligence;
+	((void(__thiscall*) (IVPed *, BYTE)) (COffsets::IV_Func__SetupPedIntelligence))(pPlayerPed, 2);
 
 	// Add to the world
 	m_pPlayerPed->AddToWorld();
@@ -376,9 +337,6 @@ bool CPlayerEntity::Create()
 	// Create the player blip
 	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
 	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
-
-	// Set the player internal name
-	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(255, 255, 255, 255));
 
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
@@ -409,21 +367,15 @@ bool CPlayerEntity::Destroy()
 	IVPlayerPed * pPlayerPed = m_pPlayerPed->GetPlayerPed();
 
 	// Deconstruct the ped intelligence
-	IVPedIntelligence * pPedIntelligence = pPlayerPed->m_pPedIntelligence;
+	((void(__thiscall*) (IVPedIntelligence *, BYTE)) (COffsets::IV_Func__SetupPedIntelligence))(pPlayerPed->m_pPedIntelligence, 0);
 
-	_asm push 0;
-	_asm mov ecx, pPedIntelligence;
-	_asm call COffsets::IV_Func__ShutdownPedIntelligence;
-
-	*(DWORD *)(pPlayerPed + 0x260) &= 0xFFFFFFFE;
+	*(DWORD *)((char*)pPlayerPed + 0x260) &= 0xFFFFFFFE;
 
 	// Remove the ped from the world
 	m_pPlayerPed->RemoveFromWorld();
 
 	// Delete the player ped
-	_asm push 1;
-	_asm mov ecx, pPlayerPed;
-	_asm call COffsets::IV_Func__DeletePed;
+	((void(__thiscall*) (IVPed *, BYTE)) (COffsets::IV_Func__DeletePed))(pPlayerPed, 1);
 
 	// Remove the model reference
 	m_pModelInfo->RemoveReference();
@@ -550,7 +502,7 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 void CPlayerEntity::SetNick(CString strNick)
 {
 	m_strNick = strNick;
-	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(255, 255, 255, 255));
+	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
 }
 
 
