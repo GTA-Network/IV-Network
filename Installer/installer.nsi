@@ -150,13 +150,12 @@ Section "Install" SecDummy
 
 	SetOutPath "$INSTDIR\CEGUI\imagesets"
 
+	File ..\Files\CEGUI\imagesets\Loading.png
 	File ..\Files\CEGUI\imagesets\Background.png
 	File ..\Files\CEGUI\imagesets\WindowsLook.png
 	File ..\Files\CEGUI\imagesets\WindowsLook.imageset
 
 	SetOutPath "$INSTDIR\CEGUI\layouts"
-
-	;
 
 	SetOutPath "$INSTDIR\CEGUI\looknfeel"
 	
@@ -199,6 +198,10 @@ Section "Install" SecDummy
 	; Create Start Menu Folder
 
 	CreateDirectory "$SMPROGRAMS\IVNetwork"
+	
+	; Create Documents Folder - For Later Usage
+	CreateDirectory "$DOCUMENTS\IVNetwork"
+	CreateDirectory "$DOCUMENTS\IVNetwork\Screenshots"
 
 	; Create Start Menu Shortcuts If Requested
 
