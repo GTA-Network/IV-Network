@@ -110,9 +110,11 @@ UINT __stdcall IDirect3DDevice9Proxy::GetNumberOfSwapChains()
 
 HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentationParameters)
 {
-	if( g_pCore )
-		g_pCore->GetGraphics()->OnLostDevice( m_pDevice );
-
+	if (g_pCore)
+	{
+		g_pCore->GetGraphics()->OnLostDevice(m_pDevice);
+		g_pCore->GetGUI()->OnLostDevice();
+	}
 #ifdef _DEBUG
 	// Windowed mode
 	pPresentationParameters->Windowed = 1;
@@ -128,8 +130,11 @@ HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentat
 
 	if (SUCCEEDED(hr))
 	{
-		if( g_pCore )
+		if (g_pCore)
+		{
 			g_pCore->GetGraphics()->OnRestoreDevice(m_pDevice);
+			g_pCore->GetGUI()->OnResetDevice();
+		}
 	}
 	return hr;
 }

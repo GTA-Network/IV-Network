@@ -657,7 +657,7 @@ namespace SharedUtility
 		return CString( "%s", md5( szSerialMask ).c_str() ).ToUpper();
 	}
 #endif
-#ifdef _CLIENT
+#ifdef _WIN32
 	void SharedUtility::CheckGameDirectoryExists()
 	{
 
