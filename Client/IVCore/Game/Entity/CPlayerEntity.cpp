@@ -301,9 +301,6 @@ bool CPlayerEntity::Create()
 	if(!pPlayerPed)
 		return false;
 
-	// Get the model index
-	int iModelIndex = m_pModelInfo->GetIndex();
-
 	// Create the ped
 	WORD wPlayerData = MAKEWORD(0, 1);
 	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
