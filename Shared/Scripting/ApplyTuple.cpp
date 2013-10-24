@@ -113,6 +113,12 @@ void returnValue(CScriptVM* pVM, char v)
 	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
 }
 
+template<>
+void returnValue(CScriptVM * pVM, DWORD v)
+{
+	pVM->Push((int) v);
+}
+
 template<class T>
 void returnValue(CScriptVM* pVM, T *v)
 {

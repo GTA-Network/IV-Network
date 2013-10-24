@@ -73,7 +73,7 @@ bool CResource::Load()
 		return false;
 	}
 	pMetaXML->nodeToRoot();
-	if(pMetaXML->findNode("info"))
+	if (pMetaXML->findNode("info"))
 	{
 		// Not really important coming soon
 		// Well its important to specify the script type so you can use any file ending
@@ -93,7 +93,7 @@ bool CResource::Load()
 	{
 		while(true)
 		{
-			if(!strcmp(pMetaXML->nodeName(),"include"))
+			if (pMetaXML->nodeName() && !strcmp(pMetaXML->nodeName(), "include"))
 			{
 				CLogFile::Printf("\t[WIP] Implement includes");
 
@@ -117,7 +117,7 @@ bool CResource::Load()
 	{
 		while(true)
 		{
-			if(!strcmp(pMetaXML->nodeName(), "script"))
+			if(pMetaXML->nodeName() && !strcmp(pMetaXML->nodeName(), "script"))
 			{
 				CScript script;
 				// Get the script name
@@ -165,7 +165,7 @@ bool CResource::Load()
 	{
 		while(true)
 		{
-			if(!strcmp(pMetaXML->nodeName(), "file"))
+			if (pMetaXML->nodeName() && !strcmp(pMetaXML->nodeName(), "file"))
 			{
 				CString strFile = pMetaXML->getAttribute("src");
 
