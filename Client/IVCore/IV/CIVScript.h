@@ -306,6 +306,8 @@ namespace CIVScript
 	static void SetWantedMultiplier(float fMulti) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_WANTED_MULTIPLIER, fMulti); }
 	
 	static void LoadAllObjectsNow(bool bunknown) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_LOAD_ALL_OBJECTS_NOW, bunknown); }
+
+	static void GivePedFakeNetworkName(unsigned int ped, const char* pnick, CColor color) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_PED_FAKE_NETWORK_NAME, ped, pnick, color.A, color.R, color.G, color.B); }
 };
 
 #endif // CIVScript_h

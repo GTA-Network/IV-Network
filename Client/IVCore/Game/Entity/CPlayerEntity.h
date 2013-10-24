@@ -193,7 +193,7 @@ public: // Handles call functions
 	void							SetMoveSpeed(const CVector3& vecMoveSpeed);
 	void							SetTurnSpeed(const CVector3& vecTurnSpeed);
 
-	void							SetNick(CString strNick) { m_strNick = strNick; }
+	void							SetNick(CString strNick);
 	void							SetColor(unsigned uiColor);
 
 	unsigned						GetScriptingHandle();

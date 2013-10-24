@@ -161,10 +161,8 @@ DWORD SkinIdToModelHash(int modelid)
 }
 
 CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
-	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0)
+	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0), m_bLocalPlayer(bLocalPlayer)
 {
-	m_bLocalPlayer = bLocalPlayer;
-	m_strNick.Set("Player");
 	m_usPlayerId = INVALID_ENTITY_ID;
 	m_usPing = 0;
 	m_bNetworked = false;
@@ -380,7 +378,7 @@ bool CPlayerEntity::Create()
 	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	// Set the player internal name
-	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GIVE_PED_FAKE_NETWORK_NAME, GetScriptingHandle(), m_strNick.Get(), 255, 255, 255, 255);
+	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(255, 255, 255, 255));
 
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
@@ -547,6 +545,12 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 		m_pPlayerPed->GetTurnSpeed(vecTurnSpeed);
 	else
 		vecTurnSpeed = CVector3();
+}
+
+void CPlayerEntity::SetNick(CString strNick)
+{
+	m_strNick = strNick;
+	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(255, 255, 255, 255));
 }
 
 
