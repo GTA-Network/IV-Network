@@ -16,6 +16,7 @@ class CNetworkManager {
 private:
 	RakNet::RakPeerInterface				* m_pRakPeer;
 	static RakNet::RPC4						* m_pRPC;
+	RakNet::SystemAddress					m_ServerAddress;
 
 	eNetworkState							m_eNetworkState;
 	unsigned int							m_uiLastConnectionTry;

@@ -676,9 +676,9 @@ void CVehicleEntity::UpdateTargetPosition()
             vecNewPosition = m_interp.pos.vecTarget;
 
             // Abort target interpolation
-            if(HasTargetRotation())
+			if (HasTargetPosition())
             {
-                SetRotation(m_interp.rot.vecTarget);
+                SetPosition(m_interp.pos.vecTarget);
                 m_interp.rot.ulFinishTime = 0;
             }
         }

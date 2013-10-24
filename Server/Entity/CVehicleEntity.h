@@ -18,13 +18,28 @@ class CVehicleEntity : public CNetworkEntity
 {
 private:
 	CScriptVehicle*	m_pScriptVehicle;
-
+	Matrix			m_Matrix;
+	unsigned int	m_uiHealth;
+	float			m_fPetrolHealth;
+	bool			m_bEngineState;
 public:
 	CVehicleEntity();
 	~CVehicleEntity();
 
 	bool Create() {return true;}
 	bool Destroy() {return true;}
+
+	void SetMatrix(Matrix &matrix) { m_Matrix = matrix; }
+	void GetMatrix(Matrix &matrix) { matrix = m_Matrix; }
+
+	void								SetHealth(unsigned int uiHealth) { m_uiHealth = uiHealth; }
+	unsigned int						GetHealth() { return m_uiHealth; }
+
+	void								SetPetrolTankHealth(float fHealth) { m_fPetrolHealth = fHealth; }
+	float								GetPetrolTankHealth() { return m_fPetrolHealth; }
+
+	void								SetEngineState(bool bEngineState) { m_bEngineState = true; }
+	bool								GetEngineState() { return m_bEngineState; }
 
 	CScriptVehicle*  GetScriptVehicle() { return m_pScriptVehicle; }
 	void			SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }

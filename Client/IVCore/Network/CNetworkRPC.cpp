@@ -42,7 +42,12 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetGame()->GetLocalPlayer()->SetId(playerId);
 
 	// Add the local player to the playermanager
-	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, reinterpret_cast<CPlayerEntity *>(g_pCore->GetGame()->GetLocalPlayer()));
+	if (g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId))
+	{
+		if(g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsLocalPlayer())
+			g_pCore->GetGame()->GetPlayerManager()->SetNull(playerId); 
+	}
+	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, g_pCore->GetGame()->GetLocalPlayer());
 
 	// Set the localplayer colour
 	g_pCore->GetGame()->GetLocalPlayer()->SetColor(uiColour);

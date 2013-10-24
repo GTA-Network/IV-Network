@@ -257,6 +257,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			// Apply current heading to the sync package
 			pSyncPacket.fHeading = m_fHeading;
 
+
+			pSyncPacket.fHealth = GetHealth();
 			// Apply current weapon sync data to the sync package
 			/*pSyncPacket.sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
 			pSyncPacket.sWeaponData.fArmsUpDownRotation = m_weaponData.fArmsUpDownRotation;
@@ -303,11 +305,17 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			if (pVehicle)
 			{
 				VehiclePacket.vehicleId = pVehicle->GetId();
-				pVehicle->GetPosition(VehiclePacket.vecPosition);
 				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
-				pVehicle->GetRotation(VehiclePacket.vecRotation);
+				pVehicle->GetMatrix(VehiclePacket.matrix);
 				
+				pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
+
+				pBitStream->Write1();
+				pBitStream->Write(pVehicle->GetHealth());
+
+				pBitStream->Write1();
+				pBitStream->Write(pVehicle->GetPetrolTankHealth());
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
@@ -338,6 +346,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetRoll(pSyncPlayer.vecRoll);
 			SetDucking(pSyncPlayer.bDuckState);
 			SetHeading(pSyncPlayer.fHeading);
+			SetHealth(pSyncPlayer.fHealth);
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
@@ -353,10 +362,26 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			if (pVehicle)
 			{
 
-				pVehicle->SetPosition(VehiclePacket.vecPosition);
+				pVehicle->SetPosition(VehiclePacket.matrix.vecPosition);
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-				pVehicle->SetRotation(VehiclePacket.vecRotation);
+				pVehicle->SetMatrix(VehiclePacket.matrix);
+
+				pVehicle->SetEngineState(pBitStream->ReadBit());
+
+				if (pBitStream->ReadBit())
+				{
+					unsigned int uiHealth;
+					pBitStream->Read(uiHealth);
+					pVehicle->SetHealth(uiHealth);
+				}
+
+				if (pBitStream->ReadBit())
+				{
+					float fHealth;
+					pBitStream->Read(fHealth);
+					pVehicle->SetPetrolTankHealth(fHealth);
+				}
 			}
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

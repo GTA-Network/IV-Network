@@ -200,6 +200,7 @@ public:
 	IVPlayerInfo		* GetPlayerInfo();
 
 	CIVPedTaskManager	* GetPedTaskManager() { return m_pPedTaskManager; }
+	CIVPedWeapons		* GetPedWeapons() { return m_pPedWeapons; }
 
 	void				SetCurrentHeading(float m_fCurrentHeading);
 	float				GetCurrentHeading();

@@ -326,7 +326,7 @@ bool CMainMenu::OnDisconnectButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 	// Are we connected?
 	if (g_pCore->GetNetworkManager()->IsConnected())
 	{
-		g_pCore->GetNetworkManager()->Shutdown(500, true);
+		g_pCore->GetNetworkManager()->Disconnect();
 
 		m_pDisconnectButton->setVisible(false);
 		m_pQuickConnectButton->setVisible(true);

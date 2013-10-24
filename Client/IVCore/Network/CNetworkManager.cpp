@@ -31,6 +31,8 @@ CNetworkManager::CNetworkManager()
 	// Set the network state
 	SetNetworkState(NETSTATE_NONE);
 
+	m_ServerAddress = RakNet::UNASSIGNED_SYSTEM_ADDRESS;
+
 	// Reset the last connection try
 	m_uiLastConnectionTry = (unsigned int)SharedUtility::GetTime();
 }
@@ -122,14 +124,16 @@ void CNetworkManager::Disconnect(bool bShowMessage)
 	if(!IsConnected())
 		return;
 
-	// Unregister the RPC's
-	CNetworkRPC::Unregister(m_pRPC);
-
 	// Close the connection
-	m_pRakPeer->CloseConnection(RakNet::UNASSIGNED_SYSTEM_ADDRESS, true);
+	m_pRakPeer->CloseConnection(m_ServerAddress, true);
 
 	// Set the network state
 	SetNetworkState(NETSTATE_DISCONNECTED);
+	
+	Shutdown(500, true);
+	Startup();
+	
+	m_ServerAddress = RakNet::UNASSIGNED_SYSTEM_ADDRESS;
 
 	// Should we output a message?
 	if(bShowMessage)
@@ -300,6 +304,8 @@ void CNetworkManager::ConnectionAccepted(RakNet::Packet * pPacket)
 
 	// Write the player serial
 	pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
+
+	m_ServerAddress = pPacket->systemAddress;
 
 	// Send to the server
 	Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);

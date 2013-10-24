@@ -37,7 +37,7 @@ public:
 		}
 	}
 
-	T*			GetAt(EntityId entityId)
+	inline T*			GetAt(EntityId entityId)
 	{
 		if(Exists(entityId))
 			return m_pEntities[entityId];
@@ -45,7 +45,7 @@ public:
 		return 0;
 	}
 
-	bool		Add(EntityId entityId, T* pEntity)
+	inline bool		Add(EntityId entityId, T* pEntity)
 	{
 		// Check if the Entity didn't exist yet
 		if(Exists(entityId))
@@ -60,7 +60,7 @@ public:
 		return true;
 	}
 
-	EntityId	Add(T* pEntity)
+	inline EntityId	Add(T* pEntity)
 	{
 		for(EntityId id = 0; id < max; ++id)
 		{
@@ -74,7 +74,7 @@ public:
 		return INVALID_ENTITY_ID;
 	}
 
-	bool		Delete(T* pEntity)
+	inline bool		Delete(T* pEntity)
 	{
 		for(EntityId id = 0; id < max; ++id)
 		{
@@ -89,7 +89,7 @@ public:
 		return false;
 	}
 
-	bool		Delete(EntityId entityId)
+	inline bool		Delete(EntityId entityId)
 	{
 		// Check if the entity already existed
 		if(!Exists(entityId))
@@ -104,17 +104,17 @@ public:
 		return true;
 	}
 
-	bool		DoesExists(EntityId entityId)
+	inline bool		DoesExists(EntityId entityId)
 	{
 		return Exists(entityId);
 	}
 
-	bool		Exists(EntityId entityId)
+	inline bool		Exists(EntityId entityId)
 	{
 		return (entityId < max && m_pEntities[entityId] != 0);
 	}
 
-	EntityId	FindFreeSlot()
+	inline EntityId	FindFreeSlot()
 	{
 		for(EntityId i = 0; i < max; i++)
 		{
@@ -125,7 +125,7 @@ public:
 		return INVALID_ENTITY_ID;
 	}
 
-	EntityId	GetCount()
+	inline EntityId	GetCount()
 	{
 		EntityId count = 0;
 
@@ -143,7 +143,7 @@ public:
 		return count;
 	}
 
-	void		Reset()
+	inline void		Reset()
 	{
 		// Loop through all entities
 		for(EntityId id = 0; id < max; ++id)
@@ -157,12 +157,12 @@ public:
 		}
 	}
 
-	EntityId	GetMax()
+	inline EntityId	GetMax()
 	{
 		return max;
 	}
 
-	void		Pulse()
+	inline void		Pulse()
 	{
 		// Loop through all entities
 		for(EntityId id = 0; id < max; ++id)
@@ -173,6 +173,12 @@ public:
 				m_pEntities[id]->Pulse();
 			}
 		}
+	}
+
+	inline void SetNull(EntityId id)
+	{
+		if (id < max)
+			m_pEntities[id] = nullptr;
 	}
 };
 

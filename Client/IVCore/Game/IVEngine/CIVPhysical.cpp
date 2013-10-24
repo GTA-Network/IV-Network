@@ -89,10 +89,10 @@ IVEntity * CIVPhysical::GetLastDamageEntity()
 
 void CIVPhysical::SetHealth(float fHealth)
 {
-	IVPhysical * pPhysical = (IVPhysical *)GetEntity();
+	IVPhysical * pPhysical = (IVPhysical *) GetEntity();
 
-	if(pPhysical)
-		pPhysical->SetHealth(fHealth, 1);
+	if (pPhysical)
+		pPhysical->m_fHealth = fHealth;
 }
 
 float CIVPhysical::GetHealth()

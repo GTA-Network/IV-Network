@@ -74,6 +74,7 @@ public:
 
 	bool						bDuckState;
 	float						fHeading;
+	float						fHealth;
 	// Add player members to sync(like weapon sync, key sync etc.)
 };
 
@@ -89,8 +90,7 @@ class CNetworkPlayerVehicleSyncPacket {
 public:
 	CControls					ControlState;
 	EntityId					vehicleId;
-	CVector3					vecPosition;
-	CVector3					vecRotation;
+	Matrix						matrix;
 	CVector3					vecMoveSpeed;
 	CVector3					vecTurnSpeed;
 };

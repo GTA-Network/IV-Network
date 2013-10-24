@@ -1813,39 +1813,39 @@ void CPlayerEntity::GiveWeapon(unsigned uiWeaponId, unsigned uiAmmunation)
 void CPlayerEntity::RemoveWeapon(unsigned uiWeaponId)
 {
 	if (IsSpawned())
-		;
+		m_pPlayerPed->GetPedWeapons()->RemoveWeapon((eWeaponType) uiWeaponId);
 }
 
 void CPlayerEntity::RemoveAllWeapons()
 {
 	if (IsSpawned())
-		;
+		m_pPlayerPed->GetPedWeapons()->RemoveAllWeapons();
 }
 
 void CPlayerEntity::SetCurrentWeapon(unsigned uiWeaponId)
 {
 	if (IsSpawned())
-		;
+		m_pPlayerPed->GetPedWeapons()->SetCurrentWeaponByType((eWeaponType) uiWeaponId);
 }
 
 unsigned CPlayerEntity::GetCurrentWeapon()
 {
 	if (IsSpawned())
-		return 0;
+		return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetType();
 
-	return 0;
+	return eWeaponType::WEAPON_TYPE_UNARMED;
 }
 
 void CPlayerEntity::SetAmmunation(unsigned uiWeaponId, unsigned uiAmmunation)
 {
 	if (IsSpawned())
-		;
+		m_pPlayerPed->GetPedWeapons()->SetAmmoByType((eWeaponType) uiWeaponId, uiAmmunation);
 }
 
-unsigned CPlayerEntity::GetAmmunation(unsigned uiWeapnId)
+unsigned CPlayerEntity::GetAmmunation(unsigned uiWeaponId)
 {
 	if (IsSpawned())
-		return 0;
+		return m_pPlayerPed->GetPedWeapons()->GetAmmoByType((eWeaponType) uiWeaponId);
 	
 	return 0;
 }
@@ -1894,6 +1894,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		PlayerPacket.fHeading = GetHeading();
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
 
+		PlayerPacket.fHealth = GetHealth();
+
 		// Write player onfoot flag into raknet bitstream
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 		pBitStream->Write(PlayerPacket);
@@ -1931,12 +1933,20 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		VehiclePacket.vehicleId = m_pVehicle->GetId();
-		m_pVehicle->GetPosition(VehiclePacket.vecPosition);
+		m_pVehicle->GetGameVehicle()->GetMatrix(VehiclePacket.matrix);
+		//m_pVehicle->GetPosition(VehiclePacket.vecPosition);
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
-		m_pVehicle->GetRotation(VehiclePacket.vecRotation);
+		//m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
 
+		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
+
+		pBitStream->Write1();
+		pBitStream->Write(m_pVehicle->GetHealth());
+		
+		pBitStream->Write1();
+		pBitStream->Write(m_pVehicle->GetPetrolTankHealth());
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
@@ -1967,6 +1977,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			PlayerPacket.vecRoll,
 			PlayerPacket.bDuckState,
 			PlayerPacket.fHeading);
+
+		SetHealth(PlayerPacket.fHealth);
 
 		SetControlState(&PlayerPacket.pControlState);
 
@@ -2051,13 +2063,34 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		{
 			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
 			{
-
-				m_pVehicle->SetTargetPosition(VehiclePacket.vecPosition, interpolationTime);
-				m_pVehicle->SetTargetRotation(VehiclePacket.vecRotation, interpolationTime);
+				Matrix matrix;
+				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
+				m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
+				matrix.vecForward = VehiclePacket.matrix.vecForward;
+				matrix.vecRight = VehiclePacket.matrix.vecRight;
+				matrix.vecUp = VehiclePacket.matrix.vecUp;
+				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
+				
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 
 				SetControlState(&VehiclePacket.ControlState);
+
+				m_pVehicle->SetEngineState(pBitStream->ReadBit());
+
+				if (pBitStream->ReadBit())
+				{
+					unsigned int uiHealth;
+					pBitStream->Read(uiHealth);
+					m_pVehicle->SetHealth(uiHealth);
+				}
+
+				if (pBitStream->ReadBit())
+				{
+					float fHealth;
+					pBitStream->Read(fHealth);
+					m_pVehicle->SetPetrolTankHealth(fHealth);
+				}
 			}
 			else
 			{
@@ -2069,8 +2102,11 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			ResetVehicleEnterExit();
 
 			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
-			CIVScript::WarpCharIntoCar(GetScriptingHandle(), g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId)->GetScriptingHandle());
-			m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
+			if (g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId))
+			{
+				CIVScript::WarpCharIntoCar(GetScriptingHandle(), g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId)->GetScriptingHandle());
+				m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
+			}
 		}
 
 
