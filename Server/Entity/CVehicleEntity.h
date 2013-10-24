@@ -36,7 +36,12 @@ public:
 	CScriptVehicle() { SetEntity(new CVehicleEntity); };
 	~CScriptVehicle() { delete GetEntity(); };
 
-	virtual const char* GetScriptClassName() { return "CVehicleEntity"; }
+	const char* GetScriptClassName() { return "CVehicleEntity"; }
+	
+	void SetPosition(float fX, float fY, float fZ) { GetEntity()->SetPosition(CVector3(fX, fY, fZ)); }
+	void SetRotation(float fX, float fY, float fZ) { GetEntity()->SetRotation(CVector3(fX, fY, fZ)); }
+	void SetMoveSpeed(float fX, float fY, float fZ) { GetEntity()->SetMoveSpeed(CVector3(fX, fY, fZ)); }
+	void SetTurnSpeed(float fX, float fY, float fZ) { GetEntity()->SetTurnSpeed(CVector3(fX, fY, fZ)); }
 };
 
 #endif // CVehicleEntity_h

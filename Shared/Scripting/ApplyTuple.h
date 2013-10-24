@@ -6,6 +6,7 @@
 
 #include "CScriptVM.h"
 #include <stdint.h>
+#include <tuple>
 
 template<typename T>
 T getValue(CScriptVM*, int idx);
@@ -41,8 +42,6 @@ T getValue_(CScriptVM *pVM, unsigned int idx, std::true_type)
 	{
 		return (T) pVM->GetUserData(idx);
 	}
-
-	(void)g;
 	T v = *(T *) pVM->GetUserData(idx);
 	return v;
 

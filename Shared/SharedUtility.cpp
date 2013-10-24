@@ -657,7 +657,7 @@ namespace SharedUtility
 		return CString( "%s", md5( szSerialMask ).c_str() ).ToUpper();
 	}
 #endif
-
+#ifdef _CLIENT
 	void SharedUtility::CheckGameDirectoryExists()
 	{
 
@@ -670,6 +670,7 @@ namespace SharedUtility
 
 	void SharedUtility::CreateBasicMPDirectories()
 	{
+
 		// Check if we have the 'multiplayer' directory, if not: create it.
 		char szExecutablePath[MAX_PATH];
 		sprintf_s(szExecutablePath,GetAbsolutePath("").Get(),sizeof(MAX_PATH));
@@ -684,6 +685,7 @@ namespace SharedUtility
 			CreateDirectoryA(strMultiplayerPath.Get());
 		}
 	}
+#endif
 	
 	CString DiconnectReasonToString( unsigned int uiReason )
 	{
