@@ -202,6 +202,8 @@ public:
 	void		GiveWeapon(int id, int uiAmmo);
 	void		SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting);
 
+	int			GetId() { return GetEntity()->GetId(); }
+
 	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
 	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
 	CVector3	GetMoveSpeed() { CVector3 vecMoveSpeed; GetEntity()->GetMoveSpeed(vecMoveSpeed); return vecMoveSpeed; }
