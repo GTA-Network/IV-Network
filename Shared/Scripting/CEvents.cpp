@@ -57,7 +57,16 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				returnArguments.push(ret);
 			}
 			else if (EventType == CEventHandler::eEventType::NATIVE_EVENT
-				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT)
+				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
+				&& pVM == nullptr)
+			{
+				CScriptArgument ret;
+				pEvent->Call(pArguments, &ret);
+				returnArguments.push(ret);
+			}
+			else if (EventType == CEventHandler::eEventType::NATIVE_EVENT
+				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
+				&& pEvent->GetVM() == pVM)
 			{
 				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);

@@ -30,7 +30,7 @@ bool CResourceServerScript::Start()
 	// Call the scripting event
 	CScriptArguments args;
 	args.push(m_strShortName.Get());
-	CEvents::GetInstance()->Call("scriptLoaded", &args, CEventHandler::eEventType::RESOURCE_EVENT, m_resource->GetVM());
+	CEvents::GetInstance()->Call("scriptLoaded", &args, CEventHandler::eEventType::NATIVE_EVENT, m_resource->GetVM());
 	return true;
 }
 
