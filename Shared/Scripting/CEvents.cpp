@@ -56,6 +56,13 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
+			else if (EventType == CEventHandler::eEventType::NATIVE_EVENT
+				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT)
+			{
+				CScriptArgument ret;
+				pEvent->Call(pArguments, &ret);
+				returnArguments.push(ret);
+			}
 		}
 	}
 

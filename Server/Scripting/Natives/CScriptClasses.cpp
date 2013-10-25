@@ -21,6 +21,8 @@ int CreateVehicle(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
 
+	pVM->ResetStackIndex();
+
 	int vehicleModel;
 	pVM->Pop(vehicleModel);
 	

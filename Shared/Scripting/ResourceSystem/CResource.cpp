@@ -236,7 +236,7 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 		// Call the scripting event
 		CScriptArguments args;
 		args.push(m_strResourceName);
-		CEvents::GetInstance()->Call("resourceStarted", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
+		CEvents::GetInstance()->Call("resourceStarted", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 		return true;
 	}
 

@@ -16,6 +16,7 @@
 #include <Squirrel/squirrel.h>
 #include <Squirrel/sqstate.h>
 #include <Squirrel/sqvm.h>
+#include <Squirrel/sqstring.h>
 #include "CScriptArguments.h"
 #include "CSquirrelVM.h"
 #include "CLuaVM.h"
@@ -26,6 +27,7 @@ public:
 		RESOURCE_EVENT,
 		GLOBAL_EVENT,
 		REMOTE_EVENT,
+		NATIVE_EVENT,
 	};
 private:
 	CScriptVM * m_pVM;
@@ -74,7 +76,29 @@ public:
 				{
 					if (pReturn)
 					{
-						pReturn->pushFromStack(m_pVM, -1);
+						switch (res._type)
+						{
+						case OT_FLOAT:
+							{
+								pReturn->set(CScriptArgument(res._unVal.fFloat));
+									 }
+							break;
+						case OT_INTEGER:
+							{
+								pReturn->set(CScriptArgument(res._unVal.nInteger));
+									   }
+							break;
+						case OT_BOOL:
+							{
+								pReturn->set(CScriptArgument((bool) res._unVal.nInteger));
+									}
+							break;
+						case OT_STRING:
+							{
+								pReturn->set(CScriptArgument(CString(res._unVal.pString->_val)));
+									  }
+							break;
+						}
 					}
 				}
 			}
@@ -84,7 +108,29 @@ public:
 				{
 					if (pReturn)
 					{
-						pReturn->pushFromStack(m_pVM, -1);
+						switch (res._type)
+						{
+						case OT_FLOAT:
+							{
+								pReturn->set(CScriptArgument(res._unVal.fFloat));
+							}
+							break;
+						case OT_INTEGER:
+							{
+								pReturn->set(CScriptArgument(res._unVal.nInteger));
+							}
+							break;
+						case OT_BOOL:
+							{
+								pReturn->set(CScriptArgument((bool) res._unVal.nInteger));
+							}
+							break;
+						case OT_STRING:
+							{
+								pReturn->set(CScriptArgument(CString(res._unVal.pString->_val)));
+							}
+							break;
+						}
 					}
 				}
 			}
