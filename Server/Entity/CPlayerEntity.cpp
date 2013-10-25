@@ -230,8 +230,7 @@ void CScriptPlayer::SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllo
 	bitStream.Write(RakNet::RakString(sMessage.C_String()));
 	bitStream.Write(dwColor);
 	bitStream.Write(bAllowFormatting);
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
-
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)

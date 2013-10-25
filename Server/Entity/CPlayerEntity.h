@@ -204,6 +204,8 @@ public:
 
 	int			GetId() { return GetEntity()->GetId(); }
 
+	bool		IsOnFoot() { return true; }
+
 	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
 	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
 	CVector3	GetMoveSpeed() { CVector3 vecMoveSpeed; GetEntity()->GetMoveSpeed(vecMoveSpeed); return vecMoveSpeed; }

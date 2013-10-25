@@ -17,6 +17,53 @@
 #include <CServer.h>
 #include <Scripting/CScriptClass.h>
 
+int IsPlayerConnected(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int id;
+	pVM->Pop(id);
+
+	pVM->Push(CServer::GetInstance()->GetPlayerManager()->DoesExists((EntityId)id));
+
+	return 1;
+}
+
+int IsPlayerSpawned(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int id;
+	pVM->Pop(id);
+
+	pVM->Push(CServer::GetInstance()->GetPlayerManager()->DoesExists((EntityId)id));
+
+	return 1;
+}
+
+int GetPlayerById(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int id;
+	pVM->Pop(id);
+
+	if (CServer::GetInstance()->GetPlayerManager()->DoesExists((EntityId)id))
+	{
+		pVM->PushInstance("CPlayerEntity", CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)id)->GetScriptPlayer());
+		return 1;
+	}
+	pVM->Push(false);
+
+	return 1;
+}
+
 int CreateVehicle(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
@@ -66,6 +113,9 @@ int CreateVehicle(int * VM)
 void CScriptClasses::Register(CScriptVM * pVM)
 {
 	pVM->RegisterFunction("createVehicle", CreateVehicle);
+	pVM->RegisterFunction("getPlayerById", GetPlayerById);
+	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
+	pVM->RegisterFunction("isPlayerSpawned", IsPlayerSpawned);
 
 	{ // ScriptPlayer
 		// TODO: fix memory leak
@@ -98,8 +148,9 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("giveMoney", &CScriptPlayer::GiveMoney). // Synced
 			AddMethod("setColor", &CScriptPlayer::SetColor). // Synced
 			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
-			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage).
-			AddMethod("getId", &CScriptPlayer::GetId).
+			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
+			AddMethod("getId", &CScriptPlayer::GetId). // Synced
+			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot). // Synced
 		Register(pVM);
 	}
 

@@ -515,15 +515,15 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Is the player pointer valid?
 	if (pPlayer)
 	{
-		CString sMessage;
+		RakNet::RakString sMessage;
 		DWORD dwColor;
 		bool bAllowFormatting;
 
-		pBitStream->Read(dwColor);
 		pBitStream->Read(sMessage);
+		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Outputf(true, "#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), sMessage);
+		g_pCore->GetChat()->Output(sMessage.C_String());
 	}
 }
 
