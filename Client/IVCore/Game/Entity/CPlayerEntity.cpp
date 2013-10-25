@@ -306,8 +306,13 @@ bool CPlayerEntity::Create()
 	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
 
 	// Setup the ped
-	_asm	mov edi, 0;
-	((void(__thiscall*) (IVPed *, DWORD, int)) (COffsets::IV_Func__SetupPed))(pPlayerPed, COffsets::IV_Var__PedFactory, m_pModelInfo->GetIndex());
+	Matrix34 * pMatrix = NULL;
+	int iModelIndex = m_pModelInfo->GetIndex();
+	_asm  push iModelIndex;
+	_asm  push COffsets::IV_Var__PedFactory;
+	_asm  mov edi, pMatrix;
+	_asm  mov esi, pPlayerPed;
+	_asm  call COffsets::IV_Func__SetupPed;
 
 	// Set the player info
 	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
@@ -364,7 +369,7 @@ bool CPlayerEntity::Destroy()
 	IVPlayerPed * pPlayerPed = m_pPlayerPed->GetPlayerPed();
 
 	// Deconstruct the ped intelligence
-	((void(__thiscall*) (IVPedIntelligence *, BYTE)) (COffsets::IV_Func__SetupPedIntelligence))(pPlayerPed->m_pPedIntelligence, 0);
+	((void(__thiscall*) (IVPedIntelligence *, BYTE)) (COffsets::IV_Func__ShutdownPedIntelligence))(pPlayerPed->m_pPedIntelligence, 0);
 
 	*(DWORD *)((char*)pPlayerPed + 0x260) &= 0xFFFFFFFE;
 
@@ -1900,11 +1905,10 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		VehiclePacket.health = m_pVehicle->GetHealth();
 		VehiclePacket.petrol = m_pVehicle->GetPetrolTankHealth();
 		VehiclePacket.steeringAngle = m_pVehicle->GetSteeringAngle();
+		VehiclePacket.bEngineState = m_pVehicle->GetEngineState();
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
-
-		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0(); //TODO: get engine state form server, but do not send to server form client
 	}
 	else if (IsInVehicle() && IsPassenger())
 	{
@@ -2036,7 +2040,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				SetControlState(&VehiclePacket.ControlState);
 				m_pVehicle->SetHealth(VehiclePacket.health);
 				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
-				m_pVehicle->SetEngineState(pBitStream->ReadBit());
+				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);
 
 				m_pVehicle->SetSteeringAngle(VehiclePacket.steeringAngle);
 			}

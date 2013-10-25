@@ -338,14 +338,11 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 
 				VehiclePacket.health = pVehicle->GetHealth();
 				VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
-
+				VehiclePacket.bEngineState = pVehicle->GetEngineState();
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 			pBitStream->Write(VehiclePacket);
-
-			if (pVehicle)
-				pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0();
 		}
 		break;
 	default:
@@ -397,7 +394,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 
 				CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
 
-				pVehicle->SetEngineState(pBitStream->ReadBit());
+				pVehicle->SetEngineState(VehiclePacket.bEngineState);
 			}
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
