@@ -92,7 +92,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("giveMoney", &CScriptPlayer::GiveMoney). // Synced
 			AddMethod("setColor", &CScriptPlayer::SetColor). // Synced
 			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
-			//AddMethod("sendMessage", &CScriptPlayer::SendMessage).
+			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage).
 		Register(pVM);
 	}
 

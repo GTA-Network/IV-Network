@@ -200,6 +200,8 @@ public:
 	void		SetTurnSpeed(float fX, float fY, float fZ);
 
 	void		GiveWeapon(int id, int uiAmmo);
+
+	void		SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting);
 };
 
 #endif // CPlayerEntity_h

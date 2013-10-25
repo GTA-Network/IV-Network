@@ -504,6 +504,30 @@ void SetPlayerColor(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CString sMessage;
+		DWORD dwColor;
+		bool bAllowFormatting;
+
+		pBitStream->Read(dwColor);
+		pBitStream->Read(sMessage);
+		pBitStream->Read(bAllowFormatting);
+
+		g_pCore->GetChat()->Outputf(true, "#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), sMessage);
+	}
+}
+
+
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId vehicleId;
@@ -559,6 +583,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON), GivePlayerWeapon);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), GivePlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
 		
 		// Mark as registered
 		m_bRegistered = true;
