@@ -35,6 +35,9 @@ unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx);
 template<>
 const char *getValue<const char *>(CScriptVM* pVM, int idx);
 
+template<>
+string getValue<string>(CScriptVM* pVM, int idx);
+
 #if 1
 template<class T>
 T getValue_(CScriptVM *pVM, unsigned int idx, std::true_type)
@@ -84,6 +87,9 @@ template<>
 void returnValue(CScriptVM* pVM, const char *v);
 
 template<>
+void returnValue(CScriptVM* pVM, string v);
+
+template<>
 void returnValue(CScriptVM* pVM, float v);
 
 template<>
@@ -94,6 +100,9 @@ void returnValue(CScriptVM* pVM, char v);
 
 template<>
 void returnValue(CScriptVM * pVM, DWORD v);
+
+template<>
+void returnValue(CScriptVM * pVM, CVector3 v);
 
 template<class T>
 void returnValue(CScriptVM* pVM, T *v);

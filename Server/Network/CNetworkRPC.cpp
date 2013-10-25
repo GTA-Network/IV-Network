@@ -179,7 +179,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 				RakNet::BitStream bitStream;
 				bitStream.WriteCompressed(playerId);
 				bitStream.Write(strInput);
-				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
 			}
 			else
 			{
@@ -204,7 +204,7 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		// Deserialse the bitstream with the player
 		ePackageType eType;
-		pBitStream->Read<ePackageType>(eType);
+		pBitStream->Read(eType);
 
 		switch (eType)
 		{
@@ -314,8 +314,8 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->ReadCompressed(vehicleId);
 
 	// Read the seat
-	int iSeat;
-	pBitStream->Read(iSeat);
+	byte byteSeat;
+	pBitStream->Read(byteSeat);
 
 	// Get the player instance
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
@@ -323,11 +323,16 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Is the player instance valid?
 	if (pPlayer)
 	{
-		// Handle this with the player
-		//pPlayer->HandleVehicleEnter(vehicleId, iSeat);
+		// Just send the event to the other players
+		RakNet::BitStream bitStream;
+		bitStream.WriteCompressed(playerId);
+		bitStream.Write(vehicleId);
+		bitStream.Write(byteSeat);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+
 	}
 
-	CLogFile::Printf("RPC_ENTER_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, iSeat);
+	CLogFile::Printf("RPC_ENTER_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, byteSeat);
 }
 
 void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -340,8 +345,8 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->ReadCompressed(vehicleId);
 
 	// Read the seat
-	int iSeat;
-	pBitStream->Read(iSeat);
+	byte byteSeat;
+	pBitStream->Read(byteSeat);
 
 	// Get the player instance
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
@@ -350,10 +355,14 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if (pPlayer)
 	{
 		// Handle this with the player
-		//pPlayer->HandleVehicleExit(vehicleId, iSeat);
+		RakNet::BitStream bitStream;
+		bitStream.WriteCompressed(playerId);
+		bitStream.Write(vehicleId);
+		bitStream.Write(byteSeat);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
 	}
 
-	CLogFile::Printf("RPC_EXIT_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, iSeat);
+	CLogFile::Printf("RPC_EXIT_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, byteSeat);
 }
 
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)

@@ -72,6 +72,10 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setRotation", &CScriptPlayer::SetRotation). // Synced
 			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed). // Synced
 			AddMethod("setTurnSpeed", &CScriptPlayer::SetTurnSpeed). // Synced
+			AddMethod("getPosition", &CScriptPlayer::GetPosition). // Synced
+			AddMethod("getRotation", &CScriptPlayer::GetRotation). // Synced
+			AddMethod("getMoveSpeed", &CScriptPlayer::GetMoveSpeed). // Synced
+			AddMethod("getTurnSpeed", &CScriptPlayer::GetTurnSpeed). // Synced
 			AddMethod("getArmour", &CScriptPlayer::GetArmour). // Synced
 			AddMethod("setArmour", &CScriptPlayer::SetArmour). // Synced
 			AddMethod("getHealth", &CScriptPlayer::GetHealth). // Synced

@@ -95,6 +95,8 @@ public:
 	CVector3					vecTurnSpeed;
 	float						health;
 	float						petrol;
+	float						steeringAngle;
+
 };
 
 // Handles data between client ped and network sync(stores the values)

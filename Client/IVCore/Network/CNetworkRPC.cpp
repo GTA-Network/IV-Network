@@ -554,6 +554,49 @@ void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void EnterVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->ReadCompressed(playerId);
+
+	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
+		return;
+
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	if (!g_pCore->GetGame()->GetVehicleManager()->DoesExists(vehicleId))
+		return;
+
+	byte byteSeat;
+	pBitStream->Read(byteSeat);
+
+	if(g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsInVehicle())
+		g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->RemoveFromVehicle();
+
+	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->EnterVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId), byteSeat);
+}
+
+void ExitVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->ReadCompressed(playerId);
+
+	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
+		return;
+
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	if (!g_pCore->GetGame()->GetVehicleManager()->DoesExists(vehicleId))
+		return;
+
+	byte byteSeat;
+	pBitStream->Read(byteSeat);
+
+	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->ExitVehicle(eExitVehicleType::EXIT_VEHICLE_NORMAL);
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -567,6 +610,11 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE), CreateVehicle);
+
+
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), EnterVehicle);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_EXIT_VEHICLE), ExitVehicle);
+
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), SetPlayerName);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);

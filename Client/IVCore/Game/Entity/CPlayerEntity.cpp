@@ -985,6 +985,12 @@ void CPlayerEntity::CheckVehicleEnterExit()
 						// Enter the vehicle
 						EnterVehicle(pVehicle, byteSeat);
 
+						// Send to the server
+						RakNet::BitStream bitStream;
+						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
+						bitStream.Write(m_byteSeat);
+						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
+
 						g_pCore->GetChat()->Outputf(false, "HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat);
 					}
 				}
@@ -1000,6 +1006,12 @@ void CPlayerEntity::CheckVehicleEnterExit()
 				{
 					// Exit the vehicle
 					ExitVehicle(EXIT_VEHICLE_NORMAL);
+
+					// Send to the server
+					RakNet::BitStream bitStream;
+					bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
+					bitStream.Write(m_byteSeat);
+					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 
 					g_pCore->GetChat()->Outputf(false, "HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat);
 				}
@@ -1188,7 +1200,7 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
 
-					// Send to the server
+					// We dont have to send it to the server its handled automatically by the sync
 
 					g_pCore->GetChat()->Output("VehicleEntryComplete()");
 				}
@@ -1202,13 +1214,10 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 				// Has the exit vehicle task finished?
 				if(!IsGettingOutOfAVehicle())
 				{
-					RakNet::BitStream bitStream;
-
-					// Send to the server
-					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_VEHICLE_ENTER_EXIT), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
-
 					// Reset vehicle enter/exit
 					ResetVehicleEnterExit();
+
+					// We dont have to send it to the server its handled automatically by the sync
 
 					g_pCore->GetChat()->Output("VehicleExitComplete()");
 				}
@@ -1890,11 +1899,16 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
 		VehiclePacket.health = m_pVehicle->GetHealth();
 		VehiclePacket.petrol = m_pVehicle->GetPetrolTankHealth();
+		VehiclePacket.steeringAngle = m_pVehicle->GetSteeringAngle();
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
 
 		m_pVehicle->GetEngineState() ? pBitStream->Write1() : pBitStream->Write0(); //TODO: get engine state form server, but do not send to server form client
+	}
+	else if (IsInVehicle() && IsPassenger())
+	{
+		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
 	}
 }
 
@@ -1951,17 +1965,17 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (IsLocalPlayer())
 			return;
 
-		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring()) 
+		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
 		{
-				PTR_CHAT-> Output("Settings weapon aim..");
-				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
-				m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
-				m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
+			PTR_CHAT->Output("Settings weapon aim..");
+			m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
+			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
+			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
 
-				CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
+			CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
 
 		}
-		else if (m_ControlState.IsFiring()) 
+		else if (m_ControlState.IsFiring())
 		{
 			PTR_CHAT->Output("Settings weapon shot..");
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
@@ -1977,7 +1991,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
 			CIVScript::ClearSequenceTask(st);
 		}
-		else 
+		else
 		{
 			unsigned int uiPlayerIndex = GetScriptingHandle();
 
@@ -2009,13 +2023,13 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			if (m_pVehicle->GetId() == VehiclePacket.vehicleId)
 			{
 				Matrix matrix;
-				
+
 				m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
 				matrix.vecForward = VehiclePacket.matrix.vecForward;
 				matrix.vecRight = VehiclePacket.matrix.vecRight;
 				matrix.vecUp = VehiclePacket.matrix.vecUp;
 				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
-				
+
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
@@ -2023,6 +2037,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle->SetHealth(VehiclePacket.health);
 				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				m_pVehicle->SetEngineState(pBitStream->ReadBit());
+
+				m_pVehicle->SetSteeringAngle(VehiclePacket.steeringAngle);
 			}
 			else
 			{
@@ -2040,6 +2056,14 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
 			}
 		}
+
+
+		m_ulLastSyncReceived = SharedUtility::GetTime();
+	}
+	else if (eType == RPC_PACKAGE_TYPE_PLAYER_PASSENGER)
+	{
+		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
+
 
 
 		m_ulLastSyncReceived = SharedUtility::GetTime();

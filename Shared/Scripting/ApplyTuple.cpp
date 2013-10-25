@@ -75,7 +75,14 @@ const char *getValue<const char *>(CScriptVM* pVM, int idx)
 	return sz;
 }
 
-
+template<>
+string getValue<string>(CScriptVM* pVM, int idx)
+{
+	CString str;
+	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
+	pVM->Pop(str);
+	return str;
+}
 
 template<>
 void returnValue(CScriptVM* pVM, int v)
@@ -108,6 +115,12 @@ void returnValue(CScriptVM* pVM, const char *v)
 }
 
 template<>
+void returnValue(CScriptVM* pVM, string v)
+{
+	pVM->Push(v);
+}
+
+template<>
 void returnValue(CScriptVM* pVM, char v)
 {
 	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
@@ -117,6 +130,12 @@ template<>
 void returnValue(CScriptVM * pVM, DWORD v)
 {
 	pVM->Push((int) v);
+}
+
+template<>
+void returnValue(CScriptVM * pVM, CVector3 v)
+{
+	pVM->Push(v);
 }
 
 template<class T>

@@ -4,6 +4,7 @@
 #include <Squirrel/squirrel.h>
 
 #include <Common.h>
+#include <Math/CMaths.h>
 
 #include "CScriptVM.h"
 #include "ResourceSystem/CResourceManager.h"

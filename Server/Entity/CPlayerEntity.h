@@ -156,11 +156,11 @@ public:
 
 	void  SetHeading(float fHeading);
 
-	const char* GetName() {
-		return GetEntity()->m_strName.Get();
+	CString GetName() {
+		return GetEntity()->m_strName;
 	}
 
-	void		SetName(const char* szName);
+	void		SetName(CString szName);
 
 	int GetModel() { 
 		return GetEntity()->GetModel();
@@ -200,8 +200,12 @@ public:
 	void		SetTurnSpeed(float fX, float fY, float fZ);
 
 	void		GiveWeapon(int id, int uiAmmo);
-
 	void		SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting);
+
+	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
+	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
+	CVector3	GetMoveSpeed() { CVector3 vecMoveSpeed; GetEntity()->GetMoveSpeed(vecMoveSpeed); return vecMoveSpeed; }
+	CVector3	GetTurnSpeed() { CVector3 vecTurnSpeed; GetEntity()->GetTurnSpeed(vecTurnSpeed); return vecTurnSpeed; }
 };
 
 #endif // CPlayerEntity_h

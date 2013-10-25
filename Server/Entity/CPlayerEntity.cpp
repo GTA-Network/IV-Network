@@ -182,14 +182,13 @@ void CScriptPlayer::SetDimension(int iDimension)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
-void CScriptPlayer::SetName(const char* szName)
+void CScriptPlayer::SetName(CString szName)
 {
-	GetEntity()->SetName(CString(szName));
-	free((void*)szName);
+	GetEntity()->SetName(szName);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(szName);
+	bitStream.Write(RakNet::RakString(szName.C_String()));
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
@@ -228,7 +227,7 @@ void CScriptPlayer::SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllo
 {
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(sMessage);
+	bitStream.Write(RakNet::RakString(sMessage.C_String()));
 	bitStream.Write(dwColor);
 	bitStream.Write(bAllowFormatting);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
