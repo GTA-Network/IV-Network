@@ -87,6 +87,9 @@ void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Notify the client
 	g_pCore->GetChat()->Clear();
+	CVector3 vecPos;
+	g_pCore->GetGame()->GetLocalPlayer()->GetSpawnPosition(&vecPos);
+	g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPos);
 	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
 }
 
@@ -527,6 +530,25 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SetPlayerSpawnLocation(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		CVector3 vecPos;
+
+		pBitStream->Read(vecPos);
+
+		g_pCore->GetGame()->GetLocalPlayer()->SetSpawnLocation(vecPos, 0.0f);
+	}
+}
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
@@ -632,6 +654,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), GivePlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION), SetPlayerSpawnLocation);
 		
 		// Mark as registered
 		m_bRegistered = true;

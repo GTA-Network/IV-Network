@@ -149,8 +149,10 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setColor", &CScriptPlayer::SetColor). // Synced
 			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
 			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
+			AddMethod("sendMessageToAll", &CScriptPlayer::SendPlayerMessageToAll). // Synced
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
-			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot). // Synced
+			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
+			AddMethod("setSpawnLocation", &CScriptPlayer::SetSpawnLocation).
 		Register(pVM);
 	}
 

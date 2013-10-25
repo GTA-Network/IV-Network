@@ -138,6 +138,13 @@ void returnValue(CScriptVM * pVM, CVector3 v)
 	pVM->Push(v);
 }
 
+template<>
+void returnValue(CScriptVM* pVM, bool v)
+{
+	pVM->Push(v);
+}
+
+
 template<class T>
 void returnValue(CScriptVM* pVM, T *v)
 {

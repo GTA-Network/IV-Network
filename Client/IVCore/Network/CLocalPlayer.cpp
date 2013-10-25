@@ -21,7 +21,9 @@ void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngl
     _asm	pushad;
  
 	CLogFile::Printf("%s",__FUNCTION__);
-	memcpy(vecSpawnPosition,&CVector3(DEVELOPMENT_SPAWN_POSITION),sizeof(CVector3));
+	CVector3 vecPos;
+	g_pCore->GetGame()->GetLocalPlayer()->GetSpawnPosition(&vecPos);
+	memcpy(vecSpawnPosition,&vecPos,sizeof(CVector3));
 
     *fAngle = g_pCore->GetGame()->GetLocalPlayer()->GetSpawnRotation();
 

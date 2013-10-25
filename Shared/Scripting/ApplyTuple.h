@@ -99,6 +99,9 @@ template<>
 void returnValue(CScriptVM* pVM, char v);
 
 template<>
+void returnValue(CScriptVM* pVM, bool v);
+
+template<>
 void returnValue(CScriptVM * pVM, DWORD v);
 
 template<>

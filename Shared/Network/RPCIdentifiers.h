@@ -48,6 +48,7 @@ enum eRPCIdentifier : RPCIdentifier
 	RPC_PLAYER_GIVE_MONEY,
 	RPC_PLAYER_SET_COLOR,
 	RPC_PLAYER_MESSAGE,
+	RPC_PLAYER_SET_SPAWN_LOCATION,
 };
 
 #endif // RPCIdentifier_h
