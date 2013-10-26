@@ -42,6 +42,8 @@ public:
 	unsigned int		GetScriptingIndex() { return m_uiScriptingIndex; }
 
 	void				GetCameraPosition(CVector3 &vecPosition);
+
+	void				GetLookAt(CVector3& vecLookAt);
 	
 	/*void				GetLookAtPosition(CVector3D &vecPosition);
 	void				SetLookAtPositionEx(CVector3D &vecPosition); //For hook*/

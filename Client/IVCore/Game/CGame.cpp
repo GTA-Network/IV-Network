@@ -448,6 +448,7 @@ void CGame::DestroyInternalThread(BYTE byteThreadId)
 	m_Threads[byteThreadId].bInitialised = false;
 }
 
+
 bool CGame::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPosition, Vector2 &vecScreenPosition)
 {
 	DWORD dwAddress = (g_pCore->GetBase() + 0xAF94C0);

@@ -112,31 +112,56 @@ void CCamera::GetAimPosition(CVector3 *vecPosition)
 	vecPosition->fZ = (vecCamPosition.fZ + (vecCamForward.fZ * fScale));
 }
 
+void CCamera::GetLookAt(CVector3& vecLookAt)
+{
+	CIVCam * pGameCam = GetGameCam();
+	CVector3 vecCamPosition;
+	CVector3 vecCamForward;
+	CVector3 vecCamLookAt;
+
+	pGameCam->GetPosition(vecCamPosition);
+	pGameCam->GetCam()->m_data1.m_matMatrix.vecForward.ToVector3(vecCamForward);
+	vecCamLookAt.fX = vecCamPosition.fX + vecCamForward.fX;
+	vecCamLookAt.fY = vecCamPosition.fY + vecCamForward.fY;
+	vecCamLookAt.fZ = vecCamPosition.fZ + vecCamForward.fZ;
+
+	CVector3 vecFinalCamLookAt = Math::GetOffsetDegrees(vecCamPosition, vecCamForward);
+	float fScale = (vecFinalCamLookAt.Length() / 2);
+
+	vecCamLookAt.fX = vecCamPosition.fX + (vecCamForward.fX * fScale);
+	vecCamLookAt.fY = vecCamPosition.fY + (vecCamForward.fY * fScale);
+	vecCamLookAt.fZ = vecCamPosition.fZ + (vecCamForward.fZ * fScale);
+
+	memcpy(&vecLookAt, &vecCamLookAt, sizeof(CVector3));
+}
+
 bool CCamera::IsOnScreen(const CVector3& vecPosition)
 {
-    CVector3 vecCamPos;
-    m_pScriptCam->GetPosition(vecCamPos);
+#define CVEC_TO_D3DVEC(vec) &D3DXVECTOR3(vec.fX, vec.fY, vec.fZ)
+#define D3DVEC_TO_CVEC(vec) &CVector3(vec.x, vec.y, vec.z)
+	CVector3 vecCamPos;
+	GetGameCam()->GetPosition(vecCamPos);
 
-    CVector3 vecCamLookAt;
-    GetAimPosition(&vecCamLookAt);
+	CVector3 vecCamLookAt;
+	GetLookAt(vecCamLookAt);
 
-    D3DXMATRIX matView;
-    D3DXMatrixLookAtLH(&matView, CVEC_TO_D3DVEC(vecCamPos), CVEC_TO_D3DVEC(vecCamLookAt), &D3DXVECTOR3(0, 0, 1));
+	D3DXMATRIX matView;
+	D3DXMatrixLookAtLH(&matView, CVEC_TO_D3DVEC(vecCamPos), CVEC_TO_D3DVEC(vecCamLookAt), &D3DXVECTOR3(0, 0, 1));
 
-    D3DVIEWPORT9 viewport;
-    g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
+	D3DVIEWPORT9 viewport;
+	g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
 
-    DWORD dwLenX = viewport.Width;
-    DWORD dwLenY = viewport.Height;
+	DWORD dwLenX = viewport.Width;
+	DWORD dwLenY = viewport.Height;
 
-    D3DXMATRIX matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, m_pGameCam->GetCam()->m_data1.m_fFOV, (float)dwLenX / (float)dwLenY, m_pGameCam->GetCam()->m_data1.m_fNear, m_pGameCam->GetCam()->m_data1.m_fFar); 
+	D3DXMATRIX matProj;
+	D3DXMatrixPerspectiveFovLH(&matProj, GetGameCam()->GetCam()->m_data1.m_fFOV, (float) dwLenX / (float) dwLenY, GetGameCam()->GetCam()->m_data1.m_fNear, GetGameCam()->GetCam()->m_data1.m_fFar);
 
-    D3DXMATRIX matWorld;
-    D3DXMatrixIdentity(&matWorld);
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity(&matWorld);
 
-    D3DXVECTOR3 vecSPos;
-    D3DXVec3Project(&vecSPos, CVEC_TO_D3DVEC(vecPosition), &viewport, &matProj, &matView, &matWorld);
+	D3DXVECTOR3 vecSPos;
+	D3DXVec3Project(&vecSPos, CVEC_TO_D3DVEC(vecPosition), &viewport, &matProj, &matView, &matWorld);
 
-    return (vecSPos.z < 1.f);
+	return (vecSPos.z < 1.f);
 }
