@@ -260,6 +260,10 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		{
 			CLogFile::Printf("[death] %s has died!", pPlayer->GetName().Get());
 		}
+
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		CEvents::GetInstance()->Call("playerDeath", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 	CLogFile::Printf("%s", __FUNCTION__);
 }
@@ -300,6 +304,9 @@ void PlayerRespawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if (pNetworkPlayer)
 	{
 		// Respawn the player
+		CScriptArguments args;
+		args.push(pNetworkPlayer->GetScriptPlayer());
+		CEvents::GetInstance()->Call("playerRespawn", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 	CLogFile::Printf("%s", __FUNCTION__);
 }
@@ -329,6 +336,9 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 
 	}
 
@@ -360,6 +370,9 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 
 	CLogFile::Printf("RPC_EXIT_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, byteSeat);
