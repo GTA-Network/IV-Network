@@ -542,6 +542,9 @@
     <ClCompile Include="Game\CContextData.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
+    <ClCompile Include="CTags.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -1100,6 +1103,9 @@
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Input.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CTags.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

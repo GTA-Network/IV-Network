@@ -46,6 +46,7 @@
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
 #include <Graphics/CLoadingScreen.h>
+#include <Graphics/CTags.h>
 
 #include <audio\CAudioManager.h>
 
@@ -72,7 +73,8 @@ private:
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
 	CDevelopment					* m_pDevelopment;
-	CGUI                  			* m_pGUI;					
+	CGUI                  			* m_pGUI;			
+	CTags							* m_pTags;
 
 	eGAMEStates						m_eGameState;
 
@@ -134,6 +136,7 @@ public:
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
 	CGUI                 		 	* GetGUI() { return m_pGUI; }
 	CMainMenu						* GetMainMenu() { return m_pMainMenu;  }
+	CTags							* GetTags() { return m_pTags; }
 	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }

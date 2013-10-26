@@ -504,7 +504,7 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 void CPlayerEntity::SetNick(CString strNick)
 {
 	m_strNick = strNick;
-	CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
+	//CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
 }
 
 
@@ -2086,4 +2086,9 @@ void CPlayerEntity::WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat)
 
 	m_pVehicle = pVehicle;
 	m_byteSeat = seat;
+}
+
+bool CPlayerEntity::IsOnScreen()
+{
+	return g_pCore->GetGame()->GetCamera()->IsOnScreen(GetPosition());
 }

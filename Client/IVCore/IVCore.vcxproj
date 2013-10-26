@@ -145,6 +145,7 @@
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CTags.cpp" />
     <ClCompile Include="Game\CCamera.cpp" />
     <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Game\CContextData.cpp" />
@@ -318,6 +319,7 @@
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="..\RAGEEngine\RAGEInterface.h" />
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CTags.h" />
     <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CContextData.h" />

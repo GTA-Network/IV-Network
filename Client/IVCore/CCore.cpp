@@ -17,7 +17,7 @@ CCore::CCore(void) :
 	m_bInitialised(false), m_bGameLoaded(false), m_pGame(NULL),
 	m_pGraphics(NULL), m_pChat(NULL), m_pFPSCounter(NULL),
 	m_pNetworkManager(NULL), m_pGUI(NULL), m_bLoadingVisibility(0),
-	m_byteLoadingStyle(0), m_uiGameInitializeTime(0)//, m_pAudioManager(NULL)
+	m_byteLoadingStyle(0), m_uiGameInitializeTime(0), m_pTags(NULL)//, m_pAudioManager(NULL)
 {
 
 }
@@ -221,6 +221,9 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
 	m_pLoadingScreen->Initialize();
 	m_pLoadingScreen->SetVisible(true);
+
+	// Setup the name tags
+	m_pTags = new CTags();
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -346,6 +349,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 		CSnapShot::Reset();
 	}
+
+	// Render our Name Tags
+	if (m_pTags)
+		m_pTags->Draw();
 }
 
 void CCore::GetLoadedModulesList()
