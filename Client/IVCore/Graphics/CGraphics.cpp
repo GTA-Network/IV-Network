@@ -345,3 +345,21 @@ float CGraphics::GetCharacterWidth(char c, float fScale)
 
 	return 0.0f;
 }
+
+void CGraphics::DrawBox_2(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox)
+{
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
+
+	// Generate the matrix
+	D3DXMATRIX matrix;
+	D3DXMatrixTransformation2D(&matrix, NULL, 0.0f, &D3DXVECTOR2(fWidth, fHeight), NULL, 0.0f, &D3DXVECTOR2(fLeft, fTop));
+
+	// Set the sprite transform
+	m_pSprite->SetTransform(&matrix);
+
+	// Draw the box
+	m_pSprite->Draw(m_pPixelTexture, NULL, NULL, NULL, dwColorBox);
+
+	// End the sprite
+	m_pSprite->End();
+}

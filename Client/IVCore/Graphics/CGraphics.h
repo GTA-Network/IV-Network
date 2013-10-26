@@ -57,6 +57,7 @@ public:
 	void					DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox);
 	void					DrawLine(float fLeft, float fTop, float fRight, float fBottom, float fWidth, DWORD dwColour);
 	void					DrawRect(float fX, float fY, float fWidth, float fHeight, unsigned long ulColor);
+	void					DrawBox_2(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox);
 
 	ID3DXFont				* GetFont();
 

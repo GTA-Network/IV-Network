@@ -259,6 +259,8 @@ public: // Handles call functions
 	virtual void					Deserialize(RakNet::BitStream * pBitStream);
 
 	void							WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat = 0);
+
+	bool							IsOnScreen();
 };
 
 #endif // CPlayerEntity_h

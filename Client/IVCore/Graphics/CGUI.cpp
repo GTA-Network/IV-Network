@@ -930,3 +930,127 @@ CGUIStaticText * CGUI::CreateButton(char * szText, CEGUI::UVector2 vecSize, CEGU
 	pButton->setProperty("TextColours", "tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF");
 	return pButton;
 }
+
+void CGUI::DrawText(CString sText, CEGUI::Vector2 vecPosition, CEGUI::ColourRect rColorRect, CEGUI::Font * pFont, bool bProcessFormatting, bool bAllowColorFormatting, CEGUI::Rect * rClipRect, float fSpaceExtra, float fXScale, float fYScale)
+{
+	if (m_bInitialized)
+	{
+		// Get the font pointer
+		CEGUI::Font * pTextFont = pFont;
+
+		// If we have no valid font use the default one
+		if (!pTextFont)
+			pTextFont = g_pCore->GetGUI()->GetFont("Arial", 10);
+
+		// Do we have a valid font?
+		if (pTextFont)
+		{
+			// Reset the text geometry buffer
+			m_pTextDrawingGeometryBuffer->reset();
+
+			const float fBaseY = (vecPosition.d_y + pTextFont->getBaseline(fYScale));
+			CEGUI::Vector2 vecGlyphPos(vecPosition);
+			float fOtherY = 0;
+			CEGUI::ColourRect rColourRect = rColorRect;
+
+			// Temporary strings for unicode conversion
+			unsigned char ucAnsi = 0;
+			WCHAR wcUnicode = 0;
+
+			// Loop through all characters
+			unsigned int uiTextLength = sText.GetLength();
+
+			for (unsigned int c = 0; c < uiTextLength; c++)
+			{
+				// Set the current character in our ANSI string
+				ucAnsi = sText[c];
+
+				// Convert the current character to unicode
+				SharedUtility::AnsiToUnicode((const char *) &ucAnsi, 1, &wcUnicode, 1);
+
+				// Check for font formatting
+				if (bProcessFormatting)
+				{
+					// Check for newline constant
+					if (sText[c] == '\n')
+					{
+						vecGlyphPos.d_x = vecPosition.d_x;
+						fOtherY += pTextFont->getFontHeight();
+						continue;
+					}
+
+					// Check for color formatting
+					else if (uiTextLength >= 10 && (sText[c] == '[' && sText[c + 9] == ']'))
+					{
+						bool bValid = true;
+						CEGUI::String sColour;
+
+						// Loop through all color chars
+						for (size_t i = 0; i < 8; i++)
+						{
+							unsigned char cChar = sText[(c + i) + 1];
+
+							// Make sure its 0-99, A-F or a-f
+							if ((cChar < '0' || cChar > '9') && (cChar < 'A' || cChar > 'F') &&
+								(cChar < 'a' || cChar > 'f'))
+							{
+								// char is invalid
+								bValid = false;
+								break;
+							}
+
+							// Add the char to the color string
+							sColour += cChar;
+						}
+
+						// Set the color if its valid
+						if (bValid)
+						{
+							// Is color formatting allowed?
+							if (bAllowColorFormatting)
+							{
+								// Set the color
+								rColourRect.setColours((CEGUI::colour(strtoul(sColour.c_str(), NULL, 16)) >> 8) | 0xFF000000);
+							}
+
+							// Increment the current char by 9
+							c += 9;
+							continue;
+						}
+					}
+				}
+
+				// Attempt to get the glyph data
+				const CEGUI::FontGlyph * glyph = pTextFont->getGlyphData((unsigned long) wcUnicode);
+
+				// Do we have valid glyph data?
+				if (glyph)
+				{
+					// Get the glyph image
+					const CEGUI::Image * const img = glyph->getImage();
+
+					// Calculate the glyph y position
+					vecGlyphPos.d_y = (fBaseY - (img->getOffsetY() - img->getOffsetY() * fYScale) + fOtherY);
+
+					// Draw the glyph
+					img->draw(*m_pTextDrawingGeometryBuffer, vecGlyphPos, glyph->getSize(fXScale, fYScale), rClipRect, rColourRect);
+
+					// Increment the x position
+					vecGlyphPos.d_x += glyph->getAdvance(fXScale);
+
+					// Apply extra spacing to space chars
+					if (sText[c] == ' ')
+						vecGlyphPos.d_x += fSpaceExtra;
+				}
+			}
+
+			// Draw the text geometry buffer
+			m_pTextDrawingGeometryBuffer->draw();
+		}
+	}
+}
+
+void CGUI::DrawText(CString sText, CEGUI::Vector2 vecPosition, CEGUI::ColourRect rColorRect, CString strFontName, bool bProcessFormatting, bool bAllowColorFormatting, CEGUI::Rect * rClipRect, float fSpaceExtra, float fXScale, float fYScale)
+{
+	DrawText(sText, vecPosition, rColorRect, GetFont(strFontName), bProcessFormatting, bAllowColorFormatting, rClipRect, fSpaceExtra, fXScale, fYScale);
+}

@@ -90,6 +90,9 @@ public:
 	void Render();
 	bool Initialize();
 
+	void            DrawText(CString sText, CEGUI::Vector2 vecPosition, CEGUI::ColourRect rColorRect = CEGUI::colour(0xFFFFFFFF), CEGUI::Font * pFont = NULL, bool bProcessFormatting = true, bool bAllowColorFormatting = true, CEGUI::Rect * rClipRect = NULL, float fSpaceExtra = 0.0f, float fXScale = 1.0f, float fYScale = 1.0f);
+	void            DrawText(CString sText, CEGUI::Vector2 vecPosition, CEGUI::ColourRect rColorRect, CString sFontName, bool bProcessFormatting = true, bool bAllowColorFormatting = true, CEGUI::Rect * rClipRect = NULL, float fSpaceExtra = 0.0f, float fXScale = 1.0f, float fYScale = 1.0f);
+
 	const char	  * GetUniqueName();
 	bool			OnGUIKeyDown(const CEGUI::EventArgs &eventArgs);
 
