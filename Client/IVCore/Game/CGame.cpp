@@ -451,7 +451,6 @@ void CGame::DestroyInternalThread(BYTE byteThreadId)
 
 bool CGame::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPosition, Vector2 &vecScreenPosition)
 {
-	// AFEA30 // AFF290 // B002E0
 	DWORD dwAddress = (g_pCore->GetBase() + 0xAF94C0);
 	CVector3 * pWorldPosition = &vecWorldPosition;
 	Vector2 * pScreenPosition = &vecScreenPosition;
@@ -459,9 +458,9 @@ bool CGame::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPosition, Vecto
 	_asm
 	{
 		push pScreenPosition
-			push 2; game viewport id; 1 = mapicon
-			push pWorldPosition
-			call dwAddress
+		push 2; game viewport id; 1 = mapicon
+		push pWorldPosition
+		call dwAddress
 	}
 
 

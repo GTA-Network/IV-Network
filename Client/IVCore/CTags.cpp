@@ -19,7 +19,7 @@ CString strString;
 
 CTags::CTags()
 {
-	m_pFont = g_pCore->GetGUI()->GetFont("tahoma-bold", 10);
+	m_pFont = g_pCore->GetGUI()->GetFont("Arial", 10);
 }
 
 CTags::~CTags()
@@ -54,7 +54,6 @@ void CTags::Draw()
 			CPlayerEntity * pPlayer = pPlayerManager->GetAt(i);
 
 			// Is the player spawned and the player isn't us?
-			//if (pPlayer && pPlayer->IsSpawned() && !pPlayer->IsLocalPlayer())
 			if (pPlayer && pPlayer->IsSpawned() && !pPlayer->IsLocalPlayer())
 			{
 				// Get the player position and add the new z position
@@ -68,8 +67,6 @@ void CTags::Draw()
 				// Convert the position to our screen position
 				if (!CGame::GetScreenPositionFromWorldPosition(vecWorldPosition, vecScreenPosition))
 					continue;
-
-				g_pCore->GetChat()->Outputf(false, "Screen Position: %fX %fY", vecScreenPosition.fX, vecScreenPosition.fY);
 
 				// Is this player not within our view range?
 				if ((vecLocalPedPosition = vecWorldPosition).Length() > 60.0f)

@@ -114,8 +114,6 @@ void CCamera::GetAimPosition(CVector3 *vecPosition)
 
 void CCamera::GetLookAt(CVector3& vecLookAt)
 {
-	// TODO: try to get coords from vec
-	// Camera data
 	CIVCam * pGameCam = GetGameCam();
 	CVector3 vecCamPosition;
 	CVector3 vecCamForward;
@@ -123,11 +121,10 @@ void CCamera::GetLookAt(CVector3& vecLookAt)
 
 	pGameCam->GetPosition(vecCamPosition);
 	pGameCam->GetCam()->m_data1.m_matMatrix.vecForward.ToVector3(vecCamForward);
-	vecCamLookAt.fX = vecCamPosition.fX + /*floatmul(*/vecCamForward.fX/*, fScale)*/;
-	vecCamLookAt.fY = vecCamPosition.fY + /*floatmul(*/vecCamForward.fY/*, fScale)*/;
-	vecCamLookAt.fZ = vecCamPosition.fZ + /*floatmul(*/vecCamForward.fZ/*, fScale)*/;
+	vecCamLookAt.fX = vecCamPosition.fX + vecCamForward.fX;
+	vecCamLookAt.fY = vecCamPosition.fY + vecCamForward.fY;
+	vecCamLookAt.fZ = vecCamPosition.fZ + vecCamForward.fZ;
 
-	// Calculate fScale
 	CVector3 vecFinalCamLookAt = Math::GetOffsetDegrees(vecCamPosition, vecCamForward);
 	float fScale = (vecFinalCamLookAt.Length() / 2);
 
@@ -137,37 +134,6 @@ void CCamera::GetLookAt(CVector3& vecLookAt)
 
 	memcpy(&vecLookAt, &vecCamLookAt, sizeof(CVector3));
 }
-
-/*
-bool CCamera::IsOnScreen(const CVector3& vecPosition)
-{
-    CVector3 vecCamPos;
-    m_pScriptCam->GetPosition(vecCamPos);
-
-    CVector3 vecCamLookAt;
-    GetAimPosition(&vecCamLookAt);
-
-    D3DXMATRIX matView;
-    D3DXMatrixLookAtLH(&matView, CVEC_TO_D3DVEC(vecCamPos), CVEC_TO_D3DVEC(vecCamLookAt), &D3DXVECTOR3(0, 0, 1));
-
-    D3DVIEWPORT9 viewport;
-    g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
-
-    DWORD dwLenX = viewport.Width;
-    DWORD dwLenY = viewport.Height;
-
-    D3DXMATRIX matProj;
-    D3DXMatrixPerspectiveFovLH(&matProj, m_pGameCam->GetCam()->m_data1.m_fFOV, (float)dwLenX / (float)dwLenY, m_pGameCam->GetCam()->m_data1.m_fNear, m_pGameCam->GetCam()->m_data1.m_fFar); 
-
-    D3DXMATRIX matWorld;
-    D3DXMatrixIdentity(&matWorld);
-
-    D3DXVECTOR3 vecSPos;
-    D3DXVec3Project(&vecSPos, CVEC_TO_D3DVEC(vecPosition), &viewport, &matProj, &matView, &matWorld);
-
-    return (vecSPos.z < 1.f);
-}
-*/
 
 bool CCamera::IsOnScreen(const CVector3& vecPosition)
 {
