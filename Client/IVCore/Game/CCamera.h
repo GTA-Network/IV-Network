@@ -59,6 +59,8 @@ public:
 
 	CIVCam				*GetGameCam() { return m_pGameCam; }
 	CIVCam				*GetScriptCam() { return m_pScriptCam; }
+
+	void				GetLookAt(CVector3& vecLookAt);
 };
 
 #endif // CCamera_h
