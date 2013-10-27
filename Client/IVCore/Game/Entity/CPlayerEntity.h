@@ -152,7 +152,6 @@ public: // Handles "GET" functions
 	BYTE							GetPlayerGameNumber() { return m_bytePlayerNumber; }
 
 	unsigned short					GetId() { return !IsNetworked() ? -1 : m_usPlayerId; }
-	CString							GetNick() { return m_strNick; }
 	unsigned						GetColor() { return m_uiColor; }
 	float							GetHealth();
 	float							GetArmour();
@@ -189,6 +188,7 @@ public: // Handles call functions
 	void							SetTurnSpeed(const CVector3& vecTurnSpeed);
 
 	void							SetNick(CString strNick);
+	CString							GetNick() { return m_strNick; }
 	void							SetColor(unsigned uiColor);
 
 	unsigned						GetScriptingHandle();

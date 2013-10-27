@@ -199,7 +199,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 		m_pModelInfo->AddReference(false);
 
 		// Set the localplayer name
-		SetNick(g_pCore->GetNick());
+		// ViruZz: We're setting the nick that the client has in his settings, if not you're just setting it to NULL and we don't want that.
+		SetNick(CVAR_GET_STRING("nick").Get());
 
 		// Mark as spawned
 		m_bSpawned = true;
@@ -504,6 +505,7 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 void CPlayerEntity::SetNick(CString strNick)
 {
 	m_strNick = strNick;
+	CLogFile::Printf("Setting name to %s", strNick.Get());
 	//CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
 }
 
