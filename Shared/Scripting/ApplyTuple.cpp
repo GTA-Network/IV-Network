@@ -135,7 +135,11 @@ void returnValue(CScriptVM * pVM, DWORD v)
 template<>
 void returnValue(CScriptVM * pVM, CVector3 v)
 {
-	pVM->Push(v);
+	CScriptArguments vec;
+	vec.push(v.fX);
+	vec.push(v.fY);
+	vec.push(v.fZ);
+	pVM->PushArray(vec);
 }
 
 template<>
