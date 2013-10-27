@@ -319,7 +319,6 @@
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
     <ClInclude Include="..\RAGEEngine\RAGEInterface.h" />
     <ClInclude Include="CCore.h" />
-    <ClInclude Include="CTags.h" />
     <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CContextData.h" />
@@ -391,6 +390,7 @@
     <ClInclude Include="Graphics\CLoadingScreen.h" />
     <ClInclude Include="Graphics\CMainMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
+    <ClInclude Include="Graphics\CTags.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
     <ClInclude Include="Graphics\Input.h" />

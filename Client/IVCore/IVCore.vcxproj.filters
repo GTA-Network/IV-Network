@@ -1105,7 +1105,7 @@
     <ClInclude Include="Graphics\Input.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="CTags.h">
+    <ClInclude Include="Graphics\CTags.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
