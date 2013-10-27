@@ -246,9 +246,9 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "ivhelp")
 	{
-		PTR_CHAT->Output(false, "List of Default IV:N Commands...");
-		PTR_CHAT->Output(false, "** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
-		PTR_CHAT->Output(false, "** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
+		PTR_CHAT->Output("List of Default IV:N Commands...");
+		PTR_CHAT->Output("** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
+		PTR_CHAT->Output("** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
 		return true;
 	}
 	else if(strCommand == "createtrain")
