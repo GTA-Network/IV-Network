@@ -15,10 +15,6 @@ extern CCore * g_pCore;
 float fWidh = 68.0f;
 float fHeight = 10.0f;
 CPlayerEntity * pPlayer = NULL;
-CGUI * m_pGUI = g_pCore->GetGUI();
-CGraphics * pGraphics = g_pCore->GetGraphics();
-CPlayerManager * pPlayerManager = g_pCore->GetGame()->GetPlayerManager();
-CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
 CString strString;
 
 CTags::CTags()
@@ -33,6 +29,11 @@ CTags::~CTags()
 
 void CTags::Draw()
 {
+	CGUI * m_pGUI = g_pCore->GetGUI();
+	CGraphics * pGraphics = g_pCore->GetGraphics();
+	CPlayerManager * pPlayerManager = g_pCore->GetGame()->GetPlayerManager();
+	CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
+
 	// Does the graphis even exist?
 	if (!pGraphics || !pGraphics->GetDevice())
 		return;
@@ -93,6 +94,9 @@ void CTags::Draw()
 
 void CTags::DrawTag(CString strString, unsigned int uiHealth, unsigned int uiArmour, Vector2 vecScreenPosition, DWORD dwColor)
 {
+	CGraphics * pGraphics = g_pCore->GetGraphics();
+	CGUI * m_pGUI = g_pCore->GetGUI();
+
 	// Get + Calculate the tag position
 	float fX = (vecScreenPosition.fX - (80 / 2));
 	float fY = vecScreenPosition.fY;
@@ -101,7 +105,7 @@ void CTags::DrawTag(CString strString, unsigned int uiHealth, unsigned int uiArm
 	m_pGUI->DrawText("", CEGUI::Vector2((fX + 1.0f), (fY + 1.0f)), (CEGUI::colour)D3DCOLOR_ARGB(120, 0, 0, 0), "tags", false, false);
 
 	// Draw the tag
-	pGraphics->DrawText((fX + 1.0f), (fY + 1.0f), D3DCOLOR_ARGB(225, 225, 225, 225), 3.0f, 5, DT_NOCLIP, (bool)true, strString.Get());
+	pGraphics->DrawText((fX + 1.0f), (fY + 1.0f), D3DCOLOR_ARGB(225, 225, 225, 225), 3.0f, 5, DT_NOCLIP, (bool) true, strString.Get());
 
 	if (uiHealth < 0)
 		uiHealth = 0;
