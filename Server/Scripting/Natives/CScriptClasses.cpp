@@ -161,8 +161,11 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		AddMethod("setPosition", &CScriptVehicle::SetPosition).
 		AddMethod("setRotation", &CScriptVehicle::SetRotation).
 		AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
-		//AddMethod("getHealth", &CScriptVehicle::GetHealth).
-		//AddMethod("setHealth", &CScriptVehicle::SetHealth).
+		AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
+		AddMethod("setHealth", &CScriptVehicle::SetHealth).
+		AddMethod("getHealth", &CScriptVehicle::GetHealth).
+
+	
 		Register(pVM);
 	}
 

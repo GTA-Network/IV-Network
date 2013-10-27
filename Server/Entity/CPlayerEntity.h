@@ -138,81 +138,81 @@ public:
 
 	virtual const char* GetScriptClassName() { return "CPlayerEntity"; }
 
+	void  SetArmour(float fArmour);
+
 	float GetArmour(void) {
 		return GetEntity()->GetArmour();
 	}
 
-	void  SetArmour(float fArmour);
+	void  SetColor(DWORD dwColor);
 
 	DWORD GetColor(void) {
 		return GetEntity()->GetColor();
 	}
 
-	void  SetColor(DWORD dwColor);
+	void  SetHeading(float fHeading);
 
 	float GetHeading() {
 		return GetEntity()->GetHeading();
 	}
 
-	void  SetHeading(float fHeading);
+	void		SetName(CString szName);
 
 	CString GetName() {
 		return GetEntity()->m_strName;
 	}
 
-	void		SetName(CString szName);
-
-	int GetModel() { 
-		return GetEntity()->GetModel();
-	}
-
 	void SetModel(int iModel);
 
-	int	GetMoney() { 
-		return GetEntity()->GetMoney();
+	int GetModel() {
+		return GetEntity()->GetModel();
 	}
 
 	void SetMoney(int iMoney);
 
-	void GiveMoney(int iMoney);
-
-	unsigned int GetDimension() { 
-		return GetEntity()->GetDimension();
+	int	GetMoney() {
+		return GetEntity()->GetMoney();
 	}
+
+	void GiveMoney(int iMoney);
 
 	void		 SetDimension(int iDimension);
 
-	int		 GetWantedLevel() { 
-		return GetEntity()->GetWantedLevel();
+	unsigned int GetDimension() {
+		return GetEntity()->GetDimension();
 	}
 
-	void		 SetWantedLevel(int iWantedLevel);
+	void		SetWantedLevel(int iWantedLevel);
+
+	int GetWantedLevel() {
+		return GetEntity()->GetWantedLevel();
+	}
 
 	float		 GetHealth() { return GetEntity()->GetHealth(); }
 	void		 SetHealth(float fHealth);
 
 	void		SetPosition(float fX, float fY, float fZ);
+	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
 
 	void		SetRotation(float fX, float fY, float fZ);
+	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
 
 	void		SetMoveSpeed(float fX, float fY, float fZ);
+	CVector3	GetMoveSpeed() { CVector3 vecMoveSpeed; GetEntity()->GetMoveSpeed(vecMoveSpeed); return vecMoveSpeed; }
 
 	void		SetTurnSpeed(float fX, float fY, float fZ);
+	CVector3	GetTurnSpeed() { CVector3 vecTurnSpeed; GetEntity()->GetTurnSpeed(vecTurnSpeed); return vecTurnSpeed; }
 
-	void		GiveWeapon(int id, int uiAmmo);
+
+
 	void		SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting);
 	void		SendPlayerMessageToAll(string sMessage, DWORD dwColor, bool bAllowFormatting);
 
 	int			GetId() { return GetEntity()->GetId(); }
 
 	bool		IsOnFoot() { return true; }
-
 	void		SetSpawnLocation(float fX, float fY, float fZ);
-
-	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
-	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
-	CVector3	GetMoveSpeed() { CVector3 vecMoveSpeed; GetEntity()->GetMoveSpeed(vecMoveSpeed); return vecMoveSpeed; }
-	CVector3	GetTurnSpeed() { CVector3 vecTurnSpeed; GetEntity()->GetTurnSpeed(vecTurnSpeed); return vecTurnSpeed; }
+	void		GiveWeapon(int id, int uiAmmo);
 };
 
 #endif // CPlayerEntity_h

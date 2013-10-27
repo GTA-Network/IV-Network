@@ -619,6 +619,101 @@ void ExitVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->ExitVehicle(eExitVehicleType::EXIT_VEHICLE_NORMAL);
 }
 
+void SetVehiclePosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		CVector3 vecPos;
+		pBitStream->Read(vecPos);
+
+		pVehicle->SetPosition(vecPos);
+	}
+}
+
+void SetVehicleRotation(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		CVector3 vecRot;
+		pBitStream->Read(vecRot);
+
+		pVehicle->SetRotation(vecRot);
+	}
+}
+
+void SetVehicleMoveSpeed(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		CVector3 vecMoveSpeed;
+		pBitStream->Read(vecMoveSpeed);
+
+		pVehicle->SetMoveSpeed(vecMoveSpeed);
+	}
+}
+
+void SetVehicleTurnSpeed(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		CVector3 vecTurnSpeed;
+		pBitStream->Read(vecTurnSpeed);
+
+		pVehicle->SetTurnSpeed(vecTurnSpeed);
+	}
+}
+
+void SetVehicleHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iHealth;
+		pBitStream->Read(iHealth);
+
+		pVehicle->SetHealth(iHealth);
+	}
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -633,10 +728,8 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), RecieveSyncPackage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE), CreateVehicle);
 
-
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), EnterVehicle);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_EXIT_VEHICLE), ExitVehicle);
-
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), SetPlayerName);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION), SetPlayerPosition);
@@ -655,6 +748,12 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION), SetPlayerSpawnLocation);
+
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_MOVE_SPEED), SetVehicleMoveSpeed);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_TURN_SPEED), SetVehicleTurnSpeed);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH), SetVehicleHealth);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -675,8 +774,32 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CREATE_VEHICLE));
 
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_EXIT_VEHICLE));
+
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ROTATION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEADING));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_WEAPON));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION));
+
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_MOVE_SPEED));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_TURN_SPEED));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH));
 
 		// Mark as not registered
 		m_bRegistered = false;
