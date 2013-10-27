@@ -60,7 +60,7 @@ public:
 	void SetMoveSpeed(float fX, float fY, float fZ);
 	void SetTurnSpeed(float fX, float fY, float fZ);
 	void SetHealth(int iHealth);
-	void GetHealth();
+	int  GetHealth() { return GetEntity()->GetHealth(); };
 };
 
 #endif // CVehicleEntity_h
