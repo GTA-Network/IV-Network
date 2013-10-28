@@ -21,6 +21,7 @@ private:
 	Matrix			m_Matrix;
 	unsigned int	m_uiHealth;
 	float			m_fPetrolHealth;
+	float			m_fSteeringAngle;
 	bool			m_bEngineState;
 public:
 	CVehicleEntity();
@@ -38,8 +39,11 @@ public:
 	void								SetPetrolTankHealth(float fHealth) { m_fPetrolHealth = fHealth; }
 	float								GetPetrolTankHealth() { return m_fPetrolHealth; }
 
-	void								SetEngineState(bool bEngineState) { m_bEngineState = true; }
+	void								SetEngineState(bool bEngineState) { m_bEngineState = bEngineState; }
 	bool								GetEngineState() { return m_bEngineState; }
+
+	void								SetSteeringAngle(float fAngle) { m_fSteeringAngle = fAngle; }
+	float								GetSteeringAngle() { return m_fSteeringAngle; }
 
 	CScriptVehicle*  GetScriptVehicle() { return m_pScriptVehicle; }
 	void			SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }

@@ -329,6 +329,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				VehiclePacket.health = pVehicle->GetHealth();
 				VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
 				VehiclePacket.bEngineState = pVehicle->GetEngineState();
+				VehiclePacket.steeringAngle = pVehicle->GetSteeringAngle();
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
@@ -381,10 +382,13 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 				pVehicle->SetMatrix(VehiclePacket.matrix);
 				pVehicle->SetHealth(VehiclePacket.health);
 				pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
-
-				CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
-
 				pVehicle->SetEngineState(VehiclePacket.bEngineState);
+
+#ifdef _DEBUG
+				CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
+#endif
+
+				
 			}
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

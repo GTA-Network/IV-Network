@@ -597,6 +597,9 @@ void EnterVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
 		return;
 
+	if (g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsLocalPlayer())
+		return;
+
 	EntityId vehicleId;
 	pBitStream->Read(vehicleId);
 
@@ -618,6 +621,9 @@ void ExitVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->ReadCompressed(playerId);
 
 	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
+		return;
+
+	if (g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsLocalPlayer())
 		return;
 
 	EntityId vehicleId;

@@ -11,11 +11,18 @@
 #include <CLogFile.h>
 #include <SharedUtility.h>
 #include <assert.h>
+#include <map>
 #include <Squirrel/sqvm.h>
 #include <Squirrel/sqstdio.h>
 #include <Squirrel/sqstdaux.h>
+#include <Squirrel/sqstdstring.h>
+#include <Squirrel/sqstdmath.h>
+#include <Squirrel/sqstdstream.h>
+#include <Squirrel/sqstdsystem.h>
 #include "CScriptArgument.h"
 #include "CScriptClass.h"
+
+std::map<void*, HSQOBJECT> m_Instances;
 
 void PrintFunction(SQVM * pVM, const char * szFormat, ...)
 {
@@ -32,6 +39,12 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 	m_iStackIndex(2)
 {
 	m_pVM = sq_open(1024);
+
+	sqstd_register_stringlib(m_pVM);
+
+	sqstd_register_mathlib(m_pVM);
+
+	sqstd_register_systemlib(m_pVM);
 
 	// Register the default error handlers
 	sqstd_seterrorhandlers(m_pVM);
@@ -165,6 +178,7 @@ void CSquirrelVM::SetClassInstance(const char* szClassName, void * pInstance)
 	sq_resetobject(&instance);
 	sq_getstackobj(m_pVM, 1, &instance);
 	sq_addref(m_pVM, &instance);
+	m_Instances.insert(std::pair<void*, HSQOBJECT>(pInstance, instance));
 }
 
 
@@ -239,15 +253,23 @@ bool CreateConstructNativeClassInstance(HSQUIRRELVM v, const SQChar * className)
 
 void CSquirrelVM::PushInstance(const char* szClassName, void * pInstance)
 {
-	CreateConstructNativeClassInstance(m_pVM, szClassName);
+	if (m_Instances.find(pInstance) != m_Instances.end())
+	{
+		sq_pushobject(m_pVM, m_Instances.find(pInstance)->second);
+	}
+	else
+	{
+		CreateConstructNativeClassInstance(m_pVM, szClassName);
 
-	sq_setinstanceup(m_pVM, -1, (SQUserPointer *) pInstance);
-	sq_setreleasehook(m_pVM, -1, deleteClassInstance);
+		sq_setinstanceup(m_pVM, -1, (SQUserPointer *) pInstance);
+		sq_setreleasehook(m_pVM, -1, deleteClassInstance);
 
-	//HSQOBJECT instance;
-	//sq_resetobject(&instance);
-	//sq_getstackobj(m_pVM, -1, &instance);
-	//sq_addref(m_pVM, &instance);
+		HSQOBJECT instance;
+		sq_resetobject(&instance);
+		sq_getstackobj(m_pVM, -1, &instance);
+		sq_addref(m_pVM, &instance);
+		m_Instances.insert(std::pair<void*, HSQOBJECT>(pInstance, instance));
+	}
 }
 
 void* CSquirrelVM::PopInstance(const char * szClassName)

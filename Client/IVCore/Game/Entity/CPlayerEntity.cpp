@@ -994,7 +994,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 
 						// Send to the server
 						RakNet::BitStream bitStream;
-						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
+						bitStream.WriteCompressed(m_pVehicleEnterExit->pVehicle->GetId());
 						bitStream.Write(m_byteSeat);
 						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 
@@ -1016,7 +1016,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 
 					// Send to the server
 					RakNet::BitStream bitStream;
-					bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
+					bitStream.WriteCompressed(m_pVehicleEnterExit->pVehicle->GetId());
 					bitStream.Write(m_byteSeat);
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 

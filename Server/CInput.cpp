@@ -25,7 +25,7 @@ void CInput::InputThread(CThread* pThread)
 	}
 }
 
-
+CScriptVehicle * pScriptVehicle = nullptr;
 void CInput::ProcessInput(CString strInput)
 {
 	// Get the command and parameters
@@ -62,11 +62,14 @@ void CInput::ProcessInput(CString strInput)
 	}
 	else if (strCommand == "test") {
 		CScriptArguments args;
-		CScriptPlayer* player = new CScriptPlayer();
-		player->SetEntity(new CPlayerEntity());
-		args.push(player);
-		CEvents::GetInstance()->Call("Test", &args, CEventHandler::eEventType::GLOBAL_EVENT, 0);
-		delete player;
+		if (!pScriptVehicle)
+		{
+			pScriptVehicle = new CScriptVehicle();
+			pScriptVehicle->SetEntity(new CVehicleEntity());
+			pScriptVehicle->GetEntity()->SetScriptVehicle(pScriptVehicle);
+		}
+		args.push(pScriptVehicle);
+		CEvents::GetInstance()->Call("Test", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 }
 

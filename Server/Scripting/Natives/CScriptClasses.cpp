@@ -16,6 +16,7 @@
 #include "Entity/Entities.h"
 #include <CServer.h>
 #include <Scripting/CScriptClass.h>
+#include <Scripting/SQL/CSQLite.h>
 
 int IsPlayerConnected(int * VM)
 {
@@ -136,6 +137,24 @@ int CreateVehicle(int * VM)
 	return 1;
 }
 
+class CScriptSQLite
+{
+public:
+	CScriptSQLite();
+	~CScriptSQLite();
+
+	bool Open(string strFileName);
+	void Query(string strQuery, string callback);
+	void Close();
+};
+
+class CScriptMysql
+{
+public:
+	CScriptMysql();
+	~CScriptMysql();
+};
+
 void CScriptClasses::Register(CScriptVM * pVM)
 {
 	pVM->RegisterFunction("createVehicle", CreateVehicle);
@@ -143,6 +162,15 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
 	pVM->RegisterFunction("isPlayerSpawned", IsPlayerSpawned);
 	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
+
+#if 0
+	(new CScriptClass<CScriptSQLite>("CSQLite"))->
+		AddMethod("open", &CScriptSQLite::Open).
+		AddMethod("query", &CScriptSQLite::Query).
+		AddMethod("close", &CScriptSQLite::Close).
+		Register(pVM);
+#endif // 0
+
 
 	{ // ScriptPlayer
 		// TODO: fix memory leak
