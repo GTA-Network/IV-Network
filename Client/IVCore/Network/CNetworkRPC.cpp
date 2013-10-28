@@ -530,6 +530,19 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+		RakNet::RakString sMessage;
+		DWORD dwColor;
+		bool bAllowFormatting;
+
+		pBitStream->Read(sMessage);
+		pBitStream->Read(dwColor);
+		pBitStream->Read(bAllowFormatting);
+
+		g_pCore->GetChat()->Output(sMessage.C_String());
+}
+
 void SetPlayerSpawnLocation(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
@@ -747,6 +760,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), GivePlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION), SetPlayerSpawnLocation);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);

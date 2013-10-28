@@ -64,6 +64,32 @@ int GetPlayerById(int * VM)
 	return 1;
 }
 
+int SendPlayerMessageToAll(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	string sMessage;
+	pVM->Pop(sMessage);
+
+	int iColor;
+	pVM->Pop(iColor);
+
+	bool bAllowFormatting;
+	pVM->Pop(bAllowFormatting);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(RakNet::RakString(sMessage.C_String()));
+	bitStream.Write((DWORD)iColor);
+	bitStream.Write(bAllowFormatting);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+
+	pVM->Push(true);
+
+	return 1;
+}
+
 int CreateVehicle(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
@@ -116,6 +142,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("getPlayerById", GetPlayerById);
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
 	pVM->RegisterFunction("isPlayerSpawned", IsPlayerSpawned);
+	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
 
 	{ // ScriptPlayer
 		// TODO: fix memory leak
@@ -149,7 +176,6 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setColor", &CScriptPlayer::SetColor). // Synced
 			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
 			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
-			AddMethod("sendMessageToAll", &CScriptPlayer::SendPlayerMessageToAll). // Synced
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("setSpawnLocation", &CScriptPlayer::SetSpawnLocation).
@@ -165,7 +191,6 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		AddMethod("setHealth", &CScriptVehicle::SetHealth).
 		AddMethod("getHealth", &CScriptVehicle::GetHealth).
 
-	
 		Register(pVM);
 	}
 
