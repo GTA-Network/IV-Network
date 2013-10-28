@@ -99,7 +99,7 @@ public:
         // 0x1354 - eVehicleType m_type;
         // 1120-12DC Damage
 
-        //virtual                       ~IVVehicle();
+        virtual                 ~IVVehicle();
         virtual void			Function72();                                   // m120
         virtual void			Function73(); // something with release model
         virtual void			IsPretendOccupants();                   // m128

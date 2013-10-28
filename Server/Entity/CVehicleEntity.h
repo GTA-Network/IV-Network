@@ -25,6 +25,7 @@ private:
 	bool			m_bEngineState;
 	int				m_iLockedState;
 	int				m_iDirtLevel;
+	float			m_fHeading;
 public:
 	CVehicleEntity();
 	~CVehicleEntity();
@@ -37,6 +38,9 @@ public:
 
 	void								SetHealth(unsigned int uiHealth) { m_uiHealth = uiHealth; }
 	unsigned int						GetHealth() { return m_uiHealth; }
+
+	float								GetHeading() { return m_fHeading; }
+	void								SetHeading(float fHeading) { m_fHeading = fHeading; }
 
 	void								SetPetrolTankHealth(float fHealth) { m_fPetrolHealth = fHealth; }
 	float								GetPetrolTankHealth() { return m_fPetrolHealth; }

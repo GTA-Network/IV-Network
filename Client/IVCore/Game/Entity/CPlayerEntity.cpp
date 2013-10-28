@@ -1911,6 +1911,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		VehiclePacket.petrol = m_pVehicle->GetPetrolTankHealth();
 		VehiclePacket.steeringAngle = m_pVehicle->GetSteeringAngle();
 		VehiclePacket.bEngineState = m_pVehicle->GetEngineState();
+		CIVScript::GetCarHeading(m_pVehicle->GetScriptingHandle(), &VehiclePacket.fHeading);
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
 		pBitStream->Write(VehiclePacket);
@@ -2035,8 +2036,9 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				matrix.vecForward = VehiclePacket.matrix.vecForward;
 				matrix.vecRight = VehiclePacket.matrix.vecRight;
 				matrix.vecUp = VehiclePacket.matrix.vecUp;
+				
 				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
-
+				CIVScript::SetCarHeading(m_pVehicle->GetScriptingHandle(), VehiclePacket.fHeading);
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
@@ -2045,6 +2047,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);
 				m_pVehicle->SetSteeringAngle(VehiclePacket.steeringAngle);
+				
 			}
 			else
 			{

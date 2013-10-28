@@ -97,7 +97,9 @@ public:
 
 class IVPedBase {
 public:
-	PAD(IVPedBase, pad0, 0x12C);
+	PAD(IVPedBase, pad0, 0x5C);
+	BYTE		m_bDrawableVariations[10];
+	PAD(IVPedBase, pad1, 0xC6);
 	ePedType m_type;
 };
 

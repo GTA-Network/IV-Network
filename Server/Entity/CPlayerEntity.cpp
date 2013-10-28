@@ -330,6 +330,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
 				VehiclePacket.bEngineState = pVehicle->GetEngineState();
 				VehiclePacket.steeringAngle = pVehicle->GetSteeringAngle();
+				VehiclePacket.fHeading = pVehicle->GetHeading();
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
@@ -383,6 +384,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 				pVehicle->SetHealth(VehiclePacket.health);
 				pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				pVehicle->SetEngineState(VehiclePacket.bEngineState);
+				pVehicle->SetHeading(VehiclePacket.fHeading);
 
 #ifdef _DEBUG
 				//CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);

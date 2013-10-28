@@ -96,6 +96,7 @@ public:
 	float						health;
 	float						petrol;
 	float						steeringAngle;
+	float						fHeading;
 	bool						bEngineState;
 
 };
