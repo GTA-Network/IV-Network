@@ -16,6 +16,10 @@
 #include <Scripting/CEvents.h>
 #include <CSettings.h>
 
+#ifndef _WIN32
+typedef unsigned char byte;
+#endif
+
 #define GET_RPC_CODEX(x) CString("IVN0xF%dF", int(x)).Get()
 
 extern CServer * g_pServer;

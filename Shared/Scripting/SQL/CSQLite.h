@@ -11,7 +11,7 @@
 #define CSQLite_h
 
 
-#include <sqlite/sqlite3.h>
+#include <Sqlite/sqlite3.h>
 #include <map>
 #include <list>
 
