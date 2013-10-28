@@ -20,7 +20,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the player id
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	// Read the player colour
 	unsigned int uiColour;
@@ -65,7 +65,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	int iHour, iMinute, iWeather, iDay;
 	pBitStream->Read(iHour);
@@ -97,7 +97,7 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	// Read the player name
 	// Read the player name
@@ -127,7 +127,7 @@ void PlayerLeave(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	// Remove the player from the player manager
 	g_pCore->GetGame()->GetPlayerManager()->Delete(playerId);
@@ -137,7 +137,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the playerid
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	// Read the input
 	RakNet::RakString strInput;
@@ -592,7 +592,7 @@ void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 void EnterVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
 		return;
@@ -612,13 +612,15 @@ void EnterVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if(g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsInVehicle())
 		g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->RemoveFromVehicle();
 
+
+
 	g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->EnterVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId), byteSeat);
 }
 
 void ExitVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
-	pBitStream->ReadCompressed(playerId);
+	pBitStream->Read(playerId);
 
 	if (!g_pCore->GetGame()->GetPlayerManager()->DoesExists(playerId))
 		return;

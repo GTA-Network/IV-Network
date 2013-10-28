@@ -132,9 +132,9 @@ void CLocalPlayer::DoDeathCheck()
 
 		// Send the death notification to the server
 		BitStream bsSend;
-		bsSend.WriteCompressed(playerId);
-		bsSend.WriteCompressed(vehicleId);
-		bsSend.WriteCompressed(weaponId);
+		bsSend.Write(playerId);
+		bsSend.Write(vehicleId);
+		bsSend.Write(weaponId);
 		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_DEATH), &bsSend, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 		// Mark ourselves as dead

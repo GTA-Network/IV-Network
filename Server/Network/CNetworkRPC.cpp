@@ -85,7 +85,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	RakNet::BitStream bitStream;
 
 	// Write the player id
-	bitStream.WriteCompressed(playerId);
+	bitStream.Write(playerId);
 
 	// Write the player colour
 	bitStream.Write(0xFFFFFF/*CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->GetColor()*/);
@@ -109,7 +109,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (CServer::GetInstance()->GetPlayerManager()->DoesExists(i) && i != playerId)
 		{
 			bitStream.Reset();
-			bitStream.WriteCompressed(i);
+			bitStream.Write(i);
 			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetName().Get());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
 
@@ -121,7 +121,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (CServer::GetInstance()->GetPlayerManager()->DoesExists(i) && i != playerId)
 		{
 			bitStream.Reset();
-			bitStream.WriteCompressed(playerId);
+			bitStream.Write(playerId);
 			bitStream.Write(strName.Get());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
 		}
@@ -146,7 +146,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	bitStream.Reset();
 
-	bitStream.WriteCompressed(playerId);
+	bitStream.Write(playerId);
 	bitStream.Write(7);
 	bitStream.Write(3);
 	bitStream.Write(3);
@@ -181,9 +181,9 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 				// Send the RPC back to other players
 				RakNet::BitStream bitStream;
-				bitStream.WriteCompressed(playerId);
+				bitStream.Write(playerId);
 				bitStream.Write(strInput);
-				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
 			}
 			else
 			{
@@ -237,7 +237,7 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Read the killer id
 	EntityId killerId;
-	pBitStream->ReadCompressed(killerId);
+	pBitStream->Read(killerId);
 
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
@@ -322,7 +322,7 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Read the vehicle id
 	EntityId vehicleId;
-	pBitStream->ReadCompressed(vehicleId);
+	pBitStream->Read(vehicleId);
 
 	// Read the seat
 	byte byteSeat;
@@ -336,10 +336,11 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		// Just send the event to the other players
 		RakNet::BitStream bitStream;
-		bitStream.WriteCompressed(playerId);
+		bitStream.Write(playerId);
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CLogFile::Printf("Keks");
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
@@ -356,7 +357,7 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Read the vehicle id
 	EntityId vehicleId;
-	pBitStream->ReadCompressed(vehicleId);
+	pBitStream->Read(vehicleId);
 
 	// Read the seat
 	byte byteSeat;
@@ -370,10 +371,10 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		// Handle this with the player
 		RakNet::BitStream bitStream;
-		bitStream.WriteCompressed(playerId);
+		bitStream.Write(playerId);
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);

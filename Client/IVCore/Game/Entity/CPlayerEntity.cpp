@@ -658,6 +658,8 @@ void CPlayerEntity::SetModel(int iModelId)
 		// Add reference
 		m_pModelInfo->AddReference(true);
 
+		CIVScript::GetCharDrawableVariation(GetScriptingHandle(), CIVScript::ePedComponent::PED_COMPONENT_FACE);
+
 		// change the model from the player
 		CIVScript::ChangePlayerModel(m_bytePlayerNumber,(CIVScript::eModel)dwModelHash);
 
@@ -997,9 +999,9 @@ void CPlayerEntity::CheckVehicleEnterExit()
 
 						// Send to the server
 						RakNet::BitStream bitStream;
-						bitStream.WriteCompressed(m_pVehicleEnterExit->pVehicle->GetId());
+						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
 						bitStream.Write(m_byteSeat);
-						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
+						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 						g_pCore->GetChat()->Outputf(false, "HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat);
 					}
@@ -1019,9 +1021,9 @@ void CPlayerEntity::CheckVehicleEnterExit()
 
 					// Send to the server
 					RakNet::BitStream bitStream;
-					bitStream.WriteCompressed(m_pVehicle->GetId());
+					bitStream.Write(m_pVehicle->GetId());
 					bitStream.Write(m_byteSeat);
-					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
+					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 					g_pCore->GetChat()->Outputf(false, "HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat);
 				}
@@ -2042,7 +2044,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle->SetHealth(VehiclePacket.health);
 				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);
-
 				m_pVehicle->SetSteeringAngle(VehiclePacket.steeringAngle);
 			}
 			else
