@@ -641,12 +641,15 @@ void CPlayerEntity::SetModel(int iModelId)
 	// Get the model hash from skin id
 	DWORD dwModelHash = SkinIdToModelHash(iModelId);
 
+	if (dwModelHash == m_pModelInfo->GetHash())
+		return;
+
 	// Get the model index
 	int iModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
 
 	// Get the model info
 	CIVModelInfo * pModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
-	
+
 	m_pModelInfo->RemoveReference();
 	m_pModelInfo = pModelInfo;
 

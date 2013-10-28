@@ -178,7 +178,6 @@
     <ClCompile Include="..\Shared\Scripting\CScript.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp" />
     <ClCompile Include="..\Shared\Scripting\CScriptArguments.cpp" />
-    <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp" />
     <ClCompile Include="..\Shared\Scripting\CSquirrelVM.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CEventNatives.cpp" />
     <ClCompile Include="..\Shared\Scripting\Natives\CMathNatives.cpp" />
@@ -191,6 +190,7 @@
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceManager.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp" />
     <ClCompile Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp" />
+    <ClCompile Include="..\Shared\Scripting\SQL\CSQLite.cpp" />
     <ClCompile Include="..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
@@ -250,7 +250,6 @@
     <ClInclude Include="..\Shared\Scripting\CScriptArguments.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptClass.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptVM.h" />
-    <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h" />
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h" />
@@ -263,6 +262,7 @@
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceManager.h" />
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h" />
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResourceServerScript.h" />
+    <ClInclude Include="..\Shared\Scripting\SQL\CSQLite.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
     <ClInclude Include="Entity\C3DLabelEntity.h" />

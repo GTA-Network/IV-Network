@@ -40,17 +40,18 @@ CSquirrelVM::CSquirrelVM(CResource * pResource)
 {
 	m_pVM = sq_open(1024);
 
-	sqstd_register_stringlib(m_pVM);
-
-	sqstd_register_mathlib(m_pVM);
-
-	sqstd_register_systemlib(m_pVM);
 
 	// Register the default error handlers
 	sqstd_seterrorhandlers(m_pVM);
 
 	// Push the root table onto the stack
 	sq_pushroottable(m_pVM);
+
+	sqstd_register_stringlib(m_pVM);
+
+	sqstd_register_mathlib(m_pVM);
+
+	sqstd_register_systemlib(m_pVM);
 
 	sq_setprintfunc(m_pVM, PrintFunction, PrintFunction);
 }

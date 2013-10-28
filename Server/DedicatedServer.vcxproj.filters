@@ -375,9 +375,6 @@
     <ClCompile Include="..\Shared\Scripting\CScriptArgument.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.cpp">
-      <Filter>Source Files\Shared\Scripting</Filter>
-    </ClCompile>
     <ClCompile Include="..\Libraries\Sqlite\sqlite3.c">
       <Filter>Libraries\SQLite</Filter>
     </ClCompile>
@@ -391,6 +388,9 @@
       <Filter>Source Files\Shared\Scripting\Natives</Filter>
     </ClCompile>
     <ClCompile Include="..\Shared\Scripting\ApplyTuple.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Scripting\SQL\CSQLite.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
@@ -587,9 +587,6 @@
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h">
       <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Scripting\CSQLDatabase.h\CSQLite.h">
-      <Filter>Header Files\Shared\Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="Network\CNetworkModule.h">
       <Filter>Header Files\Network</Filter>
     </ClInclude>
@@ -604,6 +601,9 @@
     </ClInclude>
     <ClInclude Include="Scripting\Natives\Natives_Server.h">
       <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\SQL\CSQLite.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
