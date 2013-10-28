@@ -203,10 +203,7 @@ public:
 	void		SetTurnSpeed(float fX, float fY, float fZ);
 	CVector3	GetTurnSpeed() { CVector3 vecTurnSpeed; GetEntity()->GetTurnSpeed(vecTurnSpeed); return vecTurnSpeed; }
 
-
-
 	void		SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting);
-	void		SendPlayerMessageToAll(string sMessage, DWORD dwColor, bool bAllowFormatting);
 
 	int			GetId() { return GetEntity()->GetId(); }
 

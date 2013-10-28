@@ -23,6 +23,8 @@ private:
 	float			m_fPetrolHealth;
 	float			m_fSteeringAngle;
 	bool			m_bEngineState;
+	int				m_iLockedState;
+	int				m_iDirtLevel;
 public:
 	CVehicleEntity();
 	~CVehicleEntity();
@@ -45,6 +47,12 @@ public:
 	void								SetSteeringAngle(float fAngle) { m_fSteeringAngle = fAngle; }
 	float								GetSteeringAngle() { return m_fSteeringAngle; }
 
+	void								SetLockedState(int iLockedState) { m_iLockedState = iLockedState; }
+	int									GetLockedState() { return m_iLockedState; }
+
+	void								SetDirtLevel(int iDirtLevel) { m_iDirtLevel = iDirtLevel; }
+	int									GetDirtLevel() { return m_iDirtLevel; }
+
 	CScriptVehicle*  GetScriptVehicle() { return m_pScriptVehicle; }
 	void			SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }
 };
@@ -63,8 +71,18 @@ public:
 	void SetRotation(float fX, float fY, float fZ);
 	void SetMoveSpeed(float fX, float fY, float fZ);
 	void SetTurnSpeed(float fX, float fY, float fZ);
+
 	void SetHealth(int iHealth);
 	int  GetHealth() { return GetEntity()->GetHealth(); };
+
+	void SetLocked(int iLocked);
+	int  GetLocked() { return GetEntity()->GetLockedState(); };
+
+	void SetEngine(bool bEngineState);
+	bool GetEngine() { return GetEntity()->GetEngineState(); };
+
+	void SetDirtLevel(int iDirtLevel);
+	int  GetDirtLevel() { return GetEntity()->GetDirtLevel(); };
 };
 
 #endif // CVehicleEntity_h

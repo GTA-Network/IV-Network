@@ -218,6 +218,12 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
 		AddMethod("setHealth", &CScriptVehicle::SetHealth).
 		AddMethod("getHealth", &CScriptVehicle::GetHealth).
+		AddMethod("setLocked", &CScriptVehicle::SetLocked).
+		AddMethod("getLocked", &CScriptVehicle::GetLocked).
+		AddMethod("setEngine", &CScriptVehicle::SetEngine).
+		AddMethod("getEngine", &CScriptVehicle::GetEngine).
+		AddMethod("setDirtLevel", &CScriptVehicle::SetDirtLevel).
+		AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel).
 
 		Register(pVM);
 	}

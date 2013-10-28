@@ -733,6 +733,63 @@ void SetVehicleHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SetVehicleLockedState(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iLocked;
+		pBitStream->Read(iLocked);
+
+		pVehicle->SetDoorLockState(iLocked);
+	}
+}
+
+void SetVehicleEngineState(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		bool bEngineState;
+		pBitStream->Read(bEngineState);
+
+		pVehicle->SetEngineState(bEngineState);
+	}
+}
+
+void SetVehicleDirtLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -774,6 +831,9 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_MOVE_SPEED), SetVehicleMoveSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_TURN_SPEED), SetVehicleTurnSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH), SetVehicleHealth);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_LOCKED), SetVehicleLockedState);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ENGINE), SetVehicleEngineState);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL), SetVehicleDirtLevel);
 		
 		// Mark as registered
 		m_bRegistered = true;

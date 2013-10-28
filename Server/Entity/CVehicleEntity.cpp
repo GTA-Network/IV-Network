@@ -77,4 +77,34 @@ void CScriptVehicle::SetHealth(int iHealth)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
+void CScriptVehicle::SetLocked(int iLocked)
+{
+	GetEntity()->SetLockedState(iLocked);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iLocked);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_LOCKED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptVehicle::SetEngine(bool bEngineState)
+{
+	GetEntity()->SetEngineState(bEngineState);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(bEngineState);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_ENGINE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
+void CScriptVehicle::SetDirtLevel(int iDirtLevel)
+{
+	GetEntity()->SetDirtLevel(iDirtLevel);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iDirtLevel);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+}
+
 
