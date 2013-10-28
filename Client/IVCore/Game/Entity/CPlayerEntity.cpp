@@ -1019,7 +1019,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 
 					// Send to the server
 					RakNet::BitStream bitStream;
-					bitStream.WriteCompressed(m_pVehicleEnterExit->pVehicle->GetId());
+					bitStream.WriteCompressed(m_pVehicle->GetId());
 					bitStream.Write(m_byteSeat);
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, LOW_PRIORITY, RELIABLE_ORDERED, false);
 
@@ -1891,8 +1891,6 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 			m_pContextData->GetArmHeading(WeaponPacket.fArmsHeadingCircle);
 			m_pContextData->GetArmUpDown(WeaponPacket.fArmsUpDownRotation);
 
-			g_pCore->GetChat()->Output("Weapon sync");
-
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
 		}
@@ -1976,7 +1974,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
 		{
-			PTR_CHAT->Output("Settings weapon aim..");
 			m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
 			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
@@ -1986,7 +1983,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		}
 		else if (m_ControlState.IsFiring())
 		{
-			PTR_CHAT->Output("Settings weapon shot..");
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
 			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
