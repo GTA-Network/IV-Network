@@ -20,7 +20,6 @@ typedef unsigned __int32    uint32_t;
 
 class CGameFunction {
 public:
-
 	static void				SetTimeOfDay(int iHour, int iMinute);
 	static DWORD			GetTimeOfDay();
 	static void				SetTimeOfDayFormat(DWORD dwTimeOfDay);

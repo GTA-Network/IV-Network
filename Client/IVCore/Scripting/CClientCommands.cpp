@@ -169,7 +169,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	else if(strCommand == "time")
 	{
 		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.c_str()),0);
-		CIVWeather::SetTime(atoi(strParameters.c_str()),0);
+		CGameFunction::SetTimeOfDay(atoi(strParameters.c_str()), 0);
 		return true;
 	}
 	else if(strCommand == "setmodel")

@@ -253,7 +253,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strBass.Get());
 
 	// Inject IVNetwork.dll into EFLC.exe
-	iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strCore.Get());
+	iReturn += SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strCore.Get());
 
 	// Did the injection fail?
 	if(iReturn > 0) {

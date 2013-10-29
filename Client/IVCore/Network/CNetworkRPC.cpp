@@ -152,9 +152,9 @@ void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Set the stuff from server
 	g_pCore->GetTimeManagementInstance()->SetTime(iHour, iMinute);
-	CIVWeather::SetTime(iHour, iMinute);
+	CGameFunction::SetTimeOfDay(iHour, iMinute);
 	CIVWeather::SetWeather((eWeather) iWeather);
-	CIVWeather::SetDayOfWeek(iDay);
+	CGameFunction::SetDayOfWeek(iDay);
 
 	// Notify the client
 	g_pCore->GetChat()->Clear();
