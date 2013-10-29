@@ -104,18 +104,13 @@ bool CServer::Startup()
 	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 #endif
 
-
+	
 	CLogFile::Print(" " VERSION_IDENTIFIER " " OS_STRING " Server");
 	CLogFile::Print(" Copyright (C) 2013 GTA-Network Team");
 	CLogFile::Printf(" Port: %d", CVAR_GET_INTEGER("port"));
-	CLogFile::Printf(" HTTP Port: %d", CVAR_GET_INTEGER("httpport"));
-	CLogFile::Printf(" Query Port: %d", (CVAR_GET_INTEGER("queryport")));
 
 	if(CVAR_GET_STRING("hostaddress").IsNotEmpty())
 		CLogFile::Printf(" Host Address: %s", CVAR_GET_STRING("hostaddress").Get());
-
-	if(CVAR_GET_STRING("httpserver").IsNotEmpty())
-		CLogFile::Printf(" HTTP Server: %s", CVAR_GET_STRING("httpserver").Get());
 
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 

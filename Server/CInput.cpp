@@ -60,17 +60,6 @@ void CInput::ProcessInput(CString strInput)
 		int fps = atoi(strParameters.Get());
 		CServer::GetInstance()->SetMaximumFPS(fps);
 	}
-	else if (strCommand == "test") {
-		CScriptArguments args;
-		if (!pScriptVehicle)
-		{
-			pScriptVehicle = new CScriptVehicle();
-			pScriptVehicle->SetEntity(new CVehicleEntity());
-			pScriptVehicle->GetEntity()->SetScriptVehicle(pScriptVehicle);
-		}
-		args.push(pScriptVehicle);
-		CEvents::GetInstance()->Call("Test", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
-	}
 }
 
 

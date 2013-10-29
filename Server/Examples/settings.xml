@@ -1,4 +1,24 @@
 <settings>
-	<resource>Example1_lua</resource> <!-- Lua example -->
-	<resource>Example1_squirrel</resource> <!-- Squirrel example -->
+	<!-- name of the server -->
+	<hostname>Default IV:Network server</hostname>
+	
+	<!-- port the server is listening on -->
+	<port>9999</port>	
+	
+	<!-- maximum number of players able to join the server -->
+	<maxplayers>32</maxplayers>	
+	
+	<!-- address the server will bind to -->
+	<!-- hostaddress>127.0.0.1</hostaddress -->	
+	
+	<!-- password which is needed to enter the server -->
+	<!--password>mylittlesecretpw</password>
+	
+	<!-- modules the server the server is using -->
+	<!--resource>windows_module.dll</resource>
+	<!--resource>linux_module.so</resource>
+	
+	<!-- resources which are loaded on server-startup -->
+	<resource>Example1_lua</resource>
+	<resource>Example1_squirrel</resource>
 </settings>
