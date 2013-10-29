@@ -129,9 +129,7 @@ Section "Install" SecDummy
 
 	File ..\Files\LaunchIVNetwork.exe
 	File ..\Files\IVNetwork.dll
-
-	SetOutPath "$GTAIVDirectory"
-	File libs\bass.dll
+	File ..\Files\bass.dll
 
 	SetOutPath "$INSTDIR\multiplayer\datafiles"
 	
@@ -228,8 +226,6 @@ Section "Uninstall"
 
 	Delete "$INSTDIR\LaunchIVNetwork.exe"
 	Delete "$INSTDIR\IVNetwork.dll"
-
-	Delete "$GTAIVDirectory\bass.dll"
 	
 	; Remove CEGUI Folders
 	RMDIR "$INSTDIR\CEGUI\fonts"
