@@ -16,7 +16,7 @@
 class CMainMenu
 {
 private:
-	CGUI * m_pGUI;
+	CGUI			* m_pGUI;
 	bool			  m_bVisible;
 	bool			  m_bQuickConnectVisible;
 	bool			  m_bSettingsVisible;

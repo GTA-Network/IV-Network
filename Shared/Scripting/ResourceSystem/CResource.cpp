@@ -140,14 +140,14 @@ bool CResource::Load()
 
 					CString scriptType = pMetaXML->getAttribute("type");
 					if(scriptType == "client") {
-						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + "/" + strScript).Get()));
 					} else if(scriptType == "server") {
-						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + "/" + strScript).Get()));
 					} else if(scriptType == "shared") {
-						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
-						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + "/" + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceClientScript(this, strScript.Get(), (GetResourceDirectoryPath() + "/" + strScript).Get()));
 					} else {
-						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + strScript).Get()));
+						m_resourceFiles.push_back(new CResourceServerScript(this, strScript.Get(), (GetResourceDirectoryPath() + "/" + strScript).Get()));
 					}
 				}
 			}

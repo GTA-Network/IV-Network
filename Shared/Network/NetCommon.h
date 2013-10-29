@@ -17,6 +17,9 @@
 #include <RakNet/BitStream.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/RPC4Plugin.h>
+#include <RakNet/DirectoryDeltaTransfer.h>
+#include <RakNet/FileListTransfer.h>
+#include <RakNet/IncrementalReadInterface.h>
 using namespace RakNet;
 //#endif
 

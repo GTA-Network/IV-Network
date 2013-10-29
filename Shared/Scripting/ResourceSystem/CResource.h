@@ -77,6 +77,7 @@ public:
 	int								GetDependentCount() { return m_dependents.size(); }
 	std::list<CIncludedResource*>*	GetIncludedResources() { return &m_includedResources; }
 	int								GetIncludedResourcesCount() { return m_includedResources.size(); }
+	std::list<CResourceFile *>*		GetResourceFiles() { return &m_resourceFiles; }
 
 	void		AddDependent(CResource* pResource);
 	void		RemoveDependet(CResource* pResource);

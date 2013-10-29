@@ -47,7 +47,7 @@ public:
 	void		RemoveResource(CResource* pResource);
 
 	CResource				*GetResource(CString strResourceName);
-	std::list<CResource*>	GetResources() { m_resources; }
+	std::list<CResource*>	GetResources() { return m_resources; }
 
 	CResource *Get(int * pVM);
 };

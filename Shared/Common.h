@@ -23,7 +23,7 @@
 #include "CString.h"
 
 // typedef
-typedef CString string;							// CString class defined is in /Shared/CString.h
+//typedef CString string;							// CString class defined is in /Shared/CString.h
 typedef unsigned short EntityId;
 
 #ifdef _CLIENT

@@ -22,8 +22,24 @@ CNetworkManager::CNetworkManager()
 	// Get the RPC4 instance
 	m_pRPC = RakNet::RPC4::GetInstance();
 
+	m_pDirectoryDeltaTransfer = RakNet::DirectoryDeltaTransfer::GetInstance();
+
+	m_pFileListTransfer = RakNet::FileListTransfer::GetInstance();
+
+	m_pIri = new RakNet::IncrementalReadInterface();
+
+	m_pDirectoryDeltaTransfer->SetDownloadRequestIncrementalReadInterface(m_pIri, 1000000);
+
 	// Attact RPC4 to RakPeerInterface
 	m_pRakPeer->AttachPlugin(m_pRPC);
+
+	m_pRakPeer->AttachPlugin(m_pDirectoryDeltaTransfer);
+
+	m_pRakPeer->AttachPlugin(m_pFileListTransfer);
+
+	m_pRakPeer->SetSplitMessageProgressInterval(100);
+
+	m_pDirectoryDeltaTransfer->SetFileListTransferPlugin(m_pFileListTransfer);
 
 	// Register the RPC's
 	CNetworkRPC::Register(m_pRPC);
@@ -293,20 +309,8 @@ void CNetworkManager::ConnectionAccepted(RakNet::Packet * pPacket)
 	// Set the network state
 	SetNetworkState(NETSTATE_CONNECTED);
 
-	// Construct a new bitstream
-	RakNet::BitStream pBitStream;
-
-	// Write the network version
-	pBitStream.Write((DWORD)NETWORK_VERSION);
-
-	// Write the player nickname
-	pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
-
-	// Write the player serial
-	pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
-
 	m_ServerAddress = pPacket->systemAddress;
 
 	// Send to the server
-	Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	Call(GET_RPC_CODEX(RPC_FILE_LIST), nullptr, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 }

@@ -29,8 +29,9 @@ private:
 
 	RakNet::RakPeerInterface				* m_pRakPeer;
 	RakNet::RPC4							* m_pRPC;
-	//RakNet::NetworkIDManager				* m_pNetworkIdManager;
-	//ReplicaManagerMP						* m_pReplicaManager;
+	RakNet::DirectoryDeltaTransfer			* m_pDirectoryDeltaTransfer;
+	RakNet::FileListTransfer				* m_pFileListTransfer;
+	RakNet::IncrementalReadInterface		* m_pIri;
 
 	eNetworkState							m_eNetworkState;
 
@@ -53,6 +54,9 @@ public:
 
 	RakNet::RakPeerInterface				* GetRakPeer(void ) { return m_pRakPeer; }
 	RakNet::RPC4							* GetRPC(void ) { return m_pRPC; }
+	RakNet::DirectoryDeltaTransfer			* GetDirectoryDeltaTransfer() { return m_pDirectoryDeltaTransfer; }
+	RakNet::FileListTransfer				* GetFileListTransfer() { return m_pFileListTransfer; }
+	RakNet::IncrementalReadInterface		* GetIri() { return m_pIri; }
 
 };
 

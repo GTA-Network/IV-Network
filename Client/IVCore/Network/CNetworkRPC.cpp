@@ -16,6 +16,56 @@
 extern CCore * g_pCore;
 bool   CNetworkRPC::m_bRegistered = false;
 
+std::vector<CString> vecClientResources;
+
+#include <RakNet/FileListTransferCBInterface.h>
+class TestCB : public RakNet::FileListTransferCBInterface
+{
+public:
+	bool OnFile(
+		OnFileStruct *onFileStruct)
+	{
+		assert(onFileStruct->byteLengthOfThisFile >= onFileStruct->bytesDownloadedForThisFile);
+		CLogFile::Printf("%i. (100%%) %i/%i %s %ib / %ib\n", onFileStruct->setID, onFileStruct->fileIndex + 1, onFileStruct->numberOfFilesInThisSet, onFileStruct->fileName, onFileStruct->byteLengthOfThisFile, onFileStruct->byteLengthOfThisSet);
+
+		// Return true to have RakNet delete the memory allocated to hold this file.
+		// False if you hold onto the memory, and plan to delete it yourself later
+		return true;
+	}
+
+	virtual void OnFileProgress(FileProgressStruct *fps)
+	{
+		assert(fps->onFileStruct->byteLengthOfThisFile >= fps->onFileStruct->bytesDownloadedForThisFile);
+		CLogFile::Printf("%i (%i%%) %i/%i %s %ib / %ib\n", fps->onFileStruct->setID, (int) (100.0*(double) fps->partCount / (double) fps->partTotal),
+			fps->onFileStruct->fileIndex + 1,
+			fps->onFileStruct->numberOfFilesInThisSet,
+			fps->onFileStruct->fileName,
+			fps->onFileStruct->byteLengthOfThisFile,
+			fps->onFileStruct->byteLengthOfThisSet,
+			fps->firstDataChunk);
+	}
+
+	virtual bool OnDownloadComplete(DownloadCompleteStruct *dcs)
+	{
+		CLogFile::Printf("Download complete.\n");
+
+		RakNet::BitStream pBitStream;
+
+		// Write the network version
+		pBitStream.Write((DWORD) NETWORK_VERSION);
+
+		// Write the player nickname
+		pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
+
+		// Write the player serial
+		pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
+
+		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+		return false;
+	}
+
+} transferCallback;
+
 void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Read the player id
@@ -48,6 +98,27 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			g_pCore->GetGame()->GetPlayerManager()->SetNull(playerId); 
 	}
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, g_pCore->GetGame()->GetLocalPlayer());
+
+	CResourceManager * m_pResourceManager = g_pCore->GetResourceManager();
+	for (auto strResource : vecClientResources)
+	{
+		if (!strResource.IsEmpty())
+		{
+			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
+			if (CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()), strResource))
+			{
+				if (!m_pResourceManager->StartResource(pResource))
+				{
+					CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+				}
+
+			}
+			else 
+			{
+				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+			}
+		}
+	}
 
 	// Set the localplayer colour
 	g_pCore->GetGame()->GetLocalPlayer()->SetColor(uiColour);
@@ -792,6 +863,21 @@ void SetVehicleDirtLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacke
 	}
 }
 
+void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	RakNet::RakString strResource;
+	RakNet::DirectoryDeltaTransfer * pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
+
+	vecClientResources.clear();
+
+	while (pBitStream->Read(strResource))
+	{
+		vecClientResources.push_back(strResource.C_String());
+	}
+	pDelta->DownloadFromSubdirectory(("client_files"), SharedUtility::GetAbsolutePath("client_resources/"), false, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -799,6 +885,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	{
 		// Register the RPCs
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_FILE_LIST), ClientFiles);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);

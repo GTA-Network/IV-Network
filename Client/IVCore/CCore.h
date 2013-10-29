@@ -58,6 +58,7 @@ typedef void(*GetInterface_t)(RAGEEngineInterface *);
 #include "Game/EpisodeManager.h"
 
 #include <Network/CHttpClient.h>
+#include <Scripting/ResourceSystem/CResourceManager.h>
 
 class CCore {
 private:
@@ -75,6 +76,9 @@ private:
 	CDevelopment					* m_pDevelopment;
 	CGUI                  			* m_pGUI;			
 	CTags							* m_pTags;
+
+
+	CResourceManager				* m_pResourceManager;
 
 	eGAMEStates						m_eGameState;
 
@@ -175,6 +179,8 @@ public:
 	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
 
 	CIVStartupScript				*GetIVStartupScript() { return m_pIVStartupScript; };
+
+	CResourceManager*				GetResourceManager() { return m_pResourceManager; }
 };
 
 #endif // CCore_h

@@ -76,7 +76,7 @@ const char *getValue<const char *>(CScriptVM* pVM, int idx)
 }
 
 template<>
-string getValue<string>(CScriptVM* pVM, int idx)
+CString getValue<CString>(CScriptVM* pVM, int idx)
 {
 	CString str;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -115,7 +115,7 @@ void returnValue(CScriptVM* pVM, const char *v)
 }
 
 template<>
-void returnValue(CScriptVM* pVM, string v)
+void returnValue(CScriptVM* pVM, CString v)
 {
 	pVM->Push(v);
 }

@@ -38,6 +38,7 @@
 #include "CCamera.h"
 #include "CGameFuncs.h"
 #include "CCharacterManager.h"
+#include "CContextSwitch.h"
 #include <Game/CTrafficLights.h>
 #include <Game/CTrafficHandler.h>
 

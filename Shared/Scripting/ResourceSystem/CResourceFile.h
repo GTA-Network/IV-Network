@@ -39,6 +39,7 @@ public:
 
 	inline eResourceType		GetType() { return m_type; }
 	inline const char *			GetName() { return m_strShortName.Get(); }
+	CString						GetFileName() { return m_strResourceFileName; }
 
 	virtual bool				Start() = 0;
 	virtual bool				Stop() = 0;

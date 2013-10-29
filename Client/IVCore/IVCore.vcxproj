@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -76,7 +76,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;_CRT_SECURE_NO_WARNINGS;_WINDLL;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -111,7 +111,59 @@
     <ClCompile Include="..\..\Libraries\lpng142\pngwrite.c" />
     <ClCompile Include="..\..\Libraries\lpng142\pngwtran.c" />
     <ClCompile Include="..\..\Libraries\lpng142\pngwutil.c" />
+    <ClCompile Include="..\..\Libraries\lua\lapi.c" />
+    <ClCompile Include="..\..\Libraries\lua\lauxlib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lbaselib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lbitlib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lcode.c" />
+    <ClCompile Include="..\..\Libraries\lua\lcorolib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lctype.c" />
+    <ClCompile Include="..\..\Libraries\lua\ldblib.c" />
+    <ClCompile Include="..\..\Libraries\lua\ldebug.c" />
+    <ClCompile Include="..\..\Libraries\lua\ldo.c" />
+    <ClCompile Include="..\..\Libraries\lua\ldump.c" />
+    <ClCompile Include="..\..\Libraries\lua\lfunc.c" />
+    <ClCompile Include="..\..\Libraries\lua\lgc.c" />
+    <ClCompile Include="..\..\Libraries\lua\linit.c" />
+    <ClCompile Include="..\..\Libraries\lua\liolib.c" />
+    <ClCompile Include="..\..\Libraries\lua\llex.c" />
+    <ClCompile Include="..\..\Libraries\lua\lmathlib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lmem.c" />
+    <ClCompile Include="..\..\Libraries\lua\loadlib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lobject.c" />
+    <ClCompile Include="..\..\Libraries\lua\lopcodes.c" />
+    <ClCompile Include="..\..\Libraries\lua\loslib.c" />
+    <ClCompile Include="..\..\Libraries\lua\lparser.c" />
+    <ClCompile Include="..\..\Libraries\lua\lstate.c" />
+    <ClCompile Include="..\..\Libraries\lua\lstring.c" />
+    <ClCompile Include="..\..\Libraries\lua\lstrlib.c" />
+    <ClCompile Include="..\..\Libraries\lua\ltable.c" />
+    <ClCompile Include="..\..\Libraries\lua\ltablib.c" />
+    <ClCompile Include="..\..\Libraries\lua\ltm.c" />
+    <ClCompile Include="..\..\Libraries\lua\lundump.c" />
+    <ClCompile Include="..\..\Libraries\lua\lvm.c" />
+    <ClCompile Include="..\..\Libraries\lua\lzio.c" />
     <ClCompile Include="..\..\Libraries\md5\md5.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqapi.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqbaselib.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqclass.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqcompiler.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqdebug.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqfuncstate.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqlexer.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqmem.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqobject.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstate.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdaux.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdblob.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdio.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdmath.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdrex.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdstream.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdstring.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdsystem.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqtable.cpp" />
+    <ClCompile Include="..\..\Libraries\Squirrel\sqvm.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\ticpp.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\tinystr.cpp" />
     <ClCompile Include="..\..\Libraries\tinyxml\tinyxml.cpp" />
@@ -136,11 +188,30 @@
     <ClCompile Include="..\..\Shared\CLogFile.cpp" />
     <ClCompile Include="..\..\Shared\CSettings.cpp" />
     <ClCompile Include="..\..\Shared\CString.cpp" />
+    <ClCompile Include="..\..\Shared\CXML.cpp" />
     <ClCompile Include="..\..\Shared\CZlib.cpp" />
     <ClCompile Include="..\..\Shared\Game\CTime.cpp" />
     <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp" />
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ApplyTuple.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CEvents.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CLuaVM.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CScript.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CScriptArgument.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CScriptArguments.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\CSquirrelVM.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CEventNatives.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CMathNatives.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CSystemNatives.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResource.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientScript.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceFile.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceManager.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp" />
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp" />
     <ClCompile Include="..\..\Shared\SharedUtility.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CMutex.cpp" />
     <ClCompile Include="..\..\Shared\Threading\CThread.cpp" />
@@ -149,6 +220,7 @@
     <ClCompile Include="Game\CCamera.cpp" />
     <ClCompile Include="Game\CCharacterManager.cpp" />
     <ClCompile Include="Game\CContextData.cpp" />
+    <ClCompile Include="Game\CContextSwitch.cpp" />
     <ClCompile Include="Game\CCrashFixes.cpp" />
     <ClCompile Include="Game\CDevelopment.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
@@ -201,6 +273,7 @@
     <ClCompile Include="General\CModule.cpp" />
     <ClCompile Include="General\CModuleManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
+    <ClCompile Include="Graphics\CChatBox.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />
@@ -289,7 +362,57 @@
     <ClInclude Include="..\..\Libraries\lpng142\png.h" />
     <ClInclude Include="..\..\Libraries\lpng142\pngconf.h" />
     <ClInclude Include="..\..\Libraries\lpng142\pngpriv.h" />
+    <ClInclude Include="..\..\Libraries\lua\lapi.h" />
+    <ClInclude Include="..\..\Libraries\lua\lauxlib.h" />
+    <ClInclude Include="..\..\Libraries\lua\lcode.h" />
+    <ClInclude Include="..\..\Libraries\lua\lctype.h" />
+    <ClInclude Include="..\..\Libraries\lua\ldebug.h" />
+    <ClInclude Include="..\..\Libraries\lua\ldo.h" />
+    <ClInclude Include="..\..\Libraries\lua\lfunc.h" />
+    <ClInclude Include="..\..\Libraries\lua\lgc.h" />
+    <ClInclude Include="..\..\Libraries\lua\llex.h" />
+    <ClInclude Include="..\..\Libraries\lua\llimits.h" />
+    <ClInclude Include="..\..\Libraries\lua\lmem.h" />
+    <ClInclude Include="..\..\Libraries\lua\lobject.h" />
+    <ClInclude Include="..\..\Libraries\lua\lopcodes.h" />
+    <ClInclude Include="..\..\Libraries\lua\lparser.h" />
+    <ClInclude Include="..\..\Libraries\lua\lstate.h" />
+    <ClInclude Include="..\..\Libraries\lua\lstring.h" />
+    <ClInclude Include="..\..\Libraries\lua\ltable.h" />
+    <ClInclude Include="..\..\Libraries\lua\ltm.h" />
+    <ClInclude Include="..\..\Libraries\lua\lua.h" />
+    <ClInclude Include="..\..\Libraries\lua\lua.hpp" />
+    <ClInclude Include="..\..\Libraries\lua\luaconf.h" />
+    <ClInclude Include="..\..\Libraries\lua\lualib.h" />
+    <ClInclude Include="..\..\Libraries\lua\lundump.h" />
+    <ClInclude Include="..\..\Libraries\lua\lvm.h" />
+    <ClInclude Include="..\..\Libraries\lua\lzio.h" />
     <ClInclude Include="..\..\Libraries\md5\md5.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqarray.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqclass.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqclosure.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqcompiler.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqfuncproto.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqfuncstate.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqlexer.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqobject.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqopcodes.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqpcheader.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstate.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdaux.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdblob.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdblobimpl.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdio.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdmath.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdstream.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdstring.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdsystem.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstring.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqtable.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\squirrel.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\squserdata.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\squtils.h" />
+    <ClInclude Include="..\..\Libraries\Squirrel\sqvm.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\ticpp.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\ticpprc.h" />
     <ClInclude Include="..\..\Libraries\tinyxml\tinystr.h" />
@@ -308,6 +431,7 @@
     <ClInclude Include="..\..\Shared\CLibrary.h" />
     <ClInclude Include="..\..\Shared\CNetSync.h" />
     <ClInclude Include="..\..\Shared\CSettings.h" />
+    <ClInclude Include="..\..\Shared\CXML.h" />
     <ClInclude Include="..\..\Shared\CZlib.h" />
     <ClInclude Include="..\..\Shared\Game\CTime.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
@@ -317,11 +441,34 @@
     <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Network\CRPCIdentifiers.h" />
     <ClInclude Include="..\..\Shared\Patcher\CPatcher.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ApplyTuple.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CEventHandler.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CEvents.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CLuaVM.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CScript.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CScriptArgument.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CScriptArguments.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CScriptClass.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CScriptVM.h" />
+    <ClInclude Include="..\..\Shared\Scripting\CSquirrelVM.h" />
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CEventNatives.h" />
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CMathNatives.h" />
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CSystemNatives.h" />
+    <ClInclude Include="..\..\Shared\Scripting\Natives\Natives.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CIncludedResource.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResource.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientFile.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientScript.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceFile.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceManager.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h" />
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceServerScript.h" />
     <ClInclude Include="..\RAGEEngine\RAGEInterface.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />
     <ClInclude Include="Game\CContextData.h" />
+    <ClInclude Include="Game\CContextSwitch.h" />
     <ClInclude Include="Game\CCrashFixes.h" />
     <ClInclude Include="Game\CDevelopment.h" />
     <ClInclude Include="Game\CGame.h" />
@@ -381,6 +528,7 @@
     <ClInclude Include="General\CModuleManager.h" />
     <ClInclude Include="General\Ptrs.h" />
     <ClInclude Include="Graphics\CChat.h" />
+    <ClInclude Include="Graphics\CChatBox.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Proxy.h" />
