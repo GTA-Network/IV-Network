@@ -15,6 +15,9 @@
 
 extern CCore * g_pCore;
 bool   CNetworkRPC::m_bRegistered = false;
+
+std::vector<CString> vecClientResources;
+
 #include <RakNet/FileListTransferCBInterface.h>
 class TestCB : public RakNet::FileListTransferCBInterface
 {
@@ -46,7 +49,18 @@ public:
 	{
 		CLogFile::Printf("Download complete.\n");
 
-		// Returning false automatically deallocates the automatically allocated handler that was created by DirectoryDeltaTransfer
+		RakNet::BitStream pBitStream;
+
+		// Write the network version
+		pBitStream.Write((DWORD) NETWORK_VERSION);
+
+		// Write the player nickname
+		pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
+
+		// Write the player serial
+		pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
+
+		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 		return false;
 	}
 
@@ -74,14 +88,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	int iPort;
 	pBitStream->Read(iPort);
 
-	RakNet::RakString strResource;
-	RakNet::DirectoryDeltaTransfer * pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
-
-	while (pBitStream->Read(strResource))
-	{
-		pDelta->DownloadFromSubdirectory(("client_files/resources/" + strResource).C_String(), "resources", true, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
-	}
-
 	// Set the localplayer id
 	g_pCore->GetGame()->GetLocalPlayer()->SetId(playerId);
 
@@ -92,6 +98,27 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			g_pCore->GetGame()->GetPlayerManager()->SetNull(playerId); 
 	}
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, g_pCore->GetGame()->GetLocalPlayer());
+
+	CResourceManager * m_pResourceManager = g_pCore->GetResourceManager();
+	for (auto strResource : vecClientResources)
+	{
+		if (!strResource.IsEmpty())
+		{
+			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
+			if (CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()), strResource))
+			{
+				if (!m_pResourceManager->StartResource(pResource))
+				{
+					CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+				}
+
+			}
+			else 
+			{
+				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+			}
+		}
+	}
 
 	// Set the localplayer colour
 	g_pCore->GetGame()->GetLocalPlayer()->SetColor(uiColour);
@@ -836,6 +863,21 @@ void SetVehicleDirtLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacke
 	}
 }
 
+void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	RakNet::RakString strResource;
+	RakNet::DirectoryDeltaTransfer * pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
+
+	vecClientResources.clear();
+
+	while (pBitStream->Read(strResource))
+	{
+		vecClientResources.push_back(strResource.C_String())
+	}
+	pDelta->DownloadFromSubdirectory(("client_files/resources/"), ("resources/"), true, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -843,6 +885,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	{
 		// Register the RPCs
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_FILE_LIST), ClientFiles);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);

@@ -13,7 +13,7 @@
 #include <SharedUtility.h>
 #include <CLogFile.h>
 
-CServer* CServer::s_pInstance = 0;
+CServer* CServer::s_pInstance = nullptr;
 
 CServer::CServer()
 : m_bShowFPS(true),
@@ -201,6 +201,7 @@ bool CServer::Startup()
 		}
 	}
 #define CLIENT_FILE_DIRECTORY "client_files"
+	
 	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY);
 	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY "/resources");
 	for (auto pResource : m_pResourceManager->GetResources())
@@ -211,6 +212,7 @@ bool CServer::Startup()
 			{
 				SharedUtility::CreateDirectory(SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/", pResource->GetName().C_String()).C_String());
 				SharedUtility::CopyFile(pFile->GetFileName(), SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/%s", pResource->GetName().C_String(), pFile->GetName()));
+				SharedUtility::CopyFile(SharedUtility::GetAbsolutePath("/resources/%s/meta.xml", pResource->GetName().C_String()), SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/meta.xml", pResource->GetName().C_String()));
 			}
 		}
 	}
@@ -311,6 +313,8 @@ void CServer::Process()
 
 void CServer::Shutdown()
 {
+	//m_pNetworkModule->Shutdown();
+
 	// TODO: clear events
 	CEvents::GetInstance()->Clear();
 

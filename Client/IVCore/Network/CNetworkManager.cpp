@@ -309,20 +309,8 @@ void CNetworkManager::ConnectionAccepted(RakNet::Packet * pPacket)
 	// Set the network state
 	SetNetworkState(NETSTATE_CONNECTED);
 
-	// Construct a new bitstream
-	RakNet::BitStream pBitStream;
-
-	// Write the network version
-	pBitStream.Write((DWORD)NETWORK_VERSION);
-
-	// Write the player nickname
-	pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
-
-	// Write the player serial
-	pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
-
 	m_ServerAddress = pPacket->systemAddress;
 
 	// Send to the server
-	Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	Call(GET_RPC_CODEX(RPC_FILE_LIST), nullptr, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 }

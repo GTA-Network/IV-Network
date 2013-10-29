@@ -17,6 +17,7 @@ typedef unsigned short RPCIdentifier;
 enum eRPCIdentifier : RPCIdentifier
 {
 	RPC_INITIAL_DATA,
+	RPC_FILE_LIST,
 	RPC_START_GAME,
 	RPC_NEW_PLAYER,
 	RPC_DELETE_PLAYER,

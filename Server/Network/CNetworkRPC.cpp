@@ -99,11 +99,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Write the port
 	bitStream.Write(CVAR_GET_INTEGER("port"));
 
-	for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
-	{
-		bitStream.Write(RakNet::RakString(pResource->GetName().C_String()));
-	}
-
 	// Send it back to the player
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
 
@@ -117,7 +112,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Write(i);
 			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetName().Get());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
-
 		}
 	}
 
@@ -388,6 +382,17 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CLogFile::Printf("RPC_EXIT_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, byteSeat);
 }
 
+void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
+	RakNet::BitStream bitStream;
+	for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
+	{
+		bitStream.Write(RakNet::RakString(pResource->GetName().C_String()));
+	}
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_FILE_LIST), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we already registered?
@@ -396,6 +401,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 
 	// Default rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_FILE_LIST), ClientFiles);
 
 	// Player rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);

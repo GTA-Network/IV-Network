@@ -169,6 +169,19 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 		}
 
+		if (uMsg == WM_CHAR)
+		{
+			if (wParam == 't' || wParam == 'T' || wParam == '`') // 0x54
+			{
+				/*if (g_pCore->GetChatBox()->IsVisible())
+				{
+					if (g_pCore->GetChatBox()->IsEnabled())
+						g_pCore->GetChatBox()->Disable();
+					else
+						g_pCore->GetChatBox()->Enable();
+				}*/
+			}
+		}
 
 		if(g_pCore->GetChat())
 			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);
