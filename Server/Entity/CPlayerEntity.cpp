@@ -223,7 +223,7 @@ void CScriptPlayer::SetColor(DWORD dwColor)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
-void CScriptPlayer::SendPlayerMessage(string sMessage, DWORD dwColor, bool bAllowFormatting)
+void CScriptPlayer::SendPlayerMessage(CString sMessage, DWORD dwColor, bool bAllowFormatting)
 {
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());

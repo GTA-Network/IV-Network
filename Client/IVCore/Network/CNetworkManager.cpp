@@ -22,8 +22,24 @@ CNetworkManager::CNetworkManager()
 	// Get the RPC4 instance
 	m_pRPC = RakNet::RPC4::GetInstance();
 
+	m_pDirectoryDeltaTransfer = RakNet::DirectoryDeltaTransfer::GetInstance();
+
+	m_pFileListTransfer = RakNet::FileListTransfer::GetInstance();
+
+	m_pIri = new RakNet::IncrementalReadInterface();
+
+	m_pDirectoryDeltaTransfer->SetDownloadRequestIncrementalReadInterface(m_pIri, 1000000);
+
 	// Attact RPC4 to RakPeerInterface
 	m_pRakPeer->AttachPlugin(m_pRPC);
+
+	m_pRakPeer->AttachPlugin(m_pDirectoryDeltaTransfer);
+
+	m_pRakPeer->AttachPlugin(m_pFileListTransfer);
+
+	m_pRakPeer->SetSplitMessageProgressInterval(100);
+
+	m_pDirectoryDeltaTransfer->SetFileListTransferPlugin(m_pFileListTransfer);
 
 	// Register the RPC's
 	CNetworkRPC::Register(m_pRPC);

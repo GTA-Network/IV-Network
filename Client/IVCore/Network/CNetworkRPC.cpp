@@ -15,6 +15,42 @@
 
 extern CCore * g_pCore;
 bool   CNetworkRPC::m_bRegistered = false;
+#include <RakNet/FileListTransferCBInterface.h>
+class TestCB : public RakNet::FileListTransferCBInterface
+{
+public:
+	bool OnFile(
+		OnFileStruct *onFileStruct)
+	{
+		assert(onFileStruct->byteLengthOfThisFile >= onFileStruct->bytesDownloadedForThisFile);
+		CLogFile::Printf("%i. (100%%) %i/%i %s %ib / %ib\n", onFileStruct->setID, onFileStruct->fileIndex + 1, onFileStruct->numberOfFilesInThisSet, onFileStruct->fileName, onFileStruct->byteLengthOfThisFile, onFileStruct->byteLengthOfThisSet);
+
+		// Return true to have RakNet delete the memory allocated to hold this file.
+		// False if you hold onto the memory, and plan to delete it yourself later
+		return true;
+	}
+
+	virtual void OnFileProgress(FileProgressStruct *fps)
+	{
+		assert(fps->onFileStruct->byteLengthOfThisFile >= fps->onFileStruct->bytesDownloadedForThisFile);
+		CLogFile::Printf("%i (%i%%) %i/%i %s %ib / %ib\n", fps->onFileStruct->setID, (int) (100.0*(double) fps->partCount / (double) fps->partTotal),
+			fps->onFileStruct->fileIndex + 1,
+			fps->onFileStruct->numberOfFilesInThisSet,
+			fps->onFileStruct->fileName,
+			fps->onFileStruct->byteLengthOfThisFile,
+			fps->onFileStruct->byteLengthOfThisSet,
+			fps->firstDataChunk);
+	}
+
+	virtual bool OnDownloadComplete(DownloadCompleteStruct *dcs)
+	{
+		CLogFile::Printf("Download complete.\n");
+
+		// Returning false automatically deallocates the automatically allocated handler that was created by DirectoryDeltaTransfer
+		return false;
+	}
+
+} transferCallback;
 
 void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
@@ -37,6 +73,14 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Read the file transfer port
 	int iPort;
 	pBitStream->Read(iPort);
+
+	RakNet::RakString strResource;
+	RakNet::DirectoryDeltaTransfer * pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
+
+	while (pBitStream->Read(strResource))
+	{
+		pDelta->DownloadFromSubdirectory(("client_files/resources/" + strResource).C_String(), "resources", true, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
+	}
 
 	// Set the localplayer id
 	g_pCore->GetGame()->GetLocalPlayer()->SetId(playerId);

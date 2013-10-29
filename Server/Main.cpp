@@ -15,7 +15,7 @@
 #include <Threading/CThread.h>
 
 bool g_bClose = false;
-string g_strStartError;
+CString g_strStartError;
 
 int main(int argc, char ** argv)
 {

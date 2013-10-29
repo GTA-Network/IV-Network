@@ -16,6 +16,9 @@ class CNetworkManager {
 private:
 	RakNet::RakPeerInterface				* m_pRakPeer;
 	static RakNet::RPC4						* m_pRPC;
+	RakNet::DirectoryDeltaTransfer			* m_pDirectoryDeltaTransfer;
+	RakNet::FileListTransfer				* m_pFileListTransfer;
+	RakNet::IncrementalReadInterface		* m_pIri;
 	RakNet::SystemAddress					m_ServerAddress;
 
 	eNetworkState							m_eNetworkState;
@@ -49,6 +52,10 @@ public:
 
 	RakNet::RakPeerInterface				* GetRakPeer() { return m_pRakPeer; }
 	static RakNet::RPC4						* GetRPC() { return m_pRPC; }
+	RakNet::DirectoryDeltaTransfer			* GetDirectoryDeltaTransfer() { return m_pDirectoryDeltaTransfer; }
+	RakNet::FileListTransfer				* GetFileListTransfer() { return m_pFileListTransfer; }
+	RakNet::IncrementalReadInterface		* GetIri() { return m_pIri; }
+	RakNet::SystemAddress					GetServerAddress() { return m_ServerAddress; }
 
 };
 

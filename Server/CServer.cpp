@@ -184,16 +184,40 @@ bool CServer::Startup()
 			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
 			if(CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()),strResource))
 			{
-				m_pResourceManager->StartResource(pResource);
-				iResourcesLoaded++;
+				if (!m_pResourceManager->StartResource(pResource))
+				{
+					CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
+					iFailedResources++;
+				}
+				else
+				{
+					iResourcesLoaded++;
+				}
+				
 			} else {
 				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
 				iFailedResources++;
 			}
 		}
 	}
+#define CLIENT_FILE_DIRECTORY "client_files"
+	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY);
+	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY "/resources");
+	for (auto pResource : m_pResourceManager->GetResources())
+	{
+		for (auto pFile : *pResource->GetResourceFiles())
+		{
+			if (pFile->GetType() == CResourceFile::eResourceType::RESOURCE_FILE_TYPE_CLIENT_SCRIPT)
+			{
+				SharedUtility::CreateDirectory(SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/", pResource->GetName().C_String()).C_String());
+				SharedUtility::CopyFile(pFile->GetFileName(), SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/%s", pResource->GetName().C_String(), pFile->GetName()));
+			}
+		}
+	}
 
 	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
+
+	m_pNetworkModule->GetDirectoryDeltaTransfer()->AddUploadsFromSubdirectory(CLIENT_FILE_DIRECTORY);
 
 #ifdef _WIN32
         SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);

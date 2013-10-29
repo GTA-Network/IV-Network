@@ -36,7 +36,7 @@ template<>
 const char *getValue<const char *>(CScriptVM* pVM, int idx);
 
 template<>
-string getValue<string>(CScriptVM* pVM, int idx);
+CString getValue<CString>(CScriptVM* pVM, int idx);
 
 #if 1
 template<class T>
@@ -87,7 +87,7 @@ template<>
 void returnValue(CScriptVM* pVM, const char *v);
 
 template<>
-void returnValue(CScriptVM* pVM, string v);
+void returnValue(CScriptVM* pVM, CString v);
 
 template<>
 void returnValue(CScriptVM* pVM, float v);

@@ -71,7 +71,7 @@ int SendPlayerMessageToAll(int * VM)
 
 	pVM->ResetStackIndex();
 
-	string sMessage;
+	CString sMessage;
 	pVM->Pop(sMessage);
 
 	int iColor;
@@ -143,8 +143,8 @@ public:
 	CScriptSQLite();
 	~CScriptSQLite();
 
-	bool Open(string strFileName);
-	void Query(string strQuery, string callback);
+	bool Open(CString strFileName);
+	void Query(CString strQuery, CString callback);
 	void Close();
 };
 

@@ -1823,13 +1823,16 @@ unsigned CPlayerEntity::GetAmmunation(unsigned uiWeaponId)
 void CPlayerEntity::GetWeaponInSlot(unsigned uiWeaponSlot, unsigned &uiWeaponId, unsigned &uiAmmunation, unsigned &uiUnkown)
 {
 	if (IsSpawned())
-		;
+	{
+		uiAmmunation = m_pPlayerPed->GetPedWeapons()->GetAmmoBySlot((eWeaponSlot) uiWeaponSlot);
+		uiWeaponId = m_pPlayerPed->GetPedWeapons()->GetWeaponInSlot((eWeaponSlot) uiWeaponSlot);
+	}
 }
 
 unsigned CPlayerEntity::GetAmmunationInClip(unsigned uiWeapon)
 {
 	if (IsSpawned())
-		return 0;
+		return m_pPlayerPed->GetPedWeapons()->GetAmmoInClip();
 
 	return 0;
 }
@@ -1837,13 +1840,13 @@ unsigned CPlayerEntity::GetAmmunationInClip(unsigned uiWeapon)
 void CPlayerEntity::SetAmmunationInClip(unsigned uiAmmunationInClip)
 {
 	if (IsSpawned())
-		;
+		m_pPlayerPed->GetPedWeapons()->SetAmmoInClip(uiAmmunationInClip);
 }
 
 unsigned CPlayerEntity::GetMaxAmmunationInClip(unsigned uiWeapon)
 {
 	if (IsSpawned())
-		return 0;
+		return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetClipSize();
 
 	return 0;
 }

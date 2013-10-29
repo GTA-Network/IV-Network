@@ -153,6 +153,30 @@
     <Filter Include="Header Files\Audio">
       <UniqueIdentifier>{e8acafa7-a8cf-4b76-8018-768448e9682e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shared\Scripting">
+      <UniqueIdentifier>{598e00eb-b2e7-4b72-b77d-7195d201c465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting\ResourceSystem">
+      <UniqueIdentifier>{bbe12ddb-a418-444b-951f-c65dc724ed76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting">
+      <UniqueIdentifier>{206f7222-d25f-49d6-a17e-d069014cdab5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting\ResourceSystem">
+      <UniqueIdentifier>{0a3c4634-45be-4e79-bc8d-057f2b319196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{80ac8cf3-eb87-4839-a9c6-e869bef1d98b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared\Scripting\Natives">
+      <UniqueIdentifier>{c78c682c-e17b-45b1-aefc-956234eae8e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\Squirrel">
+      <UniqueIdentifier>{1d376fac-e61e-4a00-9ec0-9a554db53fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\lua">
+      <UniqueIdentifier>{4d3f9556-55fb-40fc-b604-dd118c07f04f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -544,6 +568,219 @@
     </ClCompile>
     <ClCompile Include="CTags.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ApplyTuple.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CEvents.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CLuaVM.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CScript.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CScriptArgument.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CScriptArguments.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\CSquirrelVM.cpp">
+      <Filter>Source Files\Shared\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CIncludedResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResource.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceManager.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceScriptFile.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\ResourceSystem\CResourceServerScript.cpp">
+      <Filter>Source Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\CXML.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CEventNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CMathNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Shared\Scripting\Natives\CSystemNatives.cpp">
+      <Filter>Source Files\Shared\Scripting\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqapi.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqbaselib.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqclass.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqcompiler.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqdebug.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqfuncstate.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqlexer.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqmem.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqobject.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstate.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdaux.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdblob.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdio.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdmath.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdrex.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdstream.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdstring.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqstdsystem.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqtable.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Squirrel\sqvm.cpp">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lapi.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lauxlib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lbaselib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lbitlib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lcode.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lcorolib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lctype.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ldblib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ldebug.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ldo.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ldump.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lfunc.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lgc.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\linit.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\liolib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\llex.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lmathlib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lmem.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\loadlib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lobject.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lopcodes.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\loslib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lparser.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lstate.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lstring.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lstrlib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ltable.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ltablib.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\ltm.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lundump.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lvm.c">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\lua\lzio.c">
+      <Filter>Source Files\Libraries\lua</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1107,6 +1344,225 @@
     </ClInclude>
     <ClInclude Include="Graphics\CTags.h">
       <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ApplyTuple.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CEventHandler.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CEvents.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CLuaVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CScript.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CScriptArgument.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CScriptArguments.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CScriptClass.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CScriptVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\CSquirrelVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CIncludedResource.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResource.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceClientScript.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceManager.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceServerScript.h">
+      <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\CXML.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CEventNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CMathNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\Natives\CSystemNatives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\Scripting\Natives\Natives.h">
+      <Filter>Header Files\Shared\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqarray.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqclass.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqclosure.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqcompiler.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqfuncproto.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqfuncstate.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqlexer.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqobject.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqopcodes.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqpcheader.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstate.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdaux.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdblob.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdblobimpl.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdio.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdmath.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdstream.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdstring.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstdsystem.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqstring.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqtable.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\squirrel.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\squserdata.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\squtils.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\Squirrel\sqvm.h">
+      <Filter>Source Files\Libraries\Squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lapi.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lauxlib.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lcode.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lctype.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\ldebug.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\ldo.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lfunc.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lgc.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\llex.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\llimits.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lmem.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lobject.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lopcodes.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lparser.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lstate.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lstring.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\ltable.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\ltm.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lua.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lua.hpp">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\luaconf.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lualib.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lundump.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lvm.h">
+      <Filter>Source Files\Libraries\lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\lua\lzio.h">
+      <Filter>Source Files\Libraries\lua</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

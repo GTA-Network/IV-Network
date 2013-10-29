@@ -99,6 +99,11 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Write the port
 	bitStream.Write(CVAR_GET_INTEGER("port"));
 
+	for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
+	{
+		bitStream.Write(RakNet::RakString(pResource->GetName().C_String()));
+	}
+
 	// Send it back to the player
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
 
