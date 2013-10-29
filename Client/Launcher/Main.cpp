@@ -119,6 +119,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	if (!SharedUtility::Exists(strCore.Get()))
 		return ShowMessageBox("Failed to find " CLIENT_CORE_NAME DEBUG_SUFFIX LIBRARY_EXTENSION". Cannot launch "MOD_NAME".");
 
+	// Get the full path of the launch helper
+	CString strBass(SharedUtility::GetAbsolutePath("bass.dll"));
+
+	// Check if the launch helper exists
+	if (!SharedUtility::Exists(strBass.Get()))
+		return ShowMessageBox("Failed to find bass.dll. Cannot launch "MOD_NAME".");
+
 	// Check if GTAEFLC is already running
 	if (SharedUtility::IsProcessRunning(GAME_DEFAULT_EXECUTABLE))
 	{
@@ -242,8 +249,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 1;
 	}
 
+	// Inject bass.dll into EFLC.exe
+	int iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strBass.Get());
+
 	// Inject IVNetwork.dll into EFLC.exe
-	int iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strCore.Get());
+	iReturn = SharedUtility::InjectLibraryIntoProcess(piProcessInfo.hProcess, strCore.Get());
 
 	// Did the injection fail?
 	if(iReturn > 0) {
