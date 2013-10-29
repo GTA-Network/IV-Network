@@ -29,4 +29,4 @@ BEGIN
     END
 END
 
-IDI_ICON                ICON                    "res\\IVMP.ico"
+IDI_ICON                ICON                    "res\\Server.ico"
