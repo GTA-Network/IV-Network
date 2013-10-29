@@ -23,6 +23,12 @@ CCore::CCore(void) :
 
 }
 
+void OnCreateVM(CScriptVM * pVM)
+{
+	// Register dat natives
+	/*CScriptClasses::Register(pVM);*/
+}
+
 bool CCore::Initialise()
 {
 	// Are we already initialsed?
@@ -97,6 +103,7 @@ bool CCore::Initialise()
 
 	CEvents* pEvents = new CEvents();
 	m_pResourceManager = new CResourceManager("client_resources/resources");
+	m_pResourceManager->SetCreateVMCallback(OnCreateVM);
 
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();
