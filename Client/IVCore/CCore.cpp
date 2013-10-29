@@ -9,6 +9,7 @@
 
 #include	"CCore.h"
 #include    <IV/CIVScript.h>
+#include <Scripting/CEvents.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
@@ -93,7 +94,9 @@ bool CCore::Initialise()
 
 	m_pIVStartupScript = new CIVStartupScript;
 	
-	m_pResourceManager = new CResourceManager("client_files/resources");
+
+	CEvents* pEvents = new CEvents();
+	m_pResourceManager = new CResourceManager("client_resources/resources");
 
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();

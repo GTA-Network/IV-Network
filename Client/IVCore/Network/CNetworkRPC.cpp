@@ -875,7 +875,7 @@ void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		vecClientResources.push_back(strResource.C_String());
 	}
-	pDelta->DownloadFromSubdirectory(("client_files/resources/"), ("resources/"), true, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
+	pDelta->DownloadFromSubdirectory(("client_files"), SharedUtility::GetAbsolutePath("client_resources/"), false, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
 }
 
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
