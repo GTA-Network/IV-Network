@@ -93,6 +93,8 @@ bool CCore::Initialise()
 
 	m_pIVStartupScript = new CIVStartupScript;
 	
+	m_pResourceManager = new CResourceManager("client_files/resources");
+
 	// Unprotect memory before starting addressing
 	m_pGame->UnprotectMemory();
 	
