@@ -785,6 +785,9 @@
     <ClCompile Include="Graphics\CChatBox.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Game\CContextSwitch.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -1569,6 +1572,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\CChatBox.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CContextSwitch.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

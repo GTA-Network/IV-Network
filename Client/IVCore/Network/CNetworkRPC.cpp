@@ -873,7 +873,7 @@ void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	while (pBitStream->Read(strResource))
 	{
-		vecClientResources.push_back(strResource.C_String())
+		vecClientResources.push_back(strResource.C_String());
 	}
 	pDelta->DownloadFromSubdirectory(("client_files/resources/"), ("resources/"), true, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
 }

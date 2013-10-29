@@ -67,6 +67,12 @@ void CGame::Setup()
 	// Create new traffic lights instance
 	m_pTrafficLights = new CTrafficLights;
 	
+	// Install our switches/patches
+	CContextSwitch::InstallKeySyncHooks();
+
+	// Setup the weapon handle hook
+	//CWeaponHandler::InstallAimSyncHooks();
+
 	// Setup the traffic handle hook
 	CTrafficHandler::InstallTrafficHook();
 	CTrafficHandler::InstallTrafficLightsHook();
