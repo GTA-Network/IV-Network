@@ -18,14 +18,12 @@
 class CScriptPlayer;
 
 class CPlayerEntity : public CNetworkEntity {
-public:
-
-
 private:
 	unsigned long m_ulLastSyncReceived;
 	unsigned long m_ulLastSyncSent;
 	ePackageType m_eLastSyncPackageType;
 
+	CString		m_strName;
 	
 	CVector3	m_vecDirection;
 	CVector3	m_vecRoll;
@@ -54,8 +52,9 @@ private:
 
 	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
+
+	CVector3 spawnPos;
 public:
-	CString		m_strName;
 	CPlayerEntity();
 	~CPlayerEntity();
 
@@ -125,6 +124,9 @@ public:
 
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
+
+	void		SetSpawnPosition(CVector3 pos) { spawnPos.fX = pos.fX; spawnPos.fY = pos.fY, spawnPos.fZ = pos.fZ; };
+	CVector3	GetSpawnPosition() { return spawnPos; };
 };
 
 
@@ -140,53 +142,37 @@ public:
 
 	void  SetArmour(float fArmour);
 
-	float GetArmour(void) {
-		return GetEntity()->GetArmour();
-	}
+	float GetArmour(void) { return GetEntity()->GetArmour(); }
 
 	void  SetColor(DWORD dwColor);
 
-	DWORD GetColor(void) {
-		return GetEntity()->GetColor();
-	}
+	DWORD GetColor(void) { return GetEntity()->GetColor(); }
 
 	void  SetHeading(float fHeading);
 
-	float GetHeading() {
-		return GetEntity()->GetHeading();
-	}
+	float GetHeading() { return GetEntity()->GetHeading(); }
 
 	void		SetName(CString szName);
 
-	CString GetName() {
-		return GetEntity()->m_strName;
-	}
+	CString GetName() { return GetEntity()->GetName(); }
 
 	void SetModel(int iModel);
 
-	int GetModel() {
-		return GetEntity()->GetModel();
-	}
+	int GetModel() { return GetEntity()->GetModel(); }
 
 	void SetMoney(int iMoney);
 
-	int	GetMoney() {
-		return GetEntity()->GetMoney();
-	}
+	int	GetMoney() { return GetEntity()->GetMoney(); }
 
 	void GiveMoney(int iMoney);
 
 	void		 SetDimension(int iDimension);
 
-	unsigned int GetDimension() {
-		return GetEntity()->GetDimension();
-	}
+	unsigned int GetDimension() { return GetEntity()->GetDimension(); }
 
 	void		SetWantedLevel(int iWantedLevel);
 
-	int GetWantedLevel() {
-		return GetEntity()->GetWantedLevel();
-	}
+	int GetWantedLevel() { return GetEntity()->GetWantedLevel(); }
 
 	float		 GetHealth() { return GetEntity()->GetHealth(); }
 	void		 SetHealth(float fHealth);
@@ -208,7 +194,7 @@ public:
 	int			GetId() { return GetEntity()->GetId(); }
 
 	bool		IsOnFoot() { return true; }
-	void		SetSpawnLocation(float fX, float fY, float fZ);
+	void		SetSpawnPosition(float fX, float fY, float fZ) { GetEntity()->SetSpawnPosition(CVector3(fX, fY, fZ)); };
 	void		GiveWeapon(int id, int uiAmmo);
 };
 

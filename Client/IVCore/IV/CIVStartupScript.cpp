@@ -16,7 +16,7 @@ extern	CCore				* g_pCore;
 void CIVStartupScript::Process()
 {
 	unsigned int pid = 0;
-	CIVScript::CreatePlayer(0, DEVELOPMENT_SPAWN_POSITION, &pid);
+	CIVScript::CreatePlayer(0, DEFAULT_SPAWN_POSITION, &pid);
 
 	//disable police
 	CIVScript::SetMaxWantedLevel(0);

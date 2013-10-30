@@ -171,10 +171,6 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 	// Check if our local player class not existing, otherwise create it
 	if(!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
-	
-	// Call basic initialasion functions from the localplayer class
-	m_pLocalPlayer->Reset();
-	m_pLocalPlayer->SetSpawnLocation(CVector3(DEVELOPMENT_SPAWN_POSITION),0.0f);
 
 	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
 }

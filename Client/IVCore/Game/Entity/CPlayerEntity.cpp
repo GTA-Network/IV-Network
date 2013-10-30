@@ -682,6 +682,8 @@ int CPlayerEntity::GetWantedLevel()
 	{
 		return m_iWantedLevel;
 	}
+
+	return 0;
 }
 
 void CPlayerEntity::SetControlState(CControls * pControlState)

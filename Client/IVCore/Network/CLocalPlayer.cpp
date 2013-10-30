@@ -16,29 +16,25 @@
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
 
-void GetLocalPlayerSpawnPosition(int, CVector3 * vecSpawnPosition, float * fAngle)
+bool isHandleLocalPlayerSpawnAlreadyCalled = false;
+
+void HandleLocalPlayerSpawn()
 {
-    _asm	pushad;
- 
-	CLogFile::Printf("%s",__FUNCTION__);
-	CVector3 vecPos;
-	g_pCore->GetGame()->GetLocalPlayer()->GetSpawnPosition(&vecPos);
-	memcpy(vecSpawnPosition,&vecPos,sizeof(CVector3));
+	_asm pushad;
 
-    *fAngle = g_pCore->GetGame()->GetLocalPlayer()->GetSpawnRotation();
+	CLogFile::Printf("%s", __FUNCTION__);
 
-	_asm	popad;
-}
+	if (!isHandleLocalPlayerSpawnAlreadyCalled)
+	{
+		g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
+		isHandleLocalPlayerSpawnAlreadyCalled = true;
+	}
+	else
+	{
+		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
+	}
 
-void __declspec(naked) HandleLocalPlayerSpawn()
-{
-    _asm	pushad;
-
-	CLogFile::Printf("%s",__FUNCTION__);
-    g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
-
-    _asm	popad;
-    _asm	jmp COffsets::FUNC_SpawnPlayer;
+	_asm popad;
 }
 
 CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
@@ -54,15 +50,12 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 		m_bAdvancedControlState(true),
 		m_bAdvancedCameraState(true)
 {
-	// Temporary spawn position for development
-	m_vecSpawnPosition = CVector3(DEVELOPMENT_SPAWN_POSITION);
+	// Patch to override spawn position and let the game call HandleSpawn
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x7D5BAD, (DWORD) HandleLocalPlayerSpawn);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x7D5BB2, g_pCore->GetBase() + 0x7D5C77);
 
-    // Patch to override spawn position and let the game call HandleSpawn
-    CPatcher::InstallCallPatch(COffsets::FUNC_GetLocalPlayerSpawnPosition, (DWORD)GetLocalPlayerSpawnPosition, 5);
-    CPatcher::InstallCallPatch(COffsets::CALL_SpawnLocalPlayer, (DWORD)HandleLocalPlayerSpawn, 5);
-	
 	// Patch death loading screen slow motion :D
-	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchDeathLoadingScreen,0x18);
+	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchDeathLoadingScreen, 24);
 }
 
 void CLocalPlayer::Respawn()
@@ -158,12 +151,6 @@ void CLocalPlayer::Pulse()
 
 	if(IsSpawned())
 		DoDeathCheck();
-}
-
-void CLocalPlayer::SetSpawnLocation(CVector3 vecPosition, float fHeading)
-{
-    m_vecSpawnPosition = vecPosition;
-    m_fSpawnAngle = fHeading;
 }
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bForce)

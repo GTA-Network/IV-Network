@@ -126,41 +126,14 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Set the servername
 	g_pCore->SetServerName(strServerName.C_String());
 
-	// Notify the player via chat
-	g_pCore->GetChat()->Outputf(true, "#16C5F2 Connection established waiting for welcome message %s.", strServerName.C_String());
-
 	// Start the game
 	g_pCore->GetGame()->SetupGame();
-}
-
-void StartGame(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
-{
-	EntityId playerId;
-	pBitStream->Read(playerId);
-
-	int iHour, iMinute, iWeather, iDay;
-	pBitStream->Read(iHour);
-	pBitStream->Read(iMinute);
-	pBitStream->Read(iWeather);
-	pBitStream->Read(iDay);
-
-	// Set the localplayer id
-	g_pCore->GetGame()->GetLocalPlayer()->SetPlayerId(playerId);
 
 	// Set the network state
 	g_pCore->GetNetworkManager()->SetNetworkState(NETSTATE_CONNECTED);
 
-	// Set the stuff from server
-	g_pCore->GetTimeManagementInstance()->SetTime(iHour, iMinute);
-	CGameFunction::SetTimeOfDay(iHour, iMinute);
-	CIVWeather::SetWeather((eWeather) iWeather);
-	CGameFunction::SetDayOfWeek(iDay);
-
 	// Notify the client
 	g_pCore->GetChat()->Clear();
-	CVector3 vecPos;
-	g_pCore->GetGame()->GetLocalPlayer()->GetSpawnPosition(&vecPos);
-	g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPos);
 	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
 }
 
@@ -170,7 +143,6 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	EntityId playerId;
 	pBitStream->Read(playerId);
 
-	// Read the player name
 	// Read the player name
 	RakNet::RakString _strName;
 	pBitStream->Read(_strName);
@@ -182,16 +154,13 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Add the player
 	CPlayerEntity * pEntity = new CPlayerEntity;
-	pEntity->SetModel(0); // Set temporary to luis lol
+	pEntity->SetModel(0); // Set temporary to nico lol
 	pEntity->Create();
 	pEntity->SetNick(strPlayerName);
 	pEntity->SetId(playerId);
 
 	// Notify the playermanager that we're having a new player
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, pEntity);
-
-	// Temporary set the position to our dev spawn
-	pEntity->SetPosition(CVector3(DEVELOPMENT_SPAWN_POSITION));
 }
 
 void PlayerLeave(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -614,24 +583,20 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		g_pCore->GetChat()->Output(sMessage.C_String());
 }
 
-void SetPlayerSpawnLocation(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+#define sub_7D5220 ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
+#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458))
+#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134))
+
+void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId playerId;
-	pBitStream->Read(playerId);
+	CVector3 spawnPos;
+	pBitStream->Read(spawnPos);
 
-	// Get a pointer to the player
-	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+	float fHeading;
+	pBitStream->Read(fHeading);
 
-	// Is the player pointer valid?
-	if (pPlayer)
-	{
-		CVector3 vecPos;
-
-		pBitStream->Read(vecPos);
-
-		g_pCore->GetGame()->GetLocalPlayer()->SetSpawnLocation(vecPos, 0.0f);
-	}
+	if (dword_F16134 != -1)
+		sub_7D5220(*(IVPhysical* *) (((unsigned char*) dword_10D9458[dword_F16134]) + 1420), &spawnPos, fHeading);
 }
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -886,7 +851,6 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		// Register the RPCs
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_FILE_LIST), ClientFiles);
-		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_START_GAME), StartGame);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER), PlayerJoin);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER), PlayerLeave);
@@ -913,7 +877,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
-		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION), SetPlayerSpawnLocation);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), RespawnPlayer);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);
@@ -936,7 +900,6 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 	{
 		// Unregister the RPCs
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA));
-		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_START_GAME));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_NEW_PLAYER));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DELETE_PLAYER));
@@ -962,7 +925,8 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE));
-		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN));
 
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION));

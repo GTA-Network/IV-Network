@@ -193,7 +193,7 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define	CHAT_MAX_HISTORY 12
 
 // Spawn position
-#define DEVELOPMENT_SPAWN_POSITION -547.40f, -961.30f, 4.84f
+#define DEFAULT_SPAWN_POSITION -547.40f, -961.30f, 4.84f
 #define GAME_LOAD_CAMERA_POS	488.702759f, 540.719421f, 161.584091f
 #define GAME_LOAD_CAMERA_LOOKAT -16.441833f, 69.520508f, 140.250290f
 

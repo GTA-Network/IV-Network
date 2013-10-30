@@ -12,9 +12,10 @@
 #include <SharedUtility.h>
 #include "../CServer.h"
 
-CPlayerEntity::CPlayerEntity()
+CPlayerEntity::CPlayerEntity() :
+	m_ulLastSyncSent(0),
+	spawnPos(DEFAULT_SPAWN_POSITION)
 {
-	m_ulLastSyncSent = 0;
 }
 
 CPlayerEntity::~CPlayerEntity()
@@ -231,14 +232,6 @@ void CScriptPlayer::SendPlayerMessage(CString sMessage, DWORD dwColor, bool bAll
 	bitStream.Write(dwColor);
 	bitStream.Write(bAllowFormatting);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
-}
-
-void CScriptPlayer::SetSpawnLocation(float fX, float fY, float fZ)
-{
-	RakNet::BitStream bitStream;
-	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(CVector3(fX, fY, fZ));
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_SPAWN_LOCATION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)

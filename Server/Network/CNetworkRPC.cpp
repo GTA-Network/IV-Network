@@ -102,7 +102,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Send it back to the player
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
 
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_START_GAME), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+	CVector3 spawnPos = pPlayer->GetSpawnPosition();
+	pScriptPlayer->SetPosition(spawnPos.fX, spawnPos.fY, spawnPos.fZ);
 
 	for (EntityId i = 0; i < CServer::GetInstance()->GetPlayerManager()->GetMax(); ++i)
 	{
@@ -182,7 +183,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 				RakNet::BitStream bitStream;
 				bitStream.Write(playerId);
 				bitStream.Write(strInput);
-				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 			}
 			else
 			{
@@ -231,6 +232,8 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
+	CLogFile::Printf("%s", __FUNCTION__);
+
 	// Get the player id
 	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
@@ -255,9 +258,9 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 			// Is the killer valid?
 			if (pKiller)
-				CLogFile::Printf("[death] %s has been killed by %d!", pPlayer->GetName().Get(), pKiller->GetId());
+				CLogFile::Printf("[death] %s has been killed by %s!", pPlayer->GetName().Get(), pKiller->GetName().Get());
 			else
-				CLogFile::Printf("[death] %s has been killed by NOT_A_PLAYER!", pPlayer->GetName().Get());
+				CLogFile::Printf("[death] %s has been killed!", pPlayer->GetName().Get());
 		}
 		else
 		{
@@ -268,11 +271,12 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerDeath", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
-	CLogFile::Printf("%s", __FUNCTION__);
 }
 
 void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
+	CLogFile::Printf("%s", __FUNCTION__);
+
 	// Get the player id
 	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
@@ -292,26 +296,27 @@ void PlayerSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		CEvents::GetInstance()->Call("playerSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 		CLogFile::Printf("[spawn] %s has spawned.", pPlayer->GetName().Get());
 	}
-	CLogFile::Printf("%s", __FUNCTION__);
 }
 
-void PlayerRespawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
+	CLogFile::Printf("%s", __FUNCTION__);
+
 	// Get the player id
 	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
 
 	// Get a pointer to the player
-	CPlayerEntity * pNetworkPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
+	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
 
 	// Is the player pointer valid?
-	if (pNetworkPlayer)
+	if (pPlayer)
 	{
-		// Respawn the player
-		CScriptArguments args;
-		args.push(pNetworkPlayer->GetScriptPlayer());
-		CEvents::GetInstance()->Call("playerRespawn", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+
+		RakNet::BitStream bitStream;
+		bitStream.Write(pPlayer->GetSpawnPosition()); //spawnPos
+		bitStream.Write(0.0f); //fHeading
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 	}
-	CLogFile::Printf("%s", __FUNCTION__);
 }
 
 void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -339,7 +344,7 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
 		CLogFile::Printf("Keks");
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
@@ -373,7 +378,7 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(playerId);
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
@@ -408,7 +413,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), PlayerSync);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_DEATH), PlayerDeath);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), PlayerSpawn);
-	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), PlayerRespawn);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), PlayerRequestSpawn);
 
 	// Vehicle rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), VehicleEnter);
@@ -429,7 +434,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_DEATH));
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN));
-	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN));
+	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN));
 
 	// Vehicle rpcs
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE));

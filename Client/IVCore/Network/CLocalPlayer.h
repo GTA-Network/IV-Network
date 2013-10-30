@@ -18,7 +18,6 @@
 class CLocalPlayer : public CPlayerEntity {
 private:
         bool                            m_bIsDead;
-        CVector3                        m_vecSpawnPosition;
         float                           m_fSpawnAngle;
         bool                            m_bToggleControl;
         unsigned long					m_ulLastPureSyncTime;
@@ -44,10 +43,6 @@ public:
         void							HandleSpawn();
 
         void							DoDeathCheck();
-
-        void							SetSpawnLocation(CVector3 vecPosition, float fHeading);
-        void							GetSpawnPosition(CVector3 * vecPosition) { memcpy(vecPosition, &m_vecSpawnPosition, sizeof(CVector3)); }
-        inline float					GetSpawnRotation() { return m_fSpawnAngle; }
 
         inline bool						GetFirstSpawn() { return m_bFirstSpawn; }
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }
