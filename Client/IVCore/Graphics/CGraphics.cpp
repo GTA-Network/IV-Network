@@ -127,8 +127,7 @@ bool CGraphics::LoadFonts()
 	{
 		fontsize = 18;
 	}
-	bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE,
-		DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
+	bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
 
 	if (fontsize == NULL)
 	{
@@ -141,17 +140,14 @@ bool CGraphics::LoadFonts()
 }
 
 
-void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, unsigned int fontIndex, bool bShadow, const char * szText)
+void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom, unsigned long ulColor, float fScaleX, float fScaleY, unsigned long ulFormat, bool bShadow, const char * szText)
 {
 	// Is the sprite invalid?
 	if(!m_pSprite)
 		return;
 
-	// Get the font
-	ID3DXFont * pFont = GetFont();
-
 	// Is the font invalid?
-	if(!pFont)
+	if (!m_pFont)
 		return;
 
 	// Prevent the rect from getting scaled along with the size
@@ -178,17 +174,17 @@ void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int u
 	{
 		RECT shadow_rect;        
 		SetRect(&shadow_rect, uiLeft + 1, uiTop + 1, uiRight + 1, uiBottom + 1);  
-		pFont->DrawText(m_pSprite, szText, -1, &shadow_rect, ulFormat, D3DCOLOR_ARGB(255, 0, 0, 0));
+		m_pFont->DrawTextA(m_pSprite, szText, -1, &shadow_rect, ulFormat, D3DCOLOR_ARGB(255, 0, 0, 0));
 	}
 
 	// Draw the text
-	pFont->DrawText(m_pSprite, szText, -1, &rect, ulFormat, ulColor);
+	m_pFont->DrawTextA(m_pSprite, szText, -1, &rect, ulFormat, ulColor);
 
 	// End the sprite
     m_pSprite->End();
 }
 
-void CGraphics::DrawText(float fX, float fY, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char * szFormat, ...)
+void CGraphics::DrawText(float fX, float fY, unsigned long ulColor, float fScale, unsigned long ulFormat, bool bShadow, const char * szFormat, ...)
 {
 	// Get the string arguments
 	char szBuffer[ 2048 ];
@@ -198,10 +194,10 @@ void CGraphics::DrawText(float fX, float fY, unsigned long ulColor, float fScale
 	va_end(vArgs);
 
 	// Draw the text
-	DrawText((unsigned int)fX, (unsigned int)fY, (unsigned int)fX, (unsigned int)fY, ulColor, fScale, fScale, ulFormat, fontIndex, bShadow, szBuffer); 
+	DrawText((unsigned int)fX, (unsigned int)fY, (unsigned int)fX, (unsigned int)fY, ulColor, fScale, fScale, ulFormat, bShadow, szBuffer); 
 }
 
-void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned int fontIndex, unsigned long ulFormat, bool bShadow, const char * szFormat, ...)
+void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulColor, float fScale, unsigned long ulFormat, bool bShadow, const char * szFormat, ...)
 {
 	// Get the string arguments
 	char szBuffer[ 2048 ];
@@ -250,7 +246,7 @@ void CGraphics::DrawText(CVector3 vecPosition, float fRange, unsigned long ulCol
 
 	// Draw the text
 	if(_fRange >= fRange)
-		DrawText((unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, (unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, ulColor, fScale, fScale, ulFormat, fontIndex, bShadow, szBuffer); 
+		DrawText((unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, (unsigned int)vecScreen.fX, (unsigned int)vecScreen.fY, ulColor, fScale, fScale, ulFormat, bShadow, szBuffer); 
 }
 
 void CGraphics::DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox)
@@ -315,14 +311,11 @@ void CGraphics::OnRestoreDevice(IDirect3DDevice9 * pDevice)
 
 float CGraphics::GetFontHeight(float fScale)
 {
-	// Get the font
-	LPD3DXFONT pFont = GetFont();
-
 	// Is the font valid?
-	if(pFont)
+	if (m_pFont)
 	{
 		D3DXFONT_DESC desc;
-		pFont->GetDesc(&desc);
+		m_pFont->GetDesc(&desc);
 		return ((float) desc.Height * fScale);
 	}
 
@@ -331,19 +324,26 @@ float CGraphics::GetFontHeight(float fScale)
 
 float CGraphics::GetCharacterWidth(char c, float fScale)
 {
-	// Get the font
-	LPD3DXFONT pFont = GetFont();
-
 	// Is the font valid?
-	if(pFont)
+	if (m_pFont)
 	{
-		HDC dc = pFont->GetDC();
+		HDC dc = m_pFont->GetDC();
 		SIZE size;
 		GetTextExtentPoint32(dc, &c, 1, &size);
 		return ((float)size.cx * fScale);
 	}
 
 	return 0.0f;
+}
+
+float CGraphics::GetStringWidth(CString s, float fScale)
+{
+	float ret = 0.0f;
+	
+	for (int i = 0; i < s.GetLength(); ++i)
+		ret += GetCharacterWidth(s.GetChar(i), fScale);
+
+	return ret;
 }
 
 void CGraphics::DrawBox_2(float fLeft, float fTop, float fWidth, float fHeight, DWORD dwColorBox)

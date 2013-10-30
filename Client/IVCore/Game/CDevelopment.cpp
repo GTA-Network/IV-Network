@@ -30,7 +30,7 @@ void CDevelopment::DumpTask(CString strName, CIVTask * pTask)
 		return;
 
 	fCurrentLine += 15;
-	g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("%s: %s (%d)", strName.Get(), pTask->GetName(), pTask->GetType()).Get());
+	g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("%s: %s (%d)", strName.Get(), pTask->GetName(), pTask->GetType()).Get());
 
 	/*if(!pTask->IsSimple())
 	{
@@ -45,23 +45,23 @@ void CDevelopment::DumpTasks(CIVPedTaskManager * pPedTaskManager, int iType)
 	if(iType == 0)
 	{
 		fCurrentLine += 30;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Priority Tasks: ").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Priority Tasks: ").Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 		DumpTask("PhysicalResponse",     pPedTaskManager->GetTask(TASK_PRIORITY_PHYSICAL_RESPONSE));
 		DumpTask("EventResponseTemp",    pPedTaskManager->GetTask(TASK_PRIORITY_EVENT_RESPONSE_TEMP));
 		DumpTask("EventResponseNonTemp", pPedTaskManager->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP));
 		DumpTask("Primary",              pPedTaskManager->GetTask(TASK_PRIORITY_PRIMARY));
 		DumpTask("Default",              pPedTaskManager->GetTask(TASK_PRIORITY_DEFAULT));
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 	}
 	else if(iType == 1)
 	{
 		fCurrentLine += 30;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Secondary Tasks: ").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Secondary Tasks: ").Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 		DumpTask("Attack",        pPedTaskManager->GetTaskSecondary(TASK_SECONDARY_ATTACK));
 		DumpTask("Duck",          pPedTaskManager->GetTaskSecondary(TASK_SECONDARY_DUCK));
 		DumpTask("Say",           pPedTaskManager->GetTaskSecondary(TASK_SECONDARY_SAY));
@@ -69,20 +69,20 @@ void CDevelopment::DumpTasks(CIVPedTaskManager * pPedTaskManager, int iType)
 		DumpTask("PartialAnim",   pPedTaskManager->GetTaskSecondary(TASK_SECONDARY_PARTIAL_ANIM));
 		DumpTask("IK",            pPedTaskManager->GetTaskSecondary(TASK_SECONDARY_IK));
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 
 	}
 	else if(iType == 2)
 	{
 		fCurrentLine += 30;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Movement Tasks: ").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Movement Tasks: ").Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 		DumpTask("MovementTask0", pPedTaskManager->GetTaskMovement(TASK_MOVEMENT_UNKNOWN0));
 		DumpTask("MovementTask1", pPedTaskManager->GetTaskMovement(TASK_MOVEMENT_UNKNOWN1));
 		DumpTask("MovementTask2", pPedTaskManager->GetTaskMovement(TASK_MOVEMENT_UNKNOWN2));
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("").Get());
 	}
 }
 
@@ -91,7 +91,7 @@ void CDevelopment::Process()
 	fCurrentLine = 325;
 
 	if(bDebugView && g_pCore->GetGame()->GetLocalPlayer() && g_pCore->GetGraphics()) {
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("LocalPlayer Debug:").Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("LocalPlayer Debug:").Get());
 
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetPosition(vecPosition);
 		g_pCore->GetGame()->GetLocalPlayer()->CNetworkEntity::GetMoveSpeed(vecMoveSpeed);
@@ -121,15 +121,15 @@ void CDevelopment::Process()
 
 		if(PTR_LOCALPLAYER->IsOnFoot()) {
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Move Speed: %.2f, %.2f ,%.2f", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Move Speed: %.2f, %.2f ,%.2f", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Turn Speed: %.2f, %.2f ,%.2f", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Turn Speed: %.2f, %.2f ,%.2f", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Direction: %.2f, %.2f ,%.2f", vecDirection.fX, vecDirection.fY, vecDirection.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Direction: %.2f, %.2f ,%.2f", vecDirection.fX, vecDirection.fY, vecDirection.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Roll: %.2f, %.2f ,%.2f", vecRoll.fX, vecRoll.fY, vecRoll.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Roll: %.2f, %.2f ,%.2f", vecRoll.fX, vecRoll.fY, vecRoll.fZ).Get());
 			
 			DumpTasks(g_pCore->GetGame()->GetLocalPlayer()->GetPlayerPed()->GetPedTaskManager(),0);
 			DumpTasks(g_pCore->GetGame()->GetLocalPlayer()->GetPlayerPed()->GetPedTaskManager(),1);
@@ -158,67 +158,67 @@ void CDevelopment::Process()
 			g_pCore->GetGame()->GetLocalPlayer()->GetControlState(pControls);
 
 			fCurrentLine += 30;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Current Position: %.2f, %.2f ,%.2f", vecPosition.fX, vecPosition.fY, vecPosition.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Move Speed: %.2f, %.2f ,%.2f", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Move Speed: %.2f, %.2f ,%.2f", vecMoveSpeed.fX, vecMoveSpeed.fY, vecMoveSpeed.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Turn Speed: %.2f, %.2f ,%.2f", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Turn Speed: %.2f, %.2f ,%.2f", vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Direction: %.2f, %.2f ,%.2f", vecDirection.fX, vecDirection.fY, vecDirection.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Direction: %.2f, %.2f ,%.2f", vecDirection.fX, vecDirection.fY, vecDirection.fZ).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Roll: %.2f, %.2f ,%.2f", vecRoll.fX, vecRoll.fY, vecRoll.fZ).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Roll: %.2f, %.2f ,%.2f", vecRoll.fX, vecRoll.fY, vecRoll.fZ).Get());
 			
 			fCurrentLine += 30;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input RIGHT: %d", (pControls->ucInVehicleMove[0])).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Key-Input RIGHT: %d", (pControls->ucInVehicleMove[0])).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input LEFT: %d", (pControls->ucInVehicleMove[1])).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Key-Input LEFT: %d", (pControls->ucInVehicleMove[1])).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input UP: %d", (pControls->ucInVehicleMove[2])).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Key-Input UP: %d", (pControls->ucInVehicleMove[2])).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Key-Input DOWN: %d", (pControls->ucInVehicleMove[3])).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Key-Input DOWN: %d", (pControls->ucInVehicleMove[3])).Get());
 
 			fCurrentLine += 30;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Engine Health: %f", fVehicleEngineHealth).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Engine Health: %f", fVehicleEngineHealth).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Petrol Health: %f", fPetrolHealth).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Petrol Health: %f", fPetrolHealth).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Gas pressure: %f", fGasPressure).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Gas pressure: %f", fGasPressure).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Break Pressure: %f", fBreakPressure).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Break Pressure: %f", fBreakPressure).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Steering Bias: %f", fSteeringBias).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Steering Bias: %f", fSteeringBias).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Steering: %f", fSteering).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Steering: %f", fSteering).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Dirt Level: %f", fDirtLevel).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Dirt Level: %f", fDirtLevel).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Indicators: %d, %d, %d, %d", 0, 0, 0, 0).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Indicators: %d, %d, %d, %d", 0, 0, 0, 0).Get());
 
 			fCurrentLine += 30;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Engine State: %d", bEngineStatus).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Engine State: %d", bEngineStatus).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Lights State: %d", iLightsState).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Lights State: %d", iLightsState).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Headlights State: %d", bHeadLightsStatus).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Headlights State: %d", bHeadLightsStatus).Get());
 			fCurrentLine += 15;
-			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Vehicle Radio Station Index: [%d] %s", byteRadioIndex, CGameFunction::GetRadioName(byteRadioIndex).Get()).Get());
+			g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Vehicle Radio Station Index: [%d] %s", byteRadioIndex, CGameFunction::GetRadioName(byteRadioIndex).Get()).Get());
 		}
 
 		fCurrentLine += 30;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Aim Coords: %.2f, %.2f ,%.2f", vecAimTarget.fX, vecAimTarget.fY, vecAimTarget.fZ).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Aim Coords: %.2f, %.2f ,%.2f", vecAimTarget.fX, vecAimTarget.fY, vecAimTarget.fZ).Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Arm Heading: %.2f | Arm UpDown: %.2f", fArmHeading, fArmUpDown).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Arm Heading: %.2f | Arm UpDown: %.2f", fArmHeading, fArmUpDown).Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Shot Coords: %.2f, %.2f ,%.2f", vecShotTarget.fX, vecShotTarget.fY, vecShotTarget.fZ).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Shot Coords: %.2f, %.2f ,%.2f", vecShotTarget.fX, vecShotTarget.fY, vecShotTarget.fZ).Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Game Cam: %.2f, %.2f ,%.2f", vecLookAt.fX, vecLookAt.fY, vecLookAt.fZ).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Game Cam: %.2f, %.2f ,%.2f", vecLookAt.fX, vecLookAt.fY, vecLookAt.fZ).Get());
 
 		fCurrentLine += 30;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Ducking: %d", bDuckingState).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Ducking: %d", bDuckingState).Get());
 		fCurrentLine += 15;
-		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Health: %f", fHealth).Get());
+		g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Health: %f", fHealth).Get());
 		//fCurrentLine += 15;
-		//g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, 5, DT_NOCLIP, (bool)true, CString("Rotation: %.2f", fHeading).Get());
+		//g_pCore->GetGraphics()->DrawText(5, fCurrentLine, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("Rotation: %.2f", fHeading).Get());
 		
 	}
 

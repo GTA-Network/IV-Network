@@ -19,7 +19,7 @@ extern CCore * g_pCore;
 
 CTags::CTags()
 {
-	m_pFont = g_pCore->GetGUI()->GetFont("Arial", 15);
+
 }
 
 CTags::~CTags()
@@ -74,34 +74,34 @@ void CTags::Draw()
 				// Set the player name
 				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);
 
-				vecScreenPosition.fX -= m_pFont->getTextExtent(CEGUI::String(strString.Get())) / 2;
+				vecScreenPosition.fX -= g_pCore->GetGraphics()->GetStringWidth(strString) / 2;
 
 				// Draw the tag
-				g_pCore->GetGUI()->DrawText(strString, CEGUI::Vector2(vecScreenPosition.fX, vecScreenPosition.fY), CEGUI::colour(1.0f, 1.0f, 1.0f, 1.0f), m_pFont); // Issue #48 
+				g_pCore->GetGraphics()->DrawText(vecScreenPosition.fX, vecScreenPosition.fY, (pPlayer->GetColor() >> 8) | 0xFF000000, 1.0f, DT_NOCLIP, false, strString);
 
-				vecScreenPosition.fY += m_pFont->getFontHeight() + BAR_BORDER;
+				vecScreenPosition.fY += g_pCore->GetGraphics()->GetFontHeight() + BAR_BORDER;
 
 				// Health Box
-				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, m_pFont->getTextExtent(CEGUI::String(strString.Get())) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, g_pCore->GetGraphics()->GetStringWidth(strString) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
 
 				// Health Background
-				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())), BAR_HEIGHT, D3DCOLOR_ARGB(255, 139, 0, 0));
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString), BAR_HEIGHT, D3DCOLOR_ARGB(255, 139, 0, 0));
 
 				// Health Bar
-				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())) * (((pPlayer->GetHealth() < 100.0f ? 100.0f : pPlayer->GetHealth()) - 100.0f) / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(255, 255, 0, 0));
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (((pPlayer->GetHealth() < 100.0f ? 100.0f : pPlayer->GetHealth()) - 100.0f) / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(255, 255, 0, 0));
 
 				if (pPlayer->GetArmour() > 0.0f)
 				{
 					vecScreenPosition.fY += BAR_HEIGHT + BAR_BORDER + BAR_PADDING;
 
 					// Armour Box
-					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, m_pFont->getTextExtent(CEGUI::String(strString.Get())) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, g_pCore->GetGraphics()->GetStringWidth(strString) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
 
 					// Armour Background
-					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())), BAR_HEIGHT, D3DCOLOR_ARGB(255, 169, 169, 169));
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString), BAR_HEIGHT, D3DCOLOR_ARGB(255, 169, 169, 169));
 
 					// Armour Bar
-					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())) * (pPlayer->GetArmour() / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(225, 225, 225, 225));
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (pPlayer->GetArmour() / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(225, 225, 225, 225));
 				}
 			}
 		}

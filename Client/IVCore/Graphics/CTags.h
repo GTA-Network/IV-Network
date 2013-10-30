@@ -14,8 +14,6 @@
 
 class CTags
 {
-private:
-		CEGUI::Font * m_pFont;
 public:
 		CTags();
 		~CTags();

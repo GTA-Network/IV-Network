@@ -13,6 +13,10 @@
 #include <Common.h>
 #include <d3d9.h>
 
+#ifdef DrawText
+#undef DrawText
+#endif
+
 #include <CLogFile.h>
 #include <CSettings.h>
 #include <SharedUtility.h>
