@@ -9,7 +9,7 @@ Three quick start options are available:
 * Clone the repo: `https://github.com/GTA-Network/IV-Network.git`.
 * For compiled nightly builds, visit http://nightly.gta-network.net
 
-Visit [GTA-NETWORK.NET | IV](http://iv.gta-network.net) and [GTA-NETWORK.NET | IV-NETWORK](http://iv-network.gta-network.net) to stay up to date!
+Visit [IV:Network forum](http://gta-network.net/forum/) to stay up to date!
 
 ## Description
 
