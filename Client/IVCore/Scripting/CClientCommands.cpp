@@ -261,9 +261,8 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_ADD_BLIP_FOR_COORD, 0, 0, 0,&uiBlip); 
 		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_CHANGE_BLIP_SPRITE, 10);
 	}
-	else if(strCommand == "numberplate")
+	else if(strCommand == "jump")
 	{
-		g_pCore->GetChat()->Output("FAIL");
 	}
 	return false;
 }

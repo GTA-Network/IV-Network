@@ -50,6 +50,9 @@ private:
 		CVector3		vecLookAtCoordinates;
 	} m_weaponData;
 
+
+	CSyncWeapon		m_Weapons[11];
+
 	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
 

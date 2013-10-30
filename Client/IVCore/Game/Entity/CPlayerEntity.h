@@ -133,6 +133,7 @@ public: // Handles "GET" functions
 	bool							GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat);
 	bool							IsGettingIntoAVehicle();
 	bool							IsGettingOutOfAVehicle();
+	bool							IsJumping();
 
 	void							GiveMoney(int iAmount);
     void							SetMoney(int iAmount);

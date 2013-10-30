@@ -309,8 +309,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			}
 
 			WeaponPacket.vecShotSource = GetWeaponShotSource();
-			WeaponPacket.fArmsHeadingCircle = GetArmHeading();
-			WeaponPacket.fArmsUpDownRotation = GetArmUpDown();
+			//WeaponPacket.fArmsHeadingCircle = GetArmHeading();
+			//WeaponPacket.fArmsUpDownRotation = GetArmUpDown();
 
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
@@ -406,8 +406,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetWeaponShotTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponAimTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponShotSource(WeaponPacket.vecShotSource);
-			SetArmHeading(WeaponPacket.fArmsHeadingCircle);
-			SetArmUpDown(WeaponPacket.fArmsUpDownRotation);
+			//SetArmHeading(WeaponPacket.fArmsHeadingCircle);
+			//SetArmUpDown(WeaponPacket.fArmsUpDownRotation);
 		}
 		break;
 	default:

@@ -81,9 +81,11 @@ public:
 class CNetworkPlayerWeaponSyncPacket {
 public:
 	CVector3       vecAimShotAtCoordinates; // When fire this is shot at when aiming this is Aim at
-	float          fArmsHeadingCircle;
-	float          fArmsUpDownRotation;
+	//float          fArmsHeadingCircle;
+	//float          fArmsUpDownRotation;
 	CVector3       vecShotSource;
+	char		   weaponType;
+	int			   iAmmo;
 };
 
 class CNetworkPlayerVehicleSyncPacket {
@@ -99,6 +101,15 @@ public:
 	float						fHeading;
 	bool						bEngineState;
 
+};
+
+class CSyncWeapon
+{
+public:
+	char	weaponSlot;
+	char	weaponType;
+	int		iAmmo;
+	int		iClip;
 };
 
 // Handles data between client ped and network sync(stores the values)

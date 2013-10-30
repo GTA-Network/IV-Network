@@ -261,8 +261,11 @@ void CPlayerEntity::Pulse()
 			// Are we not in a vehicle?
 			if(!IsInVehicle())
 			{
-				// Process interpolation
-				Interpolate();
+				if (!IsJumping())
+				{
+					// Process interpolation
+					Interpolate();
+				}
 			}
 		}
 	}
@@ -1287,6 +1290,24 @@ bool CPlayerEntity::IsGettingIntoAVehicle()
 	return false;
 }
 
+bool CPlayerEntity::IsJumping()
+{
+	if (IsSpawned())
+	{
+		// Get the ped task
+		CIVTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
+
+		// Is the task valid?
+		if (pTask)
+		{
+			// Is this task getting in a vehicle?
+			if (pTask->GetType() == TASK_COMPLEX_JUMP)
+				return true;
+		}
+	}
+
+	return false;
+}
 bool CPlayerEntity::IsGettingOutOfAVehicle()
 {
 	// Are we spawned?
@@ -1895,8 +1916,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 			}
 
 			m_pContextData->GetWeaponShotSource(WeaponPacket.vecShotSource);
-			m_pContextData->GetArmHeading(WeaponPacket.fArmsHeadingCircle);
-			m_pContextData->GetArmUpDown(WeaponPacket.fArmsUpDownRotation);
+			//m_pContextData->GetArmHeading(WeaponPacket.fArmsHeadingCircle);
+			//m_pContextData->GetArmUpDown(WeaponPacket.fArmsUpDownRotation);
 
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
@@ -1983,19 +2004,26 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
 		{
 			m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
-			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
-			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
 
+			unsigned int st = 0;
+			CIVScript::OpenSequenceTask(&st);
 			CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
+			CIVScript::CloseSequenceTask(st);
+			if (!CIVScript::IsCharInjured(GetScriptingHandle()))
+				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
+			CIVScript::ClearSequenceTask(st);
+			
 
 		}
 		else if (m_ControlState.IsFiring())
 		{
 			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
 			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
-			m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
-			m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
 
+			CIVScript::GiveWeaponToChar(GetScriptingHandle(), (CIVScript::eWeapon)AimSync.weaponType, AimSync.iAmmo, true);
+			//m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
+			//m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
+			m_pPlayerPed->GetPedWeapons()->GiveWeapon((eWeaponType)AimSync.weaponType, AimSync.iAmmo);
 			unsigned int st = 0;
 			CIVScript::OpenSequenceTask(&st);
 			CIVScript::TaskShootAtCoord(0, AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000, 5); // 3 - fake shot
@@ -2077,8 +2105,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	else if (eType == RPC_PACKAGE_TYPE_PLAYER_PASSENGER)
 	{
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-
-
 
 		m_ulLastSyncReceived = SharedUtility::GetTime();
 	}

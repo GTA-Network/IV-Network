@@ -86,6 +86,7 @@ void CGame::Setup()
 	{
 		m_weaponInfos[i].SetType((eWeaponType)i);
 		m_weaponInfos[i].SetWeaponInfo((IVWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(IVWeaponInfo))));
+		m_weaponInfos[i].GetWeaponInfo()->m_wAmmoMax = 0xFFFF;
 	}
 	
 	// Hide the chat

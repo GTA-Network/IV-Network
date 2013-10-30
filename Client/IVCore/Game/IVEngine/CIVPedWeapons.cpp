@@ -69,8 +69,8 @@ CIVWeapon * CIVPedWeapons::GetCurrentWeapon()
 
 void CIVPedWeapons::GiveWeapon(eWeaponType weaponType, int dwAmmo)
 {
-	if(m_pPedWeapons)
-		; //CIVScript::GiveWeaponToChar();
+	if (m_pPedWeapons)
+		;//
 }
 
 eWeaponType CIVPedWeapons::GetWeaponInSlot(eWeaponSlot weaponSlot)
