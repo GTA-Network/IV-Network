@@ -312,22 +312,19 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	// Is the player pointer valid?
 	if (pPlayer)
 	{
-		/*
-		TODO:
-		if playerRequestRespawn command is exists in scripts
-			call playerRequestRespawn command
-			/-
-			playerRequestRespawn(player)
-			{
-				playerRespawn(player, 0.0f, 0.0f, 0.0f, 0.0f) //respawn cord, and heading
-			}
-			-/
+		if (CEvents::GetInstance()->IsEventRegistered("playerRequestSpawn"))
+		{
+			CScriptArguments args;
+			args.push(pPlayer->GetScriptPlayer());
+			CEvents::GetInstance()->Call("playerRequestSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+		}
 		else
-		*/
-		RakNet::BitStream bitStream;
-		bitStream.Write(pPlayer->GetSpawnPosition()); //spawnPos
-		bitStream.Write(0.0f); //fHeading
-		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+		{
+			RakNet::BitStream bitStream;
+			bitStream.Write(pPlayer->GetSpawnPosition()); //spawnPos
+			bitStream.Write(0.0f); //fHeading
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+		}
 	}
 }
 

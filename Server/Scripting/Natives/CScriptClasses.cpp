@@ -207,26 +207,27 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("setSpawnPosition", &CScriptPlayer::SetSpawnPosition).
+			AddMethod("respawn", &CScriptPlayer::Respawn).
 
-		Register(pVM);
+			Register(pVM);
 	}
 
 	{ // ScriptVehicle
 		(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
-		AddMethod("setPosition", &CScriptVehicle::SetPosition).
-		AddMethod("setRotation", &CScriptVehicle::SetRotation).
-		AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
-		AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
-		AddMethod("setHealth", &CScriptVehicle::SetHealth).
-		AddMethod("getHealth", &CScriptVehicle::GetHealth).
-		AddMethod("setLocked", &CScriptVehicle::SetLocked).
-		AddMethod("getLocked", &CScriptVehicle::GetLocked).
-		AddMethod("setEngine", &CScriptVehicle::SetEngine).
-		AddMethod("getEngine", &CScriptVehicle::GetEngine).
-		AddMethod("setDirtLevel", &CScriptVehicle::SetDirtLevel).
-		AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel).
+			AddMethod("setPosition", &CScriptVehicle::SetPosition).
+			AddMethod("setRotation", &CScriptVehicle::SetRotation).
+			AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
+			AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
+			AddMethod("setHealth", &CScriptVehicle::SetHealth).
+			AddMethod("getHealth", &CScriptVehicle::GetHealth).
+			AddMethod("setLocked", &CScriptVehicle::SetLocked).
+			AddMethod("getLocked", &CScriptVehicle::GetLocked).
+			AddMethod("setEngine", &CScriptVehicle::SetEngine).
+			AddMethod("getEngine", &CScriptVehicle::GetEngine).
+			AddMethod("setDirtLevel", &CScriptVehicle::SetDirtLevel).
+			AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel).
 
-		Register(pVM);
+			Register(pVM);
 	}
 
 

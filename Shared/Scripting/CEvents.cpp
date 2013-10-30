@@ -99,6 +99,14 @@ bool CEvents::Remove(CString strName, CEventHandler* pEventHandler)
 	return false;
 }
 
+bool CEvents::IsEventRegistered(CString strEventName)
+{
+	if (m_Events.find(strEventName) == m_Events.end())
+		return false;
+
+	return true;
+}
+
 void CEvents::Clear()
 {
 	for(auto pEvent : m_Events)

@@ -234,6 +234,14 @@ void CScriptPlayer::SendPlayerMessage(CString sMessage, DWORD dwColor, bool bAll
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
+void CScriptPlayer::Respawn(float fX, float fY, float fZ, float fA)
+{
+	RakNet::BitStream bitStream;
+	bitStream.Write(CVector3(fX, fY, fZ)); //spawnPos
+	bitStream.Write(0.0f); //fHeading
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
+}
+
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType)
 {
 	switch (pType)
@@ -407,4 +415,3 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 		break;
 	}
 }
-

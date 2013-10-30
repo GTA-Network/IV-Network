@@ -196,6 +196,8 @@ public:
 	bool		IsOnFoot() { return true; }
 	void		SetSpawnPosition(float fX, float fY, float fZ) { GetEntity()->SetSpawnPosition(CVector3(fX, fY, fZ)); };
 	void		GiveWeapon(int id, int uiAmmo);
+
+	void		Respawn(float fX, float fY, float fZ, float fA);
 };
 
 #endif // CPlayerEntity_h
