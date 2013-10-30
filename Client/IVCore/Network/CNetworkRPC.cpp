@@ -566,7 +566,7 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Output(sMessage.C_String());
+		g_pCore->GetChat()->Outputf(false, "%s", sMessage.C_String());
 	}
 }
 
@@ -580,7 +580,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Output(sMessage.C_String());
+		g_pCore->GetChat()->Outputf(false, "%s", sMessage.C_String());
 }
 
 #define sub_895290 ((bool(__stdcall *) (int, bool, bool))(g_pCore->GetBase() + 0x895290))
@@ -933,6 +933,9 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_MOVE_SPEED));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_TURN_SPEED));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_LOCKED));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ENGINE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL));
 
 		// Mark as not registered
 		m_bRegistered = false;

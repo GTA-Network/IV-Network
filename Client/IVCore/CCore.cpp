@@ -363,7 +363,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	// Render our Name Tags
-	if (m_pTags)
+	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible())
 		m_pTags->Draw();
 }
 

@@ -151,7 +151,15 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_ESCAPE: // Our own main menu
 				{
-					g_pCore->GetMainMenu()->SetVisible(!g_pCore->GetMainMenu()->IsMainMenuVisible());
+					g_pCore->GetMainMenu()->SetVisible(!g_pCore->GetMainMenu()->IsMainMenuVisible());	
+
+					if (g_pCore->GetMainMenu()->IsMainMenuVisible()) {
+						g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false, false);
+					}
+					else {
+						g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true, true);
+					}
+
 					break;
 				}
 				case VK_F8:
