@@ -116,8 +116,8 @@ void CChat::Render()
 void CChat::Output(const char * szTextOld, bool bColorCoded)
 {
 	CString strText = szTextOld;
-	if (strlen(szTextOld) > 128)
-		strText = strText.Substring(0, 127);
+	if (strlen(szTextOld) > 192)
+		strText = strText.Substring(0, 191);
 	 
 	CChatLine * pLine = NULL;
 	const char * szRemainingText = strText.Get();
