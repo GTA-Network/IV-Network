@@ -77,7 +77,7 @@ void CTags::Draw()
 				vecScreenPosition.fX -= m_pFont->getTextExtent(CEGUI::String(strString.Get())) / 2;
 
 				// Draw the tag
-				g_pCore->GetGUI()->DrawText(strString, CEGUI::Vector2(vecScreenPosition.fX, vecScreenPosition.fY), CEGUI::colour(1.0f, 1.0f, 1.0f, 1.0f), m_pFont);
+				g_pCore->GetGUI()->DrawText(strString, CEGUI::Vector2(vecScreenPosition.fX, vecScreenPosition.fY), CEGUI::colour(1.0f, 1.0f, 1.0f, 1.0f), m_pFont); // Issue #48 
 
 				vecScreenPosition.fY += m_pFont->getFontHeight() + BAR_BORDER;
 
