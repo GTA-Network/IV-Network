@@ -15,6 +15,7 @@
 #include <CServer.h>
 #include <Scripting/CEvents.h>
 #include <CSettings.h>
+#include <time.h>
 
 #ifndef _WIN32
 typedef unsigned char byte;
@@ -41,8 +42,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read(_strName);
 	CString strName(_strName.C_String());
 
-
-
 	// Read the player serial
 	RakNet::RakString _strSerial;
 	pBitStream->Read(_strSerial);
@@ -53,8 +52,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		// TODO
 	}
-
-	
 
 	// Is the nickname already in use?
 	// TODO: check is nick in use
@@ -71,7 +68,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
 	playerId = pPlayer->GetId();
-	pPlayer->SetColor(CColor(rand() % 255, rand() % 255, rand() % 255).dwHexColor); //generate random color
+	srand(time(NULL));
+	pPlayer->SetColor(CColor(rand() % 256, rand() % 256, rand() % 256).dwHexColor); //generate random color
 
 	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
 

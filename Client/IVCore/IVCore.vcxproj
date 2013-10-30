@@ -63,6 +63,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>RakNet.lib;winmm.lib;d3dx9.lib;ws2_32.lib;comctl32.lib;dinput8.lib;detours.lib;dxguid.lib;zlib.lib;CEGUIBase_d.lib;CEGUIDirect3D9Renderer_d.lib;CEGUIExpatParser_d.lib;CEGUIFalagardWRBase_d.lib;CEGUISILLYImageCodec_d.lib;fat-io.lib;libjpeg_d.lib;libpng_d.lib;SILLY_d.lib;libexpat_d.lib;pcre_d.lib;freetype_d.lib;bass.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration)\Lib\;$(SolutionDir)Libraries/DXSDK/Lib/;$(SolutionDir)Libraries/Detours/;$(SolutionDir)Libraries/zlib-1.2.5/projects/Debug;$(SolutionDir)Libraries/CEGUI/dependencies/lib;$(SolutionDir)\Libraries\bass;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(TargetDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Files\$(TargetName)$(TargetExt)"</Command>
@@ -222,7 +223,6 @@
     <ClCompile Include="Game\CContextData.cpp" />
     <ClCompile Include="Game\CContextSwitch.cpp" />
     <ClCompile Include="Game\CCrashFixes.cpp" />
-    <ClCompile Include="Game\CDevelopment.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
     <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
@@ -470,7 +470,6 @@
     <ClInclude Include="Game\CContextData.h" />
     <ClInclude Include="Game\CContextSwitch.h" />
     <ClInclude Include="Game\CCrashFixes.h" />
-    <ClInclude Include="Game\CDevelopment.h" />
     <ClInclude Include="Game\CGame.h" />
     <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />

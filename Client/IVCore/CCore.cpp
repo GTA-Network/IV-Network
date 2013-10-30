@@ -92,9 +92,6 @@ bool CCore::Initialise()
 	// Create the network manager instance
 	m_pNetworkManager = new CNetworkManager;
 	
-	// Create the development instance
-	m_pDevelopment = new CDevelopment;
-	
 	// Create the chat instance
 	m_pChat = new CChat(30, 80);
 
@@ -128,9 +125,6 @@ bool CCore::Initialise()
 
 	// Install crash fixes
 	CCrashFixes::Initialize();
-	
-	// Setup the development instance
-	m_pDevelopment->SetDebugView(true);
 	
 	// Get loaded modules from our process
 	GetLoadedModulesList();
@@ -345,12 +339,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Before rendering FPS-Counter instance, update FPS display
 	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
-#ifdef _DEBUG
-	// Render our development instance
-	if(m_pDevelopment)
-		m_pDevelopment->Process();
-#endif
-
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
 	{
@@ -363,7 +351,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	// Render our Name Tags
-	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible())
+	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible() && CIVScript::IsScreenFadedIn())
 		m_pTags->Draw();
 }
 

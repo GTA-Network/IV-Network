@@ -13,7 +13,7 @@
 
 extern CCore * g_pCore;
 
-#define BAR_HEIGHT 10.0f
+#define BAR_HEIGHT 5.0f
 #define BAR_BORDER 2.0f
 #define BAR_PADDING 4.0f
 
@@ -39,7 +39,7 @@ void CTags::Draw()
 		return;
 
 	// Do our local player exist and is he spawned?
-	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned() && CIVScript::IsScreenFadedIn())
+	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned())
 	{
 		CVector3 vecLocalHeadPosition;
 		CIVScript::GetPedBonePosition(pLocalPlayer->GetScriptingHandle(), CIVScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecLocalHeadPosition);

@@ -41,7 +41,6 @@
 #include "Game/Entity/CNetworkEntity.h"
 
 #include <Network/CNetworkManager.h>
-#include <Game/CDevelopment.h>
 #include <Graphics/CSnapShot.h>
 
 #include <General/CModuleManager.h>
@@ -77,7 +76,6 @@ private:
 	CChat							* m_pChat;
 	CFPSCounter						* m_pFPSCounter;
 	CNetworkManager					* m_pNetworkManager;
-	CDevelopment					* m_pDevelopment;
 	CGUI                  			* m_pGUI;			
 	CTags							* m_pTags;
 
@@ -140,7 +138,6 @@ public:
 	CChat							* GetChat() { return m_pChat; }
 	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
-	CDevelopment					* GetDevelopmentInstance() { return m_pDevelopment; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
 	CGUI                 		 	* GetGUI() { return m_pGUI; }
 	CMainMenu						* GetMainMenu() { return m_pMainMenu;  }
