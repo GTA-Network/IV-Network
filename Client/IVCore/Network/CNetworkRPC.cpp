@@ -583,9 +583,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		g_pCore->GetChat()->Output(sMessage.C_String());
 }
 
-#define sub_7D5220 ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
-#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458))
-#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134))
+#define sub_895290 ((bool(__stdcall *) (int, bool, bool))(g_pCore->GetBase() + 0x895290))
 
 void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
@@ -595,8 +593,10 @@ void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	float fHeading;
 	pBitStream->Read(fHeading);
 
-	if (dword_F16134 != -1)
-		sub_7D5220(*(IVPhysical* *) (((unsigned char*) dword_10D9458[dword_F16134]) + 1420), &spawnPos, fHeading);
+	g_pCore->GetGame()->GetLocalPlayer()->SetPosition(spawnPos);
+	g_pCore->GetGame()->GetLocalPlayer()->SetHeading(fHeading);
+
+	sub_895290(3000, false, false);
 }
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)

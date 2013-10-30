@@ -16,6 +16,10 @@
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
 
+#define sub_7D5220 ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
+#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458))
+#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134))
+
 bool isHandleLocalPlayerSpawnAlreadyCalled = false;
 
 void HandleLocalPlayerSpawn()
@@ -31,6 +35,9 @@ void HandleLocalPlayerSpawn()
 	}
 	else
 	{
+		if (dword_F16134 != -1)
+			sub_7D5220(*(IVPhysical* *) (((unsigned char*) dword_10D9458[dword_F16134]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
+
 		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 	}
 
@@ -53,6 +60,7 @@ CLocalPlayer::CLocalPlayer() : CPlayerEntity(true),
 	// Patch to override spawn position and let the game call HandleSpawn
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x7D5BAD, (DWORD) HandleLocalPlayerSpawn);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x7D5BB2, g_pCore->GetBase() + 0x7D5C77);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x7D5D3C, g_pCore->GetBase() + 0x7D5D49);
 
 	// Patch death loading screen slow motion :D
 	CPatcher::InstallNopPatch(COffsets::IV_Hook__PatchDeathLoadingScreen, 24);
