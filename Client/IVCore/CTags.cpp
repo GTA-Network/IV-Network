@@ -41,8 +41,8 @@ void CTags::Draw()
 	// Do our local player exist and is he spawned?
 	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned() && CIVScript::IsScreenFadedIn())
 	{
-		CVector3 vecLocalPedPosition;
-		pLocalPlayer->GetPosition(vecLocalPedPosition);
+		CVector3 vecLocalHeadPosition;
+		CIVScript::GetPedBonePosition(pLocalPlayer->GetScriptingHandle(), CIVScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecLocalHeadPosition);
 
 		// Render the player nametags
 		for (EntityId i = 0; i < MAX_PLAYERS; i++)
@@ -57,23 +57,24 @@ void CTags::Draw()
 				if (!pPlayer->IsOnScreen())
 					continue;
 
-				// Get the player position and add the new z position
-				CVector3 vecWorldPosition;
-				pPlayer->GetPosition(vecWorldPosition);
-				vecWorldPosition.fZ += 1.15f;
+				// Get the player's head position
+				CVector3 vecHeadPosition;
+				CIVScript::GetPedBonePosition(pPlayer->GetScriptingHandle(), CIVScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecHeadPosition);
 
 				//Is this player not within our view range?
-				if (sqrt((vecWorldPosition.fX - vecLocalPedPosition.fX)*(vecWorldPosition.fX - vecLocalPedPosition.fX) + (vecWorldPosition.fY - vecLocalPedPosition.fY)*(vecWorldPosition.fY - vecLocalPedPosition.fY)) > 60.0f)
+				if (sqrt((vecHeadPosition.fX - vecLocalHeadPosition.fX)*(vecHeadPosition.fX - vecLocalHeadPosition.fX) + (vecHeadPosition.fY - vecLocalHeadPosition.fY)*(vecHeadPosition.fY - vecLocalHeadPosition.fY)) > 60.0f)
 					continue;
+
+				vecHeadPosition.fZ += 0.4f;
 
 				// Convert the position to our screen position
 				Vector2 vecScreenPosition;
-				if (!CGame::GetScreenPositionFromWorldPosition(vecWorldPosition, vecScreenPosition))
+				if (!CGame::GetScreenPositionFromWorldPosition(vecHeadPosition, vecScreenPosition))
 					continue;
 
 				// Set the player name
 				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);
-
+				
 				vecScreenPosition.fX -= g_pCore->GetGraphics()->GetStringWidth(strString) / 2;
 
 				// Draw the tag
