@@ -71,6 +71,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
 	playerId = pPlayer->GetId();
+	pPlayer->SetColor(CColor(rand() % 255, rand() % 255, rand() % 255).dwHexColor); //generate random color
 
 	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
 
@@ -88,7 +89,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bitStream.Write(playerId);
 
 	// Write the player colour
-	bitStream.Write(0xFFFFFF/*CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->GetColor()*/);
+	bitStream.Write(pPlayer->GetColor());
 
 	// Write the server name
 	bitStream.Write(RakNet::RakString("IV:Network DEV Server"));
@@ -183,7 +184,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 				RakNet::BitStream bitStream;
 				bitStream.Write(playerId);
 				bitStream.Write(strInput);
-				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 			}
 			else
 			{
@@ -311,7 +312,18 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	// Is the player pointer valid?
 	if (pPlayer)
 	{
-
+		/*
+		TODO:
+		if playerRequestRespawn command is exists in scripts
+			call playerRequestRespawn command
+			/-
+			playerRequestRespawn(player)
+			{
+				playerRespawn(player, 0.0f, 0.0f, 0.0f, 0.0f) //respawn cord, and heading
+			}
+			-/
+		else
+		*/
 		RakNet::BitStream bitStream;
 		bitStream.Write(pPlayer->GetSpawnPosition()); //spawnPos
 		bitStream.Write(0.0f); //fHeading
