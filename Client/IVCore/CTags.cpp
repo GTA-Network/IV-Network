@@ -9,17 +9,17 @@
 
 #include "CCore.h"
 #include <cstdlib>
+#include "IV\CIVScript.h"
 
 extern CCore * g_pCore;
 
-float fWidh = 68.0f;
-float fHeight = 10.0f;
-CPlayerEntity * pPlayer = NULL;
-CString strString;
+#define BAR_HEIGHT 10.0f
+#define BAR_BORDER 2.0f
+#define BAR_PADDING 4.0f
 
 CTags::CTags()
 {
-	m_pFont = g_pCore->GetGUI()->GetFont("Arial", 10);
+	m_pFont = g_pCore->GetGUI()->GetFont("Arial", 15);
 }
 
 CTags::~CTags()
@@ -39,118 +39,71 @@ void CTags::Draw()
 		return;
 
 	// Do our local player exist and is he spawned?
-	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned())
+	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned() && CIVScript::IsScreenFadedIn())
 	{
-		// Retrieve the local player position
 		CVector3 vecLocalPedPosition;
-		CVector3 vecWorldPosition;
-		Vector2 vecScreenPosition;
 		pLocalPlayer->GetPosition(vecLocalPedPosition);
 
 		// Render the player nametags
 		for (EntityId i = 0; i < MAX_PLAYERS; i++)
 		{
 			// Get the active player
-			pPlayer = pPlayerManager->GetAt(i);
+			CPlayerEntity * pPlayer = pPlayerManager->GetAt(i);
 
-			// Is the player spawned and the player isn't us?
+			// Is the player spawned?
 			if (pPlayer && pPlayer->IsSpawned())
 			{
-				// Get the player position and add the new z position
-				pPlayer->GetPosition(vecWorldPosition);
-				vecWorldPosition.fZ += 1.15f;
-
 				// Is the player on our screen?
 				if (!pPlayer->IsOnScreen())
 					continue;
 
-				// Convert the position to our screen position
-				if (!CGame::GetScreenPositionFromWorldPosition(vecWorldPosition, vecScreenPosition))
+				// Get the player position and add the new z position
+				CVector3 vecWorldPosition;
+				pPlayer->GetPosition(vecWorldPosition);
+				vecWorldPosition.fZ += 1.15f;
+
+				//Is this player not within our view range?
+				if (sqrt((vecWorldPosition.fX - vecLocalPedPosition.fX)*(vecWorldPosition.fX - vecLocalPedPosition.fX) + (vecWorldPosition.fY - vecLocalPedPosition.fY)*(vecWorldPosition.fY - vecLocalPedPosition.fY)) > 60.0f)
 					continue;
 
-				/*
-				Note: Disabled for now
-				Is this player not within our view range?
-				if ((vecLocalPedPosition = vecWorldPosition).Length() > 60.0f)
+				// Convert the position to our screen position
+				Vector2 vecScreenPosition;
+				if (!CGame::GetScreenPositionFromWorldPosition(vecWorldPosition, vecScreenPosition))
 					continue;
-				*/
 
 				// Set the player name
 				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);
 
-				// Get the player color
-				DWORD dwColor = ((pPlayer->GetColor() >> 8) | 0xFF000000);
+				vecScreenPosition.fX -= m_pFont->getTextExtent(CEGUI::String(strString.Get())) / 2;
 
-				// Get the player health & armour
-				unsigned int uiHealth = (pPlayer->GetHealth() - 100);
-				unsigned int uiArmour = (pPlayer->GetArmour());
+				// Draw the tag
+				g_pCore->GetGUI()->DrawText(strString, CEGUI::Vector2(vecScreenPosition.fX, vecScreenPosition.fY), CEGUI::colour(1.0f, 1.0f, 1.0f, 1.0f), m_pFont);
 
-				// Draw the tag as it's done being setup
-				DrawTag(strString, uiHealth, uiArmour, vecScreenPosition, dwColor);
+				vecScreenPosition.fY += m_pFont->getFontHeight() + BAR_BORDER;
+
+				// Health Box
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, m_pFont->getTextExtent(CEGUI::String(strString.Get())) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
+
+				// Health Background
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())), BAR_HEIGHT, D3DCOLOR_ARGB(255, 139, 0, 0));
+
+				// Health Bar
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())) * (((pPlayer->GetHealth() < 100.0f ? 100.0f : pPlayer->GetHealth()) - 100.0f) / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(255, 255, 0, 0));
+
+				if (pPlayer->GetArmour() > 0.0f)
+				{
+					vecScreenPosition.fY += BAR_HEIGHT + BAR_BORDER + BAR_PADDING;
+
+					// Armour Box
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, m_pFont->getTextExtent(CEGUI::String(strString.Get())) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
+
+					// Armour Background
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())), BAR_HEIGHT, D3DCOLOR_ARGB(255, 169, 169, 169));
+
+					// Armour Bar
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, m_pFont->getTextExtent(CEGUI::String(strString.Get())) * (pPlayer->GetArmour() / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(225, 225, 225, 225));
+				}
 			}
 		}
-	}
-}
-
-void CTags::DrawTag(CString strString, unsigned int uiHealth, unsigned int uiArmour, Vector2 vecScreenPosition, DWORD dwColor)
-{
-	CGraphics * pGraphics = g_pCore->GetGraphics();
-	CGUI * m_pGUI = g_pCore->GetGUI();
-
-	// Get + Calculate the tag position
-	float fX = (vecScreenPosition.fX - (80 / 2));
-	float fY = vecScreenPosition.fY;
-
-	// Draw the background
-	m_pGUI->DrawText("", CEGUI::Vector2((fX + 1.0f), (fY + 1.0f)), (CEGUI::colour)D3DCOLOR_ARGB(120, 0, 0, 0), "tags", false, false);
-
-	// Draw the tag
-	pGraphics->DrawText((fX + 1.0f), (fY + 1.0f), D3DCOLOR_ARGB(225, 225, 225, 225), 1.2f, 5, DT_NOCLIP, (bool) true, strString.Get());
-
-	if (uiHealth < 0)
-		uiHealth = 0;
-
-	if (uiHealth > 100)
-		uiHealth = 100;
-
-	if (uiArmour < 0)
-		uiArmour = 0;
-
-	if (uiArmour > 100)
-		uiArmour = 100;
-
-	// Get the correct health and armour values
-	float fHealth((80 - 2) * ((float) uiHealth / 100));
-	float fArmour((80 - 2) * ((float) uiArmour / 100));
-
-	if (fHealth < 0)
-		fHealth = 0;
-
-	if (fArmour < 0)
-		fArmour = 0;
-
-	// Get the correct health and armour width
-	float fHealthWidth = Math::Clamp<float>(0.0f, (2 + fHealth), 100.0f);
-	float fArmourWidth = Math::Clamp<float>(0.0f, (2 + fArmour), 100.0f);
-
-	// Health Box
-	pGraphics->DrawBox((fX + 1.0f), (fY + 17.0f), 80, fHeight, D3DCOLOR_ARGB(160, 0, 0, 0));
-
-	// Health Background
-	pGraphics->DrawBox((fX + 1.0f), (fY + 17.0f), (80 - 4), (11 - (2 * 2)), D3DCOLOR_ARGB(255, 139, 0, 0));
-
-	// Health Bar
-	pGraphics->DrawBox((fX + 1.0f), (fY + 17.0f), fHealthWidth, (11 - (2 * 2)), D3DCOLOR_ARGB(255, 255, 0, 0));
-
-	if (uiArmour > 0.0f)
-	{
-		// Armour Box
-		pGraphics->DrawBox((fX + 1.0f), (fY + 30.0f), 80, fHeight, D3DCOLOR_ARGB(160, 0, 0, 0));
-
-		// Armour Background
-		pGraphics->DrawBox((fX + 1.0f), (fY + 30.0f), (80 - 4), (11 - (2 * 2)), D3DCOLOR_ARGB(255, 169, 169, 169));
-
-		// Armour Box
-		pGraphics->DrawBox((fX + 1.0f), (fY + 30.0f), fArmourWidth, (11 - (2 * 2)), D3DCOLOR_ARGB(225, 225, 225, 225));
 	}
 }

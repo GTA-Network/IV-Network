@@ -14,13 +14,11 @@
 
 class CTags
 {
-	private:
-			CEGUI::Font * m_pFont;
-			void DrawTag(CString strName, unsigned int uiHealth, unsigned int uiArmour, Vector2 vecScreenPosition, DWORD dwColor);
+private:
+		CEGUI::Font * m_pFont;
+public:
+		CTags();
+		~CTags();
 
-	public:
-			CTags();
-			~CTags();
-
-			void Draw();
+		void Draw();
 };
