@@ -16,7 +16,7 @@
 #include "Game/eInput.h"
 
 class CScriptPlayer;
-
+class CVehicleEntity;
 class CPlayerEntity : public CNetworkEntity {
 private:
 	unsigned long m_ulLastSyncReceived;
@@ -55,7 +55,9 @@ private:
 
 	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
-	unsigned char	m_vehicleSeatId;public:
+	unsigned char	m_vehicleSeatId;
+
+public:
 	CPlayerEntity();
 	~CPlayerEntity();
 
@@ -126,6 +128,8 @@ private:
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
 
+	CVehicleEntity* GetVehicle();
+
 	void		GiveWeapon(int id, int uiAmmo);
 };
 
@@ -195,6 +199,8 @@ public:
 
 	bool		IsOnFoot() { return true; }
 	void		GiveWeapon(int id, int uiAmmo);
+
+	CVehicleEntity* GetVehicle() { return GetEntity()->GetVehicle(); }
 
 	void		Spawn(float fX, float fY, float fZ, float fA);
 };

@@ -22,6 +22,8 @@
 #include <SharedUtility.h>
 #include <Patcher/CPatcher.h>
 
+#include "Graphics/CChatBox.h"
+
 #include <Game/eGame.h>
 
 #include <Hooks/CXLive.h>
@@ -78,6 +80,9 @@ private:
 	CNetworkManager					* m_pNetworkManager;
 	CGUI                  			* m_pGUI;			
 	CTags							* m_pTags;
+
+
+	CChatBox						* m_pChatBox;
 
 
 	CResourceManager				* m_pResourceManager;
@@ -182,6 +187,8 @@ public:
 	CIVStartupScript				*GetIVStartupScript() { return m_pIVStartupScript; };
 
 	CResourceManager*				GetResourceManager() { return m_pResourceManager; }
+
+	CChatBox*						GetChatBox() { return m_pChatBox; }
 };
 
 #endif // CCore_h

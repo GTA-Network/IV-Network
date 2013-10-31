@@ -181,9 +181,10 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		{
 			if (wParam == 't' || wParam == 'T' || wParam == '`') // 0x54
 			{
+				
 				/*if (g_pCore->GetChatBox()->IsVisible())
 				{
-					if (g_pCore->GetChatBox()->IsEnabled())
+					if (g_pCore->GetChatBox()->IsEnabled() && g_pCore->GetChatBox()->GetInputText() == "")
 						g_pCore->GetChatBox()->Disable();
 					else
 						g_pCore->GetChatBox()->Enable();

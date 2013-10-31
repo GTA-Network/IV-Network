@@ -72,8 +72,6 @@ T getValue(CScriptVM* pVM, int idx)
 	return getValue_<T>(pVM, idx, std::is_pointer<T>());
 }
 
-
-
 template<typename T>
 void returnValue(CScriptVM* pVM, T);
 
@@ -109,6 +107,12 @@ void returnValue(CScriptVM * pVM, CVector3 v);
 
 template<class T>
 void returnValue(CScriptVM* pVM, T *v);
+
+#ifndef _CLIENT
+class CVehicleEntity;
+template<>
+void returnValue(CScriptVM* pVM, CVehicleEntity* v);
+#endif
 
 // this is currently a source of memory leaks :(
 // need to tell the code that lua owns it somehow

@@ -1,5 +1,9 @@
 #include "ApplyTuple.h"
 
+#ifndef _CLIENT
+#include "../Server/Entity/CVehicleEntity.h"
+#endif
+
 template<>
 int getValue<int>(CScriptVM* pVM, int idx)
 {
@@ -148,6 +152,20 @@ void returnValue(CScriptVM* pVM, bool v)
 	pVM->Push(v);
 }
 
+#ifndef _CLIENT
+template<>
+void returnValue(CScriptVM* pVM, CVehicleEntity* v)
+{
+	if (v)
+	{
+		pVM->PushInstance(v->GetScriptVehicle()->GetScriptClassName(), v->GetScriptVehicle());
+	}
+	else
+	{
+		pVM->Push(false);
+	}
+}
+#endif
 
 template<class T>
 void returnValue(CScriptVM* pVM, T *v)

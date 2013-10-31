@@ -16,26 +16,38 @@ CChatBox::~CChatBox()
 
 bool CChatBox::Initialize()
 {
-	m_pChatWindow = m_pGUI->CreateGUIWindow(STYLE_PREFIX "/Window", "ChatBox", 0);
+	m_pChatWindow = m_pGUI->CreateGUIWindow(STYLE_PREFIX "/FrameWindow", "ChatBox", 0);
 	m_pChatWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 10), CEGUI::UDim(0, 10)));
-	m_pChatWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 500), CEGUI::UDim(0, 500)));
+	m_pChatWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 510), CEGUI::UDim(0, 480)));
 
 	m_pInputBox = (CEGUI::Editbox*)m_pGUI->CreateGUIEditBox(m_pChatWindow);
-	m_pChatOutputWindow = (CEGUI::Listbox*)m_pGUI->CreateGUIWindow(STYLE_PREFIX "/ListBox", "ChatOutput", m_pChatWindow);
+	m_pChatOutputWindow = (CEGUI::Listbox*)m_pGUI->CreateGUIWindow(STYLE_PREFIX "/Listbox", "ChatOutput", m_pChatWindow);
 	m_pChatOutputWindow->setPosition(CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
-	m_pChatOutputWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 500), CEGUI::UDim(0, 430)));
+	m_pChatOutputWindow->setSize(CEGUI::UVector2(CEGUI::UDim(0, 500), CEGUI::UDim(0, 430.0f)));
 
 	
-	m_pInputBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 75.0f), CEGUI::UDim(0.0f, 435.0f)));
-	m_pInputBox->setSize(CEGUI::UVector2(CEGUI::UDim(0.25f, 0), CEGUI::UDim(0.03375f, 0)));
+	m_pInputBox->setPosition(CEGUI::UVector2(CEGUI::UDim(0.0f, 5.0f), CEGUI::UDim(0.0f, 435.0f)));
+	m_pInputBox->setSize(CEGUI::UVector2(CEGUI::UDim(0, 480.0f), CEGUI::UDim(0, 25.0f)));
 	m_pInputBox->setText("");
 
 	m_pInputBox->subscribeEvent(CEGUI::Editbox::EventKeyUp, CEGUI::Event::Subscriber(&CChatBox::Event_KeyPressed, this));
 	m_pInputBox->subscribeEvent(CEGUI::Editbox::EventTextAccepted, CEGUI::Event::Subscriber(&CChatBox::Event_EditTextAccepted, this));
 
+	m_pChatHistory = new CChatHistory();
+
 	return true;
 }
 
+
+CString CChatBox::GetInputText()
+{
+	if (m_pInputBox)
+	{
+		return m_pInputBox->getText().c_str();
+	}
+
+	return "";
+}
 
 bool CChatBox::Event_KeyPressed(const CEGUI::EventArgs& e)
 {
@@ -70,7 +82,7 @@ bool CChatBox::Event_EditTextAccepted(const CEGUI::EventArgs& e)
 	m_pChatOutputWindow->addItem(new CEGUI::ListboxTextItem(m_pInputBox->getText()));
 	m_pChatHistory->Add(m_pInputBox->getText().c_str());
 	m_pInputBox->setText("");
-
+	Disable();
 	return true;
 }
 

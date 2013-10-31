@@ -219,6 +219,9 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
 
+	/*m_pChatBox = new CChatBox(m_pGUI);
+	m_pChatBox->Initialize();*/
+
 	// Initialize the main menu elements
 	m_pMainMenu = new CMainMenu(m_pGUI);
 	m_pMainMenu->Initialize();
@@ -267,8 +270,9 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #ifdef _DEBUG
 	char szNetworkStats[10000];
 	memset(szNetworkStats, 0, sizeof(szNetworkStats));
+	
 	RakNet::StatisticsToString(m_pNetworkManager->GetRakPeer()->GetStatistics(RakNet::UNASSIGNED_SYSTEM_ADDRESS), szNetworkStats, 2);
-	m_pGraphics->DrawText(26.0f, 30.0f, D3DCOLOR_ARGB((unsigned char) 255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool)true, szNetworkStats);
+	m_pGraphics->DrawText(26.0f, 500, D3DCOLOR_ARGB((unsigned char) 255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool) true, szNetworkStats);
 #endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner

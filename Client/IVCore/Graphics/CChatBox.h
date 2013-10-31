@@ -93,6 +93,8 @@ public:
 	void	SetVisible(bool bVisible);
 	bool	IsEnabled();
 
+	CString	GetInputText();
+
 	void	Enable();
 	void	Disable();
 };

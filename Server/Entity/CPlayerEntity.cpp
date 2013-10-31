@@ -216,6 +216,11 @@ void CPlayerEntity::Pulse()
 };
 
 
+CVehicleEntity* CPlayerEntity::GetVehicle()
+{
+	{ return m_vehicleId == 0xFFFF ? nullptr : CServer::GetInstance()->GetVehicleManager()->GetAt(m_vehicleId); }
+}
+
 void CPlayerEntity::SetPosition(const CVector3& vecPosition)
 {
 	{
@@ -487,7 +492,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 		}
 		break;
 	default:
-		CLogFile::Printf("Warning: Sync Package type not implemented");
+		CLogFile::Printf("Warning: Sync Package type not implemented %i", pType);
 		break;
 	}
 }
@@ -512,6 +517,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetHeading(pSyncPlayer.fHeading);
 			SetHealth(pSyncPlayer.fHealth);
 			SetArmour(pSyncPlayer.fArmor);
+
+			m_vehicleId = 0xFFFF;
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
