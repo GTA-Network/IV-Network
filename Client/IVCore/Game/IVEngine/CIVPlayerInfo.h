@@ -39,7 +39,7 @@ public:
 	DWORD m_dwLastDroveOnPavementTime;      // 4A0-4A4
 	DWORD m_dwLastRanLightTime;             // 4A4-4A8
 	DWORD m_dwLastDroveAgainstTrafficTime;  // 4A8-4AC
-	PAD(IVPlayerInfo, pad2, 0x2E);          // 4AC-4DA
+	PAD(IVPlayerInfo, pad2, 0x2E);          // 4AC-4DA  // 0x4BC: int m_ControlStateFlag
 	BYTE m_bytePlayerNumber;                // 4DA-4DB
 	PAD(IVPlayerInfo, pad3, 0x1);           // 4DB-4DC
 	DWORD m_dwState;                        // 4DC-4E0 - 2: spawned, 3: dead, 4: arrested
