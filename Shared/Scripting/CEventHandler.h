@@ -90,7 +90,7 @@ public:
 							break;
 						case OT_BOOL:
 							{
-								pReturn->set(CScriptArgument((bool) res._unVal.nInteger));
+								pReturn->set(CScriptArgument(res._unVal.nInteger != 0));
 									}
 							break;
 						case OT_STRING:
@@ -122,7 +122,7 @@ public:
 							break;
 						case OT_BOOL:
 							{
-								pReturn->set(CScriptArgument((bool) res._unVal.nInteger));
+								pReturn->set(CScriptArgument(res._unVal.nInteger != 0));
 							}
 							break;
 						case OT_STRING:

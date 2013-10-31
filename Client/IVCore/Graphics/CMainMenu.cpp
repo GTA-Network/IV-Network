@@ -537,7 +537,7 @@ void CMainMenu::OnQuickConnectSubmit()
 	}
 
 	int colon = -1;
-	for (int i = 0; i < strlen(m_pQuickConnectIPEditBox->getText()); ++i)
+	for (unsigned int i = 0; i < strlen(m_pQuickConnectIPEditBox->getText()); ++i)
 	{
 		if (m_pQuickConnectIPEditBox->getText()[i] == ':')
 		{

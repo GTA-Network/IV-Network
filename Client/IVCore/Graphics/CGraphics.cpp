@@ -340,7 +340,7 @@ float CGraphics::GetStringWidth(CString s, float fScale)
 {
 	float ret = 0.0f;
 	
-	for (int i = 0; i < s.GetLength(); ++i)
+	for (unsigned int i = 0; i < s.GetLength(); ++i)
 		ret += GetCharacterWidth(s.GetChar(i), fScale);
 
 	return ret;

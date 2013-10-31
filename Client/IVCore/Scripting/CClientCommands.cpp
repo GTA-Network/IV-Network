@@ -41,7 +41,46 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		TerminateProcess(GetCurrentProcess(), 0);
 		return true;
 	}
+	else if (strCommand == "saveposition" || strCommand == "save")
+	{
+		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
+		if (!file)
+		{
+			g_pCore->GetChat()->Output("Failed to open 'SavePositions.log'");
+			return true;
+		}
 
+		CVector3 vecPosition;
+
+		// Get our local player
+		CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
+
+		if (pLocalPlayer->IsInVehicle())
+		{
+			CVehicleEntity * pVehicle = pLocalPlayer->GetVehicleEntity();
+
+			if (pVehicle)
+			{
+				pVehicle->GetPosition(vecPosition);
+				CVector3 vecRotation;
+				pVehicle->GetRotation(vecRotation);
+				DWORD dwColors[5];
+				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4]);
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+			}
+		}
+		else
+		{
+			pLocalPlayer->GetPosition(vecPosition);
+			int iModelId = pLocalPlayer->GetPlayerPed()->GetModelIndex();
+			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetHeading(), strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+		}
+
+		fclose(file);
+		g_pCore->GetChat()->Output("Position data saved to 'SavePositions.log'");
+		return true;
+	}
+#ifdef _DEBUG
 	else if(strCommand == "cv")
 	{
 		int iVehicleType = atoi(strParameters.c_str());
@@ -82,45 +121,6 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
 			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(!g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetEngineState());
 		
-		return true;
-	}
-	else if(strCommand == "saveposition" || strCommand == "save")
-	{
-		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
-		if(!file)
-		{
-			g_pCore->GetChat()->Output("Failed to open 'SavePositions.log'");
-			return true;
-		}
-
-		CVector3 vecPosition;
-
-		// Get our local player
-		CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
-
-		if(pLocalPlayer->IsInVehicle())
-		{
-			CVehicleEntity * pVehicle = pLocalPlayer->GetVehicleEntity();
-
-			if(pVehicle)
-			{
-				pVehicle->GetPosition(vecPosition);
-				CVector3 vecRotation;
-				pVehicle->GetRotation(vecRotation);
-				DWORD dwColors[5];
-				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4]);
-				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
-			}
-		}
-		else
-		{
-			pLocalPlayer->GetPosition(vecPosition);
-			int iModelId = pLocalPlayer->GetPlayerPed()->GetModelIndex();
-			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetHeading() ,strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
-		}
-
-		fclose(file);
-		g_pCore->GetChat()->Output("Position data saved to 'SavePositions.log'");
 		return true;
 	}
 	else if(strCommand == "giveweapon")
@@ -272,5 +272,6 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.c_str()));
 		return true;
 	}
+#endif
 	return false;
 }
