@@ -450,22 +450,3 @@ void CGame::DestroyInternalThread(BYTE byteThreadId)
 	m_Threads[byteThreadId].szThreadTitle = "";
 	m_Threads[byteThreadId].bInitialised = false;
 }
-
-
-bool CGame::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPosition, Vector2 &vecScreenPosition)
-{
-	DWORD dwAddress = (g_pCore->GetBase() + 0xAF94C0);
-	CVector3 * pWorldPosition = &vecWorldPosition;
-	Vector2 * pScreenPosition = &vecScreenPosition;
-
-	_asm
-	{
-		push pScreenPosition
-		push 2; game viewport id; 1 = mapicon
-		push pWorldPosition
-		call dwAddress
-	}
-
-
-	return g_pCore->GetGame()->GetCamera()->IsOnScreen(vecWorldPosition);
-}

@@ -139,8 +139,6 @@ public:
 
 	static void							SetRadarVisible(bool bVisible) { m_bRadarVisibility = bVisible; }
 	static bool							GetRadarVisibility() { return m_bRadarVisibility; }
-
-	static bool							GetScreenPositionFromWorldPosition(CVector3 &vecWorldPosition, Vector2 &vecScreenPosition);
 };
 
 #endif // CGame_h

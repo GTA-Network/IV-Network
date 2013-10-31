@@ -308,6 +308,8 @@ namespace CIVScript
 	static void LoadAllObjectsNow(bool bunknown) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_LOAD_ALL_OBJECTS_NOW, bunknown); }
 
 	static void GivePedFakeNetworkName(unsigned int ped, const char* pnick, CColor color) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_PED_FAKE_NETWORK_NAME, ped, pnick, color.A, color.R, color.G, color.B); }
+
+	static unsigned int GetViewportPositionOfCoord(CVector3 * vecWordPosition, Vector2 * vecViewportPosition, int type) { float fX; float fY; unsigned int ret = CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GET_VIEWPORT_POSITION_OF_COORD, vecWordPosition->fX, vecWordPosition->fY, vecWordPosition->fZ, type, &fX, &fY); vecViewportPosition->fX = fX; vecViewportPosition->fY = fY; return ret; } //types: 2: on screen pos
 };
 
 #endif // CIVScript_h

@@ -69,8 +69,7 @@ void CTags::Draw()
 
 				// Convert the position to our screen position
 				Vector2 vecScreenPosition;
-				if (!CGame::GetScreenPositionFromWorldPosition(vecHeadPosition, vecScreenPosition))
-					continue;
+				CIVScript::GetViewportPositionOfCoord(&vecHeadPosition, &vecScreenPosition, 2);
 
 				// Set the player name
 				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);
