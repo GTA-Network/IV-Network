@@ -47,7 +47,6 @@ public:
 	DEF_OFF(FUNC_NEW_CPedData);
 
 	DEF_OFF(FUNC_CEpisodes__IsEpisodeAvaliable);
-	DEF_OFF(FUNC_GetPlayerInfoFromIndex);
 	DEF_OFF(FUNC_GetIndexFromPlayerInfo);
 	DEF_OFF(FUNC_GetLocalPlayerPed);
 	DEF_OFF(FUNC_CTask__Destructor);

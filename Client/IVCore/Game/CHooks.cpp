@@ -474,7 +474,7 @@ __declspec(naked) int GetRunningScriptThread()
 void CHooks::Intialize()
 {
 	// Hook GetPlayerInfoFromIndex to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GetPlayerInfoFromIndex, (DWORD)GetPlayerInfoFromIndex_Hook);
+	CPatcher::InstallJmpPatch(COffsets::FUNC_CPlayer__GetPlayerByNumber, (DWORD) GetPlayerInfoFromIndex_Hook);
 	
 	// Hook GetIndexFromPlayerInfo to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GetIndexFromPlayerInfo, (DWORD)GetIndexFromPlayerInfo_Hook);

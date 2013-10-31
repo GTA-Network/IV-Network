@@ -162,11 +162,6 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 
 		if(bControl != m_bAdvancedControlState) {
 
-			// Check if our player is driver of a vehicle
-			if(GetVehicleEntity() && GetVehicleEntity()->GetDriver() == reinterpret_cast<CPlayerEntity*>(this))
-				if(!bControl)
-					return;
-
 			// Apply current controls
 			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 			m_bAdvancedControlState = bControl;

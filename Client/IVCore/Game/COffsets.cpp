@@ -24,7 +24,6 @@ INIT_OFF(FUNC_CPedIntelligence__Reset);
 INIT_OFF(FUNC_CPed__ScalarDeletingDestructor);
 
 INIT_OFF(FUNC_CEpisodes__IsEpisodeAvaliable);
-INIT_OFF(FUNC_GetPlayerInfoFromIndex);
 INIT_OFF(FUNC_GetIndexFromPlayerInfo);
 INIT_OFF(FUNC_GetLocalPlayerPed);
 INIT_OFF(FUNC_CTask__Destructor);
@@ -425,7 +424,6 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_NumberOfParkedCars, __noop); // not needed
 
 			SET_OFF(FUNC_CEpisodes__IsEpisodeAvaliable,  __noop); // removed
-			SET_OFF(FUNC_GetPlayerInfoFromIndex,  0x86CC80); // done
 			SET_OFF(FUNC_GetIndexFromPlayerInfo,  0x86CB20); // done
 			SET_OFF(FUNC_GetLocalPlayerPed,  0x86CCA0); // done
 			SET_OFF(FUNC_CTask__Destructor,  0xA2AD20); // done
@@ -814,7 +812,6 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(VAR_NumberOfParkedCars, 0xF1D964);
 
 			SET_OFF(FUNC_CEpisodes__IsEpisodeAvaliable,  0x814810);
-			SET_OFF(FUNC_GetPlayerInfoFromIndex,  0x817F20);
 			SET_OFF(FUNC_GetIndexFromPlayerInfo,  0x817DC0);
 			SET_OFF(FUNC_GetLocalPlayerPed,  0x817F40);
 			SET_OFF(FUNC_CTask__Destructor,  0xA288D0);

@@ -10,6 +10,7 @@
 #include "CChat.h"
 #include <CCore.h>
 #include <Scripting/CClientCommands.h>
+#include "..\IV\CIVScript.h"
 
 extern CCore * g_pCore;
 
@@ -212,8 +213,8 @@ void CChat::SetInputVisible(bool bVisible)
 	m_bInputVisible = bVisible;
 
 	// Unlock the player controls
-	if(g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
-		g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true,true);
+	if (g_pCore->GetGame()->GetLocalPlayer() && !bVisible)
+		CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
 }
 
 bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
@@ -322,7 +323,7 @@ bool CChat::HandleUserInput(unsigned int uMsg, DWORD dwChar)
 				SetInputVisible(true);
 
 				// Lock the player controls
-				g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false,false);
+				CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);
 				return true;
 			}
 		}
