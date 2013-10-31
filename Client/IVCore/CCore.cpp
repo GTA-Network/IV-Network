@@ -351,7 +351,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	// Render our Name Tags
-	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible() && CIVScript::IsScreenFadedIn())
+	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible() && !CIVScript::IsScreenFadedOut())
 		m_pTags->Draw();
 }
 

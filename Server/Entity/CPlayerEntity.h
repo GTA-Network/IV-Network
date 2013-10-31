@@ -55,8 +55,6 @@ private:
 
 	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
-
-	CVector3 spawnPos;
 public:
 	CPlayerEntity();
 	~CPlayerEntity();
@@ -127,9 +125,6 @@ public:
 
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
-
-	void		SetSpawnPosition(CVector3 pos) { spawnPos.fX = pos.fX; spawnPos.fY = pos.fY, spawnPos.fZ = pos.fZ; };
-	CVector3	GetSpawnPosition() { return spawnPos; };
 };
 
 
@@ -197,7 +192,6 @@ public:
 	int			GetId() { return GetEntity()->GetId(); }
 
 	bool		IsOnFoot() { return true; }
-	void		SetSpawnPosition(float fX, float fY, float fZ) { GetEntity()->SetSpawnPosition(CVector3(fX, fY, fZ)); };
 	void		GiveWeapon(int id, int uiAmmo);
 
 	void		Respawn(float fX, float fY, float fZ, float fA);

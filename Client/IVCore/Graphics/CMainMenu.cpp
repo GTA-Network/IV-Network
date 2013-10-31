@@ -569,8 +569,6 @@ void CMainMenu::OnQuickConnectSubmit()
 	// Hide the quick connect window
 	SetVisible(false);
 
-	CIVScript::DoScreenFadeIn(1000); //TODO: do this after connected to the sever
-
 	// Enable the chat
 	g_pCore->GetChat()->SetVisible(true);
 

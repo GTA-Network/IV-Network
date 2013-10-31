@@ -135,6 +135,10 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Notify the client
 	g_pCore->GetChat()->Clear();
 	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
+
+	// whitout this two line below playerRequestSpawn never called
+	CIVScript::DoScreenFadeInUnhacked(0);
+	CIVScript::DoScreenFadeOutUnhacked(0);
 }
 
 void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -583,8 +587,6 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		g_pCore->GetChat()->Output(sMessage.C_String());
 }
 
-#define sub_895290 ((bool(__stdcall *) (int, bool, bool))(g_pCore->GetBase() + 0x895290))
-
 void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	CVector3 spawnPos;
@@ -594,9 +596,9 @@ void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read(fHeading);
 
 	g_pCore->GetGame()->GetLocalPlayer()->SetPosition(spawnPos);
-	g_pCore->GetGame()->GetLocalPlayer()->SetHeading(fHeading);
+	g_pCore->GetGame()->GetLocalPlayer()->SetRotation(CVector3(fHeading, 0.0f, 0.0f));
 
-	sub_895290(3000, false, false);
+	CIVScript::DoScreenFadeIn(3000);
 }
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)

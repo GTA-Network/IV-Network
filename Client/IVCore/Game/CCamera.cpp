@@ -137,8 +137,6 @@ void CCamera::GetLookAt(CVector3& vecLookAt)
 
 bool CCamera::IsOnScreen(const CVector3& vecPosition)
 {
-#define CVEC_TO_D3DVEC(vec) &D3DXVECTOR3(vec.fX, vec.fY, vec.fZ)
-#define D3DVEC_TO_CVEC(vec) &CVector3(vec.x, vec.y, vec.z)
 	CVector3 vecCamPos;
 	GetGameCam()->GetPosition(vecCamPos);
 
@@ -146,16 +144,13 @@ bool CCamera::IsOnScreen(const CVector3& vecPosition)
 	GetLookAt(vecCamLookAt);
 
 	D3DXMATRIX matView;
-	D3DXMatrixLookAtLH(&matView, CVEC_TO_D3DVEC(vecCamPos), CVEC_TO_D3DVEC(vecCamLookAt), &D3DXVECTOR3(0, 0, 1));
+	D3DXMatrixLookAtLH(&matView, CVEC_TO_D3DVEC(vecCamPos), CVEC_TO_D3DVEC(vecCamLookAt), CVEC_TO_D3DVEC(CVector3(0, 0, 1)));
 
 	D3DVIEWPORT9 viewport;
 	g_pCore->GetGraphics()->GetDevice()->GetViewport(&viewport);
 
-	DWORD dwLenX = viewport.Width;
-	DWORD dwLenY = viewport.Height;
-
 	D3DXMATRIX matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, GetGameCam()->GetCam()->m_data1.m_fFOV, (float) dwLenX / (float) dwLenY, GetGameCam()->GetCam()->m_data1.m_fNear, GetGameCam()->GetCam()->m_data1.m_fFar);
+	D3DXMatrixPerspectiveFovLH(&matProj, GetGameCam()->GetCam()->m_data1.m_fFOV, (float) viewport.Width / (float) viewport.Height, GetGameCam()->GetCam()->m_data1.m_fNear, GetGameCam()->GetCam()->m_data1.m_fFar);
 
 	D3DXMATRIX matWorld;
 	D3DXMatrixIdentity(&matWorld);

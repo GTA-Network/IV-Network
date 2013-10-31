@@ -207,7 +207,6 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
-			AddMethod("setSpawnPosition", &CScriptPlayer::SetSpawnPosition).
 			AddMethod("respawn", &CScriptPlayer::Respawn).
 
 			Register(pVM);

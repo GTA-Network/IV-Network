@@ -13,8 +13,7 @@
 #include "../CServer.h"
 
 CPlayerEntity::CPlayerEntity() :
-	m_ulLastSyncSent(0),
-	spawnPos(DEFAULT_SPAWN_POSITION)
+	m_ulLastSyncSent(0)
 {
 }
 

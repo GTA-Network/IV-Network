@@ -26,8 +26,6 @@ void HandleLocalPlayerSpawn()
 {
 	_asm pushad;
 
-	CLogFile::Printf("%s", __FUNCTION__);
-
 	if (!isHandleLocalPlayerSpawnAlreadyCalled)
 	{
 		g_pCore->GetGame()->GetLocalPlayer()->HandleSpawn();
@@ -37,9 +35,8 @@ void HandleLocalPlayerSpawn()
 	{
 		if (dword_F16134 != -1)
 			sub_7D5220(*(IVPhysical* *) (((unsigned char*) dword_10D9458[dword_F16134]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
-
-		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 	}
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 
 	_asm popad;
 }
@@ -103,18 +100,6 @@ void CLocalPlayer::HandleSpawn()
 
 	CIVScript::SetDrawPlayerComponent(8, 1); // special 3
 	CIVScript::SetCharComponentVariation(GetScriptingHandle(), 8, iResult, 0);
-
-	// Set basic skin in developmet mode
-#ifdef _DEV
-	SetPedClothes(1, 1);
-	SetPedClothes(2, 1);
-	SetPedClothes(3, 0);
-#endif
-
-	//g_pCore->GetMainMenu()->SetVisible(true);
-
-	// Notify the server 
-	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 }
 
 void CLocalPlayer::DoDeathCheck()

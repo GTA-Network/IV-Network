@@ -270,8 +270,6 @@ void CGame::PrepareWorld()
 
 	SAFE_DELETE(m_pCamera);
 	m_pCamera = new CCamera;
-	m_pCamera->SetCameraPosition(CVector3(GAME_LOAD_CAMERA_POS));
-	m_pCamera->SetLookAtPosition(CVector3(GAME_LOAD_CAMERA_LOOKAT));
 }
 
 void CGame::OnClientReadyToGamePlay()
