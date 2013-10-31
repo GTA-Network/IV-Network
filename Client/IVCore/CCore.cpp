@@ -248,6 +248,8 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 	g_bDeviceLost = false;
 }
 
+#include <RakNet/RakNetStatistics.h>
+
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Has the device been lost?
@@ -261,6 +263,13 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Render our gui instance
 	if (m_pGUI)
 		m_pGUI->Render();
+
+#ifdef _DEBUG
+	char szNetworkStats[10000];
+	memset(szNetworkStats, 0, sizeof(szNetworkStats));
+	RakNet::StatisticsToString(m_pNetworkManager->GetRakPeer()->GetStatistics(RakNet::UNASSIGNED_SYSTEM_ADDRESS), szNetworkStats, 2);
+	m_pGraphics->DrawText(26.0f, 30.0f, D3DCOLOR_ARGB((unsigned char) 255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool)true, szNetworkStats);
+#endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner
 	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;

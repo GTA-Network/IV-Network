@@ -22,6 +22,7 @@
 
 class CVehicleEntity;
 class CPlayerEntity : public CNetworkEntity {
+	friend class CLocalPlayer;
 private:
 	bool									m_bLocalPlayer;
 	bool									m_bNetworked;

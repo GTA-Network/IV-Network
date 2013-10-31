@@ -138,12 +138,47 @@ void CLocalPlayer::DoDeathCheck()
 	}
 }
 	
+#define SYNC_PACKETS_PER_SECOND 50
+
+bool CLocalPlayer::IsFullSyncNeeded()
+{
+	unsigned long ulCurrentTime = SharedUtility::GetTime();
+	if (ulCurrentTime >= m_ulLastPureSyncTime + (1000.0f / SYNC_PACKETS_PER_SECOND))
+	{
+		m_ulLastPureSyncTime = ulCurrentTime;
+		return true;
+	}
+
+	return false;
+}
+
 void CLocalPlayer::Pulse()
 {
-	CPlayerEntity::Pulse();
-
 	if(IsSpawned())
 		DoDeathCheck();
+
+	if (IsSpawned())
+	{
+		// Copy the current control state to the previous control state
+		memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
+
+		// Update the current control state
+		g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
+
+		// Check vehicle enter/exit
+		CheckVehicleEnterExit();
+
+		// Process vehicle enter/exit
+		ProcessVehicleEnterExit();
+
+		if (IsFullSyncNeeded())
+		{
+			RakNet::BitStream bitStream;
+			Serialize(&bitStream);
+			// Send package to network
+			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, MEDIUM_PRIORITY, UNRELIABLE_SEQUENCED, true);
+		}
+	}
 }
 
 void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bForce)

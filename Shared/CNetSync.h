@@ -60,6 +60,14 @@ enum eEntityType
 	INVALID_ENTITY,
 };
 
+class CSyncWeapon
+{
+public:
+	//char	weaponSlot;
+	char	weaponType;
+	int		iAmmo;
+	//int		iClip;
+};
 
 // Handles data between client ped and network sync(stores the values)
 class CNetworkPlayerSyncPacket {
@@ -67,63 +75,53 @@ private:
 public:
 	CControls					pControlState; 
 	CVector3					vecPosition;
-	CVector3					vecMovementSpeed;
+	float						fHeading;
+	CVector3					vecMoveSpeed;
 	CVector3					vecTurnSpeed;
+	float						fHealth;
+	float						fArmor;
+	bool						bDuckState;
 	CVector3					vecDirection;
 	CVector3					vecRoll;
-
-	bool						bDuckState;
-	float						fHeading;
-	float						fHealth;
-	// Add player members to sync(like weapon sync, key sync etc.)
+	CSyncWeapon					weapon;
 };
+
+
 
 class CNetworkPlayerWeaponSyncPacket {
 public:
 	CVector3       vecAimShotAtCoordinates; // When fire this is shot at when aiming this is Aim at
-	//float          fArmsHeadingCircle;
-	//float          fArmsUpDownRotation;
 	CVector3       vecShotSource;
-	char		   weaponType;
-	int			   iAmmo;
+	CSyncWeapon	   weapon;
 };
 
+// Pure sync packet
 class CNetworkPlayerVehicleSyncPacket {
 public:
-	CControls					ControlState;
 	EntityId					vehicleId;
+	CControls					ControlState;
 	Matrix						matrix;
 	CVector3					vecMoveSpeed;
 	CVector3					vecTurnSpeed;
-	float						health;
-	float						petrol;
-	float						steeringAngle;
+	float						vehHealth;
+	float						playerHealth;
+	float						playerArmor;
 	float						fHeading;
 	bool						bEngineState;
-
+	CSyncWeapon					weapon;
 };
 
-class CSyncWeapon
-{
+class CNetworkPlayerPassengerSyncPacket {
 public:
-	char	weaponSlot;
-	char	weaponType;
-	int		iAmmo;
-	int		iClip;
-};
-
-// Handles data between client ped and network sync(stores the values)
-class CNetworkEntityVehicleSyncPacket {
-private:
-
-public:
+	EntityId					vehicleId;
+	unsigned char				byteSeatId;
+	CControls					ControlState;
 	CVector3					vecPosition;
-	CVector3					vecMovementSpeed;
-	CVector3					vecTurnSpeed;
-	CVector3					vecDirection;
-	CVector3					vecRoll;
-	// Add vehicle members to sync(like indicators, variation etc.)
+	float						playerHealth;
+	float						playerArmor;
 };
+
+
 
 #define	NETWORK_TIMEOUT					3000
 

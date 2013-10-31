@@ -23,45 +23,195 @@ CPlayerEntity::~CPlayerEntity()
 }
 
 
+enum eWeaponType
+{
+	WEAPON_TYPE_UNARMED,
+	WEAPON_TYPE_BASEBALLBAT,
+	WEAPON_TYPE_POOLCUE,
+	WEAPON_TYPE_KNIFE,
+	WEAPON_TYPE_GRENADE,
+	WEAPON_TYPE_MOLOTOV,
+	WEAPON_TYPE_ROCKET,
+	WEAPON_TYPE_PISTOL,
+	WEAPON_TYPE_UNUSED0,
+	WEAPON_TYPE_DEAGLE,
+	WEAPON_TYPE_SHOTGUN,
+	WEAPON_TYPE_BARETTA,
+	WEAPON_TYPE_MICRO_UZI,
+	WEAPON_TYPE_MP5,
+	WEAPON_TYPE_AK47,
+	WEAPON_TYPE_M4,
+	WEAPON_TYPE_SNIPERRIFLE,
+	WEAPON_TYPE_M40A1,
+	WEAPON_TYPE_RLAUNCHER,
+	WEAPON_TYPE_FTHROWER,
+	WEAPON_TYPE_MINIGUN,
+	WEAPON_TYPE_EPISODIC_1,
+	WEAPON_TYPE_EPISODIC_2,
+	WEAPON_TYPE_EPISODIC_3,
+	WEAPON_TYPE_EPISODIC_4,
+	WEAPON_TYPE_EPISODIC_5,
+	WEAPON_TYPE_EPISODIC_6,
+	WEAPON_TYPE_EPISODIC_7,
+	WEAPON_TYPE_EPISODIC_8,
+	WEAPON_TYPE_EPISODIC_9,
+	WEAPON_TYPE_EPISODIC_10,
+	WEAPON_TYPE_EPISODIC_11,
+	WEAPON_TYPE_EPISODIC_12,
+	WEAPON_TYPE_EPISODIC_13,
+	WEAPON_TYPE_EPISODIC_14,
+	WEAPON_TYPE_EPISODIC_15,
+	WEAPON_TYPE_EPISODIC_16,
+	WEAPON_TYPE_EPISODIC_17,
+	WEAPON_TYPE_EPISODIC_18,
+	WEAPON_TYPE_EPISODIC_19,
+	WEAPON_TYPE_EPISODIC_20,
+	WEAPON_TYPE_EPISODIC_21,
+	WEAPON_TYPE_EPISODIC_22,
+	WEAPON_TYPE_EPISODIC_23,
+	WEAPON_TYPE_EPISODIC_24,
+	WEAPON_TYPE_CAMERA,
+	WEAPON_TYPE_OBJECT,
+	WEAPON_TYPE_LAST_WEAPONTYPE,
+	WEAPON_TYPE_ARMOUR,
+	WEAPON_TYPE_RAMMEDBYCAR,
+	WEAPON_TYPE_RUNOVERBYCAR,
+	WEAPON_TYPE_EXPLOSION,
+	WEAPON_TYPE_UZI_DRIVEBY,
+	WEAPON_TYPE_DROWNING,
+	WEAPON_TYPE_FALL,
+	WEAPON_TYPE_UNIDENTIFIED,
+	WEAPON_TYPE_ANYMELEE,
+	WEAPON_TYPE_ANYWEAPON,
+	WEAPON_TYPE_MAX
+};
+
+enum eWeaponSlot
+{
+	WEAPON_SLOT_UNARMED,
+	WEAPON_SLOT_MELEE,
+	WEAPON_SLOT_HANDGUN,
+	WEAPON_SLOT_SHOTGUN,
+	WEAPON_SLOT_SMG,
+	WEAPON_SLOT_RIFLE,
+	WEAPON_SLOT_SNIPER,
+	WEAPON_SLOT_HEAVY,
+	WEAPON_SLOT_THROWN,
+	WEAPON_SLOT_SPECIAL,
+	WEAPON_SLOT_PARACHUTE,
+	WEAPON_SLOT_MAX
+};
+
+int GetWeaponSlotByType(eWeaponType type)
+{
+	if (type == WEAPON_TYPE_KNIFE
+		|| type == WEAPON_TYPE_BASEBALLBAT
+		|| type == WEAPON_TYPE_POOLCUE)
+	{
+		return WEAPON_SLOT_MELEE;
+	}
+
+	if (type == WEAPON_TYPE_EPISODIC_9
+		|| type == WEAPON_TYPE_PISTOL
+		|| type == WEAPON_TYPE_DEAGLE)
+	{
+		return WEAPON_SLOT_HANDGUN;
+	}
+
+	if (type == WEAPON_TYPE_SHOTGUN
+		|| type == WEAPON_TYPE_EPISODIC_10
+		|| type == WEAPON_TYPE_EPISODIC_11
+		|| type == WEAPON_TYPE_BARETTA)
+	{
+		return WEAPON_SLOT_SHOTGUN;
+	}
+
+	if (type == WEAPON_TYPE_EPISODIC_12
+		|| type == WEAPON_TYPE_EPISODIC_13
+		|| type == WEAPON_TYPE_MICRO_UZI
+		|| type == WEAPON_TYPE_MP5)
+	{
+		return WEAPON_SLOT_SMG;
+	}
+
+	if (type == WEAPON_TYPE_AK47
+		|| type == WEAPON_TYPE_M4
+		|| type == WEAPON_TYPE_EPISODIC_14
+		|| type == WEAPON_TYPE_EPISODIC_19)
+	{
+		return WEAPON_SLOT_RIFLE;
+	}
+
+	if (type == WEAPON_TYPE_SNIPERRIFLE
+		|| type == WEAPON_TYPE_M40A1
+		|| type == WEAPON_TYPE_EPISODIC_15)
+	{
+		return WEAPON_SLOT_SNIPER;
+	}
+
+	if (type == WEAPON_TYPE_RLAUNCHER
+		|| type == WEAPON_TYPE_EPISODIC_1
+		|| type == WEAPON_TYPE_EPISODIC_17
+		|| type == WEAPON_TYPE_EPISODIC_20)
+	{
+		return WEAPON_SLOT_HEAVY;
+	}
+
+	if (type == WEAPON_TYPE_GRENADE
+		|| type == WEAPON_TYPE_MOLOTOV
+		|| type == WEAPON_TYPE_ROCKET
+		|| type == WEAPON_TYPE_EPISODIC_5
+		|| type == WEAPON_TYPE_EPISODIC_16
+		|| type == WEAPON_TYPE_EPISODIC_18)
+	{
+		return WEAPON_SLOT_THROWN;
+	}
+
+	if (type == WEAPON_TYPE_OBJECT)
+	{
+		return WEAPON_SLOT_SPECIAL;
+	}
+
+	if (type == WEAPON_TYPE_EPISODIC_21)
+	{
+		return WEAPON_SLOT_PARACHUTE;
+	}
+
+	return WEAPON_SLOT_MAX;
+}
+
+
+void CPlayerEntity::GiveWeapon(int id, int uiAmmo)
+{
+	if (GetWeaponSlotByType((eWeaponType) id) != WEAPON_SLOT_MAX)
+	{
+		//m_Weapon.weaponSlot = GetWeaponSlotByType((eWeaponType) id);
+		m_Weapon.iAmmo = uiAmmo;
+		//m_Weapon.iClip = 0;
+		m_Weapon.weaponType = id;
+	}
+}
+
 void CPlayerEntity::Pulse()
 {
 	// Send the sync only every 50ms to get a nice and smooth sync
 	// If sync is crap you can adjust this value
-	// TODO: add a value to the server to set this at runtime
 	// Example  
 	if (m_ulLastSyncSent + (1000 / CServer::GetInstance()->GetSyncRate()) <= SharedUtility::GetTime())
 	{
-		if (m_eLastSyncPackageType == RPC_PACKAGE_TYPE_PLAYER_ONFOOT)
-		{
-			RakNet::BitStream bitStream;
-			bitStream.Write(GetId());
-			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
-			Serialize(&bitStream, m_eLastSyncPackageType);
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
+		RakNet::BitStream bitStream;
+		bitStream.Write(GetId());
+		bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
 
-			m_ulLastSyncSent = SharedUtility::GetTime();
-		}
-
-		if (m_eLastSyncPackageType == RPC_PACKAGE_TYPE_PLAYER_VEHICLE)
-		{
-			RakNet::BitStream bitStream;
-			bitStream.Write(GetId());
-			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
-			Serialize(&bitStream, m_eLastSyncPackageType);
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
-
-			m_ulLastSyncSent = SharedUtility::GetTime();
-		}
+		Serialize(&bitStream, m_eLastSyncPackageType);
+		m_ulLastSyncSent = SharedUtility::GetTime();
 
 		if (m_controlState.IsAiming() || m_controlState.IsFiring())
 		{
-			RakNet::BitStream bitStream;
-			CNetworkPlayerWeaponSyncPacket WeaponPacket;
-			bitStream.Write(GetId());
-			bitStream.Write(CServer::GetInstance()->GetNetworkModule()->GetPlayerPing(GetId()));
 			Serialize(&bitStream, RPC_PACKAGE_TYPE_PLAYER_WEAPON);
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
 		}
+
+		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, -1, true);
 	}
 };
 
@@ -194,7 +344,7 @@ void CScriptPlayer::SetName(CString szName)
 
 void CScriptPlayer::GiveWeapon(int id, int uiAmmo)
 {
-	//GetEntity()->GiveWeapon(id, uiAmmo);
+	GetEntity()->GiveWeapon(id, uiAmmo);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
@@ -255,7 +405,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			GetPosition(pSyncPacket.vecPosition);
 
 			// Apply current 3D Movement to the sync package
-			GetMoveSpeed(pSyncPacket.vecMovementSpeed);
+			GetMoveSpeed(pSyncPacket.vecMoveSpeed);
 
 			// Apply current 3D Turnspeed to the sync package
 			GetTurnSpeed(pSyncPacket.vecTurnSpeed);
@@ -274,18 +424,10 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			// Apply current heading to the sync package
 			pSyncPacket.fHeading = m_fHeading;
 
-
 			pSyncPacket.fHealth = GetHealth();
-			// Apply current weapon sync data to the sync package
-			/*pSyncPacket.sWeaponData.fArmsHeadingCircle = m_weaponData.fArmsHeadingCircle;
-			pSyncPacket.sWeaponData.fArmsUpDownRotation = m_weaponData.fArmsUpDownRotation;
-			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;
-			pSyncPacket.sWeaponData.vecShotAtCoordinates = m_weaponData.vecShotAtCoordinates;
-			pSyncPacket.sWeaponData.vecShotAtTarget = m_weaponData.vecShotAtTarget;
-			pSyncPacket.sWeaponData.vecAimAtCoordinates = m_weaponData.vecAimAtCoordinates;*/
 
-			// Merge EntitySync packet with our packet
-			//memcpy(&m_pEntitySync.pPlayerPacket, pSyncPacket, sizeof(sNetwork_Sync_Entity_Player));
+			pSyncPacket.weapon.iAmmo = m_Weapon.iAmmo;
+			pSyncPacket.weapon.weaponType = m_Weapon.weaponType;
 
 			// Write player onfoot flag into raknet bitstream
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
@@ -311,6 +453,9 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			//WeaponPacket.fArmsHeadingCircle = GetArmHeading();
 			//WeaponPacket.fArmsUpDownRotation = GetArmUpDown();
 
+			WeaponPacket.weapon.iAmmo = m_Weapon.iAmmo;
+			WeaponPacket.weapon.weaponType = m_Weapon.weaponType;
+
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
 		}
@@ -326,11 +471,15 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				pVehicle->GetMatrix(VehiclePacket.matrix);
 
-				VehiclePacket.health = pVehicle->GetHealth();
-				VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
+				VehiclePacket.vehHealth = pVehicle->GetHealth();
+				//VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
 				VehiclePacket.bEngineState = pVehicle->GetEngineState();
-				VehiclePacket.steeringAngle = pVehicle->GetSteeringAngle();
 				VehiclePacket.fHeading = pVehicle->GetHeading();
+				VehiclePacket.playerArmor = GetArmour();
+				VehiclePacket.playerHealth = GetHealth();
+
+				VehiclePacket.weapon.iAmmo = m_Weapon.iAmmo;
+				VehiclePacket.weapon.weaponType = m_Weapon.weaponType;
 			}
 			GetControlState(VehiclePacket.ControlState);
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
@@ -353,15 +502,16 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			pBitStream->Read(pSyncPlayer);
 
 			SetControlState(pSyncPlayer.pControlState);
-			SetPosition(pSyncPlayer.vecPosition);
 
-			SetMoveSpeed(pSyncPlayer.vecMovementSpeed);
+			SetPosition(pSyncPlayer.vecPosition);
+			SetMoveSpeed(pSyncPlayer.vecMoveSpeed);
 			SetTurnSpeed(pSyncPlayer.vecTurnSpeed);
 			SetDirection(pSyncPlayer.vecDirection);
 			SetRoll(pSyncPlayer.vecRoll);
 			SetDucking(pSyncPlayer.bDuckState);
 			SetHeading(pSyncPlayer.fHeading);
 			SetHealth(pSyncPlayer.fHealth);
+			SetArmour(pSyncPlayer.fArmor);
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
@@ -373,24 +523,27 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			pBitStream->Read(VehiclePacket);
 			SetControlState(VehiclePacket.ControlState);
 			CVehicleEntity* pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
+
 			m_vehicleId = VehiclePacket.vehicleId;
+			m_vehicleSeatId = 0;
+
 			if (pVehicle)
 			{
-
 				pVehicle->SetPosition(VehiclePacket.matrix.vecPosition);
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				pVehicle->SetMatrix(VehiclePacket.matrix);
-				pVehicle->SetHealth(VehiclePacket.health);
-				pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
+				pVehicle->SetHealth(VehiclePacket.vehHealth);
+				//pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
+
 				pVehicle->SetEngineState(VehiclePacket.bEngineState);
 				pVehicle->SetHeading(VehiclePacket.fHeading);
 
+				SetHealth(VehiclePacket.playerHealth);
+				SetArmour(VehiclePacket.playerArmor);
 #ifdef _DEBUG
 				//CLogFile::Printf("%f %f %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
-#endif
-
-				
+#endif	
 			}
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
@@ -405,8 +558,21 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetWeaponShotTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponAimTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponShotSource(WeaponPacket.vecShotSource);
-			//SetArmHeading(WeaponPacket.fArmsHeadingCircle);
-			//SetArmUpDown(WeaponPacket.fArmsUpDownRotation);
+		}
+		break;
+	case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
+		{
+			CNetworkPlayerPassengerSyncPacket PassengerPacket;
+
+			SetPosition(PassengerPacket.vecPosition);
+			SetArmour(PassengerPacket.playerArmor);
+			SetHealth(PassengerPacket.playerHealth);
+
+			m_vehicleId = PassengerPacket.vehicleId;
+			m_vehicleSeatId = PassengerPacket.byteSeatId;
+
+			m_eLastSyncPackageType = pType;
+			m_ulLastSyncReceived = SharedUtility::GetTime();
 		}
 		break;
 	default:

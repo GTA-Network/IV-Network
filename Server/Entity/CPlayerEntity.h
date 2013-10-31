@@ -51,11 +51,11 @@ private:
 	} m_weaponData;
 
 
-	CSyncWeapon		m_Weapons[11];
+	CSyncWeapon		m_Weapon;
 
 	CScriptPlayer*	m_pScriptPlayer;
 	EntityId		m_vehicleId;
-public:
+	unsigned char	m_vehicleSeatId;public:
 	CPlayerEntity();
 	~CPlayerEntity();
 
@@ -125,6 +125,8 @@ public:
 
 	void		Serialize(RakNet::BitStream * bitStream, ePackageType pType);
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
+
+	void		GiveWeapon(int id, int uiAmmo);
 };
 
 

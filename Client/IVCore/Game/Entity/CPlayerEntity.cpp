@@ -238,25 +238,9 @@ void CPlayerEntity::Pulse()
 		// Is this the localplayer?
 		if(IsLocalPlayer())
 		{
-			// Copy the current control state to the previous control state
-			memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
 
-			// Update the current control state
-			g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
-
-			// Check vehicle enter/exit
-			CheckVehicleEnterExit();
-
-			// Process vehicle enter/exit
-			ProcessVehicleEnterExit();
-
-			RakNet::BitStream bitStream;
-
-			Serialize(&bitStream);
-			// Send package to network
-			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
 		}
-		else
+		if(!IsLocalPlayer())
 		{
 			// Are we not in a vehicle?
 			if(!IsInVehicle())
@@ -446,8 +430,10 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 
 void CPlayerEntity::GetPosition(CVector3& vecPosition)
 {
-	if(IsSpawned())
+	if (IsSpawned())
+	{
 		m_pPlayerPed->GetPosition(vecPosition);
+	}
 	else
 		vecPosition = m_vecPosition;
 }
@@ -456,8 +442,10 @@ CVector3 CPlayerEntity::GetPosition()
 {
 	CVector3 vecPosition;
 
-	if(IsSpawned())
+	if (IsSpawned())
+	{
 		m_pPlayerPed->GetPosition(vecPosition);
+	}
 	else
 		vecPosition = m_vecPosition;
 
@@ -1390,52 +1378,7 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 		vecDirection.fX, vecDirection.fY, vecDirection.fZ,
 		bDuck, fHeading);
 
-	unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-	SetTargetPosition(vecPosition, interpolationTime);
-	SetHeading(fHeading);
-	SetMoveSpeed(vecMovement);
-	SetTurnSpeed(vecTurnSpeed);
-	m_pPlayerPed->SetDirection(vecDirection);
-	m_pPlayerPed->SetRoll(vecRoll);
-
-	unsigned int uiPlayerIndex = GetScriptingHandle();
-
-	char chMoveStyle = 0;
-	if (vecMovement.Length() < 1.0)
-	{
-		// Delete any task lol 
-		_asm	push 17;
-		_asm	push 0;
-		_asm	push uiPlayerIndex;
-		_asm	call COffsets::IV_Func__DeletePedTaskID;
-		_asm	add esp, 0Ch;
-		chMoveStyle = 0;
-	}
-	else if (vecMovement.Length() < 3.0 && vecMovement.Length() >= 1.0)
-		chMoveStyle = 1;
-	else if (vecMovement.Length() < 5.0 && vecMovement.Length() > 3.0)
-		chMoveStyle = 2;
-	else
-		chMoveStyle = 3;
-
-	SetMoveToDirection(vecPosition, vecMovement, chMoveStyle+1);
-
-	GetPlayerPed()->SetDucking(bDuck);
-
-#if 0
-	int iJumpStyle = 0;
-	if (vecMovement.Length() < 1.0)
-		iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-	else if (vecMovement.Length() >= 1.0)
-		iJumpStyle = 64; // jump index, 1 = jump while movment, 2 = jump while standing still
-
-	_asm	push iJumpStyle;
-	_asm	push uiPlayerIndex;
-	_asm	call COffsets::IV_FUNC__TaskPedJump;
-	_asm	add esp, 8;
-#endif
-
-	m_ulLastSyncReceived = SharedUtility::GetTime();
+	
 }
 
 #if 0
@@ -1882,7 +1825,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 
 		// Apply current 3D Position to the sync package
 		GetPosition(PlayerPacket.vecPosition);
-		GetMoveSpeed(PlayerPacket.vecMovementSpeed);
+		GetMoveSpeed(PlayerPacket.vecMoveSpeed);
 		GetTurnSpeed(PlayerPacket.vecTurnSpeed);
 		GetDirectionSpeed(PlayerPacket.vecDirection);
 		GetRollSpeed(PlayerPacket.vecRoll);
@@ -1891,14 +1834,14 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
 
 		PlayerPacket.fHealth = GetHealth();
+		PlayerPacket.fArmor = GetArmour();
+
+		PlayerPacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
+		PlayerPacket.weapon.weaponType = GetCurrentWeapon();
 
 		// Write player onfoot flag into raknet bitstream
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 		pBitStream->Write(PlayerPacket);
-		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), pBitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, true);
-
-
-		pBitStream->Reset();
 
 		// I know its hacky i will clean it up later its just working
 		if (PlayerPacket.pControlState.IsAiming() || PlayerPacket.pControlState.IsFiring())
@@ -1916,8 +1859,9 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 			}
 
 			m_pContextData->GetWeaponShotSource(WeaponPacket.vecShotSource);
-			//m_pContextData->GetArmHeading(WeaponPacket.fArmsHeadingCircle);
-			//m_pContextData->GetArmUpDown(WeaponPacket.fArmsUpDownRotation);
+
+			WeaponPacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
+			WeaponPacket.weapon.weaponType = GetCurrentWeapon();
 
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
@@ -1928,15 +1872,18 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		VehiclePacket.vehicleId = m_pVehicle->GetId();
 		m_pVehicle->GetGameVehicle()->GetMatrix(VehiclePacket.matrix);
-		//m_pVehicle->GetPosition(VehiclePacket.vecPosition);
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
-		//m_pVehicle->GetRotation(VehiclePacket.vecRotation);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
-		VehiclePacket.health = m_pVehicle->GetHealth();
-		VehiclePacket.petrol = m_pVehicle->GetPetrolTankHealth();
-		VehiclePacket.steeringAngle = m_pVehicle->GetSteeringAngle();
+
+		VehiclePacket.vehHealth = m_pVehicle->GetHealth();
+		//VehiclePacket. = m_pVehicle->GetPetrolTankHealth();
 		VehiclePacket.bEngineState = m_pVehicle->GetEngineState();
+		VehiclePacket.playerArmor = GetArmour();
+		VehiclePacket.playerHealth = GetHealth();
+		VehiclePacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
+		VehiclePacket.weapon.weaponType = GetCurrentWeapon();
+
 		CIVScript::GetCarHeading(m_pVehicle->GetScriptingHandle(), &VehiclePacket.fHeading);
 
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_VEHICLE);
@@ -1944,8 +1891,21 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	}
 	else if (IsInVehicle() && IsPassenger())
 	{
+		CNetworkPlayerPassengerSyncPacket PassengerPacket;
+
+		PassengerPacket.byteSeatId = m_byteSeat;
+		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PassengerPacket.ControlState);
+		PassengerPacket.playerArmor = GetArmour();
+		PassengerPacket.playerHealth = GetHealth();
+		PassengerPacket.vecPosition = GetPosition();
+		PassengerPacket.vehicleId = m_pVehicle->GetId();
+		PassengerPacket.byteSeatId = m_byteSeat;
+		
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
+		pBitStream->Write(PassengerPacket);
 	}
+
+	
 }
 
 void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
@@ -1958,33 +1918,67 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		CNetworkPlayerSyncPacket PlayerPacket;
 		if (IsInVehicle())
 			m_pVehicle = nullptr;
-		// TODO: this is crap take a look at mta they only send changed values
-		// I started working on such sync for IVMP but never finished so i will do it later
-		// For now this is goood
 
 		pBitStream->Read(PlayerPacket);
 
-		ApplySyncData(
-			PlayerPacket.vecPosition,
-			PlayerPacket.vecMovementSpeed,
-			PlayerPacket.vecTurnSpeed,
-			PlayerPacket.vecDirection,
-			PlayerPacket.vecRoll,
-			PlayerPacket.bDuckState,
-			PlayerPacket.fHeading);
+		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
+
+		if (GetCurrentWeapon() != PlayerPacket.weapon.weaponType) {
+			// Set our current weapon
+			GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo);
+		}
+		// Do we not have the right ammo?
+		if (GetAmmunation(PlayerPacket.weapon.iAmmo) != PlayerPacket.weapon.iAmmo) {
+			// Set our ammo
+			SetAmmunation(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo);
+		}
+
+
+		if (!IsGettingIntoAVehicle()
+			&& !IsGettingOutOfAVehicle())
+		{
+
+			SetTargetPosition(PlayerPacket.vecPosition, interpolationTime);
+			SetHeading(PlayerPacket.fHeading);
+			SetMoveSpeed(PlayerPacket.vecMoveSpeed);
+			SetTurnSpeed(PlayerPacket.vecTurnSpeed);
+			m_pPlayerPed->SetDirection(PlayerPacket.vecDirection);
+			m_pPlayerPed->SetRoll(PlayerPacket.vecRoll);
+		}
+		unsigned int uiPlayerIndex = GetScriptingHandle();
+
+		char chMoveStyle = 0;
+		if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
+		{
+			// Delete any task lol 
+			_asm	push 17;
+			_asm	push 0;
+			_asm	push uiPlayerIndex;
+			_asm	call COffsets::IV_Func__DeletePedTaskID;
+			_asm	add esp, 0Ch;
+			chMoveStyle = 0;
+		}
+		else if (PlayerPacket.vecMoveSpeed.Length() < 3.0 && PlayerPacket.vecMoveSpeed.Length() >= 1.0)
+			chMoveStyle = 1;
+		else if (PlayerPacket.vecMoveSpeed.Length() < 5.0 && PlayerPacket.vecMoveSpeed.Length() > 3.0)
+			chMoveStyle = 2;
+		else
+			chMoveStyle = 3;
+
+		SetMoveToDirection(PlayerPacket.vecPosition, PlayerPacket.vecMoveSpeed, chMoveStyle + 1);
+
+		GetPlayerPed()->SetDucking(PlayerPacket.bDuckState);
 
 		SetHealth(PlayerPacket.fHealth);
 
 		SetControlState(&PlayerPacket.pControlState);
 
-		unsigned int uiPlayerIndex = GetScriptingHandle();
-
 		if (PlayerPacket.pControlState.IsJumping())
 		{
 			char iJumpStyle = 0;
-			if (PlayerPacket.vecMovementSpeed.Length() < 1.0)
+			if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
 				iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-			else if (PlayerPacket.vecMovementSpeed.Length() >= 1.0)
+			else if (PlayerPacket.vecMoveSpeed.Length() >= 1.0)
 				iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
 
 			_asm	push iJumpStyle;
@@ -1992,65 +1986,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			_asm	call COffsets::IV_FUNC__TaskPedJump;
 			_asm	add esp, 8;
 		}
-	}
-	else if (eType == RPC_PACKAGE_TYPE_PLAYER_WEAPON)
-	{
-		CNetworkPlayerWeaponSyncPacket AimSync;
-		pBitStream->Read(AimSync);
-		// First check if we're having any weapon data
-		if (IsLocalPlayer())
-			return;
 
-		if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
-		{
-			m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
-
-			unsigned int st = 0;
-			CIVScript::OpenSequenceTask(&st);
-			CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
-			CIVScript::CloseSequenceTask(st);
-			if (!CIVScript::IsCharInjured(GetScriptingHandle()))
-				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
-			CIVScript::ClearSequenceTask(st);
-			
-
-		}
-		else if (m_ControlState.IsFiring())
-		{
-			m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
-			m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
-
-			CIVScript::GiveWeaponToChar(GetScriptingHandle(), (CIVScript::eWeapon)AimSync.weaponType, AimSync.iAmmo, true);
-			//m_pContextData->SetArmHeading(AimSync.fArmsHeadingCircle);
-			//m_pContextData->SetArmUpDown(AimSync.fArmsUpDownRotation);
-			m_pPlayerPed->GetPedWeapons()->GiveWeapon((eWeaponType)AimSync.weaponType, AimSync.iAmmo);
-			unsigned int st = 0;
-			CIVScript::OpenSequenceTask(&st);
-			CIVScript::TaskShootAtCoord(0, AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000, 5); // 3 - fake shot
-			CIVScript::CloseSequenceTask(st);
-			if (!CIVScript::IsCharInjured(GetScriptingHandle()))
-				CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
-			CIVScript::ClearSequenceTask(st);
-		}
-		else
-		{
-			unsigned int uiPlayerIndex = GetScriptingHandle();
-
-			// Destroy shotat task
-			_asm  push 36;
-			_asm  push 0;
-			_asm  push uiPlayerIndex;
-			_asm  call COffsets::IV_Func__DeletePedTaskID;
-			_asm  add esp, 0Ch;
-
-			// Destroy aimat task
-			_asm  push 35;
-			_asm  push 0;
-			_asm  push uiPlayerIndex;
-			_asm  call COffsets::IV_Func__DeletePedTaskID;
-			_asm  add esp, 0Ch;
-
-		}
+		m_ulLastSyncReceived = SharedUtility::GetTime();
 	}
 	else if (eType == RPC_PACKAGE_TYPE_PLAYER_VEHICLE)
 	{
@@ -2069,18 +2006,23 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				matrix.vecForward = VehiclePacket.matrix.vecForward;
 				matrix.vecRight = VehiclePacket.matrix.vecRight;
 				matrix.vecUp = VehiclePacket.matrix.vecUp;
-				
 				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
+
+				SetControlState(&VehiclePacket.ControlState);
+				
+				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
 				CIVScript::SetCarHeading(m_pVehicle->GetScriptingHandle(), VehiclePacket.fHeading);
+
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
-				SetControlState(&VehiclePacket.ControlState);
-				m_pVehicle->SetHealth(VehiclePacket.health);
-				m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
-				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);
-				m_pVehicle->SetSteeringAngle(VehiclePacket.steeringAngle);
 				
+				
+				m_pVehicle->SetHealth(VehiclePacket.vehHealth);
+				//m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
+				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);
+
+				SetArmour(VehiclePacket.playerArmor);
+				SetHealth(VehiclePacket.playerHealth);
 			}
 			else
 			{
@@ -2094,9 +2036,18 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
 			if (g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId))
 			{
-				CIVScript::WarpCharIntoCar(GetScriptingHandle(), g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId)->GetScriptingHandle());
-				m_pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId);
+				WarpIntoVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId));
 			}
+		}
+
+		if (GetCurrentWeapon() != VehiclePacket.weapon.weaponType) {
+			// Set our current weapon
+			GiveWeapon(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo);
+		}
+		// Do we not have the right ammo?
+		if (GetAmmunation(VehiclePacket.weapon.iAmmo) != VehiclePacket.weapon.iAmmo) {
+			// Set our ammo
+			SetAmmunation(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo);
 		}
 
 
@@ -2106,7 +2057,95 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	{
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
 
+		CNetworkPlayerPassengerSyncPacket PassengerPacket;
+		pBitStream->Read(PassengerPacket);
+
+		SetPosition(PassengerPacket.vecPosition);
+
+		SetArmour(PassengerPacket.playerArmor);
+		SetHealth(PassengerPacket.playerHealth);
+
+		if (!IsInVehicle() || !InternalIsInVehicle())
+		{
+			ResetVehicleEnterExit();
+
+			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
+			if (g_pCore->GetGame()->GetVehicleManager()->GetAt(PassengerPacket.vehicleId))
+			{
+				WarpIntoVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(PassengerPacket.vehicleId), PassengerPacket.byteSeatId);
+			}
+		}
+		
 		m_ulLastSyncReceived = SharedUtility::GetTime();
+	}
+
+
+	// Check if we have additional packets
+	if (pBitStream->Read(eType))
+	{
+		if (eType == RPC_PACKAGE_TYPE_PLAYER_WEAPON)
+		{
+			CNetworkPlayerWeaponSyncPacket AimSync;
+			pBitStream->Read(AimSync);
+			// First check if we're having any weapon data
+			if (IsLocalPlayer())
+				return;
+
+			if (GetCurrentWeapon() != AimSync.weapon.weaponType) {
+				// Set our current weapon
+				GiveWeapon(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
+			}
+			// Do we not have the right ammo?
+			if (GetAmmunation(AimSync.weapon.iAmmo) != AimSync.weapon.iAmmo) {
+				// Set our ammo
+				SetAmmunation(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
+			}
+
+			if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
+			{
+				m_pContextData->SetWeaponAimTarget(AimSync.vecAimShotAtCoordinates);
+
+				unsigned int st = 0;
+				CIVScript::OpenSequenceTask(&st);
+				CIVScript::TaskAimGunAtCoord(GetScriptingHandle(), AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000);
+				CIVScript::CloseSequenceTask(st);
+				if (!CIVScript::IsCharInjured(GetScriptingHandle()))
+					CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
+				CIVScript::ClearSequenceTask(st);
+			}
+			else if (m_ControlState.IsFiring())
+			{
+				m_pContextData->SetWeaponShotSource(AimSync.vecShotSource);
+				m_pContextData->SetWeaponShotTarget(AimSync.vecAimShotAtCoordinates);
+
+				unsigned int st = 0;
+				CIVScript::OpenSequenceTask(&st);
+				CIVScript::TaskShootAtCoord(0, AimSync.vecAimShotAtCoordinates.fX, AimSync.vecAimShotAtCoordinates.fY, AimSync.vecAimShotAtCoordinates.fZ, 2000, 5); // 3 - fake shot
+				CIVScript::CloseSequenceTask(st);
+				if (!CIVScript::IsCharInjured(GetScriptingHandle()))
+					CIVScript::TaskPerformSequence(GetScriptingHandle(), st);
+				CIVScript::ClearSequenceTask(st);
+			}
+			else
+			{
+				unsigned int uiPlayerIndex = GetScriptingHandle();
+
+				// Destroy shotat task
+				_asm  push 36;
+				_asm  push 0;
+				_asm  push uiPlayerIndex;
+				_asm  call COffsets::IV_Func__DeletePedTaskID;
+				_asm  add esp, 0Ch;
+
+				// Destroy aimat task
+				_asm  push 35;
+				_asm  push 0;
+				_asm  push uiPlayerIndex;
+				_asm  call COffsets::IV_Func__DeletePedTaskID;
+				_asm  add esp, 0Ch;
+
+			}
+		}
 	}
 }
 

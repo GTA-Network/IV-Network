@@ -16,6 +16,7 @@
 #include "Game/Entity/CNetworkEntity.h"
 
 class CLocalPlayer : public CPlayerEntity {
+
 private:
         bool                            m_bIsDead;
         float                           m_fSpawnAngle;
@@ -33,9 +34,12 @@ private:
 		bool							m_bAdvancedCameraState;
 		unsigned						m_pObj;
 
+
 public:
 										CLocalPlayer();
 										~CLocalPlayer() { };
+
+		friend class					CPlayerEntity;
 
         void							Respawn();
         void							Reset();
@@ -43,6 +47,8 @@ public:
         void							HandleSpawn();
 
         void							DoDeathCheck();
+
+		bool							IsFullSyncNeeded();
 
         inline bool						GetFirstSpawn() { return m_bFirstSpawn; }
         void							SetRadarVisible(bool bVis) { m_bRadarVisible = bVis; }

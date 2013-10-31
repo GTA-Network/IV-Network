@@ -69,8 +69,8 @@ public:
 class CScriptVehicle : public CScriptEntity
 {
 public:
-							CScriptVehicle() { SetEntity(new CVehicleEntity); };
-							~CScriptVehicle() { delete GetEntity(); };
+							CScriptVehicle() { };
+							~CScriptVehicle() { };
 
 	CVehicleEntity *		GetEntity() { return (CVehicleEntity*)CScriptEntity::GetEntity(); }
 

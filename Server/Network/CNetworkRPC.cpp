@@ -99,7 +99,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bitStream.Write(CVAR_GET_INTEGER("port"));
 
 	// Send it back to the player
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 
 	for (EntityId i = 0; i < CServer::GetInstance()->GetPlayerManager()->GetMax(); ++i)
 	{
@@ -109,7 +109,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Write(i);
 			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetName().Get());
 			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetColor());
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 	}
 
@@ -121,7 +121,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Write(playerId);
 			bitStream.Write(pPlayer->GetName().Get());
 			bitStream.Write(pPlayer->GetColor());
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, i, false);
 		}
 	}
 
@@ -223,6 +223,27 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			{
 				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
 				break;
+			}
+		}
+
+		// Check for additional packets
+		if (pBitStream->Read(eType))
+		{
+
+			switch (eType)
+			{
+			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
+			case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
+				{
+					CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
+					break;
+				}
+			case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
+			case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
+				{
+					CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
+					break;
+				}
 			}
 		}
 	}
