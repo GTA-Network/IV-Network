@@ -85,21 +85,6 @@ void CLocalPlayer::HandleSpawn()
 
 	// Set first spawn
 	m_bFirstSpawn = true;
-
-	// Force to draw components on slot 8(parachute etc.)
-	int iResult;
-    switch (CIVScript::GetCharDrawableVariation(GetScriptingHandle(), 1))
-    {
-        case 0: iResult = 1; break;
-        case 1: iResult = 2; break;
-        case 2: iResult = 2; break;
-        case 3: iResult = 1; break;
-        case 4: iResult = 1; break;
-		default: break;
-    }
-
-	CIVScript::SetDrawPlayerComponent(8, 1); // special 3
-	CIVScript::SetCharComponentVariation(GetScriptingHandle(), 8, iResult, 0);
 }
 
 void CLocalPlayer::DoDeathCheck()

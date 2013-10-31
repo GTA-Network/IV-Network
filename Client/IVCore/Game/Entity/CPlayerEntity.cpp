@@ -431,9 +431,7 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 void CPlayerEntity::GetPosition(CVector3& vecPosition)
 {
 	if (IsSpawned())
-	{
 		m_pPlayerPed->GetPosition(vecPosition);
-	}
 	else
 		vecPosition = m_vecPosition;
 }
@@ -443,9 +441,7 @@ CVector3 CPlayerEntity::GetPosition()
 	CVector3 vecPosition;
 
 	if (IsSpawned())
-	{
 		m_pPlayerPed->GetPosition(vecPosition);
-	}
 	else
 		vecPosition = m_vecPosition;
 
@@ -1923,15 +1919,10 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
 
-		if (GetCurrentWeapon() != PlayerPacket.weapon.weaponType) {
-			// Set our current weapon
-			GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo);
-		}
-		// Do we not have the right ammo?
-		if (GetAmmunation(PlayerPacket.weapon.iAmmo) != PlayerPacket.weapon.iAmmo) {
-			// Set our ammo
-			SetAmmunation(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo);
-		}
+		if (GetCurrentWeapon() != PlayerPacket.weapon.weaponType)
+			GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our current weapon
+		if (GetAmmunation(PlayerPacket.weapon.iAmmo) != PlayerPacket.weapon.iAmmo) // Do we not have the right ammo?
+			SetAmmunation(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our ammo
 
 
 		if (!IsGettingIntoAVehicle()
@@ -2040,15 +2031,10 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			}
 		}
 
-		if (GetCurrentWeapon() != VehiclePacket.weapon.weaponType) {
-			// Set our current weapon
-			GiveWeapon(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo);
-		}
-		// Do we not have the right ammo?
-		if (GetAmmunation(VehiclePacket.weapon.iAmmo) != VehiclePacket.weapon.iAmmo) {
-			// Set our ammo
-			SetAmmunation(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo);
-		}
+		if (GetCurrentWeapon() != VehiclePacket.weapon.weaponType)
+			GiveWeapon(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our current weapon
+		if (GetAmmunation(VehiclePacket.weapon.iAmmo) != VehiclePacket.weapon.iAmmo) // Do we not have the right ammo?
+			SetAmmunation(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our ammo
 
 
 		m_ulLastSyncReceived = SharedUtility::GetTime();

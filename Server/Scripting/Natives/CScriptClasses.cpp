@@ -32,7 +32,7 @@ int IsPlayerConnected(int * VM)
 	return 1;
 }
 
-int IsPlayerSpawned(int * VM)
+int IsPlayerExists(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
 
@@ -161,7 +161,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("createVehicle", CreateVehicle);
 	pVM->RegisterFunction("getPlayerById", GetPlayerById);
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
-	pVM->RegisterFunction("isPlayerSpawned", IsPlayerSpawned);
+	pVM->RegisterFunction("isPlayerExists", IsPlayerExists);
 	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
 
 #if 0
