@@ -85,11 +85,8 @@ void CTags::Draw()
 				// Health Box
 				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, g_pCore->GetGraphics()->GetStringWidth(strString) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
 
-				// Health Background
-				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString), BAR_HEIGHT, D3DCOLOR_ARGB(255, 139, 0, 0));
-
 				// Health Bar
-				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (((pPlayer->GetHealth() < 100.0f ? 100.0f : pPlayer->GetHealth()) - 100.0f) / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(255, 255, 0, 0));
+				g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (((pPlayer->GetHealth() < 100.0f ? 100.0f : pPlayer->GetHealth()) - 100.0f) / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(255, 87, 124, 88));
 
 				if (pPlayer->GetArmour() > 0.0f)
 				{
@@ -98,11 +95,8 @@ void CTags::Draw()
 					// Armour Box
 					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX - BAR_BORDER, vecScreenPosition.fY - BAR_BORDER, g_pCore->GetGraphics()->GetStringWidth(strString) + BAR_BORDER * 2.0f, BAR_HEIGHT + BAR_BORDER * 2.0f, D3DCOLOR_ARGB(160, 0, 0, 0));
 
-					// Armour Background
-					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString), BAR_HEIGHT, D3DCOLOR_ARGB(255, 169, 169, 169));
-
 					// Armour Bar
-					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (pPlayer->GetArmour() / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(225, 225, 225, 225));
+					g_pCore->GetGraphics()->DrawBox(vecScreenPosition.fX, vecScreenPosition.fY, g_pCore->GetGraphics()->GetStringWidth(strString) * (pPlayer->GetArmour() / 100.0f), BAR_HEIGHT, D3DCOLOR_ARGB(225, 74, 148, 160));
 				}
 			}
 		}

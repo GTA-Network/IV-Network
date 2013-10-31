@@ -125,8 +125,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "giveweapon")
 	{
-		int iWeapon = atoi(strParameters.c_str());
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(),(CIVScript::eWeapon)iWeapon, 100, true);
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), (CIVScript::eWeapon)atoi(strParameters.c_str()), 100, true);
 		return true;
 	}
 	else if(strCommand == "xaxis")
@@ -254,15 +253,24 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	else if(strCommand == "createtrain")
 	{
 		g_pCore->GetGame()->GetIVManagement()->CreateTrain(g_pCore->GetGame()->GetLocalPlayer()->GetPosition(), 3, 20.0f, 0);
+		return true;
 	}
 	else if(strCommand == "blip")
 	{
 		unsigned int uiBlip;
 		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_ADD_BLIP_FOR_COORD, 0, 0, 0,&uiBlip); 
 		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_CHANGE_BLIP_SPRITE, 10);
+		return true;
 	}
-	else if(strCommand == "jump")
+	else if(strCommand == "sethealth")
 	{
+		g_pCore->GetGame()->GetLocalPlayer()->SetHealth(atoi(strParameters.c_str()));
+		return true;
+	}
+	else if (strCommand == "setarmour")
+	{
+		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.c_str()));
+		return true;
 	}
 	return false;
 }

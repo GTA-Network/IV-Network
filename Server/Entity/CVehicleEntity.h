@@ -19,25 +19,27 @@ class CVehicleEntity : public CNetworkEntity
 private:
 	CScriptVehicle*	m_pScriptVehicle;
 	Matrix			m_Matrix;
-	unsigned int	m_uiHealth;
+	unsigned int	m_fHealth;
 	float			m_fPetrolHealth;
 	float			m_fSteeringAngle;
 	bool			m_bEngineState;
 	int				m_iLockedState;
 	int				m_iDirtLevel;
 	float			m_fHeading;
+	int				m_iModelId;
+
 public:
-	CVehicleEntity();
-	~CVehicleEntity();
+										CVehicleEntity();
+										~CVehicleEntity();
 
-	bool Create() {return true;}
-	bool Destroy() {return true;}
+	bool								Create() { return true; }
+	bool								Destroy() { return true; }
 
-	void SetMatrix(Matrix &matrix) { m_Matrix = matrix; }
-	void GetMatrix(Matrix &matrix) { matrix = m_Matrix; }
+	void								SetMatrix(Matrix &matrix) { m_Matrix = matrix; }
+	void								GetMatrix(Matrix &matrix) { matrix = m_Matrix; }
 
-	void								SetHealth(unsigned int uiHealth) { m_uiHealth = uiHealth; }
-	unsigned int						GetHealth() { return m_uiHealth; }
+	void								SetHealth(float fHealth) { m_fHealth = fHealth; }
+	float								GetHealth() { return m_fHealth; }
 
 	float								GetHeading() { return m_fHeading; }
 	void								SetHeading(float fHeading) { m_fHeading = fHeading; }
@@ -57,36 +59,39 @@ public:
 	void								SetDirtLevel(int iDirtLevel) { m_iDirtLevel = iDirtLevel; }
 	int									GetDirtLevel() { return m_iDirtLevel; }
 
-	CScriptVehicle*  GetScriptVehicle() { return m_pScriptVehicle; }
-	void			SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }
+	void								SetScriptVehicle(CScriptVehicle* pScriptVehicle) { m_pScriptVehicle = pScriptVehicle; }
+	CScriptVehicle*						GetScriptVehicle() { return m_pScriptVehicle; }
+
+	void								SetModelId(int iModelId) { m_iModelId = iModelId; }
+	int									GetModelId() { return m_iModelId; }
 };
 
 class CScriptVehicle : public CScriptEntity
 {
 public:
-	CScriptVehicle() { SetEntity(new CVehicleEntity); };
-	~CScriptVehicle() { delete GetEntity(); };
+							CScriptVehicle() { SetEntity(new CVehicleEntity); };
+							~CScriptVehicle() { delete GetEntity(); };
 
-	CVehicleEntity * GetEntity() { return (CVehicleEntity*)CScriptEntity::GetEntity(); }
+	CVehicleEntity *		GetEntity() { return (CVehicleEntity*)CScriptEntity::GetEntity(); }
 
-	const char* GetScriptClassName() { return "CVehicleEntity"; }
+	const char *			GetScriptClassName() { return "CVehicleEntity"; }
 	
-	void SetPosition(float fX, float fY, float fZ);
-	void SetRotation(float fX, float fY, float fZ);
-	void SetMoveSpeed(float fX, float fY, float fZ);
-	void SetTurnSpeed(float fX, float fY, float fZ);
+	void					SetPosition(float fX, float fY, float fZ);
+	void					SetRotation(float fX, float fY, float fZ);
+	void					SetMoveSpeed(float fX, float fY, float fZ);
+	void					SetTurnSpeed(float fX, float fY, float fZ);
 
-	void SetHealth(int iHealth);
-	int  GetHealth() { return GetEntity()->GetHealth(); };
+	void					SetHealth(float fHealth);
+	float					GetHealth() { return GetEntity()->GetHealth(); };
 
-	void SetLocked(int iLocked);
-	int  GetLocked() { return GetEntity()->GetLockedState(); };
+	void					SetLocked(int iLocked);
+	int						GetLocked() { return GetEntity()->GetLockedState(); };
 
-	void SetEngine(bool bEngineState);
-	bool GetEngine() { return GetEntity()->GetEngineState(); };
+	void					SetEngine(bool bEngineState);
+	bool					GetEngine() { return GetEntity()->GetEngineState(); };
 
-	void SetDirtLevel(int iDirtLevel);
-	int  GetDirtLevel() { return GetEntity()->GetDirtLevel(); };
+	void					SetDirtLevel(int iDirtLevel);
+	int						GetDirtLevel() { return GetEntity()->GetDirtLevel(); };
 };
 
 #endif // CVehicleEntity_h

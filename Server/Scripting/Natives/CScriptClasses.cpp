@@ -122,13 +122,14 @@ int CreateVehicle(int * VM)
 	CVehicleEntity * pVehicle = new CVehicleEntity();
 	pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->FindFreeSlot());
 	CServer::GetInstance()->GetVehicleManager()->Add(pVehicle->GetId(), pVehicle);
+	pVehicle->SetModelId(vehicleModel);
+	pVehicle->SetPosition(vecPosition);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(pVehicle->GetId());
 	bitStream.Write(vehicleModel);
 	bitStream.Write(vecPosition);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
-	pVehicle->SetPosition(vecPosition);
 
 	CScriptVehicle * pScriptVehicle = new CScriptVehicle();
 	pScriptVehicle->SetEntity(pVehicle);

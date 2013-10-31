@@ -148,9 +148,8 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pBitStream->Read(_strName);
 	CString strPlayerName(_strName.C_String());
 
-	// Check if we are the local player(thx for broadcasting to XForce, *keks*)
-	if (g_pCore->GetGame()->GetLocalPlayer()->GetId() == playerId)
-		return;
+	unsigned int uiColor;
+	pBitStream->Read(uiColor);
 
 	// Add the player
 	CPlayerEntity * pEntity = new CPlayerEntity;
@@ -158,6 +157,7 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pEntity->Create();
 	pEntity->SetNick(strPlayerName);
 	pEntity->SetId(playerId);
+	pEntity->SetColor(uiColor);
 
 	// Notify the playermanager that we're having a new player
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, pEntity);
@@ -764,10 +764,10 @@ void SetVehicleHealth(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Is the player pointer valid?
 	if (pVehicle)
 	{
-		int iHealth;
-		pBitStream->Read(iHealth);
+		float fHealth;
+		pBitStream->Read(fHealth);
 
-		pVehicle->SetHealth(iHealth);
+		pVehicle->SetHealth(fHealth);
 	}
 }
 

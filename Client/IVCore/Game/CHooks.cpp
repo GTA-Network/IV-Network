@@ -70,7 +70,7 @@ void RemoveLoadingScreens()
 		*(DWORD *) (iLoadScreenDuration + i * 400) = 0;
 	}
 
-	CPatcher::InstallNopPatch(COffsets::FUNC_RemoveInitialLoadingScreens, 5);
+	//CPatcher::InstallNopPatch(COffsets::FUNC_RemoveInitialLoadingScreens, 5);
 }
 
 IVPlayerInfo * pReturnedPlayerInfo = NULL;

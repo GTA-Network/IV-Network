@@ -12,10 +12,13 @@
 
 #include <CServer.h>
 
-CVehicleEntity::CVehicleEntity()
+CVehicleEntity::CVehicleEntity() :
+	m_pScriptVehicle(nullptr), m_Matrix(Matrix()), m_fHealth(100),
+	m_fPetrolHealth(100.0f), m_fSteeringAngle(0.0f), m_bEngineState(false),
+	m_iLockedState(0), m_iDirtLevel(0), m_fHeading(0.0f),
+	m_iModelId(0)
 {
-	// Add the vehicle to the vehicle manager and set its id
-	//SetId(CServer::GetInstance()->GetVehicleManager()->Add(this));
+
 }
 
 CVehicleEntity::~CVehicleEntity()
@@ -67,13 +70,13 @@ void CScriptVehicle::SetTurnSpeed(float fX, float fY, float fZ)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_TURN_SPEED), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
-void CScriptVehicle::SetHealth(int iHealth)
+void CScriptVehicle::SetHealth(float fHealth)
 {
-	GetEntity()->SetHealth(iHealth);
+	GetEntity()->SetHealth(fHealth);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(iHealth);
+	bitStream.Write(fHealth);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_HEALTH), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
@@ -106,5 +109,3 @@ void CScriptVehicle::SetDirtLevel(int iDirtLevel)
 	bitStream.Write(iDirtLevel);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
-
-

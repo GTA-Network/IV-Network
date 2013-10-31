@@ -17,8 +17,8 @@ extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
 
 #define sub_7D5220 ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
-#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458))
-#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134))
+#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458)) //playerPool ?
+#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134)) //localPlayerId ?
 
 bool isHandleLocalPlayerSpawnAlreadyCalled = false;
 

@@ -111,6 +111,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Reset();
 			bitStream.Write(i);
 			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetName().Get());
+			bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt(i)->GetColor());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, playerId, false);
 		}
 	}
@@ -121,7 +122,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		{
 			bitStream.Reset();
 			bitStream.Write(playerId);
-			bitStream.Write(strName.Get());
+			bitStream.Write(pPlayer->GetName().Get());
+			bitStream.Write(pPlayer->GetColor());
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE, i, false);
 		}
 	}
@@ -134,7 +136,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Reset();
 			CVehicleEntity * pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(i);
 			bitStream.Write(pVehicle->GetId());
-			bitStream.Write(/*pVehicle->GetModelId()*/90);
+			bitStream.Write(pVehicle->GetModelId());
 
 			CVector3 vecPosition;
 			pVehicle->GetPosition(vecPosition);
