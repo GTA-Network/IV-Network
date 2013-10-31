@@ -587,7 +587,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		g_pCore->GetChat()->Output(sMessage.C_String());
 }
 
-void RespawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	CVector3 spawnPos;
 	pBitStream->Read(spawnPos);
@@ -879,7 +879,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
-		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), RespawnPlayer);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), SpawnPlayer);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);
@@ -928,7 +928,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL));
-		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_RESPAWN));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN));
 
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION));

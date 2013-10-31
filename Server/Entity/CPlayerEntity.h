@@ -194,7 +194,7 @@ public:
 	bool		IsOnFoot() { return true; }
 	void		GiveWeapon(int id, int uiAmmo);
 
-	void		Respawn(float fX, float fY, float fZ, float fA);
+	void		Spawn(float fX, float fY, float fZ, float fA);
 };
 
 #endif // CPlayerEntity_h

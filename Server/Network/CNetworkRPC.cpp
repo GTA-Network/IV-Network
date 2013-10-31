@@ -295,7 +295,7 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			RakNet::BitStream bitStream;
 			bitStream.Write(CVector3(DEFAULT_SPAWN_POSITION)); //spawnPos
 			bitStream.Write(0.0f); //fHeading
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_RESPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 		CLogFile::Printf("[spawn] %s has requestred a spawn.", pPlayer->GetName().Get());
 	}
