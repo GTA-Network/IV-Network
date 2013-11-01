@@ -524,7 +524,7 @@ unsigned CPlayerEntity::GetScriptingHandle()
 
 void CPlayerEntity::SetHealth(float fHealth)
 {
-	m_pPlayerPed->SetHealth(fHealth);
+	CIVScript::SetCharHealth(GetScriptingHandle(), fHealth + 100);
 }
 
 float CPlayerEntity::GetHealth()
