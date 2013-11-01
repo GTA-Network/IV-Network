@@ -4,10 +4,13 @@
 class CChat
 {
 private:
-	bool m_bVisible;
-	CString m_szMessages[CHAT_MAX_LINES];
-	bool m_bTypeing;
-	CString m_szTypeing;
+	bool		m_bVisible;
+	CString		m_szMessages[CHAT_MAX_LINES];
+	bool		m_bTypeing;
+	CString		m_szTypeing;
+	int			m_iCurrent;
+	CString		m_szPlayerMessages[CHAT_MAX_LINES];
+	int			m_iScroll;
 
 public:
 	CChat();
@@ -21,6 +24,9 @@ public:
 
 	void HandleUserInput(unsigned int uMsg, WPARAM dwChar);
 	void Clear();
+
+private:
+	void Log(CString text);
 };
 
 #endif

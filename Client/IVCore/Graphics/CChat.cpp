@@ -7,18 +7,25 @@
 extern CCore * g_pCore;
 
 CChat::CChat() :
-	m_bVisible(false), m_bTypeing(false)
+	m_bVisible(false), m_bTypeing(false), m_iCurrent(0),
+	m_iScroll(CHAT_MAX_LINES - CHAT_RENDER_LINES)
 {
 	for (int i = 0; i < CHAT_MAX_LINES; ++i)
-		m_szMessages[i] = CString("");
+		m_szMessages[i] = "";
 
-	m_szTypeing = CString("");
+	for (int i = 0; i < CHAT_MAX_LINES; ++i)
+		m_szPlayerMessages[i] = "";
+
+	m_szTypeing = "";
 }
 
 CChat::~CChat()
 {
 	for (int i = 0; i < CHAT_MAX_LINES; ++i)
-		delete [] m_szMessages[i];
+		delete[] m_szMessages[i];
+
+	for (int i = 0; i < CHAT_MAX_LINES; ++i)
+		delete[] m_szPlayerMessages[i];
 
 	delete [] m_szTypeing;
 }
@@ -53,7 +60,7 @@ void CChat::Render()
 	for (int i = 0; i < CHAT_RENDER_LINES; ++i)
 	{
 		char* text = new char[CHAT_MAX_CHAT_LENGTH];
-		strcpy_s(text, CHAT_MAX_CHAT_LENGTH, m_szMessages[CHAT_MAX_LINES - CHAT_RENDER_LINES + i].Get());
+		strcpy_s(text, CHAT_MAX_CHAT_LENGTH, m_szMessages[m_iScroll + i].Get());
 		 
 		DWORD color = D3DCOLOR_ARGB(255, 255, 255, 255);
 		float fX = 26.0f;
@@ -93,12 +100,20 @@ void CChat::Print(CString text)
 {
 	text = text.Substring(0, CHAT_MAX_CHAT_LENGTH);
 
-	delete [] m_szMessages[0];
-
 	for (int i = 0; i < CHAT_MAX_LINES-1; ++i)
 		m_szMessages[i] = m_szMessages[i + 1];
 
 	m_szMessages[CHAT_MAX_LINES - 1] = text;
+}
+
+void CChat::Log(CString text)
+{
+	text = text.Substring(0, CHAT_MAX_CHAT_LENGTH);
+
+	for (int i = 0; i < CHAT_MAX_LINES - 1; ++i)
+		m_szPlayerMessages[i] = m_szPlayerMessages[i + 1];
+
+	m_szPlayerMessages[CHAT_MAX_LINES - 1] = text;
 }
 
 void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
@@ -106,9 +121,48 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 	if (!m_bVisible)
 		return;
 
-	if (uMsg == WM_CHAR)
+	if (uMsg == WM_KEYDOWN)
 	{
-		if (dwChar == VK_ESCAPE)
+		if (dwChar == VK_UP && m_bTypeing)
+		{
+			if (m_iCurrent > -1)
+			{
+				m_iCurrent -= 1;
+				m_szTypeing = m_szPlayerMessages[m_iCurrent];
+			}
+		}
+		else if (dwChar == VK_DOWN && m_bTypeing)
+		{
+			if (m_iCurrent < CHAT_MAX_LINES - 1)
+			{
+				m_iCurrent += 1;
+				m_szTypeing = m_szPlayerMessages[m_iCurrent];
+			}
+			else
+				m_szTypeing.Clear();
+		}
+		else if (dwChar == VK_PRIOR && m_bTypeing)
+		{
+			if (m_iScroll > CHAT_RENDER_LINES)
+				m_iScroll -= 1;
+		}
+		else if (dwChar == VK_NEXT && m_bTypeing)
+		{
+			if (m_iScroll < CHAT_MAX_LINES - CHAT_RENDER_LINES)
+				m_iScroll += 1;
+		}
+		else if (dwChar == VK_HOME && m_bTypeing)
+		{
+			m_iScroll -= CHAT_RENDER_LINES;
+		}
+		else if (dwChar == VK_END && m_bTypeing)
+		{
+			m_iScroll += CHAT_MAX_LINES - CHAT_RENDER_LINES;
+		}
+	}
+	else if (uMsg == WM_CHAR)
+	{
+		if (dwChar == VK_ESCAPE && m_bTypeing)
 		{
 			m_bTypeing = false;
 		}
@@ -120,6 +174,8 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			{
 				if (g_pCore->GetNetworkManager() && g_pCore->GetNetworkManager()->IsConnected())
 				{
+					Log(m_szTypeing);
+
 					if (m_szTypeing.GetChar(0) == '/')
 					{
 						size_t sCommandEnd = m_szTypeing.Find(" ");
@@ -153,6 +209,7 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		{
 			m_bTypeing = true;
 			m_szTypeing.Clear();
+			m_iCurrent = CHAT_MAX_LINES;
 
 			CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);
 		}
