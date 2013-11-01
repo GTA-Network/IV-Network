@@ -288,10 +288,74 @@ void _declspec(naked) CPlane_ProcessInput_Hook()
 	}
 }
 
+IVPed* g_pPadFromPed_Ped = nullptr;
+IVPad* syncPad = nullptr;
+
+IVPad* GetPadFromPlayerPed(IVPed* pPed)
+{
+	if (g_pPadFromPed_Ped && g_pPadFromPed_Ped->m_bytePlayerNumber == 0 && g_pPadFromPed_Ped->m_byteIsPlayerPed)
+	{
+		// return the local player pad
+		return ((IVPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
+	}
+	else if (g_pPadFromPed_Ped->m_byteIsPlayerPed)
+	{
+		// Do we have a valid ped pointer?
+		if (g_pPadFromPed_Ped)
+		{
+			// Get the remote players context data
+			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *) g_pPadFromPed_Ped);
+
+			// Do we have a valid context data?
+			if (pContextData)
+			{
+#if 0 // Disabled maybe not needed
+				for (int i = 0; i < INPUT_COUNT; i++)
+				{
+					IVPadData * pPadData = &pContextData->GetPad()->GetPad()->m_padData[i];
+
+					if (pPadData->m_pHistory)
+					{
+						pPadData->m_byteHistoryIndex++;
+
+						if (pPadData->m_byteHistoryIndex >= MAX_HISTORY_ITEMS)
+							pPadData->m_byteHistoryIndex = 0;
+
+						pPadData->m_pHistory->m_historyItems[pPadData->m_byteHistoryIndex].m_byteValue = pPadData->m_byteLastValue;
+						pPadData->m_pHistory->m_historyItems[pPadData->m_byteHistoryIndex].m_dwLastUpdate = CGameFunction::GetTimeOfDay();
+					}
+				}
+#endif
+				// return our sync pad
+				return pContextData->GetPad()->GetPad();
+			}
+		}
+	}
+	return nullptr;
+}
+
+void _declspec(naked) GetPadFromPed()
+{
+	_asm
+	{
+		mov g_pPadFromPed_Ped, ecx
+			pushad
+	}
+
+	syncPad = GetPadFromPlayerPed(g_pPadFromPed_Ped);
+
+	_asm
+	{
+		popad
+			mov eax, syncPad
+			retn
+	}
+}
+
 void CContextSwitch::InstallKeySyncHooks()
 {
 	// CPlayerPed::ProcessInput
-	CPatcher::InstallMethodPatch((COffsets::VAR_CPlayerPed__VFTable + 0x74), (DWORD)CPlayerPed__ProcessInput_Hook);
+	/*CPatcher::InstallMethodPatch((COffsets::VAR_CPlayerPed__VFTable + 0x74), (DWORD)CPlayerPed__ProcessInput_Hook);
 	
 	// CAutomobile::ProcessInput
 	CPatcher::InstallMethodPatch((COffsets::VAR_CAutomobile__VFTable + 0x74), (DWORD)CAutomobile_ProcessInput_Hook);
@@ -309,5 +373,7 @@ void CContextSwitch::InstallKeySyncHooks()
 	CPatcher::InstallMethodPatch((COffsets::VAR_CHeli__VFTable + 0x74), (DWORD)CHeli_ProcessInput_Hook);
 	
 	// CPlane::ProcessInput
-	CPatcher::InstallMethodPatch((COffsets::VAR_CPlane__VFTable + 0x74), (DWORD)CPlane_ProcessInput_Hook);
+	CPatcher::InstallMethodPatch((COffsets::VAR_CPlane__VFTable + 0x74), (DWORD)CPlane_ProcessInput_Hook);*/
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA15320, (DWORD) GetPadFromPed);
 }
