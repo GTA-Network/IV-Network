@@ -776,9 +776,6 @@
     <ClCompile Include="..\..\Libraries\lua\lzio.c">
       <Filter>Source Files\Libraries\lua</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\CChatBox.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="Game\CContextSwitch.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -1563,9 +1560,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Libraries\lua\lzio.h">
       <Filter>Source Files\Libraries\lua</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\CChatBox.h">
-      <Filter>Header Files\GUI</Filter>
     </ClInclude>
     <ClInclude Include="Game\CContextSwitch.h">
       <Filter>Header Files\Game</Filter>

@@ -367,7 +367,7 @@ _declspec(naked) void CTaskSimpleStartVehicle__Process()
 
 void __cdecl renderMenus() //render Main and pause menu
 {
-	//g_pCore->GetChat()->Outputf(false, "sub_4774A0()");
+	//g_pCore->GetChat()->Print("sub_4774A0()");
 	//*(DWORD*) (g_pCore->GetBase() + 0x104E130) = 0; // 1 = blink, but i wagt hide it.
 	//*(BYTE*) (g_pCore->GetBase() + 0x104E1D8) = 1;
 }
@@ -375,12 +375,12 @@ void __cdecl renderMenus() //render Main and pause menu
 void __cdecl sub_47F080()
 {
 	g_pCore->OnGameUpdate();
-	//g_pCore->GetChat()->Outputf(false, "sub_47F080()");
+	//g_pCore->GetChat()->Print("sub_47F080()");
 }
 
 void __cdecl sub_47BA60()
 {
-	//g_pCore->GetChat()->Outputf(false, "sub_47BA60()");
+	//g_pCore->GetChat()->Print("sub_47BA60()");
 }
 
 void __cdecl runStartupScript()

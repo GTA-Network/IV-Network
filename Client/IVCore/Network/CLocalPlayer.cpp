@@ -99,7 +99,7 @@ void CLocalPlayer::DoDeathCheck()
 		GetKillInfo(&playerId, &vehicleId,&weaponId);
 
 		CLogFile::Printf("HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
-		g_pCore->GetChat()->Outputf(false, "HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
+		g_pCore->GetChat()->Print(CString("HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId));
 
 		// Send the death notification to the server
 		BitStream bsSend;

@@ -32,13 +32,13 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	if (iVehicleModel == 124 || iVehicleModel == 125 || iVehicleModel == 126)
 	{
-		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes big FPS drop and invisible (%i) !!!", iVehicleModel).Get());
+		g_pCore->GetChat()->Print(CString("!!! This vehicle is disabled, because makes big FPS drop and invisible (%i) !!!", iVehicleModel).Get());
 		return;
 	}
 
 	if (iVehicleModel == 157 || iVehicleModel == 158 || iVehicleModel == 159)
 	{
-		g_pCore->GetChat()->Output(CString("!!! This vehicle is disabled, because makes crash we will fix it (%i) (disabled boat in TBoGT) !!!", iVehicleModel).Get());
+		g_pCore->GetChat()->Print(CString("!!! This vehicle is disabled, because makes crash we will fix it (%i) (disabled boat in TBoGT) !!!", iVehicleModel).Get());
 		return;
 	}
 
@@ -50,7 +50,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 
 	if (iVehicleModelIndex == -1)
 	{
-		g_pCore->GetChat()->Output(CString("!!! 0x%X ModelHash has no model index !!!", dwModelHash).Get());
+		g_pCore->GetChat()->Print(CString("!!! 0x%X ModelHash has no model index !!!", dwModelHash).Get());
 		return;
 	}
 

@@ -134,7 +134,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Notify the client
 	g_pCore->GetChat()->Clear();
-	g_pCore->GetChat()->Outputf(true, "#16C5F2 Successfully connected to %s...", g_pCore->GetServerName().Get());
+	g_pCore->GetChat()->Print(CString("#16C5F2Successfully connected to %s...", g_pCore->GetServerName().Get()));
 
 	// whitout this two line below playerRequestSpawn never called
 	CIVScript::DoScreenFadeInUnhacked(0);
@@ -197,7 +197,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (pPlayer)
 		{
 			// Output the message
-			g_pCore->GetChat()->Outputf(true, "#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), strInput.C_String());
+			g_pCore->GetChat()->Print(CString("#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), strInput.C_String()));
 		}
 	}
 }
@@ -570,7 +570,7 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Output(sMessage.C_String());
+		g_pCore->GetChat()->Print(sMessage.C_String());
 	}
 }
 
@@ -584,7 +584,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Output(sMessage.C_String());
+		g_pCore->GetChat()->Print(sMessage.C_String());
 }
 
 void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -614,7 +614,7 @@ void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	vecPosition.fZ += 1.0f;
 
 
-	g_pCore->GetChat()->Outputf(false, "%i %i %f %f %f", vehicleId, vehicleModel, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+	g_pCore->GetChat()->Print(CString("%i %i %f %f %f", vehicleId, vehicleModel, vecPosition.fX, vecPosition.fY, vecPosition.fZ));
 
 	CVehicleEntity * pVehicle = new CVehicleEntity(vehicleModel, vecPosition, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 	if (pVehicle) 

@@ -131,7 +131,7 @@ void CNetworkManager::Connect(CString strHost, unsigned short usPort, CString st
 	}
 
 	// Output the connection message
-	g_pCore->GetChat()->Outputf(true, "#16C5F2%s", strMessage.Get());
+	g_pCore->GetChat()->Print(CString("#16C5F2%s", strMessage.Get()));
 }
 
 void CNetworkManager::Disconnect(bool bShowMessage)
@@ -153,7 +153,7 @@ void CNetworkManager::Disconnect(bool bShowMessage)
 
 	// Should we output a message?
 	if(bShowMessage)
-		g_pCore->GetChat()->Outputf(true, "#16C5F2The server connection closed.");
+		g_pCore->GetChat()->Print("#16C5F2The server connection closed.");
 }
 
 void CNetworkManager::Shutdown(int iBlockDuration, bool bShowMessage)
@@ -225,7 +225,7 @@ void CNetworkManager::UpdateNetwork()
 		{
 			case ID_NO_FREE_INCOMING_CONNECTIONS:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2The server is full. Rerying...");
+				g_pCore->GetChat()->Print("#16C5F2The server is full. Rerying...");
 
 				// Set the network state
 				SetNetworkState(NETSTATE_TIMEOUT);
@@ -237,7 +237,7 @@ void CNetworkManager::UpdateNetwork()
 
 			case ID_DISCONNECTION_NOTIFICATION:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2The server connection closed.");
+				g_pCore->GetChat()->Print("#16C5F2The server connection closed.");
 				
 				// Set the network state
 				SetNetworkState(NETSTATE_DISCONNECTED);
@@ -249,7 +249,7 @@ void CNetworkManager::UpdateNetwork()
 
 			case ID_INVALID_PASSWORD:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2Incorrect server password.");
+				g_pCore->GetChat()->Print("#16C5F2Incorrect server password.");
 
 				// Set the network state
 				SetNetworkState(NETSTATE_DISCONNECTED);
@@ -258,7 +258,7 @@ void CNetworkManager::UpdateNetwork()
 
 			case ID_CONNECTION_BANNED:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2You're banned from this server.");
+				g_pCore->GetChat()->Print("#16C5F2You're banned from this server.");
 
 				// Set the network state
 				SetNetworkState(NETSTATE_DISCONNECTED);
@@ -267,7 +267,7 @@ void CNetworkManager::UpdateNetwork()
 
 			case ID_CONNECTION_LOST:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2Lost connection to the server. Reconnecting...");
+				g_pCore->GetChat()->Print("#16C5F2Lost connection to the server. Reconnecting...");
 
 				// Set the network state
 				SetNetworkState(NETSTATE_TIMEOUT);
@@ -288,7 +288,7 @@ void CNetworkManager::UpdateNetwork()
 
 			case ID_CONNECTION_ATTEMPT_FAILED:
 			{
-				g_pCore->GetChat()->Outputf(true, "#16C5F2Failed to connect to the server. Retrying...");
+				g_pCore->GetChat()->Print("#16C5F2Failed to connect to the server. Retrying...");
 
 				// Set the network state
 				SetNetworkState(NETSTATE_TIMEOUT);

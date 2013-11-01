@@ -22,7 +22,7 @@ extern unsigned int l_U40;
 unsigned int pObj;
 CIVTrain * pTrain;
 
-bool CClientCommands::HandleUserInput(std::string strCommand, std::string strParameters)
+bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 {
 	if(strCommand == "q"  || strCommand == "quit")
 	{
@@ -46,7 +46,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if (!file)
 		{
-			g_pCore->GetChat()->Output("Failed to open 'SavePositions.log'");
+			g_pCore->GetChat()->Print("Failed to open 'SavePositions.log'");
 			return true;
 		}
 
@@ -66,30 +66,28 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 				pVehicle->GetRotation(vecRotation);
 				DWORD dwColors[5];
 				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4]);
-				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.GetLength() > 0 ? " // " : "", strParameters.GetLength() > 0 ? strParameters.Get() : "");
 			}
 		}
 		else
 		{
 			pLocalPlayer->GetPosition(vecPosition);
 			int iModelId = pLocalPlayer->GetPlayerPed()->GetModelIndex();
-			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetHeading(), strParameters.size() > 0 ? " // " : "", strParameters.size() > 0 ? strParameters.c_str() : "");
+			fprintf_s(file, "PlayerData(%d, %f, %f, %f, %f);%s%s\n", iModelId, vecPosition.fX, vecPosition.fY, vecPosition.fZ, pLocalPlayer->GetHeading(), strParameters.GetLength() > 0 ? " // " : "", strParameters.GetLength() > 0 ? strParameters.Get() : "");
 		}
 
 		fclose(file);
-		g_pCore->GetChat()->Output("Position data saved to 'SavePositions.log'");
+		g_pCore->GetChat()->Print("Position data saved to 'SavePositions.log'");
 		return true;
 	}
 #ifdef _DEBUG
 	else if(strCommand == "cv")
 	{
-		int iVehicleType = atoi(strParameters.c_str());
-
 		CVector3 vecCreatePos; 
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecCreatePos);
 		vecCreatePos.fX += 4;
 
-		CVehicleEntity * pVehicle = new CVehicleEntity(iVehicleType, vecCreatePos, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
+		CVehicleEntity * pVehicle = new CVehicleEntity(atoi(strParameters.Get()), vecCreatePos, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
 		if(pVehicle) {
 			// Add our vehicle
 			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle));
@@ -125,7 +123,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "giveweapon")
 	{
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), (CIVScript::eWeapon)atoi(strParameters.c_str()), 100, true);
+		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), (CIVScript::eWeapon)atoi(strParameters.Get()), 100, true);
 		return true;
 	}
 	else if(strCommand == "xaxis")
@@ -133,7 +131,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CVector3 vecPositon;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
 
-		vecPositon.fX += atoi(strParameters.c_str());
+		vecPositon.fX += atoi(strParameters.Get());
 		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
 		return true;
 	}
@@ -142,7 +140,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CVector3 vecPositon;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
 
-		vecPositon.fY += atoi(strParameters.c_str());
+		vecPositon.fY += atoi(strParameters.Get());
 		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
 		return true;
 	}
@@ -151,7 +149,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 		CVector3 vecPositon;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPositon);
 
-		vecPositon.fZ += atoi(strParameters.c_str());
+		vecPositon.fZ += atoi(strParameters.Get());
 		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
 		return true;
 	}
@@ -167,19 +165,19 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "time")
 	{
-		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.c_str()),0);
-		CGameFunction::SetTimeOfDay(atoi(strParameters.c_str()), 0);
+		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.Get()), 0);
+		CGameFunction::SetTimeOfDay(atoi(strParameters.Get()), 0);
 		return true;
 	}
 	else if(strCommand == "setmodel")
 	{
-		g_pCore->GetGame()->GetLocalPlayer()->SetModel(atoi(strParameters.c_str()));
+		g_pCore->GetGame()->GetLocalPlayer()->SetModel(atoi(strParameters.Get()));
 		return true;
 	}
 	else if(strCommand == "setclothes")
 	{
-		CString strParameter = CString("%s",strParameters.c_str());
-		g_pCore->GetChat()->Outputf(false, strParameter.Get());
+		CString strParameter = CString("%s", strParameters.Get());
+		g_pCore->GetChat()->Print(strParameter.Get());
 
 		// Get the end of the command
 		size_t sCommandEnd = strParameter.Find(" "); 
@@ -202,7 +200,7 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 			strParams = strParameter.Substring((sCommandEnd + 1), strParameter.GetLength());
 		}
 
-		g_pCore->GetChat()->Outputf(false, "Setting clothes part %d to %d",atoi(strCommand2.c_str()), atoi(strParams.c_str()));
+		g_pCore->GetChat()->Print(CString("Setting clothes part %d to %d", atoi(strCommand2.c_str()), atoi(strParams.c_str())));
 		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strCommand2.c_str()), atoi(strParams.c_str()));
 
 		return true;
@@ -234,20 +232,20 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "getvehpos")
 	{
-		int iVehicle = atoi(strParameters.c_str());
+		int iVehicle = atoi(strParameters.Get());
 
 		if(g_pCore->GetGame()->GetVehicleManager()->DoesExists(iVehicle)) {
 			CVector3 vecPosition;
 			g_pCore->GetGame()->GetVehicleManager()->GetAt(iVehicle)->GetPosition(vecPosition);
-			PTR_CHAT->Outputf(false,"Position of vehicle %d: %f, %f,%f",iVehicle, vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+			PTR_CHAT->Print(CString("Position of vehicle %d: %f, %f,%f", iVehicle, vecPosition.fX, vecPosition.fY, vecPosition.fZ));
 		}
 		return true;
 	}
 	else if(strCommand == "ivhelp")
 	{
-		PTR_CHAT->Output("List of Default IV:N Commands...");
-		PTR_CHAT->Output("** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
-		PTR_CHAT->Output("** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
+		PTR_CHAT->Print("List of Default IV:N Commands...");
+		PTR_CHAT->Print("** /cv /respawn /debug /weapon /cp /spawn /engine /save /giveweapon /xaxis /time");
+		PTR_CHAT->Print("** /setmodel /testweapon /ready /parachute /bahama /spawnvehicles /getvehpos");
 		return true;
 	}
 	else if(strCommand == "createtrain")
@@ -264,12 +262,12 @@ bool CClientCommands::HandleUserInput(std::string strCommand, std::string strPar
 	}
 	else if(strCommand == "sethealth")
 	{
-		g_pCore->GetGame()->GetLocalPlayer()->SetHealth(atoi(strParameters.c_str()));
+		g_pCore->GetGame()->GetLocalPlayer()->SetHealth(atoi(strParameters.Get()));
 		return true;
 	}
 	else if (strCommand == "setarmour")
 	{
-		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.c_str()));
+		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.Get()));
 		return true;
 	}
 #endif

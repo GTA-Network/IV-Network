@@ -16,7 +16,6 @@
 WNDPROC           m_wWndProc = NULL;
 extern CCore * g_pCore;
 extern bool g_bDisplayData;
-std::list< CString >		pressedKeys;
 
 CString GetKeyNameByCode(DWORD dwCode)
 {
@@ -166,10 +165,10 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				{
 					// Take a screen shot
 					if(CSnapShot::Take())
-						g_pCore->GetChat()->Outputf(false, "Screen shot captured.");
+						g_pCore->GetChat()->Print(CString("Screen shot captured."));
 					else
 					{
-						g_pCore->GetChat()->Outputf(false, "Screen shot capture failed (%s).", CSnapShot::GetError().Get());
+						g_pCore->GetChat()->Print(CString("Screen shot capture failed (%s).", CSnapShot::GetError().Get()));
 						CSnapShot::Reset();
 					}
 					break;
@@ -177,67 +176,8 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 		}
 
-		if (uMsg == WM_CHAR)
-		{
-			if (wParam == 't' || wParam == 'T' || wParam == '`') // 0x54
-			{
-				
-				/*if (g_pCore->GetChatBox()->IsVisible())
-				{
-					if (g_pCore->GetChatBox()->IsEnabled() && g_pCore->GetChatBox()->GetInputText() == "")
-						g_pCore->GetChatBox()->Disable();
-					else
-						g_pCore->GetChatBox()->Enable();
-				}*/
-			}
-		}
-
 		if(g_pCore->GetChat())
-			 g_pCore->GetChat()->HandleUserInput(uMsg, (DWORD)wParam);
-
-		// Is the chat input not visible?
-		if(g_pCore->GetChat() && !g_pCore->GetChat()->IsInputVisible())
-		{
-			// Get the key code string
-			CString strCode = GetKeyNameByCode((DWORD)wParam);
-
-			// Was something presses?
-			if(!strCode.IsEmpty())
-			{
-				CString strState;
-
-				// Get the key state
-				if(uMsg == WM_KEYUP)
-                {
-                    // Check if key was pressed beforehand
-                    if(std::find(pressedKeys.begin(), pressedKeys.end(), strCode) != pressedKeys.end())
-                    {
-						pressedKeys.remove(strCode);
-						strState = "up";
-                    }
-				}
-				else if(uMsg == WM_KEYDOWN)
-				{
-                    // Check if key was pressed beforehand
-                    if(std::find(pressedKeys.begin(), pressedKeys.end(), strCode) == pressedKeys.end())
-                    {
-                        pressedKeys.push_back(strCode);
-                        strState = "down";
-                    }
-                }
-
-				// Is the state valid?
-				if(!strState.IsEmpty())
-				{
-					/*// Call the script event
-					CSquirrelArguments pArguments;
-					pArguments.push(strCode);
-					pArguments.push(strState);
-					pGame->GetClientScriptingManager()->GetEvents()->Call("onClientKeyPress", &pArguments);
-					*/
-				}
-			}
-		}
+			 g_pCore->GetChat()->HandleUserInput(uMsg, wParam);
     }
 
     return CallWindowProc(m_wWndProc, hWnd, uMsg, wParam, lParam);

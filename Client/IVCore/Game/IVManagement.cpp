@@ -50,7 +50,7 @@ void IVManagement::ProcessTrain(LPVOID lpParameter)
 	// Wait until the train finished initialise
 	Sleep(3000);
 
-	PTR_CHAT->Output("Train starting driving away..");
+	PTR_CHAT->Print("Train starting driving away..");
 	CLogFile::Printf("Train starting driving away..");
 
 	// Update train speed
@@ -64,7 +64,7 @@ void IVManagement::ProcessTrain(LPVOID lpParameter)
 		if(!pTrainHandle->pCIVTrain->GetVehicleWagon(iWagonProcess))
 			continue;
 
-		PTR_CHAT->Outputf(false, "Train Wagon %d starting driving away",iWagonProcess);
+		PTR_CHAT->Print(CString("Train Wagon %d starting driving away", iWagonProcess));
 		CLogFile::Printf("Train Wagon %d starting driving away",iWagonProcess);
 
 		// Let the drive start driving forward

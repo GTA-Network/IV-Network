@@ -93,7 +93,7 @@ bool CCore::Initialise()
 	m_pNetworkManager = new CNetworkManager;
 	
 	// Create the chat instance
-	m_pChat = new CChat(30, 80);
+	m_pChat = new CChat();
 
 	m_pIVStartupScript = new CIVStartupScript;
 	
@@ -206,10 +206,6 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 {
 	PRINT_FUNCTION
 
-	// Setup the chat
-	if(m_pChat)
-		m_pChat->Setup(pPresentationParameters);
-
 	// Setup audio manager
 	m_pAudioManager = new CAudioManager();
 
@@ -218,9 +214,6 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
-
-	/*m_pChatBox = new CChatBox(m_pGUI);
-	m_pChatBox->Initialize();*/
 
 	// Initialize the main menu elements
 	m_pMainMenu = new CMainMenu(m_pGUI);
@@ -260,9 +253,9 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		return;
 
 	// Render our chat instance
-	if (m_pChat && m_pChat->IsVisible())
+	if (m_pChat)
 		m_pChat->Render();
-
+	
 	// Render our gui instance
 	if (m_pGUI)
 		m_pGUI->Render();
@@ -270,9 +263,8 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #ifdef _DEBUG
 	char szNetworkStats[10000];
 	memset(szNetworkStats, 0, sizeof(szNetworkStats));
-	
 	RakNet::StatisticsToString(m_pNetworkManager->GetRakPeer()->GetStatistics(RakNet::UNASSIGNED_SYSTEM_ADDRESS), szNetworkStats, 2);
-	m_pGraphics->DrawText(26.0f, 500, D3DCOLOR_ARGB((unsigned char) 255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool) true, szNetworkStats);
+	m_pGraphics->DrawText(26.0f, 500.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, szNetworkStats);
 #endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner
@@ -333,7 +325,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
 	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
 	{
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
+		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on .....").Get();
 		if (m_byteLoadingStyle == 49)
 			m_byteLoadingStyle = 0;
 	}
@@ -350,15 +342,15 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	strInformation.Clear();
 
 	// Before rendering FPS-Counter instance, update FPS display
-	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, (bool)true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
+	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone())
 	{
 		if(CSnapShot::HasSucceeded())
-			m_pChat->Outputf(false, "Screen shot written (%s).", CSnapShot::GetWriteName().Get());
+			m_pChat->Print(CString("Screen shot written (%s).", CSnapShot::GetWriteName().Get()));
 		else
-			m_pChat->Outputf(false, "Screen shot write failed (%s).", CSnapShot::GetError().Get());
+			m_pChat->Print(CString("Screen shot write failed (%s).", CSnapShot::GetError().Get()));
 
 		CSnapShot::Reset();
 	}

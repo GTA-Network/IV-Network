@@ -404,7 +404,7 @@ void CGame::SetupGame()
 BYTE CGame::CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int siThreadId, int iPriority, const char * szThreadName, const char *szComment)
 {
 	CLogFile::Printf("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment);
-	g_pCore->GetChat()->Outputf(false, "[%s]: 0x%p, %s, %s" ,__FUNCTION__, dwStartAddress, szThreadName, szComment);
+	g_pCore->GetChat()->Print(CString("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment));
 
 	signed int EBP_iThreadId;
 	if(siThreadId < 0x4000)

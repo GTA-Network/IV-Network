@@ -273,7 +273,6 @@
     <ClCompile Include="General\CModule.cpp" />
     <ClCompile Include="General\CModuleManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
-    <ClCompile Include="Graphics\CChatBox.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />
@@ -527,7 +526,6 @@
     <ClInclude Include="General\CModuleManager.h" />
     <ClInclude Include="General\Ptrs.h" />
     <ClInclude Include="Graphics\CChat.h" />
-    <ClInclude Include="Graphics\CChatBox.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Proxy.h" />
