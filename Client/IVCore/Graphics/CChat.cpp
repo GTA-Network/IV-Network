@@ -103,6 +103,9 @@ void CChat::Print(CString text)
 
 void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 {
+	if (!m_bVisible)
+		return;
+
 	if (uMsg == WM_CHAR)
 	{
 		if (dwChar == VK_ESCAPE)
