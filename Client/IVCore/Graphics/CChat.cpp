@@ -1,4 +1,4 @@
-#include <Common.h>
+﻿#include <Common.h>
 #include <CCore.h>
 #include <Scripting/CClientCommands.h>
 #include "CChat.h"
@@ -8,7 +8,7 @@ extern CCore * g_pCore;
 
 CChat::CChat() :
 	m_bVisible(false), m_bTypeing(false), m_iCurrent(0),
-	m_iScroll(CHAT_MAX_LINES - CHAT_RENDER_LINES), m_iPos(0)
+	m_iScroll(CHAT_MAX_LINES - CHAT_RENDER_LINES), m_iPos(0), m_bInsert(false)
 {
 	for (int i = 0; i < CHAT_MAX_LINES; ++i)
 		m_szMessages[i] = "";
@@ -88,7 +88,16 @@ void CChat::Render()
 		float fX = 58.0f;
 
 		if (m_iPos == -1)
-			g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+		{
+			if (m_bInsert)
+			{
+				for (float f = 0.0f; f < 5.0f; f += 0.1)
+					g_pCore->GetGraphics()->DrawText(fX + f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+			}
+			else
+				g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+
+		}
 
 		for (int i = 0; i < m_szTypeing.GetLength(); ++i)
 		{
@@ -96,7 +105,15 @@ void CChat::Render()
 			fX += g_pCore->GetGraphics()->GetCharacterWidth(m_szTypeing.GetChar(i));
 
 			if (m_iPos == i)
-				g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+			{
+				if (m_bInsert)
+				{
+					for (float f = 0.0f; f < 5.0f; f += 0.1)
+						g_pCore->GetGraphics()->DrawText(fX + f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+				}
+				else
+					g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+			}
 		}
 	}
 }
@@ -176,6 +193,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			if ((m_iPos == -1 && m_szTypeing.GetLength() != 0) || m_iPos < m_szTypeing.GetLength() - 1)
 				++m_iPos;
 		}
+		else if (dwChar == VK_INSERT && m_bTypeing)
+		{
+			m_bInsert = !m_bInsert;
+		}
 	}
 	else if (uMsg == WM_CHAR)
 	{
@@ -221,7 +242,6 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		{
 			if (m_szTypeing.GetLength() > 0 && m_iPos > -1)
 			{
-				//m_szTypeing.Resize((m_szTypeing.GetLength() - 1));
 				m_szTypeing = m_szTypeing.Substring(0, m_iPos) + m_szTypeing.Substring(m_iPos + 1, m_szTypeing.GetLength());
 
 				--m_iPos;
@@ -239,7 +259,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		else if (m_bTypeing && (m_szTypeing.GetLength() < CHAT_MAX_CHAT_LENGTH))
 		{
 			++m_iPos;
-			m_szTypeing = m_szTypeing.Substring(0, m_iPos) + dwChar + m_szTypeing.Substring(m_iPos, m_szTypeing.GetLength());
+			if (m_szTypeing.GetLength() > m_iPos && m_bInsert)
+				m_szTypeing = m_szTypeing.Substring(0, m_iPos) + dwChar + m_szTypeing.Substring(m_iPos + 1, m_szTypeing.GetLength());
+			else
+				m_szTypeing = m_szTypeing.Substring(0, m_iPos) + dwChar + m_szTypeing.Substring(m_iPos, m_szTypeing.GetLength());
 		}
 	}
 }
