@@ -91,7 +91,7 @@ void CChat::Render()
 		{
 			if (m_bInsert)
 			{
-				for (float f = 0.0f; f < 5.0f; f += 0.1)
+				for (float f = 0.0f; f < 5.0f; f += 0.1f)
 					g_pCore->GetGraphics()->DrawText(fX + f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
 			}
 			else
@@ -108,7 +108,7 @@ void CChat::Render()
 			{
 				if (m_bInsert)
 				{
-					for (float f = 0.0f; f < 5.0f; f += 0.1)
+					for (float f = 0.0f; f < 5.0f; f += 0.1f)
 						g_pCore->GetGraphics()->DrawText(fX + f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
 				}
 				else
@@ -227,7 +227,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 					RakNet::BitStream bitStream;
 
 					if (m_szTypeing.GetChar(0) == '/')
+					{
 						bitStream.Write1();
+						m_szTypeing = m_szTypeing.Substring(1, m_szTypeing.GetLength());
+					}
 					else
 						bitStream.Write0();
 
