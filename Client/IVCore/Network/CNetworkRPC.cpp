@@ -246,6 +246,7 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 			case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
 			case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
+			case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
 				{
 					pPlayer->Deserialize(pBitStream);
 					break;

@@ -293,18 +293,19 @@ IVPad* syncPad = nullptr;
 
 IVPad* GetPadFromPlayerPed(IVPed* pPed)
 {
-	if (g_pPadFromPed_Ped && g_pPadFromPed_Ped->m_bytePlayerNumber == 0 && g_pPadFromPed_Ped->m_byteIsPlayerPed)
+	if (pPed && pPed->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed)
 	{
 		// return the local player pad
+		CLogFile::Printf("Return local pad");
 		return ((IVPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
 	}
-	else if (g_pPadFromPed_Ped->m_byteIsPlayerPed)
+	else if (pPed->m_byteIsPlayerPed)
 	{
 		// Do we have a valid ped pointer?
-		if (g_pPadFromPed_Ped)
+		if (pPed)
 		{
 			// Get the remote players context data
-			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *) g_pPadFromPed_Ped);
+			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *) pPed);
 
 			// Do we have a valid context data?
 			if (pContextData)
@@ -326,6 +327,8 @@ IVPad* GetPadFromPlayerPed(IVPed* pPed)
 					}
 				}
 #endif
+
+				CLogFile::Printf("Return remote pad");
 				// return our sync pad
 				return pContextData->GetPad()->GetPad();
 			}
@@ -339,7 +342,7 @@ void _declspec(naked) GetPadFromPed()
 	_asm
 	{
 		mov g_pPadFromPed_Ped, ecx
-			pushad
+		pushad
 	}
 
 	syncPad = GetPadFromPlayerPed(g_pPadFromPed_Ped);
@@ -355,7 +358,7 @@ void _declspec(naked) GetPadFromPed()
 void CContextSwitch::InstallKeySyncHooks()
 {
 	// CPlayerPed::ProcessInput
-	/*CPatcher::InstallMethodPatch((COffsets::VAR_CPlayerPed__VFTable + 0x74), (DWORD)CPlayerPed__ProcessInput_Hook);
+	CPatcher::InstallMethodPatch((COffsets::VAR_CPlayerPed__VFTable + 0x74), (DWORD)CPlayerPed__ProcessInput_Hook);
 	
 	// CAutomobile::ProcessInput
 	CPatcher::InstallMethodPatch((COffsets::VAR_CAutomobile__VFTable + 0x74), (DWORD)CAutomobile_ProcessInput_Hook);
@@ -373,7 +376,7 @@ void CContextSwitch::InstallKeySyncHooks()
 	CPatcher::InstallMethodPatch((COffsets::VAR_CHeli__VFTable + 0x74), (DWORD)CHeli_ProcessInput_Hook);
 	
 	// CPlane::ProcessInput
-	CPatcher::InstallMethodPatch((COffsets::VAR_CPlane__VFTable + 0x74), (DWORD)CPlane_ProcessInput_Hook);*/
+	CPatcher::InstallMethodPatch((COffsets::VAR_CPlane__VFTable + 0x74), (DWORD)CPlane_ProcessInput_Hook);
 
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA15320, (DWORD) GetPadFromPed);
 }

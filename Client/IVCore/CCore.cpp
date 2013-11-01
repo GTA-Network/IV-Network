@@ -246,6 +246,57 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 
 #include <RakNet/RakNetStatistics.h>
 
+CString MakeTaskString(CString strName, CIVTask* pTask)
+{
+	CString str;
+	if (pTask)
+	{
+		str += strName;
+		str += pTask->GetName();
+		str += "\n";
+		if (!pTask->IsSimple() && ((CIVTaskComplex*) pTask)->GetSubTask())
+			str += MakeTaskString("", ((CIVTaskComplex*) pTask)->GetSubTask());
+	}
+
+	return str;
+}
+
+void DrawPedTasks(CIVPed* pPed)
+{
+	CString strTasks;
+
+	/** Prioritry Tasks **/
+	strTasks += "Priority Tasks: \n";
+
+	strTasks += MakeTaskString("PhysicalResponse: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PHYSICAL_RESPONSE));
+	strTasks += MakeTaskString("EventResponseTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_TEMP));
+	strTasks += MakeTaskString("EventResponseNonTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP));
+	strTasks += MakeTaskString("Primary: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY));
+	strTasks += MakeTaskString("Default: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_DEFAULT));
+	strTasks += "\n";
+
+	/**************************************************************************************************/
+
+	strTasks += "Secondary Tasks: \n";
+	strTasks += MakeTaskString("Attack: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_ATTACK));
+	strTasks += MakeTaskString("Duck: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_DUCK));
+	strTasks += MakeTaskString("Say: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_SAY));
+	strTasks += MakeTaskString("Facial Complex: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_FACIAL_COMPLEX));
+	strTasks += MakeTaskString("Partial Anim: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_PARTIAL_ANIM));
+	strTasks += MakeTaskString("IK: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_IK));
+	strTasks += "\n";
+
+	/**************************************************************************************************/
+
+	strTasks += "Movement Tasks: \n";
+	strTasks += MakeTaskString("Movement 1: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN0));
+	strTasks += MakeTaskString("Movement 2: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN1));
+	strTasks += MakeTaskString("Movement 3: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN2));
+
+	g_pCore->GetGraphics()->DrawText(600.0f, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, strTasks.Get());
+	
+}
+
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Has the device been lost?
@@ -311,6 +362,15 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 			strSeconds.AppendF("0%d Second%s", iSeconds, iSeconds > 1 ? "s" : "");
 
 	}
+
+#ifdef _DEBUG
+
+	if (GetGame()->GetLocalPlayer())
+	{
+		DrawPedTasks(GetGame()->GetLocalPlayer()->GetPlayerPed());
+	}
+
+#endif
 
 	// Simulate temporary loading symbol
 	m_byteLoadingStyle++;

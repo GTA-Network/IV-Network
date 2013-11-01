@@ -491,6 +491,22 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			pBitStream->Write(VehiclePacket);
 		}
 		break;
+	case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
+		{
+			CNetworkPlayerPassengerSyncPacket PassengerPacket;
+
+			GetControlState(PassengerPacket.ControlState);
+			GetPosition(PassengerPacket.vecPosition);
+			PassengerPacket.playerArmor = GetArmour();
+			PassengerPacket.playerHealth = GetHealth();
+
+			PassengerPacket.vehicleId = m_vehicleId;
+			PassengerPacket.byteSeatId = m_vehicleSeatId;
+
+			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
+			pBitStream->Write(PassengerPacket);
+		}
+		break;
 	default:
 		CLogFile::Printf("Warning: Sync Package type not implemented %i", pType);
 		break;
@@ -571,6 +587,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 		{
 			CNetworkPlayerPassengerSyncPacket PassengerPacket;
 
+			SetControlState(PassengerPacket.ControlState);
 			SetPosition(PassengerPacket.vecPosition);
 			SetArmour(PassengerPacket.playerArmor);
 			SetHealth(PassengerPacket.playerHealth);
