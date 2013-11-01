@@ -165,21 +165,21 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			else
 				m_szTypeing.Clear();
 		}
-		else if (dwChar == VK_PRIOR && m_bTypeing)
+		else if (dwChar == VK_PRIOR)
 		{
 			if (m_iScroll > CHAT_RENDER_LINES)
 				m_iScroll -= 1;
 		}
-		else if (dwChar == VK_NEXT && m_bTypeing)
+		else if (dwChar == VK_NEXT)
 		{
 			if (m_iScroll < CHAT_MAX_LINES - CHAT_RENDER_LINES)
 				m_iScroll += 1;
 		}
-		else if (dwChar == VK_HOME && m_bTypeing)
+		else if (dwChar == VK_HOME)
 		{
 			m_iScroll -= CHAT_RENDER_LINES;
 		}
-		else if (dwChar == VK_END && m_bTypeing)
+		else if (dwChar == VK_END)
 		{
 			m_iScroll += CHAT_MAX_LINES - CHAT_RENDER_LINES;
 		}
