@@ -989,7 +989,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 						// Send to the server
 						RakNet::BitStream bitStream;
 						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
-						bitStream.Write(m_byteSeat);
+						bitStream.Write(byteSeat);
 						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 						g_pCore->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
