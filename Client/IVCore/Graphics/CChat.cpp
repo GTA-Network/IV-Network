@@ -93,6 +93,8 @@ void CChat::Print(CString text)
 {
 	text = text.Substring(0, CHAT_MAX_CHAT_LENGTH);
 
+	delete [] m_szMessages[0];
+
 	for (int i = 0; i < CHAT_MAX_LINES-1; ++i)
 		m_szMessages[i] = m_szMessages[i + 1];
 
