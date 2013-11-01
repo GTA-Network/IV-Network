@@ -11,6 +11,7 @@ private:
 	int			m_iCurrent;
 	CString		m_szPlayerMessages[CHAT_MAX_LINES];
 	int			m_iScroll;
+	int			m_iPos;
 
 public:
 	CChat();

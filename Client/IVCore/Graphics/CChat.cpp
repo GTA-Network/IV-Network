@@ -8,7 +8,7 @@ extern CCore * g_pCore;
 
 CChat::CChat() :
 	m_bVisible(false), m_bTypeing(false), m_iCurrent(0),
-	m_iScroll(CHAT_MAX_LINES - CHAT_RENDER_LINES)
+	m_iScroll(CHAT_MAX_LINES - CHAT_RENDER_LINES), m_iPos(0)
 {
 	for (int i = 0; i < CHAT_MAX_LINES; ++i)
 		m_szMessages[i] = "";
@@ -59,40 +59,45 @@ void CChat::Render()
 
 	for (int i = 0; i < CHAT_RENDER_LINES; ++i)
 	{
-		char* text = new char[CHAT_MAX_CHAT_LENGTH];
-		strcpy_s(text, CHAT_MAX_CHAT_LENGTH, m_szMessages[m_iScroll + i].Get());
-		 
 		DWORD color = D3DCOLOR_ARGB(255, 255, 255, 255);
 		float fX = 26.0f;
 
-		for (int i = 0; i < CHAT_MAX_CHAT_LENGTH; ++i)
+		for (int i2 = 0; i2 < m_szMessages[m_iScroll + i].GetLength(); ++i2)
 		{
-			if (text[i] == '\0')
-				break;
-
-			if (text[i] != '#')
+			if (m_szMessages[m_iScroll + i].GetChar(i2) != '#')
 			{
-				g_pCore->GetGraphics()->DrawText(fX, fY, color, 1.0f, DT_NOCLIP, true, CString("%c", text[i]).Get());
-				fX += g_pCore->GetGraphics()->GetCharacterWidth(text[i]);
+				g_pCore->GetGraphics()->DrawText(fX, fY, color, 1.0f, DT_NOCLIP, true, m_szMessages[m_iScroll + i].Substring(i2, 1));
+				fX += g_pCore->GetGraphics()->GetCharacterWidth(m_szMessages[m_iScroll + i].GetChar(i2));
 			}
 			else
 			{
 				DWORD tmpcolor = 0;
-				sscanf_s(text + i + 1, "%06x", &tmpcolor);
+				sscanf_s(m_szMessages[m_iScroll + i].Substring(i2 + 1, 6), "%06x", &tmpcolor);
 				color = D3DCOLOR_ARGB(255, ((tmpcolor >> 16) & 0xFF), ((tmpcolor >> 8) & 0xFF), (tmpcolor & 0xFF));
-				i += 6;
+				i2 += 6;
 			}
 		}
 
 		fY += g_pCore->GetGraphics()->GetFontHeight();
-
-		delete [] text;
 	}
 
 	if (m_bTypeing)
 	{
 		g_pCore->GetGraphics()->DrawText(26.0f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "Say:");
-		g_pCore->GetGraphics()->DrawText(58.0f, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, m_szTypeing);
+
+		float fX = 58.0f;
+
+		if (m_iPos == -1)
+			g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+
+		for (int i = 0; i < m_szTypeing.GetLength(); ++i)
+		{
+			g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, m_szTypeing.Substring(i, 1));
+			fX += g_pCore->GetGraphics()->GetCharacterWidth(m_szTypeing.GetChar(i));
+
+			if (m_iPos == i)
+				g_pCore->GetGraphics()->DrawText(fX, fY, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, "|");
+		}
 	}
 }
 
@@ -129,6 +134,7 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			{
 				m_iCurrent -= 1;
 				m_szTypeing = m_szPlayerMessages[m_iCurrent];
+				m_iPos = m_szPlayerMessages[m_iCurrent].GetLength() - 1;
 			}
 		}
 		else if (dwChar == VK_DOWN && m_bTypeing)
@@ -137,6 +143,7 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			{
 				m_iCurrent += 1;
 				m_szTypeing = m_szPlayerMessages[m_iCurrent];
+				m_iPos = m_szPlayerMessages[m_iCurrent].GetLength() - 1;
 			}
 			else
 				m_szTypeing.Clear();
@@ -158,6 +165,16 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		else if (dwChar == VK_END && m_bTypeing)
 		{
 			m_iScroll += CHAT_MAX_LINES - CHAT_RENDER_LINES;
+		}
+		else if (dwChar == VK_LEFT && m_bTypeing)
+		{
+			if (m_iPos > -1)
+				--m_iPos;
+		}
+		else if (dwChar == VK_RIGHT && m_bTypeing)
+		{
+			if ((m_iPos == -1 && m_szTypeing.GetLength() != 0) || m_iPos < m_szTypeing.GetLength() - 1)
+				++m_iPos;
 		}
 	}
 	else if (uMsg == WM_CHAR)
@@ -202,20 +219,27 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		}
 		else if (dwChar == VK_BACK && m_bTypeing)
 		{
-			if (m_szTypeing.GetLength() > 0)
-				m_szTypeing.Resize((m_szTypeing.GetLength() - 1));
+			if (m_szTypeing.GetLength() > 0 && m_iPos > -1)
+			{
+				//m_szTypeing.Resize((m_szTypeing.GetLength() - 1));
+				m_szTypeing = m_szTypeing.Substring(0, m_iPos) + m_szTypeing.Substring(m_iPos + 1, m_szTypeing.GetLength());
+
+				--m_iPos;
+			}
 		}
 		else if((dwChar == 'T' || dwChar == 't') && !m_bTypeing)
 		{
 			m_bTypeing = true;
 			m_szTypeing.Clear();
 			m_iCurrent = CHAT_MAX_LINES;
+			m_iPos = -1;
 
 			CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);
 		}
 		else if (m_bTypeing && (m_szTypeing.GetLength() < CHAT_MAX_CHAT_LENGTH))
 		{
-			m_szTypeing += dwChar;
+			++m_iPos;
+			m_szTypeing = m_szTypeing.Substring(0, m_iPos) + dwChar + m_szTypeing.Substring(m_iPos, m_szTypeing.GetLength());
 		}
 	}
 }
