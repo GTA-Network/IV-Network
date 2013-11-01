@@ -284,7 +284,7 @@ void CScriptPlayer::SetArmour(float fArmour)
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(fArmour);
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOUR), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
 void CScriptPlayer::SetWantedLevel(int iWantedLevel)

@@ -869,7 +869,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED), SetPlayerMoveSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED), SetPlayerTurnSpeed);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
-		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR), SetPlayerArmour);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOUR), SetPlayerArmour);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), SetPlayerModel);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), SetPlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), SetPlayerWantedLevel);
@@ -918,7 +918,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MOVE_SPEED));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_TURN_SPEED));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH));
-		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOR));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOUR));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL));
