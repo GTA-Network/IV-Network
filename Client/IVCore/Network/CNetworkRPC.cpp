@@ -613,11 +613,26 @@ void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CVector3 vecPosition;
 	pBitStream->Read(vecPosition);
 	vecPosition.fZ += 1.0f;
+	
+	float fAngle;
+	pBitStream->Read(fAngle);
 
+	DWORD color1;
+	pBitStream->Read(color1);
 
-	g_pCore->GetChat()->Print(CString("%i %i %f %f %f", vehicleId, vehicleModel, vecPosition.fX, vecPosition.fY, vecPosition.fZ));
+	DWORD color2;
+	pBitStream->Read(color2);
 
-	CVehicleEntity * pVehicle = new CVehicleEntity(vehicleModel, vecPosition, 0.0f, 0x000000, 0x000000, 0x000000, 0x000000, 0xFFFFFF);
+	DWORD color3;
+	pBitStream->Read(color3);
+
+	DWORD color4;
+	pBitStream->Read(color4);
+
+	DWORD color5;
+	pBitStream->Read(color5);
+
+	CVehicleEntity * pVehicle = new CVehicleEntity(vehicleModel, vecPosition, fAngle, color1, color2, color3, color4, color5);
 	if (pVehicle) 
 	{
 	//	// Add our vehicle

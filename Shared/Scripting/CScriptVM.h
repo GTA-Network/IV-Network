@@ -50,12 +50,18 @@ public:
 
 	virtual void Pop(bool& b) {}
 	virtual void Pop(int& i) {}
+	virtual void Pop(unsigned int& i) {}
+	virtual void Pop(long& i) {}
+	virtual void Pop(unsigned long& i) {}
 	virtual void Pop(float& f) {}
 	virtual void Pop(CString& str) {}
 	virtual void Pop(CVector3& vec) {}
 
 	virtual void Pop(bool& b, bool bDefaultValue) {}
 	virtual void Pop(int& i, int iDefaultValue) {}
+	virtual void Pop(unsigned int& i, unsigned int iDefaultValue) {}
+	virtual void Pop(long& i, long iDefaultValue) {}
+	virtual void Pop(unsigned long& i, unsigned long iDefaultValue) {}
 	virtual void Pop(float& f, float fDefaultValue) {}
 	virtual void Pop(CString& str, CString strDefaultValue) {}
 	virtual void Pop(CVector3& vec, CVector3 vecDefaultValue) {}
@@ -64,6 +70,9 @@ public:
 
 	virtual void Push(const bool& b) {}
 	virtual void Push(const int& i) {}
+	virtual void Push(const unsigned int& i) {}
+	virtual void Push(const long& i) {}
+	virtual void Push(const unsigned long& i) {}
 	virtual void Push(const float& f) {}
 	virtual void Push(const CString& str) {}
 	virtual void Push(const CVector3& vec) {}

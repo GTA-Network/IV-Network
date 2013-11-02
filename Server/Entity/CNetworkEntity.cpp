@@ -19,7 +19,7 @@ CNetworkEntity::CNetworkEntity()
 	m_entityId(INVALID_ENTITY),
 	m_eType(UNKNOWN_ENTITY)
 {
-
+	
 }
 
 CNetworkEntity::~CNetworkEntity()

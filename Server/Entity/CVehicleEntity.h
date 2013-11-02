@@ -27,6 +27,7 @@ private:
 	int				m_iDirtLevel;
 	float			m_fHeading;
 	int				m_iModelId;
+	DWORD			m_dwColor[5];
 
 public:
 										CVehicleEntity();
@@ -64,6 +65,9 @@ public:
 
 	void								SetModelId(int iModelId) { m_iModelId = iModelId; }
 	int									GetModelId() { return m_iModelId; }
+
+	void								SetColor(BYTE id, DWORD color) { if (id < 1 || id > 5) assert(CString("Set color%i?! ARE YOU IDIOT?!", id).Get()); else m_dwColor[id - 1] = color; }
+	DWORD								GetColor(BYTE id) { if (id < 1 || id > 5) assert(CString("Get color%i?! ARE YOU IDIOT?!", id).Get()); else return m_dwColor[id - 1]; }
 };
 
 class CScriptVehicle : public CScriptEntity

@@ -361,13 +361,116 @@ void CSquirrelVM::Pop(int& i)
 
 void CSquirrelVM::Pop(int& i, int iDefaultValue)
 {
-		SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
 	if (argType == OT_INTEGER)
 	{
 		sq_getinteger(m_pVM, m_iStackIndex++, &i);
 		return;
-	}else {
-		if(argType == OT_NULL)
+	}
+	else {
+		if (argType == OT_NULL)
+		{
+			i = iDefaultValue;
+			m_iStackIndex++;
+			return;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(unsigned int& i)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(unsigned int& i, unsigned int iDefaultValue)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+	else {
+		if (argType == OT_NULL)
+		{
+			i = iDefaultValue;
+			m_iStackIndex++;
+			return;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(long& i)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(long& i, long iDefaultValue)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+	else {
+		if (argType == OT_NULL)
+		{
+			i = iDefaultValue;
+			m_iStackIndex++;
+			return;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(unsigned long& i)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CSquirrelVM::Pop(unsigned long& i, unsigned long iDefaultValue)
+{
+	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
+	if (argType == OT_INTEGER)
+	{
+		sq_getinteger(m_pVM, m_iStackIndex++, (int*) &i);
+		return;
+	}
+	else {
+		if (argType == OT_NULL)
 		{
 			i = iDefaultValue;
 			m_iStackIndex++;
@@ -467,6 +570,21 @@ void CSquirrelVM::Push(const bool& b)
 }
 
 void CSquirrelVM::Push(const int& i)
+{
+	sq_pushinteger(m_pVM, i);
+}
+
+void CSquirrelVM::Push(const unsigned int& i)
+{
+	sq_pushinteger(m_pVM, i);
+}
+
+void CSquirrelVM::Push(const long& i)
+{
+	sq_pushinteger(m_pVM, i);
+}
+
+void CSquirrelVM::Push(const unsigned long& i)
 {
 	sq_pushinteger(m_pVM, i);
 }

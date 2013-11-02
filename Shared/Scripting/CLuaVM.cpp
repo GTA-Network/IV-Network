@@ -192,6 +192,102 @@ void CLuaVM::Pop(int& i, int iDefaultValue)
 	m_iStackIndex++;
 }
 
+void CLuaVM::Pop(unsigned int& i)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<unsigned int>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CLuaVM::Pop(unsigned int& i, unsigned int iDefaultValue)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<int>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+	else {
+		if (argType == LUA_TNONE || argType == LUA_TNIL)
+		{
+			i = iDefaultValue;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CLuaVM::Pop(long& i)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<long>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CLuaVM::Pop(long& i, long iDefaultValue)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<int>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+	else {
+		if (argType == LUA_TNONE || argType == LUA_TNIL)
+		{
+			i = iDefaultValue;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CLuaVM::Pop(unsigned long& i)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<unsigned long>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
+void CLuaVM::Pop(unsigned long& i, unsigned long iDefaultValue)
+{
+	int argType = lua_type(m_pVM, m_iStackIndex);
+	if (argType == LUA_TNUMBER || argType == LUA_TSTRING)
+	{
+		i = static_cast<int>(lua_tointeger(m_pVM, m_iStackIndex++));
+		return;
+	}
+	else {
+		if (argType == LUA_TNONE || argType == LUA_TNIL)
+		{
+			i = iDefaultValue;
+		}
+	}
+
+	i = 0;
+	m_iStackIndex++;
+}
+
 void CLuaVM::Pop(float& f)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);
@@ -279,6 +375,21 @@ void CLuaVM::Push(const bool& b)
 }
 
 void CLuaVM::Push(const int& i)
+{
+	lua_pushinteger(m_pVM, i);
+}
+
+void CLuaVM::Push(const unsigned int& i)
+{
+	lua_pushinteger(m_pVM, i);
+}
+
+void CLuaVM::Push(const long& i)
+{
+	lua_pushinteger(m_pVM, i);
+}
+
+void CLuaVM::Push(const unsigned long& i)
 {
 	lua_pushinteger(m_pVM, i);
 }

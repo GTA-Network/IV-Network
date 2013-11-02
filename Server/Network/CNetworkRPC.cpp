@@ -138,6 +138,17 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CVector3 vecPosition;
 			pVehicle->GetPosition(vecPosition);
 			bitStream.Write(vecPosition);
+
+			CVector3 vecRotation;
+			pVehicle->GetRotation(vecRotation);
+			bitStream.Write(vecRotation.fX);
+
+			bitStream.Write(pVehicle->GetColor(1));
+			bitStream.Write(pVehicle->GetColor(2));
+			bitStream.Write(pVehicle->GetColor(3));
+			bitStream.Write(pVehicle->GetColor(4));
+			bitStream.Write(pVehicle->GetColor(5));
+
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 	}

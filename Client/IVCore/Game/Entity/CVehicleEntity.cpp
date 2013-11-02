@@ -221,7 +221,7 @@ void CVehicleEntity::SoundHorn(int iDuration)
     if(IsSpawned())
 		m_pVehicle->SoundHorn(iDuration);
 
-    m_ulHornDurationEnd = (SharedUtility::GetTime() + iDuration);
+	m_dwHornDurationEnd = SharedUtility::GetTime() + iDuration;
 }
 
 unsigned int CVehicleEntity::GetScriptingHandle()

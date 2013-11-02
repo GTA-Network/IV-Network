@@ -103,32 +103,46 @@ int CreateVehicle(int * VM)
 	CVector3 vecPosition;
 	pVM->Pop(vecPosition);
 
-#if 0
-	unsigned int color1;
-	pVM->Pop(color1)
+	float fAngle;
+	pVM->Pop(fAngle);
 
-		unsigned int color2;
-	pVM->Pop(color2)
+	DWORD color1;
+	pVM->Pop(color1);
 
-		unsigned int color3;
-	pVM->Pop(color3)
+	DWORD color2;
+	pVM->Pop(color2);
 
-		unsigned int color4;
-	pVM->Pop(color4)
+	DWORD color3;
+	pVM->Pop(color3);
 
-		unsigned int color5;
-	pVM->Pop(color5)
-#endif
+	DWORD color4;
+	pVM->Pop(color4);
+
+	DWORD color5;
+	pVM->Pop(color5, 0xFFFFFFFF);
+
 	CVehicleEntity * pVehicle = new CVehicleEntity();
 	pVehicle->SetId(CServer::GetInstance()->GetVehicleManager()->FindFreeSlot());
 	CServer::GetInstance()->GetVehicleManager()->Add(pVehicle->GetId(), pVehicle);
 	pVehicle->SetModelId(vehicleModel);
 	pVehicle->SetPosition(vecPosition);
+	pVehicle->SetRotation(CVector3(fAngle, 0.0f, 0.0f));
+	pVehicle->SetColor(1, color1);
+	pVehicle->SetColor(2, color2);
+	pVehicle->SetColor(3, color3);
+	pVehicle->SetColor(4, color4);
+	pVehicle->SetColor(5, color5);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(pVehicle->GetId());
 	bitStream.Write(vehicleModel);
 	bitStream.Write(vecPosition);
+	bitStream.Write(fAngle);
+	bitStream.Write(color1);
+	bitStream.Write(color2);
+	bitStream.Write(color3);
+	bitStream.Write(color4);
+	bitStream.Write(color5);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 
 	CScriptVehicle * pScriptVehicle = new CScriptVehicle();

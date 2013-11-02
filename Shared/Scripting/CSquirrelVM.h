@@ -32,18 +32,27 @@ public:
 
 	void Pop(bool& b);
 	void Pop(int& i);
+	void Pop(unsigned int& i);
+	void Pop(long& i);
+	void Pop(unsigned long& i);
 	void Pop(float& f);
 	void Pop(CString& str);
 	void Pop(CVector3& vec);
 
 	void Pop(bool& b, bool bDefaultValue);
 	void Pop(int& i, int iDefaultValue);
+	void Pop(unsigned int& i, unsigned int iDefaultValue);
+	void Pop(long& i, long iDefaultValue);
+	void Pop(unsigned long& i, unsigned long iDefaultValue);
 	void Pop(float& f, float fDefaultValue);
 	void Pop(CString& str, CString strDefaultValue);
 	void Pop(CVector3& vec, CVector3 vecDefaultValue);
 
 	void Push(const bool& b);
 	void Push(const int& i);
+	void Push(const unsigned int& i);
+	void Push(const long& i);
+	void Push(const unsigned long& i);
 	void Push(const float& f);
 	void Push(const CString& str);
 	void Push(const CVector3& vec);
