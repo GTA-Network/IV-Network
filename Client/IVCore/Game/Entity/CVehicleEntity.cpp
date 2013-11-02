@@ -220,8 +220,6 @@ void CVehicleEntity::SoundHorn(int iDuration)
 {
     if(IsSpawned())
 		m_pVehicle->SoundHorn(iDuration);
-
-	m_dwHornDurationEnd = SharedUtility::GetTime() + iDuration;
 }
 
 unsigned int CVehicleEntity::GetScriptingHandle()
@@ -288,7 +286,8 @@ public:
 	DWORD color;
 };
 
-class IVVehicleColors {
+class IVVehicleColors
+{
 public:
 	unsigned char pad_0[16];
 	ColorStuff field_10;
@@ -298,47 +297,48 @@ public:
 	ColorStuff field_50;
 	ColorStuff field_60;
 };
+
 #pragma pack(pop)
 
-float colorMultiplier = 0.003922f;
+#define getRed(color) (float) (((color >> 16) & 0xFF) / 255)
+#define getGreen(color) (float) (((color >> 8) & 0xFF) / 255)
+#define getBlue(color) (float) ((color & 0xFF) / 255)
 
 void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4, DWORD dwColor5)
 {
 	if (!GetGameVehicle())
 		return;
 
-	IVVehicle * pVehicle = GetGameVehicle()->GetVehicle();
+	IVVehicleColors* VehicleColors = *(IVVehicleColors**) (GetGameVehicle()->GetVehicle()->m_pLivery + 4);
 
-	IVVehicleColors* VehicleColors = *(IVVehicleColors**) (pVehicle->m_pLivery + 4);
-
-	VehicleColors->field_10.red = ((unsigned int) ((dwColor1 >> 16) & 0xFF) * 0.0039215689);
-	VehicleColors->field_10.green = ((unsigned int) ((dwColor1 >> 8) & 0xFF) * colorMultiplier);
-	VehicleColors->field_10.blue = (unsigned int) (dwColor1 & 0xFF)* colorMultiplier;
+	VehicleColors->field_10.red = getRed(dwColor1);
+	VehicleColors->field_10.green = getGreen(dwColor1);
+	VehicleColors->field_10.blue = getBlue(dwColor1);
 	VehicleColors->field_10.color = dwColor4;
 
-	VehicleColors->field_20.red = ((unsigned int) ((dwColor2 >> 16) & 0xFF) * 0.0039215689);
-	VehicleColors->field_20.green = ((unsigned int) ((dwColor2 >> 8) & 0xFF) * colorMultiplier);
-	VehicleColors->field_20.blue = (unsigned int) (dwColor2 & 0xFF)* colorMultiplier;
+	VehicleColors->field_20.red = getRed(dwColor2);
+	VehicleColors->field_20.green = getGreen(dwColor2);
+	VehicleColors->field_20.blue = getBlue(dwColor2);
 	VehicleColors->field_20.color = dwColor4;
 
-	VehicleColors->field_30.red = ((unsigned int) ((dwColor3 >> 16) & 0xFF) * 0.0039215689);
-	VehicleColors->field_30.green = ((unsigned int) ((dwColor3 >> 8) & 0xFF) * colorMultiplier);
-	VehicleColors->field_30.blue = (unsigned int) (dwColor3 & 0xFF)* colorMultiplier;
+	VehicleColors->field_30.red = getRed(dwColor3);
+	VehicleColors->field_30.green = getGreen(dwColor3);
+	VehicleColors->field_30.blue = getBlue(dwColor3);
 	VehicleColors->field_30.color = dwColor4;
 
-	VehicleColors->field_40.red = ((unsigned int) ((dwColor4 >> 16) & 0xFF) * 0.0039215689);
-	VehicleColors->field_40.green = ((unsigned int) ((dwColor4 >> 8) & 0xFF) * colorMultiplier);
-	VehicleColors->field_40.blue = (unsigned int) (dwColor4 & 0xFF)* colorMultiplier;
+	VehicleColors->field_40.red = getRed(dwColor4);
+	VehicleColors->field_40.green = getGreen(dwColor4);
+	VehicleColors->field_40.blue = getBlue(dwColor4);
 	VehicleColors->field_40.color = dwColor4;
 
-	VehicleColors->field_50.red = (unsigned int) ((dwColor5 >> 16) & 0xFF) * colorMultiplier;
-	VehicleColors->field_50.green = (unsigned int) ((dwColor5 >> 8) & 0xFF) * colorMultiplier;
-	VehicleColors->field_50.blue = (unsigned int) (dwColor5 & 0xFF) * colorMultiplier;
+	VehicleColors->field_50.red = getRed(dwColor5);
+	VehicleColors->field_50.green = getGreen(dwColor5);
+	VehicleColors->field_50.blue = getBlue(dwColor5);
 	VehicleColors->field_50.color = dwColor4;
 
-	VehicleColors->field_60.red = (unsigned int) ((dwColor3 >> 16) & 0xFF) * colorMultiplier;
-	VehicleColors->field_60.green = (unsigned int) ((dwColor3 >> 8) & 0xFF) * colorMultiplier;
-	VehicleColors->field_60.blue = (unsigned int) (dwColor3 & 0xFF) * colorMultiplier;
+	VehicleColors->field_60.red = getRed(dwColor3);
+	VehicleColors->field_60.green = getGreen(dwColor3);
+	VehicleColors->field_60.blue = getBlue(dwColor3);
 	VehicleColors->field_60.color = dwColor4;
 }
 

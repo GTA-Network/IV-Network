@@ -45,7 +45,7 @@ private:
 
 	CPlayerEntity						*m_pDriver;
 	CPlayerEntity						*m_pPassengers[8]; // Max passenger per vehicle = 8(GTA LIMIT)
-	DWORD								m_dwHornDurationEnd;
+
 	struct
 	{
 		struct
