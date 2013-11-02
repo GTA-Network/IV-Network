@@ -197,6 +197,13 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		{
 			m_bInsert = !m_bInsert;
 		}
+		else if (dwChar == VK_DELETE && m_bTypeing)
+		{
+			if (m_szTypeing.GetLength() > 0 && (m_iPos == -1 || m_iPos < m_szTypeing.GetLength() - 1))
+			{
+				m_szTypeing = m_szTypeing.Substring(0, m_iPos + 1) + m_szTypeing.Substring(m_iPos + 2, m_szTypeing.GetLength());
+			}
+		}
 	}
 	else if (uMsg == WM_CHAR)
 	{

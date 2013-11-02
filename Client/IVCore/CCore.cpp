@@ -246,6 +246,21 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 
 #include <RakNet/RakNetStatistics.h>
 
+CString MakeSubTaskString(CString strName, CIVTask* pTask)
+{
+	CString str;
+	if (pTask)
+	{
+		str += strName;
+		str += pTask->GetName();
+		str += "\n";
+		if (!pTask->IsSimple() && ((CIVTaskComplex*) pTask)->GetSubTask())
+			str += MakeSubTaskString(strName + "    ", ((CIVTaskComplex*) pTask)->GetSubTask());
+	}
+
+	return str;
+}
+
 CString MakeTaskString(CString strName, CIVTask* pTask)
 {
 	CString str;
@@ -255,7 +270,7 @@ CString MakeTaskString(CString strName, CIVTask* pTask)
 		str += pTask->GetName();
 		str += "\n";
 		if (!pTask->IsSimple() && ((CIVTaskComplex*) pTask)->GetSubTask())
-			str += MakeTaskString("", ((CIVTaskComplex*) pTask)->GetSubTask());
+			str += MakeSubTaskString("    ", ((CIVTaskComplex*) pTask)->GetSubTask());
 	}
 
 	return str;
