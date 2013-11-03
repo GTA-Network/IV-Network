@@ -24,22 +24,14 @@
 
 #define MAX_BUFFER 8192
 #define DEFAULT_PORT 80
-#define DEFAULT_USER_AGENT "IV:Network/1.0.0"
+#define DEFAULT_USER_AGENT "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:25.0) Gecko/20100101 Firefox/25.0"
 #define DEFAULT_REFERER "http://gta-network.net/"
 
-CHttpClient::CHttpClient()
-: m_iSocket(INVALID_SOCKET),
-m_bConnected(false),
-m_usPort(DEFAULT_PORT),
-m_status(HTTP_STATUS_NONE),
-m_lastError(HTTP_ERROR_NONE),
-m_strUserAgent(DEFAULT_USER_AGENT),
-m_strReferer(DEFAULT_REFERER),
-m_uiRequestTimeout(30000),
-m_uiRequestStart(0),
-m_pfnReceiveHandler(NULL),
-m_pReceiveHandlerUserData(NULL),
-m_fFile(NULL)
+CHttpClient::CHttpClient() :
+	m_iSocket(INVALID_SOCKET), m_bConnected(false), m_usPort(DEFAULT_PORT),
+	m_status(HTTP_STATUS_NONE), m_lastError(HTTP_ERROR_NONE), m_strUserAgent(DEFAULT_USER_AGENT),
+	m_strReferer(DEFAULT_REFERER), m_uiRequestTimeout(30000), m_uiRequestStart(0),
+	m_pfnReceiveHandler(NULL), m_pReceiveHandlerUserData(NULL), m_fFile(NULL)
 {
 	// If windows startup winsock
 #ifdef _WIN32
@@ -544,6 +536,9 @@ CString CHttpClient::GetLastErrorString()
 		break;
 	case HTTP_ERROR_NO_HEADER:
 		strError.Set("No header");
+		break;
+	case HTTP_ERROR_NONE:
+		strError.Set("No error");
 		break;
 	}
 

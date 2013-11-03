@@ -279,6 +279,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 
 void CChat::Clear()
 {
+#ifdef DEBUG
+	Print("DO NOT CLEAR IN DEBUG MODE");
+#else
 	for (int i = 0; i < CHAT_MAX_LINES; ++i)
 		m_szMessages[i].Clear();
+#endif
 }

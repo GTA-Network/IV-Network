@@ -217,44 +217,24 @@ void PlayerSync(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	{
 		// Deserialse the bitstream with the player
 		ePackageType eType;
-		pBitStream->Read(eType);
-
-		switch (eType)
+		while (pBitStream->Read(eType))
 		{
-		case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
-		case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
-			{
-				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
-
-				// TODO: dont send the sync directly store (queue) it make some interpolation or somthing and then send it to get a nice and smooth sync
-				break;
-			}
-		case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
-		case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
-			{
-				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
-				break;
-			}
-		}
-
-		// Check for additional packets
-		if (pBitStream->Read(eType))
-		{
-
 			switch (eType)
 			{
 			case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 			case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
-				{
-					CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
-					break;
-				}
+			{
+			   CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
+
+				// TODO: dont send the sync directly store (queue) it make some interpolation or somthing and then send it to get a nice and smooth sync
+				break;
+			}
 			case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:
 			case RPC_PACKAGE_TYPE_PLAYER_VEHICLE:
-				{
-					CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
-					break;
-				}
+			{
+				CServer::GetInstance()->GetPlayerManager()->GetAt(playerId)->Deserialize(pBitStream, eType);
+				break;
+			}
 			}
 		}
 	}

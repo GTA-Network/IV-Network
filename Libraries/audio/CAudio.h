@@ -15,7 +15,6 @@ private:
 	CString   m_strStreamName;
 	bool     m_bReplay;
 	bool     m_bIsOnlineStream;
-	bool     m_bIsGameFile;
 	bool     m_bUsePosition;
 	CVector3 m_vecPosition;
 	float    m_fRange;
@@ -24,7 +23,7 @@ private:
 	DWORD    m_dwChannel;
 
 public:
-	CAudio(CString strStreamName, bool bReplay = false, bool bIsOnlineStream = false, bool bIsGameFile = false);
+	CAudio(CString strStreamName, bool bReplay = false, bool bIsOnlineStream = false);
 	~CAudio();
 
 	bool  Load();

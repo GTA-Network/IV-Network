@@ -63,31 +63,31 @@ class CHttpClient
 		CHttpClient();
 		~CHttpClient();
 
-		virtual bool           IsConnected() { return m_bConnected; }
-		virtual bool           IsInvalid() { return (m_status == HTTP_STATUS_INVALID); }
-		virtual bool           GettingData() { return (m_status == HTTP_STATUS_GET_DATA); }
-		virtual bool           GotData() { return (m_status == HTTP_STATUS_GOT_DATA); }
-		virtual bool           IsBusy() { return (m_status == HTTP_STATUS_GET_DATA); }
-		virtual unsigned int   GetHeaderCount() { return m_headerMap.size(); }
-		virtual CString        GetHeader(CString strName) { return m_headerMap[strName]; }
-		virtual CString       * GetData() { return &m_strData; }
-		virtual eHttpError     GetLastError() { return m_lastError; }
-		virtual void           SetUserAgent(CString strUserAgent) { m_strUserAgent = strUserAgent; }
-		virtual CString        GetUserAgent() { return m_strUserAgent; }
-		virtual void           SetReferer(CString strReferer) { m_strReferer = strReferer; }
-		virtual CString        GetReferer() { return m_strReferer; }
-		virtual void           SetRequestTimeout(unsigned int uiRequestTimeout) { m_uiRequestTimeout = uiRequestTimeout; }
-		virtual unsigned int   GetRequestTimeout() { return m_uiRequestTimeout; }
-		virtual void           SetHost(CString strHost) { m_strHost = strHost; }
-		virtual CString        GetHost() { return m_strHost; }
-		virtual void           SetPort(unsigned short usPort) { m_usPort = usPort; }
-		virtual unsigned short GetPort() { return m_usPort; }
-		virtual void           Reset();
-		virtual bool           Get(CString strPath);
-		virtual void		   SendReport(CString strPath, CString strReport);
-		virtual bool           Post(bool bHasResponse, CString strPath, CString strData = "", CString strContentType = DEFAULT_CONTENT_TYPE);
-		virtual void           Process();
-		virtual CString        GetLastErrorString();
-		virtual void           SetReceiveHandle(ReceieveHandler_t pfnRecieveHandler, void * pUserData = NULL);
-		virtual void           SetFile(FILE * f = NULL) { m_fFile = f; }
+		bool           IsConnected() { return m_bConnected; }
+		bool           IsInvalid() { return (m_status == HTTP_STATUS_INVALID); }
+		bool           GettingData() { return (m_status == HTTP_STATUS_GET_DATA); }
+		bool           GotData() { return (m_status == HTTP_STATUS_GOT_DATA); }
+		bool           IsBusy() { return (m_status == HTTP_STATUS_GET_DATA); }
+		unsigned int   GetHeaderCount() { return m_headerMap.size(); }
+		CString        GetHeader(CString strName) { return m_headerMap[strName]; }
+		CString		   GetData() { return m_strData; }
+		eHttpError     GetLastError() { return m_lastError; }
+		void           SetUserAgent(CString strUserAgent) { m_strUserAgent = strUserAgent; }
+		CString        GetUserAgent() { return m_strUserAgent; }
+		void           SetReferer(CString strReferer) { m_strReferer = strReferer; }
+		CString        GetReferer() { return m_strReferer; }
+		void           SetRequestTimeout(unsigned int uiRequestTimeout) { m_uiRequestTimeout = uiRequestTimeout; }
+		unsigned int   GetRequestTimeout() { return m_uiRequestTimeout; }
+		void           SetHost(CString strHost) { m_strHost = strHost; }
+		CString        GetHost() { return m_strHost; }
+		void           SetPort(unsigned short usPort) { m_usPort = usPort; }
+		unsigned short GetPort() { return m_usPort; }
+		void           Reset();
+		bool           Get(CString strPath);
+		void		   SendReport(CString strPath, CString strReport);
+		bool           Post(bool bHasResponse, CString strPath, CString strData = "", CString strContentType = DEFAULT_CONTENT_TYPE);
+		void           Process();
+		CString        GetLastErrorString();
+		void           SetReceiveHandle(ReceieveHandler_t pfnRecieveHandler, void * pUserData = NULL);
+		void           SetFile(FILE * f = NULL) { m_fFile = f; }
 };

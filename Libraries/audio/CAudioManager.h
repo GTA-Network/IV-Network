@@ -27,4 +27,5 @@ public:
 	bool IsMuted() { return m_bMuted; }
 	void UnmuteAll();
 	void Process();
+	CString GetYoutubeStreamURL(CString link);
 };
