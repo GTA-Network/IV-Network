@@ -130,6 +130,9 @@ Section "Install" SecDummy
 	File ..\Files\LaunchIVNetwork.exe
 	File ..\Files\IVNetwork.dll
 	File ..\Files\bass.dll
+	File ..\Files\IVNUpdater.exe
+	File ..\Files\MahApps.Metro.dll
+	File ..\Files\System.Windows.Interactivity.dll
 
 	SetOutPath "$INSTDIR\multiplayer\datafiles"
 	
@@ -204,7 +207,7 @@ Section "Install" SecDummy
 	; Create Start Menu Shortcuts If Requested
 
 	${If} $CreateStartMenuShortcuts == ${BST_CHECKED}
-		CreateShortCut "$SMPROGRAMS\IVNetwork\${NAME}.lnk" "$INSTDIR\LaunchIVNetwork.exe"
+		CreateShortCut "$SMPROGRAMS\IVNetwork\${NAME}.lnk" "$INSTDIR\IVNUpdater.exe"
 
 		CreateShortCut "$SMPROGRAMS\IVNetwork\Uninstall ${NAME}.lnk" "$INSTDIR\Uninstall_${NAME}.exe"
 	${EndIf}
@@ -212,7 +215,7 @@ Section "Install" SecDummy
 	; Create Desktop Shortcut If Requested
 	
 	${If} $CreateDesktopShortcut == ${BST_CHECKED}
-		CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\LaunchIVNetwork.exe"
+		CreateShortCut "$DESKTOP\${NAME}.lnk" "$INSTDIR\IVNUpdater.exe"
 	${EndIf}
 
 	; Create Uninstaller
@@ -226,6 +229,9 @@ Section "Uninstall"
 
 	Delete "$INSTDIR\LaunchIVNetwork.exe"
 	Delete "$INSTDIR\IVNetwork.dll"
+	Delete "$INSTDIR\IVNUpdater.exe"
+	Delete "$INSTDIR\MahApps.Metro.dll"
+	Delete "$INSTDIR\System.Windows.Interactivity.dll"
 	
 	; Remove CEGUI Folders
 	RMDIR "$INSTDIR\CEGUI\fonts"
