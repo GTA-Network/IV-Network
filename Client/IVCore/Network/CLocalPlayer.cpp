@@ -16,9 +16,9 @@
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
 
-#define sub_7D5220 ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
-#define dword_10D9458 ((DWORD *) (g_pCore->GetBase() + 0x10D9458)) //playerPool ?
-#define dword_F16134 (*(DWORD *) (g_pCore->GetBase() + 0xF16134)) //localPlayerId ?
+#define CPlayerPed__Respawn ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
+#define g_pPlayerInfos ((DWORD *) (g_pCore->GetBase() + 0x10D9458)) //playerPool ?
+#define LocalPlayerID (*(DWORD *) (g_pCore->GetBase() + 0xF16134)) //localPlayerId ?
 
 bool isHandleLocalPlayerSpawnAlreadyCalled = false;
 
@@ -33,8 +33,8 @@ void HandleLocalPlayerSpawn()
 	}
 	else
 	{
-		if (dword_F16134 != -1)
-			sub_7D5220(*(IVPhysical* *) (((unsigned char*) dword_10D9458[dword_F16134]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
+		if (LocalPlayerID != -1)
+			CPlayerPed__Respawn(*(IVPhysical* *) (((unsigned char*) g_pPlayerInfos[LocalPlayerID]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
 	}
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 
