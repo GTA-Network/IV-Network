@@ -337,6 +337,10 @@ bool CPlayerEntity::Create()
 	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
 	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
+	CIVTaskComplexPlayerOnFoot * pTask = new CIVTaskComplexPlayerOnFoot();
+	if (pTask)
+		pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_DEFAULT);
+
 	// Unfreeze the player
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_FREEZE_CHAR_POSITION, GetScriptingHandle(), false);
 
@@ -698,7 +702,7 @@ void CPlayerEntity::SetControlState(CControls * pControlState)
 		}
 
 		// Set the last control state
-		pPad->SetLastControlState(m_ControlState);
+		//pPad->SetLastControlState(m_ControlState);
 
 		// Set the current control state
 		pPad->SetCurrentControlState(*pControlState);
@@ -1913,25 +1917,25 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		}
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
-		char chMoveStyle = 0;
-		if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
-		{
-			// Delete any task lol 
-			_asm	push 17;
-			_asm	push 0;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_Func__DeletePedTaskID;
-			_asm	add esp, 0Ch;
-			chMoveStyle = 0;
-		}
-		else if (PlayerPacket.vecMoveSpeed.Length() < 3.0 && PlayerPacket.vecMoveSpeed.Length() >= 1.0)
-			chMoveStyle = 1;
-		else if (PlayerPacket.vecMoveSpeed.Length() < 5.0 && PlayerPacket.vecMoveSpeed.Length() > 3.0)
-			chMoveStyle = 2;
-		else
-			chMoveStyle = 3;
+		//char chMoveStyle = 0;
+		//if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
+		//{
+		//	// Delete any task lol 
+		//	_asm	push 17;
+		//	_asm	push 0;
+		//	_asm	push uiPlayerIndex;
+		//	_asm	call COffsets::IV_Func__DeletePedTaskID;
+		//	_asm	add esp, 0Ch;
+		//	chMoveStyle = 0;
+		//}
+		//else if (PlayerPacket.vecMoveSpeed.Length() < 3.0 && PlayerPacket.vecMoveSpeed.Length() >= 1.0)
+		//	chMoveStyle = 1;
+		//else if (PlayerPacket.vecMoveSpeed.Length() < 5.0 && PlayerPacket.vecMoveSpeed.Length() > 3.0)
+		//	chMoveStyle = 2;
+		//else
+		//	chMoveStyle = 3;
 
-		SetMoveToDirection(PlayerPacket.vecPosition, PlayerPacket.vecMoveSpeed, chMoveStyle + 1);
+		//SetMoveToDirection(PlayerPacket.vecPosition, PlayerPacket.vecMoveSpeed, chMoveStyle + 1);
 
 		GetPlayerPed()->SetDucking(PlayerPacket.bDuckState);
 
@@ -1939,19 +1943,19 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 		SetControlState(&PlayerPacket.pControlState);
 
-		if (PlayerPacket.pControlState.IsJumping())
-		{
-			char iJumpStyle = 0;
-			if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
-				iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-			else if (PlayerPacket.vecMoveSpeed.Length() >= 1.0)
-				iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
+		//if (PlayerPacket.pControlState.IsJumping())
+		//{
+		//	char iJumpStyle = 0;
+		//	if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
+		//		iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
+		//	else if (PlayerPacket.vecMoveSpeed.Length() >= 1.0)
+		//		iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
 
-			_asm	push iJumpStyle;
-			_asm	push uiPlayerIndex;
-			_asm	call COffsets::IV_FUNC__TaskPedJump;
-			_asm	add esp, 8;
-		}
+		//	_asm	push iJumpStyle;
+		//	_asm	push uiPlayerIndex;
+		//	_asm	call COffsets::IV_FUNC__TaskPedJump;
+		//	_asm	add esp, 8;
+		//}
 
 		m_ulLastSyncReceived = SharedUtility::GetTime();
 	}

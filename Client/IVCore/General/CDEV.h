@@ -18,7 +18,7 @@ private:
 	static CString			MakeTaskString(CString strName, CIVTask* pTask);
 public:
 	static void				Pulse();
-	static void				DrawPedTasks(CIVPed* pPed);
+	static void				DrawPedTasks(CIVPed* pPed, float xOff = 0.0f);
 };
 
 #endif

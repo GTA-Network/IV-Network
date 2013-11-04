@@ -270,6 +270,29 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.Get()));
 		return true;
 	}
+	else if (strCommand == "syncTest")
+	{
+		// Add the player
+		CPlayerEntity * pPlayer = new CPlayerEntity;
+		pPlayer->SetModel(0); // Set temporary to nico lol
+		pPlayer->Create();
+		pPlayer->SetNick("Keks");
+		pPlayer->SetId(1);
+		pPlayer->SetColor(0xFFFFFFFF);
+		g_pCore->GetGame()->GetPlayerManager()->Add(1, pPlayer);
+
+		CVector3 vecPosition;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
+		vecPosition.fX += 2.0f;
+		pPlayer->SetPosition(vecPosition);
+	}
+	else if (strCommand == "getP")
+	{
+		CVector3 vecPosition;
+		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
+		vecPosition.fX += 2.0f;
+		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->SetPosition(vecPosition);
+	}
 #endif
 	return false;
 }

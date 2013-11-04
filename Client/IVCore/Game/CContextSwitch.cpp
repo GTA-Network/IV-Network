@@ -97,7 +97,7 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 	}
 }
 
-_declspec(naked) void __stdcall CPlayerPed__ProcessInput_Hook()
+void _declspec(naked) CPlayerPed__ProcessInput_Hook()
 {
 	_asm	mov g_pPed, ecx;
 	_asm	pushad;

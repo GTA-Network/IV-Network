@@ -47,7 +47,7 @@ CString CDevelopment::MakeTaskString(CString strName, CIVTask* pTask)
 	return str;
 }
 
-void CDevelopment::DrawPedTasks(CIVPed* pPed)
+void CDevelopment::DrawPedTasks(CIVPed* pPed, float xOff)
 {
 	CString strTasks;
 
@@ -79,5 +79,5 @@ void CDevelopment::DrawPedTasks(CIVPed* pPed)
 	strTasks += MakeTaskString("Movement 2: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN1));
 	strTasks += MakeTaskString("Movement 3: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN2));
 
-	g_pCore->GetGraphics()->DrawText(600.0f, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, strTasks.Get());
+	g_pCore->GetGraphics()->DrawText(600.0f + xOff, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, strTasks.Get());
 }

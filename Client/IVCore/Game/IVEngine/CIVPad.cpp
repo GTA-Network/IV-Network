@@ -38,14 +38,22 @@ CIVPad::CIVPad() :
 	((void(__thiscall *) (IVPad *, bool))(COffsets::FUNC_CPad__Initialize))(m_pPad, false);
 
 	// Initialise values
-	for(int i = 0; i < INPUT_COUNT; i++)
+	for (int i = 0; i < INPUT_COUNT; i++)
 	{
-		m_pPad->m_padData[i].m_byteUnknown4 = MAX_INPUT_VALUE;
+		// Not sure what this is for, but if we don't do it up and left movement keys don't work
+		if (i == INPUT_MOVE_LEFT || i == INPUT_MOVE_UP || i == INPUT_VEH_MOVE_LEFT || i == INPUT_VEH_MOVE_RIGHT)
+			m_pPad->m_padData[i].m_byteUnknown4 = MAX_INPUT_VALUE;
 
-		if(IsAnalogInput((eInput)i))
+		// This defaults all analog input values to 128 (middle) instead of 0
+		if (IsAnalogInput((eInput) i))
 		{
 			m_pPad->m_padData[i].m_byteCurrentValue = DEFAULT_ANALOG_INPUT_VALUE;
 			m_pPad->m_padData[i].m_byteLastValue = DEFAULT_ANALOG_INPUT_VALUE;
+		}
+		else
+		{
+			m_pPad->m_padData[i].m_byteCurrentValue = 0;
+			m_pPad->m_padData[i].m_byteLastValue = 0;
 		}
 	}
 

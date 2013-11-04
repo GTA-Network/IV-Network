@@ -341,6 +341,12 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #ifdef _DEBUG
 	if(GetGame()->GetLocalPlayer())
 		CDevelopment::DrawPedTasks(GetGame()->GetLocalPlayer()->GetPlayerPed());
+
+	if (GetGame()->GetPlayerManager())
+	if (GetGame()->GetPlayerManager()->DoesExists(1))
+	{
+		CDevelopment::DrawPedTasks(GetGame()->GetPlayerManager()->GetAt(1)->GetPlayerPed(), 600);
+	}
 #endif
 
 	// Simulate temporary loading symbol
