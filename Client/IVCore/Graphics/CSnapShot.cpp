@@ -20,7 +20,7 @@ extern CCore * g_pCore;
 
 unsigned long           CSnapShot::m_ulLastScreenShotTime = 0;
 CThread                 CSnapShot::m_writeThread;
-unsigned char         * CSnapShot::m_ucData = NULL;
+unsigned char         * CSnapShot::m_ucData = nullptr;
 unsigned int            CSnapShot::m_uiScreenWidth = 0;
 unsigned int            CSnapShot::m_uiScreenHeight = 0;
 CSnapShot::ThreadData	CSnapShot::m_threadData;
@@ -110,8 +110,8 @@ void CSnapShot::GetFrontBufferPixels(UINT uiSizeX, UINT uiSizeY,unsigned char* b
 	pDevice->GetDisplayMode(0, &displayMode);
 
 	// Create our surface
-	IDirect3DSurface9 * pSurface = NULL;
-	pDevice->CreateOffscreenPlainSurface(displayMode.Width, displayMode.Height, SCREEN_SHOT_FORMAT, D3DPOOL_SCRATCH, &pSurface, NULL);
+	IDirect3DSurface9 * pSurface = nullptr;
+	pDevice->CreateOffscreenPlainSurface(displayMode.Width, displayMode.Height, SCREEN_SHOT_FORMAT, D3DPOOL_SCRATCH, &pSurface, nullptr);
 
 	if(pSurface)
 	{
@@ -160,7 +160,7 @@ void CSnapShot::WriteImageToFile(CThread * pThread)
 
 	GetFrontBufferPixels(uiScreenWidth, uiScreenHeight, mem);
 
-	BYTE** ScreenData = NULL;
+	BYTE** ScreenData = nullptr;
 	ScreenData = new BYTE* [uiScreenHeight];
 	for (unsigned short y = 0; y < uiScreenHeight; y++) {
 		ScreenData[y] = new BYTE[uiScreenWidth * SCREEN_SHOT_FORMAT_BYTES_PER_PIXEL];

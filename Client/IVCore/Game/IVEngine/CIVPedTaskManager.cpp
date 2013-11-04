@@ -13,7 +13,8 @@
 extern CCore * g_pCore;
 
 CIVPedTaskManager::CIVPedTaskManager(IVPedTaskManager * pPedTaskManager, CIVPed * pPed) :
-	m_pPedTaskManager(pPedTaskManager), m_pPed(pPed)
+	m_pPedTaskManager(pPedTaskManager), 
+	m_pPed(pPed)
 {
 }
 
@@ -25,7 +26,7 @@ void CIVPedTaskManager::SetTask(CIVTask * pTask, int iType, bool bForceNewTask)
 		// Ensure the task type is valid
 		if(iType < TASK_PRIORITY_MAX)
 		{
-			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int, byte))(COffsets::FUNC_CPedTaskManager__SetTaskPriority))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType, bForceNewTask);
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int, byte))(COffsets::FUNC_CPedTaskManager__SetTaskPriority))(m_pPedTaskManager, pTask ? pTask->GetTask() : nullptr, iType, bForceNewTask);
 		}
 	}
 }
@@ -40,7 +41,7 @@ void CIVPedTaskManager::RemoveTask(int iType)
 		{
 			// Make sure its not the default task
 			if(iType != TASK_PRIORITY_DEFAULT)
-				SetTask(NULL, iType);
+				SetTask(nullptr, iType);
 		}
 	}
 }
@@ -55,7 +56,7 @@ CIVTask * CIVPedTaskManager::GetTask(int iType)
 			return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pPedTaskManager->m_pPrimaryTasks[iType]);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPedTaskManager::SetTaskSecondary(CIVTask * pTask, int iType)
@@ -66,7 +67,7 @@ void CIVPedTaskManager::SetTaskSecondary(CIVTask * pTask, int iType)
 		// Ensure the task type is valid
 		if(iType < TASK_SECONDARY_MAX)
 		{
-			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskSecondary))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType);
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskSecondary))(m_pPedTaskManager, pTask ? pTask->GetTask() : nullptr, iType);
 		}
 	}
 }
@@ -78,7 +79,7 @@ void CIVPedTaskManager::RemoveTaskSecondary(int iType)
 	{
 		// Ensure the task type is valid
 		if(iType < TASK_SECONDARY_MAX)
-			SetTaskSecondary(NULL, iType);
+			SetTaskSecondary(nullptr, iType);
 	}
 }
 
@@ -92,7 +93,7 @@ CIVTask * CIVPedTaskManager::GetTaskSecondary(int iType)
 			return g_pCore->GetGame()->GetTaskManager()->GetClientTaskFromGameTask(m_pPedTaskManager->m_pSecondaryTasks[iType]);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPedTaskManager::SetTaskMovement(CIVTask * pTask, int iType)
@@ -103,7 +104,7 @@ void CIVPedTaskManager::SetTaskMovement(CIVTask * pTask, int iType)
 		// Ensure the task type is valid
 		if(iType < TASK_MOVEMENT_MAX)
 		{
-			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskMovement))(m_pPedTaskManager, pTask ? pTask->GetTask() : NULL, iType);
+			((void(__thiscall *) (IVPedTaskManager *, IVTask *, int))(COffsets::FUNC_CPedTaskManager__SetTaskMovement))(m_pPedTaskManager, pTask ? pTask->GetTask() : nullptr, iType);
 		}
 	}
 }
@@ -115,7 +116,7 @@ void CIVPedTaskManager::RemoveTaskMovment(int iType)
 	{
 		// Ensure the task type is valid
 		if(iType < TASK_MOVEMENT_MAX)
-			SetTaskMovement(NULL, iType);
+			SetTaskMovement(nullptr, iType);
 	}
 }
 
@@ -132,7 +133,7 @@ CIVTask * CIVPedTaskManager::GetTaskMovement(int iType)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPedTaskManager::ClearTasks(int iAbortPriority)
@@ -146,7 +147,7 @@ void CIVPedTaskManager::ClearTasks(int iAbortPriority)
 			CIVTask * pTask = GetTask(i);
 
 			if(pTask)
-				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
+				pTask->MakeAbortable(m_pPed, iAbortPriority, nullptr);
 		}
 
 		// Clear secondary tasks
@@ -155,7 +156,7 @@ void CIVPedTaskManager::ClearTasks(int iAbortPriority)
 			CIVTask * pTask = GetTaskSecondary(i);
 
 			if(pTask)
-				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
+				pTask->MakeAbortable(m_pPed, iAbortPriority, nullptr);
 		}
 
 		// Clear movement tasks
@@ -164,7 +165,7 @@ void CIVPedTaskManager::ClearTasks(int iAbortPriority)
 			CIVTask * pTask = GetTaskMovement(i);
 
 			if(pTask)
-				pTask->MakeAbortable(m_pPed, iAbortPriority, NULL);
+				pTask->MakeAbortable(m_pPed, iAbortPriority, nullptr);
 		}
 	}
 }

@@ -120,6 +120,7 @@ public:
 
 class IVPedMoveBlendOnFoot;
 
+#pragma pack(push, 1)
 class IVPed : public IVPhysical {
 public:
 	PAD(IVPed, pad0, 0x8);                  // 210-218
@@ -184,6 +185,7 @@ public:
 	virtual void			Function80(); // nullsub
 
 };
+#pragma pack(pop)
 
 class CIVPed : public CIVPhysical {
 private:

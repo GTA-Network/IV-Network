@@ -28,10 +28,18 @@
 #define DEFAULT_REFERER "http://gta-network.net/"
 
 CHttpClient::CHttpClient() :
-	m_iSocket(INVALID_SOCKET), m_bConnected(false), m_usPort(DEFAULT_PORT),
-	m_status(HTTP_STATUS_NONE), m_lastError(HTTP_ERROR_NONE), m_strUserAgent(DEFAULT_USER_AGENT),
-	m_strReferer(DEFAULT_REFERER), m_uiRequestTimeout(30000), m_uiRequestStart(0),
-	m_pfnReceiveHandler(NULL), m_pReceiveHandlerUserData(NULL), m_fFile(NULL)
+	m_iSocket(INVALID_SOCKET), 
+	m_bConnected(false), 
+	m_usPort(DEFAULT_PORT),
+	m_status(HTTP_STATUS_NONE), 
+	m_lastError(HTTP_ERROR_NONE), 
+	m_strUserAgent(DEFAULT_USER_AGENT),
+	m_strReferer(DEFAULT_REFERER), 
+	m_uiRequestTimeout(30000), 
+	m_uiRequestStart(0),
+	m_pfnReceiveHandler(NULL), 
+	m_pReceiveHandlerUserData(nullptr),
+	m_fFile(nullptr)
 {
 	// If windows startup winsock
 #ifdef _WIN32
@@ -76,7 +84,7 @@ bool CHttpClient::Connect()
 	// Get the host
 	hostent * heHost = gethostbyname(m_strHost.Get());
 
-	if (heHost == NULL)
+	if (!heHost)
 	{
 		// Failed to get the host, set the last error
 		m_lastError = HTTP_ERROR_INVALID_HOST;
@@ -308,7 +316,7 @@ bool CHttpClient::Post(bool bHasResponse, CString strPath, CString strData, CStr
 }
 
 // find s2 in s1 (with size s1_s) starting from index sp and ending at s1_s or first instance of ts
-int strfind(const char * s1, int s1_s, const char * s2, int sp = 0, char * ts = NULL)
+int strfind(const char * s1, int s1_s, const char * s2, int sp = 0, char * ts = nullptr)
 {
 	for (int i = sp; i < s1_s; i++)
 	{
@@ -480,7 +488,7 @@ void CHttpClient::Process()
 					}
 
 					// Skip the header data if we have any
-					char * szData = (iBytesRecieved ? (szBuffer + iHeaderSize) : NULL);
+					char * szData = (iBytesRecieved ? (szBuffer + iHeaderSize) : nullptr);
 
 					// Call the receive handler if we have one
 					if (m_pfnReceiveHandler)
@@ -489,7 +497,7 @@ void CHttpClient::Process()
 							m_strData.Append(szData, iBytesRecieved);
 					}
 					// Write response data to file if we have one set
-					else if (m_fFile != NULL)
+					else if (m_fFile)
 						fwrite(szData, 1, iBytesRecieved, m_fFile);
 				}
 				else if (iBytesRecieved == 0)

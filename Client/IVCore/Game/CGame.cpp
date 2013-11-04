@@ -18,31 +18,33 @@
 #include <IV/CIVScript.h>
 
 extern	CCore				* g_pCore;
-bool bHudImageInitialized	= false;
 
-CLocalPlayer				*CGame::m_pLocalPlayer = 0;
-CIVPad						*CGame::m_pPad = 0;
-CTaskManager				*CGame::m_pTaskManager = 0;
-CPools						*CGame::m_pPool = 0;
-CCamera						*CGame::m_pCamera = 0;
-CPlayerManager				*CGame::m_pPlayerManager = 0;
-CVehicleManager				*CGame::m_pVehicleManager = 0;
-CActorManager				*CGame::m_pActorManager = 0;
-CObjectManager				*CGame::m_pObjectManager = 0;
-CFireManager				*CGame::m_pFireManager = 0;
-CPickupManager				*CGame::m_pPickupManager = 0;
-C3DLabelManager				*CGame::m_p3DLabelManager = 0;
-CBlipManager				*CGame::m_pBlipManager = 0;
-CCheckpointManager			*CGame::m_pCheckpointManager = 0;
-CCharacterManager			*CGame::m_pCharacterManager = 0;
-bool						CGame::m_LocalPlayerInitialised = 0;
-CIVModelInfo				CGame::m_modelInfos[NUM_ModelInfos];
-CIVWeaponInfo				CGame::m_weaponInfos[NUM_WeaponInfos];
-CTrafficLights				*CGame::m_pTrafficLights = 0;
-CString						CGame::m_strEFLCDirectory = 0;
-IVManagement				*CGame::m_pManagement = 0;
-InternalThread				CGame::m_Threads[254];
-bool						CGame::m_bRadarVisibility = 0;
+CGame::CGame() : 
+	m_pLocalPlayer(nullptr),
+	m_pPad(nullptr),
+	m_pTaskManager(nullptr),
+	m_pPool(nullptr),
+	m_pCamera(nullptr),
+	m_pPlayerManager(nullptr),
+	m_pVehicleManager(nullptr),
+	m_pActorManager(nullptr),
+	m_pObjectManager(nullptr),
+	m_pFireManager(nullptr),
+	m_pPickupManager(nullptr),
+	m_p3DLabelManager(nullptr),
+	m_pBlipManager(nullptr),
+	m_pCheckpointManager(nullptr),
+	m_LocalPlayerInitialised(false),
+	m_pTrafficLights(nullptr),
+	m_pManagement(nullptr)
+{
+
+}
+
+CGame::~CGame()
+{
+
+}
 
 void CGame::Setup()
 {
@@ -54,9 +56,6 @@ void CGame::Setup()
 	
 	// Create task manager instance
 	m_pTaskManager = new CTaskManager;
-	
-	// Create the character manager instance
-	m_pCharacterManager = new CCharacterManager;
 	
 	// Create new pool instance
 	m_pPool = new CPools;
@@ -150,13 +149,13 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 {
 	// Grab the PlayerInfo array index 0 from the PedPool
 	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
-	IVPlayerPed  * _pPlayerPed = NULL;
+	IVPlayerPed  * _pPlayerPed = nullptr;
 
 	// Check if we got an index from PedPool - index 0
 	if(pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
 	else
-		_pPlayerPed = NULL;
+		_pPlayerPed = nullptr;
 
 	// If no index was found and the param bForce isn't given, return
 	if(m_pPool->GetLocalPlayerIndex() == -1) {
@@ -300,7 +299,7 @@ CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())
 		return &m_modelInfos[iModelIndex];
 
-	return NULL;
+	return nullptr;
 }
 
 CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
@@ -308,42 +307,7 @@ CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
     if(weaponType < NUM_WeaponInfos && weaponType >= 0)
             return &m_weaponInfos[weaponType];
 
-    return NULL;
-}
-
-bool CGame::CheckInstances(bool bInitialised)
-{
-	// Check private class pointers to be valid(prevent game crashes)
-	if(!bInitialised)
-	{
-		CHECK_VALID(m_pPool);
-		CHECK_VALID(m_pPad);
-		CHECK_VALID(m_pTaskManager);
-		CHECK_VALID(m_pCharacterManager);
-		CHECK_VALID(m_pCamera);
-	}
-	else if(bInitialised)
-	{
-		CHECK_VALID(m_pPool);
-		CHECK_VALID(m_pPad);
-		CHECK_VALID(m_pTaskManager);
-		CHECK_VALID(m_pCharacterManager);
-		CHECK_VALID(m_pCamera);
-		CHECK_VALID(m_pLocalPlayer);
-
-		CHECK_VALID(m_pPlayerManager);
-		CHECK_VALID(m_pVehicleManager);
-		CHECK_VALID(m_pActorManager);
-		CHECK_VALID(m_pObjectManager);
-		CHECK_VALID(m_pFireManager);
-		CHECK_VALID(m_pPickupManager);
-		CHECK_VALID(m_p3DLabelManager);
-		CHECK_VALID(m_pBlipManager);
-		CHECK_VALID(m_pCheckpointManager);
-		CHECK_VALID(m_pCharacterManager);
-	}
-
-	return true;
+	return nullptr;
 }
 
 HWND CGame::GetGameWindow()

@@ -10,7 +10,7 @@
 #include "CIVCam.h"
 
 CIVCam::CIVCam() :
-	m_pCam(NULL)
+	m_pCam(nullptr)
 {
 }
 

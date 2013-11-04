@@ -35,7 +35,7 @@ IVBaseModelInfo * CIVModelInfo::GetModelInfo( )
 	if( m_iModelIndex >= 0 && m_iModelIndex < NUM_ModelInfos )
 		return *(IVBaseModelInfo **)((g_pCore->GetBase() + ARRAY_ModelInfos) + (m_iModelIndex * 4));
 
-	return NULL;
+	return nullptr;
 }
 
 BYTE CIVModelInfo::GetType( )

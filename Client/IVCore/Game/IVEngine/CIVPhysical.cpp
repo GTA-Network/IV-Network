@@ -84,7 +84,7 @@ IVEntity * CIVPhysical::GetLastDamageEntity()
 	if(pPhysical)
 		return pPhysical->m_pLastDamageEntity;
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPhysical::SetHealth(float fHealth)

@@ -12,7 +12,7 @@
 CIVObject::CIVObject(IVObject * pObject) :
 	m_pObject(pObject)
 {
-	m_pWeapon = new CIVWeapon(pObject ? pObject->m_pWeapon : NULL);
+	m_pWeapon = new CIVWeapon(pObject ? pObject->m_pWeapon : nullptr);
 }
 
 CIVObject::~CIVObject()
@@ -30,5 +30,5 @@ CIVWeapon * CIVObject::GetWeapon()
 		return m_pWeapon;
 	}
 
-	return NULL;
+	return nullptr;
 }

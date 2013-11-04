@@ -27,11 +27,11 @@ CIVTrain::CIVTrain() :
 
 	// Reset Wagons
 	for(BYTE i = 0; i < ARRAY_LENGTH(m_pWagonEntity); i++)
-		m_pWagonEntity[i] = NULL;
+		m_pWagonEntity[i] = nullptr;
 
 	// Reset train
-	m_pTrain = NULL;
-	CIVTrain::m_pVehicle = NULL;
+	m_pTrain = nullptr;
+	CIVTrain::m_pVehicle = nullptr;
 }
 void CIVTrain::CreateTrain()
 {
@@ -75,7 +75,7 @@ bool CIVTrain::IsTrain()
 
 void CIVTrain::SetTrainCuriseSpeed(float fSpeed, unsigned int uiHandle)
 {
-	IVTrain * pTrain = NULL;
+	IVTrain * pTrain = nullptr;
 	pTrain = GetIVTrain();
 	g_pCore->DumpVFTable(*(DWORD *)pTrain,11);
 
@@ -99,9 +99,9 @@ IVTrain * CIVTrain::GetIVTrain()
 			if ((*(DWORD **)result + 324) || (*(DWORD **)result) && *(*(DWORD **)result + 3824))
 				IVTrain * pTrain = *(IVTrain **)(*(DWORD **)result + 0xEF4);
 			else 
-				return NULL;
+				return nullptr;
 		}
-		return NULL;
+		return nullptr;
 	}
-	return NULL;
+	return nullptr;
 }

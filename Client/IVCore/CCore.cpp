@@ -15,10 +15,18 @@ extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
 
 CCore::CCore(void) :
-	m_bInitialised(false), m_bGameLoaded(false), m_pGame(NULL),
-	m_pGraphics(NULL), m_pChat(NULL), m_pFPSCounter(NULL),
-	m_pNetworkManager(NULL), m_pGUI(NULL), m_bLoadingVisibility(0),
-	m_byteLoadingStyle(0), m_uiGameInitializeTime(0), m_pTags(NULL)//, m_pAudioManager(NULL)
+	m_bInitialised(false), 
+	m_bGameLoaded(false), 
+	m_pGame(nullptr),
+	m_pGraphics(nullptr), 
+	m_pChat(nullptr), 
+	m_pFPSCounter(nullptr),
+	m_pNetworkManager(nullptr), 
+	m_pGUI(nullptr), 
+	m_bLoadingVisibility(false),
+	m_byteLoadingStyle(0), 
+	m_uiGameInitializeTime(0), 
+	m_pTags(nullptr)//, m_pAudioManager(NULL)
 {
 
 }
@@ -32,7 +40,8 @@ void OnCreateVM(CScriptVM * pVM)
 bool CCore::Initialise()
 {
 	// Are we already initialsed?
-	CHECK_VALID(!m_bInitialised)
+	if (m_bInitialised)
+		return false;
 	
 	// Log our function call
 	PRINT_FUNCTION
@@ -101,7 +110,8 @@ bool CCore::Initialise()
 	m_pIVStartupScript = new CIVStartupScript;
 	
 	// Create the event systems instance
-	CEvents* pEvents = new CEvents;
+	if (!CEvents::GetInstance())
+		new CEvents;
 
 	// Create the resource manager instance
 	m_pResourceManager = new CResourceManager("client_resources/resources");
@@ -144,6 +154,8 @@ bool CCore::Initialise()
 	m_pHttpClient = new CHttpClient;
 	m_pHttpClient->SetRequestTimeout(10000);
 	m_pHttpClient->SetHost(MASTERLIST_URL);
+
+	m_bInitialised = true;
 
 	CLogFile::Printf("Done!");
 	return true;
@@ -213,7 +225,7 @@ void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strP
 	SetPass(strPass);
 
 	// Connect to the network
-	CHECK_VALID_VOID(m_pNetworkManager)
+	if(m_pNetworkManager)
 		m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
@@ -283,7 +295,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner
-	unsigned short usPing = m_pNetworkManager != NULL ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
+	unsigned short usPing = m_pNetworkManager != nullptr ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
 
 	CString strConnection;
 	int iConnectTime = GetGameLoadInitializeTime() != 0 ? (int)((timeGetTime() - GetGameLoadInitializeTime()) / 1000) : 0;
@@ -405,7 +417,7 @@ void CCore::GetLoadedModule(DWORD dwProcessId)
     hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
                             PROCESS_VM_READ,
                             FALSE, dwProcessId );
-    if (NULL == hProcess)
+    if (!hProcess)
         return;
 
     if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded)) {

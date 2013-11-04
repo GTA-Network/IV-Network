@@ -15,11 +15,11 @@ extern CCore * g_pCore;
 #define INVALID_PLAYER_PED 255
 
 CPools::CPools() :
-	m_pPedPool(NULL),
-	m_pVehiclePool(NULL),
-	m_pTaskPool(NULL),
-	m_pCamPool(NULL),
-	m_pPedMoveBlendPool(NULL)
+	m_pPedPool(nullptr),
+	m_pVehiclePool(nullptr),
+	m_pTaskPool(nullptr),
+	m_pCamPool(nullptr),
+	m_pPedMoveBlendPool(nullptr)
 {
 	// Clear our custom checkpoint array
 	memset(&m_checkpoints, 0, sizeof(m_checkpoints));
@@ -89,7 +89,7 @@ IVPlayerInfo * CPools::GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
 	// Is the index more than the player info array size?
 	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
-		return NULL;
+		return nullptr;
 
 	// Get the player info pointer array
 	IVPlayerInfo ** pPlayerInfos = (IVPlayerInfo **)COffsets::VAR_PlayerInfoArray;
@@ -116,7 +116,7 @@ IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed)
 	}
 
 	// Player info not found for player ped
-	return NULL;
+	return nullptr;
 }
 
 unsigned int CPools::GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
@@ -174,7 +174,7 @@ IVCheckpoint * CPools::GetCheckpointFromIndex(unsigned int uiIndex)
 {
 	// Is the index more than the checkpoint array size?
 	if(uiIndex > CHECKPOINT_ARRAY_SIZE)
-		return NULL;
+		return nullptr;
 
 	// Return the checkpoint pointer
 	return &m_checkpoints[uiIndex];

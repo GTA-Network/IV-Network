@@ -23,7 +23,8 @@ CTaskManager::~CTaskManager()
 bool CTaskManager::AddTask(CIVTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_VALID(pClientTask);
+	if (!pClientTask)
+		return false;
 
 	// Create the client task pair
 	ClientTaskPair * pClientTaskPair = new ClientTaskPair;
@@ -45,7 +46,8 @@ bool CTaskManager::AddTask(CIVTask * pClientTask)
 bool CTaskManager::RemoveTask(CIVTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_VALID(pClientTask);
+	if (!pClientTask)
+		return false;
 
 	// Loop through all the client tasks
 	for(auto pTask:m_taskList)
@@ -70,7 +72,7 @@ IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
 	if(!pClientTask)
-		return NULL;
+		return nullptr;
 
 	// Loop through all the client tasks
 	for(auto pTask:m_taskList)
@@ -80,14 +82,14 @@ IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
 			return pTask->pGameTask;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist)
 {
 	// Do we have an invalid task pointer?
 	if(!pGameTask)
-		return NULL;
+		return nullptr;
 
 	// Loop through all the client tasks
 	for(auto pTask:m_taskList)
@@ -110,7 +112,7 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 		delete pTempClientTask;
 
 		// Create the client task instance
-		CIVTask * pClientTask = NULL;
+		CIVTask * pClientTask = nullptr;
 
 		if(bIsSimple)
 			pClientTask = new CIVTaskSimple((IVTaskSimple *)pGameTask);
@@ -124,13 +126,14 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 		return pClientTask;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 bool CTaskManager::HandleTaskDelete(IVTask * pGameTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_VALID(pGameTask);
+	if (!pGameTask)
+		return false;
 
 	// Try and get the client task pointer for this game task
 	CIVTask * pClientTask = GetClientTaskFromGameTask(pGameTask, false);

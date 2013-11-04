@@ -11,12 +11,13 @@
 #include <CLogFile.h>
 
 CIVWeaponInfo::CIVWeaponInfo() :
-	m_pWeaponInfo(NULL)
+	m_pWeaponInfo(nullptr)
 {
 }
 
 CIVWeaponInfo::CIVWeaponInfo(eWeaponType weaponType, IVWeaponInfo * pWeaponInfo) :
-	m_weaponType(weaponType), m_pWeaponInfo(pWeaponInfo)
+	m_weaponType(weaponType), 
+	m_pWeaponInfo(pWeaponInfo)
 {
 }
 

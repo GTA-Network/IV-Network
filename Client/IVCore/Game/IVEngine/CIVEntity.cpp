@@ -12,7 +12,7 @@
 #include "CIVWorld.h"
 
 CIVEntity::CIVEntity() :
-	m_pEntity(NULL)
+	m_pEntity(nullptr)
 {
 }
 

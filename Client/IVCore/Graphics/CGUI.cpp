@@ -15,13 +15,13 @@ extern CCore* g_pCore;
 
 CGUI::CGUI(IDirect3DDevice9* pDevice) :
 	m_pD3DDevice(pDevice),
-	m_pRenderer(NULL),
-	m_pSystem(NULL),
-	m_pCursor(NULL),
-	m_pWindowManager(NULL),
-	m_pDefaultWindow(NULL),
-	m_pInput(NULL),
-	m_pInputMouse(NULL),
+	m_pRenderer(nullptr),
+	m_pSystem(nullptr),
+	m_pCursor(nullptr),
+	m_pWindowManager(nullptr),
+	m_pDefaultWindow(nullptr),
+	m_pInput(nullptr),
+	m_pInputMouse(nullptr),
 	m_bInitialized(false),
 	m_dwDoubleClickTime(GetDoubleClickTime()),
 	m_iCurrentId(0),
@@ -498,7 +498,7 @@ CEGUI::Font * CGUI::GetFont(CString strFont, unsigned int uiSize, bool bScaled)
 	}
 
 	// Font does not exist and font creation failed
-	return NULL;
+	return nullptr;
 }
 
 void CGUI::SetCursorVisible(bool bVisible)
@@ -629,7 +629,7 @@ void CGUI::HideMessageBox()
 			{
 				// Remove this button
 				RemoveGUIWindow(m_messageBox.pButtons[i]);
-				m_messageBox.pButtons[i] = NULL;
+				m_messageBox.pButtons[i] = nullptr;
 			}
 		}
 
@@ -638,7 +638,7 @@ void CGUI::HideMessageBox()
 		{
 			// Remove the message box text
 			RemoveGUIWindow(m_messageBox.pText);
-			m_messageBox.pText = NULL;
+			m_messageBox.pText = nullptr;
 		}
 
 		// Does the message box window exist?
@@ -646,7 +646,7 @@ void CGUI::HideMessageBox()
 		{
 			// Remove the message box window
 			RemoveGUIWindow(m_messageBox.pWindow);
-			m_messageBox.pWindow = NULL;
+			m_messageBox.pWindow = nullptr;
 		}
 
 		// Reset the handler

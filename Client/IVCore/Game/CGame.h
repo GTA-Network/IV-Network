@@ -58,49 +58,44 @@ class CLocalPlayer;
 
 class CGame {
 private:
-	static CLocalPlayer					*m_pLocalPlayer;
-	static CIVPad						*m_pPad;
-	static CTaskManager					*m_pTaskManager;
-	static CPools						*m_pPool;
-	static CCamera						*m_pCamera;
-	static CIVModelInfo					m_modelInfos[NUM_ModelInfos];
-	static CIVWeaponInfo				m_weaponInfos[NUM_WeaponInfos];
-	static bool							m_LocalPlayerInitialised;
+	CLocalPlayer					*m_pLocalPlayer;
+	CIVPad							*m_pPad;
+	CTaskManager					*m_pTaskManager;
+	CPools							*m_pPool;
+	CCamera							*m_pCamera;
+	CIVModelInfo					m_modelInfos[NUM_ModelInfos];
+	CIVWeaponInfo					m_weaponInfos[NUM_WeaponInfos];
+	bool							m_LocalPlayerInitialised;
 
-	static CPlayerManager				*m_pPlayerManager;
-	static CVehicleManager				*m_pVehicleManager;
-	static CActorManager				*m_pActorManager;
-	static CObjectManager				*m_pObjectManager;
-	static CFireManager					*m_pFireManager;
-	static CPickupManager				*m_pPickupManager;
-	static C3DLabelManager				*m_p3DLabelManager;
-	static CBlipManager					*m_pBlipManager;
-	static CCheckpointManager			*m_pCheckpointManager;
-	static CCharacterManager			*m_pCharacterManager;
-	static CTrafficLights				*m_pTrafficLights;
+	CPlayerManager					*m_pPlayerManager;
+	CVehicleManager					*m_pVehicleManager;
+	CActorManager					*m_pActorManager;
+	CObjectManager					*m_pObjectManager;
+	CFireManager					*m_pFireManager;
+	CPickupManager					*m_pPickupManager;
+	C3DLabelManager					*m_p3DLabelManager;
+	CBlipManager					*m_pBlipManager;
+	CCheckpointManager				*m_pCheckpointManager;
+	CTrafficLights					*m_pTrafficLights;
 
-	static CString						m_strEFLCDirectory;
-	bool								m_bUsingEFLCContent;
-	static HWND							m_hwndGameWindow;
-	static IVManagement					*m_pManagement;
+	HWND							m_hwndGameWindow;
+	IVManagement					*m_pManagement;
 
-	static InternalThread				m_Threads[254];
-	static bool							m_bRadarVisibility;
+	InternalThread					m_Threads[254];
 
 public:
-										CGame() { };
-										~CGame() { };
+										CGame();
+										~CGame();
 
 	void								Initialise();
 	void								PrepareWorld();
-	static void							OnEnvironmentStartUp(bool bForce = false);
-	static void							OnClientReadyToGamePlay();
-	static void							OnClientPastGameJoin();
-	static void							Setup();
-	static void							RenderRAGEScripts();
-	static void							ProcessEnvironment();
-	static void							UnprotectMemory();
-	static bool							CheckInstances(bool bInitialised = false);
+	void								OnEnvironmentStartUp(bool bForce = false);
+	void								OnClientReadyToGamePlay();
+	void								OnClientPastGameJoin();
+	void								Setup();
+	void								RenderRAGEScripts();
+	void								ProcessEnvironment();
+	void								UnprotectMemory();
 	void								Reset();
 	CLocalPlayer						*GetLocalPlayer() { return m_pLocalPlayer; }
 	CIVPad								*GetPad() { return m_pPad; }
@@ -120,25 +115,15 @@ public:
 	C3DLabelManager						*Get3DLabelManager() { return m_p3DLabelManager; }
 	CBlipManager						*GetBlipManager() { return m_pBlipManager; }
 	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
-	CCharacterManager					*GetCharacterManager() { return m_pCharacterManager; }
 	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
 	IVManagement						*GetIVManagement() { return m_pManagement; }
 
-	CString								GetEFLCDirectory() { return m_strEFLCDirectory; }
-	inline bool							IsUsingEFLCContent()
-	{
-		return m_bUsingEFLCContent;
-	}
-
 	HWND								GetGameWindow();
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);
-	static void							SetupGame();
+	void								SetupGame();
 
-	static BYTE							CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int ThreadId, int iPriority, const char * ThreadName, const char * szComment);
-	static void							DestroyInternalThread(BYTE byteThreadId);
-
-	static void							SetRadarVisible(bool bVisible) { m_bRadarVisibility = bVisible; }
-	static bool							GetRadarVisibility() { return m_bRadarVisibility; }
+	BYTE								CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int ThreadId, int iPriority, const char * ThreadName, const char * szComment);
+	void								DestroyInternalThread(BYTE byteThreadId);
 };
 
 #endif // CGame_h

@@ -12,7 +12,6 @@
 
 #include <CCore.h>
 extern	CCore			* g_pCore;
-RakNet::RPC4			* CNetworkManager::m_pRPC = NULL;
 
 CNetworkManager::CNetworkManager()
 {

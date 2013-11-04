@@ -15,7 +15,7 @@
 class CNetworkManager {
 private:
 	RakNet::RakPeerInterface				* m_pRakPeer;
-	static RakNet::RPC4						* m_pRPC;
+	RakNet::RPC4							* m_pRPC;
 	RakNet::DirectoryDeltaTransfer			* m_pDirectoryDeltaTransfer;
 	RakNet::FileListTransfer				* m_pFileListTransfer;
 	RakNet::IncrementalReadInterface		* m_pIri;
@@ -51,7 +51,7 @@ public:
 	void									Call(const char * szIdentifier, RakNet::BitStream * pBitStream, PacketPriority priority, PacketReliability reliability, bool bBroadCast);
 
 	RakNet::RakPeerInterface				* GetRakPeer() { return m_pRakPeer; }
-	static RakNet::RPC4						* GetRPC() { return m_pRPC; }
+	RakNet::RPC4							* GetRPC() { return m_pRPC; }
 	RakNet::DirectoryDeltaTransfer			* GetDirectoryDeltaTransfer() { return m_pDirectoryDeltaTransfer; }
 	RakNet::FileListTransfer				* GetFileListTransfer() { return m_pFileListTransfer; }
 	RakNet::IncrementalReadInterface		* GetIri() { return m_pIri; }

@@ -89,14 +89,13 @@ CVehicleEntity::~CVehicleEntity()
 #define CVehicleModelInfo__AddReference ((int(__thiscall *)(IVBaseModelInfo *))(g_pCore->GetBase() + 0x83F2E0))
 #define CWorld__GetGroundZ ((float (__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0))
 #define CWorld__AddEntity ((int(_cdecl *)(IVVehicle*, bool bDontAdd))(g_pCore->GetBase() + 0x86C0B0))
-// Seems to be setup audio or something like that
 #define CVehicle__TurnEngineOn ((void(__thiscall *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
 #define sub_B40B30 ((void(__thiscall *)(IVVehicle*, char, char))(g_pCore->GetBase() + 0xB40B30))
 #define pIVVehicleFactory (*(IVVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4))
 
 bool CVehicleEntity::Create()
 {
-	if (m_pModelInfo == NULL)
+	if (!m_pModelInfo)
 		return false;
 
 	// Is the vehicle already spawned?
@@ -233,7 +232,7 @@ unsigned int CVehicleEntity::GetScriptingHandle()
 void CVehicleEntity::SetModel(DWORD dwModelHash)
 {
 	// Get the model index from the model hash
-	int iModelIndex = g_pCore->GetGame()->GetCharacterManager()->ModelHashToVehicleId(dwModelHash);
+	int iModelIndex = CCharacterManager::ModelHashToVehicleId(dwModelHash);
 
 	// Do we have an invalid model index?
 	if(iModelIndex == -1)

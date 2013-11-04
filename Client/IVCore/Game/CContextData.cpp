@@ -67,7 +67,7 @@ CContextData * CContextDataManager::GetContextData(BYTE bytePlayerNumber)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CContextData * CContextDataManager::GetContextData(CIVPlayerInfo * pPlayerInfo)
@@ -85,7 +85,7 @@ CContextData * CContextDataManager::GetContextData(CIVPlayerInfo * pPlayerInfo)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CContextData * CContextDataManager::GetContextData(IVPlayerInfo * pPlayerInfo)
@@ -103,7 +103,7 @@ CContextData * CContextDataManager::GetContextData(IVPlayerInfo * pPlayerInfo)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CContextData * CContextDataManager::GetContextData(CIVPlayerPed * pPlayerPed)
@@ -121,7 +121,7 @@ CContextData * CContextDataManager::GetContextData(CIVPlayerPed * pPlayerPed)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 CContextData * CContextDataManager::GetContextData(IVPlayerPed * pPlayerPed)
@@ -139,5 +139,5 @@ CContextData * CContextDataManager::GetContextData(IVPlayerPed * pPlayerPed)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }

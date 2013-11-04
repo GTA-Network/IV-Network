@@ -92,7 +92,7 @@ IVPed * CIVVehicle::GetDriver()
 	if(pVehicle)
 		return pVehicle->m_pDriver;
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVVehicle::SetPassenger(BYTE bytePassengerSeatId, IVPed * pPassenger)
@@ -118,7 +118,7 @@ IVPed * CIVVehicle::GetPassenger(BYTE bytePassengerSeatId)
 			return pVehicle->m_pPassengers[bytePassengerSeatId];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVVehicle::SetColors(unsigned char ucColor1, unsigned char ucColor2, unsigned char ucColor3, unsigned char ucColor4)

@@ -49,8 +49,12 @@ const unsigned char g_szPixel [] = { 0x42, 0x4D, 0x3A, 0, 0, 0, 0, 0, 0, 0, 0x36
                                     0, 0, 0, 0xFF, 0xFF, 0xFF, 0 };
 
 CGraphics::CGraphics() :
-	m_bInitialised(false), m_uiFramesPerSecond(0), m_uiCurrentFPS(0),
-	m_uiLastCheck(0), m_pDevice(NULL), m_pFont(NULL)
+	m_bInitialised(false), 
+	m_uiFramesPerSecond(0), 
+	m_uiCurrentFPS(0),
+	m_uiLastCheck(0), 
+	m_pDevice(nullptr),
+	m_pFont(nullptr)
 {
 	// Create the d3d9 device hook
 	m_pDeviceHook = new CDirect3D9Hook;
@@ -108,7 +112,7 @@ void CGraphics::Initialise(IDirect3DDevice9 * pDevice)
 
 bool CGraphics::LoadFonts()
 {
-	int fontsize = NULL;
+	int fontsize = 0;
 	bool bSuccess = true;
 
 	RECT desktop;
@@ -129,7 +133,7 @@ bool CGraphics::LoadFonts()
 	}
 	bSuccess &= SUCCEEDED(D3DXCreateFont(m_pDevice, fontsize, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, "Arial", &m_pFont));
 
-	if (fontsize == NULL)
+	if (fontsize == 0)
 	{
 		CLogFile::Print("[Crash Report] The font size has not been set properly, exiting IV:Network");
 		TerminateProcess(GetCurrentProcess(), false);
@@ -165,7 +169,7 @@ void CGraphics::DrawText(unsigned int uiLeft, unsigned int uiTop, unsigned int u
 	D3DXVECTOR2 scaling(fScaleX, fScaleY);
 
 	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE);
-	D3DXMatrixTransformation2D(&matrix, NULL, 0.0f, &scaling, NULL, 0.0f, NULL);
+	D3DXMatrixTransformation2D(&matrix, nullptr, 0.0f, &scaling, nullptr, 0.0f, nullptr);
 
 	m_pSprite->SetTransform(&matrix);
 
@@ -258,7 +262,7 @@ void CGraphics::DrawBox(float fLeft, float fTop, float fWidth, float fHeight, DW
     vertex[3] = D3DVERTEX(fLeft, (fTop + fHeight), 0.0f, 1.0f, dwColorBox);
     short indices[6] = {0, 1 ,2, 0, 2, 3};
 
-    m_pDevice->SetTexture(0, NULL);
+	m_pDevice->SetTexture(0, nullptr);
     m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
     m_pDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, &indices[0], D3DFMT_INDEX16, &vertex[0], sizeof(D3DVERTEX));
  
@@ -273,7 +277,7 @@ void CGraphics::DrawRect(float fX, float fY, float fWidth, float fHeight, unsign
 	vertex[3] = D3DVERTEX(fX, (fY + fHeight), 0.0f, 1.0f, ulColor);
 	short indices[6] = {0, 1, 2, 0, 2, 3};
 
-	m_pDevice->SetTexture(0, NULL);
+	m_pDevice->SetTexture(0, nullptr);
 	m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
 	m_pDevice->DrawIndexedPrimitiveUP(D3DPT_TRIANGLELIST, 0, 4, 2, &indices[0], D3DFMT_INDEX16, &vertex[0], sizeof(D3DVERTEX));
 }
@@ -284,7 +288,7 @@ void CGraphics::DrawLine(float fLeft, float fTop, float fRight, float fBottom, f
 	vertex[0] = D3DVERTEX(fLeft, fTop, 0.0f, 1.0f, dwColour);
 	vertex[1] = D3DVERTEX(fRight, fBottom, 0.0f, 1.0f, dwColour);
 
-	m_pDevice->SetTexture(0, NULL);
+	m_pDevice->SetTexture(0, nullptr);
 	m_pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
 	m_pDevice->DrawPrimitiveUP(D3DPT_LINELIST, 1, &vertex[0], sizeof(D3DVERTEX));
 }
@@ -352,13 +356,13 @@ void CGraphics::DrawBox_2(float fLeft, float fTop, float fWidth, float fHeight, 
 
 	// Generate the matrix
 	D3DXMATRIX matrix;
-	D3DXMatrixTransformation2D(&matrix, NULL, 0.0f, &D3DXVECTOR2(fWidth, fHeight), NULL, 0.0f, &D3DXVECTOR2(fLeft, fTop));
+	D3DXMatrixTransformation2D(&matrix, nullptr, 0.0f, &D3DXVECTOR2(fWidth, fHeight), nullptr, 0.0f, &D3DXVECTOR2(fLeft, fTop));
 
 	// Set the sprite transform
 	m_pSprite->SetTransform(&matrix);
 
 	// Draw the box
-	m_pSprite->Draw(m_pPixelTexture, NULL, NULL, NULL, dwColorBox);
+	m_pSprite->Draw(m_pPixelTexture, nullptr, nullptr, nullptr, dwColorBox);
 
 	// End the sprite
 	m_pSprite->End();

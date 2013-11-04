@@ -139,7 +139,12 @@ public:
         virtual void            Function108();
         virtual void            Function109(); 
         virtual void            Function110(); // return -1;
-};
+		virtual void			Function111();
+		virtual void			Function112(); // TODO: hook in ContextSwitch to make the Vehicle Attack Working => sub_C44D80
+												// Or better hook A92860 void* this[ecx] is Vehicle
+												// And hook AEC730 int a2 is IVPed
+												// Try to hook 7FDD20 => make a loop and switch everything to make the process for all players
+};											
 
 class CIVVehicle : public CIVPhysical {
 public:

@@ -161,11 +161,20 @@ DWORD SkinIdToModelHash(int modelid)
 }
 
 CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
-	CNetworkEntity(PLAYER_ENTITY), m_iWantedLevel(0), m_bLocalPlayer(bLocalPlayer),
-	m_usPlayerId(INVALID_ENTITY_ID), m_usPing(0), m_bNetworked(false),
-	m_uiColor(0xFFFFFFFF), m_bSpawned(false), m_pPlayerPed(NULL),
-	m_pPlayerInfo(NULL), m_bytePlayerNumber(INVALID_PLAYER_PED), m_pContextData(NULL),
-	m_pVehicle(NULL), m_byteSeat(0)
+	CNetworkEntity(PLAYER_ENTITY), 
+	m_iWantedLevel(0), 
+	m_bLocalPlayer(bLocalPlayer),
+	m_usPlayerId(INVALID_ENTITY_ID), 
+	m_usPing(0), 
+	m_bNetworked(false),
+	m_uiColor(0xFFFFFFFF), 
+	m_bSpawned(false), 
+	m_pPlayerPed(nullptr),
+	m_pPlayerInfo(nullptr),
+	m_bytePlayerNumber(INVALID_PLAYER_PED), 
+	m_pContextData(nullptr),
+	m_pVehicle(nullptr),
+	m_byteSeat(0)
 {
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(INVALID_PLAYER_PED);
 	m_vecPosition = CVector3();
@@ -294,7 +303,7 @@ bool CPlayerEntity::Create()
 	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
 
 	// Setup the ped
-	Matrix34 * pMatrix = NULL;
+	Matrix34 * pMatrix = nullptr;
 	int iModelIndex = m_pModelInfo->GetIndex();
 	_asm  push iModelIndex;
 	_asm  push COffsets::IV_Var__PedFactory;
@@ -377,7 +386,7 @@ bool CPlayerEntity::Destroy()
 		CContextDataManager::DestroyContextData(m_pContextData);
 
 		// Invalidate the context data pointer
-		m_pContextData = NULL;
+		m_pContextData = nullptr;
 	}
 
 	// Delete the player ped instance
@@ -390,7 +399,7 @@ bool CPlayerEntity::Destroy()
 	if(m_bytePlayerNumber != INVALID_PLAYER_PED)
 	{
 		// Reset the game player info pointer
-		g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned int)m_bytePlayerNumber, NULL);
+		g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex((unsigned int) m_bytePlayerNumber, nullptr);
 
 		// Invalidate the player number
 		m_bytePlayerNumber = INVALID_PLAYER_PED;
@@ -766,8 +775,10 @@ bool CPlayerEntity::InternalIsInVehicle()
 
 CVehicleEntity * CPlayerEntity::InternalGetVehicle()
 {
-	//m_pPlayerPed->GetCurrentVehicle();
-	return NULL;
+	if (m_pPlayerPed)
+		m_pPlayerPed->GetCurrentVehicle();
+
+	return nullptr;
 }
 
 void CPlayerEntity::PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
@@ -817,10 +828,10 @@ void CPlayerEntity::RemoveFromVehicle()
 	InternalRemoveFromVehicle();
 
 	// Reset the vehicle seat
-	m_pVehicle->SetOccupant(m_byteSeat, NULL);
+	m_pVehicle->SetOccupant(m_byteSeat, nullptr);
 
 	// Reset our vehicle pointer
-	m_pVehicle = NULL;
+	m_pVehicle = nullptr;
 
 	// Reset our seat
 	m_byteSeat = 0;
@@ -974,7 +985,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 				// Are we not already requesting an enter?
 				if(!m_pVehicleEnterExit->bEntering)
 				{
-					CVehicleEntity * pVehicle = NULL;
+					CVehicleEntity * pVehicle = nullptr;
 					BYTE byteSeat = 0;
 					bool bFound = GetClosestVehicle(m_lastControlState.IsUsingHorn(), &pVehicle, byteSeat);
 
@@ -982,7 +993,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 					if(bFound)
 					{
 						if (m_pVehicle)
-							m_pVehicle = NULL;
+							m_pVehicle = nullptr;
 						// Enter the vehicle
 						EnterVehicle(pVehicle, byteSeat);
 
@@ -1028,7 +1039,7 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 	{
 		float fCurrent = 6.0f;
 		CVector3 vecVehiclePosition;
-		CVehicleEntity * pClosestVehicle = NULL;
+		CVehicleEntity * pClosestVehicle = nullptr;
 
 		// Get our current position
 		CVector3 vecPosition;
@@ -1233,16 +1244,16 @@ void CPlayerEntity::ResetVehicleEnterExit()
 	if(m_pVehicle && m_pVehicleEnterExit->bExiting)
 	{
 		// Reset the seat
-		m_pVehicle->SetOccupant(m_byteSeat, NULL);
+		m_pVehicle->SetOccupant(m_byteSeat, nullptr);
 		m_byteSeat = 0;
 
 		// Reset the vehicle
-		m_pVehicle = NULL;
+		m_pVehicle = nullptr;
 	}
 
 	// Reset
 	m_pVehicleEnterExit->bEntering = false;
-	m_pVehicleEnterExit->pVehicle = NULL;
+	m_pVehicleEnterExit->pVehicle = nullptr;
 	m_pVehicleEnterExit->byteSeat = 0;
 	m_pVehicleEnterExit->bExiting = false;
 	m_pVehicleEnterExit->bRequesting = false;
@@ -1285,7 +1296,7 @@ bool CPlayerEntity::IsJumping()
 		if (pTask)
 		{
 			// Is this task getting in a vehicle?
-			if (pTask->GetType() == TASK_COMPLEX_JUMP)
+			if (pTask->GetType() == TASK_COMPLEX_JUMP || pTask->GetType() == TASK_SIMPLE_MOVE_IN_AIR)
 				return true;
 		}
 	}
@@ -1443,41 +1454,6 @@ void CPlayerEntity::ResetInterpolation()
 	RemoveTargetPosition();
 }
 
-
-void CPlayerEntity::SetAimData(bool bSwitch, CVector3 vecPosition)
-{
-	switch(bSwitch)
-	{
-	case true:
-		{
-			m_aimData.bSwitch = bSwitch;
-			memcpy(&m_aimData, &vecPosition, sizeof(CVector3));
-		}
-	case false:
-		{
-			m_aimData.bSwitch = bSwitch;
-			memcpy(&m_aimData, NULL, sizeof(CVector3));
-		}
-	}
-}
-
-void CPlayerEntity::SetShotData(bool bSwitch, CVector3 vecPosition)
-{
-	switch(bSwitch)
-	{
-	case true:
-		{
-			m_shotData.bSwitch = bSwitch;
-			memcpy(&m_shotData, &vecPosition, sizeof(CVector3));
-		}
-	case false:
-		{
-			m_shotData.bSwitch = bSwitch;
-			memcpy(&m_shotData, NULL, sizeof(CVector3));
-		}
-	}
-}
-
 void CPlayerEntity::UpdateTargetRotation()
 {
 	if(HasTargetRotation())
@@ -1586,7 +1562,7 @@ IVEntity * CPlayerEntity::GetLastDamageEntity()
 	if(IsSpawned())
 		return m_pPlayerPed->GetLastDamageEntity();
 
-	return NULL;
+	return nullptr;
 }
 
 bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId)
@@ -1889,7 +1865,6 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	{
 		CNetworkPlayerPassengerSyncPacket PassengerPacket;
 
-		PassengerPacket.byteSeatId = m_byteSeat;
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PassengerPacket.ControlState);
 		PassengerPacket.playerArmor = GetArmour();
 		PassengerPacket.playerHealth = GetHealth();
@@ -2047,7 +2022,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		pBitStream->Read(PassengerPacket);
 
 		SetPosition(PassengerPacket.vecPosition);
-
+		SetControlState(&PassengerPacket.ControlState);
 		SetArmour(PassengerPacket.playerArmor);
 		SetHealth(PassengerPacket.playerHealth);
 

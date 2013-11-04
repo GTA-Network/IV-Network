@@ -12,7 +12,8 @@
 extern CCore * g_pCore;
 
 CIVPlayerInfo::CIVPlayerInfo() :
-	m_bCreatedByUs(false), m_pPlayerInfo(NULL)
+	m_bCreatedByUs(false), 
+	m_pPlayerInfo(nullptr)
 {
 }
 
@@ -48,7 +49,7 @@ CIVPlayerInfo::CIVPlayerInfo(IVPlayerInfo * pPlayerInfo)
 CIVPlayerInfo::~CIVPlayerInfo()
 {
 	// Set the player info
-	SetPlayerInfo(NULL);
+	SetPlayerInfo(nullptr);
 }
 
 void CIVPlayerInfo::SetPlayerInfo(IVPlayerInfo * pPlayerInfo)
@@ -95,7 +96,7 @@ IVPlayerPed * CIVPlayerInfo::GetPlayerPed()
 	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_pPlayerPed;
 
-	return NULL;
+	return nullptr;
 }
 
 void CIVPlayerInfo::SetName(char * szName)

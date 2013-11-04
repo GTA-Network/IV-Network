@@ -545,7 +545,6 @@
     <ClInclude Include="Graphics\CGUI.h" />
     <ClInclude Include="Hooks\CWin32MouseHook.h" />
     <ClInclude Include="Hooks\CXLive.h" />
-    <ClInclude Include="IV\CIVExternalScriptCall.h" />
     <ClInclude Include="IV\CIVScript.h" />
     <ClInclude Include="IV\CIVScriptEnums.h" />
     <ClInclude Include="IV\CIVScript_FunctionContext.h" />
