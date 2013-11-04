@@ -221,7 +221,7 @@ IVPad* syncPad = nullptr;
 
 IVPad* GetPadFromPlayerPed(IVPed* pPed)
 {
-	if (pPed && pPed->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed) {
+	if (pPed && pPed->m_pPlayerInfo && pPed->m_pPlayerInfo->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed) {
 		// return the local player pad
 		CLogFile::Printf("Return local pad");
 		return ((IVPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
