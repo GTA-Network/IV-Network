@@ -782,6 +782,9 @@
     <ClCompile Include="Hooks\CWin32MouseHook.cpp">
       <Filter>Source Files\Hooks\XLive</Filter>
     </ClCompile>
+    <ClCompile Include="General\CDEV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -1563,6 +1566,9 @@
     </ClInclude>
     <ClInclude Include="Game\CContextSwitch.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="General\CDEV.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

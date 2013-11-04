@@ -55,7 +55,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;$(SolutionDir)\Client\IVCore\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -269,6 +269,7 @@
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
     <ClCompile Include="Game\IVManagement.cpp" />
+    <ClCompile Include="General\CDEV.cpp" />
     <ClCompile Include="General\CException.cpp" />
     <ClCompile Include="General\CModule.cpp" />
     <ClCompile Include="General\CModuleManager.cpp" />
@@ -521,6 +522,7 @@
     <ClInclude Include="Game\IVEngine\CIVWorld.h" />
     <ClInclude Include="Game\IVEngine\IVTasks.h" />
     <ClInclude Include="Game\IVManagement.h" />
+    <ClInclude Include="General\CDEV.h" />
     <ClInclude Include="General\CException.h" />
     <ClInclude Include="General\CModule.h" />
     <ClInclude Include="General\CModuleManager.h" />

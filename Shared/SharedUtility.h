@@ -134,7 +134,9 @@ namespace SharedUtility
 	void CheckGameDirectoryExists();
 	void CreateBasicMPDirectories();
 
-	CString	DiconnectReasonToString( unsigned int uiReason );
+	CString	DiconnectReasonToString(unsigned int uiReason);
+
+	bool GetHTTPData(CString host, CString page, CString &buffer);
 }
 
 #endif

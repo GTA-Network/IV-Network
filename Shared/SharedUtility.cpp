@@ -687,19 +687,53 @@ namespace SharedUtility
 	}
 #endif
 	
-	CString DiconnectReasonToString( unsigned int uiReason )
+	CString DiconnectReasonToString(unsigned uiReason)
 	{
-		CString strReason( "Unknown" );
+		CString strReason("Unknown");
 
-		switch( uiReason )
+		switch(uiReason)
 		{
-			case 0:		strReason.Set( "Timed Out" ); break;
-			case 1:		strReason.Set( "Quit" ); break;
-			case 2:		strReason.Set( "Kicked" ); break;
-			case 3:		strReason.Set( "Banned" ); break;
+			case 0:		strReason.Set("Timed Out"); break;
+			case 1:		strReason.Set("Quit"); break;
+			case 2:		strReason.Set("Kicked"); break;
+			case 3:		strReason.Set("Banned"); break;
 		}
 
 		return strReason;
+	}
+
+	bool GetHTTPData(CString host, CString page, CString &buffer)
+	{
+		SOCKET Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+		SOCKADDR_IN SockAddr;
+		SockAddr.sin_port = htons(80);
+		SockAddr.sin_family = AF_INET;
+		SockAddr.sin_addr.s_addr = *(DWORD*) gethostbyname(host.Get())->h_addr;
+
+		if(connect(Socket, (SOCKADDR*) &SockAddr, sizeof(SockAddr)) != 0)
+			return false;
+
+		CString sendme = CString(
+			"GET %s HTTP/1.1\r\n"
+			"Host: %s\r\n"
+			"Connection: close\r\n"
+			"\r\n",
+			page.Get(),
+			host.Get()
+			);
+
+		send(Socket, sendme.Get(), sendme.GetLength(), 0);
+
+		char* _buffer = new char[10000];
+		memset(_buffer, 0, 10000);
+		recv(Socket, _buffer, 10000, 0);
+		buffer = _buffer;
+		buffer.Erase(0, buffer.Find("\r\n\r\n") + strlen("\r\n\r\n"));
+		delete[] _buffer;
+
+		closesocket(Socket);
+		return true;
 	}
 
 };

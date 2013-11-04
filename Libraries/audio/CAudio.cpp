@@ -1,14 +1,16 @@
-//========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
-// Author: Knight
+// File: CAudio.cpp
+// Project: Client.Core
+// Author: Knight<xxx@xxx>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
 
 #include "CAudio.h"
-#include "CCore.h"
 #include <bass/bass.h>
 #include <SharedUtility.h>
+#include "CCore.h"
 
 extern CCore * g_pCore;
 
@@ -28,8 +30,7 @@ CAudio::~CAudio()
 
 bool CAudio::Load()
 {
-	if(m_dwChannel == 0)
-	{
+	if(m_dwChannel == 0) {
 		// Create BASS stream
 		if(m_bIsOnlineStream)
 			m_dwChannel = BASS_StreamCreateURL(m_strStreamName, 0, (BASS_STREAM_BLOCK | BASS_STREAM_STATUS | BASS_STREAM_AUTOFREE), 0, 0);
@@ -37,8 +38,7 @@ bool CAudio::Load()
 			m_dwChannel = BASS_StreamCreateFile(FALSE, m_strStreamName, 0, 0, BASS_STREAM_PRESCAN);
 
 		// stream create check
-		if(m_dwChannel != 0)
-		{
+		if(m_dwChannel != 0) {
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
 			return true;
 		}
@@ -49,8 +49,8 @@ bool CAudio::Load()
 
 void CAudio::Unload()
 {
-	if(m_dwChannel != 0)
-	{
+	// Do we have a valid channel?
+	if(m_dwChannel != 0) {
 		// Free BASS stream
 		BASS_StreamFree(m_dwChannel);
 		m_dwChannel = 0;
@@ -68,12 +68,14 @@ bool CAudio::Play()
 
 void CAudio::Pause()
 {
+	// Do we have a valid channel?
 	if(m_dwChannel != 0)
 		BASS_ChannelPause(m_dwChannel);
 }
 
 bool CAudio::IsPlaying()
 {
+	// Do we have a valid channel?
 	if(m_dwChannel != 0)
 		return (BASS_ChannelIsActive(m_dwChannel) == BASS_ACTIVE_PLAYING);
 
@@ -82,6 +84,7 @@ bool CAudio::IsPlaying()
 
 bool CAudio::IsPaused()
 {
+	// Do we have a valid channel?
 	if(m_dwChannel != 0)
 		return (BASS_ChannelIsActive(m_dwChannel) == BASS_ACTIVE_PAUSED);
 
@@ -90,6 +93,7 @@ bool CAudio::IsPaused()
 
 bool CAudio::IsStalled()
 {
+	// Do we have a valid channel?
 	if(m_dwChannel != 0)
 		return (BASS_ChannelIsActive(m_dwChannel) == BASS_ACTIVE_STALLED);
 
@@ -98,6 +102,7 @@ bool CAudio::IsStalled()
 
 void CAudio::Stop()
 {
+	// Do we have a valid channel?
 	if(m_dwChannel != 0)
 		BASS_ChannelStop(m_dwChannel);
 }
@@ -105,11 +110,6 @@ void CAudio::Stop()
 void CAudio::SetUsePosition(bool bUsePosition)
 {
 	m_bUsePosition = bUsePosition;
-}
-
-bool CAudio::GetUsePosition()
-{
-	return m_bUsePosition;
 }
 
 void CAudio::SetPosition(CVector3 vecPosition, float fRange)
@@ -129,8 +129,8 @@ void CAudio::SetVolume(float fVolume)
 	// Volume check
 	m_fVolume = Math::Clamp(0.0f, fVolume, 100.0f);
 
-	if(m_dwChannel != 0)
-	{
+	// Do we have a valid channel?
+	if(m_dwChannel != 0) {
 		// New volume
 		if(!m_bIsMuted)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
@@ -142,8 +142,8 @@ float CAudio::GetVolume()
 	if(m_bIsMuted)
 		return 0.0f;
 
-	if(m_dwChannel != 0)
-	{
+	// Do we have a valid channel?
+	if(m_dwChannel != 0) {
 		// Current volume
 		float fVolume;
 		BASS_ChannelGetAttribute(m_dwChannel, BASS_ATTRIB_VOL, &fVolume);
@@ -155,9 +155,8 @@ float CAudio::GetVolume()
 
 void CAudio::Mute()
 {
-	if(!m_bIsMuted)
-	{
-		// Set volume to 0
+	if(!m_bIsMuted) {
+		// Do we have a valid channel?
 		if(m_dwChannel != 0)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, 0.0f);
 
@@ -166,16 +165,10 @@ void CAudio::Mute()
 	}
 }
 
-bool CAudio::IsMuted()
-{
-	return m_bIsMuted;
-}
-
 void CAudio::Unmute()
 {
-	if(m_bIsMuted)
-	{
-		// Restore volume
+	if(m_bIsMuted) {
+		// Do we have a valid channel?
 		if(m_dwChannel != 0)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
 
@@ -186,15 +179,13 @@ void CAudio::Unmute()
 
 void CAudio::Process()
 {
-	if(m_bUsePosition)
-	{
+	if(m_bUsePosition) {
 		CVector3 vecLocalPlayer;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecLocalPlayer);
 
 		float fDistance = Math::GetDistanceBetweenPoints3D(vecLocalPlayer.fX, vecLocalPlayer.fY, vecLocalPlayer.fZ, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ);
 
-		if(fDistance < m_fRange)
-		{
+		if(fDistance < m_fRange) {
 			float fVolume = exp(-fDistance * (5.0f / m_fRange));
 			SetVolume(fVolume / 0.01f);
 		}
@@ -208,8 +199,8 @@ int CAudio::GetLength()
 	if (m_bIsOnlineStream)
 		return -1;
 	
-	if (m_dwChannel)
-	{
+	// Do we have a valid channel?
+	if (m_dwChannel) {
 		// get length
 		long length = BASS_ChannelGetLength (m_dwChannel, BASS_POS_BYTE);
 		
@@ -219,28 +210,26 @@ int CAudio::GetLength()
 	return -1;
 }
 
-bool CAudio::SetAt (int time)
+bool CAudio::SetAt(int iTime)
 {
 	if (m_bIsOnlineStream)
 		return false;
 
-	if (m_dwChannel)
-	{
-		long lTime =BASS_ChannelSeconds2Bytes (m_dwChannel, time);
+	// Do we have a valid channel?
+	if (m_dwChannel) {
+		long lTime =BASS_ChannelSeconds2Bytes (m_dwChannel, iTime);
 		BASS_ChannelSetPosition(m_dwChannel, lTime, BASS_POS_BYTE);
 		return true;
 	}
 	return false;
 }	
 
-int CAudio::GetAt ()
-{
-	
+int CAudio::GetAt() {
 	if (m_bIsOnlineStream)
 		return -1;
 
-	if (m_dwChannel)
-	{
+	// Do we have a valid channel?
+	if (m_dwChannel) {
 		long length = BASS_ChannelGetPosition(m_dwChannel, BASS_POS_BYTE);
 		return BASS_ChannelBytes2Seconds (m_dwChannel, length);
 	}

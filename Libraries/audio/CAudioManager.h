@@ -1,31 +1,35 @@
-//========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
-// Author: Knight
+// File: CAudioManager.h
+// Project: Client.Core
+// Author: Knight<xxx@xxx>
 // License: See LICENSE in root directory
 //
 //==========================================================================================
 
-#pragma once
+#ifndef CAUDIOMANAGER_H
+#define CAUDIOMANAGER_H
 
 #include "CAudio.h"
 
-class CAudioManager
-{
+class CAudioManager {
 private:
-	std::list<CAudio *> m_audioList;
-	bool                m_bMuted;
+	std::list<CAudio *>	 m_audioList;
+	bool				 m_bMuted;
 
 public:
-	CAudioManager();
-	~CAudioManager();
+						CAudioManager();
+						~CAudioManager();
 
-	bool Initialize();
-	void Add(CAudio * pAudio);
-	void Remove(CAudio * pAudio);
-	void RemoveAll();
-	void MuteAll();
-	bool IsMuted() { return m_bMuted; }
-	void UnmuteAll();
-	void Process();
-	CString GetYoutubeStreamURL(CString link);
+	bool				Initialize();
+	void				Add(CAudio * pAudio);
+	void				Remove(CAudio * pAudio);
+	void				RemoveAll();
+	void				MuteAll();
+	inline bool			IsMuted() { return m_bMuted; }
+	void				UnmuteAll();
+	void				Process();
+	CString				GetYoutubeStreamURL(CString link);
 };
+
+#endif // CAUDIOMANAGER_H

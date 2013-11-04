@@ -48,12 +48,16 @@
 #include <General/CModuleManager.h>
 #include <Game/CTime.h>
 
+#ifdef _DEV
+#include <CDEV.h>
+#endif
+
 #include <Graphics/CGUI.h>
 #include <Graphics/CMainMenu.h>
 #include <Graphics/CLoadingScreen.h>
 #include <Graphics/CTags.h>
 
-#include <audio\CAudioManager.h>
+#include <audio/CAudioManager.h>
 
 #include <RAGEEngine/RAGEInterface.h>
 typedef void(*GetInterface_t)(RAGEEngineInterface *);
@@ -63,7 +67,10 @@ typedef void(*GetInterface_t)(RAGEEngineInterface *);
 #include "Game/EpisodeManager.h"
 
 #include <Network/CHttpClient.h>
+
 #include <Scripting/ResourceSystem/CResourceManager.h>
+
+#include <RakNet/RakNetStatistics.h>
 
 class CCore {
 private:

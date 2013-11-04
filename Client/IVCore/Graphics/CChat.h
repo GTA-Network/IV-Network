@@ -1,8 +1,16 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: CChat.h
+// Project: Client.Core
+// Author: FRi<FRi.developing@gmail.com>
+// License: See LICENSE in root directory
+//
+//==========================================================================================
+
 #ifndef CCHAT_H
 #define CCHAT_H
 
-class CChat
-{
+class CChat {
 private:
 	bool		m_bVisible;
 	CString		m_szMessages[CHAT_MAX_LINES];
@@ -15,20 +23,20 @@ private:
 	bool		m_bInsert;
 
 public:
-	CChat();
-	~CChat();
+				CChat();
+				~CChat();
 
-	void SetVisible(bool bVisible) { m_bVisible = bVisible; }
+	void		SetVisible(bool bVisible) { m_bVisible = bVisible; }
 
-	void Render();
+	void		Render();
 
-	void Print(CString text);
+	void		Print(CString text);
 
-	void HandleUserInput(unsigned int uMsg, WPARAM dwChar);
-	void Clear();
+	void		HandleUserInput(unsigned int uMsg, WPARAM dwChar);
+	void		Clear();
 
 private:
-	void Log(CString text);
+	void		Log(CString text);
 };
 
 #endif

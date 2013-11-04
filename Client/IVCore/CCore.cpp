@@ -9,7 +9,7 @@
 
 #include	"CCore.h"
 #include    <IV/CIVScript.h>
-#include <Scripting/CEvents.h>
+#include	<Scripting/CEvents.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
@@ -32,9 +32,9 @@ void OnCreateVM(CScriptVM * pVM)
 bool CCore::Initialise()
 {
 	// Are we already initialsed?
-	if(m_bInitialised)
-		return false;
+	CHECK_PTR(m_bInitialised)
 	
+	// Log our function call
 	PRINT_FUNCTION
 	
 	// Get the application base address
@@ -52,7 +52,7 @@ bool CCore::Initialise()
 	CSettings::ParseCommandLine(GetCommandLine());
 	
 	// Load RAGE Engine
-	m_pRAGELibrary = new CLibrary();
+	m_pRAGELibrary = new CLibrary;
 
 	// Did the module fail to load?
 	if(m_pRAGELibrary->Load(SharedUtility::GetAbsolutePath("IVEngine.dll")))
@@ -61,11 +61,13 @@ bool CCore::Initialise()
 		m_pEngine = (GetInterface_t)m_pRAGELibrary->GetProcedureAddress("GetInterface");
 
 		if(m_pEngine) {
+			// Initialise new interface pointer
 			RAGEEngineInterface *pTemp = new RAGEEngineInterface;
 
 			// Get the interface
 			m_pEngine(pTemp);
 
+			// Initialise the class member interface
 			RAGEEngineInterface *m_pInterface = static_cast<RAGEEngineInterface *>(pTemp);
 
 			// Initialise the interface
@@ -95,10 +97,13 @@ bool CCore::Initialise()
 	// Create the chat instance
 	m_pChat = new CChat();
 
+	// Create the basic IV startup script
 	m_pIVStartupScript = new CIVStartupScript;
 	
+	// Create the event systems instance
+	CEvents* pEvents = new CEvents; // Shouldn't it be a class private member? To be accesses from other classes?
 
-	CEvents* pEvents = new CEvents();
+	// Create the resource manager instance
 	m_pResourceManager = new CResourceManager("client_resources/resources");
 	m_pResourceManager->SetCreateVMCallback(OnCreateVM);
 
@@ -132,10 +137,11 @@ bool CCore::Initialise()
 	// Register module manager
 	CModuleManager::FetchModules();
 	
+	// Initialise the episodes hook
 	EpisodeManager::Initialize();
 
-	// Initialize our HTTP Connection
-	m_pHttpClient = new CHttpClient();
+	// Initialize our HTTP connection
+	m_pHttpClient = new CHttpClient;
 	m_pHttpClient->SetRequestTimeout(10000);
 	m_pHttpClient->SetHost(MASTERLIST_URL);
 
@@ -178,52 +184,51 @@ void CCore::OnGameLoad()
 
 void CCore::OnGameUpdate()
 {
-	if (g_pCore->GetNetworkManager())
+	// Pulse network connection
+	if(g_pCore->GetNetworkManager())
 		g_pCore->GetNetworkManager()->Pulse();
 
-	g_pCore->GetTimeManagementInstance()->Pulse();
+	// Pulse the time management interface
+	if(g_pCore->GetTimeManagementInstance())
+		g_pCore->GetTimeManagementInstance()->Pulse();
 
-	g_pCore->GetGame()->ProcessEnvironment();
+	// Pulse our IV environment
+	if(g_pCore->GetGame())
+		g_pCore->GetGame()->ProcessEnvironment();
 
+	// Pulse fps counter
 	if (g_pCore->GetFPSCounter())
 		g_pCore->GetFPSCounter()->Pulse();
 
+	// Pulse the localplayer
 	if (g_pCore->GetGame()->GetLocalPlayer())
 		g_pCore->GetGame()->GetLocalPlayer()->Pulse();
 }
 
 void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
 {
+	// Declare our basic network connection
 	SetHost(strHost);
 	SetClientPort(usPort);
 	SetPass(strPass);
 
 	// Connect to the network
-	m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
-}
-
-void test()
-{
-	Sleep(500);
-	
-	CAudio  *pAudio = new CAudio(g_pCore->GetAudioManager()->GetYoutubeStreamURL("http://www.youtube.com/watch?v=52RP9mGwF1A").Get(), false, true);
-	if (pAudio && pAudio->Load())
-	{
-		g_pCore->GetAudioManager()->Add(pAudio);
-		pAudio->Play();
-	}
+	CHECK_PTR_VOID(m_pNetworkManager)
+		m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
 void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
 	PRINT_FUNCTION
 
-	// Setup audio manager
-	m_pAudioManager = new CAudioManager();
+	// Create our audio manager instance
+	m_pAudioManager = new CAudioManager;
 
+	// Initialise our audio manager
 	if (!m_pAudioManager->Initialize())
 		CLogFile::Printf("CAudioManager::Initialize failed");
 
+	// Create our GUI system and initialise it
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
 
@@ -237,9 +242,7 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	m_pLoadingScreen->SetVisible(true);
 
 	// Setup the name tags
-	m_pTags = new CTags();
-
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)test, NULL, 0, NULL);
+	m_pTags = new CTags;
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -258,73 +261,6 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 	g_bDeviceLost = false;
 }
 
-#include <RakNet/RakNetStatistics.h>
-
-CString MakeSubTaskString(CString strName, CIVTask* pTask)
-{
-	CString str;
-	if (pTask)
-	{
-		str += strName;
-		str += pTask->GetName();
-		str += "\n";
-		if (!pTask->IsSimple() && ((CIVTaskComplex*) pTask)->GetSubTask())
-			str += MakeSubTaskString(strName + "    ", ((CIVTaskComplex*) pTask)->GetSubTask());
-	}
-
-	return str;
-}
-
-CString MakeTaskString(CString strName, CIVTask* pTask)
-{
-	CString str;
-	if (pTask)
-	{
-		str += strName;
-		str += pTask->GetName();
-		str += "\n";
-		if (!pTask->IsSimple() && ((CIVTaskComplex*) pTask)->GetSubTask())
-			str += MakeSubTaskString("    ", ((CIVTaskComplex*) pTask)->GetSubTask());
-	}
-
-	return str;
-}
-
-void DrawPedTasks(CIVPed* pPed)
-{
-	CString strTasks;
-
-	/** Prioritry Tasks **/
-	strTasks += "Priority Tasks: \n";
-
-	strTasks += MakeTaskString("PhysicalResponse: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PHYSICAL_RESPONSE));
-	strTasks += MakeTaskString("EventResponseTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_TEMP));
-	strTasks += MakeTaskString("EventResponseNonTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP));
-	strTasks += MakeTaskString("Primary: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY));
-	strTasks += MakeTaskString("Default: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_DEFAULT));
-	strTasks += "\n";
-
-	/**************************************************************************************************/
-
-	strTasks += "Secondary Tasks: \n";
-	strTasks += MakeTaskString("Attack: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_ATTACK));
-	strTasks += MakeTaskString("Duck: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_DUCK));
-	strTasks += MakeTaskString("Say: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_SAY));
-	strTasks += MakeTaskString("Facial Complex: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_FACIAL_COMPLEX));
-	strTasks += MakeTaskString("Partial Anim: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_PARTIAL_ANIM));
-	strTasks += MakeTaskString("IK: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_IK));
-	strTasks += "\n";
-
-	/**************************************************************************************************/
-
-	strTasks += "Movement Tasks: \n";
-	strTasks += MakeTaskString("Movement 1: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN0));
-	strTasks += MakeTaskString("Movement 2: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN1));
-	strTasks += MakeTaskString("Movement 3: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN2));
-
-	g_pCore->GetGraphics()->DrawText(600.0f, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, strTasks.Get());
-	
-}
 
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
@@ -393,12 +329,8 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 #ifdef _DEBUG
-
-	if (GetGame()->GetLocalPlayer())
-	{
-		DrawPedTasks(GetGame()->GetLocalPlayer()->GetPlayerPed());
-	}
-
+	if(GetGame()->GetLocalPlayer())
+		CDevelopment::DrawPedTasks(GetGame()->GetLocalPlayer()->GetPlayerPed());
 #endif
 
 	// Simulate temporary loading symbol
@@ -494,11 +426,7 @@ void CCore::GetLoadedModule(DWORD dwProcessId)
 			  std::size_t found3 = strModulee.find("AppPatch",10);
 			  std::size_t found4 = strModulee.find("WinSxS", 10);
 
-			  if(found!=std::string::npos || found2!=std::string::npos || found3!=std::string::npos || found4!=std::string::npos)
-			  {
-				//strModule.AppendF("--> %s", szModName);
-				//CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] ); 
-			  }//;//strModule.AppendF("%i, %s",found, szModName);
+			  if(found != std::string::npos || found2 != std::string::npos || found3 != std::string::npos || found4 != std::string::npos) {/**/}
 			  else {
 				strModule.AppendF("--> IVModules: %s", szModName);
 				CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] );
