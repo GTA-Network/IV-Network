@@ -44,16 +44,15 @@ _declspec(naked) void CTask__Destructor_Hook()
 void StartGame_Loading()
 {
 	int * v7 = new int(0);
-	_asm
-	{
-		push v7
-		mov ecx, COffsets::IV_Hook__StartGameLoading_1
-		call COffsets::IV_Hook__StartGameLoading_2
-	}
+
+	_asm	push v7;
+	_asm	mov ecx, COffsets::IV_Hook__StartGameLoading_1;
+	_asm	call COffsets::IV_Hook__StartGameLoading_2;
+	
 	*(DWORD*) COffsets::IV_Hook__StartGameLoading_3 = *v7;
 	*(DWORD*) COffsets::IV_Hook__StartGameLoading_4 = *v7;
 	if (*v7 > 0)
-		_asm call COffsets::IV_Hook__StartGameLoading_5;
+		_asm	call COffsets::IV_Hook__StartGameLoading_5;
 }
 
 void RemoveLoadingScreens()
@@ -64,8 +63,7 @@ void RemoveLoadingScreens()
 	int iLoadScreenType = COffsets::VAR_FirstLoadingScreenType;
 	int iLoadScreenDuration = COffsets::VAR_FirstLoadingScreenDuration;
 
-	for (int i = 0; i < *(int *) iLoadScreens; ++i)
-	{
+	for (int i = 0; i < *(int *) iLoadScreens; ++i) {
 		*(DWORD *) (iLoadScreenType + i * 400) = 0;
 		*(DWORD *) (iLoadScreenDuration + i * 400) = 0;
 	}
@@ -202,11 +200,8 @@ _declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
 
 _declspec(naked) void CFunctionRetnPatch()
 {
-	_asm
-	{
-		xor eax, eax
-			retn
-	}
+	_asm	xor eax, eax;
+	_asm	retn;
 }
 
 bool			bInitialiseGame = true;
@@ -288,30 +283,24 @@ struct phInstGta
 #include <IV/CIVScript.h>
 void _declspec(naked) PhysicsHook()
 {
-	_asm
-	{
-		mov physics, ecx
-		mov pVehicle, esi
-		pushad
-	}
+	_asm	mov physics, ecx;
+	_asm	mov pVehicle, esi;
+	_asm	pushad;
+	_asm	pushfd; //EFLAGS!
 
-	if (*(int*) pVehicle == g_pCore->GetBase() + 0xD9ED74) // IsBike
-	{
+	if (*(int*) pVehicle == g_pCore->GetBase() + 0xD9ED74) { // IsBike
 		//_asm { int 3 }
 		//CLogFile::Printf("%p", physics);
 	}
 
 	sub_44A690 = g_pCore->GetBase() + 0x44A690;
-	if (*(DWORD *) (physics + 4) == 0)
-	{
+	if (*(DWORD *) (physics + 4) == 0) {
 		CLogFile::Printf("Fail 0x%p", physics);
 
-		if (pVehicle->GetfragInst())
-		{
+		if (pVehicle->GetfragInst()) {
 			if (*(DWORD*) (pVehicle->GetfragInst() + 0x64))
 				CLogFile::Printf("0x%p", *(DWORD*) ((*(DWORD*) (pVehicle->GetfragInst() + 0x64)) + 0x160));
-			else
-			{
+			else {
 				int v2 = (*(int(__thiscall **)(DWORD))(*(DWORD *) pVehicle + 0xA0))((DWORD) pVehicle);
 				CLogFile::Printf("0x%p", (*(int(__thiscall **)(DWORD))(*(DWORD *) v2 + 0xE0))(v2));
 			}
@@ -331,32 +320,28 @@ void _declspec(naked) PhysicsHook()
 		CLogFile::Printf("[0x38] 0x%p || [0xE14] 0x%p || [0x100] 0x%p", pVehicle->m_pPhysics, pVehicle->m_pVehiclePhysics, *(DWORD*) (pVehicle + 0x40));
 		CLogFile::Printf("<=");
 
-		if (pVehicle->GetfragInst())
-		{
+		if (pVehicle->GetfragInst()) {
 			if (*(DWORD*) (pVehicle->GetfragInst() + 0x64))
 				CLogFile::Printf("0x%p", *(DWORD*) ((*(DWORD*) (pVehicle->GetfragInst() + 0x64)) + 0x160));
-			else
-			{
+			else {
 				int v2 = (*(int(__thiscall **)(DWORD))(*(DWORD *) pVehicle + 0xA0))((DWORD) pVehicle);
 				CLogFile::Printf("0x%p", (*(int(__thiscall **)(DWORD))(*(DWORD *) v2 + 0xE0))(v2));
 			}
 		}
-		_asm popad;
-		_asm retn;
+		_asm	popfd;
+		_asm	popad;
+		_asm	retn;
 	}
-	else
-	{
-		_asm popad;
-		_asm call sub_44A690;
-		_asm retn;
+	else {
+		_asm	popfd;
+		_asm	popad;
+		_asm	call sub_44A690;
+		_asm	retn;
 	}
 
-
-	_asm
-	{
-		_asm popad;
-		_asm retn;
-	}
+	_asm	popfd;
+	_asm	popad;
+	_asm	retn;
 }
 
 _declspec(naked) void CTaskSimpleStartVehicle__Process()
@@ -467,8 +452,8 @@ sRAGETHREAD* g_pRageScriptThread = NULL;
 
 __declspec(naked) int GetRunningScriptThread()
 {
-	_asm mov eax, g_pRageScriptThread;
-	_asm retn;
+	_asm	mov eax, g_pRageScriptThread;
+	_asm	retn;
 }
 
 void CHooks::Intialize()

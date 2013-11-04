@@ -13,8 +13,7 @@
 
 extern CCore* g_pCore;
 
-class EpisodeManagerDummy
-{
+class EpisodeManagerDummy {
 public:
 	void __thiscall registerEpisodes();
 	char __thiscall loadEpisodes(int id);
@@ -192,7 +191,7 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 
 		stXMLData episode;
 		episode.iEpisodeId = id;
-		GTA_memcpy(episode.szName, "IV:Network", 64);
+		GTA_memcpy(episode.szName, MOD_NAME, 64);
 		GTA_memcpy(episode.szDatFile, "content.dat", 32);
 		episode.szAudioFolder[0] = 0;
 		GTA_memcpy(episode.szAudioMetaData, "audio.xml", 64);
@@ -303,7 +302,6 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 	return sub_8B34D0(this, id);
 }
 
-extern	CCore				* g_pCore;
 void EpisodeManager::Initialize()
 {
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x8B3FF0, CPatcher::GetClassMemberAddress(&EpisodeManagerDummy::registerEpisodes));

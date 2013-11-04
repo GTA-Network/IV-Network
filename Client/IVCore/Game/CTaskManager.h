@@ -12,25 +12,24 @@
 
 #include <Game/IVEngine/CIVTask.h>
 
-struct ClientTaskPair
-{
+struct ClientTaskPair {
 	IVTask * pGameTask;
 	CIVTask * pClientTask;
 };
 
 class CTaskManager {
 private:
-	std::list< ClientTaskPair *> m_taskList;
+	std::list< ClientTaskPair *>	m_taskList;
 
 public:
-						CTaskManager( );
-						~CTaskManager( );
+									CTaskManager() { };
+									~CTaskManager();
 
-	bool				AddTask( CIVTask * pClientTask );
-	bool				RemoveTask( CIVTask * pClientTask );
-	IVTask				* GetGameTaskFromClientTask( CIVTask * pClientTask );
-	CIVTask				* GetClientTaskFromGameTask( IVTask * pGameTask, bool bCreateIfNotExist = true );
-	bool				HandleTaskDelete( IVTask * pGameTask );
+	bool							AddTask(CIVTask * pClientTask);
+	bool							RemoveTask(CIVTask * pClientTask);
+	IVTask							* GetGameTaskFromClientTask(CIVTask * pClientTask);
+	CIVTask							* GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist = true);
+	bool							HandleTaskDelete(IVTask * pGameTask);
 };
 
 #endif // CIVTaskManager_h

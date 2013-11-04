@@ -129,7 +129,7 @@ void CGameFunction::LoadHUD(CString strPath)
 {
 	const char * szPath = strPath.C_String();
 	*(DWORD *)COffsets::IV_Hook__LoadHUD = (DWORD)szPath;
-	_asm call COffsets::IV_Hook__LoadInternalHud;
+	_asm	call COffsets::IV_Hook__LoadInternalHud;
 	*(DWORD *)COffsets::IV_Hook__LoadHUD = (DWORD)COffsets::IV_Hook__LoadHudHook;
 }
 
@@ -137,7 +137,7 @@ void CGameFunction::LoadRadioLogo(CString strPath)
 {
 	const char * szPath = strPath.C_String();
 	*(DWORD *)COffsets::IV_Hook__LoadRadioLogo = (DWORD)szPath;
-	_asm call COffsets::IV_Hook__LoadInternalRadioLogo;
+	_asm	call COffsets::IV_Hook__LoadInternalRadioLogo;
 	*(DWORD *)COffsets::IV_Hook__LoadRadioLogo = (DWORD)COffsets::IV_Hook__LoadRadioLogoHook;
 }
 
@@ -202,9 +202,9 @@ void CGameFunction::ConvertEulerAnglesToRotationMatrix(CVector3 &vecRotation, Ma
 	CVector3 * pVecGameRotation = &vecRotation;
 	DWORD dwFunctionAddress = COffsets::FUNC_CMatrix__ConvertFromEulerAngles;
 
-	_asm push pVecGameRotation;;
-	_asm mov ecx, pMatGameRotation;
-	_asm call dwFunctionAddress;
+	_asm	push pVecGameRotation;;
+	_asm	mov ecx, pMatGameRotation;
+	_asm	call dwFunctionAddress;
 	
 	matGameRotation.ToMatrix(&matRotation);
 }

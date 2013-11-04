@@ -113,5 +113,5 @@ void CPatches::Initialize()
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x405D67), (g_pCore->GetBase() + 0x405D6E), 1);
 
 	// Set the window text
-	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD) MOD_NAME;
+	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD)MOD_NAME;
 }

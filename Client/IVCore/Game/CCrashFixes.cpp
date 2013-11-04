@@ -23,38 +23,32 @@ _declspec(naked) void TextureSelect_Hook()
 	_asm	jmp COffsets::IV_Hook__TextureSelect__JmpBack;
 }
 
-_declspec(naked) void CRASH_625F15_HOOK()
+void _declspec(naked) __stdcall CRASH_625F15_HOOK()
 {
-	_asm
-	{
-		test    eax, eax
-		jz      keks
-		cmp     eax, 100000h
-		jl      keks
-		mov     edx, [eax]
-		push    1
-		mov     ecx, edi
-		call    edx
+	_asm	test eax, eax;
+	_asm	jz keks;
+	_asm	cmp eax, 100000h;
+	_asm	jl keks;
+	_asm	mov edx, [eax];
+	_asm	push 1;
+	_asm	mov ecx, edi;
+	_asm	call edx;
 
-keks_patch :
-		mov     al, 1
-		pop     edi
-		pop     esi
-		pop     ebp
-		pop     ebx
-		add     esp, 0Ch
-		retn    4
-keks:
-		pushad
-	}
+	_asm	keks_patch:;
+	_asm	mov al, 1;
+	_asm	pop edi;
+	_asm	pop esi;
+	_asm	pop ebp;
+	_asm	pop ebx;
+	_asm	add esp, 0Ch;
+	_asm	retn 4;
+	_asm	keks:;
+	_asm	pushad;
 
 	g_pCore->GetGame()->ThrowInternalException(COffsets::IV_Hook__UnkownPatch2, 0xC0000005);
 
-	_asm
-	{
-		popad
-		jmp keks_patch
-	}
+	_asm	popad;
+	_asm	jmp keks_patch;
 }
 
 void CCrashFixes::Initialize()
