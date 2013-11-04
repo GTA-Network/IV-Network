@@ -316,31 +316,31 @@ bool CGame::CheckInstances(bool bInitialised)
 	// Check private class pointers to be valid(prevent game crashes)
 	if(!bInitialised)
 	{
-		CHECK_PTR(m_pPool);
-		CHECK_PTR(m_pPad);
-		CHECK_PTR(m_pTaskManager);
-		CHECK_PTR(m_pCharacterManager);
-		CHECK_PTR(m_pCamera);
+		CHECK_VALID(m_pPool);
+		CHECK_VALID(m_pPad);
+		CHECK_VALID(m_pTaskManager);
+		CHECK_VALID(m_pCharacterManager);
+		CHECK_VALID(m_pCamera);
 	}
 	else if(bInitialised)
 	{
-		CHECK_PTR(m_pPool);
-		CHECK_PTR(m_pPad);
-		CHECK_PTR(m_pTaskManager);
-		CHECK_PTR(m_pCharacterManager);
-		CHECK_PTR(m_pCamera);
-		CHECK_PTR(m_pLocalPlayer);
+		CHECK_VALID(m_pPool);
+		CHECK_VALID(m_pPad);
+		CHECK_VALID(m_pTaskManager);
+		CHECK_VALID(m_pCharacterManager);
+		CHECK_VALID(m_pCamera);
+		CHECK_VALID(m_pLocalPlayer);
 
-		CHECK_PTR(m_pPlayerManager);
-		CHECK_PTR(m_pVehicleManager);
-		CHECK_PTR(m_pActorManager);
-		CHECK_PTR(m_pObjectManager);
-		CHECK_PTR(m_pFireManager);
-		CHECK_PTR(m_pPickupManager);
-		CHECK_PTR(m_p3DLabelManager);
-		CHECK_PTR(m_pBlipManager);
-		CHECK_PTR(m_pCheckpointManager);
-		CHECK_PTR(m_pCharacterManager);
+		CHECK_VALID(m_pPlayerManager);
+		CHECK_VALID(m_pVehicleManager);
+		CHECK_VALID(m_pActorManager);
+		CHECK_VALID(m_pObjectManager);
+		CHECK_VALID(m_pFireManager);
+		CHECK_VALID(m_pPickupManager);
+		CHECK_VALID(m_p3DLabelManager);
+		CHECK_VALID(m_pBlipManager);
+		CHECK_VALID(m_pCheckpointManager);
+		CHECK_VALID(m_pCharacterManager);
 	}
 
 	return true;

@@ -23,7 +23,7 @@ CTaskManager::~CTaskManager()
 bool CTaskManager::AddTask(CIVTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_PTR(pClientTask);
+	CHECK_VALID(pClientTask);
 
 	// Create the client task pair
 	ClientTaskPair * pClientTaskPair = new ClientTaskPair;
@@ -45,7 +45,7 @@ bool CTaskManager::AddTask(CIVTask * pClientTask)
 bool CTaskManager::RemoveTask(CIVTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_PTR(pClientTask);
+	CHECK_VALID(pClientTask);
 
 	// Loop through all the client tasks
 	for(auto pTask:m_taskList)
@@ -130,7 +130,7 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 bool CTaskManager::HandleTaskDelete(IVTask * pGameTask)
 {
 	// Do we have an invalid task pointer?
-	CHECK_PTR(pGameTask);
+	CHECK_VALID(pGameTask);
 
 	// Try and get the client task pointer for this game task
 	CIVTask * pClientTask = GetClientTaskFromGameTask(pGameTask, false);

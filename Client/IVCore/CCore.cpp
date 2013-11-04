@@ -32,7 +32,7 @@ void OnCreateVM(CScriptVM * pVM)
 bool CCore::Initialise()
 {
 	// Are we already initialsed?
-	CHECK_PTR(m_bInitialised)
+	CHECK_VALID(!m_bInitialised)
 	
 	// Log our function call
 	PRINT_FUNCTION
@@ -101,7 +101,7 @@ bool CCore::Initialise()
 	m_pIVStartupScript = new CIVStartupScript;
 	
 	// Create the event systems instance
-	CEvents* pEvents = new CEvents; // Shouldn't it be a class private member? To be accesses from other classes?
+	CEvents* pEvents = new CEvents;
 
 	// Create the resource manager instance
 	m_pResourceManager = new CResourceManager("client_resources/resources");
@@ -213,7 +213,7 @@ void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strP
 	SetPass(strPass);
 
 	// Connect to the network
-	CHECK_PTR_VOID(m_pNetworkManager)
+	CHECK_VALID_VOID(m_pNetworkManager)
 		m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
@@ -261,7 +261,6 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 	g_bDeviceLost = false;
 }
 
-
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
 	// Has the device been lost?
@@ -290,8 +289,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	int iConnectTime = GetGameLoadInitializeTime() != 0 ? (int)((timeGetTime() - GetGameLoadInitializeTime()) / 1000) : 0;
 
 	CString strSeconds;
-	if (iConnectTime > 0)
-	{
+	if (iConnectTime > 0) {
 		strSeconds.AppendF(" | Running since ");
 
 		int iSeconds = iConnectTime % 60;
@@ -344,8 +342,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ...").Get();
 	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
-	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50)
-	{
+	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50) {
 		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on .....").Get();
 		if (m_byteLoadingStyle == 49)
 			m_byteLoadingStyle = 0;
@@ -366,8 +363,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 
 	// Check if our snap shot write failed
-	if(CSnapShot::IsDone())
-	{
+	if(CSnapShot::IsDone()) {
 		if(CSnapShot::HasSucceeded())
 			m_pChat->Print(CString("Screen shot written (%s).", CSnapShot::GetWriteName().Get()));
 		else
@@ -393,8 +389,7 @@ void CCore::GetLoadedModulesList()
 
     cProcesses = cbNeeded / sizeof(DWORD);
 
-    for ( i = 0; i < cProcesses; i++ )
-    {
+    for ( i = 0; i < cProcesses; i++ ) {
 		if(aProcesses[i] == GetProcessId(GetCurrentProcess()))
 			GetLoadedModule( aProcesses[i] );
     }
