@@ -402,43 +402,22 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkPlayerSyncPacket pSyncPacket;
+			CNetworkPlayerSyncPacket PlayerPacket;
 
-			GetControlState(pSyncPacket.pControlState);
+			GetControlState(PlayerPacket.pControlState);
 
-			// Apply current 3D Position to the sync package
-			GetPosition(pSyncPacket.vecPosition);
+			GetPosition(PlayerPacket.vecPosition);
+			GetMoveSpeed(PlayerPacket.vecMoveSpeed);
+			GetTurnSpeed(PlayerPacket.vecTurnSpeed);
+			PlayerPacket.bDuckState = m_bDuckState;
+			PlayerPacket.fHeading = m_fHeading;
+			PlayerPacket.fHealth = GetHealth();
+			PlayerPacket.weapon.iAmmo = m_Weapon.iAmmo;
+			PlayerPacket.weapon.weaponType = m_Weapon.weaponType;
 
-			// Apply current 3D Movement to the sync package
-			GetMoveSpeed(pSyncPacket.vecMoveSpeed);
-
-			// Apply current 3D Turnspeed to the sync package
-			GetTurnSpeed(pSyncPacket.vecTurnSpeed);
-
-			//CLogFile::Printf("[%i] %f %f %f", GetId(), pSyncPacket->vecTurnSpeed.fX, pSyncPacket->vecTurnSpeed.fY, pSyncPacket->vecTurnSpeed.fZ);
-
-			// Apply current 3D Directionspeed to the sync package
-			pSyncPacket.vecDirection = m_vecDirection;
-
-			// Apply current 3D Rollspeed to the sync package
-			pSyncPacket.vecRoll = m_vecRoll;
-
-			// Apply current duckstate to the sync package
-			pSyncPacket.bDuckState = m_bDuckState;
-
-			// Apply current heading to the sync package
-			pSyncPacket.fHeading = m_fHeading;
-
-			pSyncPacket.fHealth = GetHealth();
-
-			pSyncPacket.weapon.iAmmo = m_Weapon.iAmmo;
-			pSyncPacket.weapon.weaponType = m_Weapon.weaponType;
-
-			// Write player onfoot flag into raknet bitstream
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
 
-			// Write our Entity-Sync to the bitstream
-			pBitStream->Write(pSyncPacket);
+			pBitStream->Write(PlayerPacket);
 		}
 		break;
 	case RPC_PACKAGE_TYPE_PLAYER_WEAPON:
@@ -527,8 +506,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetPosition(pSyncPlayer.vecPosition);
 			SetMoveSpeed(pSyncPlayer.vecMoveSpeed);
 			SetTurnSpeed(pSyncPlayer.vecTurnSpeed);
-			SetDirection(pSyncPlayer.vecDirection);
-			SetRoll(pSyncPlayer.vecRoll);
+			//SetDirection(pSyncPlayer.vecDirection);
+			//SetRoll(pSyncPlayer.vecRoll);
 			SetDucking(pSyncPlayer.bDuckState);
 			SetHeading(pSyncPlayer.fHeading);
 			SetHealth(pSyncPlayer.fHealth);

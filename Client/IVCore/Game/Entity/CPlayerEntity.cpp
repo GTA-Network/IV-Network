@@ -1803,8 +1803,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		GetPosition(PlayerPacket.vecPosition);
 		GetMoveSpeed(PlayerPacket.vecMoveSpeed);
 		GetTurnSpeed(PlayerPacket.vecTurnSpeed);
-		GetDirectionSpeed(PlayerPacket.vecDirection);
-		GetRollSpeed(PlayerPacket.vecRoll);
+
 		PlayerPacket.bDuckState = m_pPlayerPed->IsDucking();
 		PlayerPacket.fHeading = GetHeading();
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PlayerPacket.pControlState);
@@ -1907,13 +1906,13 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (!IsGettingIntoAVehicle()
 			&& !IsGettingOutOfAVehicle())
 		{
-
+			//PlayerPacket.vecPosition.fX += 2.0f;
 			SetTargetPosition(PlayerPacket.vecPosition, interpolationTime);
 			SetHeading(PlayerPacket.fHeading);
 			SetMoveSpeed(PlayerPacket.vecMoveSpeed);
 			SetTurnSpeed(PlayerPacket.vecTurnSpeed);
-			m_pPlayerPed->SetDirection(PlayerPacket.vecDirection);
-			m_pPlayerPed->SetRoll(PlayerPacket.vecRoll);
+			//m_pPlayerPed->SetDirection(PlayerPacket.vecDirection);
+			//m_pPlayerPed->SetRoll(PlayerPacket.vecRoll);
 		}
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 

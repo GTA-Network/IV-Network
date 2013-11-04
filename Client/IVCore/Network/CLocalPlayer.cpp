@@ -164,19 +164,7 @@ void CLocalPlayer::Pulse()
 			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, MEDIUM_PRIORITY, UNRELIABLE_SEQUENCED, true);
 		}
 
-#ifdef _DEBUG
-		if (g_pCore->GetGame()->GetPlayerManager()->DoesExists(1))
-		{
-			CPlayerEntity *pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(1);
 
-			CIVPad * pPad = g_pCore->GetGame()->GetPad();
-			pPlayer->SetControlState(&m_ControlState);
-			//CControls controls;
-			//pPad->GetCurrentControlState(controls);
-			//CContextDataManager::GetContextData(pPlayer->GetPlayerPed())->GetPad()->SetCurrentControlState(controls);
-			//pPlayer -> GetPlayerPed()->GetPed()->ProcessInput();
-		}
-#endif
 	}
 }
 

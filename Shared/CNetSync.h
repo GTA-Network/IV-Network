@@ -81,8 +81,6 @@ public:
 	float						fHealth;
 	float						fArmor;
 	bool						bDuckState;
-	CVector3					vecDirection;
-	CVector3					vecRoll;
 	CSyncWeapon					weapon;
 };
 
