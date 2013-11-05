@@ -136,7 +136,7 @@ namespace SharedUtility
 
 	CString	DiconnectReasonToString(unsigned int uiReason);
 
-	bool GetHTTPData(CString host, CString page, CString &buffer);
+	bool GetHTTPHeaderAndData(CString host, CString page, CString post, CString *header, CString *data);
 }
 
 #endif

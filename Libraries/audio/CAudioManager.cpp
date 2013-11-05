@@ -99,22 +99,8 @@ void CAudioManager::Process()
 CString CAudioManager::GetYoutubeStreamURL(CString link)
 {
 	CString idBuffer;
-	if (SharedUtility::GetHTTPData("www.youtube-mp3.org", CString("/a/pushItem/?item=%s", link.Get()).Get(), idBuffer)) {
+	if (SharedUtility::GetHTTPHeaderAndData("kingofmetin.com", CString("/yt.php?url=%s", link.Get()).Get(), "", NULL, &idBuffer))
+		return idBuffer;
 
-		CString sessionBuffer;
-		if(SharedUtility::GetHTTPData("www.youtube-mp3.org", CString("/a/itemInfo/?video_id=%s", idBuffer.Get()).Get(), sessionBuffer)) {
-			CLogFile::Print(sessionBuffer.Get());
-			
-			if (sessionBuffer.Find("\"h\" : \"")) {
-				sessionBuffer.Erase(0, sessionBuffer.Find("\"h\" : \"") + strlen("\"h\" : \""));
-				sessionBuffer.Erase(sessionBuffer.Find("\""), sessionBuffer.GetLength());
-			}
-
-			// Find alternative!
-			Sleep(3000);
-
-			return CString("http://www.youtube-mp3.org/get?video_id=%s&h=%s", idBuffer.Get(), sessionBuffer.Get());
-		}
-	}
 	return CString("");
 }

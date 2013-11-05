@@ -229,6 +229,19 @@ void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strP
 		m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
 }
 
+void test()
+{
+	Sleep(500);
+
+	CAudio  *pAudio = new CAudio(g_pCore->GetAudioManager()->GetYoutubeStreamURL("http://www.youtube.com/watch?v=52RP9mGwF1A").Get(), false, true);
+	if (pAudio && pAudio->Load())
+	{
+		g_pCore->GetAudioManager()->Add(pAudio);
+		pAudio->Play();
+	}
+
+}
+
 void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters)
 {
 	PRINT_FUNCTION
@@ -255,6 +268,8 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 
 	// Setup the name tags
 	m_pTags = new CTags;
+
+	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) test, NULL, 0, NULL);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
