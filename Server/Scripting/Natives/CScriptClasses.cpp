@@ -186,10 +186,16 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		Register(pVM);
 #endif // 0
 
+#if 0
+	(new CScriptClass<CScriptMySQL>("CMySQL"))->
+		AddMethod("open", &CScriptMySQL::Open).
+		AddMethod("query", &CScriptMySQL::Query).
+		AddMethod("close", &CScriptMySQL::Close).
+		Register(pVM);
+#endif
 
 	{ // ScriptPlayer
-		// TODO: fix memory leak
-		(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->
+		static CScriptClass<CScriptPlayer>* pScriptPlayer = &(new CScriptClass<CScriptPlayer>("CPlayerEntity"))->
 			AddMethod("setPosition", &CScriptPlayer::SetPosition). // Synced
 			AddMethod("setRotation", &CScriptPlayer::SetRotation). // Synced
 			AddMethod("setMoveSpeed", &CScriptPlayer::SetMoveSpeed). // Synced
@@ -222,12 +228,12 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("spawn", &CScriptPlayer::Spawn).
-			AddMethod("getVehicle", &CScriptPlayer::GetVehicle).
-			Register(pVM);
+			AddMethod("getVehicle", &CScriptPlayer::GetVehicle);
+		(pScriptPlayer)->Register(pVM);
 	}
 
 	{ // ScriptVehicle
-		(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
+		static CScriptClass<CScriptVehicle>* pScriptVehicle = &(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
 			AddMethod("setPosition", &CScriptVehicle::SetPosition).
 			AddMethod("setRotation", &CScriptVehicle::SetRotation).
 			AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
@@ -239,10 +245,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setEngine", &CScriptVehicle::SetEngine).
 			AddMethod("getEngine", &CScriptVehicle::GetEngine).
 			AddMethod("setDirtLevel", &CScriptVehicle::SetDirtLevel).
-			AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel).
-
-			Register(pVM);
+			AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel);
+		(pScriptVehicle)->Register(pVM);
 	}
-
-
 }

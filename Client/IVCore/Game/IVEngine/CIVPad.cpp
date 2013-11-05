@@ -40,9 +40,11 @@ CIVPad::CIVPad() :
 	// Initialise values
 	for (int i = 0; i < INPUT_COUNT; i++)
 	{
-		// Not sure what this is for, but if we don't do it up and left movement keys don't work
-		if (i == INPUT_MOVE_LEFT || i == INPUT_MOVE_UP || i == INPUT_VEH_MOVE_LEFT || i == INPUT_VEH_MOVE_RIGHT)
-			m_pPad->m_padData[i].m_byteUnknown4 = MAX_INPUT_VALUE;
+
+		// Set the correct xor value
+		// Should be -1 for INPUT_MOVE_LEFT | INPUT_MOVE_UP | INPUT_VEH_MOVE_LEFT | INPUT_VEH_MOVE_UP
+		// and 0 for the rest
+		m_pPad->m_padData[i].m_byteUnknown4 = g_pCore->GetGame()->GetPad()->GetPad()->m_padData[i].m_byteUnknown4;
 
 		// This defaults all analog input values to 128 (middle) instead of 0
 		if (IsAnalogInput((eInput) i))
