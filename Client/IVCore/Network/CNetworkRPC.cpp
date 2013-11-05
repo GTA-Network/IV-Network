@@ -215,13 +215,13 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	// Get a pointer to the player
 	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
 
-//#ifdef _DEBUG
-//	if (g_pCore->GetGame()->GetPlayerManager()->DoesExists(1))
-//	{
-//		CPlayerEntity *pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(1);
-//		pPlayer->Deserialize(pBitStream);
-//	}
-//#endif
+#ifdef SYNC_TEST
+	if (g_pCore->GetGame()->GetPlayerManager()->DoesExists(1))
+	{
+		CPlayerEntity *pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(1);
+		pPlayer->Deserialize(pBitStream);
+	}
+#endif
 
 	// Is the player pointer valid?
 	if (pPlayer)
