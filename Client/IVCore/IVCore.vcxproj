@@ -244,7 +244,6 @@
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Game\EpisodeManager.cpp" />
     <ClCompile Include="Game\IVEngine\CIVCam.cpp" />
-    <ClCompile Include="Game\IVEngine\CIVCheckpoint.cpp" />
     <ClCompile Include="Game\IVEngine\CIVDynamicEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVEntity.cpp" />
     <ClCompile Include="Game\IVEngine\CIVHud.cpp" />
@@ -493,7 +492,6 @@
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
     <ClInclude Include="Game\EpisodeManager.h" />
     <ClInclude Include="Game\IVEngine\CIVCam.h" />
-    <ClInclude Include="Game\IVEngine\CIVCheckpoint.h" />
     <ClInclude Include="Game\IVEngine\CIVDynamicEntity.h" />
     <ClInclude Include="Game\IVEngine\CIVEntity.h" />
     <ClInclude Include="Game\IVEngine\CIVHud.h" />

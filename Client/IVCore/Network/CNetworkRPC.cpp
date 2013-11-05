@@ -869,6 +869,151 @@ void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	pDelta->DownloadFromSubdirectory(("client_files"), SharedUtility::GetAbsolutePath("client_resources/"), false, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, 0);
 }
 
+void CreateCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
+
+	int iType;
+	pBitStream->Read(iType);
+
+	CVector3 vecPosition;
+	pBitStream->Read(vecPosition);
+
+	CVector3 vecTargetPosition;
+	pBitStream->Read(vecTargetPosition);
+
+	float fRadius;
+	pBitStream->Read(fRadius);
+
+	CCheckpointEntity * pCheckpoint = new CCheckpointEntity((CIVScript::eCheckpointType)iType, vecPosition, vecTargetPosition, fRadius);
+	if (pCheckpoint)
+	{
+		g_pCore->GetGame()->GetCheckpointManager()->Add(checkpointId, pCheckpoint);
+		pCheckpoint->SetId(checkpointId);
+		pCheckpoint->Create();
+		pCheckpoint->SetType((CIVScript::eCheckpointType)iType);
+		pCheckpoint->SetPosition(vecPosition);
+		pCheckpoint->GetTargetPosition(vecTargetPosition);
+		pCheckpoint->SetRadius(fRadius);
+		pCheckpoint->Show();
+	}
+}
+
+void SetCheckpointPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
+void SetCheckpointTargetPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
+void ShowCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
+void HideCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
+void SetCheckpointType(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
+void SetCheckpointRadius(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the playerid
+	EntityId vehicleId;
+	pBitStream->Read(vehicleId);
+
+	// Get a pointer to the player
+	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+
+	// Is the player pointer valid?
+	if (pVehicle)
+	{
+		int iDirtLevel;
+		pBitStream->Read(iDirtLevel);
+
+		pVehicle->SetDirtLevel(iDirtLevel);
+	}
+}
+
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we not already registered?
@@ -913,6 +1058,14 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_LOCKED), SetVehicleLockedState);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ENGINE), SetVehicleEngineState);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL), SetVehicleDirtLevel);
+
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), CreateCheckpoint);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_POSITION), SetCheckpointPosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TARGET_POSITION), SetCheckpointTargetPosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SHOW), ShowCheckpoint);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), HideCheckpoint);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TYPE), SetCheckpointType);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_RADIUS), SetCheckpointRadius);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -963,6 +1116,13 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ENGINE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_DIRT_LEVEL));
 
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TARGET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SHOW));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TYPE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_RADIUS));
 		// Mark as not registered
 		m_bRegistered = false;
 	}

@@ -3215,23 +3215,17 @@ namespace CIVScript
 		// todo
 	};
 
-	// Legacy support
-	typedef eVehicleDoor eCarDoor;
-	typedef eVehicleDoorLock eCarDoorLock;
-	typedef eVehicleExtra eCarExtra;
-	typedef eVehicleLights eCarLights;
-	typedef eVehicleTyre eCarTyre;
-	typedef eVehicleWindow eCarWindow;
-
-	typedef ePedType eCharType;
-	typedef ePedComponent eCharComponent;
-	typedef ePedRace eCharRace;
-	typedef ePedBone eCharBone;
-	typedef ePedBodyPart eCharBodyPart;
-	typedef ePedClimbState eCharClimbState;
-	typedef ePedMoveState eCharMoveState;
-
-	typedef unsigned int eColour; // Should use ColourIndex instead!
+	enum eCheckpointType
+	{
+		CHECKPOINT_TYPE_NONE,
+		CHECKPOINT_TYPE_ARROW_TUBE = 2,
+		CHECKPOINT_TYPE_FLAG_TUBE,
+		CHECKPOINT_TYPE_ARROW_CORONA,
+		CHECKPOINT_TYPE_FLAG_CORONA,
+		CHECKPOINT_TYPE_ARROW,
+		CHECKPOINT_TYPE_FLAG,
+		CHECKPOINT_TYPE_CORONA
+	};
 
 }
 

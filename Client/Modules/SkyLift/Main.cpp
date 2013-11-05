@@ -18,10 +18,8 @@ DWORD dwFunctionInvokeOffset;
 #include "../../IVCore/IV/CIVScript.h"
 #include "../../IVCore/IV/CIVScript_FunctionContext.h"
 #include "../../IVCore/IV/CIVScript_FunctionInvoke.h"
-#include "../../IVCore/IV/CIVScript_FunctionInvoke.cpp"
 #include "../../IVCore/IV/CIVScript_FunctionList.h"
 #include "../../IVCore/IV/CIVScriptEnums.h"
-#include "../../IVCore/IV/CIVScriptHook.h"
 
 #endif // _MODULE
 

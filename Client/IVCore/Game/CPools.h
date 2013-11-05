@@ -18,7 +18,6 @@
 #include <Game/CTaskManager.h>
 #include <Game\IVEngine\CIVTask.h>
 #include <Game\IVEngine\CIVPedMoveBlend.h>
-#include <Game\IVEngine\CIVCheckpoint.h>
 
 // Player info array size
 #define PLAYER_INFO_ARRAY_SIZE 32 // 32
@@ -41,9 +40,6 @@ private:
 	CIVPool<IVTask>               * m_pTaskPool; // Size: 1200
 	CIVPool<IVCam>                * m_pCamPool;
 	CIVPool<IVPedMoveBlendOnFoot> * m_pPedMoveBlendPool;
-
-	// Custom checkpoint array
-	IVCheckpoint                    m_checkpoints[CHECKPOINT_ARRAY_SIZE];
 
 public:
 	CPools();
@@ -76,10 +72,6 @@ public:
 	// Current Player Info Index (Doesn't really belong here, but it was the only place to put it)
 	unsigned int         GetLocalPlayerIndex();
 	void                 SetLocalPlayerIndex(unsigned int uiIndex);
-
-	// Checkpoints (An array not a pool)
-	IVCheckpoint       * GetCheckpointFromIndex(unsigned int uiIndex);
-	unsigned int         FindFreeCheckpointIndex();
 };
 
 

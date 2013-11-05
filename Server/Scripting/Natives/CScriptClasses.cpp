@@ -152,6 +152,47 @@ int CreateVehicle(int * VM)
 	return 1;
 }
 
+int CreateCheckpoint(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int iType;
+	pVM->Pop(iType);
+
+	CVector3 vecPosition;
+	pVM->Pop(vecPosition);
+
+	CVector3 vecNextPosition;
+	pVM->Pop(vecNextPosition);
+
+	float fRadius;
+	pVM->Pop(fRadius);
+
+	CCheckpointEntity * pCheckpoint = new CCheckpointEntity();
+	pCheckpoint->SetId(CServer::GetInstance()->GetCheckpointManager()->FindFreeSlot());
+	CServer::GetInstance()->GetCheckpointManager()->Add(pCheckpoint->GetId(), pCheckpoint);
+	pCheckpoint->SetType(iType);
+	pCheckpoint->SetPosition(vecPosition);
+	pCheckpoint->SetTargetPosition(vecNextPosition);
+	pCheckpoint->SetRadius(fRadius);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(pCheckpoint->GetId());
+	bitStream.Write(iType);
+	bitStream.Write(vecPosition);
+	bitStream.Write(vecNextPosition);
+	bitStream.Write(fRadius);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+
+	CScriptCheckpoint * pScriptCheckpoint = new CScriptCheckpoint();
+	pScriptCheckpoint->SetEntity(pCheckpoint);
+	pCheckpoint->SetScriptCheckpoint(pScriptCheckpoint);
+	pVM->PushInstance("CCheckpointEntity", pScriptCheckpoint);
+	return 1;
+}
+
 class CScriptSQLite
 {
 public:
@@ -177,6 +218,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
 	pVM->RegisterFunction("isPlayerExists", IsPlayerExists);
 	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
+	pVM->RegisterFunction("createCheckpoint", CreateCheckpoint);
 
 #if 0
 	(new CScriptClass<CScriptSQLite>("CSQLite"))->
@@ -247,5 +289,23 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("setDirtLevel", &CScriptVehicle::SetDirtLevel).
 			AddMethod("getDirtLevel", &CScriptVehicle::GetDirtLevel);
 		(pScriptVehicle)->Register(pVM);
+	}
+
+	{ // ScriptCheckpoint
+		static CScriptClass<CScriptCheckpoint>* pScriptCheckpoint = &(new CScriptClass<CScriptCheckpoint>("CCheckpointEntity"))->
+			//AddMethod("Delete", &CScriptCheckpoint::DeleteCheckpoint).
+			AddMethod("showForPlayer", &CScriptCheckpoint::ShowForPlayer).
+			AddMethod("hideForPlayer", &CScriptCheckpoint::HideForPlayer).
+			AddMethod("showForAll", &CScriptCheckpoint::ShowForAll).
+			AddMethod("hideForAll", &CScriptCheckpoint::HideForAll).
+			AddMethod("setType", &CScriptCheckpoint::SetType).
+			AddMethod("getType", &CScriptCheckpoint::GetType).
+			AddMethod("setPosition", &CScriptCheckpoint::SetPosition).
+			AddMethod("getPosition", &CScriptCheckpoint::GetPosition).
+			AddMethod("setTargetPosition", &CScriptCheckpoint::SetTargetPosition).
+			AddMethod("getTargetPosition", &CScriptCheckpoint::GetTargetPosition).
+			AddMethod("setRadius", &CScriptCheckpoint::SetRadius).
+			AddMethod("getRadius", &CScriptCheckpoint::GetRadius);
+			(pScriptCheckpoint)->Register(pVM);
 	}
 }

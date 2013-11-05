@@ -312,6 +312,8 @@ namespace CIVScript
 	static unsigned int GetViewportPositionOfCoord(CVector3 * vecWordPosition, Vector2 * vecViewportPosition, int type) { float fX; float fY; unsigned int ret = CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_GET_VIEWPORT_POSITION_OF_COORD, vecWordPosition->fX, vecWordPosition->fY, vecWordPosition->fZ, type, &fX, &fY); vecViewportPosition->fX = fX; vecViewportPosition->fY = fY; return ret; } //types: 2: on screen pos
 
 	static void SetPlayerControlForTextChat(unsigned int playerIndex, bool state) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_PLAYER_CONTROL_FOR_TEXT_CHAT, playerIndex, state); }
+	static unsigned int CreateCheckpoint(int iType, float fX, float fY, float fZ, float fX1, float fY1, float fZ1, float fRadius) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_CHECKPOINT, iType, fX, fY, fZ, fX1, fY1, fZ1, fRadius); }
+	static void DeleteCheckpoint(int cp) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_DELETE_CHECKPOINT, cp); }
 };
 
 #endif // CIVScript_h

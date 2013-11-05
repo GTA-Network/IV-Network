@@ -380,9 +380,6 @@
     <ClCompile Include="Game\IVEngine\CIVPedWeapons.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Game\IVEngine\CIVCheckpoint.cpp">
-      <Filter>Source Files\Game\IVEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Game\IVEngine\CIVObject.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
@@ -1019,9 +1016,6 @@
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Game\IVEngine\CIVPedFactory.h">
-      <Filter>Header Files\Game\IVEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\IVEngine\CIVCheckpoint.h">
       <Filter>Header Files\Game\IVEngine</Filter>
     </ClInclude>
     <ClInclude Include="Game\IVEngine\CIVObject.h">

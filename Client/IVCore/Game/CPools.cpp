@@ -21,9 +21,6 @@ CPools::CPools() :
 	m_pCamPool(nullptr),
 	m_pPedMoveBlendPool(nullptr)
 {
-	// Clear our custom checkpoint array
-	memset(&m_checkpoints, 0, sizeof(m_checkpoints));
-
 	// Modify checkpoint rendering to use our custom array
 	/*
 	VAR_RenderCheckpoints_FirstCP                   = (uiBase +  0x855966);
@@ -168,28 +165,4 @@ unsigned int CPools::GetLocalPlayerIndex()
 void CPools::SetLocalPlayerIndex(unsigned int uiIndex)
 {
 	*(unsigned int *)COffsets::VAR_LocalPlayerId = uiIndex;
-}
-
-IVCheckpoint * CPools::GetCheckpointFromIndex(unsigned int uiIndex)
-{
-	// Is the index more than the checkpoint array size?
-	if(uiIndex > CHECKPOINT_ARRAY_SIZE)
-		return nullptr;
-
-	// Return the checkpoint pointer
-	return &m_checkpoints[uiIndex];
-}
-
-unsigned int CPools::FindFreeCheckpointIndex()
-{
-	// Loop through all checkpoint indexes
-	for(unsigned int i = 0; i < CHECKPOINT_ARRAY_SIZE; i++)
-	{
-		// Is the current index free?
-		if(m_checkpoints[i].m_wType == CHECKPOINT_TYPE_NONE)
-			return i;
-	}
-
-	// No free checkpoint indexes found
-	return INVALID_CHECKPOINT;
 }
