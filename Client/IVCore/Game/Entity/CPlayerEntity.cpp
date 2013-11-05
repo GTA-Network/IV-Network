@@ -1328,6 +1328,10 @@ bool CPlayerEntity::IsGettingOutOfAVehicle()
 }
 
 
+#define PED_INTERPOLATION_WARP_THRESHOLD 5
+#define PED_INTERPOLATION_WARP_THRESHOLD_FOR_SPEED 5
+#define TICK_RATE 50
+
 void CPlayerEntity::UpdateTargetPosition()
 {
 	if(HasTargetPosition())
@@ -1388,8 +1392,6 @@ void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CV
 		vecRoll.fX, vecRoll.fY, vecRoll.fZ,
 		vecDirection.fX, vecDirection.fY, vecDirection.fZ,
 		bDuck, fHeading);
-
-	
 }
 
 #if 0
@@ -1882,6 +1884,9 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	
 }
 
+
+bool bPositionSwitch = false;
+
 void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 {
 	// TODO: move sync to functions
@@ -1906,35 +1911,18 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (!IsGettingIntoAVehicle()
 			&& !IsGettingOutOfAVehicle())
 		{
-			//PlayerPacket.vecPosition.fX += 2.0f;
+#ifdef SYNC_TEST
+			PlayerPacket.vecPosition.fX += 2.0f;
+#endif
+
 			SetTargetPosition(PlayerPacket.vecPosition, interpolationTime);
+			
 			SetHeading(PlayerPacket.fHeading);
 			SetMoveSpeed(PlayerPacket.vecMoveSpeed);
 			SetTurnSpeed(PlayerPacket.vecTurnSpeed);
-			//m_pPlayerPed->SetDirection(PlayerPacket.vecDirection);
-			//m_pPlayerPed->SetRoll(PlayerPacket.vecRoll);
 		}
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
-		//char chMoveStyle = 0;
-		//if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
-		//{
-		//	// Delete any task lol 
-		//	_asm	push 17;
-		//	_asm	push 0;
-		//	_asm	push uiPlayerIndex;
-		//	_asm	call COffsets::IV_Func__DeletePedTaskID;
-		//	_asm	add esp, 0Ch;
-		//	chMoveStyle = 0;
-		//}
-		//else if (PlayerPacket.vecMoveSpeed.Length() < 3.0 && PlayerPacket.vecMoveSpeed.Length() >= 1.0)
-		//	chMoveStyle = 1;
-		//else if (PlayerPacket.vecMoveSpeed.Length() < 5.0 && PlayerPacket.vecMoveSpeed.Length() > 3.0)
-		//	chMoveStyle = 2;
-		//else
-		//	chMoveStyle = 3;
-
-		//SetMoveToDirection(PlayerPacket.vecPosition, PlayerPacket.vecMoveSpeed, chMoveStyle + 1);
 
 		GetPlayerPed()->SetDucking(PlayerPacket.bDuckState);
 
@@ -1942,26 +1930,16 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 		SetControlState(&PlayerPacket.pControlState);
 
-		//if (PlayerPacket.pControlState.IsJumping())
-		//{
-		//	char iJumpStyle = 0;
-		//	if (PlayerPacket.vecMoveSpeed.Length() < 1.0)
-		//		iJumpStyle = 0; // jump index, 1 = jump while movment, 2 = jump while standing still
-		//	else if (PlayerPacket.vecMoveSpeed.Length() >= 1.0)
-		//		iJumpStyle = 1; // jump index, 1 = jump while movment, 2 = jump while standing still
-
-		//	_asm	push iJumpStyle;
-		//	_asm	push uiPlayerIndex;
-		//	_asm	call COffsets::IV_FUNC__TaskPedJump;
-		//	_asm	add esp, 8;
-		//}
-
 		m_ulLastSyncReceived = SharedUtility::GetTime();
 	}
 	else if (eType == RPC_PACKAGE_TYPE_PLAYER_VEHICLE)
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		pBitStream->Read(VehiclePacket);
+
+#ifdef SYNC_TEST
+		VehiclePacket.vehicleId += 1;
+#endif
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
 
@@ -1971,21 +1949,25 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			{
 				Matrix matrix;
 
+				CIVScript::SetCarHeading(m_pVehicle->GetScriptingHandle(), VehiclePacket.fHeading);
+#ifdef SYNC_TEST
+				VehiclePacket.matrix.vecPosition.fX += 5.0f;
+#endif
+				SetControlState(&VehiclePacket.ControlState);
+
 				m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
 				matrix.vecForward = VehiclePacket.matrix.vecForward;
 				matrix.vecRight = VehiclePacket.matrix.vecRight;
 				matrix.vecUp = VehiclePacket.matrix.vecUp;
 				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
-
-				SetControlState(&VehiclePacket.ControlState);
+				m_pVehicle->GetGameVehicle()->GetVehicle()->UpdatePhysicsMatrix(true);
 				
+
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
-				CIVScript::SetCarHeading(m_pVehicle->GetScriptingHandle(), VehiclePacket.fHeading);
+				//m_pVehicle->SetTargetHeading(VehiclePacket.fHeading, interpolationTime);
 
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-				
-				
 				m_pVehicle->SetHealth(VehiclePacket.vehHealth);
 				//m_pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 				m_pVehicle->SetEngineState(VehiclePacket.bEngineState);

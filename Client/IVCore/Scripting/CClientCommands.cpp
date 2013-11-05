@@ -270,6 +270,8 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		g_pCore->GetGame()->GetLocalPlayer()->SetArmour(atoi(strParameters.Get()));
 		return true;
 	}
+#endif
+#ifdef SYNC_TEST
 	else if (strCommand == "syncTest")
 	{
 		// Add the player
@@ -292,6 +294,32 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
 		vecPosition.fX += 2.0f;
 		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->SetPosition(vecPosition);
+	}
+	else if (strCommand = "vehicleSync")
+	{
+		g_pCore->GetGame()->GetLocalPlayer()->PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(0), 0);
+		CVector3 vecPosition;
+		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->GetPosition(vecPosition);
+		CVehicleEntity * pVehicle = new CVehicleEntity(90, vecPosition, 90, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
+		if (pVehicle)
+		{
+			//	// Add our vehicle
+			g_pCore->GetGame()->GetVehicleManager()->Add(1, pVehicle);
+			pVehicle->SetId(1);
+			pVehicle->Create();
+			pVehicle->SetPosition(vecPosition, true);
+		}
+		//g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(0), 0);
+
+		//CVehicleEntity * pVehicle = new CVehicleEntity(90, vecPosition, 90, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
+		//if (pVehicle)
+		//{
+		//	//	// Add our vehicle
+		//	g_pCore->GetGame()->GetVehicleManager()->Add(vehicleId, pVehicle);
+		//	pVehicle->SetId(vehicleId);
+		//	pVehicle->Create();
+		//	pVehicle->SetPosition(vecPosition, true);
+		//}
 	}
 #endif
 	return false;
