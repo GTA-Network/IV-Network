@@ -336,6 +336,9 @@ void CGame::ProcessEnvironment()
 	if (m_pVehicleManager)
 		m_pVehicleManager->Pulse();
 
+	if (m_pCheckpointManager)
+		m_pCheckpointManager->Pulse();
+
 	/*unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
 	int uGameHour = 0, uGameMinute = 0; // deleted by jmpback from func
 

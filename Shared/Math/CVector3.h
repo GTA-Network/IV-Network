@@ -111,5 +111,10 @@ public:
                 fY /= fRight;
                 fZ /= fRight;
         }
+
+		bool operator == (const CVector3& vecRight) const
+		{
+			return ((!memcmp(this, &vecRight, sizeof(CVector3))) != 0);
+		}
 };
 #endif // CVector3_h

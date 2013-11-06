@@ -19,7 +19,8 @@ CCheckpointEntity::CCheckpointEntity(CIVScript::eCheckpointType type, CVector3 v
 	m_vecTargetPosition(vecTargetPosition),
 	m_fRadius(fRadius),
 	m_bInCheckpoint(false),
-	m_bIsVisible(true)
+	m_bIsVisible(true),
+	m_checkpoint(NULL)
 {
 	CNetworkEntity::SetType(CHECKPOINT_ENTITY);
 }
@@ -31,17 +32,28 @@ CCheckpointEntity::~CCheckpointEntity()
 
 unsigned int CCheckpointEntity::GetCheckpoint()
 {
-	return 0;
+	return m_checkpoint;
 }
 
 void CCheckpointEntity::Show()
 {
-	CIVScript::CreateCheckpoint(m_eType, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ, m_vecTargetPosition.fX, m_vecTargetPosition.fY, m_vecTargetPosition.fZ, 1.0);
+	if (m_checkpoint)
+		CIVScript::DeleteCheckpoint(m_checkpoint);
+
+	m_checkpoint = CIVScript::CreateCheckpoint(m_eType, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ, m_vecTargetPosition.fX, m_vecTargetPosition.fY, m_vecTargetPosition.fZ, m_fRadius);
+
+	m_bIsVisible = true;
 }
 
 void CCheckpointEntity::Hide()
 {
-	m_bIsVisible = false;
+	if (m_bIsVisible) {
+		if (m_checkpoint) {
+			CIVScript::DeleteCheckpoint(m_checkpoint);
+			m_checkpoint = NULL;
+			m_bIsVisible = false;
+		}
+	}
 }
 
 bool CCheckpointEntity::IsVisible()
@@ -51,7 +63,12 @@ bool CCheckpointEntity::IsVisible()
 
 void CCheckpointEntity::SetType(CIVScript::eCheckpointType type)
 {
-	m_eType = type;
+	if (type != m_eType) {
+		m_eType = type;
+		if (m_bIsVisible) {
+			Show();
+		}
+	}
 }
 
 CIVScript::eCheckpointType CCheckpointEntity::GetType()
@@ -59,9 +76,12 @@ CIVScript::eCheckpointType CCheckpointEntity::GetType()
 	return m_eType;
 }
 
-void CCheckpointEntity::SetPosition(const CVector3& vecPosition)
+void CCheckpointEntity::SetPosition(CVector3 vecPosition)
 {
-	m_vecPosition = vecPosition;
+		m_vecPosition = vecPosition;
+		if (m_bIsVisible) {
+			Show();
+		}
 }
 
 void CCheckpointEntity::GetPosition(CVector3& vecPosition)
@@ -71,7 +91,10 @@ void CCheckpointEntity::GetPosition(CVector3& vecPosition)
 
 void CCheckpointEntity::SetTargetPosition(const CVector3& vecTargetPosition)
 {
-	m_vecTargetPosition = vecTargetPosition;
+		m_vecTargetPosition = vecTargetPosition;
+		if (m_bIsVisible) {
+			Show();
+		}
 }
 
 void CCheckpointEntity::GetTargetPosition(CVector3& vecTargetPosition)
@@ -81,7 +104,12 @@ void CCheckpointEntity::GetTargetPosition(CVector3& vecTargetPosition)
 
 void CCheckpointEntity::SetRadius(float fRadius)
 {
-	m_fRadius = fRadius;
+	if (fRadius != m_fRadius) {
+		m_fRadius = fRadius;
+		if (m_bIsVisible) {
+			Show();
+		}
+	}
 }
 
 float CCheckpointEntity::GetRadius()
@@ -105,9 +133,10 @@ void CCheckpointEntity::Pulse()
 	{
 		if (!m_bInCheckpoint)
 		{
-	/*		CBitStream  bsSend;
-			bsSend.Write(m_checkpointId);
-			g_pCore->GetNetworkManager()->RPC(RPC_CheckpointEntered, &bsSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED);*/
+			RakNet::BitStream bitStream;
+			bitStream.Write(GetId());
+			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+
 			m_bInCheckpoint = true;
 		}
 	}
@@ -115,9 +144,10 @@ void CCheckpointEntity::Pulse()
 	{
 		if (m_bInCheckpoint)
 		{
-			//CBitStream  bsSend;
-			//bsSend.Write(m_checkpointId);
-			//g_pCore->GetNetworkManager()->RPC(RPC_CheckpointLeft, &bsSend, PRIORITY_HIGH, RELIABILITY_RELIABLE_ORDERED);
+			RakNet::BitStream bitStream;
+			bitStream.Write(GetId());
+			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+
 			m_bInCheckpoint = false;
 		}
 	}

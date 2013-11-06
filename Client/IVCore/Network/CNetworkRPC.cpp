@@ -892,125 +892,115 @@ void CreateCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		g_pCore->GetGame()->GetCheckpointManager()->Add(checkpointId, pCheckpoint);
 		pCheckpoint->SetId(checkpointId);
 		pCheckpoint->Create();
-		pCheckpoint->SetType((CIVScript::eCheckpointType)iType);
-		pCheckpoint->SetPosition(vecPosition);
-		pCheckpoint->GetTargetPosition(vecTargetPosition);
-		pCheckpoint->SetRadius(fRadius);
 		pCheckpoint->Show();
 	}
 }
 
 void SetCheckpointPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
+		CVector3 vecPosition;
+		pBitStream->Read(vecPosition);
 
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->SetPosition(vecPosition);
 	}
 }
 
 void SetCheckpointTargetPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
+		CVector3 vecPosition;
+		pBitStream->Read(vecPosition);
 
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->SetTargetPosition(vecPosition);
 	}
 }
 
 void ShowCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
-
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->Show();
 	}
 }
 
 void HideCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
-
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->Hide();
 	}
 }
 
 void SetCheckpointType(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
+		int iType;
+		pBitStream->Read(iType);
 
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->SetType((CIVScript::eCheckpointType)iType);
 	}
 }
 
 void SetCheckpointRadius(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-	// Read the playerid
-	EntityId vehicleId;
-	pBitStream->Read(vehicleId);
+	// Read the checkpointId
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
 
-	// Get a pointer to the player
-	CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(vehicleId);
+	// Get a pointer to the checkpoint
+	CCheckpointEntity * pCheckpoint = g_pCore->GetGame()->GetCheckpointManager()->GetAt(checkpointId);
 
-	// Is the player pointer valid?
-	if (pVehicle)
+	// Is the checkpoint pointer valid?
+	if (pCheckpoint)
 	{
-		int iDirtLevel;
-		pBitStream->Read(iDirtLevel);
+		float fRadius;
+		pBitStream->Read(fRadius);
 
-		pVehicle->SetDirtLevel(iDirtLevel);
+		pCheckpoint->SetRadius(fRadius);
 	}
 }
 

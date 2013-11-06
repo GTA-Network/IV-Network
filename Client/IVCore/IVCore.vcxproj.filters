@@ -105,9 +105,6 @@
     <Filter Include="Header Files\Hooks\CWin32MouseHook">
       <UniqueIdentifier>{3d37df47-b8f2-401b-bf5e-8bbe13bf9232}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\General">
-      <UniqueIdentifier>{5d59ae32-21ba-40c9-b6ae-c36caefcae67}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\General">
       <UniqueIdentifier>{7462d777-5630-4513-9b77-bc61bcf4f07f}</UniqueIdentifier>
     </Filter>
@@ -176,6 +173,9 @@
     </Filter>
     <Filter Include="Source Files\Libraries\lua">
       <UniqueIdentifier>{4d3f9556-55fb-40fc-b604-dd118c07f04f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\General">
+      <UniqueIdentifier>{5d59ae32-21ba-40c9-b6ae-c36caefcae67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -501,22 +501,22 @@
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
     <ClCompile Include="General\CException.cpp">
-      <Filter>Source Files\General</Filter>
+      <Filter>Source Files\Graphics\General</Filter>
     </ClCompile>
     <ClCompile Include="General\CModuleManager.cpp">
-      <Filter>Source Files\General</Filter>
+      <Filter>Source Files\Graphics\General</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Libraries\md5\md5.cpp">
       <Filter>Source Files\Libraries\md5</Filter>
     </ClCompile>
     <ClCompile Include="General\CModule.cpp">
-      <Filter>Source Files\General</Filter>
+      <Filter>Source Files\Graphics\General</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Shared\CLibrary.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\Input.cpp">
-      <Filter>Source Files\General</Filter>
+      <Filter>Source Files\Graphics\General</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Shared\Game\CTime.cpp">
       <Filter>Source Files\Shared</Filter>
