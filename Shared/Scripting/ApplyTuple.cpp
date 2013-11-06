@@ -1,5 +1,9 @@
 #include "ApplyTuple.h"
 
+#include "CLuaVM.h"
+#include "CSquirrelVM.h"
+
+
 #ifndef _CLIENT
 #include "../Server/Entity/CVehicleEntity.h"
 #endif
@@ -37,7 +41,7 @@ DWORD getValue<DWORD>(CScriptVM* pVM, int idx)
 	DWORD dw = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
 	//pVM->Pop(dw);
-	printf("Warning: unable to pop this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to pop this type [%s]\n", __FUNCSIG__);
 	return dw;
 }
 
@@ -53,7 +57,7 @@ bool getValue<bool>(CScriptVM* pVM, int idx)
 template<>
 char getValue<char>(CScriptVM* pVM, int idx)
 {
-	printf("Warning: unable to pop this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to pop this type [%s]\n", __FUNCSIG__);
 	return 0;
 }
 
@@ -63,7 +67,7 @@ unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx)
 	unsigned int ui = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
 	//pVM->Pop(ui);
-	printf("Warning: unable to pop this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to pop this type [%s]\n", __FUNCSIG__);
 	return ui;
 }
 
@@ -88,6 +92,15 @@ CString getValue<CString>(CScriptVM* pVM, int idx)
 	return str;
 }
 
+
+template<>
+stScriptFunction getValue<stScriptFunction>(CScriptVM* pVM, int idx)
+{
+	stScriptFunction function;
+	pVM->Pop(function);
+	return function;
+}
+
 template<>
 void returnValue(CScriptVM* pVM, int v)
 {
@@ -109,7 +122,7 @@ void returnValue(CScriptVM* pVM, float v)
 template<>
 void returnValue(CScriptVM* pVM, unsigned int v)
 {
-	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 template<>
@@ -127,7 +140,7 @@ void returnValue(CScriptVM* pVM, CString v)
 template<>
 void returnValue(CScriptVM* pVM, char v)
 {
-	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 template<>
@@ -170,12 +183,12 @@ void returnValue(CScriptVM* pVM, CVehicleEntity* v)
 template<class T>
 void returnValue(CScriptVM* pVM, T *v)
 {
-	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 
 template<class T>
 void returnValue(CScriptVM* pVM, T v)
 {
-	printf("Warning: unable to push this type [%s]\n", __FUNCTION__);
+	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }

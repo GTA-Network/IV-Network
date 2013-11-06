@@ -360,7 +360,6 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(playerId);
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
-		CLogFile::Printf("Keks");
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());

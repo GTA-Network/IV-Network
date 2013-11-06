@@ -47,8 +47,10 @@ public:
 	void Pop(long& i, long iDefaultValue);
 	void Pop(unsigned long& i, unsigned long iDefaultValue);
 	void Pop(float& f, float fDefaultValue);
+	void Pop(stScriptFunction& function);
 	void Pop(CString& str, CString strDefaultValue);
 	void Pop(CVector3& vec, CVector3 vecDefaultValue);
+	void PopTable(CScriptArguments &table) {}
 
 	void Push(const bool& b);
 	void Push(const int& i);
@@ -67,6 +69,7 @@ public:
 	void		 ResetStackIndex() { m_iStackIndex = 1; }
 
 	int			 GetArgumentCount() { return lua_gettop(m_pVM); }
+	void		 Call(stScriptFunction, CScriptArguments * pArgument = 0) { }
 
 	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
@@ -75,6 +78,7 @@ public:
 
 	void		 SetClassInstance(const char* szClassName, void * pInstance);
 	void		*GetClassInstance(const char* szClassName);
+	void		 PushInstance(const char* szClassName, void * pInstance) { }
 	void		 RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
 };
 

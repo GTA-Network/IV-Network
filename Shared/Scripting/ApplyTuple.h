@@ -7,6 +7,7 @@
 #include "CScriptVM.h"
 #include <stdint.h>
 #include <tuple>
+#include <assert.h>
 
 template<typename T>
 T getValue(CScriptVM*, int idx);
@@ -37,6 +38,9 @@ const char *getValue<const char *>(CScriptVM* pVM, int idx);
 
 template<>
 CString getValue<CString>(CScriptVM* pVM, int idx);
+
+template<>
+stScriptFunction getValue<stScriptFunction>(CScriptVM* pVM, int idx);
 
 #if 1
 template<class T>
