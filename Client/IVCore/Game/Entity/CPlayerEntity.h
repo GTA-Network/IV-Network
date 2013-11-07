@@ -166,7 +166,10 @@ public: // Handles "GET" functions
 	CVehicleEntity					* GetVehicleEntity() { return m_pVehicle; }
 	
 	sWeaponStructure				GetAimData() { return m_aimData; }
-	sWeaponStructure				GetShotData() { return m_shotData; }					
+	sWeaponStructure				GetShotData() { return m_shotData; }
+
+	CNetworkPlayerSyncPacket		m_LastSyncPacket;
+	
 
 public: // Handles call functions
 									CPlayerEntity(bool bLocalPlayer = false);
@@ -263,6 +266,9 @@ public: // Handles call functions
 	void							WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat = 0);
 
 	bool							IsOnScreen();
+
+	CNetworkPlayerSyncPacket		GetLastSyncPacket() { return m_LastSyncPacket; }
+	void							SetLastSyncPacket(const CNetworkPlayerSyncPacket& Packet) { m_LastSyncPacket = Packet; }
 };
 
 #endif // CPlayerEntity_h

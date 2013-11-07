@@ -16,6 +16,7 @@
 #include <Game/IVEngine/CIVModelInfo.h>
 
 class CPlayerEntity;
+
 class CVehicleEntity : public CNetworkEntity {
 private:
 
@@ -46,6 +47,9 @@ private:
 	CPlayerEntity						*m_pDriver;
 	CPlayerEntity						*m_pPassengers[8]; // Max passenger per vehicle = 8(GTA LIMIT)
 
+
+	CNetworkPlayerVehicleSyncPacket		m_lastVehicleSyncPacket;
+
 	struct
 	{
 		struct
@@ -66,7 +70,7 @@ private:
 			unsigned long ulStartTime;
 			unsigned long ulFinishTime;
 		}								rot;
-	}									m_interp;
+	}			m_interp;
 
 public:
 
@@ -95,6 +99,10 @@ public:
     void								SetPosition(const CVector3& vecPosition, bool bDontCancelTasks = false, bool bResetInterpolation = true);
     void								GetPosition(CVector3& vecPosition);
 	CVector3							GetPosition();
+
+
+	CNetworkPlayerVehicleSyncPacket		GetLastSyncPacket() { return m_lastVehicleSyncPacket; }
+	void								SetLastSyncPacket(const CNetworkPlayerVehicleSyncPacket& Packet) { m_lastVehicleSyncPacket = Packet; }
 
     void								SetRotation(const CVector3& vecRotation, bool bResetInterpolation = true);
     void								GetRotation(CVector3& vecRotation);
@@ -136,7 +144,7 @@ public:
 
     void								UpdateTargetPosition();
     void								UpdateTargetRotation();
-        
+
     void								SetTargetPosition(const CVector3& vecPosition, unsigned long ulDelay);
     void								SetTargetRotation(const CVector3& vecRotation, unsigned long ulDelay);
     void								RemoveTargetPosition();

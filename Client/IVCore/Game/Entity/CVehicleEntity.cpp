@@ -71,6 +71,8 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	// Set the rotation
 	m_fSpawnAngle = fAngle;
 
+	m_lastVehicleSyncPacket.matrix.vecPosition = CVector3();
+
 	// Set the spawn position
 	memcpy(&m_vecSpawnPosition,&vecPos,sizeof(CVector3));
 
@@ -356,24 +358,11 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 {
 	if(IsSpawned())
 	{
-		if(!bDontCancelTasks)
-			CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
-		else
-		{
-			//m_pVehicle->RemoveFromWorld();
-
-			//// Set the position in the matrix
-			////CIVScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
-			//CVector3 vecPos = vecPosition;
-			//vecPos.fZ = ((double(__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0))(vecPos.fX, vecPos.fY);
-			//m_pVehicle->SetPosition(vecPos);
-
-
-			//m_pVehicle->AddToWorld();
-			//m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
-			//m_pVehicle->GetVehicle()->ProcessInput();
-
-			CIVScript::SetCarCoordinates(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+			m_pVehicle->RemoveFromWorld();
+			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
+			m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
+			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+			m_pVehicle->AddToWorld();
 		}
 	}
 
@@ -667,19 +656,11 @@ void CVehicleEntity::UpdateTargetPosition()
         // Calculate the new position
         CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
 
-        // Check if the distance to interpolate is too far
-        if((vecCurrentPosition - m_interp.pos.vecTarget).Length() > 20)
+		if (!((vecCurrentPosition - m_interp.pos.vecTarget).Length() <= 3.0 /* maybe adjust this value a bit if we need earlier correction */))
         {
             // Abort position interpolation
             m_interp.pos.ulFinishTime = 0;
             vecNewPosition = m_interp.pos.vecTarget;
-
-            // Abort target interpolation
-			if (HasTargetPosition())
-            {
-                SetPosition(m_interp.pos.vecTarget);
-                m_interp.rot.ulFinishTime = 0;
-            }
         }
 
         // Set our new position

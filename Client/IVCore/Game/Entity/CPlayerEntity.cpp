@@ -181,6 +181,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 	memset(&m_lastControlState, NULL, sizeof(CControls));
 	memset(&m_ControlState, NULL, sizeof(CControls));
 
+	m_LastSyncPacket.matrix.vecPosition = CVector3();
+
 	// Initialise & Reset all stuff(classes,structs)
 	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
 	m_pInterpolationData = new sPlayerEntity_InterpolationData;
@@ -1364,7 +1366,7 @@ void CPlayerEntity::UpdateTargetPosition()
 		CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
 
 		// Check if the distance to interpolate is too far
-		if((vecCurrentPosition - m_pInterpolationData->pPosition.vecTarget).Length() > 5)
+		if (!((vecCurrentPosition - m_pInterpolationData->pPosition.vecTarget).Length() <= 3.0 /* maybe adjust this value a bit if we need earlier correction */))
 		{
 			// Abort all interpolation
 			m_pInterpolationData->pPosition.ulFinishTime = 0;
@@ -1802,7 +1804,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		CNetworkPlayerSyncPacket PlayerPacket;
 
 		// Apply current 3D Position to the sync package
-		GetPosition(PlayerPacket.vecPosition);
+		GetPlayerPed()->GetMatrix(PlayerPacket.matrix);
 		GetMoveSpeed(PlayerPacket.vecMoveSpeed);
 		GetTurnSpeed(PlayerPacket.vecTurnSpeed);
 
@@ -1911,15 +1913,26 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		if (!IsGettingIntoAVehicle()
 			&& !IsGettingOutOfAVehicle())
 		{
-#ifdef SYNC_TEST
-			PlayerPacket.vecPosition.fX += 2.0f;
-#endif
 
-			SetTargetPosition(PlayerPacket.vecPosition, interpolationTime);
-			
+			Matrix matrix;
+#ifdef SYNC_TEST
+			PlayerPacket.matrix.vecPosition.fX += 2.0f;
+#endif
 			SetHeading(PlayerPacket.fHeading);
+			GetPlayerPed()->GetMatrix(matrix);
+			matrix.vecForward = PlayerPacket.matrix.vecForward;
+			matrix.vecRight = PlayerPacket.matrix.vecRight;
+			matrix.vecUp = PlayerPacket.matrix.vecUp;
+			GetPlayerPed()->SetMatrix(matrix);
+			GetPlayerPed()->GetPed()->UpdatePhysicsMatrix(true);
+
+			SetTargetPosition(PlayerPacket.matrix.vecPosition, interpolationTime);
+			
+			
 			SetMoveSpeed(PlayerPacket.vecMoveSpeed);
 			SetTurnSpeed(PlayerPacket.vecTurnSpeed);
+
+			SetLastSyncPacket(PlayerPacket);
 		}
 		unsigned int uiPlayerIndex = GetScriptingHandle();
 
@@ -1962,7 +1975,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
 				m_pVehicle->GetGameVehicle()->GetVehicle()->UpdatePhysicsMatrix(true);
 				
-
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
 				//m_pVehicle->SetTargetHeading(VehiclePacket.fHeading, interpolationTime);
 
@@ -1974,6 +1986,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 				SetArmour(VehiclePacket.playerArmor);
 				SetHealth(VehiclePacket.playerHealth);
+
+				m_pVehicle->SetLastSyncPacket(VehiclePacket);
 			}
 			else
 			{
@@ -2097,13 +2111,15 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 void CPlayerEntity::WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat)
 {
-	if (seat > 3)
-		return;
 
-	if (seat == 0)
-		CIVScript::WarpCharIntoCar(GetScriptingHandle(), pVehicle->GetScriptingHandle());
-	else
-		CIVScript::WarpCharIntoCarAsPassenger(GetScriptingHandle(), pVehicle->GetScriptingHandle(), seat - 1);
+	PutInVehicle(pVehicle, seat);
+	//if (seat > 3)
+	//	return;
+
+	//if (seat == 0)
+	//	CIVScript::WarpCharIntoCar(GetScriptingHandle(), pVehicle->GetScriptingHandle());
+	//else
+	//	CIVScript::WarpCharIntoCarAsPassenger(GetScriptingHandle(), pVehicle->GetScriptingHandle(), seat - 1);
 
 	m_pVehicle = pVehicle;
 	m_byteSeat = seat;

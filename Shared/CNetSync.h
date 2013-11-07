@@ -74,7 +74,7 @@ class CNetworkPlayerSyncPacket {
 private:
 public:
 	CControls					pControlState; 
-	CVector3					vecPosition;
+	Matrix						matrix;
 	float						fHeading;
 	CVector3					vecMoveSpeed;
 	CVector3					vecTurnSpeed;

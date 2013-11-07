@@ -57,6 +57,8 @@ private:
 	EntityId		m_vehicleId;
 	unsigned char	m_vehicleSeatId;
 
+	Matrix			m_Matrix;
+
 public:
 	CPlayerEntity();
 	~CPlayerEntity();
@@ -131,6 +133,9 @@ public:
 	CVehicleEntity* GetVehicle();
 
 	void		GiveWeapon(int id, int uiAmmo);
+
+	void		SetMatrix(Matrix &matrix) { m_Matrix = matrix; }
+	void		GetMatrix(Matrix &matrix) { matrix = m_Matrix; }
 };
 
 

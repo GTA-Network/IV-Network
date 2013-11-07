@@ -16,9 +16,6 @@
 CServer* CServer::s_pInstance = nullptr;
 
 CServer::CServer()
-: m_bShowFPS(true),
-m_uiSyncRate(20),
-m_uiMaximumFPS(100)
 {
 	s_pInstance = this;
 

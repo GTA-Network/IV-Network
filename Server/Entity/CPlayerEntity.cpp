@@ -406,7 +406,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 
 			GetControlState(PlayerPacket.pControlState);
 
-			GetPosition(PlayerPacket.vecPosition);
+			GetMatrix(PlayerPacket.matrix);
 			GetMoveSpeed(PlayerPacket.vecMoveSpeed);
 			GetTurnSpeed(PlayerPacket.vecTurnSpeed);
 			PlayerPacket.bDuckState = m_bDuckState;
@@ -498,20 +498,19 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 	{
 	case RPC_PACKAGE_TYPE_PLAYER_ONFOOT:
 		{
-			CNetworkPlayerSyncPacket pSyncPlayer;
-			pBitStream->Read(pSyncPlayer);
+			CNetworkPlayerSyncPacket PlayerPacket;
+			pBitStream->Read(PlayerPacket);
 
-			SetControlState(pSyncPlayer.pControlState);
+			SetControlState(PlayerPacket.pControlState);
 
-			SetPosition(pSyncPlayer.vecPosition);
-			SetMoveSpeed(pSyncPlayer.vecMoveSpeed);
-			SetTurnSpeed(pSyncPlayer.vecTurnSpeed);
-			//SetDirection(pSyncPlayer.vecDirection);
-			//SetRoll(pSyncPlayer.vecRoll);
-			SetDucking(pSyncPlayer.bDuckState);
-			SetHeading(pSyncPlayer.fHeading);
-			SetHealth(pSyncPlayer.fHealth);
-			SetArmour(pSyncPlayer.fArmor);
+			SetPosition(PlayerPacket.matrix.vecPosition);
+			SetMatrix(PlayerPacket.matrix);
+			SetMoveSpeed(PlayerPacket.vecMoveSpeed);
+			SetTurnSpeed(PlayerPacket.vecTurnSpeed);
+			SetDucking(PlayerPacket.bDuckState);
+			SetHeading(PlayerPacket.fHeading);
+			SetHealth(PlayerPacket.fHealth);
+			SetArmour(PlayerPacket.fArmor);
 
 			m_vehicleId = 0xFFFF;
 
