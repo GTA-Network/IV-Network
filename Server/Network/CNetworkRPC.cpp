@@ -37,6 +37,23 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	DWORD dwVersion;
 	pBitStream->Read(dwVersion);
 
+	// Is the network version invalid?
+	if (dwVersion != (DWORD)/*NETWORK_VERSION*/0x0)
+	{
+		// TODO
+	}
+	
+	RakNet::BitStream bitStream;
+	for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
+	{
+		bitStream.Write(RakNet::RakString(pResource->GetName().C_String()));
+	}
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DOWNLOAD_START), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+}
+
+void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
 	// Read the player name
 	RakNet::RakString _strName;
 	pBitStream->Read(_strName);
@@ -46,12 +63,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	RakNet::RakString _strSerial;
 	pBitStream->Read(_strSerial);
 	CString strSerial(_strSerial.C_String());
-
-	// Is the network version invalid?
-	if (dwVersion != (DWORD)/*NETWORK_VERSION*/0x0)
-	{
-		// TODO
-	}
 
 	// Is the nickname already in use?
 	// TODO: check is nick in use
@@ -67,11 +78,11 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 	// Do we need the id; maybe internal for easier sync but definetly not public to the scripting engine
 	pPlayer->SetId(CServer::GetInstance()->GetPlayerManager()->Add(pPlayer));
-	playerId = pPlayer->GetId();
+	EntityId playerId = pPlayer->GetId();
 	srand(time(NULL));
 	pPlayer->SetColor(CColor(rand() % 256, rand() % 256, rand() % 256).dwHexColor); //generate random color
 
-	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
+	CLogFile::Printf("[join] %s (%i) has connected to the server.", strName.Get(), playerId, strSerial.Get());
 
 	CScriptArguments args;
 	CScriptPlayer * pScriptPlayer = new CScriptPlayer();
@@ -175,14 +186,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 	}
-
-	bitStream.Reset();
-
-	bitStream.Write(playerId);
-	bitStream.Write(7);
-	bitStream.Write(3);
-	bitStream.Write(3);
-	bitStream.Write(1);
 }
 
 void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -457,17 +460,6 @@ void CheckpointExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CLogFile::Printf("RPC_EXIT_CHECKPOINT");
 }
 
-void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
-{
-	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
-	RakNet::BitStream bitStream;
-	for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
-	{
-		bitStream.Write(RakNet::RakString(pResource->GetName().C_String()));
-	}
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_FILE_LIST), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
-}
-
 void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 {
 	// Are we already registered?
@@ -476,7 +468,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 
 	// Default rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA), InitialData);
-	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_FILE_LIST), ClientFiles);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_DOWNLOAD_FINISH), DownloadFinished);
 
 	// Player rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT), PlayerChat);
@@ -501,6 +493,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 
 	// Default rpcs
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_INITIAL_DATA));
+	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_DOWNLOAD_FINISH));
 
 	// Player rpcs
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_CHAT));

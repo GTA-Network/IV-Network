@@ -67,7 +67,7 @@ public:
 	int									GetModelId() { return m_iModelId; }
 
 	void								SetColor(BYTE id, DWORD color) { if (id < 1 || id > 5) assert(CString("Set color%i?! ARE YOU IDIOT?!", id).Get()); else m_dwColor[id - 1] = color; }
-	DWORD								GetColor(BYTE id) { if (id < 1 || id > 5) assert(CString("Get color%i?! ARE YOU IDIOT?!", id).Get()); else return m_dwColor[id - 1]; }
+	DWORD								GetColor(BYTE id) { if (id < 1 || id > 5) assert(CString("Get color%i?! ARE YOU IDIOT?!", id).Get()); return m_dwColor[id - 1]; }
 };
 
 class CScriptVehicle : public CScriptEntity

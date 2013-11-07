@@ -311,5 +311,10 @@ void CNetworkManager::ConnectionAccepted(RakNet::Packet * pPacket)
 	m_ServerAddress = pPacket->systemAddress;
 
 	// Send to the server
-	Call(GET_RPC_CODEX(RPC_FILE_LIST), nullptr, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	RakNet::BitStream pBitStream;
+
+	// Write the network version
+	pBitStream.Write(NETWORK_VERSION);
+
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_INITIAL_DATA), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 }
