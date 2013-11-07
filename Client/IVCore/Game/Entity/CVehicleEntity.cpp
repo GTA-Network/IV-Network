@@ -356,20 +356,19 @@ void CVehicleEntity::GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3
 
 void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTasks, bool bResetInterpolation)
 {
-	if(IsSpawned())
+	if (IsSpawned())
 	{
-			m_pVehicle->RemoveFromWorld();
-			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
-			m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
-			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
-			m_pVehicle->AddToWorld();
-		}
+		m_pVehicle->RemoveFromWorld();
+		Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
+		m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
+		m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+		m_pVehicle->AddToWorld();
 	}
 
 	m_vecPosition = vecPosition;
 
 	// Reset interpolation if requested
-	if(bResetInterpolation)
+	if (bResetInterpolation)
 		RemoveTargetPosition();
 }
 
