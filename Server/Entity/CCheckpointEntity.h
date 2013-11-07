@@ -18,7 +18,7 @@ class CCheckpointEntity : public CNetworkEntity
 {
 private:
 	CScriptCheckpoint*	m_pScriptCheckpoint;
-	WORD     m_wType;
+	int     m_wType;
 	CVector3 m_vecTargetPosition;
 	float    m_fRadius;
 	bool	 m_bVisible;
@@ -32,8 +32,8 @@ public:
 	void					SetScriptCheckpoint(CScriptCheckpoint* pScriptCheckpoint) { m_pScriptCheckpoint = pScriptCheckpoint; }
 	CScriptCheckpoint*		GetScriptCheckpoint() { return m_pScriptCheckpoint; }
 
-	void     SetType(WORD wType) { m_wType = wType; }
-	WORD     GetType() { return m_wType; }
+	void     SetType(int wType) { m_wType = wType; }
+	int     GetType() { return m_wType; }
 
 	void     SetTargetPosition(CVector3 vecTargetPosition) { m_vecTargetPosition = vecTargetPosition; }
 	void     GetTargetPosition(CVector3& vecTargetPosition) { vecTargetPosition = m_vecTargetPosition; }

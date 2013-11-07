@@ -22,8 +22,6 @@
 #include "CScriptArgument.h"
 #include "CScriptClass.h"
 
-std::map<void*, HSQOBJECT> m_Instances;
-
 void PrintFunction(SQVM * pVM, const char * szFormat, ...)
 {
         va_list args;
@@ -254,6 +252,7 @@ bool CreateConstructNativeClassInstance(HSQUIRRELVM v, const SQChar * className)
 
 void CSquirrelVM::PushInstance(const char* szClassName, void * pInstance)
 {
+	// TODO:: remove instances when they are destoryed
 	if (m_Instances.find(pInstance) != m_Instances.end())
 	{
 		sq_pushobject(m_pVM, m_Instances.find(pInstance)->second);
@@ -514,6 +513,18 @@ void CSquirrelVM::Pop(float& f, float fDefaultValue)
 	m_iStackIndex++;
 }
 
+void CSquirrelVM::Pop(stScriptFunction& function)
+{
+	function.ref = -1;
+	function.function = 0;
+
+	function.function = stack_get(m_pVM, m_iStackIndex++);
+	if (function.function._type != OT_CLOSURE)
+		function.function = 0;
+
+	function.type = eFType::SQUIRREL_FUNCTION;
+}
+
 void CSquirrelVM::Pop(CString& str)
 {
 	SQObjectType argType = sq_gettype(m_pVM, m_iStackIndex);
@@ -628,6 +639,27 @@ void CSquirrelVM::PushTable(const CScriptArguments &table)
 		(*iter)->Push(this);
 		sq_createslot(m_pVM, -3);
 	}
+}
+
+void CSquirrelVM::Call(stScriptFunction function, CScriptArguments * pArguments)
+{
+	if (function.function._type != SQObjectType::OT_CLOSURE || function.function._unVal.pClosure == 0)
+		return;
+
+	SQObjectPtr res;
+	int iTop = sq_gettop(m_pVM);
+	if (pArguments)
+	{
+		for (auto it : pArguments->m_Arguments)
+			it->Push(this);
+		
+		m_pVM->Call(function.function, pArguments->m_Arguments.size() + 1, m_pVM->_top - (pArguments->m_Arguments.size() + 1), res, true);
+	}
+	else
+	{
+		m_pVM->Call(function.function, 1, m_pVM->_top - 1, res, true);
+	}
+	sq_settop(m_pVM, iTop);
 }
 
 CScriptArgument::ArgumentType CSquirrelVM::GetType(int idx)

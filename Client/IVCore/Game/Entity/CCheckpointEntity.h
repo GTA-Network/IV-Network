@@ -22,6 +22,7 @@ private:
 	float                m_fRadius;
 	bool                 m_bInCheckpoint;
 	bool                 m_bIsVisible;
+	unsigned int		 m_checkpoint;
 public:
 	CCheckpointEntity(CIVScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius);
 	~CCheckpointEntity();
@@ -29,8 +30,8 @@ public:
 	bool Create() { return true; }
 	bool Destroy() { return true; }
 
-	void								SetId(EntityId checkpointId) { m_checkpointId = checkpointId; }
-	EntityId							GetId() { return m_checkpointId; }
+	void		SetId(EntityId checkpointId) { m_checkpointId = checkpointId; }
+	EntityId	GetId() { return m_checkpointId; }
 
 	unsigned int GetCheckpoint();
 
@@ -42,7 +43,7 @@ public:
 	void            SetType(CIVScript::eCheckpointType type);
 	CIVScript::eCheckpointType GetType();
 
-	void            SetPosition(const CVector3& vecPosition);
+	void            SetPosition(CVector3 vecPosition);
 	void            GetPosition(CVector3& vecPosition);
 
 	void            SetTargetPosition(const CVector3& vecTargetPosition);

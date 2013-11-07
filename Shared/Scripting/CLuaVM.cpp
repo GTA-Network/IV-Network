@@ -319,6 +319,17 @@ void CLuaVM::Pop(float& f, float fDefaultValue)
 	m_iStackIndex++;
 }
 
+void CLuaVM::Pop(stScriptFunction &function)
+{
+	function.ref = -1;
+	function.function = 0;
+	if (lua_isfunction(m_pVM, m_iStackIndex++))
+	{
+		function.ref = luaL_ref(m_pVM, LUA_REGISTRYINDEX);
+	}
+	function.type = eFType::LUA_FUNCTION;
+}
+
 void CLuaVM::Pop(CString& str)
 {
 	int argType = lua_type(m_pVM, m_iStackIndex);

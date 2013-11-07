@@ -11,8 +11,10 @@
 #define CSquirrelVM_h
 
 #include "CScriptVM.h"
-#include <Squirrel/squirrel.h>
 
+#include <map>
+#include <Squirrel/squirrel.h>
+#include <Squirrel/sqvm.h>
 #include "CScriptArgument.h"
 
 class CSquirrelVM : public CScriptVM {
@@ -20,6 +22,7 @@ class CSquirrelVM : public CScriptVM {
 private:
 	SQVM*		m_pVM;
 	int m_iStackIndex;
+	std::map<void*, HSQOBJECT> m_Instances;
 public:
 	CSquirrelVM(CResource * pResource);
 	~CSquirrelVM();
@@ -45,8 +48,10 @@ public:
 	void Pop(long& i, long iDefaultValue);
 	void Pop(unsigned long& i, unsigned long iDefaultValue);
 	void Pop(float& f, float fDefaultValue);
+	void Pop(stScriptFunction& function);
 	void Pop(CString& str, CString strDefaultValue);
 	void Pop(CVector3& vec, CVector3 vecDefaultValue);
+	void PopTable(CScriptArguments &table) {}
 
 	void Push(const bool& b);
 	void Push(const int& i);
@@ -65,6 +70,7 @@ public:
 
 	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 2; }
+	void		 Call(stScriptFunction, CScriptArguments * pArgument = 0);
 
 	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);

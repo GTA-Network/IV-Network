@@ -153,6 +153,29 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		}
 	}
 
+	for (EntityId i = 0; i < CServer::GetInstance()->GetCheckpointManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetCheckpointManager()->DoesExists(i))
+		{
+			bitStream.Reset();
+			CCheckpointEntity * pCheckpoint = CServer::GetInstance()->GetCheckpointManager()->GetAt(i);
+			bitStream.Write(pCheckpoint->GetId());
+			bitStream.Write(pCheckpoint->GetType());
+
+			CVector3 vecPosition;
+			pCheckpoint->GetPosition(vecPosition);
+			bitStream.Write(vecPosition);
+
+			CVector3 vecTargetPosition;
+			pCheckpoint->GetTargetPosition(vecTargetPosition);
+			bitStream.Write(vecTargetPosition);
+
+			bitStream.Write(pCheckpoint->GetRadius());
+
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+		}
+	}
+
 	bitStream.Reset();
 
 	bitStream.Write(playerId);
@@ -337,7 +360,6 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(playerId);
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
-		CLogFile::Printf("Keks");
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
@@ -381,6 +403,60 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CLogFile::Printf("RPC_EXIT_VEHICLE - Player: %d, Vehicle: %d, Seat: %d", playerId, vehicleId, byteSeat);
 }
 
+void CheckpointEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Get the player id
+	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+
+	// Read the checkpoint id
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
+
+	// Get the player instance
+	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
+
+	// Get the checkpoint instance
+	CCheckpointEntity * pCheckpoint = CServer::GetInstance()->GetCheckpointManager()->GetAt(checkpointId);
+
+	// Is the player instance valid?
+	if (pPlayer)
+	{
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		args.push(pCheckpoint->GetScriptCheckpoint());
+		CEvents::GetInstance()->Call("playerEnterCheckpoint", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+	}
+
+	CLogFile::Printf("RPC_ENTER_CHECKPOINT");
+}
+
+void CheckpointExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Get the player id
+	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+
+	// Read the checkpoint id
+	EntityId checkpointId;
+	pBitStream->Read(checkpointId);
+
+	// Get the player instance
+	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
+
+	// Get the checkpoint instance
+	CCheckpointEntity * pCheckpoint = CServer::GetInstance()->GetCheckpointManager()->GetAt(checkpointId);
+
+	// Is the player instance valid?
+	if (pPlayer)
+	{
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		args.push(pCheckpoint->GetScriptCheckpoint());
+		CEvents::GetInstance()->Call("playerExitCheckpoint", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+	}
+
+	CLogFile::Printf("RPC_EXIT_CHECKPOINT");
+}
+
 void ClientFiles(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId = (EntityId) pPacket->guid.systemIndex;
@@ -411,6 +487,10 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	// Vehicle rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), VehicleEnter);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_EXIT_VEHICLE), VehicleExit);
+
+	// Checkpoint rpcs
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT), CheckpointEnter);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT), CheckpointExit);
 }
 
 void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
@@ -431,4 +511,8 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 	// Vehicle rpcs
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE));
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_EXIT_VEHICLE));
+
+	// Checkpoint rpcs
+	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT));
+	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT));
 }
