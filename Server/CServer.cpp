@@ -68,6 +68,8 @@ bool CServer::Startup()
 	m_pBlipManager = new CBlipManager();
 	m_pCheckpointManager = new CCheckpointManager();
 
+	m_pTimerManager = new CTimerManager();
+
 	// Open the settings file
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
@@ -257,6 +259,9 @@ void CServer::Process()
 	m_pBlipManager->Pulse();
 
 	m_pCheckpointManager->Pulse();
+
+	m_pTimerManager->Pulse();
+
 
 	// Get the current time
 	unsigned long ulTime = SharedUtility::GetTime();

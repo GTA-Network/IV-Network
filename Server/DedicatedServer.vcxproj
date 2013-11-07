@@ -198,6 +198,8 @@
     <ClCompile Include="..\Shared\Threading\CThread.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CServer.cpp" />
+    <ClCompile Include="CTimer.cpp" />
+    <ClCompile Include="CTimerManager.cpp" />
     <ClCompile Include="Entity\C3DLabelEntity.cpp" />
     <ClCompile Include="Entity\CActorEntity.cpp" />
     <ClCompile Include="Entity\CBlipEntity.cpp" />
@@ -267,6 +269,8 @@
     <ClInclude Include="..\Shared\Scripting\SQL\CSQLite.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
+    <ClInclude Include="CTimer.h" />
+    <ClInclude Include="CTimerManager.h" />
     <ClInclude Include="Entity\C3DLabelEntity.h" />
     <ClInclude Include="Entity\CActorEntity.h" />
     <ClInclude Include="Entity\CBlipEntity.h" />

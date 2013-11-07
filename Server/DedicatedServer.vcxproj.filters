@@ -393,6 +393,12 @@
     <ClCompile Include="..\Shared\Scripting\SQL\CSQLite.cpp">
       <Filter>Source Files\Shared\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="CTimer.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimerManager.cpp">
+      <Filter>Source Files\Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CServer.h">
@@ -604,6 +610,12 @@
     </ClInclude>
     <ClInclude Include="..\Shared\Scripting\SQL\CSQLite.h">
       <Filter>Header Files\Shared\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <Filter>Header Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimerManager.h">
+      <Filter>Header Files\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

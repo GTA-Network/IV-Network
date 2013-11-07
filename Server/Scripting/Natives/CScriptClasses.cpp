@@ -14,121 +14,8 @@
 #include <Scripting/ResourceSystem/CResourceManager.h>
 #include "../../../Server/Scripting/Natives/Natives_Server.h"
 #include "Entity/Entities.h"
+#include "CTimer.h"
 #include <CServer.h>
-#include <Scripting/CScriptClass.h>
-#include <Scripting/SQL/CSQLite.h>
-
-
-class CScriptTimer;
-
-class CTimer
-{
-private:
-	stScriptFunction	m_callback;
-	unsigned int		m_uiInterval;
-	int					m_iRepeatings;
-	bool				m_bPaused;
-	bool				m_bRunning;
-	unsigned int		m_uiLastPulse;
-	CScriptTimer		*m_pScriptTimer;
-
-public:
-	CTimer(stScriptFunction function, int interval, int repeatings);
-	~CTimer();
-
-	void Start() { m_bRunning = true; };
-	void Stop() { m_bRunning = false; /* TODO: remove timer from manager and free its memory*/ }
-
-
-	void Pause() { m_bPaused = true; }
-	void Resume() { m_bPaused = false; }
-
-	bool IsPaused() { return m_bPaused; }
-	bool IsRunning() { return m_bRunning; };
-
-	void SetScriptTimer(CScriptTimer* pTimer) { m_pScriptTimer = pTimer; }
-	CScriptTimer* GetScriptTimer() { return m_pScriptTimer; }
-
-	void Pulse();
-};
-
-class CScriptTimer
-{
-private:
-	CTimer		*m_pTimer;
-
-public:
-	CScriptTimer();
-	~CScriptTimer();
-
-	CTimer* GetTimer() { return m_pTimer; }
-	void	SetTimer(CTimer* pTimer) { m_pTimer = pTimer; }
-
-	void Start() { GetTimer()->Start(); };
-	void Stop() { GetTimer()->Stop(); /* TODO: remove timer from manager and free its memory*/ }
-
-	void Pause() { GetTimer()->Pause(); }
-	void Resume() { GetTimer()->Resume(); }
-
-	bool IsPaused() { return GetTimer()->IsPaused(); }
-	bool IsRunning() { return GetTimer()->IsRunning(); };
-};
-
-
-
-CTimer::CTimer(stScriptFunction function, int interval, int reapeatings)
-: m_callback(function),
-m_uiInterval(interval),
-m_iRepeatings(reapeatings),
-m_bPaused(false),
-m_bRunning(false),
-m_uiLastPulse(0)
-{
-}
-
-void CTimer::Pulse()
-{
-	if (m_bPaused || !m_bRunning)
-		return;
-
-	
-	unsigned int uiNow = SharedUtility::GetTime();
-
-	if (m_iRepeatings != -1 && m_iRepeatings > 0 && uiNow >= m_uiLastPulse + m_uiInterval)
-	{
-		for (auto pResource : CServer::GetInstance()->GetResourceManager()->GetResources())
-			pResource->GetVM()->Call(m_callback);
-
-		m_uiLastPulse = SharedUtility::GetTime();
-		if (m_iRepeatings != -1)
-			--m_iRepeatings;
-	}
-}
-
-
-int CreateTimer(int * VM)
-{
-	GET_SCRIPT_VM_SAFE;
-
-	pVM->ResetStackIndex();
-
-	stScriptFunction function;
-	pVM->Pop(function);
-
-	int interval;
-	pVM->Pop(interval);
-
-	int repeatings;
-	pVM->Pop(repeatings);
-
-	CTimer * pTimer = new CTimer(function, interval, repeatings);
-	// CServer::GetInstance()->GetTimerManager()->Add(pTimer);
-
-	//CScriptVehicle * pScriptVehicle = new CScriptVehicle();
-	//pScriptVehicle->SetEntity(pVehicle);
-	//pVehicle->SetScriptVehicle(pScriptVehicle);
-	//pVM->PushInstance("CVehicleEntity", pScriptVehicle);
-}
 
 int IsPlayerConnected(int * VM)
 {
@@ -305,6 +192,30 @@ int CreateCheckpoint(int * VM)
 	return 1;
 }
 
+int CreateTimer(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	stScriptFunction function;
+	pVM->Pop(function);
+
+	int interval;
+	pVM->Pop(interval);
+
+	int repeatings;
+	pVM->Pop(repeatings);
+
+	CTimer* pTimer = new CTimer(function, interval, repeatings);
+	CServer::GetInstance()->GetTimerManger()->push_back(pTimer);
+
+	CScriptTimer * pScriptTimer = new CScriptTimer();
+	pScriptTimer->SetTimer(pTimer);
+	pTimer->SetScriptTimer(pScriptTimer);
+	pVM->PushInstance("CTimer", pScriptTimer);
+}
+
 class CScriptSQLite
 {
 public:
@@ -331,6 +242,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("isPlayerExists", IsPlayerExists);
 	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
 	pVM->RegisterFunction("createCheckpoint", CreateCheckpoint);
+	pVM->RegisterFunction("createTimer", CreateTimer);
 
 #if 0
 	(new CScriptClass<CScriptSQLite>("CSQLite"))->
@@ -418,6 +330,15 @@ void CScriptClasses::Register(CScriptVM * pVM)
 			AddMethod("getTargetPosition", &CScriptCheckpoint::GetTargetPosition).
 			AddMethod("setRadius", &CScriptCheckpoint::SetRadius).
 			AddMethod("getRadius", &CScriptCheckpoint::GetRadius);
-			(pScriptCheckpoint)->Register(pVM);
+		(pScriptCheckpoint)->Register(pVM);
+	}
+
+	{ // ScriptTimer
+		static CScriptClass<CScriptTimer>* pScriptTimer = &(new CScriptClass<CScriptTimer>("CTimer"))->
+			AddMethod("Start", &CScriptTimer::Start).
+			AddMethod("Stop", &CScriptTimer::Stop).
+			AddMethod("Pause", &CScriptTimer::Pause).
+			AddMethod("Resume", &CScriptTimer::Resume);
+		(pScriptTimer)->Register(pVM);
 	}
 }
