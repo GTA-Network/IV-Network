@@ -223,7 +223,7 @@ IVPad* GetPadFromPlayerPed(IVPed* pPed)
 {
 	if (pPed && pPed->m_pPlayerInfo && pPed->m_pPlayerInfo->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed) {
 		// return the local player pad
-		CLogFile::Printf("Return local pad");
+		//CLogFile::Printf("Return local pad");
 		return ((IVPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
 	}
 	else if (pPed->m_byteIsPlayerPed) {
@@ -252,7 +252,7 @@ IVPad* GetPadFromPlayerPed(IVPed* pPed)
 				}
 #endif
 
-				CLogFile::Printf("Return remote pad");
+				//CLogFile::Printf("Return remote pad");
 				// return our sync pad
 				return pContextData->GetPad()->GetPad();
 			}

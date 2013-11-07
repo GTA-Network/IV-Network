@@ -82,7 +82,7 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	srand(time(NULL));
 	pPlayer->SetColor(CColor(rand() % 256, rand() % 256, rand() % 256).dwHexColor); //generate random color
 
-	CLogFile::Printf("[join] %s (%i) has connected to the server.", strName.Get(), playerId, strSerial.Get());
+	CLogFile::Printf("[join] %s (%i) has connected to the server. (%s)", strName.Get(), playerId, strSerial.Get());
 
 	CScriptArguments args;
 	CScriptPlayer * pScriptPlayer = new CScriptPlayer();

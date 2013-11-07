@@ -747,4 +747,25 @@ namespace SharedUtility
 		closesocket(Socket);
 		return true;
 	}
+
+	CString ConvertStringToPath(CString string)
+	{
+		for (int i = 0; i < string.GetLength(); ++i)
+		{
+			if (
+				string.GetChar(i) == '\\' ||
+				string.GetChar(i) == '/' ||
+				string.GetChar(i) == ':' ||
+				string.GetChar(i) == '*' ||
+				string.GetChar(i) == '?' ||
+				string.GetChar(i) == '"' ||
+				string.GetChar(i) == '<' ||
+				string.GetChar(i) == '>' ||
+				string.GetChar(i) == '|'
+				)
+				string.SetChar(i, '_');
+		}
+
+		return string;
+	}
 };
