@@ -301,9 +301,9 @@ public:
 
 #pragma pack(pop)
 
-#define getRed(color) (float) (((color >> 16) & 0xFF) / 255)
-#define getGreen(color) (float) (((color >> 8) & 0xFF) / 255)
-#define getBlue(color) (float) ((color & 0xFF) / 255)
+#define getRed(color) (float) ((color >> 16) & 0xFF) / 255.0
+#define getGreen(color) (float) ((color >> 8) & 0xFF) / 255.0
+#define getBlue(color) (float) (color & 0xFF) / 255.0
 
 void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, DWORD dwColor4, DWORD dwColor5)
 {
