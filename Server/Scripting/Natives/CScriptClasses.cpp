@@ -31,20 +31,6 @@ int IsPlayerConnected(int * VM)
 	return 1;
 }
 
-int IsPlayerExists(int * VM)
-{
-	GET_SCRIPT_VM_SAFE;
-
-	pVM->ResetStackIndex();
-
-	int id;
-	pVM->Pop(id);
-
-	pVM->Push(CServer::GetInstance()->GetPlayerManager()->DoesExists((EntityId)id));
-
-	return 1;
-}
-
 int GetPlayerById(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
@@ -239,8 +225,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("createVehicle", CreateVehicle);
 	pVM->RegisterFunction("getPlayerById", GetPlayerById);
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
-	pVM->RegisterFunction("isPlayerExists", IsPlayerExists);
-	pVM->RegisterFunction("sendPlayerMessageToAll", SendPlayerMessageToAll);
+	pVM->RegisterFunction("sendMessageToAll", SendPlayerMessageToAll);
 	pVM->RegisterFunction("createCheckpoint", CreateCheckpoint);
 	pVM->RegisterFunction("createTimer", CreateTimer);
 
