@@ -113,5 +113,12 @@ void CPatches::Initialize()
 	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x405D67), (g_pCore->GetBase() + 0x405D6E), 1);
 
 	// Set the window text
-	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD)MOD_NAME;
+	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD) MOD_NAME;
+
+	// Disable automatic vehicle engine turn-on
+	*(DWORD*) (COffsets::IV_Hook__PatchVehicleDriverProcess) = 0x04C2C031; //xor eax, eax; retn 4
+	*(BYTE*) (COffsets::IV_Hook__PatchVehicleDriverProcess + 4) = 0; //xor eax, eax; retn 4
+	
+	// Always draw vehicle hazzard lights
+	//CPatcher::InstallNopPatch(COffsets::PATCH_CVehicle__HazzardLightsOn, 2);
 }

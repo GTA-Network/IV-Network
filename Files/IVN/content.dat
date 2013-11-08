@@ -1,9 +1,0 @@
-# data files
-HANDLING common/data/handling.dat
-IDE common/data/vehicles.ide
-
-#VEHICLEEXTRAS e2:/common/data/VehicleExtras.dat - disabled, because this file is conataining extras for disabled boats
-VEHOFF e1:/common/data/vehOff.csv
-VEHOFF e2:/common/data/vehOff.csv
-
-IMGLIST images.txt

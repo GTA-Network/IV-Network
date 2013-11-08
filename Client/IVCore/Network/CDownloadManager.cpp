@@ -18,7 +18,8 @@ CDownloadManager::~CDownloadManager()
 
 void CDownloadManager::Process()
 {
-	m_delta->DownloadFromSubdirectory("client_files", SharedUtility::GetAbsolutePath(CString("client_resources/%s", SharedUtility::ConvertStringToPath(CString("%s:%i", g_pCore->GetHost().Get(), g_pCore->GetPort()).Get()).Get()).Get()).Get(), false, g_pCore->GetNetworkManager()->GetServerAddress(), new TransferCB, HIGH_PRIORITY, 0, NULL);
+	m_delta->DownloadFromSubdirectory("client_files", SharedUtility::GetAbsolutePath(CString("client_resources/%s", SharedUtility::ConvertStringToPath(CString("%s:%i", g_pCore->GetHost().Get(), g_pCore->GetPort())).Get())).Get(), false, g_pCore->GetNetworkManager()->GetServerAddress(), new TransferCB, HIGH_PRIORITY, 0, NULL);
+	g_pCore->GetResourceManager()->SetResourceDirectory(CString("client_resources/%s", SharedUtility::ConvertStringToPath(CString("%s:%i", g_pCore->GetHost().Get(), g_pCore->GetPort())).Get()));
 }
 
 bool TransferCB::OnFile(OnFileStruct *onFileStruct)

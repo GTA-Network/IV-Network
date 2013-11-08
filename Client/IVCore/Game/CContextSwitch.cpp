@@ -216,10 +216,12 @@ void _declspec(naked) CPlane_ProcessInput_Hook()
 	_asm	ret;
 }
 
-IVPed* g_pPadFromPed_Ped = nullptr;
-IVPad* syncPad = nullptr;
+struct thisisathiscall
+{
+	static IVPad* __thiscall GetPadFromPlayerPed(IVPed* pPed);
+};
 
-IVPad* GetPadFromPlayerPed(IVPed* pPed)
+IVPad* thisisathiscall::GetPadFromPlayerPed(IVPed* pPed)
 {
 	if (pPed && pPed->m_pPlayerInfo && pPed->m_pPlayerInfo->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed) {
 		// return the local player pad
@@ -261,18 +263,6 @@ IVPad* GetPadFromPlayerPed(IVPed* pPed)
 	return nullptr;
 }
 
-_declspec(naked) void GetPadFromPed()
-{
-	_asm	mov g_pPadFromPed_Ped, ecx;
-	_asm	pushad;
-
-	syncPad = GetPadFromPlayerPed(g_pPadFromPed_Ped);
-
-	_asm	popad;
-	_asm	mov eax, syncPad;
-	_asm	retn;
-}
-
 void CContextSwitch::InstallKeySyncHooks()
 {
 	// CPlayerPed::ProcessInput
@@ -296,5 +286,5 @@ void CContextSwitch::InstallKeySyncHooks()
 	// CPlane::ProcessInput
 	CPatcher::InstallMethodPatch((COffsets::VAR_CPlane__VFTable + 0x74), (DWORD)CPlane_ProcessInput_Hook);
 
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA15320, (DWORD) GetPadFromPed);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA15320, (DWORD) thisisathiscall::GetPadFromPlayerPed);
 }

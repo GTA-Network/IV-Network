@@ -34,6 +34,7 @@ public:
 
 	static CResourceManager * GetInstance() { return s_pInstance; }
 
+	void		SetResourceDirectory(CString strResourceDirectory) { m_strResourceDirectory = strResourceDirectory; }
 	CString		GetResourceDirectory() { return m_strResourceDirectory; }
 
 	CResource	*Load(CString strAbsPath, CString strResourceName);

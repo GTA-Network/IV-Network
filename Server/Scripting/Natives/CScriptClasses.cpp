@@ -200,6 +200,7 @@ int CreateTimer(int * VM)
 	pScriptTimer->SetTimer(pTimer);
 	pTimer->SetScriptTimer(pScriptTimer);
 	pVM->PushInstance("CTimer", pScriptTimer);
+	return 1;
 }
 
 class CScriptSQLite

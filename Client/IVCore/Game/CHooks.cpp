@@ -21,24 +21,28 @@
 
 extern	CCore* g_pCore;
 
-IVTask       * ___pTask = NULL;
-_declspec(naked) void CTask__Destructor_Hook()
+struct thisisafuckingthiscall
 {
-	_asm	mov ___pTask, ecx;
-	_asm	pushad;
+	// IS. not not like static __thiscalls, don't care about it, this will works. :)
+	static void __thiscall IVTask__Destructor(IVTask * a1);
+};
 
+#define sub_B17A90 (*(char *(__cdecl *)(IVTask *)) (g_pCore->GetBase() + 0xB17A90))
+#define sub_B17910 (*(int *(__thiscall *)(char *)) (g_pCore->GetBase() + 0xB17910))
+#define sub_A2ABA0 (*(void (__thiscall *)(IVTask *)) (g_pCore->GetBase() + 0xA2ABA0))
+
+void  thisisafuckingthiscall::IVTask__Destructor(IVTask * a1)
+{
 	if (g_pCore->GetGame()->GetTaskManager())
-		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(___pTask);
+		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(a1);
 
-	_asm	popad;
-	_asm	push esi;
-	_asm	mov esi, ecx;
-	_asm	push esi;
-	_asm	push eax;
-	_asm	mov eax, COffsets::VAR_CTask__VFTable;
-	_asm	mov dword ptr[esi], eax;
-	_asm	pop eax;
-	_asm	jmp COffsets::RETURN_CTask__Destructor;
+	*(DWORD *) (char*) a1 = *(DWORD *) COffsets::VAR_CTask__VFTable;
+
+	char * v1 = sub_B17A90(a1);
+	if (v1)
+		sub_B17910(v1);
+
+	return sub_A2ABA0(a1);
 }
 
 void StartGame_Loading()
@@ -135,17 +139,6 @@ IVPlayerPed * GetLocalPlayerPed()
 	return _pPlayerPed;
 }
 
-IVPlayerPed * GetPlayerPedFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
-{
-	// Is the player info pointer valid?
-	if (pPlayerInfo)
-		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
-	else // Player info pointer is invalid, use the local player ped
-		_pPlayerPed = GetLocalPlayerPed();
-
-	return _pPlayerPed;
-}
-
 
 unsigned int   uiPlayerInfoIndex = 0;
 _declspec(naked) void GetPlayerInfoFromIndex_Hook()
@@ -183,66 +176,6 @@ _declspec(naked) void GetLocalPlayerPed_Hook()
 	_asm	popad;
 	_asm	mov eax, _pPlayerPed;
 	_asm	retn;
-}
-
-_declspec(naked) void GetPlayerPedFromPlayerInfo_Hook()
-{
-	_asm	mov eax, [esp + 4];
-	_asm	mov pReturnedPlayerInfo, eax;
-	_asm	pushad;
-
-	GetPlayerPedFromPlayerInfo(pReturnedPlayerInfo);
-
-	_asm	popad;
-	_asm	mov eax, _pPlayerPed;
-	_asm	retn;
-}
-
-_declspec(naked) void CFunctionRetnPatch()
-{
-	_asm	xor eax, eax;
-	_asm	retn;
-}
-
-bool			bInitialiseGame = true;
-int				iFrameCalls = 0;
-_declspec(naked) void CGameProcessHook()
-{
-	if (!bInitialiseGame && iFrameCalls != 300)
-	{
-		iFrameCalls++;
-		_asm	mov ebp, esp;
-		_asm	jmp COffsets::IV_Hook__GameProcess_1;
-	}
-	else
-	{
-		iFrameCalls++;
-		bInitialiseGame = false;
-
-		// Don't process game this time, just start it(works ram usage increases up to ~1,2GB)
-		_asm	mov ebp, esp;
-		_asm	jmp COffsets::IV_Hook__GameProcess_2;
-
-		*(BYTE*) COffsets::IV_Hook__GameProcess_3 = 0;
-		*(BYTE*) COffsets::IV_Hook__GameProcess_4 = 1;
-		*(BYTE*) COffsets::IV_Hook__GameProcess_5 = 0;
-
-		*(DWORD*) (g_pCore->GetBase() + 0x10C7854) = 50;
-
-
-		DWORD keks = *(DWORD *) COffsets::IV_Hook__GameProcess_6; // keks copyright by xforce
-		DWORD g_rgsc = *(DWORD *) COffsets::IV_Hook__GameProcess_7;
-		int iTime = timeGetTime();
-
-		_asm	push 0;
-		_asm	push 1;
-		_asm	push 0;
-		_asm	mov eax, keks;
-		_asm	mov ecx, g_rgsc;
-		_asm	mov edi, iTime;
-		_asm	call COffsets::IV_Hook__GameProcess_8;
-		_asm	add esp, 0Ch;
-	}
 }
 
 int * physics = 0;
@@ -342,12 +275,6 @@ void _declspec(naked) PhysicsHook()
 	_asm	popfd;
 	_asm	popad;
 	_asm	retn;
-}
-
-_declspec(naked) void CTaskSimpleStartVehicle__Process()
-{
-	_asm xor eax, eax;
-	_asm retn 4;
 }
 
 void __cdecl renderMenus() //render Main and pause menu
@@ -450,10 +377,9 @@ public:
 
 sRAGETHREAD* g_pRageScriptThread = NULL;
 
-__declspec(naked) int GetRunningScriptThread()
+sRAGETHREAD* __cdecl GetRunningScriptThread()
 {
-	_asm	mov eax, g_pRageScriptThread;
-	_asm	retn;
+	return g_pRageScriptThread;
 }
 
 void CHooks::Intialize()
@@ -468,21 +394,15 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(COffsets::FUNC_GetLocalPlayerPed, (DWORD)GetLocalPlayerPed_Hook);
 	
 	// Hook CTask::~CTask to use our own function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD)CTask__Destructor_Hook);
+	CPatcher::InstallJmpPatch(COffsets::FUNC_CTask__Destructor, (DWORD) thisisafuckingthiscall::IVTask__Destructor);
 	
 	// Hook initial loading screens
 	CPatcher::InstallCallPatch(COffsets::FUNC_RemoveInitialLoadingScreens, (DWORD) RemoveLoadingScreens);
-	
-	// Always draw vehicle hazzard lights
-	CPatcher::InstallNopPatch(COffsets::PATCH_CVehicle__HazzardLightsOn, 2);
 	
 	// Disable loading music
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x9D180B, (DWORD) PhysicsHook);
-
-	// Disable automatic vehicle engine turn-on
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchVehicleDriverProcess, (DWORD) CTaskSimpleStartVehicle__Process);
 
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
@@ -500,7 +420,7 @@ void CHooks::Intialize()
 	// Disable check to invalid threads
 	g_pRageScriptThread = new sRAGETHREAD;
 	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
-	CPatcher::InstallJmpPatch((g_pCore->GetBase() + 0x82E7E0), (DWORD) GetRunningScriptThread, 5);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x82E7E0, (DWORD) GetRunningScriptThread, 5);
 
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&IVPoolOwns::IVPoolHook));
 }
