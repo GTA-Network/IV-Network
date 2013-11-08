@@ -382,6 +382,13 @@ sRAGETHREAD* __cdecl GetRunningScriptThread()
 	return g_pRageScriptThread;
 }
 
+#define CovertTextToDrawText (*(void (__cdecl *)(char * in, char* out)) (g_pCore->GetBase() + 0x801BC0)) //First two char is not converted. :(
+
+void __cdecl GetLoadingText(char* buffer)
+{
+	CovertTextToDrawText("  IV:Network is loading...", buffer); //TODO: make it changeable form client script
+}
+
 void CHooks::Intialize()
 {
 	// Hook GetPlayerInfoFromIndex to use our own function
@@ -423,4 +430,17 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x82E7E0, (DWORD) GetRunningScriptThread, 5);
 
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&IVPoolOwns::IVPoolHook));
+
+	//Replace loading text
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D0E, 2);
+	*(BYTE*) (g_pCore->GetBase() + 0x7E2D10) = 0xEB;
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D24, 8);
+	*(BYTE*) (g_pCore->GetBase() + 0x7E2D31) = 0xEB;
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D77, 2);
+	*(BYTE*) (g_pCore->GetBase() + 0x7E2D79) = 0xEB;
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D9A, 11);
+	*(BYTE*) (g_pCore->GetBase() + 0x7E2DA5) = 0xEB;
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2DF2, 5);
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x7E2DF7, (DWORD) GetLoadingText);
+	*(BYTE*) (g_pCore->GetBase() + 0x7E2E0B) = 4;
 }
