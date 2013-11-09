@@ -1,9 +1,10 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//========= IV: Network - https://github.com/GTA-Network/IV-Network ============
 //
 // File: CBitStream.h
-// Project: Client.Core
-// Author: xForce
+// Project: Shared
+// Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
+//          Contains code from RakNet
 //
 //==============================================================================
 

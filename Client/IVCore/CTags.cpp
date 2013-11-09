@@ -72,7 +72,7 @@ void CTags::Draw()
 				CIVScript::GetViewportPositionOfCoord(&vecHeadPosition, &vecScreenPosition, 2);
 
 				// Set the player name
-				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);
+				CString strString("%s (%d)", pPlayer->GetName().Get(), i);
 				
 				vecScreenPosition.fX -= g_pCore->GetGraphics()->GetStringWidth(strString) / 2;
 

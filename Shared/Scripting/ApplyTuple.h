@@ -1,3 +1,11 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: ApplyTuple.h
+// Project: Shared
+// Author: 
+// License: See LICENSE in root directory
+//
+//==============================================================================
 
 #ifndef ApplyTuple_h
 #define ApplyTuple_h

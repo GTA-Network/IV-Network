@@ -1,7 +1,7 @@
 //================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: CSettings.cpp
-// Project: Client.Core
+// Project: Server.Core
 // Author: FRi<FRi.developing@gmail.com>
 // License: See LICENSE in root directory
 //

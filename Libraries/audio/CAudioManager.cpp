@@ -2,7 +2,7 @@
 //
 // File: CAudioManager.cpp
 // Project: Client.Core
-// Author: Knight<xxx@xxx>
+// Author: Knight <xxx@xxx>
 // License: See LICENSE in root directory
 //
 //==========================================================================================

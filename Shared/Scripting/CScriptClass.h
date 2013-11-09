@@ -1,3 +1,12 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: CScriptClass.h
+// Project: Shared
+// Author: 
+// License: See LICENSE in root directory
+//
+//==============================================================================
+
 #ifndef CScriptClass_h
 #define CScriptClass_h
 #include <assert.h>

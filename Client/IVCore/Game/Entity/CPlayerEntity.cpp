@@ -211,7 +211,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 
 		// Set the localplayer name
 		// ViruZz: We're setting the nick that the client has in his settings, if not you're just setting it to NULL and we don't want that.
-		SetNick(CVAR_GET_STRING("nick").Get());
+		SetName(CVAR_GET_STRING("nick").Get());
 
 		// Mark as spawned
 		m_bSpawned = true;
@@ -337,7 +337,7 @@ bool CPlayerEntity::Create()
 
 	// Create the player blip
 	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strName.Get());
 
 	CIVTaskComplexPlayerOnFoot * pTask = new CIVTaskComplexPlayerOnFoot();
 	if (pTask)
@@ -504,10 +504,10 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 		vecTurnSpeed = CVector3();
 }
 
-void CPlayerEntity::SetNick(CString strNick)
+void CPlayerEntity::SetName(const CString& strName)
 {
-	m_strNick = strNick;
-	CLogFile::Printf("Setting name to %s", strNick.Get());
+	m_strName = strName;
+	CLogFile::Printf("Setting name to %s", strName.Get());
 	//CIVScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
 }
 
@@ -524,7 +524,7 @@ void CPlayerEntity::SetColor(unsigned uiColor)
 		CIVScript::ChangeBlipColour(m_uiBlip, uiColor);
 	}
 
-	// Do we have a vaid player info pointer?
+	// Do we have a valid player info pointer?
 	if(m_pPlayerInfo)
 	{
 		// Set the player colour

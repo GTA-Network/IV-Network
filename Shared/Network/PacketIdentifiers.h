@@ -1,3 +1,12 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: PacketIdentifiers.h
+// Project: Shared
+// Author: 
+// License: See LICENSE in root directory
+//
+//==============================================================================
+
 typedef unsigned short PacketId;
 
 #define INTERNAL_PACKET_END 131

@@ -113,7 +113,7 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	CPlayerEntity * pEntity = new CPlayerEntity;
 	pEntity->SetModel(0); // Set temporary to nico lol
 	pEntity->Create();
-	pEntity->SetNick(strPlayerName);
+	pEntity->SetName(strPlayerName);
 	pEntity->SetId(playerId);
 	pEntity->SetColor(uiColor);
 
@@ -151,7 +151,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (pPlayer)
 		{
 			// Output the message
-			g_pCore->GetChat()->Print(CString("#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), strInput.C_String()));
+			g_pCore->GetChat()->Print(CString("#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetName().Get(), strInput.C_String()));
 		}
 	}
 }
@@ -238,7 +238,7 @@ void SetPlayerName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		CString strName;
 		pBitStream->Read(strName);
 
-		pPlayer->SetNick(strName);
+		pPlayer->SetName(strName);
 	}
 }
 
@@ -537,7 +537,7 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
-void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+void SendMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 		RakNet::RakString sMessage;
 		DWORD dwColor;
@@ -993,7 +993,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_GIVE_MONEY), GivePlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_COLOR), SetPlayerColor);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
-		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendMessageToAll);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), SpawnPlayer);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);

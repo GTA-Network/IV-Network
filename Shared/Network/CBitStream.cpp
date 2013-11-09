@@ -2,7 +2,7 @@
 //
 // File: CBitStream.cpp
 // Project: Shared
-// Author(s): jenksta
+// Author: jenksta
 // License: See LICENSE in root directory
 //          Contains code from RakNet
 //

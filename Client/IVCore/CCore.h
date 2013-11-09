@@ -96,7 +96,6 @@ private:
 
 	eGAMEStates						m_eGameState;
 
-	CString							m_strNick;
 	CString							m_strHost;
 	unsigned short					m_usPort;
 	CString							m_strPass;
@@ -158,8 +157,6 @@ public:
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
 
-	void							SetNick( CString strNick ) { m_strNick = strNick; }
-	CString							GetNick( ) { return m_strNick; }
 	void							SetHost( CString strHost ) { m_strHost = strHost; }
 	CString							GetHost( ) { return m_strHost; }
 	void							SetClientPort( unsigned short usPort ) { m_usPort = usPort; }

@@ -1,3 +1,12 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: ApplyTuple.cpp
+// Project: Shared
+// Author: 
+// License: See LICENSE in root directory
+//
+//==============================================================================
+
 #include "ApplyTuple.h"
 
 #include "CLuaVM.h"

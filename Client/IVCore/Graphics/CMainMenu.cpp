@@ -362,6 +362,9 @@ bool CMainMenu::OnServerBrowserButtonMouseExit(const CEGUI::EventArgs &eventArgs
 
 bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
+	#ifndef _DEBUG
+		m_pGUI->ShowMessageBox("This feature is temporarily disabled. Instead use Quick Connect.", "IV:Network Server Browser", GUI_MESSAGEBOXTYPE_OK);
+	#else
 	if (!m_pBrowserWindow)
 	{
 		// Get our Screen Information
@@ -406,6 +409,7 @@ bool CMainMenu::OnServerBrowserButtonMouseClick(const CEGUI::EventArgs &eventArg
 		m_pBrowserWindow->setVisible(true);
 		m_pBrowserWindow->activate();
 	}
+	#endif
 	return true;
 }
 
@@ -435,7 +439,7 @@ bool CMainMenu::OnCreditsButtonMouseExit(const CEGUI::EventArgs &eventArgs)
 
 bool CMainMenu::OnCreditsButtonMouseClick(const CEGUI::EventArgs &eventArgs)
 {
-	m_pGUI->ShowMessageBox("This feature is temporary disabled.", "IV:Network Credits", GUI_MESSAGEBOXTYPE_OK);
+	m_pGUI->ShowMessageBox("This feature is temporarily disabled.", "IV:Network Credits", GUI_MESSAGEBOXTYPE_OK);
 	return true;
 }
 
@@ -516,7 +520,7 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 
 void CMainMenu::OnSettingsApply()
 {
-	g_pCore->SetNick(CString(m_pSettingsEditBox->getText()).Get());
+	g_pCore->GetGame()->GetLocalPlayer()->SetName(CString(m_pSettingsEditBox->getText()).Get());
 
 	CVAR_SET_STRING("nick", m_pSettingsEditBox->getText());
 
@@ -573,9 +577,9 @@ void CMainMenu::OnQuickConnectSubmit()
 	g_pCore->GetChat()->SetVisible(true);
 
 	// Set Nickname
-	g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
+	g_pCore->GetGame()->GetLocalPlayer()->SetName(CVAR_GET_STRING("nick").Get());
 
-	// Conneting the player to the server
+	// Connecting the player to the server
 	g_pCore->ConnectToServer(cpHost, usPort, m_pQuickConnectPasswordEditBox->getText());
 
 	// Hide the main menu elements
@@ -631,7 +635,7 @@ bool CMainMenu::OnServerClicked(const CEGUI::EventArgs &eventArgs)
 
 		g_pCore->GetChat()->SetVisible(true);
 
-		g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
+		g_pCore->GetGame()->GetLocalPlayer()->SetName(CVAR_GET_STRING("nick").Get());
 
 		//g_pCore->ConnectToServer(strAddress, usPort, ""); // The server password is empty if the player is able to get to this stage
 
