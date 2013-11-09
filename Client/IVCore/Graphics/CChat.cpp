@@ -215,6 +215,8 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		{
 			m_bTypeing = false;
 
+			CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
+
 			if (m_szTypeing.GetLength() > 0)
 			{
 				if (g_pCore->GetNetworkManager() && g_pCore->GetNetworkManager()->IsConnected())
@@ -245,8 +247,6 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 				}
 			}
-
-			CIVScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
 		}
 		else if (dwChar == VK_BACK && m_bTypeing)
 		{
