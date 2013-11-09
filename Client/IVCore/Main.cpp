@@ -42,7 +42,9 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			g_pCore = new CCore;
 
 			// Call install exception function
+#ifndef DEBUG
 			InstallException();
+#endif
 
 			// Did the core fail to create or initialsie?
 			if(!g_pCore || !g_pCore->Initialise())

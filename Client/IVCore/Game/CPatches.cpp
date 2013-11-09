@@ -64,7 +64,7 @@ void CPatches::Initialize()
 	// === RAGE %% RGSC Stuff
 
 	// Don't initialize error reporting
-	//CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchErrorReporting);
+	CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchErrorReporting);
 
 	*(WORD *) (g_pCore->GetBase() + 0x472EF1) = 0xC033; //xor eax, eax
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x472EF3, g_pCore->GetBase() + 0x47316E);

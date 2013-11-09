@@ -322,5 +322,9 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		//}
 	}
 #endif
+	else if (strCommand == "money")
+	{
+		g_pCore->GetGame()->GetLocalPlayer()->GiveMoney(atoi(strParameters.Get()));
+	}
 	return false;
 }
