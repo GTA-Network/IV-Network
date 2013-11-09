@@ -84,7 +84,7 @@ public:
 	CBlipManager		*GetBlipManager() { return m_pBlipManager; }
 	CCheckpointManager	*GetCheckpointManager() { return m_pCheckpointManager; }
 
-	CTimerManager		*GetTimerManger() { return m_pTimerManager; }
+	CTimerManager		*GetTimerManager() { return m_pTimerManager; }
 
 	CNetworkModule		*GetNetworkModule() { return m_pNetworkModule; }
 

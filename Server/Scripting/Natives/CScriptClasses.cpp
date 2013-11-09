@@ -178,6 +178,42 @@ int CreateCheckpoint(int * VM)
 	return 1;
 }
 
+int CreateBlip(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	int iIcon;
+	pVM->Pop(iIcon);
+
+	CVector3 vecPosition;
+	pVM->Pop(vecPosition);
+
+	bool bVisible;
+	pVM->Pop(bVisible);
+
+	CBlipEntity * pBlip = new CBlipEntity();
+	pBlip->SetId(CServer::GetInstance()->GetBlipManager()->FindFreeSlot());
+	CServer::GetInstance()->GetBlipManager()->Add(pBlip->GetId(), pBlip);
+	pBlip->SetIcon(iIcon);
+	pBlip->SetPosition(vecPosition);
+	pBlip->SetVisible(bVisible);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(pBlip->GetId());
+	bitStream.Write(iIcon);
+	bitStream.Write(vecPosition);
+	bitStream.Write(bVisible);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_BLIP), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+
+	CScriptBlip * pScriptBlip = new CScriptBlip();
+	pScriptBlip->SetEntity(pBlip);
+	pBlip->SetScriptBlip(pScriptBlip);
+	pVM->PushInstance("CBlipEntity", pScriptBlip);
+	return 1;
+}
+
 int CreateTimer(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
@@ -194,12 +230,13 @@ int CreateTimer(int * VM)
 	pVM->Pop(repeatings);
 
 	CTimer* pTimer = new CTimer(function, interval, repeatings);
-	CServer::GetInstance()->GetTimerManger()->push_back(pTimer);
+	CServer::GetInstance()->GetTimerManager()->push_back(pTimer);
 
 	CScriptTimer * pScriptTimer = new CScriptTimer();
 	pScriptTimer->SetTimer(pTimer);
 	pTimer->SetScriptTimer(pScriptTimer);
 	pVM->PushInstance("CTimer", pScriptTimer);
+
 	return 1;
 }
 
@@ -228,6 +265,7 @@ void CScriptClasses::Register(CScriptVM * pVM)
 	pVM->RegisterFunction("isPlayerConnected", IsPlayerConnected);
 	pVM->RegisterFunction("sendMessageToAll", SendPlayerMessageToAll);
 	pVM->RegisterFunction("createCheckpoint", CreateCheckpoint);
+	pVM->RegisterFunction("createBlip", CreateBlip);
 	pVM->RegisterFunction("createTimer", CreateTimer);
 
 #if 0
@@ -319,12 +357,29 @@ void CScriptClasses::Register(CScriptVM * pVM)
 		(pScriptCheckpoint)->Register(pVM);
 	}
 
+	{ // ScriptBlip
+		static CScriptClass<CScriptBlip>* pScriptBlip = &(new CScriptClass<CScriptBlip>("CBlipEntity"))->
+			AddMethod("setPosition", &CScriptBlip::SetPosition).
+			AddMethod("getPosition", &CScriptBlip::GetPosition).
+			AddMethod("setIcon", &CScriptBlip::SetIcon).
+			AddMethod("getIcon", &CScriptBlip::GetIcon).
+			AddMethod("setColor", &CScriptBlip::SetColor).
+			AddMethod("getColor", &CScriptBlip::GetColor).
+			AddMethod("setRange", &CScriptBlip::SetRange).
+			AddMethod("getRange", &CScriptBlip::GetRange).
+			AddMethod("setVisible", &CScriptBlip::SetVisible).
+			AddMethod("getVisible", &CScriptBlip::GetVisible).
+			AddMethod("setName", &CScriptBlip::SetName).
+			AddMethod("getName", &CScriptBlip::GetName);
+		(pScriptBlip)->Register(pVM);
+	}
+
 	{ // ScriptTimer
 		static CScriptClass<CScriptTimer>* pScriptTimer = &(new CScriptClass<CScriptTimer>("CTimer"))->
-			AddMethod("Start", &CScriptTimer::Start).
-			AddMethod("Stop", &CScriptTimer::Stop).
-			AddMethod("Pause", &CScriptTimer::Pause).
-			AddMethod("Resume", &CScriptTimer::Resume);
+			AddMethod("start", &CScriptTimer::Start).
+			AddMethod("stop", &CScriptTimer::Stop).
+			AddMethod("pause", &CScriptTimer::Pause).
+			AddMethod("resume", &CScriptTimer::Resume);
 		(pScriptTimer)->Register(pVM);
 	}
 }

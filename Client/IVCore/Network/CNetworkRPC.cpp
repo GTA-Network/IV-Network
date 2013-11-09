@@ -1012,6 +1012,15 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), HideCheckpoint);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TYPE), SetCheckpointType);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_RADIUS), SetCheckpointRadius);
+
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_CREATE_BLIP), CreateBlip);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_POSITION), SetBlipPosition);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_ICON), SetBlipIcon);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_COLOR), SetBlipColor);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_SIZE), SetBlipSize);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_RANGE), SetBlipRange);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_VISIBLE), SetBlipVisible);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_NAME), SetBlipName);
 		
 		// Mark as registered
 		m_bRegistered = true;
@@ -1069,6 +1078,15 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_TYPE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CHECKPOINT_SET_RADIUS));
+
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_CREATE_BLIP));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_POSITION));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_ICON));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_COLOR));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_SIZE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_RANGE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_VISIBLE));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_BLIP_SET_NAME));
 		// Mark as not registered
 		m_bRegistered = false;
 	}
