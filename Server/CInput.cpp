@@ -42,15 +42,47 @@ void CInput::ProcessInput(CString strInput)
 
 	} else if(strCommand == "help" || strCommand == "?" || strCommand == "--usage") {
 		printf("========== Available console commands: ==========\n");
-		printf("say <text>\n");
-		printf("uptime\n");
+		//printf("say <text>\n");
+		//printf("uptime\n");
+		//printf("players\n");
 		printf("resources\n");
-		printf("players\n");
 		printf("loadresource <name>\n");
 		printf("reloadresource <name>\n");
 		printf("unloadresource <name>\n");
+		printf("loadallresources\n");
+		printf("reloadallresources\n");
+		printf("unloadallresources\n");
 		printf("exit\n");
 		return;
+	}
+	else if (strCommand == "resources") {
+		CString res = strParameters.Get();
+
+		for (CResource * res : CServer::GetInstance()->GetResourceManager()->GetResources()) {
+			printf("'%s': %s\n", res->GetName(), res->GetResourceDirectoryPath());
+		}
+		
+	}
+	else if (strCommand == "loadresource") {
+		CString res = strParameters.Get();
+		CServer::GetInstance()->LoadResource(res);
+	}
+	else if (strCommand == "reloadresource") {
+		CString res = strParameters.Get();
+		CServer::GetInstance()->ReloadResource(res);
+	}
+	else if (strCommand == "unloadresource") {
+		CString res = strParameters.Get();
+		CServer::GetInstance()->UnloadResource(res);
+	}
+	else if (strCommand == "loadallresources") {
+		CServer::GetInstance()->LoadAllResources();
+	}
+	else if (strCommand == "reloadallresources") {
+		CServer::GetInstance()->ReloadAllResources();
+	}
+	else if (strCommand == "unloadallresources") {
+		CServer::GetInstance()->UnloadAllResources();
 	}
 	else if (strCommand == "setSyncRate") {
 		int rate = atoi(strParameters.Get());

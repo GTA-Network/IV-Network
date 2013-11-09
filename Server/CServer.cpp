@@ -24,6 +24,8 @@ CServer::CServer()
 
 CServer::~CServer()
 {
+	SAFE_DELETE(m_pResourceManager);
+
 	SAFE_DELETE(m_pPlayerManager);
 
 	SAFE_DELETE(m_pVehicleManager);
@@ -52,6 +54,7 @@ void OnCreateVM(CScriptVM* pVM)
 	CScriptClasses::Register(pVM);
 }
 
+
 bool CServer::Startup()
 {
 	// Register our RPCs before set the NetServer´s rpc handler
@@ -67,11 +70,13 @@ bool CServer::Startup()
 	m_p3DLabelManager = new C3DLabelManager();
 	m_pBlipManager = new CBlipManager();
 	m_pCheckpointManager = new CCheckpointManager();
-
 	m_pTimerManager = new CTimerManager();
+	m_pResourceManager = new CResourceManager("resources");
+	m_pResourceManager->SetCreateVMCallback(OnCreateVM);
+
 
 	// Open the settings file
-	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
+	if (!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
 #ifdef _WIN32
@@ -83,17 +88,17 @@ bool CServer::Startup()
 	}
 
 #ifdef _WIN32
-		 // Color stuff
-        CONSOLE_SCREEN_BUFFER_INFO csbiScreen;
-        WORD wOldColAttr;       // For input process.
+	// Color stuff
+	CONSOLE_SCREEN_BUFFER_INFO csbiScreen;
+	WORD wOldColAttr;       // For input process.
 
-        GetConsoleScreenBufferInfo((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), &csbiScreen);
-        wOldColAttr = csbiScreen.wAttributes;
+	GetConsoleScreenBufferInfo((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), &csbiScreen);
+	wOldColAttr = csbiScreen.wAttributes;
 
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 
-        // Print message to console.
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	// Print message to console.
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
 
 #endif
 	CLogFile::Print("");
@@ -103,36 +108,36 @@ bool CServer::Startup()
 	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 #endif
 
-	
+
 	CLogFile::Print(" " VERSION_IDENTIFIER " " OS_STRING " Server");
 	CLogFile::Print(" Copyright (C) 2013 GTA-Network Team");
 	CLogFile::Printf(" Port: %d", CVAR_GET_INTEGER("port"));
 
-	if(CVAR_GET_STRING("hostaddress").IsNotEmpty())
+	if (CVAR_GET_STRING("hostaddress").IsNotEmpty())
 		CLogFile::Printf(" Host Address: %s", CVAR_GET_STRING("hostaddress").Get());
 
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 
 #ifdef _WIN32
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-        CLogFile::Print("====================================================================");
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	CLogFile::Print("====================================================================");
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 #else
-        CLogFile::Print("====================================================================");
+	CLogFile::Print("====================================================================");
 #endif
-	
+
 	// Load modules
 	// Note: modules not implemented yet coming soon
 	auto modules = CVAR_GET_LIST("module");
-	if(modules.size() > 0)
+	if (modules.size() > 0)
 	{
 		CLogFile::Print("");
 		CLogFile::Print("========================== Loading Modules =========================");
 
-		for(auto strModule : modules)
+		for (auto strModule : modules)
 		{
 			CLogFile::Printf("Loading module %s.", strModule.Get());
-			if(!strModule.ToLower().EndsWith(".so") && !strModule.ToLower().EndsWith(".dll"))
+			if (!strModule.ToLower().EndsWith(".so") && !strModule.ToLower().EndsWith(".dll"))
 			{
 				// If no extension specified in module name string, load SO for linux and DLL for Win
 #ifdef _WIN32
@@ -144,58 +149,29 @@ bool CServer::Startup()
 			//CModule * pModule = g_pModuleManager->LoadModule(strModule);
 
 			//if(!pModule)
-				CLogFile::Printf("Warning: Failed to load module %s.", strModule.Get());
+			CLogFile::Printf("Warning: Failed to load module %s.", strModule.Get());
 		}
 
 		CLogFile::Print("");
 	}
-	m_pResourceManager = new CResourceManager("resources");
-	m_pResourceManager->SetCreateVMCallback(OnCreateVM);
 
 	// Loading resources
 #ifdef _WIN32
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
-        CLogFile::Print("");
-        CLogFile::Print("============ Loading Resources ===========");
-		CLogFile::Print("");
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
+	CLogFile::Print("");
+	CLogFile::Print("============ Loading Resources ===========");
+	CLogFile::Print("");
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 #else
-        CLogFile::Print("");
-        CLogFile::Print("============ Loading Resources ===========");
-		CLogFile::Print("");
+	CLogFile::Print("");
+	CLogFile::Print("============ Loading Resources ===========");
+	CLogFile::Print("");
 #endif
 
-
-	auto resources = CVAR_GET_LIST("resource");
-
-	int iResourcesLoaded = 0;
-	int iFailedResources = 0;
-
-	for(auto strResource : resources)
-	{
-		if(!strResource.IsEmpty())
-		{
-			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
-			if(CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()),strResource))
-			{
-				if (!m_pResourceManager->StartResource(pResource))
-				{
-					CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
-					iFailedResources++;
-				}
-				else
-				{
-					iResourcesLoaded++;
-				}
-				
-			} else {
-				CLogFile::Printf("Warning: Failed to load resource %s.", strResource.Get());
-				iFailedResources++;
-			}
-		}
-	}
 #define CLIENT_FILE_DIRECTORY "client_files"
-	
+
+	CServer::LoadAllResources();
+
 	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY);
 	SharedUtility::CreateDirectory(CLIENT_FILE_DIRECTORY "/resources");
 	for (auto pResource : m_pResourceManager->GetResources())
@@ -211,20 +187,16 @@ bool CServer::Startup()
 		}
 	}
 
-	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iFailedResources);
-
-	m_pNetworkModule->GetDirectoryDeltaTransfer()->AddUploadsFromSubdirectory(CLIENT_FILE_DIRECTORY);
-
 #ifdef _WIN32
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-        CLogFile::Print("");
-        CLogFile::Print("====================================================================");
-        CLogFile::Print("");
-        SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+	CLogFile::Print("");
+	CLogFile::Print("====================================================================");
+	CLogFile::Print("");
+	SetConsoleTextAttribute((HANDLE)GetStdHandle(STD_OUTPUT_HANDLE), wOldColAttr | FOREGROUND_INTENSITY);
 #else
-        CLogFile::Print("");
-        CLogFile::Print("====================================================================");
-        CLogFile::Print("");
+	CLogFile::Print("");
+	CLogFile::Print("====================================================================");
+	CLogFile::Print("");
 #endif
 
 	m_pNetworkModule->Startup();
@@ -299,13 +271,79 @@ void CServer::Process()
 	}
 
 	// This only works for 1-1000 but this is good
-	delay = (1000.0f / (float)m_uiMaximumFPS) - (float) (ulTime - m_ulLastProcess);
+	delay = (1000.0f / (float)m_uiMaximumFPS) - (float)(ulTime - m_ulLastProcess);
 	if (delay > 0)
-		std::this_thread::sleep_for(std::chrono::microseconds((long long)(delay*1000)));
+		std::this_thread::sleep_for(std::chrono::microseconds((long long)(delay * 1000)));
 
-	
+
 
 	m_ulLastProcess = SharedUtility::GetTime();
+}
+
+void CServer::LoadAllResources()
+{
+	auto resources = CVAR_GET_LIST("resource");
+
+	unsigned int iResourcesLoaded = 0;
+	unsigned int iResourcesFailed = 0;
+
+	for (auto strResource : resources) {
+		if (LoadResource(strResource))
+			iResourcesLoaded++;
+		else
+			iResourcesFailed++;
+	}
+
+	CLogFile::Printf("Successfully loaded %d resources (%d failed).", iResourcesLoaded, iResourcesFailed);
+}
+
+void CServer::ReloadAllResources()
+{
+	for (CResource * pResource : m_pResourceManager->GetResources()) {
+		m_pResourceManager->Reload(pResource);
+	}
+}
+
+void CServer::UnloadAllResources()
+{
+	for (CResource * pResource : m_pResourceManager->GetResources()) {
+		m_pResourceManager->Unload(pResource);
+	}
+}
+
+bool CServer::LoadResource(CString strResource)
+{
+	if (!strResource.IsEmpty())
+	{
+		if (CResource * pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()), strResource)) {
+			if (m_pResourceManager->StartResource(pResource)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool CServer::ReloadResource(CString strResource)
+{
+	for (CResource * pResource : m_pResourceManager->GetResources()) {
+		if (pResource->GetResourceDirectoryPath() == strResource) {
+			pResource->Reload();
+			return true;
+		}
+	}
+	return false;
+}
+
+bool CServer::UnloadResource(CString strResource)
+{
+	for (CResource * pResource : m_pResourceManager->GetResources()) {
+		if (pResource->GetResourceDirectoryPath() == strResource) {
+			pResource->Unload();
+			return true;
+		}
+	}
+	return false;
 }
 
 void CServer::Shutdown()
