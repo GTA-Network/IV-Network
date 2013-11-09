@@ -1,0 +1,6 @@
+DISABLE_FILE common:/data/ambient.ipl
+DISABLE_FILE common:/data/maps/ambient.ipl
+
+DISABLE_FILE common:/data/Scenarios.dat
+DISABLE_FILE common:/data/maps/scenarios.ipl
+DISABLE_FILE common:/data/maps/scenarios2.ipl
