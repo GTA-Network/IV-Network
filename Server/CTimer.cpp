@@ -1,3 +1,12 @@
+//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
+//
+// File: CTimer.cpp
+// Project: Server.Core
+// Author: 
+// License: See LICENSE in root directory
+//
+//==============================================================================
+
 #include "CTimer.h"
 #include <CServer.h>
 

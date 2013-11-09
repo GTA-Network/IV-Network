@@ -32,7 +32,7 @@ private:
 	unsigned int							m_uiColor;
 	
 	unsigned								m_uiBlip;
-	CString									m_strNick;
+	CString									m_strName;
 	CVector3								m_vecPosition;
 	CVector3								m_vecRotation;
 	CVector3								m_vecMoveSpeed;
@@ -192,8 +192,8 @@ public: // Handles call functions
 	void							SetMoveSpeed(const CVector3& vecMoveSpeed);
 	void							SetTurnSpeed(const CVector3& vecTurnSpeed);
 
-	void							SetNick(CString strNick);
-	CString							GetNick() { return m_strNick; }
+	void							SetName(const CString& strName);
+	CString							GetName() { return m_strName; }
 	void							SetColor(unsigned uiColor);
 
 	unsigned						GetScriptingHandle();

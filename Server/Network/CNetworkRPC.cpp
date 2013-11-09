@@ -335,7 +335,7 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			bitStream.Write(0.0f); //fHeading
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
-		CLogFile::Printf("[spawn] %s has requestred a spawn.", pPlayer->GetName().Get());
+		CLogFile::Printf("[spawn] %s has requested a spawn.", pPlayer->GetName().Get());
 	}
 }
 

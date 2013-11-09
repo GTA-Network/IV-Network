@@ -52,11 +52,11 @@ bool TransferCB::OnDownloadComplete(DownloadCompleteStruct *dcs)
 	RakNet::BitStream pBitStream;
 
 	// Write the player nickname
-	pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
+	pBitStream.Write(RakNet::RakString(g_pCore->GetGame()->GetLocalPlayer()->GetName().Get()));
 
 	// Write the player serial
 	pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));
 
-	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_DOWNLOAD_FINISH), NULL, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_DOWNLOAD_FINISH), &pBitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 	return false;
 }

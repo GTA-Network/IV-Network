@@ -1,7 +1,7 @@
 //================= IV:Network - https://github.com/GTA-Network/IV-Network =================
 //
 // File: Main.cpp
-// Project: Client.Core
+// Project: Server.Core
 // Author: xForce <xf0rc3.11@gmail.com>
 // License: See LICENSE in root directory
 //

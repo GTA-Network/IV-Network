@@ -269,7 +269,10 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Setup the name tags
 	m_pTags = new CTags;
 
+#ifdef DEBUG
+	// Audio test
 	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) test, NULL, 0, NULL);
+#endif
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
