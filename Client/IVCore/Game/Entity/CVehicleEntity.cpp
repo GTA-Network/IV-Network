@@ -150,6 +150,7 @@ bool CVehicleEntity::Create()
 		Reset();
 
 		SetPosition(m_vecSpawnPosition, true);
+		SetRotation(CVector3(m_fSpawnAngle, 0.0f, 0.0f));
 
 		CLogFile::Printf("Created vehicle! (Id: %d, Handle: %X)", m_vehicleId, g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(pVehicle));
 		return true;
