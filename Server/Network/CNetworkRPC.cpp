@@ -286,6 +286,9 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		// Kill the player
 		//pPlayer->KillForWorld();
 
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+
 		// Is the killer a player?
 		if (killerId != INVALID_ENTITY_ID)
 		{
@@ -293,18 +296,20 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CPlayerEntity* pKiller = CServer::GetInstance()->GetPlayerManager()->GetAt(killerId);
 
 			// Is the killer valid?
-			if (pKiller)
+			if (pKiller) {
+				args.push(pKiller->GetScriptPlayer());
 				CLogFile::Printf("[death] %s has been killed by %s!", pPlayer->GetName().Get(), pKiller->GetName().Get());
-			else
+			} else {
+				args.push((CScriptPlayer*)nullptr);
 				CLogFile::Printf("[death] %s has been killed!", pPlayer->GetName().Get());
+			}
 		}
 		else
 		{
+			args.push((CScriptPlayer*)nullptr);
 			CLogFile::Printf("[death] %s has died!", pPlayer->GetName().Get());
 		}
 
-		CScriptArguments args;
-		args.push(pPlayer->GetScriptPlayer());
 		CEvents::GetInstance()->Call("playerDeath", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 }
@@ -335,7 +340,7 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			bitStream.Write(0.0f); //fHeading
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
-		CLogFile::Printf("[spawn] %s has requestred a spawn.", pPlayer->GetName().Get());
+		CLogFile::Printf("[spawn] %s has requested a spawn.", pPlayer->GetName().Get());
 	}
 }
 
