@@ -38,7 +38,7 @@ public:
 	CString		GetResourceDirectory() { return m_strResourceDirectory; }
 
 	CResource	*Load(CString strAbsPath, CString strResourceName);
-	void		Unload(CResource* pResource);
+	bool		Unload(CResource* pResource);
 
 	bool		StartResource(CResource* pResource, std::list<CResource*> * dependents = NULL, bool bStartedManually = false, bool bStartIncludedResources = true);
 	bool		Reload(CResource* pResource);

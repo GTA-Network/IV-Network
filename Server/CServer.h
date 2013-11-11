@@ -88,6 +88,13 @@ public:
 
 	CNetworkModule		*GetNetworkModule() { return m_pNetworkModule; }
 
+	void	LoadAllResources();
+	void	ReloadAllResources();
+	void	UnloadAllResources();
+	bool	LoadResource(CString strResource);
+	bool	ReloadResource(CString strResource);
+	bool	UnloadResource(CString strResource);
+
 	unsigned GetSyncRate() { return m_uiSyncRate; }
 	void	 SetSyncRate(unsigned int uiSyncRate = 10) { m_uiSyncRate = uiSyncRate; }
 

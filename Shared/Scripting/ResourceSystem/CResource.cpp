@@ -52,7 +52,7 @@ CResource::CResource(CString strAbsPath, CString strResourceName)
 
 CResource::~CResource()
 {
-
+	Unload();
 }
 
 bool CResource::Load()
@@ -232,6 +232,7 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 				}
 			}
 		}
+		m_bActive = true;
 
 		// Call the scripting event
 		CScriptArguments args;
@@ -245,16 +246,18 @@ bool CResource::Start(std::list<CResource*> * dependents, bool bStartManually, b
 
 bool CResource::Stop(bool bStopManually)
 {
+	m_bActive = false;
+	DestroyVM();
 	CLogFile::Printf("[TODO] Implement %s", __FUNCTION__);
 	return true;
 }
 
 bool CResource::Unload()
 {
-	Stop(true);
-
-	m_bLoaded = false;
-
+	if (Stop(true)) {
+		m_bLoaded = false;
+		return true;
+	}
 	return false;
 }
 
@@ -294,7 +297,7 @@ bool CResource::CreateVM()
 
 void CResource::DestroyVM()
 {
-	CLogFile::Printf("[TODO] Implement %s", __FUNCTION__);
+	SAFE_DELETE(m_pVM);
 }
 
 void CResource::AddDependent(CResource* pResource)

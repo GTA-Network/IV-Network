@@ -76,7 +76,6 @@ CResource * CResourceManager::Get(int * pVM) // TODO: change to GetResourceByVM
 	return 0;
 }
 
-
 bool CResourceManager::Reload(CResource* pResource)
 {
 	pResource->Reload();
@@ -84,21 +83,32 @@ bool CResourceManager::Reload(CResource* pResource)
 	// Was it loaded successfully?
 	if(!pResource->IsLoaded())
 	{
-		CLogFile::Printf("Loading of resource '%s' failed\n", pResource->GetName().Get());
+		CLogFile::Printf("Reloading of resource '%s' failed\n", pResource->GetName().Get());
 		return false;
 	}
+	CLogFile::Printf("Resource '%s' reloaded\n", pResource->GetName().Get());
 	return true;
+}
+
+bool CResourceManager::Unload(CResource* pResource)
+{
+	if (pResource->Unload())
+	{
+		CLogFile::Printf("Resource '%s' unloaded\n", pResource->GetName().Get());
+		return true;
+	}
+	CLogFile::Printf("Unloading of resource '%s' failed\n", pResource->GetName().Get());
+	return false;
 }
 
 bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*> * dependents, bool bStartedManually, bool bStartIncludedResources)
 {
-	// Has resurce changed since load?
+	// Has resource changed since load?
 	if(pResource->HasChanged())
 	{
 		// Attempt to reload it
 		if(Reload(pResource))
 		{
-			CLogFile::Printf("Resource reloaded");
 			// Start the resource
 			return pResource->Start(NULL, bStartedManually, bStartIncludedResources);
 		}
@@ -110,14 +120,16 @@ bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*
 		// If it's not running yet
 		if(!pResource->IsActive())
 		{
-			CLogFile::Printf("Resource started");
+			CLogFile::Printf("Resource '%s' started\n", pResource->GetName().Get());
 			// Start it
 			return pResource->Start(dependents, bStartedManually, bStartIncludedResources);
 		}
+		CLogFile::Printf("Starting resource '%s' failed\n", pResource->GetName().Get());
 		return false;
 	}
 
 	// Stop it again if it failed starting
+	CLogFile::Printf("Starting resource '%s' failed\n", pResource->GetName().Get());
 	pResource->Stop();
 	return false;
 }
@@ -146,8 +158,9 @@ CResource* CResourceManager::Load(CString strAbsPath, CString strResourceName)
     {
         CLogFile::Printf("Loading of resource '%s' failed\n", strResourceName.Get());
         SAFE_DELETE(loadResource);
-    } else {
-		CLogFile::Printf("Resource loaded (%s)", strResourceName.Get());
+	}
+	else {
+		CLogFile::Printf("Resource '%s' loaded\n", strResourceName.Get());
 		loadResource->SetCreateVMCallback(m_fnCreateVM);
 		AddResource(loadResource);
 		return loadResource;
