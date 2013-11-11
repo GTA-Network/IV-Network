@@ -392,7 +392,7 @@ void CScriptPlayer::Spawn(float fX, float fY, float fZ, float fA)
 {
 	RakNet::BitStream bitStream;
 	bitStream.Write(CVector3(fX, fY, fZ)); //spawnPos
-	bitStream.Write(0.0f); //fHeading
+	bitStream.Write(fA); //fHeading
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
