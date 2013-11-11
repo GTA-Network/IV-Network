@@ -15,6 +15,7 @@
 #include "CNetworkRPC.h"
 #include <Common.h>
 #include <SharedUtility.h>
+#include <Scripting/CEvents.h>
 
 CNetworkModule::CNetworkModule(void)
 {
@@ -159,6 +160,10 @@ void CNetworkModule::UpdateNetwork(void)
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
 					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(0).Get());
 					
+					CScriptArguments args;
+					args.push(pPlayer->GetScriptPlayer());
+					CEvents::GetInstance()->Call("playerQuit", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+
 					RakNet::BitStream bitStream;
 					bitStream.Write(CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId) pPacket->systemAddress.systemIndex)->GetId());
 					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_DELETE_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
