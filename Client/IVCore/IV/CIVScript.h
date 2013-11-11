@@ -138,12 +138,14 @@ namespace CIVScript
 
 	// Blip
 	static void AddBlipForChar(unsigned int ped, unsigned int *pBlip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_CHAR, ped, pBlip); }
+	static unsigned int AddBlipForCoord(float fX, float fY, float fZ, unsigned int *pBlip) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_COORD, fX, fY, fZ, pBlip); }
+	static void RemoveBlip(unsigned int blip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REMOVE_BLIP, blip); }
+	static void SetBlipShortRange(unsigned int blip, bool bRange) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_BLIP_AS_SHORT_RANGE, blip, bRange); }
 	static void ChangeBlipSprite(unsigned int blip, eBlipSprite sprite) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_SPRITE, blip, sprite); }
 	static void ChangeBlipScale(unsigned int blip, float scale) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_SCALE, blip, scale); }
 	static void ChangeBlipNameFromAscii(unsigned int blip, const char *blipName) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_NAME_FROM_ASCII, blip, blipName); }
-	static void SetCharCoordinatesNoOffset(unsigned int ped, float x, float y, float z) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CHAR_COORDINATES_NO_OFFSET, ped, x, y, z); }
-	static void RemoveBlip(unsigned int blip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REMOVE_BLIP, blip); }
 	static void ChangeBlipColour(unsigned int blip, unsigned int colour) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CHANGE_BLIP_COLOUR, blip, colour); }
+	static void SetCharCoordinatesNoOffset(unsigned int ped, float x, float y, float z) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CHAR_COORDINATES_NO_OFFSET, ped, x, y, z); }
 
 	// Vehicle
 	static void CreateCar(unsigned int nameHash, float x, float y, float z, unsigned int *pVehicle, bool unknownTrue) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_CREATE_CAR, nameHash, x, y, z, pVehicle, unknownTrue); }

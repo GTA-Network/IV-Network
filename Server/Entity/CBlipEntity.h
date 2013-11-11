@@ -19,11 +19,10 @@ private:
 	CScriptBlip*	m_pScriptBlip;
 
 	CVector3		m_vecPos;
-	int				m_iBlipIcon;
+	unsigned		m_iBlipIcon;
 	unsigned int	m_uiColor;
 	float			m_fSize;
 	bool			m_bRange;
-	bool			m_bRouteBlip;
 	bool			m_bVisible;
 	CString			m_sName;
 public:
@@ -36,7 +35,7 @@ public:
 	void				SetScriptBlip(CScriptBlip* pScriptBlip) { m_pScriptBlip = pScriptBlip; }
 	CScriptBlip*		GetScriptBlip() { return m_pScriptBlip; }
 
-	void				SetIcon(int iIcon) { m_iBlipIcon = iIcon; }
+	void				SetIcon(unsigned int iIcon) { m_iBlipIcon = iIcon; }
 	int					GetIcon() { return m_iBlipIcon; }
 
 	void				SetColor(unsigned int uiColor) { m_uiColor = uiColor; }
@@ -47,9 +46,6 @@ public:
 
 	void				SetRange(bool bRange) { m_bRange = bRange; }
 	bool				GetRange() { return m_bRange; }
-
-	void				SetRoute(bool bRoute) { m_bRouteBlip = bRoute; }
-	bool				GetRoute() { return m_bRouteBlip; }
 
 	void				SetVisible(bool bVisible) { m_bVisible = bVisible; }
 	bool				GetVisible() { return m_bVisible; }
@@ -71,7 +67,7 @@ public:
 	void				SetPosition(float fX, float fY, float fZ);
 	CVector3			GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
 
-	void				SetIcon(int iIcon);
+	void				SetIcon(unsigned int iIcon);
 	int					GetIcon() { return GetEntity()->GetIcon(); }
 
 	void				SetColor(unsigned int uiColor);

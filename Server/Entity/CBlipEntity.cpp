@@ -12,12 +12,11 @@
 
 CBlipEntity::CBlipEntity()
 {
-
+	m_bVisible = true;
 }
 
 CBlipEntity::~CBlipEntity()
 {
-
 }
 
 void CScriptBlip::SetPosition(float fX, float fY, float fZ)
@@ -31,7 +30,7 @@ void CScriptBlip::SetPosition(float fX, float fY, float fZ)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_BLIP_SET_POSITION), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 }
 
-void CScriptBlip::SetIcon(int iIcon)
+void CScriptBlip::SetIcon(unsigned int iIcon)
 {
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());

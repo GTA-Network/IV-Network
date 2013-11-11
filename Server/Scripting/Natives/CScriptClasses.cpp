@@ -184,27 +184,27 @@ int CreateBlip(int * VM)
 
 	pVM->ResetStackIndex();
 
-	int iIcon;
+	unsigned int iIcon;
 	pVM->Pop(iIcon);
 
 	CVector3 vecPosition;
 	pVM->Pop(vecPosition);
 
-	bool bVisible;
-	pVM->Pop(bVisible);
+	bool bRange;
+	pVM->Pop(bRange);
 
 	CBlipEntity * pBlip = new CBlipEntity();
 	pBlip->SetId(CServer::GetInstance()->GetBlipManager()->FindFreeSlot());
 	CServer::GetInstance()->GetBlipManager()->Add(pBlip->GetId(), pBlip);
 	pBlip->SetIcon(iIcon);
 	pBlip->SetPosition(vecPosition);
-	pBlip->SetVisible(bVisible);
+	pBlip->SetRange(bRange);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(pBlip->GetId());
 	bitStream.Write(iIcon);
 	bitStream.Write(vecPosition);
-	bitStream.Write(bVisible);
+	bitStream.Write(bRange);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_BLIP), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 
 	CScriptBlip * pScriptBlip = new CScriptBlip();

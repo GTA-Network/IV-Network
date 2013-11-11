@@ -235,10 +235,10 @@ void SetPlayerName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Is the player pointer valid?
 	if (pPlayer)
 	{
-		CString strName;
+		RakNet::RakString strName;
 		pBitStream->Read(strName);
 
-		pPlayer->SetNick(strName);
+		pPlayer->SetNick(strName.C_String());
 	}
 }
 
@@ -957,6 +957,162 @@ void SetCheckpointRadius(RakNet::BitStream * pBitStream, RakNet::Packet * pPacke
 		pBitStream->Read(fRadius);
 
 		pCheckpoint->SetRadius(fRadius);
+	}
+}
+
+void CreateBlip(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId blipId;
+	pBitStream->Read(blipId);
+
+	unsigned int uiIcon;
+	pBitStream->Read(uiIcon);
+
+	CVector3 vecPosition;
+	pBitStream->Read(vecPosition);
+
+	bool bRange;
+	pBitStream->Read(bRange);
+
+	CBlipEntity * pBlip = new CBlipEntity((CIVScript::eBlipSprite)uiIcon, vecPosition, bRange);
+	if (pBlip)
+	{
+		g_pCore->GetGame()->GetBlipManager()->Add(blipId, pBlip);
+		pBlip->SetId(blipId);
+		pBlip->Create();
+	}
+}
+
+void SetBlipPosition(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		CVector3 vecPos;
+		pBitStream->Read(vecPos);
+
+		pBlip->SetPosition(vecPos);
+	}
+}
+
+void SetBlipIcon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		unsigned int uiIcon;
+		pBitStream->Read(uiIcon);
+
+		pBlip->SetIcon((CIVScript::eBlipSprite)uiIcon);
+	}
+}
+
+void SetBlipColor(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		unsigned int uiColor;
+		pBitStream->Read(uiColor);
+
+		pBlip->SetColor(uiColor);
+	}
+}
+
+void SetBlipSize(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		float fSize;
+		pBitStream->Read(fSize);
+
+		pBlip->SetSize(fSize);
+	}
+}
+
+void SetBlipRange(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		bool bRange;
+		pBitStream->Read(bRange);
+
+		pBlip->SetRange(bRange);
+	}
+}
+
+void SetBlipVisible(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		bool bVisible;
+		pBitStream->Read(bVisible);
+
+		pBlip->SetVisible(bVisible);
+	}
+}
+
+void SetBlipName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Read the blip
+	EntityId bliptId;
+	pBitStream->Read(bliptId);
+
+	// Get a pointer to the blip
+	CBlipEntity * pBlip = g_pCore->GetGame()->GetBlipManager()->GetAt(bliptId);
+
+	// Is the blip pointer valid?
+	if (pBlip)
+	{
+		RakNet::RakString sName;
+		pBitStream->Read(sName);
+
+		pBlip->SetName(sName.C_String());
 	}
 }
 
