@@ -16,13 +16,13 @@ CCheckpointEntity::CCheckpointEntity()
 
 CCheckpointEntity::~CCheckpointEntity()
 {
-
 }
-
 
 
 void CScriptCheckpoint::ShowForPlayer(EntityId playerId)
 {
+	GetEntity()->SetVisible(true);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_SHOW), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
@@ -30,6 +30,8 @@ void CScriptCheckpoint::ShowForPlayer(EntityId playerId)
 
 void CScriptCheckpoint::ShowForAll()
 {
+	GetEntity()->SetVisible(true);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_SHOW), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
@@ -37,6 +39,8 @@ void CScriptCheckpoint::ShowForAll()
 
 void CScriptCheckpoint::HideForPlayer(EntityId playerId)
 {
+	GetEntity()->SetVisible(false);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
@@ -44,6 +48,8 @@ void CScriptCheckpoint::HideForPlayer(EntityId playerId)
 
 void CScriptCheckpoint::HideForAll()
 {
+	GetEntity()->SetVisible(false);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
@@ -72,6 +78,8 @@ void CScriptCheckpoint::SetTargetPosition(float fX, float fY, float fZ)
 
 void CScriptCheckpoint::SetType(int iType)
 {
+	GetEntity()->SetType(iType);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(iType);
@@ -80,6 +88,8 @@ void CScriptCheckpoint::SetType(int iType)
 
 void CScriptCheckpoint::SetRadius(float fRadius)
 {
+	GetEntity()->SetRadius(fRadius);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(fRadius);

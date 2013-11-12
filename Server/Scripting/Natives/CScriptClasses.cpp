@@ -162,6 +162,7 @@ int CreateCheckpoint(int * VM)
 	pCheckpoint->SetPosition(vecPosition);
 	pCheckpoint->SetTargetPosition(vecNextPosition);
 	pCheckpoint->SetRadius(fRadius);
+	pCheckpoint->SetVisible(true);
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(pCheckpoint->GetId());

@@ -119,7 +119,6 @@ float CCheckpointEntity::GetRadius()
 
 void CCheckpointEntity::Pulse()
 {
-	// Are we not visible?
 	if (!m_bIsVisible)
 		return;
 
@@ -128,7 +127,6 @@ void CCheckpointEntity::Pulse()
 
 	CVector3 vecDistance((m_vecPosition.fX - vecPosition.fX), (m_vecPosition.fY - vecPosition.fY), (m_vecPosition.fZ - vecPosition.fZ));
 
-	// The actual radius of a checkpoint is bigger than its visible entity so we'll add a factor of 5.0
 	if (sqrt((vecDistance.fX * vecDistance.fX) + (vecDistance.fY * vecDistance.fY) + (vecDistance.fZ * vecDistance.fZ)) <= (m_fRadius * 5.0f))
 	{
 		if (!m_bInCheckpoint)

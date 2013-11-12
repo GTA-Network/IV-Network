@@ -32,6 +32,8 @@ void CScriptBlip::SetPosition(float fX, float fY, float fZ)
 
 void CScriptBlip::SetIcon(unsigned int iIcon)
 {
+	GetEntity()->SetIcon(iIcon);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(iIcon);
@@ -40,6 +42,8 @@ void CScriptBlip::SetIcon(unsigned int iIcon)
 
 void CScriptBlip::SetColor(unsigned int uiColor)
 {
+	GetEntity()->SetColor(uiColor);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(uiColor);
@@ -48,6 +52,8 @@ void CScriptBlip::SetColor(unsigned int uiColor)
 
 void CScriptBlip::SetSize(float fSize)
 {
+	GetEntity()->SetSize(fSize);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(fSize);
@@ -56,6 +62,8 @@ void CScriptBlip::SetSize(float fSize)
 
 void CScriptBlip::SetRange(bool bRange)
 {
+	GetEntity()->SetRange(bRange);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(bRange);
@@ -64,6 +72,8 @@ void CScriptBlip::SetRange(bool bRange)
 
 void CScriptBlip::SetVisible(bool bVisible)
 {
+	GetEntity()->SetVisible(bVisible);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(bVisible);
@@ -72,6 +82,8 @@ void CScriptBlip::SetVisible(bool bVisible)
 
 void CScriptBlip::SetName(CString sName)
 {
+	GetEntity()->SetName(sName);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(RakNet::RakString(sName.C_String()));

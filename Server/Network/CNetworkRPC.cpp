@@ -170,20 +170,47 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		{
 			bitStream.Reset();
 			CCheckpointEntity * pCheckpoint = CServer::GetInstance()->GetCheckpointManager()->GetAt(i);
-			bitStream.Write(pCheckpoint->GetId());
-			bitStream.Write(pCheckpoint->GetType());
+			
+			if (pCheckpoint->GetVisible())
+			{
+				bitStream.Write(pCheckpoint->GetId());
+				bitStream.Write(pCheckpoint->GetType());
 
-			CVector3 vecPosition;
-			pCheckpoint->GetPosition(vecPosition);
-			bitStream.Write(vecPosition);
+				CVector3 vecPosition;
+				pCheckpoint->GetPosition(vecPosition);
+				bitStream.Write(vecPosition);
 
-			CVector3 vecTargetPosition;
-			pCheckpoint->GetTargetPosition(vecTargetPosition);
-			bitStream.Write(vecTargetPosition);
+				CVector3 vecTargetPosition;
+				pCheckpoint->GetTargetPosition(vecTargetPosition);
+				bitStream.Write(vecTargetPosition);
 
-			bitStream.Write(pCheckpoint->GetRadius());
+				bitStream.Write(pCheckpoint->GetRadius());
 
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+			}
+		}
+	}
+
+	for (EntityId i = 0; i < CServer::GetInstance()->GetBlipManager()->GetMax(); ++i)
+	{
+		if (CServer::GetInstance()->GetBlipManager()->DoesExists(i))
+		{
+			bitStream.Reset();
+			CBlipEntity * pBlip = CServer::GetInstance()->GetBlipManager()->GetAt(i);
+
+			if (pBlip->GetVisible())
+			{
+				bitStream.Write(pBlip->GetId());
+				bitStream.Write(pBlip->GetIcon());
+
+				CVector3 vecPosition;
+				pBlip->GetPosition(vecPosition);
+				bitStream.Write(vecPosition);
+
+				bitStream.Write(pBlip->GetRange());
+
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_BLIP), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+			}
 		}
 	}
 }

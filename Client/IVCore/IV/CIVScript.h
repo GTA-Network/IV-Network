@@ -137,7 +137,7 @@ namespace CIVScript
 	static void SetCamFov(unsigned int camera, float fov) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAM_FOV, camera, fov); }
 
 	// Blip
-	static void AddBlipForChar(unsigned int ped, unsigned int *pBlip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_CHAR, ped, pBlip); }
+	static unsigned int AddBlipForChar(unsigned int ped, unsigned int *pBlip) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_CHAR, ped, pBlip); }
 	static unsigned int AddBlipForCoord(float fX, float fY, float fZ, unsigned int *pBlip) { return CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_ADD_BLIP_FOR_COORD, fX, fY, fZ, pBlip); }
 	static void RemoveBlip(unsigned int blip) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_REMOVE_BLIP, blip); }
 	static void SetBlipShortRange(unsigned int blip, bool bRange) { CIVScript_NativeInvoke::Invoke<unsigned int>(NATIVE_SET_BLIP_AS_SHORT_RANGE, blip, bRange); }
