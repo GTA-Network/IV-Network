@@ -184,6 +184,17 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			bitStream.Write(pCheckpoint->GetRadius());
 
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+
+
+			// Checkpoint visibility
+			if (!pCheckpoint->GetVisible())
+			{
+				bitStream.Reset();
+
+				bitStream.Write(pCheckpoint->GetId());
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+
+			}
 		}
 	}
 }

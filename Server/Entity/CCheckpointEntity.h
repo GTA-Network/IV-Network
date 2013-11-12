@@ -38,6 +38,9 @@ public:
 	void					SetTargetPosition(CVector3 vecTargetPosition) { m_vecTargetPosition = vecTargetPosition; }
 	void					GetTargetPosition(CVector3& vecTargetPosition) { vecTargetPosition = m_vecTargetPosition; }
 
+	void					SetVisible(bool bVisible) { m_bVisible = bVisible; }
+	bool					GetVisible() { return m_bVisible; }
+
 	void					SetRadius(float fRadius) { m_fRadius = fRadius; }
 	float					GetRadius() { return m_fRadius; }
 };

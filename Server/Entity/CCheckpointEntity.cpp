@@ -30,6 +30,8 @@ void CScriptCheckpoint::ShowForPlayer(EntityId playerId)
 
 void CScriptCheckpoint::ShowForAll()
 {
+	GetEntity()->SetVisible(true);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_SHOW), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
@@ -44,6 +46,8 @@ void CScriptCheckpoint::HideForPlayer(EntityId playerId)
 
 void CScriptCheckpoint::HideForAll()
 {
+	GetEntity()->SetVisible(false);
+
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CHECKPOINT_HIDE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
