@@ -122,8 +122,8 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     // Are we focused?
     if(bFocused)
     {
-		if (g_pCore->GetGUI())
-			g_pCore->GetGUI()->HandleUserInput(uMsg, wParam);
+		if (g_pCore->GetGraphics()->GetGUI())
+			g_pCore->GetGraphics()->GetGUI()->HandleUserInput(uMsg, wParam);
 
 		if(uMsg == WM_KILLFOCUS || (uMsg == WM_ACTIVATE && LOWORD(wParam) == WA_INACTIVE))
 		{
@@ -150,9 +150,9 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				}
 				case VK_ESCAPE: // Our own main menu
 				{
-					g_pCore->GetMainMenu()->SetVisible(!g_pCore->GetMainMenu()->IsMainMenuVisible());	
+					g_pCore->GetGraphics()->GetMainMenu()->SetVisible(!g_pCore->GetGraphics()->GetMainMenu()->IsMainMenuVisible());	
 
-					if (g_pCore->GetMainMenu()->IsMainMenuVisible()) {
+					if (g_pCore->GetGraphics()->GetMainMenu()->IsMainMenuVisible()) {
 						g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false, false);
 					}
 					else {
@@ -165,10 +165,10 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				{
 					// Take a screen shot
 					if(CSnapShot::Take())
-						g_pCore->GetChat()->Print(CString("Screen shot captured."));
+						g_pCore->GetGraphics()->GetChat()->Print(CString("Screen shot captured."));
 					else
 					{
-						g_pCore->GetChat()->Print(CString("Screen shot capture failed (%s).", CSnapShot::GetError().Get()));
+						g_pCore->GetGraphics()->GetChat()->Print(CString("Screen shot capture failed (%s).", CSnapShot::GetError().Get()));
 						CSnapShot::Reset();
 					}
 					break;
@@ -176,8 +176,8 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 			}
 		}
 
-		if(g_pCore->GetChat())
-			 g_pCore->GetChat()->HandleUserInput(uMsg, wParam);
+		if(g_pCore->GetGraphics()->GetChat())
+			 g_pCore->GetGraphics()->GetChat()->HandleUserInput(uMsg, wParam);
     }
 
     return CallWindowProc(m_wWndProc, hWnd, uMsg, wParam, lParam);

@@ -108,8 +108,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetNetworkManager()->SetNetworkState(NETSTATE_CONNECTED);
 
 	// Notify the client
-	g_pCore->GetChat()->Clear();
-	g_pCore->GetChat()->Print(CString("#16C5F2Successfully connected to %s...", g_pCore->GetServerName().Get()));
+	g_pCore->GetGraphics()->GetChat()->Clear();
+	g_pCore->GetGraphics()->GetChat()->Print(CString("#16C5F2Successfully connected to %s...", g_pCore->GetServerName().Get()));
 
 	// whitout this two line below playerRequestSpawn never called
 	CIVScript::DoScreenFadeInUnhacked(0);
@@ -172,7 +172,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (pPlayer)
 		{
 			// Output the message
-			g_pCore->GetChat()->Print(CString("#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), strInput.C_String()));
+			g_pCore->GetGraphics()->GetChat()->Print(CString("#%s%s#FFFFFF: %s", CString::DecimalToString(pPlayer->GetColor()).Get(), pPlayer->GetNick().Get(), strInput.C_String()));
 		}
 	}
 }
@@ -554,7 +554,7 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Print(sMessage.C_String());
+		g_pCore->GetGraphics()->GetChat()->Print(sMessage.C_String());
 	}
 }
 
@@ -568,7 +568,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetChat()->Print(sMessage.C_String());
+		g_pCore->GetGraphics()->GetChat()->Print(sMessage.C_String());
 }
 
 void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)

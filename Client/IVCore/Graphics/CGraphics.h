@@ -44,6 +44,13 @@
 #include <Math\CMaths.h>
 #include <Detours\detours.h>
 
+#include <Graphics/CGUI.h>
+#include <Graphics/CMainMenu.h>
+#include <Graphics/CLoadingScreen.h>
+#include <Graphics/CTags.h>
+#include <Graphics/CChat.h>
+#include <Graphics/CFPSCounter.h>
+
 #ifdef DrawText
 #undef DrawText
 #endif
@@ -69,6 +76,14 @@ private:
 	struct ID3DXLine*       m_pLineInterface;
 	IDirect3DTexture9		* m_pDXPixelTexture;
 	IDirect3DTexture9		* m_pPixelTexture;
+
+
+	CChat							* m_pChat = nullptr;
+	CFPSCounter						* m_pFPSCounter = nullptr;
+	CGUI                  			* m_pGUI = nullptr;
+	CTags							* m_pTags = nullptr;
+	CMainMenu						* m_pMainMenu = nullptr;
+	CLoadingScreen					* m_pLoadingScreen = nullptr;
 public:
 	CGraphics();
 	~CGraphics();
@@ -108,6 +123,37 @@ public:
 	// member function public
 	LPDIRECT3DTEXTURE9		pLoadingScreenTexture;
 	LPD3DXSPRITE			GetSprite() { return m_pSprite; }
+
+
+	const decltype(m_pChat) GetChat()
+	{
+		return m_pChat;
+	}
+
+	const decltype(m_pFPSCounter) GetFPSCounter()
+	{
+		return m_pFPSCounter;
+	}
+
+	const decltype(m_pGUI) GetGUI()
+	{
+		return m_pGUI;
+	}
+
+	const decltype(m_pMainMenu) GetMainMenu()
+	{
+		return m_pMainMenu;
+	}
+
+	const decltype(m_pTags) GetTags()
+	{
+		return m_pTags;
+	}
+
+	const decltype(m_pLoadingScreen) GetLoadingScreen()
+	{
+		return m_pLoadingScreen;
+	}
 };
 
 #endif // CGraphics_h

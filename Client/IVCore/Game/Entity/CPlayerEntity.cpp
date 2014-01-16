@@ -1000,7 +1000,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 				{
 					if (IsLocalPlayer())
 					{
-						g_pCore->GetChat()->Print("VehicleEntryAborted");
+						g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryAborted");
 						m_pVehicleEnterExit->bEntering = false;
 					}
 				}
@@ -1030,7 +1030,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 						bitStream.Write(byteSeat);
 						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
-						g_pCore->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
+						g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
 					}
 				}
 			}
@@ -1052,7 +1052,7 @@ void CPlayerEntity::CheckVehicleEnterExit()
 					bitStream.Write(m_byteSeat);
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
-					g_pCore->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat));
+					g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat));
 				}
 			}
 		}
@@ -1241,7 +1241,7 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 
 					// We dont have to send it to the server its handled automatically by the sync
 
-					g_pCore->GetChat()->Print("VehicleEntryComplete()");
+					g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryComplete()");
 				}
 			}
 		}
@@ -1258,7 +1258,7 @@ void CPlayerEntity::ProcessVehicleEnterExit()
 
 					// We dont have to send it to the server its handled automatically by the sync
 
-					g_pCore->GetChat()->Print("VehicleExitComplete()");
+					g_pCore->GetGraphics()->GetChat()->Print("VehicleExitComplete()");
 				}
 			}
 		}
@@ -2012,7 +2012,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			}
 			else
 			{
-				g_pCore->GetChat()->Print("mhm player is not in the correct vehicle");
+				g_pCore->GetGraphics()->GetChat()->Print("mhm player is not in the correct vehicle");
 			}
 		}
 		else

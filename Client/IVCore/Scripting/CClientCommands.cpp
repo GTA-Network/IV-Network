@@ -67,7 +67,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		FILE * file = fopen(SharedUtility::GetAbsolutePath("multiplayer//SavePositions.log"), "a");
 		if (!file)
 		{
-			g_pCore->GetChat()->Print("Failed to open 'SavePositions.log'");
+			g_pCore->GetGraphics()->GetChat()->Print("Failed to open 'SavePositions.log'");
 			return true;
 		}
 
@@ -98,7 +98,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		}
 
 		fclose(file);
-		g_pCore->GetChat()->Print("Position data saved to 'SavePositions.log'");
+		g_pCore->GetGraphics()->GetChat()->Print("Position data saved to 'SavePositions.log'");
 		return true;
 	}
 #ifdef _DEBUG
@@ -198,7 +198,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 	else if(strCommand == "setclothes")
 	{
 		CString strParameter = CString("%s", strParameters.Get());
-		g_pCore->GetChat()->Print(strParameter.Get());
+		g_pCore->GetGraphics()->GetChat()->Print(strParameter.Get());
 
 		// Get the end of the command
 		size_t sCommandEnd = strParameter.Find(" "); 
@@ -221,7 +221,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 			strParams = strParameter.Substring((sCommandEnd + 1), strParameter.GetLength());
 		}
 
-		g_pCore->GetChat()->Print(CString("Setting clothes part %d to %d", atoi(strCommand2.c_str()), atoi(strParams.c_str())));
+		g_pCore->GetGraphics()->GetChat()->Print(CString("Setting clothes part %d to %d", atoi(strCommand2.c_str()), atoi(strParams.c_str())));
 		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strCommand2.c_str()), atoi(strParams.c_str()));
 
 		return true;

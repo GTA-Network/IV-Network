@@ -591,7 +591,7 @@ void CMainMenu::OnQuickConnectSubmit()
 	SetVisible(false);
 
 	// Enable the chat
-	g_pCore->GetChat()->SetVisible(true);
+	g_pCore->GetGraphics()->GetChat()->SetVisible(true);
 
 	// Set Nickname
 	g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
@@ -650,7 +650,7 @@ bool CMainMenu::OnServerClicked(const CEGUI::EventArgs &eventArgs)
 	{
 		CIVScript::DoScreenFadeIn(1000);
 
-		g_pCore->GetChat()->SetVisible(true);
+		g_pCore->GetGraphics()->GetChat()->SetVisible(true);
 
 		g_pCore->SetNick(CVAR_GET_STRING("nick").Get());
 

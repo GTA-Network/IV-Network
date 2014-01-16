@@ -961,7 +961,7 @@ void CGUI::DrawText(CString sText, CEGUI::Vector2 vecPosition, CEGUI::ColourRect
 
 		// If we have no valid font use the default one
 		if (!pTextFont)
-			pTextFont = g_pCore->GetGUI()->GetFont("Arial", 10);
+			pTextFont = g_pCore->GetGraphics()->GetGUI()->GetFont("Arial", 10);
 
 		// Do we have a valid font?
 		if (pTextFont)

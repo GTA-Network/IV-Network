@@ -33,6 +33,7 @@
 #include <CCore.h>
 #include "CDirect3D9Hook.h"
 #include "CDirectInput8Hook.h"
+#include    <IV/CIVScript.h>
 
 extern CCore *g_pCore;
 
@@ -75,7 +76,11 @@ CGraphics::CGraphics() :
 	m_uiCurrentFPS(0),
 	m_uiLastCheck(0), 
 	m_pDevice(nullptr),
-	m_pFont(nullptr)
+	m_pFont(nullptr),
+	m_pChat(nullptr),
+	m_pFPSCounter(nullptr),
+	m_pGUI(nullptr),
+	m_pTags(nullptr)
 {
 	// Create the d3d9 device hook
 	m_pDeviceHook = new CDirect3D9Hook;
@@ -92,6 +97,12 @@ CGraphics::CGraphics() :
 		return;
 
 	m_uiLastCheck = GetTickCount();
+
+
+	// Create the chat instance
+	m_pChat = new CChat();
+
+	m_pFPSCounter = new CFPSCounter;
 }
 
 CGraphics::~CGraphics()
@@ -128,6 +139,22 @@ void CGraphics::Initialize(IDirect3DDevice9 * pDevice)
 			// Terminate process
 			TerminateProcess(GetCurrentProcess(), 0);
 		}
+
+		// Create our GUI system and Initialize it
+		m_pGUI = new CGUI(pDevice);
+		m_pGUI->Initialize();
+
+		// Initialize the main menu elements
+		m_pMainMenu = new CMainMenu(m_pGUI);
+		m_pMainMenu->Initialize();
+
+		// Initialize the loading screen elements
+		m_pLoadingScreen = new CLoadingScreen(m_pGUI);
+		m_pLoadingScreen->Initialize();
+		m_pLoadingScreen->SetVisible(true);
+
+		// Setup the name tags
+		m_pTags = new CTags;
 	}
 }
 
@@ -320,18 +347,26 @@ ID3DXFont * CGraphics::GetFont()
 
 void CGraphics::OnLostDevice(IDirect3DDevice9 * pDevice)
 {
-	m_pFont->OnLostDevice();
+	if (m_pFont)
+		m_pFont->OnLostDevice();
 
 	if(m_pSprite)
 		m_pSprite->OnLostDevice();
+
+	if (m_pGUI)
+		m_pGUI->OnLostDevice();
 }
 
 void CGraphics::OnRestoreDevice(IDirect3DDevice9 * pDevice)
 {
-	m_pFont->OnResetDevice();
+	if (m_pFont)
+		m_pFont->OnResetDevice();
 
 	if(m_pSprite)
 		m_pSprite->OnResetDevice();
+
+	if (m_pGUI)
+		m_pGUI->OnResetDevice();
 }
 
 float CGraphics::GetFontHeight(float fScale)
@@ -387,4 +422,21 @@ void CGraphics::DrawBox_2(float fLeft, float fTop, float fWidth, float fHeight, 
 
 	// End the sprite
 	m_pSprite->End();
+}
+
+void CGraphics::Render()
+{
+	if (m_pChat)
+		m_pChat->Render();
+
+	if (m_pGUI)
+		m_pGUI->Render();
+
+	// Render our Name Tags
+	if (GetTags() 
+		&& !GetMainMenu()->IsMainMenuVisible() 
+		&& !CIVScript::IsScreenFadedOut())
+		m_pTags->Draw();
+
+	DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
 }

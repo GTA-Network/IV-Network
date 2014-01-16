@@ -105,7 +105,7 @@ void CGame::Setup()
 	}
 	
 	// Hide the chat
-	g_pCore->GetChat()->SetVisible(false);
+	g_pCore->GetGraphics()->GetChat()->SetVisible(false);
 }
 
 void CGame::Initialize()

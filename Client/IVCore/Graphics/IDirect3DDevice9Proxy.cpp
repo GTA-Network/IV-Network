@@ -134,7 +134,6 @@ HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentat
 	if (g_pCore)
 	{
 		g_pCore->GetGraphics()->OnLostDevice(m_pDevice);
-		g_pCore->GetGUI()->OnLostDevice();
 	}
 #ifdef _DEBUG
 	// Windowed mode
@@ -154,7 +153,6 @@ HRESULT __stdcall IDirect3DDevice9Proxy::Reset(D3DPRESENT_PARAMETERS* pPresentat
 		if (g_pCore)
 		{
 			g_pCore->GetGraphics()->OnRestoreDevice(m_pDevice);
-			g_pCore->GetGUI()->OnResetDevice();
 		}
 	}
 	return hr;

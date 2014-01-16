@@ -40,14 +40,10 @@ CCore::CCore(void) :
 	m_bGameLoaded(false), 
 	m_pGame(nullptr),
 	m_pGraphics(nullptr), 
-	m_pChat(nullptr), 
-	m_pFPSCounter(nullptr),
-	m_pNetworkManager(nullptr), 
-	m_pGUI(nullptr), 
+	m_pNetworkManager(nullptr),
 	m_bLoadingVisibility(false),
 	m_byteLoadingStyle(0), 
-	m_uiGameInitializeTime(0), 
-	m_pTags(nullptr)//, m_pAudioManager(NULL)
+	m_uiGameInitializeTime(0)//, m_pAudioManager(NULL)
 {
 
 }
@@ -90,14 +86,8 @@ bool CCore::Initialize()
 	// Create the graphics instance
 	m_pGraphics = new CGraphics;
 	
-	// Create the fps counter instance
-	m_pFPSCounter = new CFPSCounter;
-	
 	// Create the network manager instance
 	m_pNetworkManager = new CNetworkManager;
-	
-	// Create the chat instance
-	m_pChat = new CChat();
 
 	// Create the basic IV startup script
 	m_pIVStartupScript = new CIVStartupScript;
@@ -178,10 +168,10 @@ void CCore::OnGameLoad()
 	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
 	// Set the loading screen not visible
-	m_pLoadingScreen->SetVisible(false);
+	GetGraphics()->GetLoadingScreen()->SetVisible(false);
 
 	// Set the main menu visible
-	m_pMainMenu->SetVisible(true);
+	GetGraphics()->GetMainMenu()->SetVisible(true);
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
@@ -190,20 +180,20 @@ void CCore::OnGameLoad()
 void CCore::OnGameUpdate()
 {
 	// Pulse network connection
-	if(g_pCore->GetNetworkManager())
-		g_pCore->GetNetworkManager()->Pulse();
+	if(GetNetworkManager())
+		GetNetworkManager()->Pulse();
 
 	// Pulse the time management interface
-	if(g_pCore->GetTimeManagementInstance())
-		g_pCore->GetTimeManagementInstance()->Pulse();
+	if(GetTimeManagementInstance())
+		GetTimeManagementInstance()->Pulse();
 
 	// Pulse our IV environment
-	if(g_pCore->GetGame())
-		g_pCore->GetGame()->ProcessEnvironment();
+	if(GetGame())
+		GetGame()->ProcessEnvironment();
 
 	// Pulse fps counter
-	if (g_pCore->GetFPSCounter())
-		g_pCore->GetFPSCounter()->Pulse();
+	if (GetGraphics()->GetFPSCounter())
+		GetGraphics()->GetFPSCounter()->Pulse();
 
 	// Pulse the localplayer
 	if (g_pCore->GetGame()->GetLocalPlayer())
@@ -246,23 +236,7 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	if (!m_pAudioManager->Initialize())
 		CLogFile::Printf("CAudioManager::Initialize failed");
 
-	// Create our GUI system and Initialize it
-	m_pGUI = new CGUI(pDevice);
-	m_pGUI->Initialize();
-
-	// Initialize the main menu elements
-	m_pMainMenu = new CMainMenu(m_pGUI);
-	m_pMainMenu->Initialize();
-
-	// Initialize the loading screen elements
-	m_pLoadingScreen = new CLoadingScreen(m_pGUI);
-	m_pLoadingScreen->Initialize();
-	m_pLoadingScreen->SetVisible(true);
-
-	// Setup the name tags
-	m_pTags = new CTags;
-
-	CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) test, NULL, 0, NULL);
+	//CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) test, NULL, 0, NULL);
 }
 
 void CCore::OnDeviceLost(IDirect3DDevice9 * pDevice)
@@ -286,14 +260,6 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	// Has the device been lost?
 	if(g_bDeviceLost || !m_pGraphics)
 		return;
-
-	// Render our chat instance
-	if (m_pChat)
-		m_pChat->Render();
-	
-	// Render our gui instance
-	if (m_pGUI)
-		m_pGUI->Render();
 
 #ifdef _DEBUG
 	char szNetworkStats[10000];
@@ -385,22 +351,18 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	strLoadingInformation.Clear();
 	strInformation.Clear();
 
-	// Before rendering FPS-Counter instance, update FPS display
-	m_pGraphics->DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());
-
 	// Check if our snap shot write failed
-	if(CSnapShot::IsDone()) {
+	if(CSnapShot::IsDone()) 
+	{
 		if(CSnapShot::HasSucceeded())
-			m_pChat->Print(CString("Screen shot written (%s).", CSnapShot::GetWriteName().Get()));
+			GetGraphics()->GetChat()->Print(CString("Screen shot written (%s).", CSnapShot::GetWriteName().Get()));
 		else
-			m_pChat->Print(CString("Screen shot write failed (%s).", CSnapShot::GetError().Get()));
+			GetGraphics()->GetChat()->Print(CString("Screen shot write failed (%s).", CSnapShot::GetError().Get()));
 
 		CSnapShot::Reset();
 	}
 
-	// Render our Name Tags
-	if (m_pTags && !g_pCore->GetMainMenu()->IsMainMenuVisible() && !CIVScript::IsScreenFadedOut())
-		m_pTags->Draw();
+	GetGraphics()->Render();
 }
 
 void CCore::GetLoadedModulesList()

@@ -50,8 +50,8 @@ CTags::~CTags()
 
 void CTags::Draw()
 {
-	CGUI * m_pGUI = g_pCore->GetGUI();
 	CGraphics * pGraphics = g_pCore->GetGraphics();
+	CGUI * m_pGUI = pGraphics->GetGUI();
 	CPlayerManager * pPlayerManager = g_pCore->GetGame()->GetPlayerManager();
 	CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
 

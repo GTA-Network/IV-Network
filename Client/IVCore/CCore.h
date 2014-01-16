@@ -52,12 +52,10 @@
 
 #include "Game/CGame.h"
 #include "Graphics/CGraphics.h"
-#include "Graphics/CChat.h"
 #include "Game/COffsets.h"
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
 #include "Game/CCrashFixes.h"
-#include "Graphics/CFPSCounter.h"
 
 #include "Network/CLocalPlayer.h"
 #include "Game/Entity/CPlayerEntity.h"
@@ -73,11 +71,6 @@
 #include <CDEV.h>
 #endif
 
-#include <Graphics/CGUI.h>
-#include <Graphics/CMainMenu.h>
-#include <Graphics/CLoadingScreen.h>
-#include <Graphics/CTags.h>
-
 #include <audio/CAudioManager.h>
 
 #include <IV/CIVStartupScript.h>
@@ -90,6 +83,8 @@
 
 #include <RakNet/RakNetStatistics.h>
 
+
+// TODO: Refactor this crap!!!
 class CCore 
 {
 private:
@@ -100,12 +95,9 @@ private:
 	unsigned						m_uiGameInitializeTime;
 
 	CGame							* m_pGame;
-	CGraphics						* m_pGraphics;
-	CChat							* m_pChat;
-	CFPSCounter						* m_pFPSCounter;
+	CGraphics						* m_pGraphics = nullptr;
 	CNetworkManager					* m_pNetworkManager;
-	CGUI                  			* m_pGUI;			
-	CTags							* m_pTags;
+
 
 
 	CChatBox						* m_pChatBox;
@@ -126,15 +118,9 @@ private:
 	bool							m_hwndFocused;
 	BYTE							m_byteLoadingStyle;
 
-	CMainMenu						*m_pMainMenu;
 	CCamera							*m_pCamera;
-
 	CHttpClient						* m_pHttpClient;
-
 	CAudioManager					*m_pAudioManager;
-
-	CLoadingScreen					*m_pLoadingScreen;
-
 	CIVStartupScript				*m_pIVStartupScript;
 
 public:
@@ -160,20 +146,25 @@ public:
 	unsigned						GetBase() { return m_uiBaseAddress; }
 	unsigned						GetBaseAddress() { return m_uiBaseAddress; }
 
+
+	// TODO: move GUI FpsCount, MainMenu, CTags(rename to CNameTags) to CGraphics
+	// This structure will be like in my private project
 	CGame							* GetGame() { return m_pGame; }
-	CGraphics						* GetGraphics() { return m_pGraphics; }
+
+	const decltype(m_pGraphics) GetGraphics() {
+		return m_pGraphics; 
+	}
+
 	CAudioManager					* GetAudioManager() { return m_pAudioManager; }
-	CChat							* GetChat() { return m_pChat; }
-	CFPSCounter						* GetFPSCounter() { return m_pFPSCounter; }
+
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
 	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
-	CGUI                 		 	* GetGUI() { return m_pGUI; }
-	CMainMenu						* GetMainMenu() { return m_pMainMenu;  }
-	CTags							* GetTags() { return m_pTags; }
+	
 	
 	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
 	eGAMEStates						GetClientState() { return m_eGameState; }
 
+	// Remove this here(dont know where to put atm)
 	void							SetNick( CString strNick ) { m_strNick = strNick; }
 	CString							GetNick( ) { return m_strNick; }
 	void							SetHost( CString strHost ) { m_strHost = strHost; }
