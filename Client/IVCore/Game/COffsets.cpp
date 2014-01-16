@@ -1,11 +1,32 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
-//
-// File: COffsets.cpp
-// Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>, xForce <xf0rc3.11@gmail.com>
-// License: See LICENSE in root directory
-//
-//==========================================================================================
+/*
+* Copyright (C) GTA-Network Team
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are
+* met:
+*
+*     * Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above
+* copyright notice, this list of conditions and the following disclaimer
+* in the documentation and/or other materials provided with the
+* distribution.
+*     * Neither the name of GTA-Network nor the names of its
+* contributors may be used to endorse or promote products derived from
+* this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include "COffsets.h"
 #include "CGame.h"
@@ -246,7 +267,7 @@ INIT_OFF(FUNC_IVGAME_STOPCUTSCENE);
 INIT_OFF(FUNC_IVGAME_LOADWORLDATPOSITION);
 
 INIT_OFF(CGame_Process__Sleep);
-INIT_OFF(CGame_Process_InitialiseRageGame);
+INIT_OFF(CGame_Process_InitializeRageGame);
 INIT_OFF(RAGE_LoadGame);
 INIT_OFF(RAGE_StartNewGame);
 
@@ -677,7 +698,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor, 0xCFFAF0); // done
 
 			SET_OFF(CGame_Process__Sleep, 0x47342C); // done
-			SET_OFF(CGame_Process_InitialiseRageGame, 0x4734F7); // done
+			SET_OFF(CGame_Process_InitializeRageGame, 0x4734F7); // done
 			SET_OFF(RAGE_LoadGame, 0x6DECB1); // done
 			SET_OFF(RAGE_StartNewGame, 0x6DED5F); // done !NO PATTERN  [TODO]!
  
@@ -1064,7 +1085,7 @@ void COffsets::Initialize(unsigned int uiBase)
 			SET_OFF(FUNC_CTaskSimpleReloadGun__Constructor, 0xCCAD20);
 
 			SET_OFF(CGame_Process__Sleep, 0x402B3C);
-			SET_OFF(CGame_Process_InitialiseRageGame, 0x402C07);
+			SET_OFF(CGame_Process_InitializeRageGame, 0x402C07);
 			SET_OFF(RAGE_LoadGame, 0x5B0311);
 			SET_OFF(RAGE_StartNewGame, 0x5B03BF);
 

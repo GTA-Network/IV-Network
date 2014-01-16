@@ -1,11 +1,32 @@
-//================= IV:Network - https://github.com/GTA-Network/IV-Network =================
-//
-// File: CGame.cpp
-// Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>
-// License: See LICENSE in root directory
-//
-//=================================================================================================
+/*
+* Copyright (C) GTA-Network Team
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are
+* met:
+*
+*     * Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above
+* copyright notice, this list of conditions and the following disclaimer
+* in the documentation and/or other materials provided with the
+* distribution.
+*     * Neither the name of GTA-Network nor the names of its
+* contributors may be used to endorse or promote products derived from
+* this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include "CGame.h"
 #include <CCore.h>
@@ -14,7 +35,6 @@
 #include <Game/IVEngine/CIVWeather.h>
 #include <Game/IVEngine/CIVModelInfo.h>
 #include <General/CException.h>
-#include <Game/CGameFiles.h>
 #include <IV/CIVScript.h>
 
 extern	CCore				* g_pCore;
@@ -34,9 +54,8 @@ CGame::CGame() :
 	m_p3DLabelManager(nullptr),
 	m_pBlipManager(nullptr),
 	m_pCheckpointManager(nullptr),
-	m_LocalPlayerInitialised(false),
-	m_pTrafficLights(nullptr),
-	m_pManagement(nullptr)
+	m_LocalPlayerInitialized(false),
+	m_pTrafficLights(nullptr)
 {
 
 }
@@ -59,9 +78,6 @@ void CGame::Setup()
 	
 	// Create new pool instance
 	m_pPool = new CPools;
-
-	// Create new ivmanagement instance
-	m_pManagement = new IVManagement;
 	
 	// Create new traffic lights instance
 	m_pTrafficLights = new CTrafficLights;
@@ -76,7 +92,7 @@ void CGame::Setup()
 	CTrafficHandler::InstallTrafficHook();
 	CTrafficHandler::InstallTrafficLightsHook();
 	
-	// Initialise our model info array
+	// Initialize our model info array
 	for(int i = 0; i < NUM_ModelInfos; i++)
 		m_modelInfos[i].SetIndex(i);
 	
@@ -92,12 +108,12 @@ void CGame::Setup()
 	g_pCore->GetChat()->SetVisible(false);
 }
 
-void CGame::Initialise()
+void CGame::Initialize()
 {
 	// Update client state to state ingame
 	g_pCore->SetClientState(GAME_STATE_INGAME);
 
-	// Initialise/Patch our pools(IVPed,IVVehicle,IVTask)
+	// Initialize/Patch our pools(IVPed,IVVehicle,IVTask)
 	m_pPool->Initialize();
 
 	// Create our camera instance if it doesn't exist/isn't created yet
@@ -163,8 +179,8 @@ void CGame::OnEnvironmentStartUp(bool bForce)
 			return;
 	}
 
-	// We should force to create the localplayer so continue.. Setting initialise pointer to opposit value(false->true)
-	m_LocalPlayerInitialised = !m_LocalPlayerInitialised;
+	// We should force to create the localplayer so continue.. Setting Initialize pointer to opposit value(false->true)
+	m_LocalPlayerInitialized = !m_LocalPlayerInitialized;
 
 	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
 
@@ -180,48 +196,28 @@ void CGame::Reset()
 	// Disconnect from network
 	g_pCore->GetNetworkManager()->Disconnect();
 
-	// Delte our instance if it exists/is created
-	if(m_pCamera)
-		SAFE_DELETE(m_pCamera);
+	SAFE_DELETE(m_pCamera);
 
-	// Delte our instance if it exists/is created
-	if(m_pPlayerManager)
-		SAFE_DELETE(m_pPlayerManager);
+	SAFE_DELETE(m_pPlayerManager);
 
-	// Delte our instance if it exists/is created
-	if(m_pVehicleManager)
-		SAFE_DELETE(m_pVehicleManager);
+	SAFE_DELETE(m_pVehicleManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pActorManager)
-		SAFE_DELETE(m_pActorManager);
+	SAFE_DELETE(m_pActorManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pObjectManager)
-		SAFE_DELETE(m_pObjectManager);
+	SAFE_DELETE(m_pObjectManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pFireManager)
-		SAFE_DELETE(m_pFireManager);
+	SAFE_DELETE(m_pFireManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pPickupManager)
-		SAFE_DELETE(m_pPickupManager);
+	SAFE_DELETE(m_pPickupManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_p3DLabelManager)
-		SAFE_DELETE(m_p3DLabelManager);
+	SAFE_DELETE(m_p3DLabelManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pBlipManager)
-		SAFE_DELETE(m_pBlipManager);
+	SAFE_DELETE(m_pBlipManager);
 
-	// Delte our instance if it exists/is created
-	if(!m_pCheckpointManager)
-		SAFE_DELETE(m_pCheckpointManager);
+	SAFE_DELETE(m_pCheckpointManager);
 
 	// Re-initialse our client
-	Initialise();
+	Initialize();
 
 	// Prepare our world
 	PrepareWorld();
@@ -244,13 +240,6 @@ void CGame::UnprotectMemory()
 			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
 	}
 
-}
-
-void CGame::RenderRAGEScripts()
-{
-	// If our loacl player isn't create, try to create it
-	if(!m_LocalPlayerInitialised)
-		OnEnvironmentStartUp(true);
 }
 
 void CGame::PrepareWorld()
@@ -325,10 +314,6 @@ void CGame::ProcessEnvironment()
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 		return;
 
-	// If our iv management exists, process it
-	if (m_pManagement)
-		m_pManagement->Pulse();
-
 	// If our player manager exists, process it
 	if (m_pPlayerManager)
 		m_pPlayerManager->Pulse();
@@ -366,52 +351,4 @@ void CGame::ProcessEnvironment()
 void CGame::SetupGame()
 {
 	//g_pCore->GetGame()->PrepareWorld();
-}
-
-BYTE CGame::CreateInternalThread(DWORD dwStartAddress, LPVOID lpvoidParameters, signed int siThreadId, int iPriority, const char * szThreadName, const char *szComment)
-{
-	CLogFile::Printf("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment);
-	g_pCore->GetChat()->Print(CString("[%s]: 0x%p, %s, %s", __FUNCTION__, dwStartAddress, szThreadName, szComment));
-
-	signed int EBP_iThreadId;
-	if(siThreadId < 0x4000)
-		EBP_iThreadId = 16384;
-	else
-		EBP_iThreadId = siThreadId;
-
-	BYTE iThreadOffset;
-	for(BYTE i = 0; i < ARRAY_LENGTH(m_Threads); i++)
-		if(!m_Threads[i].bInitialised) {
-			iThreadOffset = i;
-			break;
-		}
-
-	m_Threads[iThreadOffset].bInitialised = true;
-	m_Threads[iThreadOffset].szComment =  szComment;
-	m_Threads[iThreadOffset].szThreadTitle = szThreadName;
-	m_Threads[iThreadOffset].dwStartAddress = (DWORD)dwStartAddress;
-	m_Threads[iThreadOffset].hThreadHandle = CreateThread(0, EBP_iThreadId, (LPTHREAD_START_ROUTINE)dwStartAddress, lpvoidParameters, 0, (LPDWORD)&m_Threads[iThreadOffset].hThreadId);
-
-	if(m_Threads[iThreadOffset].hThreadId) {
-		SetThreadPriority(m_Threads[iThreadOffset].hThreadId, iPriority);
-		SetThreadPriorityBoost(m_Threads[iThreadOffset].hThreadId, 1);
-
-		ResumeThread(m_Threads[iThreadOffset].hThreadId);
-	}
-
-	return iThreadOffset;
-}
-
-void CGame::DestroyInternalThread(BYTE byteThreadId)
-{
-	if(!m_Threads[byteThreadId].bInitialised)
-		return;
-
-	TerminateThread(m_Threads[byteThreadId].hThreadHandle, 0);
-	m_Threads[byteThreadId].hThreadHandle = NULL;
-	m_Threads[byteThreadId].dwStartAddress = NULL;
-	m_Threads[byteThreadId].hThreadId = NULL;
-	m_Threads[byteThreadId].szComment = "";
-	m_Threads[byteThreadId].szThreadTitle = "";
-	m_Threads[byteThreadId].bInitialised = false;
 }

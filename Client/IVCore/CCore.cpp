@@ -1,11 +1,32 @@
-//========== IV:Network - https://github.com/GTA-Network/IV-Network ======================
-//
-// File: CCore.cpp
-// Project: Client.Core
-// Author: FRi<FRi.developing@gmail.com>
-// License: See LICENSE in root directory
-//
-//==========================================================================================
+/*
+* Copyright (C) GTA-Network Team
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are
+* met:
+*
+*     * Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above
+* copyright notice, this list of conditions and the following disclaimer
+* in the documentation and/or other materials provided with the
+* distribution.
+*     * Neither the name of GTA-Network nor the names of its
+* contributors may be used to endorse or promote products derived from
+* this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+* A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+* OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT
+* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+* DATA, OR PROFITS; OR BUSINESS INTERRUPTION HOWEVER CAUSED AND ON ANY
+* THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE
+* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 #include	"CCore.h"
 #include    <IV/CIVScript.h>
@@ -15,7 +36,7 @@ extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
 
 CCore::CCore(void) :
-	m_bInitialised(false), 
+	m_bInitialized(false), 
 	m_bGameLoaded(false), 
 	m_pGame(nullptr),
 	m_pGraphics(nullptr), 
@@ -37,10 +58,10 @@ void OnCreateVM(CScriptVM * pVM)
 	/*CScriptClasses::Register(pVM);*/
 }
 
-bool CCore::Initialise()
+bool CCore::Initialize()
 {
 	// Are we already initialsed?
-	if (m_bInitialised)
+	if (m_bInitialized)
 		return false;
 	
 	// Log our function call
@@ -60,34 +81,6 @@ bool CCore::Initialise()
 	// Parse the command line
 	CSettings::ParseCommandLine(GetCommandLine());
 	
-	// Load RAGE Engine
-	m_pRAGELibrary = new CLibrary;
-
-	// Did the module fail to load?
-	if(m_pRAGELibrary->Load(SharedUtility::GetAbsolutePath("IVEngine.dll")))
-	{
-		// Get the module function pointers
-		m_pEngine = (GetInterface_t)m_pRAGELibrary->GetProcedureAddress("GetInterface");
-
-		if(m_pEngine) {
-			// Initialise new interface pointer
-			RAGEEngineInterface *pTemp = new RAGEEngineInterface;
-
-			// Get the interface
-			m_pEngine(pTemp);
-
-			// Initialise the class member interface
-			RAGEEngineInterface *m_pInterface = static_cast<RAGEEngineInterface *>(pTemp);
-
-			// Initialise the interface
-			m_pInterface->Initialise();
-		}
-	}
-	else {
-		// Delete the library instance
-		SAFE_DELETE(m_pRAGELibrary);
-	}
-
 	// Create the game instance
 	m_pGame = new CGame;
 
@@ -147,7 +140,7 @@ bool CCore::Initialise()
 	// Register module manager
 	CModuleManager::FetchModules();
 	
-	// Initialise the episodes hook
+	// Initialize the episodes hook
 	EpisodeManager::Initialize();
 
 	// Initialize our HTTP connection
@@ -155,7 +148,7 @@ bool CCore::Initialise()
 	m_pHttpClient->SetRequestTimeout(10000);
 	m_pHttpClient->SetHost(MASTERLIST_URL);
 
-	m_bInitialised = true;
+	m_bInitialized = true;
 
 	CLogFile::Printf("Done!");
 	return true;
@@ -170,7 +163,7 @@ void CCore::OnGameLoad()
 	CLogFile::Print(__FUNCTION__);
 
 	// Initialize game instance & respawn local player
-	GetGame()->Initialise();
+	GetGame()->Initialize();
 
 	// Mark the game as loaded
 	SetGameLoaded(true);
@@ -249,11 +242,11 @@ void CCore::OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * p
 	// Create our audio manager instance
 	m_pAudioManager = new CAudioManager;
 
-	// Initialise our audio manager
+	// Initialize our audio manager
 	if (!m_pAudioManager->Initialize())
 		CLogFile::Printf("CAudioManager::Initialize failed");
 
-	// Create our GUI system and initialise it
+	// Create our GUI system and Initialize it
 	m_pGUI = new CGUI(pDevice);
 	m_pGUI->Initialize();
 
@@ -474,7 +467,7 @@ void CCore::OnNetworkShutDown()
 
 void CCore::OnNetworkTimeout()
 {
-	// Call reinitialise cgame
+	// Call reInitialize cgame
 	g_pCore->GetGame()->Reset();
 }
 

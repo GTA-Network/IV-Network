@@ -224,7 +224,6 @@
     <ClCompile Include="Game\CContextSwitch.cpp" />
     <ClCompile Include="Game\CCrashFixes.cpp" />
     <ClCompile Include="Game\CGame.cpp" />
-    <ClCompile Include="Game\CGameFiles.cpp" />
     <ClCompile Include="Game\CGameFuncs.cpp" />
     <ClCompile Include="Game\CHooks.cpp" />
     <ClCompile Include="Game\COffsets.cpp" />
@@ -267,7 +266,6 @@
     <ClCompile Include="Game\IVEngine\CIVWeather.cpp" />
     <ClCompile Include="Game\IVEngine\CIVWorld.cpp" />
     <ClCompile Include="Game\IVEngine\IVTasks.cpp" />
-    <ClCompile Include="Game\IVManagement.cpp" />
     <ClCompile Include="General\CDEV.cpp" />
     <ClCompile Include="General\CException.cpp" />
     <ClCompile Include="General\CModule.cpp" />
@@ -471,7 +469,6 @@
     <ClInclude Include="Game\CContextSwitch.h" />
     <ClInclude Include="Game\CCrashFixes.h" />
     <ClInclude Include="Game\CGame.h" />
-    <ClInclude Include="Game\CGameFiles.h" />
     <ClInclude Include="Game\CGameFuncs.h" />
     <ClInclude Include="Game\CHooks.h" />
     <ClInclude Include="Game\COffsets.h" />
@@ -520,7 +517,6 @@
     <ClInclude Include="Game\IVEngine\CIVWeather.h" />
     <ClInclude Include="Game\IVEngine\CIVWorld.h" />
     <ClInclude Include="Game\IVEngine\IVTasks.h" />
-    <ClInclude Include="Game\IVManagement.h" />
     <ClInclude Include="General\CDEV.h" />
     <ClInclude Include="General\CException.h" />
     <ClInclude Include="General\CModule.h" />

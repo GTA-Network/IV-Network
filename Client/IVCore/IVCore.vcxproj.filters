@@ -218,9 +218,6 @@
     <ClCompile Include="Game\CHooks.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Game\CGameFiles.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Shared\CSettings.cpp">
       <Filter>Source Files\Shared</Filter>
     </ClCompile>
@@ -520,9 +517,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Shared\Game\CTime.cpp">
       <Filter>Source Files\Shared</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\IVManagement.cpp">
-      <Filter>Source Files\Game</Filter>
     </ClCompile>
     <ClCompile Include="Game\CCrashFixes.cpp">
       <Filter>Source Files\Game</Filter>
@@ -833,9 +827,6 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\CHooks.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\CGameFiles.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Shared\CSettings.h">
@@ -1296,9 +1287,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\Game\CTime.h">
       <Filter>Header Files\Shared\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\IVManagement.h">
-      <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\CCrashFixes.h">
       <Filter>Header Files\Game</Filter>
