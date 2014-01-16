@@ -38,13 +38,15 @@
 #include "CIVPadData.h"
 #include <IV/IVData.h>
 
-class IVPadConfig {
+class IVPadConfig
+{
 public:
 	DWORD dwCount;
 	PAD(IVPadConfig, pad0, 0x7B4);
 };
 
-class IVPad {
+class IVPad
+{
 public:
 	IVPadConfig m_padConfig[5];
 	IVPadData m_padData[INPUT_COUNT];
@@ -63,7 +65,8 @@ public:
 	PAD(IVPad, pad4, 0x14);
 };
 
-class CIVPad {
+class CIVPad 
+{
 private:
 	bool			m_bCreatedByUs;
 	IVPad			* m_pPad;

@@ -33,12 +33,14 @@
 
 #include <Game/IVEngine/CIVTask.h>
 
-struct ClientTaskPair {
+struct ClientTaskPair 
+{
 	IVTask * pGameTask;
 	CIVTask * pClientTask;
 };
 
-class CTaskManager {
+class CTaskManager
+{
 private:
 	std::list< ClientTaskPair *>	m_taskList;
 

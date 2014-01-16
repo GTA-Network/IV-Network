@@ -34,7 +34,8 @@
 #include "CNetworkEntity.h"
 #include "..\..\IV\CIVScriptEnums.h"
 
-class CCheckpointEntity : public CNetworkEntity {
+class CCheckpointEntity : public CNetworkEntity
+{
 private:
 	EntityId             m_checkpointId;
 	CIVScript::eCheckpointType      m_eType;

@@ -33,7 +33,8 @@
 #include <CString.h>
 #include <IVCore/Game/IVEngine/CIVTask.h>
 
-class CDevelopment {
+class CDevelopment
+{
 private:
 	static CString			MakeSubTaskString(CString strName, CIVTask* pTask);
 	static CString			MakeTaskString(CString strName, CIVTask* pTask);

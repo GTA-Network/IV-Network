@@ -35,7 +35,8 @@
 #include <list>
 #include <CModule.h>
 
-class CModuleManager {
+class CModuleManager
+{
 private:
 	static std::list<CModule *>		m_pModules;
 public:

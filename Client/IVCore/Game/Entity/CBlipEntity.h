@@ -34,7 +34,8 @@
 #include "CNetworkEntity.h"
 #include "..\..\IV\CIVScriptEnums.h"
 
-class CBlipEntity : public CNetworkEntity {
+class CBlipEntity : public CNetworkEntity
+{
 private:
 	EntityId				 m_blipId;
 	CIVScript::eBlipSprite   m_eIcon;

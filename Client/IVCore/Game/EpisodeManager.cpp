@@ -34,7 +34,8 @@
 
 extern CCore* g_pCore;
 
-class EpisodeManagerDummy {
+class EpisodeManagerDummy
+{
 public:
 	void __thiscall registerEpisodes();
 	char __thiscall loadEpisodes(int id);

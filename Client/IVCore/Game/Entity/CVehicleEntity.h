@@ -38,7 +38,8 @@
 
 class CPlayerEntity;
 
-class CVehicleEntity : public CNetworkEntity {
+class CVehicleEntity : public CNetworkEntity
+{
 private:
 
 	CIVVehicle							*m_pVehicle;

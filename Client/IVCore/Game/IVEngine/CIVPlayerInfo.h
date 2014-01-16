@@ -46,7 +46,8 @@ struct CIVPlayerInfo_FakeProtectedBuffer
 	BYTE	byteData[4];
 };
 
-class IVPlayerInfo {
+class IVPlayerInfo
+{
 public:
 	PAD(IVPlayerInfo, pad0, 0x4C);          // 000-04C
 	char m_szName[20];                      // 04C-060
@@ -94,7 +95,8 @@ public:
 
 };
 
-class CIVPlayerInfo {
+class CIVPlayerInfo
+{
 private:
 	bool					m_bCreatedByUs;
 	IVPlayerInfo			* m_pPlayerInfo;

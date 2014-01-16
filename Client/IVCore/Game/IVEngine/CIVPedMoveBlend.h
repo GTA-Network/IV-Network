@@ -33,7 +33,8 @@
 
 #include <IV/IVCommon.h>
 
-class IVPedMoveBlendBase {
+class IVPedMoveBlendBase
+{
 public:
 	virtual ~IVPedMoveBlendBase();
 	virtual void Function1();

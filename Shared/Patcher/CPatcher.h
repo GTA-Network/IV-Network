@@ -45,7 +45,8 @@ struct ProtectionInfo
 	int   iSize;
 };
 
-class CPatcher {
+class CPatcher
+{
 public:
 	static ProtectionInfo	Unprotect(DWORD dwAddress, int iSize);
 	static void				Reprotect(ProtectionInfo protectionInfo);

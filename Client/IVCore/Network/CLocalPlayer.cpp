@@ -173,7 +173,8 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 	if(GetPlayerGameNumber() != INVALID_PLAYER_PED)
 	{
 		// Toggle controls
-		if(bForce) {
+		if(bForce) 
+		{
 			// Apply current controls
 			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 			m_bAdvancedControlState = bControl;
@@ -182,7 +183,8 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 			return;
 		}
 
-		if(bControl != m_bAdvancedControlState) {
+		if(bControl != m_bAdvancedControlState) 
+		{
 
 			// Apply current controls
 			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
@@ -190,7 +192,8 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 		}
 		
 		// Toggle camera
-		if(bCamera != m_bAdvancedCameraState) {
+		if(bCamera != m_bAdvancedCameraState) 
+		{
 			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 			m_bAdvancedCameraState = bCamera;
 		}
@@ -199,7 +202,7 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 
 unsigned short CLocalPlayer::GetPing()
 {
-	return static_cast<unsigned short>((unsigned short)g_pCore->GetNetworkManager()->GetRakPeer()->GetLastPing(g_pCore->GetNetworkManager()->GetRakPeer()->GetMyGUID()));
+	return (unsigned short)g_pCore->GetNetworkManager()->GetRakPeer()->GetLastPing(g_pCore->GetNetworkManager()->GetRakPeer()->GetMyGUID());
 }
 
 void CLocalPlayer::Reset()

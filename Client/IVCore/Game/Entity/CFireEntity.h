@@ -33,9 +33,8 @@
 
 #include "CNetworkEntity.h"
 
-class CFireEntity : public CNetworkEntity {
-private:
-
+class CFireEntity : public CNetworkEntity
+{
 public:
 	CFireEntity();
 	~CFireEntity();

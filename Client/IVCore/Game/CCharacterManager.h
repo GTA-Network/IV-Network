@@ -33,7 +33,8 @@
 
 #include <Common.h>
 
-class CCharacterManager {
+class CCharacterManager
+{
 public:
     static DWORD VehicleIdToModelHash(int iModelId);
     static int ModelHashToVehicleId(DWORD dwModelHash);

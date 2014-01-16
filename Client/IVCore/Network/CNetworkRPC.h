@@ -34,7 +34,8 @@
 #include <Network/NetCommon.h>
 #include <Network/RPCIdentifiers.h>
 
-class CNetworkRPC {
+class CNetworkRPC
+{
 private:
 	static	bool			m_bRegistered;
 

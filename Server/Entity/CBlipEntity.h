@@ -35,7 +35,8 @@
 
 class CScriptBlip;
 
-class CBlipEntity : public CNetworkEntity {
+class CBlipEntity : public CNetworkEntity
+{
 private:
 	CScriptBlip*	m_pScriptBlip;
 

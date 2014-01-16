@@ -35,7 +35,8 @@
 #include <winsock2.h>
 #include <windows.h>
 
-class CCursorHook {
+class CCursorHook
+{
 private:
 	typedef int			(WINAPI * ShowCursor_t)(BOOL);
 

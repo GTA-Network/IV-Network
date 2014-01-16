@@ -205,11 +205,11 @@ public:
 
 	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
 
-	CIVStartupScript				*GetIVStartupScript() { return m_pIVStartupScript; };
+	const decltype(m_pIVStartupScript) GetIVStartupScript() { return m_pIVStartupScript; };
 
-	CResourceManager*				GetResourceManager() { return m_pResourceManager; }
+	const decltype(m_pResourceManager) GetResourceManager() { return m_pResourceManager; }
 
-	CChatBox*						GetChatBox() { return m_pChatBox; }
+	const decltype(m_pChatBox)      GetChatBox() { return m_pChatBox; }
 };
 
 #endif // CCore_h

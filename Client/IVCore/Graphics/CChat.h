@@ -31,7 +31,8 @@
 #ifndef CCHAT_H
 #define CCHAT_H
 
-class CChat {
+class CChat
+{
 private:
 	bool		m_bVisible;
 	CString		m_szMessages[CHAT_MAX_LINES];

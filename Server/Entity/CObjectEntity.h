@@ -33,7 +33,8 @@
 
 #include "CNetworkEntity.h"
 
-class CObjectEntity : public CNetworkEntity {
+class CObjectEntity : public CNetworkEntity
+{
 private:
 
 public:

@@ -45,7 +45,8 @@ enum eResourceScriptType {
 	UNKNOWN,
 };
 
-class CResource {
+class CResource
+{
 private:
 	CScriptVM	*m_pVM;
 

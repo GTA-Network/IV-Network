@@ -35,7 +35,8 @@
 #include <CLogFile.h>
 #include <Game/Entity/CVehicleEntity.h>
 
-class IVTrain { // size 44
+class IVTrain 
+{ // size 44
 public:
   BYTE f0[4];
   DWORD dword4;
@@ -56,12 +57,14 @@ public:
   BYTE byte2B;
 };
 
-enum eTrainType {
+enum eTrainType 
+{
 	TYPE_MAIN = 0,
 	TYPE_WAGON = 1
 };
 
-class CIVTrain : public CVehicleEntity {
+class CIVTrain : public CVehicleEntity
+{
 public:
 	IVTrain				*	m_pTrain;
 	CVehicleEntity		*	m_pVehicle;

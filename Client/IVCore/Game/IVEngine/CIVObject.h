@@ -35,7 +35,8 @@
 #include "CIVPhysical.h"
 #include "CIVWeapon.h"
 
-class IVObject : public IVPhysical {
+class IVObject : public IVPhysical
+{
 public:
 	                           // 000-210
 	PAD(IVObject, pad0, 0x4C); // 210-25C
@@ -45,7 +46,8 @@ public:
 	virtual ~IVObject();
 };
 
-class CIVObject : public CIVPhysical {
+class CIVObject : public CIVPhysical
+{
 private:
 	IVObject  * m_pObject;
 	CIVWeapon * m_pWeapon;

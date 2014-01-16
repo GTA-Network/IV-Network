@@ -31,7 +31,8 @@
 #ifndef CPatches_h
 #define CPatches_h
 
-class CPatches {
+class CPatches
+{
 public:
 					CPatches() { };
 					~CPatches() { };

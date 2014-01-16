@@ -37,12 +37,14 @@
 #include <Game/eGame.h>
 #include "CIVPed.h"
 
-class IVPlayerPed : public IVPed {
+class IVPlayerPed : public IVPed
+{
 public:
 	virtual ~IVPlayerPed();
 };
 
-class CIVPlayerPed : public CIVPed {
+class CIVPlayerPed : public CIVPed
+{
 public:
 	CIVPlayerPed();
 	CIVPlayerPed(IVPlayerPed * pPlayerPed);

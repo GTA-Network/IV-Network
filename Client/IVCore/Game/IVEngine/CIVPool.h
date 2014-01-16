@@ -36,7 +36,8 @@
 #include <IV/IVCommon.h>
 #include <Game/eGame.h>
 
-class IVPool {
+class IVPool
+{
 public:
 	BYTE *  m_pElements;
 	BYTE *  m_pFlags;
@@ -57,7 +58,8 @@ public:
 };
 
 template <class T>
-class CIVPool {
+class CIVPool
+{
 private:
 	IVPool		* m_pPool;
 

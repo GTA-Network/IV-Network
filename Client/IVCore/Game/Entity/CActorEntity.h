@@ -33,9 +33,8 @@
 
 #include "CNetworkEntity.h"
 
-class CActorEntity : public CNetworkEntity {
-private:
-
+class CActorEntity : public CNetworkEntity
+{
 public:
 	CActorEntity();
 	~CActorEntity();

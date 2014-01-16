@@ -1030,9 +1030,6 @@
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h">
       <Filter>Header Files\Game\IV</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h">
-      <Filter>Header Files\Game\IV</Filter>
-    </ClInclude>
     <ClInclude Include="Scripting\CClientCommands.h">
       <Filter>Header Files\Scripting</Filter>
     </ClInclude>

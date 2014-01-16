@@ -55,7 +55,8 @@ enum eGameVersion
 // Sets a offset
 #define SET_OFF(x, y) x = (uiBase + y);
 
-class COffsets {
+class COffsets
+{
 private:
 	static eGameVersion m_GameVersion;
 

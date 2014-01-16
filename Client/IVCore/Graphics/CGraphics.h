@@ -49,7 +49,8 @@
 #endif
 
 class CDirect3D9Hook;
-class CGraphics {
+class CGraphics
+{
 private:
 	IDirect3DDevice9		* m_pDevice;
 	CDirect3D9Hook			* m_pDeviceHook;

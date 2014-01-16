@@ -41,15 +41,13 @@
 extern CCore * g_pCore;
 
 CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle, DWORD color1, DWORD color2, DWORD color3, DWORD color4, DWORD color5) :
-	CNetworkEntity()
+	CNetworkEntity(VEHICLE_ENTITY)
 {
 	m_pVehicle = NULL;
 	m_vehicleId = INVALID_ENTITY_ID;
 	m_pDriver = NULL;
 	m_bSpawned = false;
 	m_pModelInfo = NULL;
-
-	CNetworkEntity::SetType(VEHICLE_ENTITY);
 
 	if (iVehicleModel == 124 || iVehicleModel == 125 || iVehicleModel == 126)
 	{
@@ -1107,5 +1105,5 @@ CPlayerEntity * CVehicleEntity::GetOccupant(BYTE byteSeatId)
 	if(byteSeatId == 0)
 		return GetDriver();
 
-	return new CPlayerEntity(); //GetPassenger(byteSeatId - 1);
+	return nullptr;
 }

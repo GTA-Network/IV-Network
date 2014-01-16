@@ -45,7 +45,8 @@ struct sWeaponHandlerData
 	CVector3	m_vecShotTarget;
 };
 
-class CContextData {
+class CContextData
+{
 private:
 	CIVPlayerInfo			* m_pPlayerInfo;
 	CIVPlayerPed			* m_pPlayerPed;
@@ -100,7 +101,8 @@ public:
 	void            GetWeaponShotTarget(CVector3& vecWeaponShotTarget) { vecWeaponShotTarget = m_WeaponHandle.m_vecShotTarget; }
 };
 
-class CContextDataManager {
+class CContextDataManager
+{
 private:
 	static std::list< CContextData *>	m_contextDataList;
 

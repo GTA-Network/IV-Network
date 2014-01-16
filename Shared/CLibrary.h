@@ -11,7 +11,8 @@
 
 #include "Common.h"
 
-class CLibrary {
+class CLibrary
+{
 private:
 	void * m_pLibrary;
 

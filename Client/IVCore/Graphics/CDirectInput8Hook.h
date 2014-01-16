@@ -35,14 +35,12 @@
 
 typedef HRESULT	( WINAPI * DirectInput8Create_t )( HINSTANCE, DWORD, REFIID, LPVOID *, LPUNKNOWN );
 
-class CDirectInput8Hook {
-
+class CDirectInput8Hook 
+{
 private:
-
 	static	bool						m_bInstalled;
 
 public:
-
 	static	DirectInput8Create_t		m_pDirectInput8Create;
 	static	bool						Install( );
 	static	void						Uninstall( );

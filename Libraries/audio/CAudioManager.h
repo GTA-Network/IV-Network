@@ -33,7 +33,8 @@
 
 #include "CAudio.h"
 
-class CAudioManager {
+class CAudioManager
+{
 private:
 	std::list<CAudio *>	 m_audioList;
 	bool				 m_bMuted;

@@ -33,13 +33,15 @@
 
 #include <Common.h>
 
-enum eScriptType {
+enum eScriptType 
+{
 	CLIENT_SCRIPT,
 	SERVER_SCRIPT,
 	SHARED_SCRIPT,
 };
 
-class CScript {
+class CScript
+{
 private:
 	eScriptType		m_ScriptType;
 	CString			m_strScriptFileName;

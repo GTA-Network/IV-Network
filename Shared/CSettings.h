@@ -83,7 +83,8 @@ struct SettingsValue
 	bool IsList() { return IS_BIT_SET(cFlags, SETTINGS_FLAG_LIST); }
 };
 
-class CSettings {
+class CSettings
+{
 private:
 	static std::map<CString, SettingsValue *> m_values;
 	static bool                              m_bOpen;

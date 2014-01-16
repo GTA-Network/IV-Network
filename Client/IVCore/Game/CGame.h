@@ -75,7 +75,8 @@ typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 
 class CLocalPlayer;
 
-class CGame {
+class CGame
+{
 private:
 	CLocalPlayer					*m_pLocalPlayer;
 	CIVPad							*m_pPad;

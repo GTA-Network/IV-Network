@@ -51,7 +51,8 @@ CAudio::~CAudio()
 
 bool CAudio::Load()
 {
-	if(m_dwChannel == 0) {
+	if(m_dwChannel == 0) 
+	{
 		// Create BASS stream
 		if(m_bIsOnlineStream)
 			m_dwChannel = BASS_StreamCreateURL(m_strStreamName, 0, (BASS_STREAM_BLOCK | BASS_STREAM_STATUS | BASS_STREAM_AUTOFREE), 0, 0);
@@ -59,7 +60,8 @@ bool CAudio::Load()
 			m_dwChannel = BASS_StreamCreateFile(FALSE, m_strStreamName, 0, 0, BASS_STREAM_PRESCAN);
 
 		// stream create check
-		if(m_dwChannel != 0) {
+		if(m_dwChannel != 0) 
+		{
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
 			return true;
 		}
@@ -71,7 +73,8 @@ bool CAudio::Load()
 void CAudio::Unload()
 {
 	// Do we have a valid channel?
-	if(m_dwChannel != 0) {
+	if(m_dwChannel != 0) 
+	{
 		// Free BASS stream
 		BASS_StreamFree(m_dwChannel);
 		m_dwChannel = 0;
@@ -151,7 +154,8 @@ void CAudio::SetVolume(float fVolume)
 	m_fVolume = Math::Clamp(0.0f, fVolume, 100.0f);
 
 	// Do we have a valid channel?
-	if(m_dwChannel != 0) {
+	if(m_dwChannel != 0) 
+	{
 		// New volume
 		if(!m_bIsMuted)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
@@ -164,7 +168,8 @@ float CAudio::GetVolume()
 		return 0.0f;
 
 	// Do we have a valid channel?
-	if(m_dwChannel != 0) {
+	if(m_dwChannel != 0) 
+	{
 		// Current volume
 		float fVolume;
 		BASS_ChannelGetAttribute(m_dwChannel, BASS_ATTRIB_VOL, &fVolume);
@@ -176,7 +181,8 @@ float CAudio::GetVolume()
 
 void CAudio::Mute()
 {
-	if(!m_bIsMuted) {
+	if(!m_bIsMuted) 
+	{
 		// Do we have a valid channel?
 		if(m_dwChannel != 0)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, 0.0f);
@@ -188,7 +194,8 @@ void CAudio::Mute()
 
 void CAudio::Unmute()
 {
-	if(m_bIsMuted) {
+	if(m_bIsMuted) 
+	{
 		// Do we have a valid channel?
 		if(m_dwChannel != 0)
 			BASS_ChannelSetAttribute(m_dwChannel, BASS_ATTRIB_VOL, (m_fVolume * 0.01f));
@@ -200,13 +207,15 @@ void CAudio::Unmute()
 
 void CAudio::Process()
 {
-	if(m_bUsePosition) {
+	if(m_bUsePosition) 
+	{
 		CVector3 vecLocalPlayer;
 		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecLocalPlayer);
 
 		float fDistance = Math::GetDistanceBetweenPoints3D(vecLocalPlayer.fX, vecLocalPlayer.fY, vecLocalPlayer.fZ, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ);
 
-		if(fDistance < m_fRange) {
+		if(fDistance < m_fRange) 
+		{
 			float fVolume = exp(-fDistance * (5.0f / m_fRange));
 			SetVolume(fVolume / 0.01f);
 		}
@@ -221,7 +230,8 @@ int CAudio::GetLength()
 		return -1;
 	
 	// Do we have a valid channel?
-	if (m_dwChannel) {
+	if (m_dwChannel) 
+	{
 		// get length
 		long length = BASS_ChannelGetLength (m_dwChannel, BASS_POS_BYTE);
 		
@@ -237,7 +247,8 @@ bool CAudio::SetAt(int iTime)
 		return false;
 
 	// Do we have a valid channel?
-	if (m_dwChannel) {
+	if (m_dwChannel) 
+	{
 		long lTime =BASS_ChannelSeconds2Bytes (m_dwChannel, iTime);
 		BASS_ChannelSetPosition(m_dwChannel, lTime, BASS_POS_BYTE);
 		return true;
@@ -245,15 +256,16 @@ bool CAudio::SetAt(int iTime)
 	return false;
 }	
 
-int CAudio::GetAt() {
+int CAudio::GetAt() 
+{
 	if (m_bIsOnlineStream)
 		return -1;
 
 	// Do we have a valid channel?
-	if (m_dwChannel) {
+	if (m_dwChannel) 
+	{
 		long length = BASS_ChannelGetPosition(m_dwChannel, BASS_POS_BYTE);
 		return BASS_ChannelBytes2Seconds (m_dwChannel, length);
 	}
 	return -1;
 }
-

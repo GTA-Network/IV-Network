@@ -33,7 +33,8 @@
 
 #include "CNetworkEntity.h"
 
-class CPickupEntity : public CNetworkEntity {
+class CPickupEntity : public CNetworkEntity
+{
 private:
 
 public:

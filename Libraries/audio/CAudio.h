@@ -33,7 +33,8 @@
 #ifndef CAUDIO_H
 #define CAUDIO_H
 
-class CAudio {
+class CAudio
+{
 private:
 	CString			m_strStreamName;
 	bool			m_bReplay;

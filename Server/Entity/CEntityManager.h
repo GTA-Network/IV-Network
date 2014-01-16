@@ -34,7 +34,8 @@
 #include <Common.h>
 
 template<class T, EntityId max>
-class CEntityManager {
+class CEntityManager
+{
 private:
 	T* m_pEntities[max];
 

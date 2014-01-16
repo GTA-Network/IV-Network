@@ -31,13 +31,9 @@
 #ifndef CContextSwitch_h
 #define CContextSwitch_h
 
-class CContextSwitch {
-private:
-
+class CContextSwitch
+{
 public:
-	CContextSwitch() { };
-	~CContextSwitch() { };
-
 	static void InstallKeySyncHooks();
 };
 

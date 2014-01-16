@@ -15,7 +15,8 @@
 #include <map>
 #include <list>
 
-class CSQLite {
+class CSQLite
+{
 private:
 	sqlite3 * m_pSQLite;
 	bool	  m_bIsOpen;

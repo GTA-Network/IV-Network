@@ -37,7 +37,8 @@
 #include <Game/eGame.h>
 #include <IV/IVData.h>
 
-class IVBaseModelInfo {
+class IVBaseModelInfo
+{
 public:
 	virtual DWORD ScalarDeletingDestructor() = 0;
 	virtual DWORD F_m4() = 0;
@@ -66,7 +67,8 @@ public:
 	BYTE byteTextureVariationCount;
 };
 
-class CIVModelInfo {
+class CIVModelInfo
+{
 private:
 	int			m_iModelIndex;
 	DWORD		m_dwReferenceCount;

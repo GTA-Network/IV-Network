@@ -33,7 +33,8 @@
 
 #include "StdDXInc.h"
 
-interface IDirect3DDevice9Proxy : public IDirect3DDevice9 {
+interface IDirect3DDevice9Proxy : public IDirect3DDevice9
+{
 private:
 	IDirect3DDevice9 *m_pDevice;
 public:

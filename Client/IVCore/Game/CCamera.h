@@ -44,7 +44,8 @@ public:
 	PAD(IVCamPool, pad1, 0x1C); // 0x0 - 0x1C (size = 0x1C)
 };
 
-class CCamera {
+class CCamera
+{
 private:
 	unsigned int		m_uiGameCamIndex;
 	unsigned int		m_uiScriptingIndex;

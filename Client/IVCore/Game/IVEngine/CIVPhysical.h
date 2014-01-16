@@ -39,7 +39,8 @@
 #include <IV/CIVScriptEnums.h>
 #include "CIVWeaponInfo.h"
 
-class IVPhysical : public IVDynamicEntity {
+class IVPhysical : public IVDynamicEntity
+{
 public:
         // 000-10C
         // 13C - In Water (BYTE)?
@@ -76,7 +77,8 @@ public:
 		virtual void			Function71();
 };
 
-class CIVPhysical : public CIVDynamicEntity {
+class CIVPhysical : public CIVDynamicEntity
+{
 public:
         CIVPhysical();
         CIVPhysical(IVPhysical * pPhysical);

@@ -12,7 +12,8 @@
 
 #include <Scripting/CScriptVM.h>
 
-class CScriptClasses {
+class CScriptClasses
+{
 private:
 	static int	CreateEntity(int * pVM);
 public:

@@ -33,7 +33,8 @@
 
 #include <Network/NetCommon.h>
 
-class CNetworkManager {
+class CNetworkManager
+{
 private:
 	RakNet::RakPeerInterface				* m_pRakPeer;
 	RakNet::RPC4							* m_pRPC;

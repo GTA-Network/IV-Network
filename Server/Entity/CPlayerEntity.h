@@ -17,7 +17,8 @@
 
 class CScriptPlayer;
 class CVehicleEntity;
-class CPlayerEntity : public CNetworkEntity {
+class CPlayerEntity : public CNetworkEntity
+{
 private:
 	unsigned long m_ulLastSyncReceived;
 	unsigned long m_ulLastSyncSent;

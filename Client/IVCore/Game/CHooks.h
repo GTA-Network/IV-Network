@@ -31,7 +31,8 @@
 #ifndef CHooks_h
 #define CHooks_h
 
-class CHooks {
+class CHooks
+{
 public:
 					CHooks() { };
 					~CHooks() { };

@@ -433,7 +433,6 @@
     <ClInclude Include="..\..\Shared\CZlib.h" />
     <ClInclude Include="..\..\Shared\Game\CTime.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
-    <ClInclude Include="..\..\Shared\Game\CTrafficLightsInterface.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
     <ClInclude Include="..\..\Shared\Network\CPacketIdentifiers.h" />

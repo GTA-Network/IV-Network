@@ -34,9 +34,9 @@
 #include "CString.h"
 #include <stdio.h>
 
-class CZlib {
+class CZlib
+{
 public:
-
 	static	int			Inflate(FILE * pSource, FILE * pDestination);
 	static	int			Decompress(CString strFileName, CString strOutput);
 
