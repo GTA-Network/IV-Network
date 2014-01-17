@@ -115,9 +115,8 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
     bool bFocused = (GetForegroundWindow() == hWnd);
 
 	// Update HWND state..
-	if(bFocused != g_pCore->GetHWNDFocused()) {
-		g_pCore->SetHWNDFocused(bFocused);
-	}
+	if(bFocused != g_pCore->GetGame()->IsFocused())
+		g_pCore->GetGame()->SetFocused(bFocused);
 
     // Are we focused?
     if(bFocused)

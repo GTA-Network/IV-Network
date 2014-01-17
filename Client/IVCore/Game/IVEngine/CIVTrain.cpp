@@ -98,7 +98,6 @@ void CIVTrain::SetTrainCuriseSpeed(float fSpeed, unsigned int uiHandle)
 {
 	IVTrain * pTrain = nullptr;
 	pTrain = GetIVTrain();
-	g_pCore->DumpVFTable(*(DWORD *)pTrain,11);
 
 	CIVScript::SetTrainCuriseSpeed(uiHandle ? uiHandle : m_pVehicle->GetScriptingHandle(), fSpeed);
 	CIVScript::SetTrainSpeed(uiHandle ? uiHandle : m_pVehicle->GetScriptingHandle(), fSpeed);

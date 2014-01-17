@@ -35,7 +35,7 @@ bool TransferCB::OnDownloadComplete(DownloadCompleteStruct *dcs)
 	RakNet::BitStream pBitStream;
 
 	// Write the player nickname
-	pBitStream.Write(RakNet::RakString(g_pCore->GetNick().Get()));
+	pBitStream.Write(RakNet::RakString(g_pCore->GetGame()->GetLocalPlayer()->GetNick().Get()));
 
 	// Write the player serial
 	pBitStream.Write(RakNet::RakString(SharedUtility::GetSerialHash().Get()));

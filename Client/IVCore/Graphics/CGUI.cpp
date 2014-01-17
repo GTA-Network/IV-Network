@@ -217,7 +217,6 @@ void CGUI::Render()
 	// Make sure we are initialized
 	if (m_bInitialized)
 	{
-
 		// Render our GUI
 		if (m_pSystem)
 			m_pSystem->renderGUI();
@@ -225,7 +224,7 @@ void CGUI::Render()
 		//m_pCursor->setVisible(true);
 
 		// Process our mouse events
-		if (g_pCore->GetHWNDFocused())
+		if (g_pCore->GetGame()->IsFocused())
 		{
 			if (!m_pInput || !m_pInputMouse)
 				return;
@@ -258,8 +257,7 @@ void CGUI::Render()
 
 				// If the window has focus sync the windows cursor position with 
 				// the direct input cursor position
-				if (g_pCore->GetHWNDFocused())
-					SetCursorPos(m_rCursorPosition.left, m_rCursorPosition.top);
+				SetCursorPos(m_rCursorPosition.left, m_rCursorPosition.top);
 
 				// Check the mouse wheel for changes
 				if (m_MouseState.lZ != 0)

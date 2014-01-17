@@ -78,26 +78,27 @@ class CLocalPlayer;
 class CGame
 {
 private:
-	CLocalPlayer					*m_pLocalPlayer;
-	CIVPad							*m_pPad;
-	CTaskManager					*m_pTaskManager;
-	CPools							*m_pPool;
-	CCamera							*m_pCamera;
+	CLocalPlayer					* m_pLocalPlayer = nullptr;
+	CIVPad							* m_pPad = nullptr;
+	CTaskManager					* m_pTaskManager = nullptr;
+	CPools							* m_pPool = nullptr;
+	CCamera							* m_pCamera = nullptr;
 	CIVModelInfo					m_modelInfos[NUM_ModelInfos];
 	CIVWeaponInfo					m_weaponInfos[NUM_WeaponInfos];
 
-	CPlayerManager					*m_pPlayerManager;
-	CVehicleManager					*m_pVehicleManager;
-	CActorManager					*m_pActorManager;
-	CObjectManager					*m_pObjectManager;
-	CFireManager					*m_pFireManager;
-	CPickupManager					*m_pPickupManager;
-	C3DLabelManager					*m_p3DLabelManager;
-	CBlipManager					*m_pBlipManager;
-	CCheckpointManager				*m_pCheckpointManager;
-	CTrafficLights					*m_pTrafficLights;
+	CPlayerManager					* m_pPlayerManager = nullptr;
+	CVehicleManager					* m_pVehicleManager = nullptr;
+	CActorManager					* m_pActorManager = nullptr;
+	CObjectManager					* m_pObjectManager = nullptr;
+	CFireManager					* m_pFireManager = nullptr;
+	CPickupManager					* m_pPickupManager = nullptr;
+	C3DLabelManager					* m_p3DLabelManager = nullptr;
+	CBlipManager					* m_pBlipManager = nullptr;
+	CCheckpointManager				* m_pCheckpointManager = nullptr;
+	CTrafficLights					* m_pTrafficLights = nullptr;
 
 	HWND							m_hwndGameWindow;
+	bool							m_bFocused;
 
 public:
 										CGame();
@@ -109,25 +110,27 @@ public:
 	void								UnprotectMemory();
 	void								Reset();
 
-	CLocalPlayer						*GetLocalPlayer() { return m_pLocalPlayer; }
-	CIVPad								*GetPad() { return m_pPad; }
-	CTaskManager						*GetTaskManager() { return m_pTaskManager; }
-	CPools								*GetPools() { return m_pPool; }
-	CCamera								*GetCamera() { return m_pCamera; }
+	CIVModelInfo						* GetModelInfo(int iModelIndex);
+	CIVWeaponInfo						* GetWeaponInfo(eWeaponType weaponType);
 
-	CIVModelInfo						*GetModelInfo(int iModelIndex);
-	CIVWeaponInfo						*GetWeaponInfo(eWeaponType weaponType);
+	const decltype(m_pLocalPlayer)        GetLocalPlayer() { return m_pLocalPlayer; }
+	const decltype(m_pPad)                GetPad() { return m_pPad; }
+	const decltype(m_pTaskManager)        GetTaskManager() { return m_pTaskManager; }
+	const decltype(m_pPool)               GetPools() { return m_pPool; }
+	const decltype(m_pCamera)             GetCamera() { return m_pCamera; }
+	const decltype(m_pPlayerManager)      GetPlayerManager() { return m_pPlayerManager; }
+	const decltype(m_pVehicleManager)     GetVehicleManager() { return m_pVehicleManager; }
+	const decltype(m_pActorManager)       GetActorManager() { return m_pActorManager; }
+	const decltype(m_pObjectManager)      GetObjectManager() { return m_pObjectManager; }
+	const decltype(m_pFireManager)        GetFireManager() { return m_pFireManager; }
+	const decltype(m_pPickupManager)      GetPickupManager() { return m_pPickupManager; }
+	const decltype(m_p3DLabelManager)     Get3DLabelManager() { return m_p3DLabelManager; }
+	const decltype(m_pBlipManager)        GetBlipManager() { return m_pBlipManager; }
+	const decltype(m_pCheckpointManager)  GetCheckpointManager() { return m_pCheckpointManager; }
+	const decltype(m_pTrafficLights)      GetTrafficLights() { return m_pTrafficLights; }
 
-	CPlayerManager						*GetPlayerManager() { return m_pPlayerManager; }
-	CVehicleManager						*GetVehicleManager() { return m_pVehicleManager; }
-	CActorManager						*GetActorManager() { return m_pActorManager; }
-	CObjectManager						*GetObjectManager() { return m_pObjectManager; }
-	CFireManager						*GetFireManager() { return m_pFireManager; }
-	CPickupManager						*GetPickupManager() { return m_pPickupManager; }
-	C3DLabelManager						*Get3DLabelManager() { return m_p3DLabelManager; }
-	CBlipManager						*GetBlipManager() { return m_pBlipManager; }
-	CCheckpointManager					*GetCheckpointManager() { return m_pCheckpointManager; }
-	CTrafficLights						*GetTrafficLights() { return m_pTrafficLights; }
+	inline void						SetFocused(bool bFocus) { m_bFocused = bFocus; }
+	bool							IsFocused() { return m_bFocused; }
 
 	HWND								GetGameWindow();
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);

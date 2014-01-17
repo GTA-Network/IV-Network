@@ -35,15 +35,7 @@
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;
 
-CCore::CCore(void) :
-	m_bInitialized(false), 
-	m_bGameLoaded(false), 
-	m_pGame(nullptr),
-	m_pGraphics(nullptr), 
-	m_pNetworkManager(nullptr),
-	m_bLoadingVisibility(false),
-	m_byteLoadingStyle(0), 
-	m_uiGameInitializeTime(0)//, m_pAudioManager(NULL)
+CCore::CCore()
 {
 
 }
@@ -121,9 +113,6 @@ bool CCore::Initialize()
 	// Install crash fixes
 	CCrashFixes::Initialize();
 	
-	// Get loaded modules from our process
-	GetLoadedModulesList();
-	
 	// Register module manager
 	CModuleManager::FetchModules();
 	
@@ -187,13 +176,6 @@ void CCore::OnGameUpdate()
 		GetGame()->GetLocalPlayer()->Pulse();
 }
 
-void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
-{
-	// Connect to the network
-	if(m_pNetworkManager)
-		m_pNetworkManager->Connect(strHost, usPort, strPass);
-}
-
 void test()
 {
 	Sleep(500);
@@ -251,7 +233,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner
-	unsigned short usPing = m_pNetworkManager != nullptr ? (m_pNetworkManager->IsConnected() ? (g_pCore->GetGame()->GetLocalPlayer() ? g_pCore->GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
+	unsigned short usPing = m_pNetworkManager != nullptr ? (m_pNetworkManager->IsConnected() ? (GetGame()->GetLocalPlayer() ? GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
 
 	CString strConnection;
 	int iConnectTime = GetGameLoadInitializeTime() != 0 ? (int)((timeGetTime() - GetGameLoadInitializeTime()) / 1000) : 0;
@@ -324,7 +306,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 	CString strInformation = usPing == 0xFFFF ? CString("%s%s", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get()) : CString("%s%s | Ping %hu", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get(), usPing);
 	
-	if(!g_pCore->GetGame()->GetLocalPlayer())
+	if(!GetGame()->GetLocalPlayer())
 		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, DT_NOCLIP, true, strLoadingInformation.Get());
 	else
 		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, DT_NOCLIP, true, strInformation.Get());
@@ -345,74 +327,4 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	GetGraphics()->Render();
-}
-
-void CCore::GetLoadedModulesList()
-{
-	DWORD aProcesses[1024]; 
-    DWORD cbNeeded; 
-    DWORD cProcesses;
-    unsigned int i;
-
-    if ( !EnumProcesses( aProcesses, sizeof(aProcesses), &cbNeeded ) )
-        return;
-
-    cProcesses = cbNeeded / sizeof(DWORD);
-
-    for ( i = 0; i < cProcesses; i++ ) {
-		if(aProcesses[i] == GetProcessId(GetCurrentProcess()))
-			GetLoadedModule( aProcesses[i] );
-    }
-}
-
-void CCore::GetLoadedModule(DWORD dwProcessId)
-{
-	HMODULE hMods[1024];
-    HANDLE hProcess;
-    DWORD cbNeeded;
-    unsigned int i;
-
-    hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
-                            PROCESS_VM_READ,
-                            FALSE, dwProcessId );
-    if (!hProcess)
-        return;
-
-    if( EnumProcessModules(hProcess, hMods, sizeof(hMods), &cbNeeded)) {
-        for ( i = 0; i < (cbNeeded / sizeof(HMODULE)); i++ ) {
-            TCHAR szModName[MAX_PATH];
-            if ( GetModuleFileNameExA(hProcess, hMods[i], szModName, sizeof(szModName) / sizeof(TCHAR))) {
-			  CString strModule;
-
-			  std::string strModulee;
-			  strModulee.append(szModName);
-			  std::size_t found = strModulee.find("SYSTEM32",10);
-			  std::size_t found2 = strModulee.find("system32",10);
-			  std::size_t found3 = strModulee.find("AppPatch",10);
-			  std::size_t found4 = strModulee.find("WinSxS", 10);
-
-			  if(found != std::string::npos || found2 != std::string::npos || found3 != std::string::npos || found4 != std::string::npos) {/**/}
-			  else {
-				strModule.AppendF("--> IVModules: %s", szModName);
-				CLogFile::Printf("  %s (0x%08X)",strModule.Get(), hMods[i] );
-			  }
-            }
-        }
-    }
-    CloseHandle(hProcess);
-    return;
-}
-
-void CCore::OnNetworkTimeout()
-{
-	// Call reInitialize cgame
-	g_pCore->GetGame()->Reset();
-}
-
-void CCore::DumpVFTable(DWORD dwAddress, int iFunctionCount)
-{
-	CLogFile::Printf("Dumping Virtual Function Table at 0x%p...",dwAddress);
-
-	for(int i = 0; i < iFunctionCount; i++)
-		CLogFile::Printf("VFTable Offset: %d, Function: 0x%p (At Address: 0x%p)", (i * 4), *(PDWORD)(dwAddress + (i * 4)), (dwAddress + (i * 4)));
 }

@@ -82,34 +82,26 @@
 
 #include <RakNet/RakNetStatistics.h>
 
-
-// TODO: Refactor this crap!!!
 class CCore 
 {
 private:
-
-	bool							m_bInitialized;
-	bool							m_bGameLoaded;
+	bool							m_bInitialized = false;
+	bool							m_bGameLoaded = false;
 	unsigned						m_uiBaseAddress;
 	unsigned						m_uiGameInitializeTime;
 
-	CGame							* m_pGame;
+	CGame							* m_pGame = nullptr;
 	CGraphics						* m_pGraphics = nullptr;
-	CNetworkManager					* m_pNetworkManager;
+	CNetworkManager					* m_pNetworkManager = nullptr;
+	CResourceManager				* m_pResourceManager = nullptr;
 
-	CChatBox						* m_pChatBox;
-	CResourceManager				* m_pResourceManager;
+	CCamera							* m_pCamera = nullptr;
+	CHttpClient						* m_pHttpClient = nullptr;
+	CAudioManager					* m_pAudioManager = nullptr;
+	CIVStartupScript				* m_pIVStartupScript = nullptr;
 
-	CString							m_strNick;
 	CString							m_strServerName;
-
-	bool							m_hwndFocused;
-	BYTE							m_byteLoadingStyle;
-
-	CCamera							*m_pCamera;
-	CHttpClient						* m_pHttpClient;
-	CAudioManager					*m_pAudioManager;
-	CIVStartupScript				*m_pIVStartupScript;
+	BYTE							m_byteLoadingStyle = 0;
 
 public:
 									CCore();
@@ -127,55 +119,44 @@ public:
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
 	void							OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDeviceRender(IDirect3DDevice9 * pDevice);
-	
-	void							OnNetworkShutDown();
-	void							OnNetworkTimeout();
 
 	unsigned						GetBase() { return m_uiBaseAddress; }
-
-
-	// TODO: move GUI FpsCount, MainMenu, CTags(rename to CNameTags) to CGraphics
-	// This structure will be like in my private project
-	CGame							* GetGame() { return m_pGame; }
-
-	const decltype(m_pGraphics) GetGraphics() {
-		return m_pGraphics; 
-	}
-
-	CAudioManager					* GetAudioManager() { return m_pAudioManager; }
-
-	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
-
-	// Remove this here(dont know where to put atm)
-	void							SetNick( CString strNick ) { m_strNick = strNick; }
-	CString							GetNick( ) { return m_strNick; }
 
 	void							SetServerName(CString strServerName) { m_strServerName = strServerName;  }
 	CString							GetServerName() { return m_strServerName; }
 
 	unsigned						GetGameLoadInitializeTime() { return m_uiGameInitializeTime; }
 
-	void							GetLoadedModulesList();
-	void							GetLoadedModule(DWORD dwProcessId);
-
-	inline void						SetHWNDFocused(bool bFocus)
+	const decltype(m_pGame) GetGame()
 	{
-		m_hwndFocused = bFocus;
+		return m_pGame;
 	}
-	bool							GetHWNDFocused() { return m_hwndFocused; }
-	void							DumpVFTable(DWORD dwAddress, int iFunctionCount);
-	
-	bool              				m_bLoadingVisibility;
-	void              				SetLoadingVisible(bool bVisible) { m_bLoadingVisibility = bVisible; }
-	bool              				GetLoadingVisibility() { return m_bLoadingVisibility; }
 
-	void							ConnectToServer(CString strHost, unsigned short usPort, CString strPass = "");
+	const decltype(m_pGraphics) GetGraphics()
+	{
+		return m_pGraphics;
+	}
 
-	const decltype(m_pIVStartupScript) GetIVStartupScript() { return m_pIVStartupScript; };
+	const decltype(m_pAudioManager)	GetAudioManager()
+	{
+		return m_pAudioManager;
+	}
 
-	const decltype(m_pResourceManager) GetResourceManager() { return m_pResourceManager; }
+	const decltype(m_pNetworkManager) GetNetworkManager()
+	{
+		return m_pNetworkManager;
+	}
 
-	const decltype(m_pChatBox)      GetChatBox() { return m_pChatBox; }
+	const decltype(m_pIVStartupScript) GetIVStartupScript()
+	{
+		return m_pIVStartupScript;
+	}
+
+	const decltype(m_pResourceManager) GetResourceManager()
+	{
+		return m_pResourceManager;
+	}
+
 };
 
 #endif // CCore_h

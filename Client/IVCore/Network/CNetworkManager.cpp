@@ -293,7 +293,7 @@ void CNetworkManager::UpdateNetwork()
 				SetNetworkState(NETSTATE_TIMEOUT);
 
 				// Handle the connection timeout
-				g_pCore->OnNetworkTimeout();
+				g_pCore->GetGame()->Reset();
 
 				// Set the last connection try
 				m_uiLastConnectionTry = GetTickCount();
