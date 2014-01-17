@@ -164,9 +164,7 @@ LRESULT APIENTRY WndProc_Hook(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				case VK_F8:
 				{
 					// Take a screen shot
-					if(CSnapShot::Take())
-						g_pCore->GetGraphics()->GetChat()->Print(CString("Screen shot captured."));
-					else
+					if(!CSnapShot::Take())
 					{
 						g_pCore->GetGraphics()->GetChat()->Print(CString("Screen shot capture failed (%s).", CSnapShot::GetError().Get()));
 						CSnapShot::Reset();

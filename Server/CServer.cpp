@@ -227,6 +227,8 @@ bool CServer::Startup()
 			{
 				SharedUtility::CreateDirectory(SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/", pResource->GetName().C_String()).C_String());
 				SharedUtility::CopyFile(pFile->GetFileName(), SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/%s", pResource->GetName().C_String(), pFile->GetName()));
+
+				// TODO: construct meta.xml for clients
 				SharedUtility::CopyFile(SharedUtility::GetAbsolutePath("/resources/%s/meta.xml", pResource->GetName().C_String()), SharedUtility::GetAbsolutePath(CLIENT_FILE_DIRECTORY "/resources/%s/meta.xml", pResource->GetName().C_String()));
 			}
 		}

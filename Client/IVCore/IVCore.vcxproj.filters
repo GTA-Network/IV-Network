@@ -120,9 +120,6 @@
     <Filter Include="Header Files\Libraries\md5">
       <UniqueIdentifier>{1335a3e3-5167-4395-aecd-6226fa580870}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\RAGEEngine">
-      <UniqueIdentifier>{76db95f5-e1fd-4cae-bc08-e181495588a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{d964c099-b2be-4118-95b7-bfc172bbc1d1}</UniqueIdentifier>
     </Filter>
@@ -514,9 +511,6 @@
     </ClCompile>
     <ClCompile Include="Graphics\Input.cpp">
       <Filter>Source Files\General</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Shared\Game\CTime.cpp">
-      <Filter>Source Files\Shared</Filter>
     </ClCompile>
     <ClCompile Include="Game\CCrashFixes.cpp">
       <Filter>Source Files\Game</Filter>
@@ -1278,12 +1272,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Shared\CLibrary.h">
       <Filter>Header Files\Shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\RAGEEngine\RAGEInterface.h">
-      <Filter>Header Files\RAGEEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Shared\Game\CTime.h">
-      <Filter>Header Files\Shared\Game</Filter>
     </ClInclude>
     <ClInclude Include="Game\CCrashFixes.h">
       <Filter>Header Files\Game</Filter>

@@ -5,23 +5,6 @@
 
 extern CCore * g_pCore;
 
-CDownloadManager::CDownloadManager(RakNet::DirectoryDeltaTransfer * pDelta) :
-	m_delta(pDelta)
-{
-
-}
-
-CDownloadManager::~CDownloadManager()
-{
-
-}
-
-void CDownloadManager::Process()
-{
-	m_delta->DownloadFromSubdirectory("client_files", SharedUtility::GetAbsolutePath(CString("client_resources/%s", SharedUtility::ConvertStringToPath(CString("%s:%i", g_pCore->GetHost().Get(), g_pCore->GetPort())).Get())).Get(), false, g_pCore->GetNetworkManager()->GetServerAddress(), new TransferCB, HIGH_PRIORITY, 0, NULL);
-	g_pCore->GetResourceManager()->SetResourceDirectory(CString("client_resources/%s", SharedUtility::ConvertStringToPath(CString("%s:%i", g_pCore->GetHost().Get(), g_pCore->GetPort())).Get()));
-}
-
 bool TransferCB::OnFile(OnFileStruct *onFileStruct)
 {
 	assert(onFileStruct->byteLengthOfThisFile >= onFileStruct->bytesDownloadedForThisFile);

@@ -85,7 +85,6 @@ private:
 	CCamera							*m_pCamera;
 	CIVModelInfo					m_modelInfos[NUM_ModelInfos];
 	CIVWeaponInfo					m_weaponInfos[NUM_WeaponInfos];
-	bool							m_LocalPlayerInitialized;
 
 	CPlayerManager					*m_pPlayerManager;
 	CVehicleManager					*m_pVehicleManager;
@@ -105,15 +104,11 @@ public:
 										~CGame();
 
 	void								Initialize();
-	void								PrepareWorld();
-	void								OnEnvironmentStartUp(bool bForce = false);
-	void								OnClientReadyToGamePlay();
-	void								OnClientPastGameJoin();
 	void								Setup();
-	void								RenderRAGEScripts();
-	void								ProcessEnvironment();
+	void								Process();
 	void								UnprotectMemory();
 	void								Reset();
+
 	CLocalPlayer						*GetLocalPlayer() { return m_pLocalPlayer; }
 	CIVPad								*GetPad() { return m_pPad; }
 	CTaskManager						*GetTaskManager() { return m_pTaskManager; }
@@ -136,7 +131,6 @@ public:
 
 	HWND								GetGameWindow();
 	void								ThrowInternalException(DWORD dwAddress, DWORD dwExcetionType);
-	void								SetupGame();
 };
 
 #endif // CGame_h

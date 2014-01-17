@@ -83,6 +83,8 @@ public:
 
 	CIVCam				*GetGameCam() { return m_pGameCam; }
 	CIVCam				*GetScriptCam() { return m_pScriptCam; }
+
+	void                Reset();
 };
 
 #endif // CCamera_h

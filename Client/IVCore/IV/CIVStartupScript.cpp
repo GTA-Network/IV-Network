@@ -44,5 +44,4 @@ void CIVStartupScript::Process()
 	CIVScript::SetWantedMultiplier(0.0f);
 
 	g_pCore->OnGameLoad();
-	g_pCore->SetClientState(GAME_STATE_INGAME);
 }

@@ -54,7 +54,6 @@ CGame::CGame() :
 	m_p3DLabelManager(nullptr),
 	m_pBlipManager(nullptr),
 	m_pCheckpointManager(nullptr),
-	m_LocalPlayerInitialized(false),
 	m_pTrafficLights(nullptr)
 {
 
@@ -67,9 +66,6 @@ CGame::~CGame()
 
 void CGame::Setup()
 {
-	// Mark client-state as world-game loading
-	g_pCore->SetClientState(GAME_STATE_LOADING);
-	
 	// Create new civpad instance
 	m_pPad = new CIVPad((IVPad *)COffsets::VAR_Pads);
 	
@@ -110,85 +106,43 @@ void CGame::Setup()
 
 void CGame::Initialize()
 {
-	// Update client state to state ingame
-	g_pCore->SetClientState(GAME_STATE_INGAME);
-
 	// Initialize/Patch our pools(IVPed,IVVehicle,IVTask)
 	m_pPool->Initialize();
 
-	// Create our camera instance if it doesn't exist/isn't created yet
 	if(!m_pCamera)
 		m_pCamera = new CCamera;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pPlayerManager)
 		m_pPlayerManager = new CPlayerManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pVehicleManager)
 		m_pVehicleManager = new CVehicleManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pActorManager)
 		m_pActorManager = new CActorManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pObjectManager)
 		m_pObjectManager = new CObjectManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pFireManager)
 		m_pFireManager = new CFireManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pPickupManager)
 		m_pPickupManager = new CPickupManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_p3DLabelManager)
 		m_p3DLabelManager = new C3DLabelManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pBlipManager)
 		m_pBlipManager = new CBlipManager;
 
-	// Create our manager instance if it doesn't exist/isn't created yet
 	if(!m_pCheckpointManager)
 		m_pCheckpointManager = new CCheckpointManager;
 	
-	OnEnvironmentStartUp(false);
-
-	PrepareWorld();
-}
-
-void CGame::OnEnvironmentStartUp(bool bForce)
-{
-	// Grab the PlayerInfo array index 0 from the PedPool
-	IVPlayerInfo * pPlayerInfo = m_pPool->GetPlayerInfoFromIndex(0);
-	IVPlayerPed  * _pPlayerPed = nullptr;
-
-	// Check if we got an index from PedPool - index 0
-	if(pPlayerInfo)
-		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
-	else
-		_pPlayerPed = nullptr;
-
-	// If no index was found and the param bForce isn't given, return
-	if(m_pPool->GetLocalPlayerIndex() == -1) {
-		if(!bForce)
-			return;
-	}
-
-	// We should force to create the localplayer so continue.. Setting Initialize pointer to opposit value(false->true)
-	m_LocalPlayerInitialized = !m_LocalPlayerInitialized;
-
-	CLogFile::Printf("[%s] Creating Player..",__FUNCTION__);
-
-	// Check if our local player class not existing, otherwise create it
-	if(!m_pLocalPlayer)
+	if (!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 
-	CLogFile::Printf("[%s] Successfully create local player instance..",__FUNCTION__);
+	Reset();
 }
 
 void CGame::Reset()
@@ -196,31 +150,52 @@ void CGame::Reset()
 	// Disconnect from network
 	g_pCore->GetNetworkManager()->Disconnect();
 
-	SAFE_DELETE(m_pCamera);
+	if (m_pCamera)
+		m_pCamera->Reset();
 
-	SAFE_DELETE(m_pPlayerManager);
+	if (m_pPlayerManager)
+		m_pPlayerManager->Reset();
 
-	SAFE_DELETE(m_pVehicleManager);
+	if (m_pVehicleManager)
+		m_pVehicleManager->Reset();
 
-	SAFE_DELETE(m_pActorManager);
+	if (m_pActorManager)
+		m_pActorManager->Reset();
 
-	SAFE_DELETE(m_pObjectManager);
+	if (m_pObjectManager)
+		m_pObjectManager->Reset();
 
-	SAFE_DELETE(m_pFireManager);
+	if (m_pFireManager)
+		m_pFireManager->Reset();
 
-	SAFE_DELETE(m_pPickupManager);
+	if (m_pPickupManager)
+		m_pPickupManager->Reset();
 
-	SAFE_DELETE(m_p3DLabelManager);
+	if (m_p3DLabelManager)
+		m_p3DLabelManager->Reset();
 
-	SAFE_DELETE(m_pBlipManager);
+	if (m_pBlipManager)
+		m_pBlipManager->Reset();
 
-	SAFE_DELETE(m_pCheckpointManager);
+	if (m_pCheckpointManager)
+		m_pCheckpointManager->Reset();
 
-	// Re-initialse our client
-	Initialize();
+	CIVWeather::SetWeather(WEATHER_SUNNY);
+	m_pTrafficLights->Reset();
 
-	// Prepare our world
-	PrepareWorld();
+	// Make our local player ready to port to the default spawn position
+	m_pLocalPlayer->Respawn();
+	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
+	m_pLocalPlayer->SetPlayerControlAdvanced(true, true, true);
+
+	// Enable UI elements to be visible
+	CIVHud::SetHudVisible(true);
+	CIVHud::SetRadarVisible(true);
+	CIVHud::SetAreaNamesEnabled(true);
+	CIVHud::SetPlayerNamesVisible(true);
+	// Update our environment settings and set default timemanagement data
+	//g_pCore->GetTimeManagementInstance()->SetTime(7,0);
+	//g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
 }
 
 void CGame::UnprotectMemory()
@@ -240,46 +215,6 @@ void CGame::UnprotectMemory()
 			CPatcher::Unprotect((DWORD)(pImageBase + pSection->VirtualAddress), ((pSection->Misc.VirtualSize + 4095) & ~4095));
 	}
 
-}
-
-void CGame::PrepareWorld()
-{
-	// Disable(hide) UI elements to be visible
-	CIVHud::SetHudVisible(false);
-	CIVHud::SetRadarVisible(false);
-	CIVHud::SetAreaNamesEnabled(false);
-	CIVHud::SetPlayerNamesVisible(0);
-
-	// Update environment settings and set default
-	CIVWeather::SetWeather(WEATHER_SUNNY);
-	g_pCore->GetTimeManagementInstance()->SetTime(6,45);
-	g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
-	m_pTrafficLights->Reset();
-
-	SAFE_DELETE(m_pCamera);
-	m_pCamera = new CCamera;
-}
-
-void CGame::OnClientReadyToGamePlay()
-{
-	// Make our local player ready to port to the default spawn position
-	m_pLocalPlayer->Respawn();
-	m_pCamera->SetCamBehindPed(m_pLocalPlayer->GetScriptingHandle());
-	m_pLocalPlayer->SetPlayerControlAdvanced(true, true, true);
-
-	// Enable UI elements to be visible
-	CIVHud::SetHudVisible(true);
-	CIVHud::SetRadarVisible(true);
-	CIVHud::SetAreaNamesEnabled(true);
-	CIVHud::SetPlayerNamesVisible(true);
-	// Update our environment settings and set default timemanagement data
-	//g_pCore->GetTimeManagementInstance()->SetTime(7,0);
-	//g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
-}
-
-void CGame::OnClientPastGameJoin()
-{
-	// Preload world stuff
 }
 
 CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
@@ -309,7 +244,7 @@ void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
 	CLogFile::Printf("Warning: Exception 0x%p at 0x%p", dwExceptionType, dwAddress);
 }
 
-void CGame::ProcessEnvironment()
+void CGame::Process()
 {
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 		return;
@@ -346,9 +281,4 @@ void CGame::ProcessEnvironment()
 		// Let the game render the time by itself(so it's not so buggy when updating the time)
 		;
 	}*/
-}
-
-void CGame::SetupGame()
-{
-	//g_pCore->GetGame()->PrepareWorld();
 }

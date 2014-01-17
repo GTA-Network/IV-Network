@@ -101,9 +101,6 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Set the servername
 	g_pCore->SetServerName(strServerName.C_String());
 
-	// Start the game
-	g_pCore->GetGame()->SetupGame();
-
 	// Set the network state
 	g_pCore->GetNetworkManager()->SetNetworkState(NETSTATE_CONNECTED);
 
@@ -829,6 +826,8 @@ void SetVehicleDirtLevel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacke
 	}
 }
 
+TransferCB transferCallback;
+
 void DownloadStart(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	vecClientResources.clear();
@@ -839,11 +838,10 @@ void DownloadStart(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		vecClientResources.push_back(strResource.C_String());
 	}
 
-
-	RakNet::DirectoryDeltaTransfer * pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
-	CDownloadManager* downloadManager = new CDownloadManager(pDelta);
-
-	downloadManager->Process();
+	const auto pDelta = g_pCore->GetNetworkManager()->GetDirectoryDeltaTransfer();
+	CString strPath = CString("client_resources/%s", SharedUtility::ConvertStringToPath(g_pCore->GetNetworkManager()->GetServerAddress().ToString(true, ':')).Get());
+	pDelta->DownloadFromSubdirectory("client_files", SharedUtility::GetAbsolutePath(strPath.Get()).Get(), false, g_pCore->GetNetworkManager()->GetServerAddress(), &transferCallback, HIGH_PRIORITY, 0, NULL);
+	g_pCore->GetResourceManager()->SetResourceDirectory(strPath);
 }
 
 void CreateCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)

@@ -31,7 +31,6 @@
 #ifndef CTrafficLights_h
 #define CTrafficLights_h
 
-#include "CTrafficLightsInterface.h"
 #include <Common.h>
 
 class CTrafficLights

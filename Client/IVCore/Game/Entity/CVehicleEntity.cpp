@@ -186,6 +186,21 @@ bool CVehicleEntity::Destroy()
 	if(!IsSpawned())
 		return false;
 
+	// Remove driver and passengers
+	if (m_pDriver)
+	{
+		m_pDriver->RemoveFromVehicle();
+		SetDriver(nullptr);
+	}
+
+	for (auto pPassenger : m_pPassengers)
+	{
+		if (pPassenger)
+		{
+			pPassenger->RemoveFromVehicle();
+		}
+	}
+
 	unsigned int handle = g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(m_pVehicle->GetVehicle());
 	CIVScript::MarkCarAsNoLongerNeeded(&handle);
 	pIVVehicleFactory->Delete(m_pVehicle->GetVehicle());

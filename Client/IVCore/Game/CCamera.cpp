@@ -55,6 +55,9 @@ CCamera::~CCamera()
 	CIVScript::DestroyCam(g_pCore->GetGame()->GetPools()->GetCamPool()->HandleOf(m_pScriptCam->GetCam()));
 }
 
+void CCamera::Reset()
+{ }
+
 void CCamera::SetCameraPosition(CVector3 &vecPosition)
 {
 	if(!m_bUsingScriptingCam)

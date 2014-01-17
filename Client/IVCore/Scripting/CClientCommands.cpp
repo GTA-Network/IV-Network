@@ -184,12 +184,6 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPositon);
 		return true;
 	}
-	else if(strCommand == "time")
-	{
-		g_pCore->GetTimeManagementInstance()->SetTime(atoi(strParameters.Get()), 0);
-		CGameFunction::SetTimeOfDay(atoi(strParameters.Get()), 0);
-		return true;
-	}
 	else if(strCommand == "setmodel")
 	{
 		g_pCore->GetGame()->GetLocalPlayer()->SetModel(atoi(strParameters.Get()));

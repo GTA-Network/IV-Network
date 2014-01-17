@@ -1,16 +1,7 @@
-#ifndef CDOWNLOADMANAGER_H
-#define CDOWNLOADMANAGER_H
 
-class CDownloadManager
-{
-private:
-	RakNet::DirectoryDeltaTransfer* m_delta;
-public:
-	CDownloadManager(RakNet::DirectoryDeltaTransfer* pDelta);
-	~CDownloadManager();
-
-	void Process();
-};
+// TODO: rename this file
+#ifndef CDownloadManager_h
+#define CDownloadManager_h
 
 class TransferCB : public RakNet::FileListTransferCBInterface
 {
@@ -20,4 +11,4 @@ public:
 	bool OnDownloadComplete(DownloadCompleteStruct *dcs);
 };
 
-#endif
+#endif // CDownloadManager_h

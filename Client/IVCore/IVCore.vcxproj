@@ -191,7 +191,6 @@
     <ClCompile Include="..\..\Shared\CString.cpp" />
     <ClCompile Include="..\..\Shared\CXML.cpp" />
     <ClCompile Include="..\..\Shared\CZlib.cpp" />
-    <ClCompile Include="..\..\Shared\Game\CTime.cpp" />
     <ClCompile Include="..\..\Shared\Game\CTrafficLights.cpp" />
     <ClCompile Include="..\..\Shared\Network\CBitStream.cpp" />
     <ClCompile Include="..\..\Shared\Patcher\CPatcher.cpp" />
@@ -431,7 +430,6 @@
     <ClInclude Include="..\..\Shared\CSettings.h" />
     <ClInclude Include="..\..\Shared\CXML.h" />
     <ClInclude Include="..\..\Shared\CZlib.h" />
-    <ClInclude Include="..\..\Shared\Game\CTime.h" />
     <ClInclude Include="..\..\Shared\Game\CTrafficLights.h" />
     <ClInclude Include="..\..\Shared\Game\eGame.h" />
     <ClInclude Include="..\..\Shared\Network\CBitStream.h" />
@@ -460,7 +458,6 @@
     <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceManager.h" />
     <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceScriptFile.h" />
     <ClInclude Include="..\..\Shared\Scripting\ResourceSystem\CResourceServerScript.h" />
-    <ClInclude Include="..\RAGEEngine\RAGEInterface.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="Game\CCamera.h" />
     <ClInclude Include="Game\CCharacterManager.h" />

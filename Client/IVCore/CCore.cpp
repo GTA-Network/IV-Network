@@ -79,9 +79,6 @@ bool CCore::Initialize()
 	
 	// Create the game instance
 	m_pGame = new CGame;
-
-	// Create the time instance
-	m_pTimeManagement = new CTime;
 	
 	// Create the graphics instance
 	m_pGraphics = new CGraphics;
@@ -160,12 +157,6 @@ void CCore::OnGameLoad()
 
 	// Startup the network module
 	m_pNetworkManager->Startup();
-	
-	// Prepare the client in game elements
-	g_pCore->GetGame()->PrepareWorld();
-
-	// Finalize the client in game elements
-	g_pCore->GetGame()->OnClientReadyToGamePlay();
 
 	// Set the loading screen not visible
 	GetGraphics()->GetLoadingScreen()->SetVisible(false);
@@ -183,33 +174,24 @@ void CCore::OnGameUpdate()
 	if(GetNetworkManager())
 		GetNetworkManager()->Pulse();
 
-	// Pulse the time management interface
-	if(GetTimeManagementInstance())
-		GetTimeManagementInstance()->Pulse();
-
 	// Pulse our IV environment
 	if(GetGame())
-		GetGame()->ProcessEnvironment();
+		GetGame()->Process();
 
 	// Pulse fps counter
 	if (GetGraphics()->GetFPSCounter())
 		GetGraphics()->GetFPSCounter()->Pulse();
 
 	// Pulse the localplayer
-	if (g_pCore->GetGame()->GetLocalPlayer())
-		g_pCore->GetGame()->GetLocalPlayer()->Pulse();
+	if (GetGame()->GetLocalPlayer())
+		GetGame()->GetLocalPlayer()->Pulse();
 }
 
 void CCore::ConnectToServer(CString strHost, unsigned short usPort, CString strPass)
 {
-	// Declare our basic network connection
-	SetHost(strHost);
-	SetClientPort(usPort);
-	SetPass(strPass);
-
 	// Connect to the network
 	if(m_pNetworkManager)
-		m_pNetworkManager->Connect(GetHost(), (unsigned short) GetPort(), GetPass());
+		m_pNetworkManager->Connect(strHost, usPort, strPass);
 }
 
 void test()
@@ -355,9 +337,9 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	if(CSnapShot::IsDone()) 
 	{
 		if(CSnapShot::HasSucceeded())
-			GetGraphics()->GetChat()->Print(CString("Screen shot written (%s).", CSnapShot::GetWriteName().Get()));
+			GetGraphics()->GetChat()->Print(CString("Screenshot written (%s).", CSnapShot::GetWriteName().Get()));
 		else
-			GetGraphics()->GetChat()->Print(CString("Screen shot write failed (%s).", CSnapShot::GetError().Get()));
+			GetGraphics()->GetChat()->Print(CString("Screenshot write failed (%s).", CSnapShot::GetError().Get()));
 
 		CSnapShot::Reset();
 	}
@@ -419,12 +401,6 @@ void CCore::GetLoadedModule(DWORD dwProcessId)
     }
     CloseHandle(hProcess);
     return;
-}
-
-void CCore::OnNetworkShutDown()
-{
-	// Call destructor of cgame
-	g_pCore->GetGame()->~CGame();
 }
 
 void CCore::OnNetworkTimeout()

@@ -40,16 +40,6 @@
 #include <Network/CBitStream.h>
 #include <Math/CMaths.h>
 
-enum eGAMEStates
-{
-	GAME_STATE_NONE,
-	GAME_STATE_MAIN_MENU,
-	GAME_STATE_LOADING,
-	GAME_STATE_INGAME,
-	GAME_STATE_PAUSE_MENU,
-	GAME_STATE_IVN_PAUSE_MENU,
-};
-
 enum eWeather
 {
 	WEATHER_EXTRA_SUNNY,

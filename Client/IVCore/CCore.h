@@ -65,7 +65,6 @@
 #include <Graphics/CSnapShot.h>
 
 #include <General/CModuleManager.h>
-#include <Game/CTime.h>
 
 #ifdef _DEV
 #include <CDEV.h>
@@ -98,22 +97,11 @@ private:
 	CGraphics						* m_pGraphics = nullptr;
 	CNetworkManager					* m_pNetworkManager;
 
-
-
 	CChatBox						* m_pChatBox;
-
-
 	CResourceManager				* m_pResourceManager;
 
-	eGAMEStates						m_eGameState;
-
 	CString							m_strNick;
-	CString							m_strHost;
-	unsigned short					m_usPort;
-	CString							m_strPass;
 	CString							m_strServerName;
-
-	CTime							*m_pTimeManagement;
 
 	bool							m_hwndFocused;
 	BYTE							m_byteLoadingStyle;
@@ -144,7 +132,6 @@ public:
 	void							OnNetworkTimeout();
 
 	unsigned						GetBase() { return m_uiBaseAddress; }
-	unsigned						GetBaseAddress() { return m_uiBaseAddress; }
 
 
 	// TODO: move GUI FpsCount, MainMenu, CTags(rename to CNameTags) to CGraphics
@@ -158,27 +145,15 @@ public:
 	CAudioManager					* GetAudioManager() { return m_pAudioManager; }
 
 	CNetworkManager					* GetNetworkManager() { return m_pNetworkManager; }
-	CTime							* GetTimeManagementInstance() { return m_pTimeManagement; }
-	
-	
-	void							SetClientState(eGAMEStates pState) { m_eGameState = pState; }
-	eGAMEStates						GetClientState() { return m_eGameState; }
 
 	// Remove this here(dont know where to put atm)
 	void							SetNick( CString strNick ) { m_strNick = strNick; }
 	CString							GetNick( ) { return m_strNick; }
-	void							SetHost( CString strHost ) { m_strHost = strHost; }
-	CString							GetHost( ) { return m_strHost; }
-	void							SetClientPort( unsigned short usPort ) { m_usPort = usPort; }
-	unsigned short					GetPort( ) { return m_usPort; }
-	void							SetPass( CString strPass ) { m_strPass = strPass; }
-	CString							GetPass( ) { return m_strPass; }
 
 	void							SetServerName(CString strServerName) { m_strServerName = strServerName;  }
 	CString							GetServerName() { return m_strServerName; }
 
 	unsigned						GetGameLoadInitializeTime() { return m_uiGameInitializeTime; }
-	DWORD							SubStractAddressFromBase(DWORD dwAddress) { return (dwAddress-m_uiBaseAddress); }
 
 	void							GetLoadedModulesList();
 	void							GetLoadedModule(DWORD dwProcessId);
