@@ -199,8 +199,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 {
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(INVALID_PLAYER_PED);
 	m_vecPosition = CVector3();
-	memset(&m_lastControlState, NULL, sizeof(CControls));
-	memset(&m_ControlState, NULL, sizeof(CControls));
+	memset(&m_lastControlState, NULL, sizeof(CControlState));
+	memset(&m_ControlState, NULL, sizeof(CControlState));
 
 	m_LastSyncPacket.matrix.vecPosition = CVector3();
 
@@ -709,7 +709,7 @@ int CPlayerEntity::GetWantedLevel()
 	return 0;
 }
 
-void CPlayerEntity::SetControlState(CControls * pControlState)
+void CPlayerEntity::SetControlState(CControlState * pControlState)
 {
 	// Is the player spawned?
 	if(IsSpawned())
@@ -732,22 +732,22 @@ void CPlayerEntity::SetControlState(CControls * pControlState)
 	}
 
 	// Copy the current control state
-	memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
+	memcpy(&m_lastControlState, &m_ControlState, sizeof(CControlState));
 
 	// Copy the control state
-	memcpy(&m_ControlState, pControlState, sizeof(CControls));
+	memcpy(&m_ControlState, pControlState, sizeof(CControlState));
 }
 
-void CPlayerEntity::GetControlState(CControls * pControlState)
+void CPlayerEntity::GetControlState(CControlState * pControlState)
 {
 	// Copy the current controls
-	memcpy(pControlState, &m_ControlState, sizeof(CControls));
+	memcpy(pControlState, &m_ControlState, sizeof(CControlState));
 }
 
-void CPlayerEntity::GetLastControlState(CControls * pControlState)
+void CPlayerEntity::GetLastControlState(CControlState * pControlState)
 {
 	// Copy the last controls
-	memcpy(pControlState, &m_lastControlState, sizeof(CControls));
+	memcpy(pControlState, &m_lastControlState, sizeof(CControlState));
 }
 
 void CPlayerEntity::InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
@@ -1551,7 +1551,7 @@ void CPlayerEntity::KillPed(bool bInstantly)
 		SetHealth(0);
 
 		// Reset the control state
-		CControls * controlState = new CControls;
+		CControlState * controlState = new CControlState;
 		SetControlState(controlState);
 		SAFE_DELETE(controlState);
 

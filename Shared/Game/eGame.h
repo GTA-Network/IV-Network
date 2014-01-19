@@ -179,7 +179,7 @@ struct sPlayerEntity_StoreIVSynchronization
 	Matrix34		pWeaponCameraB;
 	Matrix34		pWeaponCameraC;
 	*/
-	CControls	   *pControls ;
+	CControlState	   *pControls ;
 	unsigned		uiPlayerIndex;
 	unsigned		uiJumpTime;
 };

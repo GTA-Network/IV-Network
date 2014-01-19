@@ -446,14 +446,15 @@ namespace SharedUtility
 		return szTime;
 	}
 
-	unsigned long GetTime()
+	long long GetTime()
 	{
 #ifdef _WIN32
 		return timeGetTime();
 #else
 		timeval ts;
 		gettimeofday(&ts,0);
-		return (DWORD)(ts.tv_sec * 1000 + (ts.tv_usec / 1000));
+		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
+		return (DWORD)(ts.tv_sec * 1000 + round(spec.tv_nsec / 1.0e6));
 #endif
 	}
 

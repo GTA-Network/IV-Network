@@ -225,7 +225,8 @@ enum eInput
 	INPUT_COUNT
 };
 
-class CControls {
+class CControls 
+{
 public:
 
 	unsigned char		ucOnFootMove[4];

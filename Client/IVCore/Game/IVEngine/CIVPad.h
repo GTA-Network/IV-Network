@@ -81,14 +81,14 @@ public:
 
 	bool			IsAnalogInput(eInput input);
 
-	void			ToControlState(CControls& controlState, bool bCurrent);
-	void			FromControlState(CControls controlState, bool bCurrent);
+	void			ToControlState(CControlState& controlState, bool bCurrent);
+	void			FromControlState(CControlState controlState, bool bCurrent);
 
-	void			SetCurrentControlState(CControls controlState);
-	void			GetCurrentControlState(CControls& controlState);
+	void			SetCurrentControlState(CControlState controlState);
+	void			GetCurrentControlState(CControlState& controlState);
 
-	void			SetLastControlState(CControls controlState);
-	void			GetLastControlState(CControls& controlState);
+	void			SetLastControlState(CControlState controlState);
+	void			GetLastControlState(CControlState& controlState);
 };
 
 #endif // CIVPad_h

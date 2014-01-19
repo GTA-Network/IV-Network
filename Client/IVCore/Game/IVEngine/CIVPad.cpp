@@ -143,7 +143,7 @@ bool CIVPad::IsAnalogInput(eInput input)
 	return false;
 }
 
-void CIVPad::ToControlState(CControls& controlState, bool bCurrent)
+void CIVPad::ToControlState(CControlState& controlState, bool bCurrent)
 {
 	// Do we not have a valid pad?
 	if(!m_pPad)
@@ -180,7 +180,7 @@ void CIVPad::ToControlState(CControls& controlState, bool bCurrent)
 	SET_BINARY_KEY(INPUT_VEH_ATTACK2,       controlState.keys.bHeliPrimaryFire);
 }
 
-void CIVPad::FromControlState(CControls controlState, bool bCurrent)
+void CIVPad::FromControlState(CControlState controlState, bool bCurrent)
 {
 	// Do we not have a valid pad?
 	if(!m_pPad)
@@ -217,25 +217,25 @@ void CIVPad::FromControlState(CControls controlState, bool bCurrent)
 	GET_BINARY_KEY(INPUT_VEH_ATTACK2,       controlState.keys.bHeliPrimaryFire);
 }
 
-void CIVPad::SetCurrentControlState(CControls controlState)
+void CIVPad::SetCurrentControlState(CControlState controlState)
 {
 	if(m_pPad)
 		FromControlState(controlState, true);
 }
 
-void CIVPad::GetCurrentControlState(CControls& controlState)
+void CIVPad::GetCurrentControlState(CControlState& controlState)
 {
 	if(m_pPad)
 		ToControlState(controlState, true);
 }
 
-void CIVPad::SetLastControlState(CControls controlState)
+void CIVPad::SetLastControlState(CControlState controlState)
 {
 	if(m_pPad)
 		FromControlState(controlState, false);
 }
 
-void CIVPad::GetLastControlState(CControls& controlState)
+void CIVPad::GetLastControlState(CControlState& controlState)
 {
 	if(m_pPad)
 		ToControlState(controlState, false);

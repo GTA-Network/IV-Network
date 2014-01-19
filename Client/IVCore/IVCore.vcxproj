@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;$(SolutionDir)\Client\IVCore\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
@@ -285,6 +285,8 @@
     <ClCompile Include="Graphics\Input.cpp" />
     <ClCompile Include="Hooks\CWin32MouseHook.cpp" />
     <ClCompile Include="Hooks\CXLive.cpp" />
+    <ClCompile Include="IV\CGameMainScript.cpp" />
+    <ClCompile Include="IV\CGameScript.cpp" />
     <ClCompile Include="IV\CIVStartupScript.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Network\CDownloadManager.cpp" />
@@ -536,6 +538,8 @@
     <ClInclude Include="Graphics\CGUI.h" />
     <ClInclude Include="Hooks\CWin32MouseHook.h" />
     <ClInclude Include="Hooks\CXLive.h" />
+    <ClInclude Include="IV\CGameMainScript.h" />
+    <ClInclude Include="IV\CGameScript.h" />
     <ClInclude Include="IV\CIVScript.h" />
     <ClInclude Include="IV\CIVScriptEnums.h" />
     <ClInclude Include="IV\CIVScript_FunctionContext.h" />

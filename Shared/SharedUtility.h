@@ -118,7 +118,7 @@ namespace SharedUtility
 
 	// TODO: TimeInit and TimeShutdown from Networked: IV
 	// 
-	unsigned long GetTime();
+	long long GetTime();
 
 	// Check if a path exists
 	bool Exists(const char * szPath);

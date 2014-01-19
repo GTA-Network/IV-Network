@@ -109,7 +109,7 @@ public:
 	void                     Write(const double &dIn) { WRITE_TEMPLATE(sizeof(double), dIn); }
 	void                     Write(const CString &strIn);
 	void                     Write(const CVector3 &vecIn);
-	//void                     Write(const CControlState &in);
+	//void                     Write(const CControlStatetate &in);
 
 	// Write any integral type compressed to the BitStream.
 	void                     WriteCompressed(const bool &bIn) { WRITE_COMPRESSED_TEMPLATE(sizeof(bool), bIn); }
@@ -138,7 +138,7 @@ public:
 	bool                     Read(double& dOut) { READ_TEMPLATE(sizeof(double), dOut); }
 	bool                     Read(CString &strOut);
 	bool                     Read(CVector3 &vecOut);
-	//bool                     Read(CControlState &out);
+	//bool                     Read(CControlStatetate &out);
 
 	// Read any compressed integral type from the BitStream.
 	bool                     ReadCompressed(bool &bOut) { READ_COMPRESSED_TEMPLATE(sizeof(bool), bOut); }

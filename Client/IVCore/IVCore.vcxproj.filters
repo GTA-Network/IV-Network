@@ -773,6 +773,12 @@
     <ClCompile Include="Network\CDownloadManager.cpp">
       <Filter>Source Files\Network</Filter>
     </ClCompile>
+    <ClCompile Include="IV\CGameScript.cpp">
+      <Filter>Source Files\Game\IV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="IV\CGameMainScript.cpp">
+      <Filter>Source Files\Game\IV\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -1539,6 +1545,12 @@
     </ClInclude>
     <ClInclude Include="Network\CDownloadManager.h">
       <Filter>Header Files\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CGameScript.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="IV\CGameMainScript.h">
+      <Filter>Header Files\Game\IV\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

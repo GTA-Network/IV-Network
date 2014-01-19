@@ -257,9 +257,48 @@ bool CServer::Startup()
 unsigned long m_ulLastProcess = 0;
 float delay;
 #include <thread>
+
+
+double PCFreq = 0.0;
+__int64 CounterStart = 0;
+
+void StartCounter()
+{
+#ifdef WIN32
+	LARGE_INTEGER li;
+	if (!QueryPerformanceFrequency(&li))
+		std::cout << "QueryPerformanceFrequency failed!\n";
+
+	PCFreq = double(li.QuadPart) / 1000.0;
+
+	QueryPerformanceCounter(&li);
+	CounterStart = li.QuadPart;
+#else
+	CounterStart = SharedUtility::GetTime();
+#endif
+}
+double GetCounter()
+{
+#ifdef WIN32
+	LARGE_INTEGER li;
+	QueryPerformanceCounter(&li);
+	return double(li.QuadPart - CounterStart) / PCFreq;
+#else
+	return double(SharedUtility::GetTime() - CounterStart);
+#endif
+}
+
+
+
 void CServer::Process()
 {
+	StartCounter();
+
+	unsigned long ulTime = SharedUtility::GetTime();
+
+
 	m_pNetworkModule->Pulse();
+
 
 
 	// Pulse all managers
@@ -287,7 +326,7 @@ void CServer::Process()
 
 
 	// Get the current time
-	unsigned long ulTime = SharedUtility::GetTime();
+	
 
 	// Is show fps enabled?
 	if (m_bShowFPS)
@@ -322,13 +361,10 @@ void CServer::Process()
 	}
 
 	// This only works for 1-1000 but this is good
-	delay = (1000.0f / (float)m_uiMaximumFPS) - (float) (ulTime - m_ulLastProcess);
+	delay = (1000.0f / m_uiMaximumFPS) - GetCounter();
 	if (delay > 0)
-		std::this_thread::sleep_for(std::chrono::microseconds((long long)(delay*1000)));
-
-	
-
-	m_ulLastProcess = SharedUtility::GetTime();
+		std::this_thread::sleep_for(std::chrono::milliseconds((long long)(delay)));
+	printf("%f %d\n", delay, m_uiMaximumFPS);
 }
 
 void CServer::Shutdown()

@@ -305,7 +305,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		vecPosition.fX += 2.0f;
 		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->SetPosition(vecPosition);
 	}
-	else if (strCommand = "vehicleSync")
+	else if (strCommand == "vehicleSync")
 	{
 		g_pCore->GetGame()->GetLocalPlayer()->PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(0), 0);
 		CVector3 vecPosition;

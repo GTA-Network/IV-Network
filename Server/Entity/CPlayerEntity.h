@@ -30,7 +30,7 @@ private:
 	CVector3	m_vecRoll;
 	bool		m_bDuckState;
 	float		m_fHeading;
-	CControls m_controlState;
+	CControlState m_controlState;
 
 	float		m_fHealth;
 	float		m_fArmour;
@@ -123,8 +123,8 @@ public:
 	void		SetWeaponShotTarget(const CVector3& vecShotTarget) { m_weaponData.vecShotAtTarget = vecShotTarget; }
 	CVector3	GetWeaponShotTarget() { return m_weaponData.vecShotAtTarget; }
 
-	void		SetControlState(const CControls& controlState) { m_controlState = controlState; }
-	void		GetControlState(CControls& controlState) { controlState = m_controlState; }
+	void		SetControlState(const CControlState& controlState) { m_controlState = controlState; }
+	void		GetControlState(CControlState& controlState) { controlState = m_controlState; }
 
 	void		SetPosition(const CVector3& vecPosition);
 

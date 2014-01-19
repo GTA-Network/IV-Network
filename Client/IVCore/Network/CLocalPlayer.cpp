@@ -145,7 +145,7 @@ void CLocalPlayer::Pulse()
 	if (IsSpawned())
 	{
 		// Copy the current control state to the previous control state
-		memcpy(&m_lastControlState, &m_ControlState, sizeof(CControls));
+		memcpy(&m_lastControlState, &m_ControlState, sizeof(CControlState));
 
 		// Update the current control state
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);

@@ -106,7 +106,7 @@ void CLogFile::Printf(const char * szFormat, ...)
 
 void CLogFile::PrintDebugf(const char * szFormat, ...)
 {
-#ifdef IVN_DEBUG
+#ifdef DEBUG
 	// Lock the mutex
 	m_mutex.TryLock(1);
 

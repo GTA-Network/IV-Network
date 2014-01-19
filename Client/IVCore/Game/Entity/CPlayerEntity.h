@@ -67,8 +67,8 @@ private:
 	BYTE									m_bytePlayerNumber;
 	CContextData							* m_pContextData;
 
-	CControls								m_lastControlState;
-	CControls								m_ControlState;
+	CControlState								m_lastControlState;
+	CControlState								m_ControlState;
 
 	CVehicleEntity							* m_pVehicle;
 	BYTE									m_byteSeat;
@@ -227,9 +227,9 @@ public: // Handles call functions
 	bool							Create();
 	bool							Destroy();
 
-	void							SetControlState(CControls * pControlState);
-	void							GetControlState(CControls * pControlState);
-	void							GetLastControlState(CControls * pControlState);
+	void							SetControlState(CControlState * pControlState);
+	void							GetControlState(CControlState * pControlState);
+	void							GetLastControlState(CControlState * pControlState);
 
 	void							PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
 	void							RemoveFromVehicle();

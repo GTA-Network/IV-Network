@@ -31,21 +31,99 @@
 #ifndef Common_h
 #define Common_h
 
-// Common definitions for both client and server, windows and linux (structs, etc).
-
-#ifdef _WIN32
-#include <WinSock2.h>
-#include <Windows.h>
-#include <windowsx.h>
+#if _WIN64 || __x86_64__ || __ppc64__
+#define IS64BIT 1
+#else
+#define IS64BIT 0
 #endif
+
+#if defined(_WIN64) || defined(_WIN32)
+#ifdef WIN32
+#undef WIN32
+#endif
+#define WIN32 1
+#elif __APPLE__
+#define MAC 1
+#elif __linux
+#define LINUX 1
+#elif __unix
+#define UNIX 1
+#elif __posix
+#define POSIX 1
+#endif
+
+#if WIN32
+#include <yvals.h>
+#if __cplusplus <= 199711L && _HAS_CPP0X == 0
+#error "Please use at least Visual Studio 2013. This project was developed using VS2013 and/or GCC 4.8."
+#else
+// Check if all used features are vailable
+#if !defined(_CPPLIB_VER) || _CPPLIB_VER < 610
+#error "Use at least VS2013."
+#endif
+
+#if !defined(_HAS_DECLTYPE) || _HAS_DECLTYPE < 1
+#error "Decltype is required. Use at least VS2013."
+#endif
+
+#if !defined(_HAS_INITIALIZER_LISTS) || _HAS_INITIALIZER_LISTS < 1
+#error "Initialiizer lists is required. Use at least VS2013."
+#endif
+
+//#if !defined(_HAS_REF_QUALIFIER) || _HAS_REF_QUALIFIER < 1
+//#error "Please use at least VS2013."
+//#endif
+
+#if !defined(_HAS_RVALUE_REFERENCES) || _HAS_RVALUE_REFERENCES < 1
+#error "Rvalue References is required. Use at least VS2013."
+#endif
+
+#if !defined(_HAS_SCOPED_ENUM) || _HAS_SCOPED_ENUM < 1
+#error "Scoped enum is required. Use at least VS2013."
+#endif
+
+#if !defined(_HAS_TEMPLATE_ALIAS) || _HAS_TEMPLATE_ALIAS < 1
+#error "Template alias is required. Use at least VS2013."
+#endif
+
+#if !defined(_HAS_VARIADIC_TEMPLATES) || _HAS_VARIADIC_TEMPLATES < 1
+#error "Variadic templates is required. Use at least VS2013."
+#endif
+
+#endif
+#elif LINUX
+#if __GNUC__ < 4 || (__GNUC__ < 4 && __GNUC_MINOR__ < 7) || (__GNUC__ < 4 && __GNUC_MINOR__ < 7 && __GNUC_PATCHLEVEL__ < 2)
+#error "Use at least GCC 4.7.2"
+#endif 
+
+#if __cplusplus <= 199711L
+if !defined(__GXX_EXPERIMENTAL_CXX0X__) || __GXX_EXPERIMENTAL_CXX0X__ != 1
+#error "C++11 is required. Try --std=c++0x"
+#endif
+#endif
+
+#if _DEBUG == 1 && !defined(DEBUG)
+#define DEBUG
+#endif
+
+// at this point we can use C++11
+
+#ifdef WIN32
+#include <WinSock2.h> // Just to be sure that there will never be a fucking include guard error
+#include <Windows.h>
+#include <iostream>
+#endif
+
+
+// IVNetwork crap
+// TODO: clean up
+
+// DirectX Input version
+#define DIRECTINPUT_VERSION 0x0800
 
 // include
 #include "CColor.h"
 #include "CString.h"
-
-// typedef
-//typedef CString string;							// CString class defined is in /Shared/CString.h
-typedef unsigned short EntityId;
 
 #ifdef _CLIENT
 using namespace std; // Conflicts with string(std::string) in network stuff
@@ -68,33 +146,16 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #include	"Network\CBitStream.h"
 #endif
 
+
+// typedef
+//typedef CString string;							// CString class defined is in /Shared/CString.h
+typedef unsigned short EntityId;
+
+
 #include "CNetSync.h"
 
-// If compiling in debug mode force mod debug mode
-#ifdef _DEBUG
-#undef IVN_DEBUG
-#define IVN_DEBUG 1
-#endif
-
-// DirectX Input version
-#define DIRECTINPUT_VERSION 0x0800
-
-// Forced debug
-#ifdef FORCE_DEBUG
-#ifndef IVN_DEBUG
-#define IVN_DEBUG 1
-#endif
-#endif
-
-// Forced release
-#ifdef FORCE_RELEASE
-#ifdef IVN_DEBUG
-#undef IVN_DEBUG
-#endif
-#endif
-
 // Version defines
-#ifdef IVN_DEBUG
+#ifdef DEBUG
 #define DEBUG_IDENTIFIER " - Debug"
 #else
 #define DEBUG_IDENTIFIER
@@ -217,5 +278,6 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 #define GET_RPC_CODEX(x) CString("IVN0xF%dF", int(x)).Get()
 #define CHECK_VALID(x) if(!x) return false;
 #define CHECK_VALID_VOID(x) if(!x) return;
+
 
 #endif // Common_h
