@@ -37,6 +37,7 @@
 class IVObject;
 
 
+#pragma pack(1)
 class IVPedWeapons
 {
 public:
@@ -53,6 +54,7 @@ public:
 	BYTE m_byteAccuracy;                        // 0D9-0DA
 	PAD(IVPedWeapons, pad4, 0x40);              // 0DA-11A
 };
+#pragma pack()
 
 class CIVObject;
 class CIVPed;

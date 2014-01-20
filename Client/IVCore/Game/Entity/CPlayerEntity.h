@@ -292,8 +292,8 @@ public: // Handles call functions
 	CNetworkPlayerSyncPacket		GetLastSyncPacket() { return m_LastSyncPacket; }
 	void							SetLastSyncPacket(const CNetworkPlayerSyncPacket& Packet) { m_LastSyncPacket = Packet; }
 
-	void SerializeTaskInfo(RakNet::BitStream * pBitStream, IVPed* m_pPlayerPed);
-	void DeserializeTaskInfo(RakNet::BitStream* pBitStream, IVPed* m_pPlayerPed);
+	void SerializeTaskInfo(RakNet::BitStream * pBitStream);
+	void DeserializeTaskInfo(RakNet::BitStream* pBitStream);
 	
 	CString							GetDebugText();
 };

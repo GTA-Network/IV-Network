@@ -39,6 +39,7 @@
 #include <IV/CIVScriptEnums.h>
 #include "CIVWeaponInfo.h"
 
+#pragma pack(push, 1)
 class IVPhysical : public IVDynamicEntity
 {
 public:
@@ -76,6 +77,7 @@ public:
 		virtual void			Function70();
 		virtual void			Function71();
 };
+#pragma pack(pop)
 
 class CIVPhysical : public CIVDynamicEntity
 {

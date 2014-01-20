@@ -33,6 +33,7 @@
 
 #include <IV/IVCommon.h>
 
+#pragma pack(push, 1)
 class IVPedMoveBlendBase
 {
 public:
@@ -124,7 +125,7 @@ public:
 
 	virtual ~IVPedMoveBlendOnFoot();
 };
-
+#pragma pack(pop)
 class CIVPedMoveBlendOnFoot
 {
 public:

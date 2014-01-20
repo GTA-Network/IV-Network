@@ -303,7 +303,7 @@ void CPlayerEntity::Pulse()
 bool CPlayerEntity::Create()
 {
 	// Is this the localplayer or are we alread spawned?
-	if(IsLocalPlayer() && IsSpawned())
+	if (IsLocalPlayer() && IsSpawned())
 		return false;
 
 	// Add our model reference and load the model
@@ -313,7 +313,7 @@ bool CPlayerEntity::Create()
 	m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->FindFreePlayerInfoIndex();
 
 	// Invalid player number?
-	if(m_bytePlayerNumber == INVALID_PLAYER_PED)
+	if (m_bytePlayerNumber == INVALID_PLAYER_PED)
 		return false;
 
 	// Create the player info instance
@@ -325,48 +325,15 @@ bool CPlayerEntity::Create()
 	// Set the game player info pointer
 	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
-#ifdef TASKINFO_TEST
-	WORD wPlayerData = MAKEWORD(m_bytePlayerNumber, 1);
-	Matrix34 matrix;
-	IVPlayerPed * pPlayerPed = (IVPlayerPed*)g_pPedFactory->CreatePlayerPed(&wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber, &matrix, false);
-
-	// Ensure the ped was allocated
-	if (!pPlayerPed)
-		return true;
-
-	sub_846CC0(m_pPlayerInfo->GetPlayerInfo(), pPlayerPed);
-
-	IVTask * pCTaskSimpleNetworkClone = CTaskSimpleNetworkClone__CTaskSimpleNetworkClone();
-	if (pCTaskSimpleNetworkClone)
-		CPedTaskManager__AssignPriorityTask(&pPlayerPed->m_pPedIntelligence->m_pedTaskManager, pCTaskSimpleNetworkClone, 4, false);
-
-	void* pNetObjPlayer = (void*)pPlayerPed->CreateNetworkObject(sub_4FF7C0(&dword_188CD50), 0, 0, 0, 32);
-	sub_4FD0E0(&dword_188CD50, pNetObjPlayer);
-
-	pPlayerPed->field_41 = 2;
-#else
 	// Allocate the player ped
 	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
-#endif
+
 	CLogFile::Printf("CREATE: m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed);
 
 	// Ensure the ped was allocated
-	if(!pPlayerPed)
+	if (!pPlayerPed)
 		return false;
 
-	// Set the player info
-	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
-
-	// Set our player info with the ped
-	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
-
-	// Create the player ped instance
-	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
-
-	// Set the context data player ped pointer
-	m_pContextData->SetPlayerPed(m_pPlayerPed);
-
-#ifndef TASKINFO_TEST
 	// Create the ped
 	WORD wPlayerData = MAKEWORD(0, 1);
 	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
@@ -378,12 +345,33 @@ bool CPlayerEntity::Create()
 	_asm  push COffsets::IV_Var__PedFactory;
 	_asm  mov edi, pMatrix;
 	_asm  mov esi, pPlayerPed;
-	_asm  call COffsets::IV_Func__SetupPed;	// Set the player state to spawned
+	_asm  call COffsets::IV_Func__SetupPed;
+
+	// Set the player info
+	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
+
+	// Set the player state to spawned
 	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
 	*(DWORD *)((char*)pPlayerPed + 0x260) |= 1u;
 
+	// Set our player info with the ped
+	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
+
+	// Create the player ped instance
+	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
+
+	// Set the context data player ped pointer
+	m_pContextData->SetPlayerPed(m_pPlayerPed);
+
 	// Setup ped intelligence
 	((void(__thiscall*) (IVPed *, BYTE)) (COffsets::IV_Func__SetupPedIntelligence))(pPlayerPed, 2);
+
+	// Add to the world
+	m_pPlayerPed->AddToWorld();
+
+	// Create the player blip
+	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	CIVTaskComplexPlayerOnFoot * pTask = new CIVTaskComplexPlayerOnFoot();
 	if (pTask)
@@ -397,14 +385,6 @@ bool CPlayerEntity::Create()
 
 	// Disable shot los
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
-#endif	
-
-	// Add to the world
-	m_pPlayerPed->AddToWorld();
-
-	// Create the player blip
-	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	// Mark as spawned
 	m_bSpawned = true;
@@ -1801,7 +1781,8 @@ void CPlayerEntity::SetCurrentWeapon(unsigned uiWeaponId)
 unsigned CPlayerEntity::GetCurrentWeapon()
 {
 	if (IsSpawned())
-		return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetType();
+		if (m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon())
+			return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetType();
 
 	return eWeaponType::WEAPON_TYPE_UNARMED;
 }
@@ -1957,12 +1938,16 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		pBitStream->Read(PlayerPacket);
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-
+		RemoveAllWeapons();
 		if (GetCurrentWeapon() != PlayerPacket.weapon.weaponType)
+		{
 			GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our current weapon
-		if (GetAmmunation(PlayerPacket.weapon.iAmmo) != PlayerPacket.weapon.iAmmo) // Do we not have the right ammo?
+			
+		}
+		if (GetAmmunation(PlayerPacket.weapon.weaponType) != PlayerPacket.weapon.iAmmo) // Do we not have the right ammo?
 			SetAmmunation(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our ammo
 
+		SetCurrentWeapon(PlayerPacket.weapon.weaponType);
 
 		if (!IsGettingIntoAVehicle()
 			&& !IsGettingOutOfAVehicle())
@@ -2289,9 +2274,11 @@ CIVTaskInfo* CreateTaskInfoById(int taskid)
 #define applyTaskInfo ((void(__thiscall *)(IVTaskInfo **, IVTaskInfo*))((g_pCore->GetBase() + 0xA1D980)))
 #define processTaskInfo ((void(__stdcall *)(DWORD, IVPed*))((g_pCore->GetBase() + 0x525CE0)))
 
-void CPlayerEntity::SerializeTaskInfo(RakNet::BitStream * pBitStream, IVPed* m_pPlayerPed)
+void CPlayerEntity::SerializeTaskInfo(RakNet::BitStream * pBitStream)
 {
-	IVTaskInfo * pTaskInfo = m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo;
+	IVTaskInfo * pTaskInfo = m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo;
+	if (!pTaskInfo)
+		return;
 	do
 	{
 		pBitStream->Write(pTaskInfo->GetType());
@@ -2305,12 +2292,12 @@ void CPlayerEntity::SerializeTaskInfo(RakNet::BitStream * pBitStream, IVPed* m_p
 	while (pTaskInfo = pTaskInfo->subTaskInfo);
 }
 
-void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream, IVPed* m_pPlayerPed)
+void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream)
 {
 	if (!m_pPlayerPed)
 		return;
 
-	deleteTaskInfo(&m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo);
+	deleteTaskInfo(&m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo);
 
 	int TaskId;
 	if (pBitStream->Read(TaskId))
@@ -2327,13 +2314,13 @@ void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream, IVPed* m_
 					return;
 				}
 
-				applyTaskInfo(&m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo, pCTaskInfo->GetTaskInfo());
+				applyTaskInfo(&m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo, pCTaskInfo->GetTaskInfo());
 				delete pCTaskInfo;
 			}
 		}
 		while (pBitStream->Read(TaskId));
 
-		processTaskInfo(m_pPlayerPed->m_pNetworkObject + 2056, m_pPlayerPed);
+		processTaskInfo(m_pPlayerPed->GetPed()->m_pNetworkObject + 2056, m_pPlayerPed->GetPed());
 	}
 }
 
@@ -2429,7 +2416,9 @@ CString CPlayerEntity::GetDebugText()
 	{
 		IVPed* pIVPed = m_pPlayerPed->GetPed();
 
-		IVPedMoveBlendOnFoot *pPedMoveBlendOnFoot = pIVPed->m_pPedMoveBlendOnFoot;
+		IVPedMoveBlendOnFoot *pPedMoveBlendOnFoot = pIVPed->m_pPedMoveBlendOnFoot; // (IVPedMoveBlendOnFoot*)((char*)pIVPed + 0xA90);
+		if (!pPedMoveBlendOnFoot)
+			return "";
 		strDebug += (CString("m_pNetworkObject: %s [0x%x]", pIVPed->m_pNetworkObject ? "Created" : "Not created", pIVPed->m_pNetworkObject));
 		strDebug += "\n";
 		strDebug += (CString("MoveBlend(v(%f, %f), vDest(%f, %f), AnimGroup: %d", pPedMoveBlendOnFoot->fX, pPedMoveBlendOnFoot->fY, pPedMoveBlendOnFoot->destX, pPedMoveBlendOnFoot->destY, pPedMoveBlendOnFoot->m_dwAnimGroup));
@@ -2442,20 +2431,23 @@ CString CPlayerEntity::GetDebugText()
 		strDebug += "\n";
 		strDebug += (CString("MoveBlend(44:%d,48:%f,4C:%d,50:%d)", pPedMoveBlendOnFoot->field_44, pPedMoveBlendOnFoot->field_48, pPedMoveBlendOnFoot->field_4C, pPedMoveBlendOnFoot->m_dwFlags));
 		strDebug += "\n";
-		if (pIVPed->m_pPedIntelligence->m_pTaskInfo)
+		if (pIVPed->m_pPedIntelligence)
 		{
-			strDebug += (CString("TaskInfo [%s]", GetTaskName(pIVPed->m_pPedIntelligence->m_pTaskInfo->m_dwTaskId)));
-			strDebug += "\n";
-			strDebug += (CString("%s", MakeTaskInfoDebugString(pIVPed->m_pPedIntelligence->m_pTaskInfo).Get()));
-			strDebug += "\n";
-			IVTaskInfo * pTaskInfo = pIVPed->m_pPedIntelligence->m_pTaskInfo->subTaskInfo;
-			while (pTaskInfo)
+			if (pIVPed->m_pPedIntelligence->m_pTaskInfo)
 			{
-				strDebug += (CString("subTaskInfo [%s]", GetTaskName(pTaskInfo->m_dwTaskId)));
+				strDebug += (CString("TaskInfo [%s]", GetTaskName(pIVPed->m_pPedIntelligence->m_pTaskInfo->m_dwTaskId)));
 				strDebug += "\n";
-				strDebug += (CString("%s", MakeTaskInfoDebugString(pTaskInfo).Get()));
+				strDebug += (CString("%s", MakeTaskInfoDebugString(pIVPed->m_pPedIntelligence->m_pTaskInfo).Get()));
 				strDebug += "\n";
-				pTaskInfo = pTaskInfo->subTaskInfo;
+				IVTaskInfo * pTaskInfo = pIVPed->m_pPedIntelligence->m_pTaskInfo->subTaskInfo;
+				while (pTaskInfo)
+				{
+					strDebug += (CString("subTaskInfo [%s]", GetTaskName(pTaskInfo->m_dwTaskId)));
+					strDebug += "\n";
+					strDebug += (CString("%s", MakeTaskInfoDebugString(pTaskInfo).Get()));
+					strDebug += "\n";
+					pTaskInfo = pTaskInfo->subTaskInfo;
+				}
 			}
 		}
 	}

@@ -267,9 +267,10 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 
 	if (GetGame()->GetLocalPlayer())
 		g_pCore->GetGraphics()->DrawText(600.0f + 0, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetLocalPlayer()->GetDebugText().Get());
-
-	if (GetGame()->GetPlayerManager()->DoesExists(1))
-		g_pCore->GetGraphics()->DrawText(600.0f + 600, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetPlayerManager()->GetAt(1)->GetDebugText().Get());
+	
+	if (GetGame()->GetPlayerManager())
+		if (GetGame()->GetPlayerManager()->DoesExists(1))
+			g_pCore->GetGraphics()->DrawText(600.0f + 600, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetPlayerManager()->GetAt(1)->GetDebugText().Get());
 #endif
 
 	CString strInformation = usPing == 0xFFFF ? CString("%s%s", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get()) : CString("%s%s | Ping %hu", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get(), usPing);

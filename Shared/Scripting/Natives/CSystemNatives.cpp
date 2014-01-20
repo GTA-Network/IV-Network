@@ -68,8 +68,6 @@ int CSystemNatives::Date(int * VM)
 			pVM->Pop(iCustomTime);
 	}
 
-	CLogFile::Printf("%d", pVM->GetArgumentCount());
-
 	if (iCustomTime != 0)
 		tTime = iCustomTime;
 	else
