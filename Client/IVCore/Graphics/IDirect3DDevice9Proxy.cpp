@@ -280,8 +280,6 @@ HRESULT __stdcall IDirect3DDevice9Proxy::BeginScene()
 
 HRESULT __stdcall IDirect3DDevice9Proxy::EndScene()
 {
-	g_pCore->OnGameUpdate();
-
 	// Call the client render function
 	g_pCore->OnDeviceRender( m_pDevice );
 

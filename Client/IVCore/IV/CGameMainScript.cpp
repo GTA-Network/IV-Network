@@ -44,6 +44,7 @@ namespace EFLC
 
 		while (m_Context.State != ThreadStateKilled)
 		{
+			g_pCore->OnGameUpdate();
 			SwitchToFiber(pMainFiber);
 		}
 	}
