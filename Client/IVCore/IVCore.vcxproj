@@ -79,6 +79,10 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CLIENT;_CRT_SECURE_NO_WARNINGS;_WINDLL;CEGUI_STATIC;LOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
