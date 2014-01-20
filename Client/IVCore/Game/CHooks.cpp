@@ -298,6 +298,81 @@ void _declspec(naked) PhysicsHook()
 	_asm	retn;
 }
 
+
+IVPed* gped = nullptr;
+DWORD dwJmp = 0;
+
+void _declspec(naked) _hook_9E6480()
+{
+	_asm
+	{
+		mov eax, [ecx + 40h]
+		mov gped, eax
+		pushad
+	}
+
+	if (gped->m_bytePlayerNumber && gped->m_byteIsPlayerPed)
+	{
+
+		// TODO: set some stuff in the netblender
+		/*
+		NetBlender* = *(DWORD *)(gped->m_pNetworkObject + 28)
+		*/
+		if (gped->m_pNetworkObject)
+			((int(__stdcall *)(int, IVPed *))((g_pCore->GetBase() + 0x525C20)))(gped->m_pNetworkObject + 2056, gped);
+
+		_asm
+		{
+			popad
+				retn
+		}
+	}
+
+	dwJmp = (g_pCore->GetBase() + 0x9E648A);
+	_asm
+	{
+		popad
+		push    esi
+		push    edi
+		mov     edi, ecx
+		lea     esi, [edi + 2E0h]
+		jmp		dwJmp
+	}
+}
+
+void _declspec(naked) _hook_9E656F()
+{
+	_asm
+	{
+		mov     eax, [ecx + 38h]
+		mov		gped, eax
+		pushad
+	}
+
+	if (gped->m_bytePlayerNumber && gped->m_byteIsPlayerPed)
+	{
+
+		gped->m_pPedMoveBlendOnFoot->m_dwFlags |= 0x2000u;
+		((void(__thiscall *)(IVPedMoveBlendOnFoot*, DWORD))((g_pCore->GetBase() + 0xB10C30)))(gped->m_pPedMoveBlendOnFoot, 1);
+
+		// TODO: set the move speed in moveblendonfoot
+
+		gped->m_pPedMoveBlendOnFoot->Function19();
+		gped->IVPed_pad16[40] |= 2u;
+		_asm
+		{
+			popad
+			retn
+		}
+	}
+	dwJmp = (g_pCore->GetBase() + 0x9E3DA0);
+	_asm
+	{
+		popad
+		jmp dwJmp
+	}
+}
+
 void __cdecl renderMenus() //render Main and pause menu
 {
 	//g_pCore->GetGraphics()->GetChat()->Print("sub_4774A0()");
@@ -444,15 +519,9 @@ void CHooks::Intialize()
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
 
 	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47BA60, (DWORD) sub_47BA60);
-
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
 	
-	// Disable check to invalid threads
-	g_pRageScriptThread = new sRAGETHREAD;
-	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x82E7E0, (DWORD) GetRunningScriptThread, 5);
-
 	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&IVPoolOwns::IVPoolHook));
 
 	//Replace loading text
@@ -483,93 +552,10 @@ void CHooks::Intialize()
 	*(DWORD*)(g_pCore->GetBase() + 0x8DC8FD) = 0xFF38F5D8; //Set scrollbars's color to blue
 #endif
 
-
-	//m_Patcher.UnprotectSection(".text");
-	//m_Patcher.UnprotectSection(".data");
-	//m_Patcher.UnprotectSection(".rdata");
-
-	//m_XLivePatcher.UnprotectSection(".text");
-	//m_XLivePatcher.UnprotectSection(".data");
-	//m_XLivePatcher.UnprotectSection(".rdata");
-
-
-	////disable xlive's memory check protection
-	//DWORD addr = m_XLivePatcher.FindPattern("7414FF75148BCEFF751053E8");
-	//if (addr != NULL)
-	//	m_XLivePatcher.EditByte(addr, 0xEB);
-	//addr = m_XLivePatcher.FindPattern("8BFF558BEC83EC205356578D45E0");
-	//if (addr != NULL)
-	//	m_XLivePatcher.EditDword(addr, 0x90000CC2);
-
-	//m_Patcher.EditDword(0x47316F, (DWORD)"IV:Network"); //chnage window name
-
-	//pPatcher->EditDword(0x401855, 0); //remove start sleep
-#if 0
-	*(BYTE*)(g_pCore->GetBase() + 0x7CA700) = 0xC3; //disable error reporting
-
-	//bypass rockstar social club
-	//m_Patcher.JMP(0x7E0150, EFLC::Hooks::isConnectedToSocialClub, true);
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x477324, g_pCore->GetBase() + 0x47747F);
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x48436A, g_pCore->GetBase() + 0x48437F);
-	
-	//do not ping http://www.rockstargames.com on starup
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x475EC5, 5);
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x475EDC, 8);
-
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x492D9B, 5); //do not load scrollbars.dat
-
-	char* text = "Welcome to IV:Network. Have fun!"; //scrollbars text
-
-	for (int i = 0; i < 8; ++i) //set scrollbars text
-	{
-		memcpy((char*)((g_pCore->GetBase() + 0x11B4508) + (1300 * i)), text, strlen(text)); //max len: 1300
-		((char*)((g_pCore->GetBase() + 0x11B4508) + (1300 * i)))[strlen(text)] = '\0';
-	}
-
-
-	*(DWORD*)(g_pCore->GetBase() + 0x8DC8FD) = 0xFF38F5D8; //Set scrollbars's color to blue
-
-	//m_Patcher.CALL(0x834093, EFLC::Hooks::onStartStartupThread, true);
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
-
-	/*m_Patcher.JMP(0x473432, 0x4734F7); //automatice start game
-	m_Patcher.JMP(0x6DECB1, 0x6DED5F);
-	m_Patcher.EditByte(0x853073, 0xE0);*/
-
-	//remove CREATE_PLAYER last arg
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0xBFF6F2, 3);
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0xBFF6F8, 2);
-
-	//m_Patcher.Detour(&EFLC::Hooks::_sub_9E6480, 0x9E6480, EFLC::Hooks::this_is_a_fuckin_thiscall::sub_9E6480);
-
-	//Replace loading text
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D0E, 2);
-	*(BYTE*)(g_pCore->GetBase() + 0x7E2D10) = 0xEB;
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D24, 8);
-	*(BYTE*)(g_pCore->GetBase() + 0x7E2D31) = 0xEB;
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D77, 2);
-	*(BYTE*)(g_pCore->GetBase() + 0x7E2D79) = 0xEB;
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D9A, 11);
-	*(BYTE*)(g_pCore->GetBase() + 0x7E2DA5) = 0xEB;
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2DF2, 5);
-	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x7E2DF7, (DWORD)GetLoadingText);
-	*(BYTE*)(g_pCore->GetBase() + 0x7E2E0B) = 4;
+#ifdef TASKINFO_TEST
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x9E656F, (DWORD)_hook_9E656F);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x9E6480, (DWORD)_hook_9E6480);
 #endif
-	//junksta:
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x5138C4, 10);
-	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x5138F7, 6);
-
-	//EFLC::Hooks::sub_4B3EE0 = (g_pCore->GetBase() + 0x4B3EE0;
-	//EFLC::Hooks::addr_8F4DC8 = (g_pCore->GetBase() + 0x8F4DC8);
-	//m_Patcher.JMP(0x8F4DC0, EFLC::Hooks::sub_8F4DC0, true);
-
-	/*m_Patcher.EditDword(0x4FC0D1, 0x90DB3353);
-	m_Patcher.EditWord(0x4FC0FD, 0xC35B);
-	m_Patcher.EditDword(0x4FF40F, 0x9057FF33);
-	m_Patcher.EditWord(0x4FF43A, 0xC35F);
-	m_Patcher.EditDword(0x4FC130, 0x90DB3355);
-	m_Patcher.EditWord(0x4FC15C, 0xC359);*/
-
-	//UI:
-	//m_Patcher.JMP(0x81A770, EFLC::Hooks::this_is_a_fuckin_thiscall::sub_81A770, true);
+	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x5138C4, 10);
+	//CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x5138F7, 6);
 }

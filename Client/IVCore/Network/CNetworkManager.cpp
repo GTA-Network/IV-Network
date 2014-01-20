@@ -143,13 +143,6 @@ void CNetworkManager::Connect(CString strHost, unsigned short usPort, CString st
 		m_uiLastConnectionTry = (unsigned int)SharedUtility::GetTime();
 	}
 
-	CGUI* pGUI = g_pCore->GetGraphics()->GetGUI();
-	if (pGUI)
-	{
-		//pGUI->ClearView(CGUI::GUI_SERVER);
-		//pGUI->SetView(CGUI::GUI_SERVER);
-	}
-
 	// Output the connection message
 	g_pCore->GetGraphics()->GetChat()->Print(CString("#16C5F2%s", strMessage.Get()));
 }
@@ -188,16 +181,12 @@ void CNetworkManager::Shutdown(int iBlockDuration, bool bShowMessage)
 
 void CNetworkManager::Pulse()
 {
-	// Is the game not loaded?
-	if(!g_pCore->IsGameLoaded())
-		return;
-
 	// Are we disconnected from the network?
 	if(GetNetworkState() == NETSTATE_DISCONNECTED)
 		return;
 
 	// Should we try connecting again?
-	if(GetNetworkState() == NETSTATE_TIMEOUT && ((unsigned short)SharedUtility::GetTime() - m_uiLastConnectionTry) >= NETWORK_TIMEOUT)
+	if(GetNetworkState() == NETSTATE_TIMEOUT && (SharedUtility::GetTime() - m_uiLastConnectionTry) >= NETWORK_TIMEOUT)
 	{
 		// Attempt to reconnect
 		Connect(m_strIp, m_usPort, m_strPass);
@@ -211,16 +200,6 @@ void CNetworkManager::Pulse()
 
 	// Process the network
 	UpdateNetwork();
-
-	// Are we connected?
-	if(IsConnected())
-	{
-		// Pulse the player manager
-		g_pCore->GetGame()->GetPlayerManager()->Pulse();
-
-		// Pulse the vehicle manager
-		g_pCore->GetGame()->GetVehicleManager()->Pulse();
-	}
 }
 
 void CNetworkManager::Call(const char * szIdentifier, RakNet::BitStream * pBitStream, PacketPriority priority, PacketReliability reliability, bool bBroadCast)

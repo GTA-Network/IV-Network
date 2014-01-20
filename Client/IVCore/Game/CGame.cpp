@@ -249,7 +249,6 @@ void CGame::Process()
 	if(!g_pCore->GetGame()->GetLocalPlayer())
 		return;
 
-	// If our player manager exists, process it
 	if (m_pPlayerManager)
 		m_pPlayerManager->Pulse();
 
@@ -258,6 +257,10 @@ void CGame::Process()
 
 	if (m_pCheckpointManager)
 		m_pCheckpointManager->Pulse();
+
+	// LocalPlayer should be in playermanager! Remove this?
+	if (m_pLocalPlayer)
+		m_pLocalPlayer->Pulse();
 
 	/*unsigned char ucHour = 0, ucMinute = 0; // deleted by jmpback from func
 	int uGameHour = 0, uGameMinute = 0; // deleted by jmpback from func

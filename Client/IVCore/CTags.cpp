@@ -51,13 +51,10 @@ CTags::~CTags()
 void CTags::Draw()
 {
 	CGraphics * pGraphics = g_pCore->GetGraphics();
-	CGUI * m_pGUI = pGraphics->GetGUI();
 	CPlayerManager * pPlayerManager = g_pCore->GetGame()->GetPlayerManager();
 	CLocalPlayer * pLocalPlayer = g_pCore->GetGame()->GetLocalPlayer();
 
-	// Does the graphis even exist?
-	if (!pGraphics || !pGraphics->GetDevice())
-		return;
+	assert(pGraphics);
 
 	// Do our local player exist and is he spawned?
 	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned())

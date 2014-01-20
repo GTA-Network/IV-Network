@@ -28,15 +28,13 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef EPISODEMANAGER_H
-#define EPISODEMANAGER_H
+#ifndef EpisodeManager_h
+#define EpisodeManager_h
 
 class EpisodeManager
 {
-	EpisodeManager() { }
-	~EpisodeManager() { }
 public:
 	static void Initialize();
 };
 
-#endif //EPISODEMANAGER_H
+#endif //EpisodeManager_h

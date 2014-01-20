@@ -71,22 +71,15 @@
 #endif
 
 #include <audio/CAudioManager.h>
-
-#include <IV/CIVStartupScript.h>
-
 #include "Game/EpisodeManager.h"
-
 #include <Network/CHttpClient.h>
-
 #include <Scripting/ResourceSystem/CResourceManager.h>
-
 #include <RakNet/RakNetStatistics.h>
 
 class CCore 
 {
 private:
 	bool							m_bInitialized = false;
-	bool							m_bGameLoaded = false;
 	unsigned						m_uiBaseAddress;
 	unsigned						m_uiGameInitializeTime;
 
@@ -98,7 +91,6 @@ private:
 	CCamera							* m_pCamera = nullptr;
 	CHttpClient						* m_pHttpClient = nullptr;
 	CAudioManager					* m_pAudioManager = nullptr;
-	CIVStartupScript				* m_pIVStartupScript = nullptr;
 
 	CString							m_strServerName;
 	BYTE							m_byteLoadingStyle = 0;
@@ -111,9 +103,6 @@ public:
 
 	void							OnGameLoad();
 	void							OnGameUpdate();
-
-	void							SetGameLoaded(bool bLoaded) { m_bGameLoaded = bLoaded; }
-	bool							IsGameLoaded() { return m_bGameLoaded; }
 
 	void							OnDeviceCreate(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pPresentationParameters);
 	void							OnDeviceLost(IDirect3DDevice9 * pDevice);
@@ -145,11 +134,6 @@ public:
 	const decltype(m_pNetworkManager) GetNetworkManager()
 	{
 		return m_pNetworkManager;
-	}
-
-	const decltype(m_pIVStartupScript) GetIVStartupScript()
-	{
-		return m_pIVStartupScript;
 	}
 
 	const decltype(m_pResourceManager) GetResourceManager()

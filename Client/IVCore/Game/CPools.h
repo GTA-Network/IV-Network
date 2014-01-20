@@ -39,6 +39,7 @@
 #include <Game/CTaskManager.h>
 #include <Game\IVEngine\CIVTask.h>
 #include <Game\IVEngine\CIVPedMoveBlend.h>
+#include <Game\IVEngine\TaskInfo\CIVTaskInfo.h>
 
 // Player info array size
 #define PLAYER_INFO_ARRAY_SIZE 32 // 32
@@ -61,6 +62,7 @@ private:
 	CIVPool<IVTask>               * m_pTaskPool; // Size: 1200
 	CIVPool<IVCam>                * m_pCamPool;
 	CIVPool<IVPedMoveBlendOnFoot> * m_pPedMoveBlendPool;
+	CIVPool<IVTaskInfo>			  * m_pTaskInfoPool;
 
 public:
 	CPools();

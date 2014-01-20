@@ -287,6 +287,19 @@ void CPlayerEntity::Pulse()
 	}
 }
 
+#include "IVCore\Game\IVEngine\CIVPedFactory.h"
+
+#define g_pPedFactory (*(IVPedFactoryNY**)((g_pCore->GetBase() + 0x156B764)))
+#define sub_846CC0 ((void(__thiscall *)(IVPlayerInfo*, IVPed*))((g_pCore->GetBase() + 0x846CC0)))
+#define CPedTaskManager__AssignPriorityTask ((void(__thiscall *) (IVPedTaskManager *, IVTask *, int, BYTE))((g_pCore->GetBase() + 0x9E3220)))
+#define CTaskSimpleNetworkClone__CTaskSimpleNetworkClone ((IVTask *(__thiscall *) ())((g_pCore->GetBase() + 0x4FB940)))
+
+#define sub_4FF7C0 ((WORD(__thiscall *)(void*))((g_pCore->GetBase() + 0x4FF7C0)))
+#define dword_188CD50 (*(DWORD*)((g_pCore->GetBase() + 0x188CD50)))
+#define sub_4FD0E0 ((bool(__thiscall *)(void*, void*))((g_pCore->GetBase() + 0x4FD0E0)))
+#define dword_D4B0BC (*(DWORD*)((g_pCore->GetBase() + 0xD4B0BC)))
+
+
 bool CPlayerEntity::Create()
 {
 	// Is this the localplayer or are we alread spawned?
@@ -312,15 +325,48 @@ bool CPlayerEntity::Create()
 	// Set the game player info pointer
 	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
 
+#ifdef TASKINFO_TEST
+	WORD wPlayerData = MAKEWORD(m_bytePlayerNumber, 1);
+	Matrix34 matrix;
+	IVPlayerPed * pPlayerPed = (IVPlayerPed*)g_pPedFactory->CreatePlayerPed(&wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber, &matrix, false);
+
+	// Ensure the ped was allocated
+	if (!pPlayerPed)
+		return true;
+
+	sub_846CC0(m_pPlayerInfo->GetPlayerInfo(), pPlayerPed);
+
+	IVTask * pCTaskSimpleNetworkClone = CTaskSimpleNetworkClone__CTaskSimpleNetworkClone();
+	if (pCTaskSimpleNetworkClone)
+		CPedTaskManager__AssignPriorityTask(&pPlayerPed->m_pPedIntelligence->m_pedTaskManager, pCTaskSimpleNetworkClone, 4, false);
+
+	void* pNetObjPlayer = (void*)pPlayerPed->CreateNetworkObject(sub_4FF7C0(&dword_188CD50), 0, 0, 0, 32);
+	sub_4FD0E0(&dword_188CD50, pNetObjPlayer);
+
+	pPlayerPed->field_41 = 2;
+#else
 	// Allocate the player ped
 	IVPlayerPed * pPlayerPed = (IVPlayerPed *)g_pCore->GetGame()->GetPools()->GetPedPool()->Allocate();
-
+#endif
 	CLogFile::Printf("CREATE: m_bytePlayerNumber: %d, m_pPlayerInfo: 0x%p, pPlayerPed: 0x%p", m_bytePlayerNumber, m_pPlayerInfo, pPlayerPed);
 
 	// Ensure the ped was allocated
 	if(!pPlayerPed)
 		return false;
 
+	// Set the player info
+	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
+
+	// Set our player info with the ped
+	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
+
+	// Create the player ped instance
+	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
+
+	// Set the context data player ped pointer
+	m_pContextData->SetPlayerPed(m_pPlayerPed);
+
+#ifndef TASKINFO_TEST
 	// Create the ped
 	WORD wPlayerData = MAKEWORD(0, 1);
 	((void(__thiscall*) (IVPed *, WORD*, int, unsigned int)) (COffsets::IV_Func__CreatePed))(pPlayerPed, &wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber);
@@ -332,33 +378,12 @@ bool CPlayerEntity::Create()
 	_asm  push COffsets::IV_Var__PedFactory;
 	_asm  mov edi, pMatrix;
 	_asm  mov esi, pPlayerPed;
-	_asm  call COffsets::IV_Func__SetupPed;
-
-	// Set the player info
-	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
-
-	// Set the player state to spawned
+	_asm  call COffsets::IV_Func__SetupPed;	// Set the player state to spawned
 	m_pPlayerInfo->GetPlayerInfo()->m_dwState = 2;
 	*(DWORD *)((char*)pPlayerPed + 0x260) |= 1u;
 
-	// Set our player info with the ped
-	pPlayerPed->m_pPlayerInfo = m_pPlayerInfo->GetPlayerInfo();
-
-	// Create the player ped instance
-	m_pPlayerPed = new CIVPlayerPed(pPlayerPed);
-
-	// Set the context data player ped pointer
-	m_pContextData->SetPlayerPed(m_pPlayerPed);
-
 	// Setup ped intelligence
 	((void(__thiscall*) (IVPed *, BYTE)) (COffsets::IV_Func__SetupPedIntelligence))(pPlayerPed, 2);
-
-	// Add to the world
-	m_pPlayerPed->AddToWorld();
-
-	// Create the player blip
-	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	CIVTaskComplexPlayerOnFoot * pTask = new CIVTaskComplexPlayerOnFoot();
 	if (pTask)
@@ -372,6 +397,14 @@ bool CPlayerEntity::Create()
 
 	// Disable shot los
 	CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
+#endif	
+
+	// Add to the world
+	m_pPlayerPed->AddToWorld();
+
+	// Create the player blip
+	CIVScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
 
 	// Mark as spawned
 	m_bSpawned = true;
@@ -2149,4 +2182,283 @@ void CPlayerEntity::WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat)
 bool CPlayerEntity::IsOnScreen()
 {
 	return g_pCore->GetGame()->GetCamera()->IsOnScreen(GetPosition());
+}
+
+
+// !!! TEST CODE !!! I will clean this up later!
+
+#include "IVCore/Game/IVEngine/TaskInfo/CIVTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVTaskInfoWithCloneTask.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleAimPlayerProjectileInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleCarDriveTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleClimbTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleMeleeActionResultTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMBalanceTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMBraceTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMExplosionTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMFlinchTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMHighFallTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMJumpRollTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMOnFireTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleNMShotTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleSidewaysDiveTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSimpleThrowProjectileInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexClearVehicleSeatTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexClimbIntoVehicleTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexClimbLadderTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexCombatRetreatInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexFallAndGetUpTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexGangDrivebyTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexGunTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexJumpTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexNewExitVehicleTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexNewGetInVehicleTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexNewUseCoverInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexOnFireInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexOpenVehicleDoorTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexPickUpAndCarryObjectTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVComplexSlideIntoCoverInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVDeadInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVDieInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVPlayRandomAmbientsInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVScenarioTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSitDownIdleThenStandTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVSitIdleTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVStandUpTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVStatusAndTargetTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVStatusTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVVehicleTaskInfo.h"
+#include "IVCore/Game/IVEngine/TaskInfo/CIVMeleeTaskInfo.h"
+
+CIVTaskInfo* CreateCTaskInfoFromTaskInfo(IVTaskInfo * pTaskInfo)
+{
+	switch (pTaskInfo->GetType())
+	{
+		case 0:
+		return new CIVTaskInfo(pTaskInfo);
+		case 5:
+		return new CIVMeleeTaskInfo((IVMeleeTaskInfo*)pTaskInfo);
+		case 6:
+		return new CIVSimpleMeleeActionResultTaskInfo((IVSimpleMeleeActionResultTaskInfo*)pTaskInfo);
+		case 11:
+		return new CIVComplexJumpTaskInfo((IVComplexJumpTaskInfo*)pTaskInfo);
+		case 14:
+		return new CIVSimpleCarDriveTaskInfo((IVSimpleCarDriveTaskInfo*)pTaskInfo);
+		case 17:
+		return nullptr; //IVComplexGunTaskInfo * pComplexGunTaskInfo = (IVComplexGunTaskInfo*) pTaskInfo;
+		case 25:
+		return new CIVSimpleClimbTaskInfo((IVSimpleClimbTaskInfo*)pTaskInfo);
+		case 26:
+		return nullptr; //IVComplexClimbLadderTaskInfo * pComplexClimbLadderTaskInfo = (IVComplexClimbLadderTaskInfo*) pTaskInfo;
+		case 27:
+		return new CIVPlayRandomAmbientsInfo((IVPlayRandomAmbientsInfo*)pTaskInfo);
+		default:
+		return nullptr;
+	}
+}
+
+
+CIVTaskInfo* CreateTaskInfoById(int taskid)
+{
+	switch (taskid)
+	{
+		case 0:
+		return new CIVTaskInfo();
+		case 5:
+		return new CIVMeleeTaskInfo();
+		case 6:
+		return new CIVSimpleMeleeActionResultTaskInfo();
+		case 11:
+		return new CIVComplexJumpTaskInfo();
+		case 14:
+		return new CIVSimpleCarDriveTaskInfo();
+		case 17:
+		return nullptr; //IVComplexGunTaskInfo * pComplexGunTaskInfo = (IVComplexGunTaskInfo*) pTaskInfo;
+		case 25:
+		return new CIVSimpleClimbTaskInfo();
+		case 26:
+		return nullptr; //IVComplexClimbLadderTaskInfo * pComplexClimbLadderTaskInfo = (IVComplexClimbLadderTaskInfo*) pTaskInfo;
+		case 27:
+		return new CIVPlayRandomAmbientsInfo();
+		default:
+		return nullptr;
+	}
+}
+
+#define deleteTaskInfo ((void(__thiscall *)(IVTaskInfo**))((g_pCore->GetBase() + 0xA1F780)))
+#define applyTaskInfo ((void(__thiscall *)(IVTaskInfo **, IVTaskInfo*))((g_pCore->GetBase() + 0xA1D980)))
+#define processTaskInfo ((void(__stdcall *)(DWORD, IVPed*))((g_pCore->GetBase() + 0x525CE0)))
+
+void CPlayerEntity::SerializeTaskInfo(RakNet::BitStream * pBitStream, IVPed* m_pPlayerPed)
+{
+	IVTaskInfo * pTaskInfo = m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo;
+	do
+	{
+		pBitStream->Write(pTaskInfo->GetType());
+		CIVTaskInfo* pCTaskInfo = CreateCTaskInfoFromTaskInfo(pTaskInfo);
+		if (pCTaskInfo != nullptr)
+		{
+			pCTaskInfo->Serialize(pBitStream);
+			delete pCTaskInfo;
+		}
+	}
+	while (pTaskInfo = pTaskInfo->subTaskInfo);
+}
+
+void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream, IVPed* m_pPlayerPed)
+{
+	if (!m_pPlayerPed)
+		return;
+
+	deleteTaskInfo(&m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo);
+
+	int TaskId;
+	if (pBitStream->Read(TaskId))
+	{
+		do
+		{
+			CIVTaskInfo* pCTaskInfo = CreateTaskInfoById(TaskId);
+			if (pCTaskInfo != nullptr)
+			{
+				if (!pCTaskInfo->Deserialize(pBitStream))
+				{
+					// DeserializeTasks fail (Error code 3 (task info type %d)), TaskId
+					delete pCTaskInfo;
+					return;
+				}
+
+				applyTaskInfo(&m_pPlayerPed->m_pPedIntelligence->m_pTaskInfo, pCTaskInfo->GetTaskInfo());
+				delete pCTaskInfo;
+			}
+		}
+		while (pBitStream->Read(TaskId));
+
+		processTaskInfo(m_pPlayerPed->m_pNetworkObject + 2056, m_pPlayerPed);
+	}
+}
+
+
+
+CString MakeTaskInfoDebugString(IVTaskInfo* pInfo)
+{
+	CString info;
+	switch (pInfo->GetType())
+	{
+		case 11:
+		{
+				   IVComplexJumpTaskInfo * pTaskInfo = (IVComplexJumpTaskInfo*)pInfo;
+
+				   info.Format("ComplexJump(bHasPedJumped: %d, bJumpOnSpot : %d, bForceInAir : %d)",
+							   pTaskInfo->m_bHasPedJumped,
+							   pTaskInfo->m_bJumpOnSpot,
+							   pTaskInfo->m_bForceInAir);
+				   break;
+		}
+		case 14:
+		{
+				   IVSimpleCarDriveTaskInfo * pTaskInfo = (IVSimpleCarDriveTaskInfo*)pInfo;
+				   info.Format("SimpleCarDrive(dwStatus: %d, Door Closed : %d, Engine On : %d, Horn : %d, Siren On : %d, Air Horn : %d, Full Beam On : %d)",
+							   pTaskInfo->m_dwStatus,
+							   pTaskInfo->m_dwFlags & 1,
+							   pTaskInfo->m_dwFlags & 2,
+							   pTaskInfo->m_dwFlags & 4,
+							   pTaskInfo->m_dwFlags & 8,
+							   pTaskInfo->m_dwFlags & 0x10,
+							   pTaskInfo->m_dwFlags & 0x20);
+				   break;
+		}
+		case 17:
+		{
+
+				   IVComplexGunTaskInfo * pTaskInfo = (IVComplexGunTaskInfo*)pInfo;
+				   info.Format("ComplexGun(dwStatus: %d, dwTarget: 0x%x, wTargetId: %d, vecTarget(%f, %f, %f), dwFlags: %d, bOverridingAnims: %d, bCoverLeftFlag: %d, bCoverOverFlag: %d, dwCoverHeight: %d)",
+							   pTaskInfo->m_dwStatus,
+							   pTaskInfo->m_pTarget,				// 1C-20
+							   pTaskInfo->m_wTargetId,			// 20-22
+							   pTaskInfo->m_vecTarget,			// 30-40
+							   pTaskInfo->m_dwFlags,				// 40-44
+							   pTaskInfo->m_bOverridingAnims,		// 44-45
+							   pTaskInfo->m_bCoverLeftFlag,		// 45-46
+							   pTaskInfo->m_bCoverOverFlag,		// 46-47
+							   pTaskInfo->m_bUnk,					// 47-48
+							   pTaskInfo->m_dwCoverHeight		// 48-
+							   );
+				   break;
+		}
+		case 25:
+		{
+				   IVSimpleClimbTaskInfo * pTaskInfo = (IVSimpleClimbTaskInfo*)pInfo;
+				   info.Format("SimpleClimb(byteClimbType: %d, bShimmyingLeft: %d, bShimmyingRight: %d, bPullingUp: %d, vecGrapPosition(%f, %f, %f))",
+							   pTaskInfo->m_bClimbType,
+							   pTaskInfo->m_bShimmyingLeft,
+							   pTaskInfo->m_bShimmyingRight,
+							   pTaskInfo->m_bPullingUp,
+							   pTaskInfo->m_vecGrabPosition.fX,
+							   pTaskInfo->m_vecGrabPosition.fY,
+							   pTaskInfo->m_vecGrabPosition.fZ);
+				   break;
+		}
+		case 26:
+		{
+				   IVComplexClimbLadderTaskInfo * pTaskInfo = (IVComplexClimbLadderTaskInfo*)pInfo;
+				   info.Format("ComplexClimbLadder(isClimbingUp: %s, isClimbingDown: %s, isSlidingDown: %s)",
+							   pTaskInfo->isClimbingUp ? "true" : "false",
+							   pTaskInfo->isClimbingDown ? "true" : "false",
+							   pTaskInfo->isSlidingDown ? "true" : "false");
+				   break;
+		}
+		case 27:
+		{
+				   IVPlayRandomAmbientsInfo * pTaskInfo = (IVPlayRandomAmbientsInfo*)pInfo;
+				   info.Format("PlayRandomAmbients(state: %i)", pTaskInfo->state);
+				   break;
+		}
+		default:
+		info.Format("TODO: type %d", pInfo->GetType());
+		break;
+	}
+
+	return info;
+}
+
+#include "IVCore\Game\IVEngine\CIVTask.h"
+
+CString CPlayerEntity::GetDebugText()
+{
+	CString strDebug = "";
+	{
+		IVPed* pIVPed = m_pPlayerPed->GetPed();
+
+		IVPedMoveBlendOnFoot *pPedMoveBlendOnFoot = pIVPed->m_pPedMoveBlendOnFoot;
+		strDebug += (CString("m_pNetworkObject: %s [0x%x]", pIVPed->m_pNetworkObject ? "Created" : "Not created", pIVPed->m_pNetworkObject));
+		strDebug += "\n";
+		strDebug += (CString("MoveBlend(v(%f, %f), vDest(%f, %f), AnimGroup: %d", pPedMoveBlendOnFoot->fX, pPedMoveBlendOnFoot->fY, pPedMoveBlendOnFoot->destX, pPedMoveBlendOnFoot->destY, pPedMoveBlendOnFoot->m_dwAnimGroup));
+		strDebug += "\n";
+		strDebug += (CString("Flags(%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)", pPedMoveBlendOnFoot->m_dwFlags & 1, pPedMoveBlendOnFoot->m_dwFlags & 2, pPedMoveBlendOnFoot->m_dwFlags & 4, pPedMoveBlendOnFoot->m_dwFlags & 8, pPedMoveBlendOnFoot->m_dwFlags & 0x10, pPedMoveBlendOnFoot->m_dwFlags & 0x20, pPedMoveBlendOnFoot->m_dwFlags & 0x40, pPedMoveBlendOnFoot->m_dwFlags & 0x80, pPedMoveBlendOnFoot->m_dwFlags & 0x100, pPedMoveBlendOnFoot->m_dwFlags & 0x200, pPedMoveBlendOnFoot->m_dwFlags & 0x400, pPedMoveBlendOnFoot->m_dwFlags & 0x800, pPedMoveBlendOnFoot->m_dwFlags & 0x1000, pPedMoveBlendOnFoot->m_dwFlags & 0x2000));
+		strDebug += "\n";
+		strDebug += (CString("MoveBlend(14:%d, 18:%f, 1C:%d, 20:%d)", pPedMoveBlendOnFoot->field_14, pPedMoveBlendOnFoot->field_18, pPedMoveBlendOnFoot->field_1C, pPedMoveBlendOnFoot->field_20));
+		strDebug += "\n";
+		strDebug += (CString("MoveBlend(pPed:0x%x, 28:%f, 2C:%f, 30:%d, 34:%d, 38:%d, 40:%d)", pPedMoveBlendOnFoot->m_pPed, pPedMoveBlendOnFoot->field_28, pPedMoveBlendOnFoot->field_2C, pPedMoveBlendOnFoot->field_30, pPedMoveBlendOnFoot->field_34, pPedMoveBlendOnFoot->field_38, pPedMoveBlendOnFoot->field_40));
+		strDebug += "\n";
+		strDebug += (CString("MoveBlend(44:%d,48:%f,4C:%d,50:%d)", pPedMoveBlendOnFoot->field_44, pPedMoveBlendOnFoot->field_48, pPedMoveBlendOnFoot->field_4C, pPedMoveBlendOnFoot->m_dwFlags));
+		strDebug += "\n";
+		if (pIVPed->m_pPedIntelligence->m_pTaskInfo)
+		{
+			strDebug += (CString("TaskInfo [%s]", GetTaskName(pIVPed->m_pPedIntelligence->m_pTaskInfo->m_dwTaskId)));
+			strDebug += "\n";
+			strDebug += (CString("%s", MakeTaskInfoDebugString(pIVPed->m_pPedIntelligence->m_pTaskInfo).Get()));
+			strDebug += "\n";
+			IVTaskInfo * pTaskInfo = pIVPed->m_pPedIntelligence->m_pTaskInfo->subTaskInfo;
+			while (pTaskInfo)
+			{
+				strDebug += (CString("subTaskInfo [%s]", GetTaskName(pTaskInfo->m_dwTaskId)));
+				strDebug += "\n";
+				strDebug += (CString("%s", MakeTaskInfoDebugString(pTaskInfo).Get()));
+				strDebug += "\n";
+				pTaskInfo = pTaskInfo->subTaskInfo;
+			}
+		}
+	}
+
+	return strDebug;
 }

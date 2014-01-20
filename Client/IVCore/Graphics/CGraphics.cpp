@@ -432,10 +432,11 @@ void CGraphics::Render()
 	if (m_pGUI)
 		m_pGUI->Render();
 
+	if (m_pFPSCounter)
+		m_pFPSCounter->Pulse();
+
 	// Render our Name Tags
-	if (GetTags() 
-		&& !GetMainMenu()->IsMainMenuVisible() 
-		&& !CIVScript::IsScreenFadedOut())
+	if (m_pTags && !GetMainMenu()->IsMainMenuVisible() && !CIVScript::IsScreenFadedOut())
 		m_pTags->Draw();
 
 	DrawText(5.0f, 5.0f, D3DCOLOR_ARGB((unsigned char)255, 255, 255, 255), 1.0f, DT_NOCLIP, true, CString("FPS: %d", m_pFPSCounter->GetFPS()).Get());

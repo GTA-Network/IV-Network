@@ -86,7 +86,7 @@ public:
 };
 
 
-static const char * GetTaskName(int iTaskType);
+const char * GetTaskName(int iTaskType);
 
 class IVTask
 {
@@ -132,8 +132,6 @@ public:
 	virtual IVTask*			CreateFirstSubTask(IVPed* pPed);
 	virtual IVTask*			ControlSubTask(IVPed* pPed);
 };
-
-static const char * GetTaskName(int iTaskType);
 
 class CIVTask
 {

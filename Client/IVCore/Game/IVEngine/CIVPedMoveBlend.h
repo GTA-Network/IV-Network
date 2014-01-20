@@ -36,6 +36,27 @@
 class IVPedMoveBlendBase
 {
 public:
+	float fX;
+	float fY;
+	float destX;
+	float destY;
+	DWORD field_14;
+	float field_18;
+	DWORD field_1C;
+	DWORD field_20;
+	IVPed * m_pPed;
+	float field_28;
+	float field_2C;
+	DWORD field_30;
+	DWORD field_34;
+	DWORD field_38;
+	DWORD m_dwAnimGroup;
+	DWORD field_40;
+	DWORD field_44;
+	float field_48;
+	DWORD field_4C;
+	DWORD m_dwFlags;
+
 	virtual ~IVPedMoveBlendBase();
 	virtual void Function1();
 	virtual void Function2(); // sets flag
@@ -43,7 +64,7 @@ public:
 	virtual void Function4();
 	virtual void Function5();
 	virtual void Function6();
-	virtual void Function7();
+	virtual void* CreateDefaultTask(); //returns whit CTask*
 	virtual void Function8();
 	virtual void Function9();
 	virtual void Function10();
@@ -67,7 +88,41 @@ public:
 
 class IVPedMoveBlendOnFoot : public IVPedMoveBlendBase
 {
+public:
+	DWORD field_54; //float?
+	DWORD field_58;
+	DWORD field_5C;
+	DWORD field_60;
+	DWORD field_64;
+	DWORD field_68; //Missed form the reset	
+	DWORD field_6C; //float?
+	DWORD field_70; //float?
+	DWORD field_74;
+	DWORD field_78;
+	DWORD field_7C;
+	DWORD field_80;
+	DWORD field_84;
+	DWORD field_88;
+	DWORD field_8C;
+	DWORD field_90;
+	DWORD field_94; //Missed form the reset	
+	DWORD field_98;
+	DWORD field_9C;
+	DWORD field_A0;
+	DWORD field_A4;
+	WORD field_A8; //flag
+	WORD field_AA;
+	DWORD field_AC;
+	DWORD field_B0;
+	DWORD field_B4;
+	DWORD field_B8;
+	DWORD field_BC;
+	DWORD field_C0;
+	DWORD field_C4;
+	DWORD field_C8;
+	DWORD field_CC;
 
+	virtual ~IVPedMoveBlendOnFoot();
 };
 
 class CIVPedMoveBlendOnFoot

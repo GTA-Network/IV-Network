@@ -174,6 +174,12 @@
     <Filter Include="Source Files\Libraries\lua">
       <UniqueIdentifier>{4d3f9556-55fb-40fc-b604-dd118c07f04f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Game\IVEngine\TaskInfo">
+      <UniqueIdentifier>{ba24ed01-bd87-4b76-bedb-dc68fda4c0ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\IVEngine\TaskInfo">
+      <UniqueIdentifier>{6961e075-3dce-4862-8ee2-7dca5de7b79a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -530,9 +536,6 @@
     <ClCompile Include="Graphics\CLoadingScreen.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="IV\CIVStartupScript.cpp">
-      <Filter>Source Files\Game\IV\Script</Filter>
-    </ClCompile>
     <ClCompile Include="Game\IVEngine\CIVPool.cpp">
       <Filter>Source Files\Game\IVEngine</Filter>
     </ClCompile>
@@ -778,6 +781,132 @@
     </ClCompile>
     <ClCompile Include="IV\CGameMainScript.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexClearVehicleSeatTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexClimbIntoVehicleTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexClimbLadderTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexCombatRetreatInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexFallAndGetUpTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexGangDrivebyTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexGunTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexJumpTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexNewExitVehicleTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexNewGetInVehicleTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexNewUseCoverInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexOnFireInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexOpenVehicleDoorTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexPickUpAndCarryObjectTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVComplexSlideIntoCoverInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVDeadInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVDieInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVMeleeTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVPlayRandomAmbientsInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVScenarioTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleAimPlayerProjectileInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleCarDriveTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleClimbTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleMeleeActionResultTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMBalanceTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMBraceTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMExplosionTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMFlinchTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMHighFallTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMJumpRollTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMOnFireTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleNMShotTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleSidewaysDiveTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSimpleThrowProjectileInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSitDownIdleThenStandTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVSitIdleTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVStandUpTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVStatusAndTargetTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVStatusTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVTaskInfoWithCloneTask.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\IVEngine\TaskInfo\CIVVehicleTaskInfo.cpp">
+      <Filter>Source Files\Game\IVEngine\TaskInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1297,9 +1426,6 @@
     <ClInclude Include="Graphics\CLoadingScreen.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="IV\CIVStartupScript.h">
-      <Filter>Header Files\Game\IV\Script</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Shared\CNetSync.h">
       <Filter>Header Files\Network\Shared</Filter>
     </ClInclude>
@@ -1551,6 +1677,132 @@
     </ClInclude>
     <ClInclude Include="IV\CGameMainScript.h">
       <Filter>Header Files\Game\IV\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexClearVehicleSeatTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexClimbIntoVehicleTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexClimbLadderTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexCombatRetreatInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexFallAndGetUpTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexGangDrivebyTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexGunTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexJumpTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexNewExitVehicleTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexNewGetInVehicleTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexNewUseCoverInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexOnFireInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexOpenVehicleDoorTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexPickUpAndCarryObjectTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVComplexSlideIntoCoverInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVDeadInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVDieInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVMeleeTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVPlayRandomAmbientsInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVScenarioTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleAimPlayerProjectileInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleCarDriveTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleClimbTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleMeleeActionResultTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMBalanceTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMBraceTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMExplosionTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMFlinchTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMHighFallTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMJumpRollTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMOnFireTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleNMShotTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleSidewaysDiveTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSimpleThrowProjectileInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSitDownIdleThenStandTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVSitIdleTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVStandUpTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVStatusAndTargetTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVStatusTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVTaskInfoWithCloneTask.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\IVEngine\TaskInfo\CIVVehicleTaskInfo.h">
+      <Filter>Header Files\Game\IVEngine\TaskInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

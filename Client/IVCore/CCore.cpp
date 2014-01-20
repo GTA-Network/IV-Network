@@ -77,9 +77,6 @@ bool CCore::Initialize()
 	
 	// Create the network manager instance
 	m_pNetworkManager = new CNetworkManager;
-
-	// Create the basic IV startup script
-	m_pIVStartupScript = new CIVStartupScript;
 	
 	// Create the event systems instance
 	if (!CEvents::GetInstance())
@@ -132,26 +129,19 @@ bool CCore::Initialize()
 
 void CCore::OnGameLoad()
 {
-	// Is the game already loaded?
-	if(IsGameLoaded())
-		return;
-
 	CLogFile::Print(__FUNCTION__);
 
 	// Initialize game instance & respawn local player
-	GetGame()->Initialize();
-
-	// Mark the game as loaded
-	SetGameLoaded(true);
+	m_pGame->Initialize();
 
 	// Startup the network module
 	m_pNetworkManager->Startup();
 
 	// Set the loading screen not visible
-	GetGraphics()->GetLoadingScreen()->SetVisible(false);
+	m_pGraphics->GetLoadingScreen()->SetVisible(false);
 
 	// Set the main menu visible
-	GetGraphics()->GetMainMenu()->SetVisible(true);
+	m_pGraphics->GetMainMenu()->SetVisible(true);
 
 	// Set the initialize time
 	m_uiGameInitializeTime = timeGetTime(); 
@@ -166,14 +156,6 @@ void CCore::OnGameUpdate()
 	// Pulse our IV environment
 	if(GetGame())
 		GetGame()->Process();
-
-	// Pulse fps counter
-	if (GetGraphics()->GetFPSCounter())
-		GetGraphics()->GetFPSCounter()->Pulse();
-
-	// Pulse the localplayer
-	if (GetGame()->GetLocalPlayer())
-		GetGame()->GetLocalPlayer()->Pulse();
 }
 
 void test()
@@ -221,9 +203,7 @@ void CCore::OnDeviceReset(IDirect3DDevice9 * pDevice, D3DPRESENT_PARAMETERS * pP
 
 void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 {
-	// Has the device been lost?
-	if(g_bDeviceLost || !m_pGraphics)
-		return;
+	assert(m_pGraphics);
 
 #ifdef _DEBUG
 	char szNetworkStats[10000];
@@ -233,7 +213,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 #endif
 
 	// Print our IVNetwork "Identifier" in the left upper corner
-	unsigned short usPing = m_pNetworkManager != nullptr ? (m_pNetworkManager->IsConnected() ? (GetGame()->GetLocalPlayer() ? GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
+	unsigned short usPing = m_pNetworkManager ? (m_pNetworkManager->IsConnected() ? (GetGame()->GetLocalPlayer() ? GetGame()->GetLocalPlayer()->GetPing() : -1) : -1) : -1;
 
 	CString strConnection;
 	int iConnectTime = GetGameLoadInitializeTime() != 0 ? (int)((timeGetTime() - GetGameLoadInitializeTime()) / 1000) : 0;
@@ -273,47 +253,29 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 			strSeconds.AppendF("%d Seconds", iSeconds);
 		else
 			strSeconds.AppendF("0%d Second%s", iSeconds, iSeconds > 1 ? "s" : "");
-
 	}
 
 #ifdef _DEBUG
-	if(GetGame()->GetLocalPlayer())
+	/*if(GetGame()->GetLocalPlayer())
 		CDevelopment::DrawPedTasks(GetGame()->GetLocalPlayer()->GetPlayerPed());
 
 	if (GetGame()->GetPlayerManager())
 	if (GetGame()->GetPlayerManager()->DoesExists(1))
 	{
 		CDevelopment::DrawPedTasks(GetGame()->GetPlayerManager()->GetAt(1)->GetPlayerPed(), 600);
-	}
-#endif
+	}*/
 
-	// Simulate temporary loading symbol
-	m_byteLoadingStyle++;
-	CString strLoadingInformation;
-	if(m_byteLoadingStyle >= 0 && m_byteLoadingStyle < 10)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on .").Get();
-	else if(m_byteLoadingStyle >= 10 && m_byteLoadingStyle < 20)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ..").Get();
-	else if(m_byteLoadingStyle >= 20 && m_byteLoadingStyle < 30)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ...").Get();
-	else if(m_byteLoadingStyle >= 30 && m_byteLoadingStyle < 40)
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on ....").Get();
-	else if (m_byteLoadingStyle >= 40 && m_byteLoadingStyle < 50) {
-		strLoadingInformation = CString(MOD_NAME " " VERSION_IDENTIFIER " - Loading.. Hold on .....").Get();
-		if (m_byteLoadingStyle == 49)
-			m_byteLoadingStyle = 0;
-	}
+	if (GetGame()->GetLocalPlayer())
+		g_pCore->GetGraphics()->DrawText(600.0f + 0, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetLocalPlayer()->GetDebugText().Get());
+
+	if (GetGame()->GetPlayerManager()->DoesExists(1))
+		g_pCore->GetGraphics()->DrawText(600.0f + 600, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetPlayerManager()->GetAt(1)->GetDebugText().Get());
+#endif
 
 	CString strInformation = usPing == 0xFFFF ? CString("%s%s", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get()) : CString("%s%s | Ping %hu", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get(), usPing);
 	
-	if(!GetGame()->GetLocalPlayer())
-		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, DT_NOCLIP, true, strLoadingInformation.Get());
-	else
+	if(GetGame()->GetLocalPlayer())
 		m_pGraphics->DrawText(60.0f, 5.0f, D3DCOLOR_ARGB(255, 0, 195, 255), 1.0f, DT_NOCLIP, true, strInformation.Get());
-	
-	strSeconds.Clear();
-	strLoadingInformation.Clear();
-	strInformation.Clear();
 
 	// Check if our snap shot write failed
 	if(CSnapShot::IsDone()) 
