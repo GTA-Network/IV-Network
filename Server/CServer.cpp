@@ -364,7 +364,6 @@ void CServer::Process()
 	delay = (1000.0f / m_uiMaximumFPS) - GetCounter();
 	if (delay > 0)
 		std::this_thread::sleep_for(std::chrono::milliseconds((long long)(delay)));
-	printf("%f %d\n", delay, m_uiMaximumFPS);
 }
 
 void CServer::Shutdown()

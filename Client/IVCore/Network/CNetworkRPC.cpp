@@ -70,7 +70,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	if (g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId))
 	{
 		if(g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId)->IsLocalPlayer())
-			g_pCore->GetGame()->GetPlayerManager()->SetNull(playerId); 
+			g_pCore->GetGame()->GetPlayerManager()->Set(playerId, nullptr); 
 	}
 	g_pCore->GetGame()->GetPlayerManager()->Add(playerId, g_pCore->GetGame()->GetLocalPlayer());
 

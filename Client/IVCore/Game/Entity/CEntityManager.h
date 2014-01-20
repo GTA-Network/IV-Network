@@ -32,6 +32,8 @@
 #define CEntityManager_h
 
 #include <Common.h>
+#include <cassert>
+#include <array>
 
 template<class T, EntityId max>
 class CEntityManager
@@ -42,39 +44,34 @@ private:
 public:
 	CEntityManager()
 	{
-		// Set all entities invalid
-		memset(&m_pEntities, 0, sizeof(m_pEntities));
+		std::fill_n(m_pEntities, max, nullptr);
 	}
+
 	~CEntityManager()
 	{
 		// Loop through all entities
-		for(EntityId id = 0; id < max; ++id)
-		{
-			// Check if ID exists
-			if(DoesExists(id))
-			{
-				// we could call Delete() here, but there's no need to get this done in a clean way as we're about to be deleted
-				delete m_pEntities[id];
-			}
-		}
+		for (auto pEntity : m_pEntities)
+			delete pEntity;
 	}
 
 	inline T*			GetAt(EntityId entityId)
 	{
-		if(Exists(entityId))
+		if (Exists(entityId))
 			return m_pEntities[entityId];
 
-		return 0;
+		return nullptr;
 	}
 
 	inline bool		Add(EntityId entityId, T* pEntity)
 	{
-		// Check if the Entity didn't exist yet
-		if(Exists(entityId))
-		{
-			// Delete it if it did
-			Delete(entityId);
-		}
+#ifdef max
+#pragma push_macro("max")
+#undef max
+		assert(entityId < max);
+#pragma pop_macro("max")
+#endif
+		// Delete it if it did
+		Delete(entityId);
 
 		// save it
 		m_pEntities[entityId] = pEntity;
@@ -84,9 +81,9 @@ public:
 
 	inline EntityId	Add(T* pEntity)
 	{
-		for(EntityId id = 0; id < max; ++id)
+		for (EntityId id = 0; id < max; ++id)
 		{
-			if(!Exists(id))
+			if (!m_pEntities[id])
 			{
 				m_pEntities[id] = pEntity;
 				return id;
@@ -98,10 +95,10 @@ public:
 
 	inline bool		Delete(T* pEntity)
 	{
-		for(EntityId id = 0; id < max; ++id)
+		for (EntityId id = 0; id < max; ++id)
 		{
 			// Check if ID exists
-			if(Exists(id) && m_pEntities[id] == pEntity)
+			if (m_pEntities[id] == pEntity)
 			{
 				// we could call Delete() here, but there's no need to get this done in a clean way as we're about to be deleted
 				delete m_pEntities[id];
@@ -113,15 +110,18 @@ public:
 
 	inline bool		Delete(EntityId entityId)
 	{
-		// Check if the entity already existed
-		if(!Exists(entityId))
-			return false;
+#ifdef max
+#pragma push_macro("max")
+#undef max
+		assert(entityId < max);
+#pragma pop_macro("max")
+#endif
 
 		// Delete the entity
 		delete m_pEntities[entityId];
 
 		// mark the slot as free
-		m_pEntities[entityId] = 0;
+		m_pEntities[entityId] = nullptr;
 
 		return true;
 	}
@@ -133,14 +133,14 @@ public:
 
 	inline bool		Exists(EntityId entityId)
 	{
-		return (entityId < max && m_pEntities[entityId] != 0);
+		return (entityId < max && m_pEntities[entityId] != nullptr);
 	}
 
 	inline EntityId	FindFreeSlot()
 	{
-		for(EntityId i = 0; i < max; i++)
+		for (EntityId i = 0; i < max; ++i)
 		{
-			if(!DoesExists(i))
+			if (!m_pEntities[i])
 				return i;
 		}
 
@@ -152,10 +152,9 @@ public:
 		EntityId count = 0;
 
 		// Loop through all entities
-		for(EntityId id = 0; id < max; ++id)
+		for (auto pEntity : m_pEntities)
 		{
-			// Check if ID exists
-			if(Exists(id))
+			if (pEntity)
 			{
 				// Increment the count
 				count++;
@@ -167,16 +166,10 @@ public:
 
 	inline void		Reset()
 	{
-		// Loop through all entities
-		for(EntityId id = 0; id < max; ++id)
-		{
-			// Check if ID exists
-			if(DoesExists(id))
-			{
-				// we could call Delete() here, but there's no need to get this done in a clean way as we're about to be deleted
-				delete m_pEntities[id];
-			}
-		}
+		for (auto pEntity : m_pEntities)
+			delete pEntity;
+
+		std::fill_n(m_pEntities, max, nullptr);
 	}
 
 	inline EntityId	GetMax()
@@ -187,20 +180,23 @@ public:
 	inline void		Pulse()
 	{
 		// Loop through all entities
-		for(EntityId id = 0; id < max; ++id)
+		for (auto pEntity : m_pEntities)
 		{
-			// Check if ID exists
-			if(DoesExists(id))
-			{
-				m_pEntities[id]->Pulse();
-			}
+			if (pEntity)
+				pEntity->Pulse();
 		}
 	}
 
-	inline void SetNull(EntityId id)
+	inline void Set(EntityId id, T* v)
 	{
-		if (id < max)
-			m_pEntities[id] = nullptr;
+#ifdef max
+#pragma push_macro("max")
+#undef max
+		assert(entityId < max);
+#pragma pop_macro("max")
+#endif
+
+		m_pEntities[id] = v;
 	}
 };
 

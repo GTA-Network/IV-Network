@@ -772,7 +772,7 @@ namespace SharedUtility
 
 	CString ConvertStringToPath(CString string)
 	{
-		for (int i = 0; i < string.GetLength(); ++i)
+		for (size_t i = 0; i < string.GetLength(); ++i)
 		{
 			if (
 				string.GetChar(i) == '\\' ||

@@ -106,6 +106,8 @@ if !defined(__GXX_EXPERIMENTAL_CXX0X__) || __GXX_EXPERIMENTAL_CXX0X__ != 1
 #define DEBUG
 #endif
 
+#pragma warning( disable : 4003)
+
 // at this point we can use C++11
 
 #ifdef WIN32
