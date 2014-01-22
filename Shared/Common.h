@@ -114,6 +114,19 @@ if !defined(__GXX_EXPERIMENTAL_CXX0X__) || __GXX_EXPERIMENTAL_CXX0X__ != 1
 #include <WinSock2.h> // Just to be sure that there will never be a fucking include guard error
 #include <Windows.h>
 #include <iostream>
+#else
+#include <string.h>
+#include <inttypes.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <cerrno>
+
+typedef unsigned char BYTE;
+typedef int64_t __int64;
+#define __FUNCSIG__ __PRETTY_FUNCTION__
 #endif
 
 

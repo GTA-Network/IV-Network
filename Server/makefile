@@ -20,7 +20,7 @@ EXECUTABLE=../Files/ivn-svr
 all: $(SOURCES) dir $(EXECUTABLE)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LUA_OBJECTS) -m32 -lpthread -ldl -o $@
+	$(CC) $(OBJECTS) $(LUA_OBJECTS) -m32 -lpthread -ldl -lrt -o $@
 
 dir:
 	mkdir -p ../Files

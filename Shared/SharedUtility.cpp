@@ -28,6 +28,7 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#include "Common.h"
 #include "SharedUtility.h"
 #include <string.h>
 #include <time.h>
@@ -451,10 +452,9 @@ namespace SharedUtility
 #ifdef _WIN32
 		return timeGetTime();
 #else
-		timeval ts;
-		gettimeofday(&ts,0);
+		timespec ts;
 		clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &ts);
-		return (DWORD)(ts.tv_sec * 1000 + round(spec.tv_nsec / 1.0e6));
+		return (DWORD)(ts.tv_sec * 1000 + round(ts.tv_nsec / 1.0e6));
 #endif
 	}
 
@@ -723,7 +723,7 @@ namespace SharedUtility
 
 		return strReason;
 	}
-
+#ifdef _WIN32
 	bool GetHTTPHeaderAndData(CString host, CString page, CString post, CString *header, CString *data)
 	{
 		SOCKET Socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -769,6 +769,7 @@ namespace SharedUtility
 		closesocket(Socket);
 		return true;
 	}
+#endif
 
 	CString ConvertStringToPath(CString string)
 	{
