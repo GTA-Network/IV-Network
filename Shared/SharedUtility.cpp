@@ -520,48 +520,6 @@ namespace SharedUtility
 		return 0;
 	}
 
-	unsigned int IVHash(std::string strString, unsigned int uiInitialHash, bool bEnsureLowercase)
-	{
-		// Ensure the string is lowercase if needed
-		if(bEnsureLowercase)
-		{
-			for(size_t i = 0; i < strString.size(); i++)
-				strString[i] = tolower(strString[i]);
-		}
-
-		// Set the initial hash value
-		unsigned int uiValue = uiInitialHash;
-		unsigned int uiTemp = 0;
-		int iCurrent = 0;
-
-		for(size_t sIndex = 0; sIndex < strString.size(); sIndex++)
-		{
-			iCurrent = strString[sIndex];
-
-			if(iCurrent == '\\')
-				iCurrent = '/';
-
-			uiTemp = iCurrent;
-			uiTemp = (uiTemp + uiValue);
-			uiValue = (uiTemp << 10);
-			uiTemp += uiValue;
-			uiValue = (uiTemp >> 6);
-			uiValue = (uiValue ^ uiTemp);
-		}
-
-		uiTemp = (uiValue << 3);
-		uiTemp = (uiValue + uiTemp);
-		unsigned int uiTemp2 = (uiTemp >> 11);
-		uiTemp = (uiTemp2 ^ uiTemp);
-		uiTemp2 = (uiTemp << 15);
-		uiValue = (uiTemp2 + uiTemp);
-
-		if(uiValue < 2)
-			uiValue += 2;
-
-		return uiValue;
-	}
-
 	const char * inet_ntop(int af, const void * src, char * dst, int cnt)
 	{
 		if(af == AF_INET || af == PF_INET)

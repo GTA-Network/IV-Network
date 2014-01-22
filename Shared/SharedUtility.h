@@ -129,10 +129,6 @@ namespace SharedUtility
 	// Creates a directory
 	int CreateDirectory(const char * szPath);
 
-	// Parts taken from SparkIV
-	// All of the IV hash functions merged into one
-	unsigned int IVHash(std::string strString, unsigned int uiInitialHash = 0, bool bEnsureLowercase = true);
-
 	// Replacement for inet_ntop
 	const char * inet_ntop(int af, const void * src, char * dst, int cnt);
 
