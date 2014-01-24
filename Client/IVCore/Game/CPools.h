@@ -32,14 +32,12 @@
 #define CPools_h
 
 #include <Common.h>
-#include <Game\IVEngine\CIVCam.h>
-#include <Game\IVEngine\CIVPed.h>
-#include <Game\IVEngine\CIVVehicle.h>
-#include <Game\IVEngine\CIVPlayerPed.h>
-#include <Game/CTaskManager.h>
-#include <Game\IVEngine\CIVTask.h>
-#include <Game\IVEngine\CIVPedMoveBlend.h>
-#include <Game\IVEngine\TaskInfo\CIVTaskInfo.h>
+#include <Game\EFLC\CPool.h>
+#include <Game\EFLC\CCam.h>
+#include <Game\EFLC\CVehicle.h>
+#include <Game\EFLC\CPed.h>
+#include <Game\EFLC\CPlayerInfo.h>
+#include <Game\EFLC\CPlayerPed.h>
 
 // Player info array size
 #define PLAYER_INFO_ARRAY_SIZE 32 // 32
@@ -50,19 +48,26 @@
 // Invalid checkpoint array index
 #define INVALID_CHECKPOINT 255
 
+_GAME_BEGIN
 template <class T>
-class CIVPool;
+class CPool;
+typedef CPool<IVehicle> CVehiclePool;
+typedef CPool<IPed> CPedPool;
+typedef CPool<ICam> CCamPool;
+typedef CPool<IPedMoveBlendOnFoot> CPedMoveBlendPool;
+typedef CPool<ITaskInfo> CTaskInfoPool;
+_GAME_END
 
 class CPools
 {
 private:
 	// Game pools
-	CIVPool<IVPed>                * m_pPedPool;
-	CIVPool<IVVehicle>            * m_pVehiclePool; // Size: 140
-	CIVPool<IVTask>               * m_pTaskPool; // Size: 1200
-	CIVPool<IVCam>                * m_pCamPool;
-	CIVPool<IVPedMoveBlendOnFoot> * m_pPedMoveBlendPool;
-	CIVPool<IVTaskInfo>			  * m_pTaskInfoPool;
+	EFLC::CPedPool          * m_pPedPool;
+	EFLC::CVehiclePool      * m_pVehiclePool; // Size: 140
+	EFLC::CTaskPool         * m_pTaskPool; // Size: 1200
+	EFLC::CCamPool          * m_pCamPool;
+	EFLC::CPedMoveBlendPool * m_pPedMoveBlendPool;
+	EFLC::CTaskInfoPool     * m_pTaskInfoPool;
 
 public:
 	CPools();
@@ -79,17 +84,17 @@ public:
 	void                 Initialize();
 
 	// Pools
-	CIVPool<IVPed>     * GetPedPool() { return m_pPedPool; }
-	CIVPool<IVVehicle> * GetVehiclePool() { return m_pVehiclePool; }
-	CIVPool<IVTask>    * GetTaskPool() { return m_pTaskPool; }
-	CIVPool<IVCam>     * GetCamPool() { return m_pCamPool; }
-	CIVPool<IVPedMoveBlendOnFoot> * GetPedMoveBlendPool() { return m_pPedMoveBlendPool; }
+	const decltype(m_pPedPool) GetPedPool() { return m_pPedPool; }
+	const decltype(m_pVehiclePool) GetVehiclePool() { return m_pVehiclePool; }
+	const decltype(m_pTaskPool) GetTaskPool() { return m_pTaskPool; }
+	const decltype(m_pCamPool) GetCamPool() { return m_pCamPool; }
+	const decltype(m_pPedMoveBlendPool) GetPedMoveBlendPool() { return m_pPedMoveBlendPool; }
 
 	// Player Infos (An array not a pool)
-	IVPlayerInfo       * GetPlayerInfoFromIndex(unsigned int uiIndex);
-	IVPlayerInfo       * GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed);
-	unsigned int         GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo);
-	void                 SetPlayerInfoAtIndex(unsigned int uiIndex, IVPlayerInfo * pPlayerInfo);
+	EFLC::IPlayerInfo       * GetPlayerInfoFromIndex(unsigned int uiIndex);
+	EFLC::IPlayerInfo       * GetPlayerInfoFromPlayerPed(EFLC::IPlayerPed * pPlayerPed);
+	unsigned int         GetIndexFromPlayerInfo(EFLC::IPlayerInfo * pPlayerInfo);
+	void                 SetPlayerInfoAtIndex(unsigned int uiIndex, EFLC::IPlayerInfo * pPlayerInfo);
 	unsigned int         FindFreePlayerInfoIndex();
 
 	// Current Player Info Index (Doesn't really belong here, but it was the only place to put it)

@@ -30,7 +30,7 @@
 
 #include "CMainMenu.h"
 #include <CCore.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 
 extern CCore* g_pCore;
 
@@ -647,7 +647,7 @@ bool CMainMenu::OnServerClicked(const CEGUI::EventArgs &eventArgs)
 	}
 	else
 	{
-		CIVScript::DoScreenFadeIn(1000);
+		EFLC::CScript::DoScreenFadeIn(1000);
 
 		g_pCore->GetGraphics()->GetChat()->SetVisible(true);
 

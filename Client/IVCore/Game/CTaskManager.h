@@ -31,12 +31,12 @@
 #ifndef CTaskManager_h
 #define CTaskManager_h
 
-#include <Game/IVEngine/CIVTask.h>
+#include <Game/EFLC/CTask.h>
 
 struct ClientTaskPair 
 {
-	IVTask * pGameTask;
-	CIVTask * pClientTask;
+	EFLC::ITask * pGameTask;
+	EFLC::CTask * pClientTask;
 };
 
 class CTaskManager
@@ -45,14 +45,14 @@ private:
 	std::list< ClientTaskPair *>	m_taskList;
 
 public:
-									CTaskManager() { };
-									~CTaskManager();
+		CTaskManager() { };
+		~CTaskManager();
 
-	bool							AddTask(CIVTask * pClientTask);
-	bool							RemoveTask(CIVTask * pClientTask);
-	IVTask							* GetGameTaskFromClientTask(CIVTask * pClientTask);
-	CIVTask							* GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist = true);
-	bool							HandleTaskDelete(IVTask * pGameTask);
+		bool							AddTask(EFLC::CTask * pClientTask);
+		bool							RemoveTask(EFLC::CTask * pClientTask);
+		EFLC::ITask						* GetGameTaskFromClientTask(EFLC::CTask * pClientTask);
+		EFLC::CTask						* GetClientTaskFromGameTask(EFLC::ITask * pGameTask, bool bCreateIfNotExist = true);
+		bool							HandleTaskDelete(EFLC::ITask * pGameTask);
 };
 
-#endif // CIVTaskManager_h
+#endif // CTaskManager_h

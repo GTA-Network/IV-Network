@@ -32,9 +32,9 @@
 #define CContextData_h
 
 #include <Common.h>
-#include <Game/IVEngine/CIVPlayerInfo.h>
-#include <Game/IVEngine/CIVPlayerPed.h>
-#include <Game/IVEngine/CIVPad.h>
+#include "EFLC/CPlayerInfo.h"
+#include "EFLC/CPlayerPed.h"
+#include "EFLC/CPad.h"
 
 struct sWeaponHandlerData
 {
@@ -48,15 +48,15 @@ struct sWeaponHandlerData
 class CContextData
 {
 private:
-	CIVPlayerInfo			* m_pPlayerInfo;
-	CIVPlayerPed			* m_pPlayerPed;
-	CIVPad					* m_pPad;
+	EFLC::CPlayerInfo			* m_pPlayerInfo;
+	EFLC::CPlayerPed			* m_pPlayerPed;
+	EFLC::CPad					* m_pPad;
 
 	sWeaponHandlerData		  m_WeaponHandle;
 
 public:
 
-	CContextData(CIVPlayerInfo * pPlayerInfo)
+	CContextData(EFLC::CPlayerInfo * pPlayerInfo)
 	{
 		// Set the player info
 		SetPlayerInfo(pPlayerInfo);
@@ -65,7 +65,7 @@ public:
 		SetPlayerPed(NULL);
 
 		// Create the pad
-		m_pPad = new CIVPad();
+		m_pPad = new EFLC::CPad();
 
 		m_WeaponHandle.m_ArmUp = 0.0f;
 		m_WeaponHandle.m_ArmDown = 0.0f;
@@ -80,13 +80,13 @@ public:
 		m_WeaponHandle.m_ArmDown = 0.0f;
 	}
 
-	void              SetPlayerPed(CIVPlayerPed * pPlayerPed) { m_pPlayerPed = pPlayerPed; }
-	CIVPlayerPed    * GetPlayerPed() { return m_pPlayerPed; }
+	void              SetPlayerPed(EFLC::CPlayerPed * pPlayerPed) { m_pPlayerPed = pPlayerPed; }
+	EFLC::CPlayerPed    * GetPlayerPed() { return m_pPlayerPed; }
 
-	void              SetPlayerInfo(CIVPlayerInfo * pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
-	CIVPlayerInfo   * GetPlayerInfo() { return m_pPlayerInfo; }
+	void              SetPlayerInfo(EFLC::CPlayerInfo * pPlayerInfo) { m_pPlayerInfo = pPlayerInfo; }
+	EFLC::CPlayerInfo   * GetPlayerInfo() { return m_pPlayerInfo; }
 
-	CIVPad			* GetPad() { return m_pPad; }
+	EFLC::CPad			* GetPad() { return m_pPad; }
 
 
 	void			SetWeaponAimTarget(const CVector3& vecAimTargetPosition) { m_WeaponHandle.m_vecAimPosition = vecAimTargetPosition; }
@@ -111,14 +111,14 @@ public:
 									CContextDataManager() { };
 									~CContextDataManager();
 
-	static	CContextData			* CreateContextData(CIVPlayerInfo * pPlayerInfo);
+									static	CContextData			* CreateContextData(EFLC::CPlayerInfo * pPlayerInfo);
 	static	void					DestroyContextData(CContextData * pContextData);
 
 	static CContextData				* GetContextData(BYTE bytePlayerNumber);
-	static CContextData				* GetContextData(CIVPlayerInfo * pPlayerInfo);
-	static CContextData				* GetContextData(IVPlayerInfo * pPlayerInfo);
-	static CContextData				* GetContextData(CIVPlayerPed * pPlayerPed);
-	static CContextData				* GetContextData(IVPlayerPed * pPlayerPed);
+	static CContextData				* GetContextData(EFLC::CPlayerInfo * pPlayerInfo);
+	static CContextData				* GetContextData(EFLC::IPlayerInfo * pPlayerInfo);
+	static CContextData				* GetContextData(EFLC::CPlayerPed * pPlayerPed);
+	static CContextData				* GetContextData(EFLC::IPlayerPed * pPlayerPed);
 
 };
 

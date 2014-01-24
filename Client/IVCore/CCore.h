@@ -66,15 +66,14 @@
 
 #include <General/CModuleManager.h>
 
-#ifdef _DEV
-#include <CDEV.h>
-#endif
-
 #include <audio/CAudioManager.h>
 #include "Game/EpisodeManager.h"
 #include <Network/CHttpClient.h>
 #include <Scripting/ResourceSystem/CResourceManager.h>
 #include <RakNet/RakNetStatistics.h>
+
+class CGame;
+class CCamera;
 
 class CCore 
 {

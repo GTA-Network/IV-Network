@@ -32,26 +32,25 @@
 #include "CContextData.h"
 #include <Game/COffsets.h>
 #include <Patcher/CPatcher.h>
-#include <Game/IVEngine/CIVPad.h>
-#include <Game/IVEngine/CIVVehicle.h>
-#include "CPools.h"
+#include <Game/EFLC/CPad.h>
+#include <Game/EFLC/CVehicle.h>
 #include <CLogFile.h>
 #include <CCore.h>
 
-IVPed      * g_pPed = NULL;
-IVVehicle  * g_pKeySyncIVVehicle = NULL;
+EFLC::IPed      * g_pPed = NULL;
+EFLC::IVehicle  * g_pKeySyncIVehicle = NULL;
 unsigned int g_uiLocalPlayerIndex = 0;
-IVPad        g_localPad;
+EFLC::IPad        g_localPad;
 bool         g_bInLocalContext = true;
 extern CCore *g_pCore;
-IVPlayerInfo* g_pLocalPlayerInfo = NULL;
+EFLC::IPlayerInfo* g_pLocalPlayerInfo = NULL;
 
-void ContextSwitch(IVPed * pPed, bool bPost) 
+void ContextSwitch(EFLC::IPed * pPed, bool bPost)
 {
 	// Do we have a valid ped pointer?
 	if(pPed) {
 		// Get the remote players context data
-		CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
+		const auto pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *)pPed);
 
 		// Do we have a valid context data?
 		if(pContextData) {
@@ -68,14 +67,14 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 				}
 
 				// Get the game pad
-				CIVPad * pPad = g_pCore->GetGame()->GetPad();
+				auto * pPad = g_pCore->GetGame()->GetPad();
 
 				if(!bPost) {
 					// Store the local players index
 					g_uiLocalPlayerIndex = g_pCore->GetGame()->GetPools()->GetLocalPlayerIndex();
 
 					// Store the local players pad
-					memcpy(&g_localPad, pPad->GetPad(), sizeof(IVPad));
+					memcpy(&g_localPad, pPad->GetPad(), sizeof(EFLC::IPad));
 
 					g_pLocalPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(g_uiLocalPlayerIndex);
 
@@ -83,12 +82,12 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 
 					// Set the history values
 					for(int i = 0; i < INPUT_COUNT; i++) {
-						IVPadData * pPadData = &pContextData->GetPad()->GetPad()->m_padData[i];
+						auto pPadData = &pContextData->GetPad()->GetPad()->m_padData[i];
 
 						if(pPadData->m_pHistory) {
 							pPadData->m_byteHistoryIndex++;
 
-							if(pPadData->m_byteHistoryIndex >= MAX_HISTORY_ITEMS)
+							if (pPadData->m_byteHistoryIndex >= MAX_HISTORY_ITEMS)
 								pPadData->m_byteHistoryIndex = 0;
 
 							pPadData->m_pHistory->m_historyItems[pPadData->m_byteHistoryIndex].m_byteValue = pPadData->m_byteLastValue;
@@ -97,14 +96,14 @@ void ContextSwitch(IVPed * pPed, bool bPost)
 					}
 
 					// Swap the local players pad with the remote players pad
-					memcpy(pPad->GetPad(), pContextData->GetPad()->GetPad(), sizeof(IVPad));
+					memcpy(pPad->GetPad(), pContextData->GetPad()->GetPad(), sizeof(EFLC::IPad));
 
 					// Flag ourselves as no longer in local context
 					g_bInLocalContext = false;
 				}
 				else {
 					// Restore the local players pad
-					memcpy(pPad->GetPad(), &g_localPad, sizeof(IVPad));
+					memcpy(pPad->GetPad(), &g_localPad, sizeof(EFLC::IPad));
 
 					g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(g_uiLocalPlayerIndex, g_pLocalPlayerInfo);
 
@@ -137,16 +136,16 @@ void _declspec(naked) CPlayerPed__ProcessInput_Hook()
 
 void _declspec(naked) CAutomobile_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 
 	_asm	popad;
 	_asm	call COffsets::FUNC_CAutomobile__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -154,16 +153,16 @@ void _declspec(naked) CAutomobile_ProcessInput_Hook()
 
 void _declspec(naked) CBike_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 
 	_asm	popad;
 	_asm	call COffsets::FUNC_CBike__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -171,16 +170,16 @@ void _declspec(naked) CBike_ProcessInput_Hook()
 
 void _declspec(naked) CBoat_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 
 	_asm	popad;
 	_asm	call COffsets::FUNC_CBoat__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -188,16 +187,16 @@ void _declspec(naked) CBoat_ProcessInput_Hook()
 
 void _declspec(naked) CTrain_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 
 	_asm	popad;
 	_asm	call COffsets::FUNC_CTrain__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -205,16 +204,16 @@ void _declspec(naked) CTrain_ProcessInput_Hook()
 
 void _declspec(naked) CHeli_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 
 	_asm	popad;
 	_asm	call COffsets::FUNC_CHeli__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -222,16 +221,16 @@ void _declspec(naked) CHeli_ProcessInput_Hook()
 
 void _declspec(naked) CPlane_ProcessInput_Hook()
 {
-	_asm	mov g_pKeySyncIVVehicle, ecx;
+	_asm	mov g_pKeySyncIVehicle, ecx;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, false);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, false);
 	
 	_asm	popad;
 	_asm	call COffsets::FUNC_CPlane__ProcessInput;
 	_asm	pushad;
 
-	ContextSwitch(g_pKeySyncIVVehicle->m_pDriver, true);
+	ContextSwitch(g_pKeySyncIVehicle->m_pDriver, true);
 
 	_asm	popad;
 	_asm	ret;
@@ -239,21 +238,21 @@ void _declspec(naked) CPlane_ProcessInput_Hook()
 
 struct thisisathiscall
 {
-	static IVPad* __thiscall GetPadFromPlayerPed(IVPed* pPed);
+	static EFLC::IPad* __thiscall GetPadFromPlayerPed(EFLC::IPed* pPed);
 };
 
-IVPad* thisisathiscall::GetPadFromPlayerPed(IVPed* pPed)
+EFLC::IPad* thisisathiscall::GetPadFromPlayerPed(EFLC::IPed* pPed)
 {
 	if (pPed && pPed->m_pPlayerInfo && pPed->m_pPlayerInfo->m_bytePlayerNumber == 0 && pPed->m_byteIsPlayerPed) {
 		// return the local player pad
 		//CLogFile::Printf("Return local pad");
-		return ((IVPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
+		return ((EFLC::IPad*(__cdecl*)())(g_pCore->GetBase() + 0x7FD960))();
 	}
 	else if (pPed->m_byteIsPlayerPed) {
 		// Do we have a valid ped pointer?
 		if (pPed) {
 			// Get the remote players context data
-			CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *) pPed);
+			CContextData * pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *) pPed);
 
 			// Do we have a valid context data?
 			if (pContextData) {

@@ -30,18 +30,17 @@
 
 #include "CClientCommands.h"
 
-#include <Game/IVEngine/CIVModelManager.h>
-#include <Game/IVEngine/CIVHud.h>
-#include <IV/CIVScript.h>
-#include <IV/CIVScriptEnums.h>
-#include <Game/IVEngine/CIVWeather.h>
-#include <IV/CIVScript_FunctionInvoke.h>
+#include <Game/EFLC/CModelManager.h>
+#include <Game/EFLC/CHud.h>
+#include <Game/EFLC/CScript.h>
+#include <Game/EFLC/ScriptEnums.h>
+#include <Game/EFLC/ScriptFunctions.h>
+#include <Game/EFLC/CWeather.h>
 #include <Ptrs.h>
-#include <Game/IVEngine/CIVTrain.h>
+#include <Game/EFLC/CTrain.h>
 
 extern unsigned int l_U40;
 unsigned int pObj;
-CIVTrain * pTrain;
 
 bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 {
@@ -87,7 +86,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 				pVehicle->GetRotation(vecRotation);
 				DWORD dwColors[5];
 				pVehicle->GetColors(dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4]);
-				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", CIVModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.GetLength() > 0 ? " // " : "", strParameters.GetLength() > 0 ? strParameters.Get() : "");
+				fprintf_s(file, "createVehicle(%d, %f, %f, %f, %f, %f, %f, %d, %d, %d, %d, %d);%s%s\n", EFLC::CModelManager::ModelHashToVehicleId(pVehicle->GetModelInfo()->GetHash()), vecPosition.fX, vecPosition.fY, vecPosition.fZ, vecRotation.fX, vecRotation.fY, vecRotation.fZ, dwColors[0], dwColors[1], dwColors[2], dwColors[3], dwColors[4], strParameters.GetLength() > 0 ? " // " : "", strParameters.GetLength() > 0 ? strParameters.Get() : "");
 			}
 		}
 		else
@@ -144,7 +143,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 	}
 	else if(strCommand == "giveweapon")
 	{
-		CIVScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), (CIVScript::eWeapon)atoi(strParameters.Get()), 100, true);
+		EFLC::CScript::GiveWeaponToChar(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), (EFLC::CScript::eWeapon)atoi(strParameters.Get()), 100, true);
 		return true;
 	}
 	else if(strCommand == "xaxis")
@@ -266,8 +265,8 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 	else if(strCommand == "blip")
 	{
 		unsigned int uiBlip;
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_ADD_BLIP_FOR_COORD, 0, 0, 0,&uiBlip); 
-		CIVScript_NativeInvoke::Invoke<unsigned int>(CIVScript::NATIVE_CHANGE_BLIP_SPRITE, 10);
+		EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_ADD_BLIP_FOR_COORD, 0, 0, 0, &uiBlip);
+		EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_CHANGE_BLIP_SPRITE, 10);
 		return true;
 	}
 	else if(strCommand == "sethealth")

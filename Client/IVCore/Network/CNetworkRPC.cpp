@@ -30,8 +30,8 @@
 
 #include "CNetworkRPC.h"
 #include "CNetworkManager.h"
-#include <IV/CIVScript.h>
-#include <Game/IVEngine/CIVWeather.h>
+#include <Game/EFLC/CScript.h>
+#include <Game/EFLC/CWeather.h>
 #include <CCore.h>
 #include <RakNet/FileListTransferCBInterface.h>
 #include "CDownloadManager.h"
@@ -109,8 +109,8 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetGraphics()->GetChat()->Print(CString("#16C5F2Successfully connected to %s...", g_pCore->GetServerName().Get()));
 
 	// whitout this two line below playerRequestSpawn never called
-	CIVScript::DoScreenFadeInUnhacked(0);
-	CIVScript::DoScreenFadeOutUnhacked(0);
+	EFLC::CScript::DoScreenFadeInUnhacked(0);
+	EFLC::CScript::DoScreenFadeOutUnhacked(0);
 }
 
 void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -579,7 +579,7 @@ void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	g_pCore->GetGame()->GetLocalPlayer()->SetPosition(spawnPos);
 	g_pCore->GetGame()->GetLocalPlayer()->SetRotation(CVector3(fHeading, 0.0f, 0.0f));
 
-	CIVScript::DoScreenFadeIn(3000);
+	EFLC::CScript::DoScreenFadeIn(3000);
 }
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -861,7 +861,7 @@ void CreateCheckpoint(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	float fRadius;
 	pBitStream->Read(fRadius);
 
-	CCheckpointEntity * pCheckpoint = new CCheckpointEntity((CIVScript::eCheckpointType)iType, vecPosition, vecTargetPosition, fRadius);
+	CCheckpointEntity * pCheckpoint = new CCheckpointEntity((EFLC::CScript::eCheckpointType)iType, vecPosition, vecTargetPosition, fRadius);
 	if (pCheckpoint)
 	{
 		g_pCore->GetGame()->GetCheckpointManager()->Add(checkpointId, pCheckpoint);
@@ -956,7 +956,7 @@ void SetCheckpointType(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		int iType;
 		pBitStream->Read(iType);
 
-		pCheckpoint->SetType((CIVScript::eCheckpointType)iType);
+		pCheckpoint->SetType((EFLC::CScript::eCheckpointType)iType);
 	}
 }
 
@@ -993,7 +993,7 @@ void CreateBlip(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bool bRange;
 	pBitStream->Read(bRange);
 
-	CBlipEntity * pBlip = new CBlipEntity((CIVScript::eBlipSprite)uiIcon, vecPosition, bRange);
+	CBlipEntity * pBlip = new CBlipEntity((EFLC::CScript::eBlipSprite)uiIcon, vecPosition, bRange);
 	if (pBlip)
 	{
 		g_pCore->GetGame()->GetBlipManager()->Add(blipId, pBlip);
@@ -1036,7 +1036,7 @@ void SetBlipIcon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		unsigned int uiIcon;
 		pBitStream->Read(uiIcon);
 
-		pBlip->SetIcon((CIVScript::eBlipSprite)uiIcon);
+		pBlip->SetIcon((EFLC::CScript::eBlipSprite)uiIcon);
 	}
 }
 

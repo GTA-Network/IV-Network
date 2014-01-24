@@ -31,11 +31,11 @@
 #include "CGame.h"
 #include <CCore.h>
 
-#include <Game/IVEngine/CIVHud.h>
-#include <Game/IVEngine/CIVWeather.h>
-#include <Game/IVEngine/CIVModelInfo.h>
+#include <Game/EFLC/CHud.h>
+#include <Game/EFLC/CWeather.h>
+#include <Game/EFLC/CModelInfo.h>
 #include <General/CException.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 
 extern	CCore				* g_pCore;
 
@@ -67,7 +67,7 @@ CGame::~CGame()
 void CGame::Setup()
 {
 	// Create new civpad instance
-	m_pPad = new CIVPad((IVPad *)COffsets::VAR_Pads);
+	m_pPad = new EFLC::CPad((EFLC::IPad *)COffsets::VAR_Pads);
 	
 	// Create task manager instance
 	m_pTaskManager = new CTaskManager;
@@ -95,8 +95,8 @@ void CGame::Setup()
 	// Initialize our weapon info array
 	for(int i = 0; i < NUM_WeaponInfos; i++)
 	{
-		m_weaponInfos[i].SetType((eWeaponType)i);
-		m_weaponInfos[i].SetWeaponInfo((IVWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(IVWeaponInfo))));
+		m_weaponInfos[i].SetType((EFLC::eWeaponType)i);
+		m_weaponInfos[i].SetWeaponInfo((EFLC::IWeaponInfo *)((g_pCore->GetBase() + ARRAY_WeaponInfos) + (i * sizeof(EFLC::IWeaponInfo))));
 		m_weaponInfos[i].GetWeaponInfo()->m_wAmmoMax = 0xFFFF;
 	}
 	
@@ -106,7 +106,7 @@ void CGame::Setup()
 
 void CGame::Initialize()
 {
-	// Initialize/Patch our pools(IVPed,IVVehicle,IVTask)
+	// Initialize/Patch our pools(IPed,IVehicle,IVTask)
 	m_pPool->Initialize();
 
 	if(!m_pCamera)
@@ -180,7 +180,7 @@ void CGame::Reset()
 	if (m_pCheckpointManager)
 		m_pCheckpointManager->Reset();
 
-	CIVWeather::SetWeather(WEATHER_SUNNY);
+	EFLC::CWeather::SetWeather(WEATHER_SUNNY);
 	m_pTrafficLights->Reset();
 
 	// Make our local player ready to port to the default spawn position
@@ -189,10 +189,10 @@ void CGame::Reset()
 	m_pLocalPlayer->SetPlayerControlAdvanced(true, true, true);
 
 	// Enable UI elements to be visible
-	CIVHud::SetHudVisible(true);
-	CIVHud::SetRadarVisible(true);
-	CIVHud::SetAreaNamesEnabled(true);
-	CIVHud::SetPlayerNamesVisible(true);
+	EFLC::CHud::SetHudVisible(true);
+	EFLC::CHud::SetRadarVisible(true);
+	EFLC::CHud::SetAreaNamesEnabled(true);
+	EFLC::CHud::SetPlayerNamesVisible(true);
 	// Update our environment settings and set default timemanagement data
 	//g_pCore->GetTimeManagementInstance()->SetTime(7,0);
 	//g_pCore->GetTimeManagementInstance()->SetMinuteDuration(60000); // 60 seconds, default
@@ -217,7 +217,7 @@ void CGame::UnprotectMemory()
 
 }
 
-CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
+EFLC::CModelInfo * CGame::GetModelInfo(int iModelIndex)
 {
 	// Loop through all ModelInfo array indexes and return if a match was found
 	if(iModelIndex < NUM_ModelInfos && iModelIndex >= 0 && m_modelInfos[iModelIndex].IsValid())
@@ -226,7 +226,7 @@ CIVModelInfo * CGame::GetModelInfo(int iModelIndex)
 	return nullptr;
 }
 
-CIVWeaponInfo * CGame::GetWeaponInfo(eWeaponType weaponType)
+EFLC::CWeaponInfo * CGame::GetWeaponInfo(EFLC::eWeaponType weaponType)
 {
     if(weaponType < NUM_WeaponInfos && weaponType >= 0)
             return &m_weaponInfos[weaponType];
@@ -246,7 +246,7 @@ void CGame::ThrowInternalException(DWORD dwAddress, DWORD dwExceptionType)
 
 void CGame::Process()
 {
-	if(!g_pCore->GetGame()->GetLocalPlayer())
+	if(!GetLocalPlayer())
 		return;
 
 	if (m_pPlayerManager)

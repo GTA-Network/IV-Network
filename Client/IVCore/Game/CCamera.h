@@ -31,18 +31,8 @@
 #ifndef CCamera_h
 #define CCamera_h
 
-#include <Game/IVEngine/CIVCam.h>
 #include <Common.h>
-
-class IVCamera { // (size = 0x140)
-public:
-	PAD(IVCamera, pad1, 0x140); // 0x0 - 0x140 (size = 0x140)
-};
-
-class IVCamPool { // (size = 0x1C)
-public:
-	PAD(IVCamPool, pad1, 0x1C); // 0x0 - 0x1C (size = 0x1C)
-};
+#include <Game/EFLC/CCam.h>
 
 class CCamera
 {
@@ -50,8 +40,8 @@ private:
 	unsigned int		m_uiGameCamIndex;
 	unsigned int		m_uiScriptingIndex;
 	bool				m_bUsingScriptingCam;	
-	CIVCam				*m_pGameCam;
-	CIVCam				*m_pScriptCam;
+	EFLC::CCam				*m_pGameCam;
+	EFLC::CCam				*m_pScriptCam;
 	CVector3			m_vecLookAtPosition; 
 
 public:
@@ -81,8 +71,8 @@ public:
 
 	void				SetCamBehindPed(unsigned int uiPed);
 
-	CIVCam				*GetGameCam() { return m_pGameCam; }
-	CIVCam				*GetScriptCam() { return m_pScriptCam; }
+	EFLC::CCam				*GetGameCam() { return m_pGameCam; }
+	EFLC::CCam				*GetScriptCam() { return m_pScriptCam; }
 
 	void                Reset();
 };

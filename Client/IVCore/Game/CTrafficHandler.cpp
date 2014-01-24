@@ -30,7 +30,7 @@
 
 #include "CTrafficHandler.h"
 #include <Patcher/CPatcher.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <Ptrs.h>
 
 CTrafficLights::eGTATrafficLightState dwTrafficLightState;

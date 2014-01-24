@@ -31,13 +31,13 @@
 #include "CLocalPlayer.h"
 #include "Game/CGameFuncs.h"
 #include <CCore.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <Game/CGameFuncs.h>
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
 
-#define CPlayerPed__Respawn ((void(__cdecl *) (IVPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
+#define CPlayerPed__Respawn ((void(__cdecl *) (EFLC::IPhysical* pPhysical, CVector3 * vecSpawnPosition, float fHeading))(g_pCore->GetBase() + 0x7D5220))
 #define g_pPlayerInfos ((DWORD *) (g_pCore->GetBase() + 0x10D9458)) //playerPool ?
 #define LocalPlayerID (*(DWORD *) (g_pCore->GetBase() + 0xF16134)) //localPlayerId ?
 
@@ -55,7 +55,7 @@ void HandleLocalPlayerSpawn()
 	else
 	{
 		if (LocalPlayerID != -1)
-			CPlayerPed__Respawn(*(IVPhysical* *) (((unsigned char*) g_pPlayerInfos[LocalPlayerID]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
+			CPlayerPed__Respawn(*(EFLC::IPhysical* *) (((unsigned char*)g_pPlayerInfos[LocalPlayerID]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
 	}
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 
@@ -132,9 +132,6 @@ void CLocalPlayer::DoDeathCheck()
 		// Mark ourselves as dead
 		CLocalPlayer::m_bIsDead = true;
 
-		// Delete the object
-		CIVScript::DeleteObject(&m_pObj);
-
 		// Reset vehicle entry/exit flags
 		SetExitFlag(true);
 		ResetVehicleEnterExit();
@@ -206,9 +203,9 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 		if(bForce) 
 		{
 			// Apply current controls
-			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
+			EFLC::CScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 			m_bAdvancedControlState = bControl;
-			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+			EFLC::CScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 			m_bAdvancedCameraState = bCamera;
 			return;
 		}
@@ -217,14 +214,14 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 		{
 
 			// Apply current controls
-			CIVScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
+			EFLC::CScript::SetPlayerControlAdvanced(GetPlayerGameNumber(), bControl, bControl, bControl);
 			m_bAdvancedControlState = bControl;
 		}
 		
 		// Toggle camera
 		if(bCamera != m_bAdvancedCameraState) 
 		{
-			CIVScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
+			EFLC::CScript::SetCameraControlsDisabledWithPlayerControls(!bCamera);
 			m_bAdvancedCameraState = bCamera;
 		}
 	}

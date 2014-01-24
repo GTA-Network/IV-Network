@@ -33,18 +33,20 @@
 
 #include <Common.h>
 #include "CNetworkEntity.h"
-#include <Game/IVEngine/CIVVehicle.h>
-#include <Game/IVEngine/CIVModelInfo.h>
+#include <Game/EFLC/CVehicle.h>
+#include <Game/EFLC/CModelInfo.h>
 
 class CPlayerEntity;
-
+_GAME_BEGIN
+class CVehicle;
+_GAME_END
 class CVehicleEntity : public CNetworkEntity
 {
 private:
 
-	CIVVehicle							*m_pVehicle;
+	EFLC::CVehicle							*m_pVehicle;
 	EntityId							m_vehicleId;
-	CIVModelInfo						*m_pModelInfo;
+	EFLC::CModelInfo						*m_pModelInfo;
 	bool								m_bSpawned;
 	CVector3							m_vecSpawnPosition;
 	CVector3							m_vecPosition;
@@ -223,8 +225,8 @@ public:
 	void								SetDriver(CPlayerEntity * pDriver) { m_pDriver = pDriver; }
 	virtual CPlayerEntity				*GetDriver() { return m_pDriver; }
 
-	virtual CIVVehicle					*GetGameVehicle() { return m_pVehicle; }
-	virtual CIVModelInfo				*GetModelInfo() { return m_pModelInfo; }
+	virtual EFLC::CVehicle					*GetGameVehicle() { return m_pVehicle; }
+	virtual EFLC::CModelInfo				*GetModelInfo() { return m_pModelInfo; }
 };
 
 #endif // CVehicleEntity_h

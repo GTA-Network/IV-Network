@@ -41,7 +41,7 @@ CTaskManager::~CTaskManager()
 	}
 }
 
-bool CTaskManager::AddTask(CIVTask * pClientTask)
+bool CTaskManager::AddTask(EFLC::CTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
 	if (!pClientTask)
@@ -64,7 +64,7 @@ bool CTaskManager::AddTask(CIVTask * pClientTask)
 	return true;
 }
 
-bool CTaskManager::RemoveTask(CIVTask * pClientTask)
+bool CTaskManager::RemoveTask(EFLC::CTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
 	if (!pClientTask)
@@ -89,7 +89,7 @@ bool CTaskManager::RemoveTask(CIVTask * pClientTask)
 	return false;
 }
 
-IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
+EFLC::ITask * CTaskManager::GetGameTaskFromClientTask(EFLC::CTask * pClientTask)
 {
 	// Do we have an invalid task pointer?
 	if(!pClientTask)
@@ -106,7 +106,7 @@ IVTask * CTaskManager::GetGameTaskFromClientTask(CIVTask * pClientTask)
 	return nullptr;
 }
 
-CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCreateIfNotExist)
+EFLC::CTask * CTaskManager::GetClientTaskFromGameTask(EFLC::ITask * pGameTask, bool bCreateIfNotExist)
 {
 	// Do we have an invalid task pointer?
 	if(!pGameTask)
@@ -124,7 +124,7 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 	if(bCreateIfNotExist)
 	{
 		// Create a temp intance
-		CIVTask * pTempClientTask = new CIVTask(pGameTask);
+		EFLC::CTask * pTempClientTask = new EFLC::CTask(pGameTask);
 
 		// Is this task simple?
 		bool bIsSimple = pTempClientTask->IsSimple();
@@ -133,12 +133,12 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 		delete pTempClientTask;
 
 		// Create the client task instance
-		CIVTask * pClientTask = nullptr;
+		EFLC::CTask * pClientTask = nullptr;
 
 		if(bIsSimple)
-			pClientTask = new CIVTaskSimple((IVTaskSimple *)pGameTask);
+			pClientTask = new EFLC::CTaskSimple((EFLC::ITaskSimple *)pGameTask);
 		else
-			pClientTask = new CIVTaskComplex((IVTaskComplex *)pGameTask);
+			pClientTask = new EFLC::CTaskComplex((EFLC::ITaskComplex *)pGameTask);
 
 		// Add the task
 		AddTask(pClientTask);
@@ -150,14 +150,14 @@ CIVTask * CTaskManager::GetClientTaskFromGameTask(IVTask * pGameTask, bool bCrea
 	return nullptr;
 }
 
-bool CTaskManager::HandleTaskDelete(IVTask * pGameTask)
+bool CTaskManager::HandleTaskDelete(EFLC::ITask * pGameTask)
 {
 	// Do we have an invalid task pointer?
 	if (!pGameTask)
 		return false;
 
 	// Try and get the client task pointer for this game task
-	CIVTask * pClientTask = GetClientTaskFromGameTask(pGameTask, false);
+	EFLC::CTask * pClientTask = GetClientTaskFromGameTask(pGameTask, false);
 
 	// Do we have a valid client task pointer?
 	if(pClientTask)

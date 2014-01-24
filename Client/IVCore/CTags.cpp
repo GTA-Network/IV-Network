@@ -30,7 +30,7 @@
 
 #include "CCore.h"
 #include <cstdlib>
-#include "IV\CIVScript.h"
+#include "Game/EFLC/CScript.h"
 
 extern CCore * g_pCore;
 
@@ -60,7 +60,7 @@ void CTags::Draw()
 	if (pPlayerManager && pLocalPlayer && pLocalPlayer->IsSpawned())
 	{
 		CVector3 vecLocalHeadPosition;
-		CIVScript::GetPedBonePosition(pLocalPlayer->GetScriptingHandle(), CIVScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecLocalHeadPosition);
+		EFLC::CScript::GetPedBonePosition(pLocalPlayer->GetScriptingHandle(), EFLC::CScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecLocalHeadPosition);
 
 		// Render the player nametags
 		for (EntityId i = 0; i < MAX_PLAYERS; i++)
@@ -77,7 +77,7 @@ void CTags::Draw()
 
 				// Get the player's head position
 				CVector3 vecHeadPosition;
-				CIVScript::GetPedBonePosition(pPlayer->GetScriptingHandle(), CIVScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecHeadPosition);
+				EFLC::CScript::GetPedBonePosition(pPlayer->GetScriptingHandle(), EFLC::CScript::ePedBone::BONE_HEAD, 0.0f, 0.0f, 0.0f, &vecHeadPosition);
 
 				//Is this player not within our view range?
 				if (sqrt((vecHeadPosition.fX - vecLocalHeadPosition.fX)*(vecHeadPosition.fX - vecLocalHeadPosition.fX) + (vecHeadPosition.fY - vecLocalHeadPosition.fY)*(vecHeadPosition.fY - vecLocalHeadPosition.fY)) > 60.0f)
@@ -87,7 +87,7 @@ void CTags::Draw()
 
 				// Convert the position to our screen position
 				Vector2 vecScreenPosition;
-				CIVScript::GetViewportPositionOfCoord(&vecHeadPosition, &vecScreenPosition, 2);
+				EFLC::CScript::GetViewportPositionOfCoord(&vecHeadPosition, &vecScreenPosition, 2);
 
 				// Set the player name
 				CString strString("%s (%d)", pPlayer->GetNick().Get(), i);

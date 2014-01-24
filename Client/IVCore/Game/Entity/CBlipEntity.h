@@ -32,13 +32,13 @@
 #define CBlipEntity_h
 
 #include "CNetworkEntity.h"
-#include "..\..\IV\CIVScriptEnums.h"
+#include "..\EFLC\ScriptEnums.h"
 
 class CBlipEntity : public CNetworkEntity
 {
 private:
 	EntityId				 m_blipId;
-	CIVScript::eBlipSprite   m_eIcon;
+	EFLC::CScript::eBlipSprite   m_eIcon;
 	CVector3				 m_vecPos;
 	unsigned int			 m_uiColor;
 	float					 m_fSize;
@@ -48,7 +48,7 @@ private:
 	CString					 m_sName;
 	unsigned int			 m_uiBlip;
 public:
-	CBlipEntity(CIVScript::eBlipSprite icon, CVector3 vecPosition, bool bVisible);
+	CBlipEntity(EFLC::CScript::eBlipSprite icon, CVector3 vecPosition, bool bVisible);
 	~CBlipEntity();
 
 	bool							Create() { return true; }
@@ -57,8 +57,8 @@ public:
 	void							SetId(EntityId blipId) { m_blipId = blipId; }
 	EntityId						GetId() { return m_blipId; }
 
-	void							SetIcon(CIVScript::eBlipSprite icon);
-	CIVScript::eBlipSprite			GetIcon();
+	void							SetIcon(EFLC::CScript::eBlipSprite icon);
+	EFLC::CScript::eBlipSprite			GetIcon();
 
 	void							SetPosition(CVector3 vecPosition);
 	CVector3						GetPosition();

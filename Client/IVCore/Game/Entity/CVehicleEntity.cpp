@@ -31,10 +31,10 @@
 #include "CVehicleEntity.h"
 #include "CPlayerEntity.h"
 
-#include <Game/IVEngine/CIVModelManager.h>
-#include <Game/IVEngine/CIVVehicleFactory.h>
+#include <Game/EFLC/CModelManager.h>
+#include <Game/EFLC/CVehicleFactory.h>
 #include <Game/Entity/CVehicleEntity.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <Game/CCharacterManager.h>
 
 #include <CCore.h>
@@ -62,10 +62,10 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	}
 
 	// Get the model hash from the model id
-	DWORD dwModelHash = CIVModelManager::VehicleIdToModelHash(iVehicleModel);
+	DWORD dwModelHash = EFLC::CModelManager::VehicleIdToModelHash(iVehicleModel);
 
 	// Get the model index
-	int iVehicleModelIndex = CIVModelManager::GetModelIndexFromHash(dwModelHash);
+	int iVehicleModelIndex = EFLC::CModelManager::GetModelIndexFromHash(dwModelHash);
 
 	if (iVehicleModelIndex == -1)
 	{
@@ -107,12 +107,12 @@ CVehicleEntity::~CVehicleEntity()
 	}
 }
 
-#define CVehicleModelInfo__AddReference ((int(__thiscall *)(IVBaseModelInfo *))(g_pCore->GetBase() + 0x83F2E0))
+#define CVehicleModelInfo__AddReference ((int(__thiscall *)(EFLC::IBaseModelInfo *))(g_pCore->GetBase() + 0x83F2E0))
 #define CWorld__GetGroundZ ((float (__cdecl*)(float, float))(g_pCore->GetBase() + 0x9C69F0))
-#define CWorld__AddEntity ((int(_cdecl *)(IVVehicle*, bool bDontAdd))(g_pCore->GetBase() + 0x86C0B0))
-#define CVehicle__TurnEngineOn ((void(__thiscall *)(IVVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
-#define sub_B40B30 ((void(__thiscall *)(IVVehicle*, char, char))(g_pCore->GetBase() + 0xB40B30))
-#define pIVVehicleFactory (*(IVVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4))
+#define CWorld__AddEntity ((int(_cdecl *)(EFLC::IVehicle*, bool bDontAdd))(g_pCore->GetBase() + 0x86C0B0))
+#define CVehicle__TurnEngineOn ((void(__thiscall *)(EFLC::IVehicle*, bool))(g_pCore->GetBase() + 0x9FD530))
+#define sub_B40B30 ((void(__thiscall *)(EFLC::IVehicle*, char, char))(g_pCore->GetBase() + 0xB40B30))
+#define pIVehicleFactory (*(EFLC::IVehicleFactory**)(g_pCore->GetBase() + 0x118A6D4))
 
 bool CVehicleEntity::Create()
 {
@@ -123,12 +123,12 @@ bool CVehicleEntity::Create()
 	if(IsSpawned())
 		return false;
 
-	CIVScript::RequestModel(m_pModelInfo->GetHash());
+	EFLC::CScript::RequestModel(m_pModelInfo->GetHash());
 
-	while (!CIVScript::HasModelLoaded(m_pModelInfo->GetHash()))
-		CIVScript::LoadAllObjectsNow(false);
+	while (!EFLC::CScript::HasModelLoaded(m_pModelInfo->GetHash()))
+		EFLC::CScript::LoadAllObjectsNow(false);
 
-	IVVehicle * pVehicle = pIVVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
+	EFLC::IVehicle * pVehicle = pIVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
@@ -151,9 +151,9 @@ bool CVehicleEntity::Create()
 			pVehicle->ProcessInput();
 		}
 		
-		CIVScript::MarkModelAsNoLongerNeeded(m_pModelInfo->GetHash());
+		EFLC::CScript::MarkModelAsNoLongerNeeded(m_pModelInfo->GetHash());
 
-		m_pVehicle = new CIVVehicle(pVehicle);
+		m_pVehicle = new EFLC::CVehicle(pVehicle);
 
 		//set the vehicle's color
 		SetColors(m_dwColor[0], m_dwColor[1], m_dwColor[2], m_dwColor[3], m_dwColor[4]);
@@ -202,8 +202,8 @@ bool CVehicleEntity::Destroy()
 	}
 
 	unsigned int handle = g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(m_pVehicle->GetVehicle());
-	CIVScript::MarkCarAsNoLongerNeeded(&handle);
-	pIVVehicleFactory->Delete(m_pVehicle->GetVehicle());
+	EFLC::CScript::MarkCarAsNoLongerNeeded(&handle);
+	pIVehicleFactory->Delete(m_pVehicle->GetVehicle());
 
 	// Remove the vehicle model reference
 	m_pModelInfo->RemoveReference();
@@ -285,7 +285,7 @@ void CVehicleEntity::SetModel(DWORD dwModelHash)
 	}
 
 	// Get the new model info
-	CIVModelInfo * pNewModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
+	auto pNewModelInfo = g_pCore->GetGame()->GetModelInfo(iModelIndex);
 
 	// Is the new model info valid?
 	if(!pNewModelInfo || !pNewModelInfo->IsValid() || !pNewModelInfo->IsVehicle())
@@ -321,7 +321,7 @@ public:
 	DWORD color;
 };
 
-class IVVehicleColors
+class IVehicleColors
 {
 public:
 	unsigned char pad_0[16];
@@ -344,7 +344,7 @@ void CVehicleEntity::SetColors(DWORD dwColor1, DWORD dwColor2, DWORD dwColor3, D
 	if (!GetGameVehicle())
 		return;
 
-	IVVehicleColors* VehicleColors = *(IVVehicleColors**) (GetGameVehicle()->GetVehicle()->m_pLivery + 4);
+	IVehicleColors* VehicleColors = *(IVehicleColors**) (GetGameVehicle()->GetVehicle()->m_pLivery + 4);
 
 	VehicleColors->field_10.red = getRed(dwColor1);
 	VehicleColors->field_10.green = getGreen(dwColor1);
@@ -628,7 +628,7 @@ void CVehicleEntity::SetDoorLockState(DWORD dwDoorLockState)
 
 	// Are we spawned?
 	if(IsSpawned())
-		CIVScript::LockCarDoor(GetScriptingHandle(), m_dwDoorLockState);
+		EFLC::CScript::LockCarDoor(GetScriptingHandle(), m_dwDoorLockState);
 }
 
 DWORD CVehicleEntity::GetDoorLockState()
@@ -875,7 +875,7 @@ void CVehicleEntity::SetIndicatorState(bool bFrontLeft, bool bFrontRight, bool b
         
     if(m_pVehicle)
     {
-        IVVehicle* pVehicle = m_pVehicle->GetVehicle();
+        auto pVehicle = m_pVehicle->GetVehicle();
         if(pVehicle)
         {
             pVehicle->indicators[0] = !bFrontLeft;
@@ -924,7 +924,7 @@ void CVehicleEntity::SetVariation(unsigned char ucVariation)
         if(m_pVehicle->GetTextureVariationCount() != 255)
         {
             //m_pVehicle->SetTextureVariation(ucVariation);
-            CIVScript::SetCarLivery(GetScriptingHandle(), (int)ucVariation);
+			EFLC::CScript::SetCarLivery(GetScriptingHandle(), (int)ucVariation);
             m_ucVariation = ucVariation;
 		}
         else
@@ -943,7 +943,7 @@ unsigned char CVehicleEntity::GetVariation()
         {
             //return (unsigned char)m_pVehicle->GetTextureVariation();
             int iVariation = 0;
-            CIVScript::GetCarLivery(GetScriptingHandle(), &iVariation);
+			EFLC::CScript::GetCarLivery(GetScriptingHandle(), &iVariation);
             return iVariation;
         }
         else
@@ -970,7 +970,7 @@ void CVehicleEntity::SetTaxiLightsState(bool bState)
 {
     // Are we spawned?
     if(IsSpawned())
-        CIVScript::SetTaxiLights(GetScriptingHandle(),bState);
+		EFLC::CScript::SetTaxiLights(GetScriptingHandle(), bState);
 
     m_bTaxiLights = bState;
 }
@@ -990,11 +990,11 @@ void CVehicleEntity::SetCarDoorAngle(int iDoor,bool bClose, float fAngle)
     if(IsSpawned())
     {
         if(fAngle > 1.9f && fAngle < 350.0f)
-                CIVScript::ControlCarDoor(GetScriptingHandle(),(CIVScript::eVehicleDoor)iDoor,bClose,fAngle);
+			EFLC::CScript::ControlCarDoor(GetScriptingHandle(), (EFLC::CScript::eVehicleDoor)iDoor, bClose, fAngle);
         else if(fAngle >= 350.0f)
-                CIVScript::OpenCarDoor(GetScriptingHandle(),(CIVScript::eVehicleDoor)iDoor);
+			EFLC::CScript::OpenCarDoor(GetScriptingHandle(), (EFLC::CScript::eVehicleDoor)iDoor);
         else if(fAngle < 2.0f)
-                CIVScript::ShutCarDoor(GetScriptingHandle(),(CIVScript::eVehicleDoor)iDoor);
+			EFLC::CScript::ShutCarDoor(GetScriptingHandle(), (EFLC::CScript::eVehicleDoor)iDoor);
     }
 
     // Apply changes
@@ -1016,9 +1016,9 @@ void CVehicleEntity::SetLightsState(bool bLights)
     if(IsSpawned())
     {
         if(bLights)
-                CIVScript::ForceCarLights(GetScriptingHandle(),2);
+			EFLC::CScript::ForceCarLights(GetScriptingHandle(), 2);
         else if(!bLights)
-                CIVScript::ForceCarLights(GetScriptingHandle(),1);
+			EFLC::CScript::ForceCarLights(GetScriptingHandle(), 1);
 
         m_bLights = bLights;
     }
@@ -1099,7 +1099,7 @@ void CVehicleEntity::Fix()
 {
 	if (m_pVehicle)
 	{
-		IVVehicle* pVehicle = m_pVehicle->GetVehicle();
+		auto pVehicle = m_pVehicle->GetVehicle();
 		if (pVehicle)
 		{
 			pVehicle->Repair();

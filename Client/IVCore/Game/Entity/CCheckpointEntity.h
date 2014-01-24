@@ -32,13 +32,13 @@
 #define CCheckpointEntity_h
 
 #include "CNetworkEntity.h"
-#include "..\..\IV\CIVScriptEnums.h"
+#include "..\EFLC\ScriptEnums.h"
 
 class CCheckpointEntity : public CNetworkEntity
 {
 private:
 	EntityId             m_checkpointId;
-	CIVScript::eCheckpointType      m_eType;
+	EFLC::CScript::eCheckpointType      m_eType;
 	CVector3             m_vecPosition;
 	CVector3             m_vecTargetPosition;
 	float                m_fRadius;
@@ -46,7 +46,7 @@ private:
 	bool                 m_bIsVisible;
 	unsigned int		 m_checkpoint;
 public:
-	CCheckpointEntity(CIVScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius);
+	CCheckpointEntity(EFLC::CScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius);
 	~CCheckpointEntity();
 
 	bool Create() { return true; }
@@ -62,8 +62,8 @@ public:
 
 	bool            IsVisible();
 
-	void            SetType(CIVScript::eCheckpointType type);
-	CIVScript::eCheckpointType GetType();
+	void            SetType(EFLC::CScript::eCheckpointType type);
+	EFLC::CScript::eCheckpointType GetType();
 
 	void            SetPosition(CVector3 vecPosition);
 	void            GetPosition(CVector3& vecPosition);

@@ -32,27 +32,28 @@
 #include "COffsets.h"
 #include <CCore.h>
 #include <Patcher/CPatcher.h>
-#include <Game/IVEngine/CIVPlayerInfo.h>
+#include <Game/EFLC/CPlayerInfo.h>
 #include "CContextData.h"
 #include <SharedUtility.h>
 #include "CGameFuncs.h"
-#include <IV/CIVScript_FunctionInvoke.h>
-#include <IV/CIVScriptEnums.h>
-#include <IV/CIVScript_FunctionList.h>
+#include <Game/EFLC/CScript_FunctionInvoke.h>
+#include <Game/EFLC/ScriptEnums.h>
+#include <Game/EFLC/ScriptFunctions.h>
+#include <Game/EFLC/CPedMoveBlend.h>
 
 extern	CCore* g_pCore;
 
 struct thisisafuckingthiscall
 {
 	// IS. not not like static __thiscalls, don't care about it, this will works. :)
-	static void __thiscall IVTask__Destructor(IVTask * a1);
+	static void __thiscall IVTask__Destructor(EFLC::ITask * a1);
 };
 
-#define sub_B17A90 (*(char *(__cdecl *)(IVTask *)) (g_pCore->GetBase() + 0xB17A90))
+#define sub_B17A90 (*(char *(__cdecl *)(EFLC::ITask *)) (g_pCore->GetBase() + 0xB17A90))
 #define sub_B17910 (*(int *(__thiscall *)(char *)) (g_pCore->GetBase() + 0xB17910))
-#define sub_A2ABA0 (*(void (__thiscall *)(IVTask *)) (g_pCore->GetBase() + 0xA2ABA0))
+#define sub_A2ABA0 (*(void (__thiscall *)(EFLC::ITask *)) (g_pCore->GetBase() + 0xA2ABA0))
 
-void  thisisafuckingthiscall::IVTask__Destructor(IVTask * a1)
+void  thisisafuckingthiscall::IVTask__Destructor(EFLC::ITask * a1)
 {
 	if (g_pCore->GetGame()->GetTaskManager())
 		g_pCore->GetGame()->GetTaskManager()->HandleTaskDelete(a1);
@@ -96,8 +97,8 @@ void RemoveLoadingScreens()
 	//CPatcher::InstallNopPatch(COffsets::FUNC_RemoveInitialLoadingScreens, 5);
 }
 
-IVPlayerInfo * pReturnedPlayerInfo = NULL;
-IVPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
+EFLC::IPlayerInfo * pReturnedPlayerInfo = NULL;
+EFLC::IPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
 	pReturnedPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 
@@ -113,7 +114,7 @@ IVPlayerInfo * GetPlayerInfoFromIndex(unsigned int uiIndex)
 }
 
 unsigned int   uiReturnedIndex = 0;
-unsigned int GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
+unsigned int GetIndexFromPlayerInfo(EFLC::IPlayerInfo * pPlayerInfo)
 {
 	uiReturnedIndex = 0;
 
@@ -128,11 +129,11 @@ unsigned int GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 	return uiReturnedIndex;
 }
 
-IVPlayerPed  * _pPlayerPed = NULL;
-IVPlayerPed * GetLocalPlayerPed()
+EFLC::IPlayerPed  * _pPlayerPed = NULL;
+EFLC::IPlayerPed * GetLocalPlayerPed()
 {
 	// Default to the local player ped (If available)
-	IVPlayerInfo * pPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
+	EFLC::IPlayerInfo * pPlayerInfo = g_pCore->GetGame()->GetPools()->GetPlayerInfoFromIndex(0);
 
 	if (pPlayerInfo)
 		_pPlayerPed = pPlayerInfo->m_pPlayerPed;
@@ -200,7 +201,7 @@ _declspec(naked) void GetLocalPlayerPed_Hook()
 }
 
 int * physics = 0;
-IVVehicle * pVehicle = 0;
+EFLC::IVehicle * pVehicle = 0;
 DWORD sub_44A690 = 0;
 
 // Vehicle + 0xE14 == fragInstGta*
@@ -210,7 +211,7 @@ struct fragInstGta
 	DWORD dw1;
 	WORD w1;
 	WORD w2;
-	IVEntity *	pEntity;
+	EFLC::IEntity *	pEntity;
 	Matrix34 m_Matrix; // 16-72
 	char pad1[8]; // 72-80
 	DWORD vtable_destruct; // 80-84
@@ -228,13 +229,13 @@ struct phInstGta
 	DWORD dw1;
 	WORD w1;
 	WORD w2;
-	IVEntity *	pEntity;
+	EFLC::IEntity *	pEntity;
 	Matrix34	m_Matrix;
 	char pad2[4];
 	int	iUnk;
 }; // size = 0x60 [96]
 
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 void _declspec(naked) PhysicsHook()
 {
 	_asm	mov physics, ecx;
@@ -260,9 +261,9 @@ void _declspec(naked) PhysicsHook()
 			}
 		}
 
-		CIVScript::RequestModel(pVehicle->m_wModelIndex);
-		while (!CIVScript::HasModelLoaded(pVehicle->m_wModelIndex))
-			CIVScript::LoadAllObjectsNow(false);
+		EFLC::CScript::RequestModel(pVehicle->m_wModelIndex);
+		while (!EFLC::CScript::HasModelLoaded(pVehicle->m_wModelIndex))
+			EFLC::CScript::LoadAllObjectsNow(false);
 
 		CLogFile::Printf("Model: %i", pVehicle->m_wModelIndex);
 
@@ -299,7 +300,7 @@ void _declspec(naked) PhysicsHook()
 }
 
 
-IVPed* gped = nullptr;
+EFLC::IPed* gped = nullptr;
 DWORD dwJmp = 0;
 
 void _declspec(naked) _hook_9E6480()
@@ -319,7 +320,7 @@ void _declspec(naked) _hook_9E6480()
 		NetBlender* = *(DWORD *)(gped->m_pNetworkObject + 28)
 		*/
 		if (gped->m_pNetworkObject)
-			((int(__stdcall *)(int, IVPed *))((g_pCore->GetBase() + 0x525C20)))(gped->m_pNetworkObject + 2056, gped);
+			((int(__stdcall *)(int, EFLC::IPed *))((g_pCore->GetBase() + 0x525C20)))(gped->m_pNetworkObject + 2056, gped);
 
 		_asm
 		{
@@ -353,12 +354,12 @@ void _declspec(naked) _hook_9E656F()
 	{
 
 		gped->m_pPedMoveBlendOnFoot->m_dwFlags |= 0x2000u;
-		((void(__thiscall *)(IVPedMoveBlendOnFoot*, DWORD))((g_pCore->GetBase() + 0xB10C30)))(gped->m_pPedMoveBlendOnFoot, 1);
+		((void(__thiscall *)(EFLC::IPedMoveBlendOnFoot*, DWORD))((g_pCore->GetBase() + 0xB10C30)))(gped->m_pPedMoveBlendOnFoot, 1);
 
 		// TODO: set the move speed in moveblendonfoot
 
 		gped->m_pPedMoveBlendOnFoot->Function19();
-		gped->IVPed_pad16[40] |= 2u;
+		gped->IPed_pad16[40] |= 2u;
 		_asm
 		{
 			popad
@@ -390,8 +391,7 @@ void __cdecl sub_47BA60()
 {
 	//g_pCore->GetGraphics()->GetChat()->Print("sub_47BA60()");
 }
-#include "../IV/CGameScript.h"
-#include "../IV/CGameMainScript.h"
+#include <Game/CGameMainScript.h>
 
 void __cdecl runStartupScript()
 {
@@ -522,7 +522,7 @@ void CHooks::Intialize()
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
 	
-	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&IVPoolOwns::IVPoolHook));
+	CPatcher::InstallJmpPatch(COffsets::IV_Hook__IncreasePoolSizes, CPatcher::GetClassMemberAddress(&EFLC::IPoolOwns::IVPoolHook));
 
 	//Replace loading text
 	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x7E2D0E, 2);

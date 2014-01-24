@@ -29,7 +29,7 @@
 */
 
 #include	"CCore.h"
-#include    <IV/CIVScript.h>
+#include    <Game/EFLC/CScript.h>
 #include	<Scripting/CEvents.h>
 
 extern	CCore			* g_pCore;

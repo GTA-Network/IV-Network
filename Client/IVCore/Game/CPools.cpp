@@ -29,7 +29,7 @@
 */
 
 #include "CPools.h"
-#include <Game\IVEngine\CIVPlayerInfo.h>
+#include <Game\EFLC\CPlayerInfo.h>
 #include <CCore.h>
 extern CCore * g_pCore;
 
@@ -96,33 +96,33 @@ void CPools::SetVehicleStructPoolLimit(BYTE byteLimit)
 void CPools::Initialize()
 {
     // Initialize game pools
-    m_pPedPool = new CIVPool<IVPed>(*(IVPool **)COffsets::VAR_PedPool);
-    m_pVehiclePool = new CIVPool<IVVehicle>(*(IVPool **)COffsets::VAR_VehiclePool);
-    m_pTaskPool = new CIVPool<IVTask>(*(IVPool **)COffsets::VAR_TaskPool);
-    m_pCamPool = new CIVPool<IVCam>(*(IVPool **)COffsets::VAR_CamPool);
-    m_pPedMoveBlendPool = new CIVPool<IVPedMoveBlendOnFoot>(*(IVPool **)COffsets::VAR_PedMoveBlendPool);
+	m_pPedPool = new EFLC::CPool<EFLC::IPed>(*(EFLC::IPool **)COffsets::VAR_PedPool);
+	m_pVehiclePool = new EFLC::CPool<EFLC::IVehicle>(*(EFLC::IPool **)COffsets::VAR_VehiclePool);
+	m_pTaskPool = new EFLC::CPool<EFLC::ITask>(*(EFLC::IPool **)COffsets::VAR_TaskPool);
+	m_pCamPool = new EFLC::CPool<EFLC::ICam>(*(EFLC::IPool **)COffsets::VAR_CamPool);
+	m_pPedMoveBlendPool = new EFLC::CPool<EFLC::IPedMoveBlendOnFoot>(*(EFLC::IPool **)COffsets::VAR_PedMoveBlendPool);
 }
 
-IVPlayerInfo * CPools::GetPlayerInfoFromIndex(unsigned int uiIndex)
+EFLC::IPlayerInfo * CPools::GetPlayerInfoFromIndex(unsigned int uiIndex)
 {
 	// Is the index more than the player info array size?
 	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
 		return nullptr;
 
 	// Get the player info pointer array
-	IVPlayerInfo ** pPlayerInfos = (IVPlayerInfo **)COffsets::VAR_PlayerInfoArray;
+	EFLC::IPlayerInfo ** pPlayerInfos = (EFLC::IPlayerInfo **)COffsets::VAR_PlayerInfoArray;
 
 	// Return the player info pointer
 	return pPlayerInfos[uiIndex];
 }
 
-IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed)
+EFLC::IPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(EFLC::IPlayerPed * pPlayerPed)
 {
 	// Loop through all player info indexes
 	for(unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++)
 	{
 		// Get the current player info
-		IVPlayerInfo * pPlayerInfo = GetPlayerInfoFromIndex(i);
+		EFLC::IPlayerInfo * pPlayerInfo = GetPlayerInfoFromIndex(i);
 
 		// Does the current player info exist?
 		if(pPlayerInfo)
@@ -137,7 +137,7 @@ IVPlayerInfo * CPools::GetPlayerInfoFromPlayerPed(IVPlayerPed * pPlayerPed)
 	return nullptr;
 }
 
-unsigned int CPools::GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
+unsigned int CPools::GetIndexFromPlayerInfo(EFLC::IPlayerInfo * pPlayerInfo)
 {
 	// Loop through all player info indexes
 	for(unsigned int i = 0; i < PLAYER_INFO_ARRAY_SIZE; i++)
@@ -151,14 +151,14 @@ unsigned int CPools::GetIndexFromPlayerInfo(IVPlayerInfo * pPlayerInfo)
 	return INVALID_PLAYER_PED;
 }
 
-void CPools::SetPlayerInfoAtIndex(unsigned int uiIndex, IVPlayerInfo * pPlayerInfo)
+void CPools::SetPlayerInfoAtIndex(unsigned int uiIndex, EFLC::IPlayerInfo * pPlayerInfo)
 {
 	// Is the index more than the player info array size?
 	if(uiIndex > PLAYER_INFO_ARRAY_SIZE)
 		return;
 
 	// Get the player info pointer array
-	IVPlayerInfo ** pPlayerInfos = (IVPlayerInfo **)COffsets::VAR_PlayerInfoArray;
+	EFLC::IPlayerInfo ** pPlayerInfos = (EFLC::IPlayerInfo **)COffsets::VAR_PlayerInfoArray;
 
 	// Set the player info pointer
 	pPlayerInfos[uiIndex] = pPlayerInfo;

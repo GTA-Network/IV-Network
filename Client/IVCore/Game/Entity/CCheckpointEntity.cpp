@@ -29,11 +29,11 @@
 */
 
 #include "CCheckpointEntity.h"
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <CCore.h>
 extern CCore * g_pCore;
 
-CCheckpointEntity::CCheckpointEntity(CIVScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius) :
+CCheckpointEntity::CCheckpointEntity(EFLC::CScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius) :
 	CNetworkEntity(),
 	m_eType(type),
 	m_vecPosition(vecPosition),
@@ -59,9 +59,9 @@ unsigned int CCheckpointEntity::GetCheckpoint()
 void CCheckpointEntity::Show()
 {
 	if (m_checkpoint)
-		CIVScript::DeleteCheckpoint(m_checkpoint);
+		EFLC::CScript::DeleteCheckpoint(m_checkpoint);
 
-	m_checkpoint = CIVScript::CreateCheckpoint(m_eType, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ, m_vecTargetPosition.fX, m_vecTargetPosition.fY, m_vecTargetPosition.fZ, m_fRadius);
+	m_checkpoint = EFLC::CScript::CreateCheckpoint(m_eType, m_vecPosition.fX, m_vecPosition.fY, m_vecPosition.fZ, m_vecTargetPosition.fX, m_vecTargetPosition.fY, m_vecTargetPosition.fZ, m_fRadius);
 
 	m_bIsVisible = true;
 }
@@ -70,7 +70,7 @@ void CCheckpointEntity::Hide()
 {
 	if (m_bIsVisible) {
 		if (m_checkpoint) {
-			CIVScript::DeleteCheckpoint(m_checkpoint);
+			EFLC::CScript::DeleteCheckpoint(m_checkpoint);
 			m_checkpoint = NULL;
 			m_bIsVisible = false;
 		}
@@ -82,7 +82,7 @@ bool CCheckpointEntity::IsVisible()
 	return m_bIsVisible;
 }
 
-void CCheckpointEntity::SetType(CIVScript::eCheckpointType type)
+void CCheckpointEntity::SetType(EFLC::CScript::eCheckpointType type)
 {
 	if (type != m_eType) {
 		m_eType = type;
@@ -92,7 +92,7 @@ void CCheckpointEntity::SetType(CIVScript::eCheckpointType type)
 	}
 }
 
-CIVScript::eCheckpointType CCheckpointEntity::GetType()
+EFLC::CScript::eCheckpointType CCheckpointEntity::GetType()
 {
 	return m_eType;
 }

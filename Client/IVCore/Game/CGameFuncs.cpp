@@ -30,8 +30,7 @@
 
 #include "CGameFuncs.h"
 #include <CCore.h>
-#include <IV\IVData.h>
-#include <IV\CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <Game\COffsets.h>
 #include <CString.h>
 
@@ -329,17 +328,17 @@ bool CGameFunction::GetScreenPositionFromWorldPosition(CVector3 &vecWorldPositio
 
 void CGameFunction::CreateExplosion(CVector3& vecPosition, unsigned int uiExplosionType, float fRadius, bool bSound, bool bInvisible, float fCameraShake)
 {
-	return CIVScript::AddExplosion(vecPosition.fX, vecPosition.fY, vecPosition.fZ, uiExplosionType, fRadius, bSound, bInvisible, fCameraShake);
+	return EFLC::CScript::AddExplosion(vecPosition.fX, vecPosition.fY, vecPosition.fZ, uiExplosionType, fRadius, bSound, bInvisible, fCameraShake);
 }
 
 unsigned int CGameFunction::CreateFire(CVector3 vecPosition, unsigned int uiStrength, unsigned char ucAllowedGenerations)
 {
-    return CIVScript::StartScriptFire(vecPosition.fX, vecPosition.fY, vecPosition.fZ, ucAllowedGenerations, uiStrength);
+    return EFLC::CScript::StartScriptFire(vecPosition.fX, vecPosition.fY, vecPosition.fZ, ucAllowedGenerations, uiStrength);
 }
 
 bool CGameFunction::DeleteFire(unsigned int uiFire)
 {
-	CIVScript::RemoveScriptFire(uiFire);
+	EFLC::CScript::RemoveScriptFire(uiFire);
 	return true;
 }
 

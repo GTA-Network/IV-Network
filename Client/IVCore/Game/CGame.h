@@ -48,11 +48,18 @@
 #include <Game/Entity/CBlipEntity.h>
 #include <Game/Entity/CCheckpointEntity.h>
 
-#include <Game/IVEngine/CIVModelInfo.h>
-#include <Game/IVEngine/CIVPad.h>
-#include <Game/IVEngine/CIVPool.h>
-#include <Game/IVEngine/CIVCam.h>
-#include <Game/IVEngine/CIVWeaponInfo.h>
+#include <Game/EFLC/CModelInfo.h>
+#include <Game/EFLC/CPad.h>
+#include <Game/EFLC/CPool.h>
+#include <Game/EFLC/CCam.h>
+#include <Game/EFLC/CWeaponInfo.h>
+
+#include <Game\EFLC\CPool.h>
+#include <Game\EFLC\CCam.h>
+#include <Game\EFLC\CVehicle.h>
+#include <Game\EFLC\CPed.h>
+#include <Game\EFLC\CPlayerInfo.h>
+#include <Game\EFLC\CPlayerPed.h>
 
 #include "CTaskManager.h"
 #include "CPools.h"
@@ -74,17 +81,17 @@ typedef CEntityManager<CBlipEntity, MAX_BLIPS> CBlipManager;
 typedef CEntityManager<CCheckpointEntity, MAX_CHECKPOINTS> CCheckpointManager;
 
 class CLocalPlayer;
-
+class CPools;
 class CGame
 {
 private:
 	CLocalPlayer					* m_pLocalPlayer = nullptr;
-	CIVPad							* m_pPad = nullptr;
+	EFLC::CPad							* m_pPad = nullptr;
 	CTaskManager					* m_pTaskManager = nullptr;
 	CPools							* m_pPool = nullptr;
 	CCamera							* m_pCamera = nullptr;
-	CIVModelInfo					m_modelInfos[NUM_ModelInfos];
-	CIVWeaponInfo					m_weaponInfos[NUM_WeaponInfos];
+	EFLC::CModelInfo					m_modelInfos[NUM_ModelInfos];
+	EFLC::CWeaponInfo					m_weaponInfos[NUM_WeaponInfos];
 
 	CPlayerManager					* m_pPlayerManager = nullptr;
 	CVehicleManager					* m_pVehicleManager = nullptr;
@@ -110,8 +117,8 @@ public:
 	void								UnprotectMemory();
 	void								Reset();
 
-	CIVModelInfo						* GetModelInfo(int iModelIndex);
-	CIVWeaponInfo						* GetWeaponInfo(eWeaponType weaponType);
+	EFLC::CModelInfo						* GetModelInfo(int iModelIndex);
+	EFLC::CWeaponInfo						* GetWeaponInfo(EFLC::eWeaponType weaponType);
 
 	const decltype(m_pLocalPlayer)        GetLocalPlayer() { return m_pLocalPlayer; }
 	const decltype(m_pPad)                GetPad() { return m_pPad; }

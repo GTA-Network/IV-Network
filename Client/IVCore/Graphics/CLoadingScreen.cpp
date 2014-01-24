@@ -1,6 +1,6 @@
 #include "CLoadingScreen.h"
 #include <CCore.h>
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 
 extern CCore* g_pCore;
 

@@ -31,11 +31,17 @@
 #ifndef CLogFile_h
 #define CLogFile_h
 
+#include "Common.h"
 #include "CString.h"
 #include "Threading/CMutex.h"
 #include <stdio.h>
 
-#define PRINT_FUNCTION ; //CLogFile::Print(__FUNCTION__);
+#ifdef DEBUG
+#define PRINT_FUNCTION CLogFile::Print(__FUNCSIG__);
+#else
+#define PRINT_FUNCTION
+#endif
+
 typedef void (* LogFileCallback_t)(const char * szBuffer);
 
 class CLogFile

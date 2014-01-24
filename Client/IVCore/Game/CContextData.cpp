@@ -29,6 +29,7 @@
 */
 
 #include "CContextData.h"
+#include "CPools.h"
 
 std::list< CContextData *>	CContextDataManager::m_contextDataList;
 
@@ -42,7 +43,7 @@ CContextDataManager::~CContextDataManager()
 	}
 }
 
-CContextData * CContextDataManager::CreateContextData(CIVPlayerInfo * pPlayerInfo)
+CContextData * CContextDataManager::CreateContextData(EFLC::CPlayerInfo * pPlayerInfo)
 {
 	// Create the context data
 	CContextData * pContextData = new CContextData(pPlayerInfo);
@@ -91,7 +92,7 @@ CContextData * CContextDataManager::GetContextData(BYTE bytePlayerNumber)
 	return nullptr;
 }
 
-CContextData * CContextDataManager::GetContextData(CIVPlayerInfo * pPlayerInfo)
+CContextData * CContextDataManager::GetContextData(EFLC::CPlayerInfo * pPlayerInfo)
 {
 	// Loop through the context data list
 	for(std::list<CContextData *>::iterator iter = m_contextDataList.begin(); iter != m_contextDataList.end(); iter++)
@@ -109,7 +110,7 @@ CContextData * CContextDataManager::GetContextData(CIVPlayerInfo * pPlayerInfo)
 	return nullptr;
 }
 
-CContextData * CContextDataManager::GetContextData(IVPlayerInfo * pPlayerInfo)
+CContextData * CContextDataManager::GetContextData(EFLC::IPlayerInfo * pPlayerInfo)
 {
 	// Loop through the context data list
 	for(std::list<CContextData *>::iterator iter = m_contextDataList.begin(); iter != m_contextDataList.end(); iter++)
@@ -127,7 +128,7 @@ CContextData * CContextDataManager::GetContextData(IVPlayerInfo * pPlayerInfo)
 	return nullptr;
 }
 
-CContextData * CContextDataManager::GetContextData(CIVPlayerPed * pPlayerPed)
+CContextData * CContextDataManager::GetContextData(EFLC::CPlayerPed * pPlayerPed)
 {
 	// Loop through the context data list
 	for(std::list<CContextData *>::iterator iter = m_contextDataList.begin(); iter != m_contextDataList.end(); iter++)
@@ -145,7 +146,7 @@ CContextData * CContextDataManager::GetContextData(CIVPlayerPed * pPlayerPed)
 	return nullptr;
 }
 
-CContextData * CContextDataManager::GetContextData(IVPlayerPed * pPlayerPed)
+CContextData * CContextDataManager::GetContextData(EFLC::IPlayerPed * pPlayerPed)
 {
 	// Loop through the context data list
 	for(std::list<CContextData *>::iterator iter = m_contextDataList.begin(); iter != m_contextDataList.end(); iter++)

@@ -36,12 +36,19 @@
 
 #include <Math/CMaths.h>
 #include <Game/CContextData.h>
-#include <Game/IVEngine/CIVPlayerPed.h>
-#include <Game/IVEngine/CIVModelInfo.h>
+#include <Game/EFLC/CPlayerPed.h>
+#include <Game/EFLC/CModelInfo.h>
 #include <Network/CBitStream.h>
 #include <Game/eGame.h>
 
 class CVehicleEntity;
+_GAME_BEGIN
+class CPlayerPed;
+class CPlayerInfo;
+_GAME_END
+
+class CContextData;
+
 class CPlayerEntity : public CNetworkEntity 
 {
 	friend class CLocalPlayer;
@@ -62,9 +69,9 @@ private:
 	CVector3								m_vecDirection;
 	CVector3								m_vecRoll;
 
-	CIVPlayerPed							* m_pPlayerPed;
-	CIVPlayerInfo							* m_pPlayerInfo;
-	CIVModelInfo							* m_pModelInfo;
+	EFLC::CPlayerPed							* m_pPlayerPed;
+	EFLC::CPlayerInfo							* m_pPlayerInfo;
+	EFLC::CModelInfo							* m_pModelInfo;
 	BYTE									m_bytePlayerNumber;
 	CContextData							* m_pContextData;
 
@@ -183,8 +190,8 @@ public: // Handles "GET" functions
 
 	CContextData					* GetContextData() { return m_pContextData; }
 	CVehicleEntity					* InternalGetVehicle();
-	CIVPlayerPed					* GetPlayerPed() { return m_pPlayerPed; }
-	CIVPlayerInfo					* GetPlayerInfo() { return m_pPlayerInfo; }
+	EFLC::CPlayerPed					* GetPlayerPed() { return m_pPlayerPed; }
+	EFLC::CPlayerInfo					* GetPlayerInfo() { return m_pPlayerInfo; }
 	CVehicleEntity					* GetVehicleEntity() { return m_pVehicle; }
 	
 	sWeaponStructure				GetAimData() { return m_aimData; }
@@ -261,7 +268,7 @@ public: // Handles call functions
 	void							KillPed(bool bInstandly);
 	bool							IsDying();
 	bool							IsDead();
-	IVEntity						*GetLastDamageEntity();
+	EFLC::IEntity						*GetLastDamageEntity();
 	bool							GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId);
 
 	void							SetAimData(bool bSwitch, CVector3 vecPos);

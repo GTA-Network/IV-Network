@@ -29,10 +29,10 @@
 */
 
 #include "CBlipEntity.h"
-#include <IV/CIVScript.h>
+#include <Game/EFLC/CScript.h>
 #include <CCore.h>
 
-CBlipEntity::CBlipEntity(CIVScript::eBlipSprite icon, CVector3 vecPosition, bool bRange) :
+CBlipEntity::CBlipEntity(EFLC::CScript::eBlipSprite icon, CVector3 vecPosition, bool bRange) :
 CNetworkEntity(),
 m_eIcon(icon),
 m_vecPos(vecPosition),
@@ -42,24 +42,24 @@ m_bVisible(true)
 {
 	CNetworkEntity::SetType(BLIP_ENTITY);
 
-	m_uiBlip = CIVScript::AddBlipForCoord(vecPosition.fX, vecPosition.fY, vecPosition.fZ, (unsigned int*)icon);
-	CIVScript::SetBlipShortRange(m_uiBlip, bRange);
+	m_uiBlip = EFLC::CScript::AddBlipForCoord(vecPosition.fX, vecPosition.fY, vecPosition.fZ, (unsigned int*)icon);
+	EFLC::CScript::SetBlipShortRange(m_uiBlip, bRange);
 }
 
 CBlipEntity::~CBlipEntity()
 {
 }
 
-void CBlipEntity::SetIcon(CIVScript::eBlipSprite icon)
+void CBlipEntity::SetIcon(EFLC::CScript::eBlipSprite icon)
 {
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::ChangeBlipSprite(m_uiBlip, icon);
+	EFLC::CScript::ChangeBlipSprite(m_uiBlip, icon);
 	m_eIcon = icon;
 }
 
-CIVScript::eBlipSprite CBlipEntity::GetIcon()
+EFLC::CScript::eBlipSprite CBlipEntity::GetIcon()
 {
 	return m_eIcon;
 }
@@ -69,10 +69,10 @@ void CBlipEntity::SetPosition(CVector3 vecPosition)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::RemoveBlip(m_uiBlip);
+	EFLC::CScript::RemoveBlip(m_uiBlip);
 
 	if (m_bVisible)
-		m_uiBlip = CIVScript::AddBlipForCoord(vecPosition.fX, vecPosition.fY, vecPosition.fZ, (unsigned int*)m_eIcon);
+		m_uiBlip = EFLC::CScript::AddBlipForCoord(vecPosition.fX, vecPosition.fY, vecPosition.fZ, (unsigned int*)m_eIcon);
 
 	m_vecPos = vecPosition;
 }
@@ -88,7 +88,7 @@ void CBlipEntity::SetColor(unsigned int uiColor)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::ChangeBlipColour(m_uiBlip, uiColor);
+	EFLC::CScript::ChangeBlipColour(m_uiBlip, uiColor);
 	m_uiColor = uiColor;
 }
 
@@ -102,7 +102,7 @@ void CBlipEntity::SetSize(float fSize)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::ChangeBlipScale(m_uiBlip, fSize);
+	EFLC::CScript::ChangeBlipScale(m_uiBlip, fSize);
 	m_fSize = fSize;
 }
 
@@ -116,7 +116,7 @@ void CBlipEntity::SetRange(bool bRange)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::SetBlipShortRange(m_uiBlip, bRange);
+	EFLC::CScript::SetBlipShortRange(m_uiBlip, bRange);
 	m_bRange = bRange;
 }
 
@@ -130,10 +130,10 @@ void CBlipEntity::SetVisible(bool bVisible)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::RemoveBlip(m_uiBlip);
+	EFLC::CScript::RemoveBlip(m_uiBlip);
 
 	if (m_bVisible)
-		m_uiBlip = CIVScript::AddBlipForCoord(m_vecPos.fX, m_vecPos.fY, m_vecPos.fZ, (unsigned int*)m_eIcon);
+		m_uiBlip = EFLC::CScript::AddBlipForCoord(m_vecPos.fX, m_vecPos.fY, m_vecPos.fZ, (unsigned int*)m_eIcon);
 
 	m_bVisible = bVisible;
 }
@@ -148,7 +148,7 @@ void CBlipEntity::SetName(CString sName)
 	if (!m_uiBlip)
 		return;
 
-	CIVScript::ChangeBlipNameFromAscii(m_uiBlip, sName.C_String());
+	EFLC::CScript::ChangeBlipNameFromAscii(m_uiBlip, sName.C_String());
 	m_sName = sName;
 }
 
