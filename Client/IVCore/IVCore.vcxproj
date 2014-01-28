@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client\IVCore\General;$(SolutionDir)\Client;./;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;$(SolutionDir)\Client\IVCore\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;TASKINFO_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
@@ -311,6 +311,7 @@
     <ClCompile Include="Game\Entity\CObjectEntity.cpp" />
     <ClCompile Include="Game\Entity\CPickupEntity.cpp" />
     <ClCompile Include="Game\Entity\CPlayerEntity.cpp" />
+    <ClCompile Include="Game\Entity\CPlayerWeapons.cpp" />
     <ClCompile Include="Game\Entity\CVehicleEntity.cpp" />
     <ClCompile Include="Game\EpisodeManager.cpp" />
     <ClCompile Include="General\CException.cpp" />
@@ -606,6 +607,7 @@
     <ClInclude Include="Game\Entity\CObjectEntity.h" />
     <ClInclude Include="Game\Entity\CPickupEntity.h" />
     <ClInclude Include="Game\Entity\CPlayerEntity.h" />
+    <ClInclude Include="Game\Entity\CPlayerWeapons.h" />
     <ClInclude Include="Game\Entity\CVehicleEntity.h" />
     <ClInclude Include="Game\EpisodeManager.h" />
     <ClInclude Include="General\CException.h" />

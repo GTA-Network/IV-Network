@@ -191,7 +191,9 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	if (g_pCore->GetGame()->GetPlayerManager()->DoesExists(1))
 	{
 		CPlayerEntity *pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(1);
+#ifndef TASKINFO_TEST
 		pPlayer->Deserialize(pBitStream);
+#endif
 	}
 #endif
 
@@ -490,7 +492,7 @@ void GivePlayerWeapon(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(id);
 		pBitStream->Read(uiAmmo);
 
-		pPlayer->GiveWeapon(id, uiAmmo);
+		pPlayer->GetPlayerWeapons()->GiveWeapon(id, uiAmmo);
 	}
 }
 

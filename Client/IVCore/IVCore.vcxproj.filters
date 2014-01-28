@@ -905,6 +905,9 @@
     <ClCompile Include="Game\CGameMainScript.cpp">
       <Filter>Source Files\Game\IV\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Entity\CPlayerWeapons.cpp">
+      <Filter>Source Files\Network\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -1797,6 +1800,9 @@
     </ClInclude>
     <ClInclude Include="Game\EFLC\ScriptFunctions.h">
       <Filter>Header Files\Game\EFLC</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Entity\CPlayerWeapons.h">
+      <Filter>Source Files\Network\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -358,6 +358,30 @@ void _declspec(naked) _hook_9E656F()
 
 		// TODO: set the move speed in moveblendonfoot
 
+		// TODO: set the move speed in moveblendonfoot
+		EFLC::IPed * pPed = g_pCore->GetGame()->GetLocalPlayer()->GetPlayerPed()->GetPed();
+		gped->m_pPedMoveBlendOnFoot->fX = pPed->m_pPedMoveBlendOnFoot->fX;
+		gped->m_pPedMoveBlendOnFoot->fY = pPed->m_pPedMoveBlendOnFoot->fY;
+		gped->m_pPedMoveBlendOnFoot->destX = pPed->m_pPedMoveBlendOnFoot->destX;
+		gped->m_pPedMoveBlendOnFoot->destY = pPed->m_pPedMoveBlendOnFoot->destY;
+		//gped->m_pPedMoveBlendOnFoot->field_14 = from->m_pPedMoveBlendOnFoot->field_14;
+		gped->m_pPedMoveBlendOnFoot->field_18 = pPed->m_pPedMoveBlendOnFoot->field_18;
+		gped->m_pPedMoveBlendOnFoot->field_1C = pPed->m_pPedMoveBlendOnFoot->field_1C;
+		gped->m_pPedMoveBlendOnFoot->field_20 = pPed->m_pPedMoveBlendOnFoot->field_20;
+		//gped->m_pPedMoveBlendOnFoot->m_pPed = from->m_pPedMoveBlendOnFoot->m_pPed;
+		gped->m_pPedMoveBlendOnFoot->field_28 = pPed->m_pPedMoveBlendOnFoot->field_28;
+		gped->m_pPedMoveBlendOnFoot->field_2C = pPed->m_pPedMoveBlendOnFoot->field_2C;
+		gped->m_pPedMoveBlendOnFoot->field_30 = pPed->m_pPedMoveBlendOnFoot->field_30;
+		gped->m_pPedMoveBlendOnFoot->field_34 = pPed->m_pPedMoveBlendOnFoot->field_34;
+		gped->m_pPedMoveBlendOnFoot->field_38 = pPed->m_pPedMoveBlendOnFoot->field_38;
+		gped->m_pPedMoveBlendOnFoot->m_dwAnimGroup = pPed->m_pPedMoveBlendOnFoot->m_dwAnimGroup;
+		gped->m_pPedMoveBlendOnFoot->field_40 = pPed->m_pPedMoveBlendOnFoot->field_40;
+		/*gped->m_pPedMoveBlendOnFoot->field_44 = pPed->m_pPedMoveBlendOnFoot->field_44;
+		gped->m_pPedMoveBlendOnFoot->field_48 = pPed->m_pPedMoveBlendOnFoot->field_48;
+		gped->m_pPedMoveBlendOnFoot->field_4C = pPed->m_pPedMoveBlendOnFoot->field_4C; */
+		gped->m_pPedMoveBlendOnFoot->m_dwFlags = pPed->m_pPedMoveBlendOnFoot->m_dwFlags;
+
+
 		gped->m_pPedMoveBlendOnFoot->Function19();
 		gped->IPed_pad16[40] |= 2u;
 		_asm
@@ -489,6 +513,7 @@ void __cdecl GetLoadingText(char* buffer)
 
 void CHooks::Intialize()
 {
+#if 0
 	// Hook GetPlayerInfoFromIndex to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CPlayer__GetPlayerByNumber, (DWORD) GetPlayerInfoFromIndex_Hook);
 	
@@ -508,15 +533,19 @@ void CHooks::Intialize()
 	CPatcher::InstallNopPatch(COffsets::CALL_StartLoadingTune, 5);
 
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x9D180B, (DWORD) PhysicsHook);
+#endif
 
-#if 1
+	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
+
+#if 0
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;
 	*(BYTE *) (g_pCore->GetBase() + 0x83BFE0) = 0xC3;
 
 	//CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x47BFED, (DWORD) renderMenus);
 
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
 
 	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47BA60, (DWORD) sub_47BA60);
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);

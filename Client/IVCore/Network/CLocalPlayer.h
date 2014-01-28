@@ -82,6 +82,9 @@ public:
 		inline bool						GetAdvancedCameraState() { return m_bAdvancedCameraState; }
 
 		unsigned short					GetPing();
+
+		void	CheckVehicleEnterExit();
+		void	ProcessVehicleEnterExit();
 };
 
 #endif // CLocalPlayer_h

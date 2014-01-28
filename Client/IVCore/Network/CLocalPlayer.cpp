@@ -111,13 +111,13 @@ void CLocalPlayer::HandleSpawn()
 void CLocalPlayer::DoDeathCheck()
 {
 	// Have we not yet processed the death and is the local player dead?
-	if(!CLocalPlayer::m_bIsDead && IsDead())
+	if(!m_bIsDead && IsDead())
 	{
 		// Get the kill info
 		EntityId playerId = INVALID_ENTITY_ID;
 		EntityId vehicleId = INVALID_ENTITY_ID;
 		EntityId weaponId = INVALID_ENTITY_ID;
-		GetKillInfo(&playerId, &vehicleId,&weaponId);
+		GetKillInfo(playerId, vehicleId,weaponId);
 
 		CLogFile::Printf("HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId);
 		g_pCore->GetGraphics()->GetChat()->Print(CString("HandleDeath(LocalPlayer, %d, %d, %d)", playerId, vehicleId, weaponId));
@@ -130,11 +130,10 @@ void CLocalPlayer::DoDeathCheck()
 		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_DEATH), &bsSend, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
 		// Mark ourselves as dead
-		CLocalPlayer::m_bIsDead = true;
+		m_bIsDead = true;
 
-		// Reset vehicle entry/exit flags
-		SetExitFlag(true);
-		ResetVehicleEnterExit();
+		if (GetVehicle())
+			RemoveFromVehicle();
 
 		// Get current day time so we don't have to set the time always..
 		CGameFunction::GetTime(&m_iRespawnTime[0], &m_iRespawnTime[1]);
@@ -155,17 +154,155 @@ bool CLocalPlayer::IsFullSyncNeeded()
 	return false;
 }
 
+void CLocalPlayer::CheckVehicleEnterExit()
+{
+	// Are we spawned?
+	if (IsSpawned() && g_pCore->GetGame()->GetLocalPlayer()->GetAdvancedControlState())
+	{
+
+		// Are we not in a vehicle?
+		if (!InternalIsInVehicle())
+		{
+			if (m_pVehicleEnterExit->bEntering)
+			{
+				// Is the flag wrong (did the player cancel entering ?)
+				if (!IsGettingIntoAVehicle())
+				{
+					if (IsLocalPlayer())
+					{
+						g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryAborted");
+						m_pVehicleEnterExit->bEntering = false;
+					}
+				}
+			}
+			CControlState controlState;
+
+			GetControlState(&controlState);
+			
+			// Has the enter/exit vehicle key been pressed?
+			if (controlState.IsUsingEnterExitVehicle() || controlState.IsUsingHorn())
+			{
+				// Are we not already requesting an enter?
+				if (!m_pVehicleEnterExit->bEntering)
+				{
+					CVehicleEntity * pVehicle = nullptr;
+					BYTE byteSeat = 0;
+					bool bFound = GetClosestVehicle(controlState.IsUsingHorn(), &pVehicle, byteSeat);
+
+					// Have we found a vehicle?
+					if (bFound)
+					{
+						if (GetVehicle())
+							m_pVehicle = nullptr;
+
+						// Enter the vehicle
+						EnterVehicle(pVehicle, byteSeat);
+
+						// Send to the server
+						RakNet::BitStream bitStream;
+						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
+						bitStream.Write(byteSeat);
+						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+
+						g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
+					}
+				}
+			}
+		}
+		else
+		{
+			CControlState controlState;
+
+			GetControlState(&controlState);
+
+			// Has the enter/exit vehicle key been pressed?
+			if (controlState.IsUsingEnterExitVehicle())
+			{
+				// Are we not already requesting an exit?
+				if (!m_pVehicleEnterExit->bExiting)
+				{
+					// Exit the vehicle
+					ExitVehicle(EXIT_VEHICLE_NORMAL);
+
+					// Send to the server
+					RakNet::BitStream bitStream;
+					bitStream.Write(GetVehicle()->GetId());
+					bitStream.Write(GetSeat());
+					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+
+					g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", GetVehicle()->GetId(), GetSeat()));
+				}
+			}
+		}
+	}
+}
+
+void CLocalPlayer::ProcessVehicleEnterExit()
+{
+	// Are we spawned?
+	if (IsSpawned())
+	{
+		// Are we internally in a vehicle?
+		if (InternalIsInVehicle())
+		{
+			// Are we flagged as entering a vehicle?
+			if (m_pVehicleEnterExit->bEntering)
+			{
+				// Has the enter vehicle task finished?
+				if (!IsGettingIntoAVehicle())
+				{
+					// Vehicle entry is complete
+					m_pVehicleEnterExit->pVehicle->SetOccupant(m_pVehicleEnterExit->byteSeat, this);
+
+					// Store the vehicle
+					m_pVehicle = m_pVehicleEnterExit->pVehicle;
+
+					// Store the seat
+					m_byteSeat = m_pVehicleEnterExit->byteSeat;
+
+					// Reset vehicle enter/exit
+					ResetVehicleEnterExit();
+
+					// We dont have to send it to the server its handled automatically by the sync
+
+					g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryComplete()");
+				}
+			}
+		}
+		else
+		{
+			// Are we flagged as exiting?
+			if (m_pVehicleEnterExit->bExiting)
+			{
+				// Has the exit vehicle task finished?
+				if (!IsGettingOutOfAVehicle())
+				{
+					// Reset vehicle enter/exit
+					ResetVehicleEnterExit();
+
+					// We dont have to send it to the server its handled automatically by the sync
+
+					g_pCore->GetGraphics()->GetChat()->Print("VehicleExitComplete()");
+				}
+			}
+		}
+	}
+}
+
 void CLocalPlayer::Pulse()
 {
 	if (IsSpawned())
 	{
 		DoDeathCheck();
 
-		// Copy the current control state to the previous control state
-		memcpy(&m_lastControlState, &m_ControlState, sizeof(CControlState));
+		CControlState controlState;
+		GetControlState(&controlState);
+		SetLastControlState(controlState);
 
 		// Update the current control state
-		g_pCore->GetGame()->GetPad()->GetCurrentControlState(m_ControlState);
+		
+		g_pCore->GetGame()->GetPad()->GetCurrentControlState(controlState);
+		SetControlState(&controlState);
 
 		// Check vehicle enter/exit
 		CheckVehicleEnterExit();
@@ -178,11 +315,9 @@ void CLocalPlayer::Pulse()
 			RakNet::BitStream bitStream;
 			Serialize(&bitStream);
 
-
-			
 			// Send package to network
 			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_SYNC_PACKAGE), &bitStream, MEDIUM_PRIORITY, UNRELIABLE_SEQUENCED, true);
-
+/*
 #ifdef TASKINFO_TEST
 			bitStream.Reset();
 			SerializeTaskInfo(&bitStream);
@@ -190,7 +325,7 @@ void CLocalPlayer::Pulse()
 			if (g_pCore->GetGame()->GetPlayerManager())
 			if (g_pCore->GetGame()->GetPlayerManager()->GetAt(1))
 				g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->DeserializeTaskInfo(&bitStream);
-#endif				
+#endif		*/		
 		}
 	}
 }

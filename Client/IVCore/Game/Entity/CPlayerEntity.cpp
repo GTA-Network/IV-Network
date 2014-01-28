@@ -42,6 +42,7 @@
 #include <Math/CMaths.h>
 #include <Ptrs.h>
 
+
 DWORD dwPlayerModelHashes[] = 
 {
 	EFLC::CScript::MODEL_PLAYER, EFLC::CScript::MODEL_M_Y_MULTIPLAYER, EFLC::CScript::MODEL_F_Y_MULTIPLAYER, EFLC::CScript::MODEL_SUPERLOD,
@@ -198,7 +199,6 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 	m_byteSeat(0)
 {
 	m_pModelInfo = g_pCore->GetGame()->GetModelInfo(INVALID_PLAYER_PED);
-	m_vecPosition = CVector3();
 	memset(&m_lastControlState, NULL, sizeof(CControlState));
 	memset(&m_ControlState, NULL, sizeof(CControlState));
 
@@ -206,7 +206,7 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 
 	// Initialize & Reset all stuff(classes,structs)
 	m_pVehicleEnterExit = new sPlayerEntity_VehicleData;
-	m_pInterpolationData = new sPlayerEntity_InterpolationData;
+
 	ResetVehicleEnterExit();
 
 	// Is this the localplayer?
@@ -227,6 +227,8 @@ CPlayerEntity::CPlayerEntity(bool bLocalPlayer) :
 		// Set the context data player ped pointer
 		m_pContextData->SetPlayerPed(m_pPlayerPed);
 
+		m_pPlayerWeapons = new CPlayerWeapons(m_pPlayerPed->GetPedWeapons());
+
 		// Add our model reference
 		m_pModelInfo->AddReference(false);
 
@@ -246,9 +248,6 @@ CPlayerEntity::~CPlayerEntity()
 	// Is this not the localplayer?
 	if(!IsLocalPlayer())
 		Destroy();
-
-	delete m_pVehicleEnterExit;
-	delete m_pInterpolationData;
 }
 
 unsigned short CPlayerEntity::GetPing()
@@ -267,11 +266,6 @@ void CPlayerEntity::Pulse()
 	// Is the player spawned?
 	if(IsSpawned())
 	{
-		// Is this the localplayer?
-		if(IsLocalPlayer())
-		{
-
-		}
 		if(!IsLocalPlayer())
 		{
 			// Are we not in a vehicle?
@@ -289,19 +283,118 @@ void CPlayerEntity::Pulse()
 
 #include "IVCore\Game\EFLC\CPedFactory.h"
 
-#define g_pPedFactory (*(IPedFactoryNY**)((g_pCore->GetBase() + 0x156B764)))
-#define sub_846CC0 ((void(__thiscall *)(IPlayerInfo*, IPed*))((g_pCore->GetBase() + 0x846CC0)))
-#define CPedTaskManager__AssignPriorityTask ((void(__thiscall *) (IPedTaskManager *, IVTask *, int, BYTE))((g_pCore->GetBase() + 0x9E3220)))
-#define CTaskSimpleNetworkClone__CTaskSimpleNetworkClone ((IVTask *(__thiscall *) ())((g_pCore->GetBase() + 0x4FB940)))
+#define g_pPedFactory (*(EFLC::IPedFactoryNY**)((g_pCore->GetBase() + 0x156B764)))
+#define sub_846CC0 ((void(__thiscall *)(EFLC::IPlayerInfo*, EFLC::IPed*))((g_pCore->GetBase() + 0x846CC0)))
+#define CPedTaskManager__AssignPriorityTask ((void(__thiscall *) (EFLC::IPedTaskManager *, EFLC::ITask *, int, BYTE))((g_pCore->GetBase() + 0x9E3220)))
+#define CTaskSimpleNetworkClone__CTaskSimpleNetworkClone ((EFLC::ITask *(__thiscall *) ())((g_pCore->GetBase() + 0x4FB940)))
 
 #define sub_4FF7C0 ((WORD(__thiscall *)(void*))((g_pCore->GetBase() + 0x4FF7C0)))
 #define dword_188CD50 (*(DWORD*)((g_pCore->GetBase() + 0x188CD50)))
 #define sub_4FD0E0 ((bool(__thiscall *)(void*, void*))((g_pCore->GetBase() + 0x4FD0E0)))
 #define dword_D4B0BC (*(DWORD*)((g_pCore->GetBase() + 0xD4B0BC)))
 
+#pragma pack(push, 1)
+struct SetupPedData
+{
+	DWORD field_0;
+	int field_4;
+	int field_8;
+	int field_C;
+	int field_10;
+	DWORD field_14;
+	int field_18;
+	int field_1C;
+	int field_20;
+	int field_24;
+	DWORD field_28;
+	int field_2C;
+	float fX;
+	float fY;
+	float fZ;
+};
+#pragma pack(pop)
+
 
 bool CPlayerEntity::Create()
 {
+#ifdef TASKINFO_TEST
+	// Is this the localplayer or are we alread spawned?
+	if (IsLocalPlayer() && IsSpawned())
+		return false;
+
+	m_pModelInfo->AddReference(true);
+
+	m_bytePlayerNumber = (BYTE)g_pCore->GetGame()->GetPools()->FindFreePlayerInfoIndex();
+
+	// Invalid player number?
+	if (m_bytePlayerNumber == INVALID_PLAYER_PED)
+		return false;
+
+	// Create the player info instance
+	m_pPlayerInfo = new EFLC::CPlayerInfo(m_bytePlayerNumber);
+
+	// Create our context data
+	m_pContextData = CContextDataManager::CreateContextData(m_pPlayerInfo);
+
+	// Set the game player info pointer
+	g_pCore->GetGame()->GetPools()->SetPlayerInfoAtIndex(m_bytePlayerNumber, m_pPlayerInfo->GetPlayerInfo());
+
+	WORD wPlayerData = MAKEWORD(m_bytePlayerNumber, 1);
+
+	CVector3 vecPos;
+	g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPos);
+
+	SetupPedData spd;
+	memset(&spd, 0, sizeof(SetupPedData));
+	spd.field_0 = dword_D4B0BC;
+	spd.field_8 = 0;
+	spd.field_10 = 0;
+	spd.field_14 = dword_D4B0BC;
+	spd.field_20 = 0;
+	spd.field_24 = 0;
+	spd.field_28 = dword_D4B0BC;
+	spd.fX = vecPos.fX;
+	spd.fY = vecPos.fY;
+	spd.fZ = vecPos.fZ;
+
+	EFLC::IPlayerPed * pPlayerPed = (EFLC::IPlayerPed*)g_pPedFactory->CreatePlayerPed(&wPlayerData, m_pModelInfo->GetIndex(), m_bytePlayerNumber, (Matrix34*)&spd, false);
+
+	// Ensure the ped was allocated
+	if (!pPlayerPed)
+		return false;
+
+	sub_846CC0(m_pPlayerInfo->GetPlayerInfo(), pPlayerPed);
+
+	EFLC::ITask * pCTaskSimpleNetworkClone = CTaskSimpleNetworkClone__CTaskSimpleNetworkClone();
+	if (pCTaskSimpleNetworkClone)
+		CPedTaskManager__AssignPriorityTask(&pPlayerPed->m_pPedIntelligence->m_pedTaskManager, pCTaskSimpleNetworkClone, 4, false);
+
+	void* pNetObjPlayer = (void*)pPlayerPed->CreateNetworkObject(sub_4FF7C0(&dword_188CD50), 0, 0, 0, 32);
+	sub_4FD0E0(&dword_188CD50, pNetObjPlayer);
+
+	pPlayerPed->field_41 = 2;
+
+	m_pPlayerPed = new EFLC::CPlayerPed(pPlayerPed);
+
+	m_pPlayerInfo->SetPlayerPed(pPlayerPed);
+	m_pPlayerPed->SetPlayerPed(pPlayerPed);
+
+	m_pContextData->SetPlayerPed(m_pPlayerPed);
+
+	m_pPlayerPed->AddToWorld();
+
+	// Create the player blip
+	EFLC::CScript::AddBlipForChar(GetScriptingHandle(), &m_uiBlip);
+	EFLC::CScript::ChangeBlipNameFromAscii(m_uiBlip, m_strNick.Get());
+
+	m_pPlayerWeapons = new CPlayerWeapons(m_pPlayerPed->GetPedWeapons());
+
+	// Mark as spawned
+	m_bSpawned = true;
+
+	return true;
+
+#else
 	// Is this the localplayer or are we alread spawned?
 	if (IsLocalPlayer() && IsSpawned())
 		return false;
@@ -386,8 +479,12 @@ bool CPlayerEntity::Create()
 	// Disable shot los
 	EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_SET_CHAR_WILL_ONLY_FIRE_WITH_CLEAR_LOS, GetScriptingHandle(), false);
 
+	m_pPlayerWeapons = new CPlayerWeapons(m_pPlayerPed->GetPedWeapons());
+
 	// Mark as spawned
 	m_bSpawned = true;
+
+#endif
 
 	return true;
 }
@@ -458,7 +555,6 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 {
 	// Are we spawned?
 	if(IsSpawned())
-	{
 		// Are we not in a vehicle and not entering a vehicle?
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
@@ -466,14 +562,11 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
 			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 		}
-	}
 
 	// Just update the position
 	if (bForce) 
-	{
 		RemoveTargetPosition();
-		m_vecPosition = vecPosition;
-	}
+
 	CNetworkEntity::SetPosition(vecPosition);
 }
 
@@ -482,28 +575,7 @@ void CPlayerEntity::GetPosition(CVector3& vecPosition)
 	if (IsSpawned())
 		m_pPlayerPed->GetPosition(vecPosition);
 	else
-		vecPosition = m_vecPosition;
-}
-
-CVector3 CPlayerEntity::GetPosition()
-{
-	CVector3 vecPosition;
-
-	if (IsSpawned())
-		m_pPlayerPed->GetPosition(vecPosition);
-	else
-		vecPosition = m_vecPosition;
-
-	return vecPosition;
-}
-
-void CPlayerEntity::Teleport(CVector3 vecPosition)
-{
-	EFLC::CScript::SetCharCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
-
-	// Set position for varible.
-	m_vecPosition = m_vecPosition;
-	CNetworkEntity::SetPosition(vecPosition);
+		CNetworkEntity::GetPosition(vecPosition);
 }
 
 void CPlayerEntity::SetMoveSpeed(const CVector3& vecMoveSpeed)
@@ -538,32 +610,25 @@ void CPlayerEntity::GetTurnSpeed(CVector3& vecTurnSpeed)
 		vecTurnSpeed = CVector3();
 }
 
-void CPlayerEntity::SetNick(CString strNick)
+void CPlayerEntity::SetNick(const CString &strNick)
 {
 	m_strNick = strNick;
 	CLogFile::Printf("Setting name to %s", strNick.Get());
-	//EFLC::CScript::GivePedFakeNetworkName(GetScriptingHandle(), m_strNick.Get(), CColor(m_uiColor));
 }
 
 
 void CPlayerEntity::SetColor(unsigned uiColor)
 {
+	assert(m_pPlayerInfo);
+
 	// Save the colour
 	m_uiColor = uiColor;
 
 	// Do we have an active blip?
 	if(m_uiBlip)
-	{
-		// Set the blip colour
 		EFLC::CScript::ChangeBlipColour(m_uiBlip, uiColor);
-	}
 
-	// Do we have a vaid player info pointer?
-	if(m_pPlayerInfo)
-	{
-		// Set the player colour
-		m_pPlayerInfo->SetColour(uiColor);
-	}
+	m_pPlayerInfo->SetColour(uiColor);
 }
 
 unsigned CPlayerEntity::GetScriptingHandle()
@@ -589,7 +654,6 @@ void CPlayerEntity::SetArmour(float fnewArmour)
 	{
 		unsigned int uiArmour;
 		EFLC::CScript::GetCharArmour(GetScriptingHandle(), &uiArmour);
-
 		EFLC::CScript::AddCharArmour(GetScriptingHandle(), fnewArmour - uiArmour);
 	}
 }
@@ -626,7 +690,7 @@ void CPlayerEntity::SetRotation(CVector3& vecRotation)
 		m_pPlayerPed->SetMatrix(matMatrix);
 	}
 
-	m_vecRotation = vecRotation;
+	CNetworkEntity::SetRotation(vecRotation);
 }
 
 void CPlayerEntity::GetRotation(CVector3& vecRotation)
@@ -650,7 +714,7 @@ void CPlayerEntity::GetRotation(CVector3& vecRotation)
 		vecRotation = Math::ConvertRadiansToDegrees(vecNewRotation);
 	}
 	else
-		vecRotation = m_vecRotation;
+		CNetworkEntity::GetRotation(vecRotation);
 }
 
 
@@ -715,9 +779,7 @@ void CPlayerEntity::SetWantedLevel(int iWantedLevel)
 int CPlayerEntity::GetWantedLevel()
 {
 	if (IsSpawned())
-	{
 		return m_iWantedLevel;
-	}
 
 	return 0;
 }
@@ -786,6 +848,9 @@ void CPlayerEntity::InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSea
 
 void CPlayerEntity::InternalRemoveFromVehicle()
 {
+	if (IsDead())
+		return;
+
 	// Are we spawned and in a vehicle?
 	if(IsSpawned() && m_pVehicle)
 	{
@@ -811,14 +876,6 @@ bool CPlayerEntity::InternalIsInVehicle()
 		return (m_pPlayerPed->IsInVehicle());
 
 	return false;
-}
-
-CVehicleEntity * CPlayerEntity::InternalGetVehicle()
-{
-	if (m_pPlayerPed)
-		m_pPlayerPed->GetCurrentVehicle();
-
-	return nullptr;
 }
 
 void CPlayerEntity::PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
@@ -878,14 +935,6 @@ void CPlayerEntity::RemoveFromVehicle()
 
 	// Reset entry/exit
 	ResetVehicleEnterExit();
-}
-
-bool CPlayerEntity::IsAnyWeaponUser()
-{
-	//TODO: Remote player task check.
-	bool bReturn = false;
-
-	return bReturn;
 }
 
 void CPlayerEntity::EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat)
@@ -997,81 +1046,6 @@ void CPlayerEntity::ExitVehicle(eExitVehicleType exitType)
 	m_pVehicleEnterExit->bExiting = true;
 }
 
-void CPlayerEntity::CheckVehicleEnterExit()
-{
-	// Are we spawned?
-	if(IsSpawned() && g_pCore->GetGame()->GetLocalPlayer()->GetAdvancedControlState())
-	{
-
-		// Are we not in a vehicle?
-		if(!InternalIsInVehicle())
-		{
-			if(m_pVehicleEnterExit->bEntering)
-			{
-				// Is the flag wrong (did the player cancel entering ?)
-				if (!IsGettingIntoAVehicle())
-				{
-					if (IsLocalPlayer())
-					{
-						g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryAborted");
-						m_pVehicleEnterExit->bEntering = false;
-					}
-				}
-			}
-
-			// Has the enter/exit vehicle key been pressed?
-			if(m_lastControlState.IsUsingEnterExitVehicle() || m_lastControlState.IsUsingHorn())
-			{
-				// Are we not already requesting an enter?
-				if(!m_pVehicleEnterExit->bEntering)
-				{
-					CVehicleEntity * pVehicle = nullptr;
-					BYTE byteSeat = 0;
-					bool bFound = GetClosestVehicle(m_lastControlState.IsUsingHorn(), &pVehicle, byteSeat);
-
-					// Have we found a vehicle?
-					if(bFound)
-					{
-						if (m_pVehicle)
-							m_pVehicle = nullptr;
-						// Enter the vehicle
-						EnterVehicle(pVehicle, byteSeat);
-
-						// Send to the server
-						RakNet::BitStream bitStream;
-						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
-						bitStream.Write(byteSeat);
-						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
-
-						g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
-					}
-				}
-			}
-		}
-		else
-		{
-			// Has the enter/exit vehicle key been pressed?
-			if(m_lastControlState.IsUsingEnterExitVehicle())
-			{
-				// Are we not already requesting an exit?
-				if(!m_pVehicleEnterExit->bExiting)
-				{
-					// Exit the vehicle
-					ExitVehicle(EXIT_VEHICLE_NORMAL);
-
-					// Send to the server
-					RakNet::BitStream bitStream;
-					bitStream.Write(m_pVehicle->GetId());
-					bitStream.Write(m_byteSeat);
-					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
-
-					g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", m_pVehicle->GetId(), m_byteSeat));
-				}
-			}
-		}
-	}
-}
-
 bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat)
 {
 	// Are we spawned?
@@ -1086,10 +1060,13 @@ bool CPlayerEntity::GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicl
 		GetPosition(vecPosition);
 
 		// Loop through all current vehicles
-		for(int i = 0; i < g_pCore->GetGame()->GetVehicleManager()->GetCount(); i++)
+		for(int i = 0; i < g_pCore->GetGame()->GetVehicleManager()->GetMax(); i++)
 		{
 			// Get a pointer to this vehicle
 			CVehicleEntity * pThisVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(i);
+
+			if (!pThisVehicle)
+				continue;
 
 			// Get this vehicle position
 			pThisVehicle->GetPosition(vecVehiclePosition);
@@ -1226,58 +1203,6 @@ void CPlayerEntity::ClearVehicleExitTask()
 	}
 }
 
-void CPlayerEntity::ProcessVehicleEnterExit()
-{
-	// Are we spawned?
-	if(IsSpawned())
-	{
-		// Are we internally in a vehicle?
-		if(InternalIsInVehicle())
-		{
-			// Are we flagged as entering a vehicle?
-			if(m_pVehicleEnterExit->bEntering)
-			{
-				// Has the enter vehicle task finished?
-				if(!IsGettingIntoAVehicle())
-				{
-					// Vehicle entry is complete
-					m_pVehicleEnterExit->pVehicle->SetOccupant(m_pVehicleEnterExit->byteSeat, this);
-
-					// Store the vehicle
-					m_pVehicle = m_pVehicleEnterExit->pVehicle;
-
-					// Store the seat
-					m_byteSeat = m_pVehicleEnterExit->byteSeat;
-
-					// Reset vehicle enter/exit
-					ResetVehicleEnterExit();
-
-					// We dont have to send it to the server its handled automatically by the sync
-
-					g_pCore->GetGraphics()->GetChat()->Print("VehicleEntryComplete()");
-				}
-			}
-		}
-		else
-		{
-			// Are we flagged as exiting?
-			if(m_pVehicleEnterExit->bExiting)
-			{
-				// Has the exit vehicle task finished?
-				if(!IsGettingOutOfAVehicle())
-				{
-					// Reset vehicle enter/exit
-					ResetVehicleEnterExit();
-
-					// We dont have to send it to the server its handled automatically by the sync
-
-					g_pCore->GetGraphics()->GetChat()->Print("VehicleExitComplete()");
-				}
-			}
-		}
-	}
-}
-
 void CPlayerEntity::ResetVehicleEnterExit()
 {
 	// If player was exiting vehicle, process to proper reset first
@@ -1313,13 +1238,9 @@ bool CPlayerEntity::IsGettingIntoAVehicle()
 		// Get the ped task
 		EFLC::CTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
-		// Is the task valid?
-		if(pTask)
-		{
-			// Is this task getting in a vehicle?
-			if(pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE)
-				return true;
-		}
+		// Is this task getting in a vehicle?
+		if (pTask && pTask->GetType() == TASK_COMPLEX_NEW_GET_IN_VEHICLE)
+			return true;
 	}
 
 	return false;
@@ -1332,13 +1253,8 @@ bool CPlayerEntity::IsJumping()
 		// Get the ped task
 		EFLC::CTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
 
-		// Is the task valid?
-		if (pTask)
-		{
-			// Is this task getting in a vehicle?
-			if (pTask->GetType() == TASK_COMPLEX_JUMP || pTask->GetType() == TASK_SIMPLE_MOVE_IN_AIR)
-				return true;
-		}
+		if (pTask&& (pTask->GetType() == TASK_COMPLEX_JUMP || pTask->GetType() == TASK_SIMPLE_MOVE_IN_AIR))
+			return true;
 	}
 
 	return false;
@@ -1350,14 +1266,8 @@ bool CPlayerEntity::IsGettingOutOfAVehicle()
 	{
 		// Get the ped task
 		EFLC::CTask * pTask = m_pPlayerPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY);
-
-		// Is the task valid?
-		if(pTask)
-		{
-			// Is this task getting in a vehicle?
-			if(pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE)
+		if (pTask && pTask->GetType() == TASK_COMPLEX_NEW_EXIT_VEHICLE)
 				return true;
-		}
 	}
 
 	return false;
@@ -1380,31 +1290,31 @@ void CPlayerEntity::UpdateTargetPosition()
 
 		// Get the factor of time spent from the interpolation start
 		// to the current time.
-		float fAlpha = Math::Unlerp(m_pInterpolationData->pPosition.ulStartTime, ulCurrentTime, m_pInterpolationData->pPosition.ulFinishTime);
+		float fAlpha = Math::Unlerp(m_interp.pos.ulStartTime, ulCurrentTime, m_interp.pos.ulFinishTime);
 
 		// Don't let it overcompensate the error
 		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
 
 		// Get the current error portion to compensate
-		float fCurrentAlpha = (fAlpha - m_pInterpolationData->pPosition.fLastAlpha);
-		m_pInterpolationData->pPosition.fLastAlpha = fAlpha;
+		float fCurrentAlpha = (fAlpha - m_interp.pos.fLastAlpha);
+		m_interp.pos.fLastAlpha = fAlpha;
 
 		// Apply the error compensation
-		CVector3 vecCompensation = Math::Lerp(CVector3(), fCurrentAlpha, m_pInterpolationData->pPosition.vecError);
+		CVector3 vecCompensation = Math::Lerp(CVector3(), fCurrentAlpha, m_interp.pos.vecError);
 
 		// If we finished compensating the error, finish it for the next pulse
 		if(fAlpha == 1.0f)
-			m_pInterpolationData->pPosition.ulFinishTime = 0;
+			m_interp.pos.ulFinishTime = 0;
 
 		// Calculate the new position
 		CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
 
 		// Check if the distance to interpolate is too far
-		if (!((vecCurrentPosition - m_pInterpolationData->pPosition.vecTarget).Length() <= 3.0 /* maybe adjust this value a bit if we need earlier correction */))
+		if (!((vecCurrentPosition - m_interp.pos.vecTarget).Length() <= 3.0 /* maybe adjust this value a bit if we need earlier correction */))
 		{
 			// Abort all interpolation
-			m_pInterpolationData->pPosition.ulFinishTime = 0;
-			vecNewPosition = m_pInterpolationData->pPosition.vecTarget;
+			m_interp.pos.ulFinishTime = 0;
+			vecNewPosition = m_interp.pos.vecTarget;
 		}
 
 		// Set our new position
@@ -1414,28 +1324,8 @@ void CPlayerEntity::UpdateTargetPosition()
 
 void CPlayerEntity::Interpolate()
 {
-	// Are we not getting in/out of a vehicle?
-	if(true)
 		UpdateTargetPosition();
 }
-
-void CPlayerEntity::ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading)
-{
-	CLogFile::Printf("%f %f %f, %f %f %f, %f %f %f, %f %f %f, %f %f %f, %d, %f", 
-		vecPosition.fX, vecPosition.fY, vecPosition.fZ,
-		vecMovement.fX, vecMovement.fY, vecMovement.fZ,
-		vecTurnSpeed.fX, vecTurnSpeed.fY, vecTurnSpeed.fZ,
-		vecRoll.fX, vecRoll.fY, vecRoll.fZ,
-		vecDirection.fX, vecDirection.fY, vecDirection.fZ,
-		bDuck, fHeading);
-}
-
-#if 0
-void CPlayerEntity::ApplyWeaponSync()
-{
-
-}
-#endif
 
 void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long ulDelay)
 {
@@ -1450,45 +1340,24 @@ void CPlayerEntity::SetTargetPosition(const CVector3 &vecPosition, unsigned long
 		GetPosition(vecCurrentPosition);
 
 		// Set the target position
-		m_pInterpolationData->pPosition.vecTarget = vecPosition;
+		m_interp.pos.vecTarget = vecPosition;
 
 		// Calculate the relative error
-		m_pInterpolationData->pPosition.vecError = (vecPosition - vecCurrentPosition);
+		m_interp.pos.vecError = (vecPosition - vecCurrentPosition);
 
 		// Get the interpolation interval
 		unsigned long ulTime = SharedUtility::GetTime();
-		m_pInterpolationData->pPosition.ulStartTime = ulTime;
-		m_pInterpolationData->pPosition.ulFinishTime = (ulTime + ulDelay);
+		m_interp.pos.ulStartTime = ulTime;
+		m_interp.pos.ulFinishTime = (ulTime + ulDelay);
 
 		// Initialize the interpolation
-		m_pInterpolationData->pPosition.fLastAlpha = 0.0f;
-	}
-}
-
-void CPlayerEntity::SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType)
-{
-	if(IsSpawned()) {
-
-		float tX = (vecPos.fX + (vecMove.fX * (10)));
-		float tY = (vecPos.fY + (vecMove.fY * (10)));
-		float tZ = (vecPos.fZ + (vecMove.fZ * (10)));
-		unsigned int uiPlayerIndex = GetScriptingHandle();
-
-
-		_asm	push 1000;
-		_asm	push iMoveType;
-		_asm	push tZ;
-		_asm	push tY;
-		_asm	push tX;
-		_asm	push uiPlayerIndex;
-		_asm	call COffsets::IV_Func__MovePedToPositionInterpolated;
-		_asm	add esp, 18h;
+		m_interp.pos.fLastAlpha = 0.0f;
 	}
 }
 
 void CPlayerEntity::RemoveTargetPosition()
 {
-	m_pInterpolationData->pPosition.ulFinishTime = 0;
+	m_interp.pos.ulFinishTime = 0;
 }
 
 void CPlayerEntity::ResetInterpolation()
@@ -1496,48 +1365,14 @@ void CPlayerEntity::ResetInterpolation()
 	RemoveTargetPosition();
 }
 
-void CPlayerEntity::UpdateTargetRotation()
-{
-	if(HasTargetRotation())
-	{
-		unsigned long ulCurrentTime = SharedUtility::GetTime();
-
-		// Get the factor of time spent from the interpolation start
-		// to the current time.
-		float fAlpha = Math::Unlerp(m_pInterpolationData->pRotation.ulStartTime, ulCurrentTime, m_pInterpolationData->pRotation.ulFinishTime);
-
-		// Don't let it overcompensate the error
-		fAlpha = Math::Clamp(0.0f, fAlpha, 1.0f);
-
-		// Get the current error portion to compensate
-		float fCurrentAlpha = (fAlpha - m_pInterpolationData->pRotation.fLastAlpha);
-		m_pInterpolationData->pRotation.fLastAlpha = fAlpha;
-
-		// Apply the error compensation
-		float fCompensation = Math::Lerp(0.0f, fCurrentAlpha, m_pInterpolationData->pRotation.fError);
-
-		// If we finished compensating the error, finish it for the next pulse
-		if(fAlpha == 1.0f)
-			m_pInterpolationData->pRotation.ulFinishTime = 0;
-
-		// Get our rotation
-		float fCurrentHeading = GetHeading();
-
-		// Calculate the new rotation
-		float fNewRotation = (fCurrentHeading + fCompensation);
-
-		// Set our new rotation
-		SetHeading(fNewRotation);
-	}
-}
-
-void CPlayerEntity::KillPed(bool bInstantly)
+void CPlayerEntity::Kill(bool bInstantly)
 {
 	// Are we spawned and not already dead?
 	if(IsSpawned() && !IsDead())
 	{
 		// Are we getting killed instantly?
-		if(bInstantly) {
+		if(bInstantly) 
+		{
 
 			// Create the dead task
 			EFLC::CTaskSimpleDead * pTask = new EFLC::CTaskSimpleDead(CGameFunction::GetTimeOfDay(), 1, 0);
@@ -1546,7 +1381,8 @@ void CPlayerEntity::KillPed(bool bInstantly)
 			if(pTask)
 				pTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
 		}
-		else { // We are not getting killed instantly
+		else 
+		{ // We are not getting killed instantly
 
 			// Are we already dying?
 			if(IsDying())
@@ -1564,9 +1400,8 @@ void CPlayerEntity::KillPed(bool bInstantly)
 		SetHealth(0);
 
 		// Reset the control state
-		CControlState * controlState = new CControlState;
-		SetControlState(controlState);
-		SAFE_DELETE(controlState);
+		CControlState controlState;
+		SetControlState(&controlState);
 
 		// Reset vehicle entry/exit flags
 		m_pVehicleEnterExit->bExiting = true;
@@ -1607,18 +1442,18 @@ EFLC::IEntity * CPlayerEntity::GetLastDamageEntity()
 	return nullptr;
 }
 
-bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId)
+bool CPlayerEntity::GetKillInfo(EntityId & playerId, EntityId & vehicleId, EntityId & weaponId)
 {
 	// Are we spawned?
 	if(IsSpawned())
 	{
 		// Reset player id and vehicle id
-		*playerId = INVALID_ENTITY_ID;
-		*vehicleId = INVALID_ENTITY_ID;
-		*weaponId = INVALID_ENTITY_ID;
+		playerId = INVALID_ENTITY_ID;
+		vehicleId = INVALID_ENTITY_ID;
+		weaponId = INVALID_ENTITY_ID;
 
 		// Loop through all players
-		for(EntityId i = 0; i < MAX_PLAYERS; i++)
+		for (EntityId i = 0; i < g_pCore->GetGame()->GetPlayerManager()->GetMax(); i++)
 		{
 			// Is this player connected and spawned?
 			CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(i);
@@ -1629,20 +1464,19 @@ bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, Entit
 				if (GetLastDamageEntity() == (EFLC::IEntity *)pPlayer->GetPlayerPed()->GetPed())
 				{
 					// This player killed us
-					*playerId = i;
-					//*weaponId = pPlayer->();
+					playerId = i;
+					weaponId = pPlayer->GetPlayerWeapons()->GetCurrentWeapon();
 					break;
 				}
 				else
 				{
 					// Is this players vehicle the last damage entity?
 					if(pPlayer->IsInVehicle() && !pPlayer->IsPassenger() && 
-					   (GetLastDamageEntity() == (EFLC::IEntity *)pPlayer->GetVehicleEntity()))
+					   (GetLastDamageEntity() == pPlayer->GetVehicle()->GetGameVehicle()->GetVehicle()))
 					{
 						// This player killed us with their vehicle
-						*playerId = i;
-						//*weaponId = pPlayer->GetCurrentWeapon();
-						*vehicleId = i;
+						playerId = i;
+						vehicleId = i;
 						break;
 					}
 				}
@@ -1650,10 +1484,10 @@ bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, Entit
 		}
 
 		// Have we not yet found a killer?
-		if(*playerId == INVALID_ENTITY_ID && *vehicleId == INVALID_ENTITY_ID)
+		if(playerId == INVALID_ENTITY_ID && vehicleId == INVALID_ENTITY_ID)
 		{
 			// Loop through all players
-			for(EntityId i = 0; i < MAX_VEHICLES; i++)
+			for(EntityId i = 0; i < g_pCore->GetGame()->GetVehicleManager()->GetMax(); i++)
 			{
 				// Is this player connected and spawned?
 				CVehicleEntity * pVehicle = g_pCore->GetGame()->GetVehicleManager()->GetAt(i);
@@ -1664,7 +1498,7 @@ bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, Entit
 					if(GetLastDamageEntity() == pVehicle->GetGameVehicle()->GetEntity())
 					{
 						// This vehicle killed us
-						*vehicleId = pVehicle->GetId();
+						vehicleId = pVehicle->GetId();
 						break;
 					}
 				}
@@ -1677,7 +1511,7 @@ bool CPlayerEntity::GetKillInfo(EntityId * playerId, EntityId * vehicleId, Entit
 	return false;
 }
 
-void CPlayerEntity::SetWeaponAimAtTask(CVector3 vecAimAt)
+void CPlayerEntity::SetWeaponAimAtTask(const CVector3 &vecAimAt)
 {
 	if(IsSpawned())
 	{
@@ -1695,7 +1529,7 @@ void CPlayerEntity::SetWeaponAimAtTask(CVector3 vecAimAt)
 	}
 }
 
-void CPlayerEntity::SetWeaponShotAtTask(CVector3 vecAimAt)
+void CPlayerEntity::SetWeaponShotAtTask(const CVector3 &vecAimAt)
 {
 	if (IsSpawned())
 	{
@@ -1713,7 +1547,7 @@ void CPlayerEntity::SetWeaponShotAtTask(CVector3 vecAimAt)
 	}
 }
 
-void CPlayerEntity::SetPedClothes(unsigned short ucBodyLocation, unsigned  char ucClothes)
+void CPlayerEntity::SetClothes(unsigned short ucBodyLocation, unsigned  char ucClothes)
 {
 	// Check if the bodylocation is out of our index
 	if(ucBodyLocation > 10)
@@ -1723,12 +1557,15 @@ void CPlayerEntity::SetPedClothes(unsigned short ucBodyLocation, unsigned  char 
 		unsigned char ucClothesIdx = 0;
 		unsigned uiDrawableVariations = m_pPlayerPed->GetNumberOfCharDrawableVariations(ucBodyLocation);
 
-		for(unsigned uiDrawable = 0; uiDrawable < uiDrawableVariations; ++uiDrawable) {
+		for(unsigned uiDrawable = 0; uiDrawable < uiDrawableVariations; ++uiDrawable) 
+		{
 			unsigned uiTextureVariations = m_pPlayerPed->GetNumberOfCharTextureVariations(ucBodyLocation, uiDrawable);
 
-			for(unsigned uiTexture = 0; uiTexture < uiTextureVariations; ++uiTexture) {
+			for(unsigned uiTexture = 0; uiTexture < uiTextureVariations; ++uiTexture) 
+			{
 
-				if(ucClothesIdx == ucClothes) {
+				if(ucClothesIdx == ucClothes) 
+				{
 					m_pPlayerPed->SetClothes(ucBodyLocation, uiDrawable, uiTexture);
 					SetClothesValue(ucBodyLocation, ucClothes);
 					return;
@@ -1745,7 +1582,7 @@ void CPlayerEntity::SetPedClothes(unsigned short ucBodyLocation, unsigned  char 
 		SetClothesValue(ucBodyLocation, ucClothes);
 }
 
-unsigned char CPlayerEntity::GetPedClothes(unsigned short ucBodyLocation)
+unsigned char CPlayerEntity::GetClothes(unsigned short ucBodyLocation)
 {
 	// Check if the bodylocation is out of our index
 	if(ucBodyLocation > 10)
@@ -1754,87 +1591,9 @@ unsigned char CPlayerEntity::GetPedClothes(unsigned short ucBodyLocation)
 	return GetClothesValueFromSlot(ucBodyLocation);
 }
 
-void CPlayerEntity::GiveWeapon(unsigned uiWeaponId, unsigned uiAmmunation)
-{
-	if (IsSpawned())
-		EFLC::CScript::GiveWeaponToChar(GetScriptingHandle(), uiWeaponId, uiAmmunation, true);
-}
-
-void CPlayerEntity::RemoveWeapon(unsigned uiWeaponId)
-{
-	if (IsSpawned())
-		m_pPlayerPed->GetPedWeapons()->RemoveWeapon((EFLC::eWeaponType) uiWeaponId);
-}
-
-void CPlayerEntity::RemoveAllWeapons()
-{
-	if (IsSpawned())
-		m_pPlayerPed->GetPedWeapons()->RemoveAllWeapons();
-}
-
-void CPlayerEntity::SetCurrentWeapon(unsigned uiWeaponId)
-{
-	if (IsSpawned())
-		m_pPlayerPed->GetPedWeapons()->SetCurrentWeaponByType((EFLC::eWeaponType) uiWeaponId);
-}
-
-unsigned CPlayerEntity::GetCurrentWeapon()
-{
-	if (IsSpawned())
-		if (m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon())
-			return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetType();
-
-		return EFLC::eWeaponType::WEAPON_TYPE_UNARMED;
-}
-
-void CPlayerEntity::SetAmmunation(unsigned uiWeaponId, unsigned uiAmmunation)
-{
-	if (IsSpawned())
-		m_pPlayerPed->GetPedWeapons()->SetAmmoByType((EFLC::eWeaponType) uiWeaponId, uiAmmunation);
-}
-
-unsigned CPlayerEntity::GetAmmunation(unsigned uiWeaponId)
-{
-	if (IsSpawned())
-		return m_pPlayerPed->GetPedWeapons()->GetAmmoByType((EFLC::eWeaponType) uiWeaponId);
-	
-	return 0;
-}
-
-void CPlayerEntity::GetWeaponInSlot(unsigned uiWeaponSlot, unsigned &uiWeaponId, unsigned &uiAmmunation, unsigned &uiUnkown)
-{
-	if (IsSpawned())
-	{
-		uiAmmunation = m_pPlayerPed->GetPedWeapons()->GetAmmoBySlot((EFLC::eWeaponSlot) uiWeaponSlot);
-		uiWeaponId = m_pPlayerPed->GetPedWeapons()->GetWeaponInSlot((EFLC::eWeaponSlot) uiWeaponSlot);
-	}
-}
-
-unsigned CPlayerEntity::GetAmmunationInClip(unsigned uiWeapon)
-{
-	if (IsSpawned())
-		return m_pPlayerPed->GetPedWeapons()->GetAmmoInClip();
-
-	return 0;
-}
-
-void CPlayerEntity::SetAmmunationInClip(unsigned uiAmmunationInClip)
-{
-	if (IsSpawned())
-		m_pPlayerPed->GetPedWeapons()->SetAmmoInClip(uiAmmunationInClip);
-}
-
-unsigned CPlayerEntity::GetMaxAmmunationInClip(unsigned uiWeapon)
-{
-	if (IsSpawned())
-		return m_pPlayerPed->GetPedWeapons()->GetCurrentWeapon()->GetClipSize();
-
-	return 0;
-}
-
 void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 {
-	if (IsOnFoot())
+	if (!IsInVehicle())
 	{
 		CNetworkPlayerSyncPacket PlayerPacket;
 
@@ -1850,8 +1609,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		PlayerPacket.fHealth = GetHealth();
 		PlayerPacket.fArmor = GetArmour();
 
-		PlayerPacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
-		PlayerPacket.weapon.weaponType = GetCurrentWeapon();
+		PlayerPacket.weapon.iAmmo = m_pPlayerWeapons->GetAmmo(m_pPlayerWeapons->GetCurrentWeapon());
+		PlayerPacket.weapon.weaponType = m_pPlayerWeapons->GetCurrentWeapon();
 
 		// Write player onfoot flag into raknet bitstream
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_ONFOOT);
@@ -1874,8 +1633,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 
 			m_pContextData->GetWeaponShotSource(WeaponPacket.vecShotSource);
 
-			WeaponPacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
-			WeaponPacket.weapon.weaponType = GetCurrentWeapon();
+			WeaponPacket.weapon.iAmmo = m_pPlayerWeapons->GetAmmo(m_pPlayerWeapons->GetCurrentWeapon());
+			WeaponPacket.weapon.weaponType = m_pPlayerWeapons->GetCurrentWeapon();
 
 			pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_WEAPON);
 			pBitStream->Write(WeaponPacket);
@@ -1895,8 +1654,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		VehiclePacket.bEngineState = m_pVehicle->GetEngineState();
 		VehiclePacket.playerArmor = GetArmour();
 		VehiclePacket.playerHealth = GetHealth();
-		VehiclePacket.weapon.iAmmo = GetAmmunation(GetCurrentWeapon());
-		VehiclePacket.weapon.weaponType = GetCurrentWeapon();
+		VehiclePacket.weapon.iAmmo = m_pPlayerWeapons->GetAmmo(m_pPlayerWeapons->GetCurrentWeapon());
+		VehiclePacket.weapon.weaponType = m_pPlayerWeapons->GetCurrentWeapon();
 
 		EFLC::CScript::GetCarHeading(m_pVehicle->GetScriptingHandle(), &VehiclePacket.fHeading);
 
@@ -1910,7 +1669,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(PassengerPacket.ControlState);
 		PassengerPacket.playerArmor = GetArmour();
 		PassengerPacket.playerHealth = GetHealth();
-		PassengerPacket.vecPosition = GetPosition();
+		GetPosition(PassengerPacket.vecPosition);
 		PassengerPacket.vehicleId = m_pVehicle->GetId();
 		PassengerPacket.byteSeatId = m_byteSeat;
 		
@@ -1920,9 +1679,6 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 
 	
 }
-
-
-bool bPositionSwitch = false;
 
 void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 {
@@ -1938,16 +1694,16 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 		pBitStream->Read(PlayerPacket);
 
 		unsigned int interpolationTime = SharedUtility::GetTime() - m_ulLastSyncReceived;
-		RemoveAllWeapons();
-		if (GetCurrentWeapon() != PlayerPacket.weapon.weaponType)
+
+		if (m_pPlayerWeapons->GetCurrentWeapon() != PlayerPacket.weapon.weaponType)
 		{
-			GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our current weapon
+			m_pPlayerWeapons->GiveWeapon(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our current weapon
 			
 		}
-		if (GetAmmunation(PlayerPacket.weapon.weaponType) != PlayerPacket.weapon.iAmmo) // Do we not have the right ammo?
-			SetAmmunation(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our ammo
+		if (m_pPlayerWeapons->GetAmmo(PlayerPacket.weapon.weaponType) != PlayerPacket.weapon.iAmmo) // Do we not have the right ammo?
+			m_pPlayerWeapons->SetAmmo(PlayerPacket.weapon.weaponType, PlayerPacket.weapon.iAmmo); // Set our ammo
 
-		SetCurrentWeapon(PlayerPacket.weapon.weaponType);
+		m_pPlayerWeapons->SetCurrentWeapon(PlayerPacket.weapon.weaponType);
 
 		if (!IsGettingIntoAVehicle()
 			&& !IsGettingOutOfAVehicle())
@@ -2040,14 +1796,18 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
 			if (g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId))
 			{
-				WarpIntoVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId));
+				PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(VehiclePacket.vehicleId), 0);
 			}
 		}
 
-		if (GetCurrentWeapon() != VehiclePacket.weapon.weaponType)
-			GiveWeapon(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our current weapon
-		if (GetAmmunation(VehiclePacket.weapon.iAmmo) != VehiclePacket.weapon.iAmmo) // Do we not have the right ammo?
-			SetAmmunation(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our ammo
+		if (m_pPlayerWeapons->GetCurrentWeapon() != VehiclePacket.weapon.weaponType)
+		{
+			m_pPlayerWeapons->GiveWeapon((EFLC::eWeaponType)VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our current weapon
+			m_pPlayerWeapons->SetCurrentWeapon((EFLC::eWeaponType)VehiclePacket.weapon.weaponType);
+		}
+
+		if (m_pPlayerWeapons->GetAmmo(VehiclePacket.weapon.iAmmo) != VehiclePacket.weapon.iAmmo) // Do we not have the right ammo?
+			m_pPlayerWeapons->SetAmmo(VehiclePacket.weapon.weaponType, VehiclePacket.weapon.iAmmo); // Set our ammo
 
 
 		m_ulLastSyncReceived = SharedUtility::GetTime();
@@ -2071,7 +1831,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			// Put the player in the vehicle if vehicle enter/exit sync failed or not completed
 			if (g_pCore->GetGame()->GetVehicleManager()->GetAt(PassengerPacket.vehicleId))
 			{
-				WarpIntoVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(PassengerPacket.vehicleId), PassengerPacket.byteSeatId);
+				PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(PassengerPacket.vehicleId), PassengerPacket.byteSeatId);
 			}
 		}
 		
@@ -2090,14 +1850,14 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			if (IsLocalPlayer())
 				return;
 
-			if (GetCurrentWeapon() != AimSync.weapon.weaponType) {
+			if (m_pPlayerWeapons->GetCurrentWeapon() != AimSync.weapon.weaponType) {
 				// Set our current weapon
-				GiveWeapon(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
+				m_pPlayerWeapons->GiveWeapon(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
 			}
 			// Do we not have the right ammo?
-			if (GetAmmunation(AimSync.weapon.iAmmo) != AimSync.weapon.iAmmo) {
+			if (m_pPlayerWeapons->GetAmmo(AimSync.weapon.iAmmo) != AimSync.weapon.iAmmo) {
 				// Set our ammo
-				SetAmmunation(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
+				m_pPlayerWeapons->SetAmmo(AimSync.weapon.weaponType, AimSync.weapon.iAmmo);
 			}
 
 			if (m_ControlState.IsAiming() && !m_ControlState.IsFiring())
@@ -2148,25 +1908,11 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 	}
 }
 
-void CPlayerEntity::WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat)
-{
-
-	PutInVehicle(pVehicle, seat);
-	//if (seat > 3)
-	//	return;
-
-	//if (seat == 0)
-	//	EFLC::CScript::WarpCharIntoCar(GetScriptingHandle(), pVehicle->GetScriptingHandle());
-	//else
-	//	EFLC::CScript::WarpCharIntoCarAsPassenger(GetScriptingHandle(), pVehicle->GetScriptingHandle(), seat - 1);
-
-	m_pVehicle = pVehicle;
-	m_byteSeat = seat;
-}
-
 bool CPlayerEntity::IsOnScreen()
 {
-	return g_pCore->GetGame()->GetCamera()->IsOnScreen(GetPosition());
+	CVector3 vecPos;
+	GetPosition(vecPos);
+	return g_pCore->GetGame()->GetCamera()->IsOnScreen(vecPos);
 }
 
 
@@ -2277,6 +2023,9 @@ EFLC::CTaskInfo* CreateTaskInfoById(int taskid)
 
 void CPlayerEntity::SerializeTaskInfo(RakNet::BitStream * pBitStream)
 {
+	if (!m_pPlayerPed->GetPed()->m_pPedIntelligence)
+		return;
+
 	EFLC::ITaskInfo * pTaskInfo = m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo;
 	if (!pTaskInfo)
 		return;
@@ -2301,6 +2050,7 @@ void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream)
 	deleteTaskInfo(&m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo);
 
 	int TaskId;
+	EFLC::ITaskComplex * pPrevTask = nullptr;
 	if (pBitStream->Read(TaskId))
 	{
 		do
@@ -2315,6 +2065,17 @@ void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream)
 					return;
 				}
 
+				EFLC::ITask * pTask = (EFLC::ITask*)pCTaskInfo->GetTaskInfo()->Function9();
+
+				if (pTask)
+				{
+					EFLC::ITaskComplex * pTaskComplex = (EFLC::ITaskComplex*)pPrevTask;
+					if (pPrevTask && !pPrevTask->IsSimple())
+						pPrevTask->SetSubTask(pTask);
+					pPrevTask = pTaskComplex;
+				}
+
+
 				applyTaskInfo(&m_pPlayerPed->GetPed()->m_pPedIntelligence->m_pTaskInfo, pCTaskInfo->GetTaskInfo());
 				delete pCTaskInfo;
 			}
@@ -2322,6 +2083,15 @@ void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream)
 		while (pBitStream->Read(TaskId));
 
 		processTaskInfo(m_pPlayerPed->GetPed()->m_pNetworkObject + 2056, m_pPlayerPed->GetPed());
+
+		DWORD net = m_pPlayerPed->GetPed()->m_pNetworkObject;
+		DWORD dwCall = g_pCore->GetBase() + 0x519BA0;
+		_asm push esi;
+		_asm mov esi, net;
+		_asm call dwCall;
+		_asm pop esi;
+		
+	
 	}
 }
 
@@ -2411,6 +2181,73 @@ CString MakeTaskInfoDebugString(EFLC::ITaskInfo* pInfo)
 
 #include "IVCore\Game\EFLC\CTask.h"
 
+
+CString MakeSubTaskString(CString strName, EFLC::CTask* pTask)
+{
+	CString str;
+	if (pTask)
+	{
+		str += strName;
+		str += pTask->GetName();
+		str += "\n";
+		if (!pTask->IsSimple() && ((EFLC::CTaskComplex*)pTask)->GetSubTask())
+			str += MakeSubTaskString(strName + "    ", ((EFLC::CTaskComplex*)pTask)->GetSubTask());
+	}
+
+	return str;
+}
+
+CString MakeTaskString(CString strName, EFLC::CTask* pTask)
+{
+	CString str;
+	if (pTask)
+	{
+		str += strName;
+		str += pTask->GetName();
+		str += "\n";
+		if (!pTask->IsSimple() && ((EFLC::CTaskComplex*)pTask)->GetSubTask())
+			str += MakeSubTaskString("    ", ((EFLC::CTaskComplex*)pTask)->GetSubTask());
+	}
+
+	return str;
+}
+
+CString GetPedTasks(EFLC::CPed* pPed)
+{
+	CString strTasks;
+
+	/** Prioritry Tasks **/
+	strTasks += "Priority Tasks: \n";
+
+	strTasks += MakeTaskString("PhysicalResponse: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PHYSICAL_RESPONSE));
+	strTasks += MakeTaskString("EventResponseTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_TEMP));
+	strTasks += MakeTaskString("EventResponseNonTemp: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP));
+	strTasks += MakeTaskString("Primary: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_PRIMARY));
+	strTasks += MakeTaskString("Default: ", pPed->GetPedTaskManager()->GetTask(TASK_PRIORITY_DEFAULT));
+	strTasks += "\n";
+
+	/**************************************************************************************************/
+
+	strTasks += "Secondary Tasks: \n";
+	strTasks += MakeTaskString("Attack: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_ATTACK));
+	strTasks += MakeTaskString("Duck: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_DUCK));
+	strTasks += MakeTaskString("Say: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_SAY));
+	strTasks += MakeTaskString("Facial Complex: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_FACIAL_COMPLEX));
+	strTasks += MakeTaskString("Partial Anim: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_PARTIAL_ANIM));
+	strTasks += MakeTaskString("IK: ", pPed->GetPedTaskManager()->GetTask(TASK_SECONDARY_IK));
+	strTasks += "\n";
+
+	/**************************************************************************************************/
+
+	strTasks += "Movement Tasks: \n";
+	strTasks += MakeTaskString("Movement 1: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN0));
+	strTasks += MakeTaskString("Movement 2: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN1));
+	strTasks += MakeTaskString("Movement 3: ", pPed->GetPedTaskManager()->GetTask(TASK_MOVEMENT_UNKNOWN2));
+
+	return strTasks;
+}
+
+
 CString CPlayerEntity::GetDebugText()
 {
 	CString strDebug = "";
@@ -2451,6 +2288,12 @@ CString CPlayerEntity::GetDebugText()
 				}
 			}
 		}
+		
+		strDebug += "\n";
+		strDebug += "\n";
+		strDebug += "\n";
+
+		strDebug += GetPedTasks(m_pPlayerPed);
 	}
 
 	return strDebug;

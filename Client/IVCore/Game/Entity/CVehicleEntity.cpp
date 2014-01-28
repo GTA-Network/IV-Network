@@ -513,14 +513,14 @@ float CVehicleEntity::GetPetrolTankHealth()
 
 void CVehicleEntity::SetQuaternion(float * quat)
 {
-	//if(IsSpawned())
-		//Scripting::SetVehicleQuaternion(GetScriptingHandle(), quat[0], quat[1], quat[2], quat[3]);
+	if(IsSpawned())
+		EFLC::CScript::SetVehicleQuaternion(GetScriptingHandle(), quat[0], quat[1], quat[2], quat[3]);
 }
 
 void CVehicleEntity::GetQuaternion(float * quat)
 {
-	//if(IsSpawned())
-		//Scripting::GetVehicleQuaternion(GetScriptingHandle(), &quat[0], &quat[1], &quat[2], &quat[3]);
+	if(IsSpawned())
+		EFLC::CScript::GetVehicleQuaternion(GetScriptingHandle(), &quat[0], &quat[1], &quat[2], &quat[3]);
 }
 
 void CVehicleEntity::SetMoveSpeed(const CVector3& vecMoveSpeed)
@@ -858,11 +858,11 @@ void CVehicleEntity::UpdateInterior(bool bHasDriver)
 
 void CVehicleEntity::SetInterior(unsigned int uiInterior)
 {
-
 }
 
 unsigned CVehicleEntity::GetInterior()
 {
+	m_pVehicle->GetVehicle()->m_dwInteriorHandle;
 	return 0;
 }
 
@@ -1017,7 +1017,7 @@ void CVehicleEntity::SetLightsState(bool bLights)
     {
         if(bLights)
 			EFLC::CScript::ForceCarLights(GetScriptingHandle(), 2);
-        else if(!bLights)
+        else
 			EFLC::CScript::ForceCarLights(GetScriptingHandle(), 1);
 
         m_bLights = bLights;
@@ -1026,6 +1026,9 @@ void CVehicleEntity::SetLightsState(bool bLights)
 
 bool CVehicleEntity::GetLightsState()
 {
+	if (IsSpawned())
+		return (m_pVehicle->GetLightsState() == 2);
+
 	return false;
 }
 
@@ -1036,11 +1039,19 @@ bool CVehicleEntity::GetWindowState(int iWindow)
 
 void CVehicleEntity::SetWindowState(int iWindow, bool bBroken)
 {
+	if (!IsSpawned())
+		return;
+
+	if (bBroken)
+		m_pVehicle->RemoveVehicleWindow((EFLC::eVehicleWindow)iWindow);
+	else
+		; // TODO
 }
 
 void CVehicleEntity::SetDamageable(bool bToggle)
 {
-
+	if (IsSpawned())
+		m_pVehicle->SetCarCanBeDamaged(bToggle);
 }
 
 void CVehicleEntity::SetSteeringAngle(float fSteeringAngle)
@@ -1062,28 +1073,18 @@ float CVehicleEntity::GetSteeringAngle()
 void CVehicleEntity::SetEngineState(bool bState)
 {
     // Are we spawned?
-    if(IsSpawned()) {
+    if(IsSpawned()) 
         m_pVehicle->SetEngineStatus(bState, 1);
-        m_bEngineStatus = bState;
-    }
-	else
-		 m_bEngineStatus = bState;
 }
 
 bool CVehicleEntity::GetEngineState()
 {
     // Are we spawned?
     if(IsSpawned())
-        return m_bEngineStatus;
+        return m_pVehicle->GetEngineStatus();
 
     return false;
 }
-
-CVector3 CVehicleEntity::GetDeformation(CVector3 vecPosition)
-{
-	return CVector3(0.0f, 0.0f, 0.0f);
-}
-
 void CVehicleEntity::SetVehicleGPSState(bool bState)
 {
     if(IsSpawned())
@@ -1092,6 +1093,9 @@ void CVehicleEntity::SetVehicleGPSState(bool bState)
 
 bool CVehicleEntity::GetVehicleGPSState()
 {
+	if (IsSpawned())
+		return m_pVehicle->GetGPSState();
+
 	return false;
 }
 
@@ -1111,14 +1115,19 @@ void CVehicleEntity::SetOccupant(BYTE byteSeatId, CPlayerEntity * pOccupant)
 {
 	if(byteSeatId == 0)
 		SetDriver(pOccupant);
-	//else
-		//SetPassenger((byteSeatId - 1), pOccupant);
+	else
+		SetPassenger(pOccupant, (byteSeatId - 1));
 }
 
 CPlayerEntity * CVehicleEntity::GetOccupant(BYTE byteSeatId)
 {
-	if(byteSeatId == 0)
-		return GetDriver();
+	if (byteSeatId >= 8)
+		return nullptr;
+
+	if (byteSeatId == 0)
+		return m_pDriver;
+	else
+		return m_pPassengers[byteSeatId];
 
 	return nullptr;
 }

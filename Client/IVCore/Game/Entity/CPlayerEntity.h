@@ -40,6 +40,7 @@
 #include <Game/EFLC/CModelInfo.h>
 #include <Network/CBitStream.h>
 #include <Game/eGame.h>
+#include "CPlayerWeapons.h"
 
 class CVehicleEntity;
 _GAME_BEGIN
@@ -51,7 +52,6 @@ class CContextData;
 
 class CPlayerEntity : public CNetworkEntity 
 {
-	friend class CLocalPlayer;
 private:
 	bool									m_bLocalPlayer;
 	bool									m_bNetworked;
@@ -62,30 +62,41 @@ private:
 	
 	unsigned								m_uiBlip;
 	CString									m_strNick;
-	CVector3								m_vecPosition;
-	CVector3								m_vecRotation;
-	CVector3								m_vecMoveSpeed;
-	CVector3								m_vecTurnSpeed;
-	CVector3								m_vecDirection;
-	CVector3								m_vecRoll;
 
-	EFLC::CPlayerPed							* m_pPlayerPed;
-	EFLC::CPlayerInfo							* m_pPlayerInfo;
-	EFLC::CModelInfo							* m_pModelInfo;
+	EFLC::CPlayerPed						* m_pPlayerPed;
+	EFLC::CPlayerInfo						* m_pPlayerInfo;
+	EFLC::CModelInfo						* m_pModelInfo;
+	CPlayerWeapons							* m_pPlayerWeapons;
 	BYTE									m_bytePlayerNumber;
 	CContextData							* m_pContextData;
 
-	CControlState								m_lastControlState;
-	CControlState								m_ControlState;
+	CControlState							m_lastControlState;
+	CControlState							m_ControlState;
 
-	CVehicleEntity							* m_pVehicle;
-	BYTE									m_byteSeat;
 
-	sPlayerEntity_VehicleData				* m_pVehicleEnterExit;
-	sPlayerEntity_InterpolationData			* m_pInterpolationData;
+	CNetworkPlayerSyncPacket		m_LastSyncPacket;
 
-	sWeaponStructure						m_aimData;
-	sWeaponStructure						m_shotData;
+	struct
+	{
+		struct
+		{
+			CVector3      vecStart;
+			CVector3      vecTarget;
+			CVector3      vecError;
+			float         fLastAlpha;
+			unsigned long ulStartTime;
+			unsigned long ulFinishTime;
+		}								pos;
+		struct
+		{
+			float      fStart;
+			float      fTarget;
+			float      fError;
+			float         fLastAlpha;
+			unsigned long ulStartTime;
+			unsigned long ulFinishTime;
+		}								rot;
+	}			m_interp;
 
 	unsigned long							m_ulLastSyncReceived;
 
@@ -147,18 +158,14 @@ private:
 public: // Handles "GET" functions
 
 	inline bool						IsLocalPlayer() { return m_bLocalPlayer; }
-	inline bool						IsNetworked() { return m_bNetworked; }
 	inline bool						IsSpawned() { return m_bSpawned; }
 	
-	bool							IsOnFoot() { return (m_pVehicle == NULL); }
 	bool							IsInVehicle() { return (m_pVehicle != NULL); }
 	bool							IsPassenger() { return (m_pVehicle != NULL && m_byteSeat != 0); }
 	
-	bool							HasTargetPosition() { return (m_pInterpolationData->pPosition.ulFinishTime != 0); }
-	bool							HasTargetRotation() { return (m_pInterpolationData->pRotation.ulFinishTime != 0); }
+	bool							HasTargetPosition() { return (m_interp.pos.ulFinishTime != 0); }
+	bool							HasTargetRotation() { return (m_interp.rot.ulFinishTime != 0); }
 	
-	bool							IsAnyWeaponUser();
-	bool							InternalIsInVehicle();
 	bool							HasVehicleEnterExit() { return (m_pVehicleEnterExit->bEntering || m_pVehicleEnterExit->bExiting); }
 	bool							GetClosestVehicle(bool bPassenger, CVehicleEntity ** pVehicle, BYTE& byteSeat);
 	bool							IsGettingIntoAVehicle();
@@ -177,39 +184,27 @@ public: // Handles "GET" functions
 	void							GetMoveSpeed(CVector3& vecMoveSpeed);
 	void							GetPosition(CVector3 &vecPosition);
 	void							GetRotation(CVector3 &vecRotation);
-	CVector3						GetPosition();
 	void							GetTurnSpeed(CVector3& vecTurnSpeed);
 	
 	BYTE							GetPlayerGameNumber() { return m_bytePlayerNumber; }
 
-	unsigned short					GetId() { return !IsNetworked() ? -1 : m_usPlayerId; }
 	unsigned						GetColor() { return m_uiColor; }
 	float							GetHealth();
 	float							GetArmour();
 	int								GetWantedLevel();
 
 	CContextData					* GetContextData() { return m_pContextData; }
-	CVehicleEntity					* InternalGetVehicle();
-	EFLC::CPlayerPed					* GetPlayerPed() { return m_pPlayerPed; }
-	EFLC::CPlayerInfo					* GetPlayerInfo() { return m_pPlayerInfo; }
-	CVehicleEntity					* GetVehicleEntity() { return m_pVehicle; }
-	
-	sWeaponStructure				GetAimData() { return m_aimData; }
-	sWeaponStructure				GetShotData() { return m_shotData; }
+	EFLC::CPlayerPed				* GetPlayerPed() { return m_pPlayerPed; }
+	EFLC::CPlayerInfo				* GetPlayerInfo() { return m_pPlayerInfo; }
+	CVehicleEntity					* GetVehicle() { return m_pVehicle; }
 
-	CNetworkPlayerSyncPacket		m_LastSyncPacket;
-	
 
-public: // Handles call functions
+public:
 									CPlayerEntity(bool bLocalPlayer = false);
 									~CPlayerEntity();
 
-	void							SetNetworked(bool bNetworked) { m_bNetworked = bNetworked; }
-	void							SetId(unsigned short usPlayerId) { m_usPlayerId = usPlayerId; }
-	void							SetPlayerId(EntityId playerId) { CNetworkEntity::SetId(playerId); }
 	void							SetPing(unsigned short usPing) { m_usPing = usPing; }
 
-	void							ApplySyncData(CVector3 vecPosition, CVector3 vecMovement, CVector3 vecTurnSpeed, CVector3 vecRoll, CVector3 vecDirection, bool bDuck, float fHeading);
 	void							SetPosition(CVector3 &vecPosition, bool bForce = false);
 	void							SetRotation(CVector3 &vecRotation);
 	void							SetHeading(float fAngle);
@@ -217,20 +212,16 @@ public: // Handles call functions
 	void							SetArmour(float fArmour);
 	void							SetModel(int iModelId);
 	void							SetWantedLevel(int iWantedLevel);
-	void							Teleport(CVector3 vecPosition);
 	void							SetMoveSpeed(const CVector3& vecMoveSpeed);
 	void							SetTurnSpeed(const CVector3& vecTurnSpeed);
 
-	void							SetNick(CString strNick);
+	void							SetNick(const CString &strNick);
 	CString							GetNick() { return m_strNick; }
 	void							SetColor(unsigned uiColor);
 
 	unsigned						GetScriptingHandle();
 
 	void							Pulse();
-	void							PreStoreIVSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
-	void							StoreIVSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
-	void							StoreIVContextSynchronization(bool bHasWeaponData = false, bool bCopyLocalPlayer = false, CPlayerEntity * pCopy = NULL);
 
 	bool							Create();
 	bool							Destroy();
@@ -241,68 +232,61 @@ public: // Handles call functions
 
 	void							PutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
 	void							RemoveFromVehicle();
-	void							InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
-	void							InternalRemoveFromVehicle();
 	void							EnterVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
 	void							ExitVehicle(eExitVehicleType exitType);
-	void							CheckVehicleEnterExit();
-	void							ProcessVehicleEnterExit();
 	void							ResetVehicleEnterExit();
 	void							ClearVehicleEntryTask();
 	void							ClearVehicleExitTask();
-	void							SetExitFlag(bool bFlag) { m_pVehicleEnterExit->bExiting = true; }
 	
 	void							Interpolate();
 	void							ResetInterpolation();
 	void							UpdateTargetPosition();
-	void							UpdateTargetRotation();
 	void							RemoveTargetPosition();
 	void							SetTargetPosition(const CVector3& vecPosition, unsigned long ulDelay);
-	void							SetMoveToDirection(CVector3 vecPos, CVector3 vecMove, int iMoveType);
 
 	void							ClearWeaponAimAtTask();
 	void							ClearWeaponShotAtTask();
-	void							SetWeaponAimAtTask(CVector3 vecAimAt);
-	void							SetWeaponShotAtTask(CVector3 vecShotAt);
+	void							SetWeaponAimAtTask(const CVector3 &vecAimAt);
+	void							SetWeaponShotAtTask(const CVector3 &vecShotAt);
 
-	void							KillPed(bool bInstandly);
+	void							Kill(bool bInstandly);
 	bool							IsDying();
 	bool							IsDead();
-	EFLC::IEntity						*GetLastDamageEntity();
-	bool							GetKillInfo(EntityId * playerId, EntityId * vehicleId, EntityId * weaponId);
+	EFLC::IEntity					* GetLastDamageEntity();
+	bool							GetKillInfo(EntityId & playerId, EntityId & vehicleId, EntityId & weaponId);
 
-	void							SetAimData(bool bSwitch, CVector3 vecPos);
-	void							SetShotData(bool bSwitch, CVector3 vecPos);
+	void							SetClothes(unsigned short ucBodyLocation, unsigned  char ucClothes);
+	unsigned char					GetClothes(unsigned short ucBodyLocation);
 
-	void							SetPedClothes(unsigned short ucBodyLocation, unsigned  char ucClothes);
-	unsigned char					GetPedClothes(unsigned short ucBodyLocation);
-
-	void							GiveWeapon(unsigned uiWeaponId, unsigned uiAmmunation);
-	void							RemoveWeapon(unsigned uiWeaponId);
-	void							RemoveAllWeapons();
-	void							SetCurrentWeapon(unsigned uiWeaponId);
-	unsigned						GetCurrentWeapon();
-	void							SetAmmunation(unsigned uiWeaponId, unsigned uiAmmunation);
-	unsigned						GetAmmunation(unsigned uiWeapnId);
-	void							GetWeaponInSlot(unsigned uiWeaponSlot, unsigned &uiWeaponId, unsigned &uiAmmunation, unsigned &uiUnkown);
-	unsigned						GetAmmunationInClip(unsigned uiWeapon);
-	void							SetAmmunationInClip(unsigned uiAmmunationInClip);
-	unsigned						GetMaxAmmunationInClip(unsigned uiWeapon);
+	decltype(m_pPlayerWeapons)		GetPlayerWeapons() { return m_pPlayerWeapons; }
 
 	virtual void					Serialize(RakNet::BitStream * pBitStream);
 	virtual void					Deserialize(RakNet::BitStream * pBitStream);
-
-	void							WarpIntoVehicle(CVehicleEntity * pVehicle, BYTE seat = 0);
 
 	bool							IsOnScreen();
 
 	CNetworkPlayerSyncPacket		GetLastSyncPacket() { return m_LastSyncPacket; }
 	void							SetLastSyncPacket(const CNetworkPlayerSyncPacket& Packet) { m_LastSyncPacket = Packet; }
 
+	void							SetLastControlState(const CControlState & controlState) { m_lastControlState = controlState; }
+
+	BYTE							GetSeat() { return m_byteSeat; }
+
+	/* TEST STUFF */
 	void SerializeTaskInfo(RakNet::BitStream * pBitStream);
 	void DeserializeTaskInfo(RakNet::BitStream* pBitStream);
 	
 	CString							GetDebugText();
+
+protected:
+	sPlayerEntity_VehicleData		* m_pVehicleEnterExit;
+	CVehicleEntity					* m_pVehicle;
+	BYTE							m_byteSeat;
+
+	void							InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSeat);
+	void							InternalRemoveFromVehicle();
+	bool							InternalIsInVehicle();
+	
 };
 
 #endif // CPlayerEntity_h

@@ -40,6 +40,24 @@ CCore		*g_pCore = NULL;
 HMODULE		g_hModule = NULL;
 extern		void InstallException();
 
+
+bool bDataCompare(const BYTE * pData, const BYTE * bmask, const char * szMask)
+{
+	for (; *szMask; ++szMask, pData++, ++bmask)
+	if (*szMask == 'x' && * pData != *bmask)
+		return false;
+	return (*szMask) == NULL;
+}
+
+DWORD DwFindPattern(DWORD dwAddress, DWORD dwLen, BYTE * bmask, char * szMask)
+{
+	for (DWORD i = 0; i <dwLen; i++)
+	if (bDataCompare((BYTE *)(dwAddress + i), bmask, szMask))
+		return (DWORD)(dwAddress + i);
+
+	return 0;
+}
+
 BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 {
 	switch(dwReason)
@@ -58,6 +76,9 @@ BOOL WINAPI DllMain(HMODULE hModule, DWORD dwReason, void * pReserved)
 			
 			// Open the log file
 			CLogFile::Open(CLIENT_LOG_FILE);
+
+
+			//CLogFile::Printf("0x%x", DwFindPattern((DWORD)GetModuleHandle(NULL), 0x1000000000, (BYTE*)"\x55\x8B\xEC\x83\xE4\xF0\x83\xEC\x24\x0F\x57\xC0\x53\x56\x32\xDB", "xxxxxxxxxxxxxxxx"));
 
 			// Create the core instance
 			g_pCore = new CCore;

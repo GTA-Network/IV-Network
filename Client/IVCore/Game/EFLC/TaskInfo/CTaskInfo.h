@@ -32,7 +32,7 @@ public:
 	virtual void Function6();
 	virtual void DebugText(); // does nothing because debug log function is a nullsub
 	virtual void Function8();
-	virtual void Function9();
+	virtual void* Function9();
 	virtual void Function10();
 	virtual void Function11();
 	virtual void Function12();

@@ -113,8 +113,10 @@ bool CCore::Initialize()
 	// Register module manager
 	CModuleManager::FetchModules();
 	
+#ifndef TASKINFO_TEST
 	// Initialize the episodes hook
 	EpisodeManager::Initialize();
+#endif
 
 	// Initialize our HTTP connection
 	m_pHttpClient = new CHttpClient;
@@ -156,6 +158,12 @@ void CCore::OnGameUpdate()
 	// Pulse our IV environment
 	if(GetGame())
 		GetGame()->Process();
+#ifdef TASKINFO_TEST
+	if (GetGame()->GetPlayerManager()->DoesExists(1))
+	{
+		EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_SET_PLAYER_CONTROL_FOR_NETWORK, 1, false, false);
+	}
+#endif
 }
 
 void test()
@@ -273,6 +281,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 			g_pCore->GetGraphics()->DrawText(600.0f + 600, 26.0f, D3DCOLOR_ARGB(255, 255, 255, 255), 1.0f, DT_NOCLIP, true, GetGame()->GetPlayerManager()->GetAt(1)->GetDebugText().Get());
 #endif
 
+
 	CString strInformation = usPing == 0xFFFF ? CString("%s%s", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get()) : CString("%s%s | Ping %hu", MOD_NAME " " VERSION_IDENTIFIER, strSeconds.Get(), usPing);
 	
 	if(GetGame()->GetLocalPlayer())
@@ -290,4 +299,7 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	GetGraphics()->Render();
+
+
+
 }

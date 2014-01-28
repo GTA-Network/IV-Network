@@ -34,20 +34,69 @@
 #include <Ptrs.h>
 #include <CXML.h>
 
+bool __cdecl isConnectedToSocialClub(int a1)
+{
+	return true;
+}
+
 void CPatches::Initialize()
 {
+#ifdef TASKINFO_TEST
+	*(BYTE*)(g_pCore->GetBase() + 0x7CA700) = 0xC3; //disable error reporting
+
+	//bypass rockstar social club
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x7E0150, (DWORD)isConnectedToSocialClub);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x477324, g_pCore->GetBase() + 0x47747F);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x48436A, g_pCore->GetBase() + 0x48437F);
+
+	//do not ping http://www.rockstargames.com on starup
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x475EC5, 5);
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x475EDC, 8);
+
+	CPatcher::InstallNopPatch(g_pCore->GetBase() + 0x492D9B, 5); //do not load scrollbars.dat
+
+	char* text = "Kekse!!!!"; //scrollbars text
+
+	for (int i = 0; i < 8; ++i) //set scrollbars text
+	{
+		memcpy((char*)((g_pCore->GetBase() + 0x11B4508) + (1300 * i)), text, strlen(text)); //max len: 1300
+		((char*)((g_pCore->GetBase() + 0x11B4508) + (1300 * i)))[strlen(text)] = '\0';
+	}
+
+
+	*(DWORD*)(g_pCore->GetBase() + 0x8DC8FD) = 0xFF38F5D8;
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x473432, g_pCore->GetBase() + 0x4734F7); //automatice start game
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x6DECB1, g_pCore->GetBase() + 0x6DED5F);
+
+	*(BYTE*)(g_pCore->GetBase() + 0x853073) = 0xE0;
+
+	*(WORD *)(g_pCore->GetBase() + 0x472EF1) = 0xC033; //xor eax, eax
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x472EF3, g_pCore->GetBase() + 0x47316E);
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x473207, g_pCore->GetBase() + 0x473213);
+
+	*(BYTE*)(g_pCore->GetBase() + 0xA1FE40) == 0xCC;
+
+	return;
+#else
 	// Skip main menu #1
 	*(BYTE *) COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 
 	// Skip main menu #2
-	CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitializeRageGame);
+	//CPatcher::InstallJmpPatch(COffsets::CGame_Process__Sleep, COffsets::CGame_Process_InitializeRageGame);
 
 	// Make the game think we are not connected to the internet - Balika011: faster game load
 	*(BYTE *) COffsets::IV_Hook__PatchInternet_1 = 0; // byteInternetConnectionState
 	*(DWORD *) COffsets::IV_Hook__PatchInternet_2 = 0x90C3C032; // xor al, al; retn; nop
 
 	// Always start a new game
-	CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
+	//CPatcher::InstallJmpPatch(COffsets::RAGE_LoadGame, COffsets::RAGE_StartNewGame);
+
+
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x473432, g_pCore->GetBase() + 0x4734F7); //automatice start game
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x6DECB1, g_pCore->GetBase() + 0x6DED5F);
+	//pPatcher->EditByte(0x853073, 0xE0);
 
 	// === RAGE %% RGSC Stuff
 
@@ -85,7 +134,7 @@ void CPatches::Initialize()
 	*(BYTE *) COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 
 	// Allow remote desktop connections pff
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x405D67, g_pCore->GetBase() + 0x405D6E, 1);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x405D67, g_pCore->GetBase() + 0x405D6E, 1);
 
 	// Set the window text
 	*(DWORD *) (g_pCore->GetBase() + 0x47316F) = (DWORD) MOD_NAME;
@@ -93,4 +142,5 @@ void CPatches::Initialize()
 	// Disable automatic vehicle engine turn-on
 	*(DWORD*) (COffsets::IV_Hook__PatchVehicleDriverProcess) = 0x04C2C031; //xor eax, eax; retn 4
 	*(BYTE*) (COffsets::IV_Hook__PatchVehicleDriverProcess + 4) = 0; //xor eax, eax; retn 4
+#endif
 }

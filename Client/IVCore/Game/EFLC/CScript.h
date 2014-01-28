@@ -201,6 +201,8 @@ namespace CScript
 	static void SetCarAsMissionCar(unsigned int vehicle) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_SET_CAR_AS_MISSION_CAR, vehicle); }
 	static void GetOffsetFromCarInWorldCoords(unsigned int vehicle, float x, float y, float z, float *pOffX, float *pOffY, float *pOffZ) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_GET_OFFSET_FROM_CAR_IN_WORLD_COORDS, vehicle, x, y, z, pOffX, pOffY, pOffZ); }
 	static bool IsCarInAirProper(unsigned int vehicle) { return EFLC::CNativeInvoke::Invoke<bool>(NATIVE_IS_CAR_IN_AIR_PROPER, vehicle); }
+	static void SetVehicleQuaternion(unsigned int vehicle, float rX, float rY, float rZ, float rW) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_SET_VEHICLE_QUATERNION, vehicle, rX, rY, rZ, rW); }
+	static void GetVehicleQuaternion(unsigned int vehicle, float * rX, float * rY, float * rZ, float * rW) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_GET_VEHICLE_QUATERNION, vehicle, rX, rY, rZ, rW); }
 
 	// Sound
 	static unsigned int RequestAmbientAudioBank(const char* szAudio) { return EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_REQUEST_AMBIENT_AUDIO_BANK, szAudio); }
@@ -208,7 +210,7 @@ namespace CScript
 	static void ReleaseSoundId(unsigned int sound) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_RELEASE_SOUND_ID, sound); }
 	static void PlaySoundFromPed(unsigned int ped, eSound sound, unsigned int unknown) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_PLAY_SOUND_FROM_PED, ped, sound, unknown); }
 	static void PlaySoundFromPed(unsigned int ped, unsigned int sound, unsigned int unknown) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_PLAY_SOUND_FROM_PED, ped, sound, unknown); }
-
+	
 	static void PlaySoundFromPed(int SoundId, char *SoundName, unsigned int ped) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_PLAY_SOUND_FROM_PED, SoundId, SoundName, ped); }
 
 	static eSound GetSoundId() { return EFLC::CNativeInvoke::Invoke<eSound>(NATIVE_GET_SOUND_ID); }

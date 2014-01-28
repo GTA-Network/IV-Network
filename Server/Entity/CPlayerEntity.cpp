@@ -514,6 +514,9 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 
 			m_vehicleId = 0xFFFF;
 
+			m_Weapon.weaponType = PlayerPacket.weapon.weaponType;
+			m_Weapon.iAmmo = PlayerPacket.weapon.iAmmo;
+
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();
 		}
@@ -559,6 +562,9 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetWeaponShotTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponAimTarget(WeaponPacket.vecAimShotAtCoordinates);
 			SetWeaponShotSource(WeaponPacket.vecShotSource);
+
+			m_Weapon.weaponType = WeaponPacket.weapon.weaponType;
+			m_Weapon.iAmmo = WeaponPacket.weapon.iAmmo;
 		}
 		break;
 	case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:

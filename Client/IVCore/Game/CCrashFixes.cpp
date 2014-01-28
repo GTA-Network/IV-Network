@@ -84,7 +84,7 @@ void _declspec(naked) __stdcall CRASH_625F15_HOOK()
 void CCrashFixes::Initialize()
 {
 	// Hook texture select/generate function
-	CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD) TextureSelect_Hook);
+	//CPatcher::InstallJmpPatch(COffsets::FUNC_GENERATETEXTURE, (DWORD) TextureSelect_Hook);
 
 	// Fix vehicle crash -> 8 xrefs
 	//CPatcher::InstallJmpPatch(COffsets::IV_Hook__PatchPreventVehicleCrash, (COffsets::IV_Hook__PatchPreventVehicleCrash + 40));
@@ -95,5 +95,5 @@ void CCrashFixes::Initialize()
 	// Disables zone population calcs fixes crash with some vehicles
 	CPatcher::InstallRetnPatch(COffsets::IV_Hook__PatchEnableAndFixVehicleModels);
 
-	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA6180C, g_pCore->GetBase() + 0xA619F7);
+	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0xA6180C, g_pCore->GetBase() + 0xA619F7);
 }

@@ -78,8 +78,10 @@ void CGame::Setup()
 	// Create new traffic lights instance
 	m_pTrafficLights = new CTrafficLights;
 	
+#ifndef TASKINFO_TEST
 	// Install our switches/patches
 	CContextSwitch::InstallKeySyncHooks();
+#endif
 
 	// Setup the weapon handle hook
 	//CWeaponHandler::InstallAimSyncHooks();
@@ -139,6 +141,9 @@ void CGame::Initialize()
 	if(!m_pCheckpointManager)
 		m_pCheckpointManager = new CCheckpointManager;
 	
+	if (m_pLocalPlayer)
+		SAFE_DELETE(m_pLocalPlayer);
+
 	if (!m_pLocalPlayer)
 		m_pLocalPlayer = new CLocalPlayer;
 

@@ -77,7 +77,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 
 		if (pLocalPlayer->IsInVehicle())
 		{
-			CVehicleEntity * pVehicle = pLocalPlayer->GetVehicleEntity();
+			CVehicleEntity * pVehicle = pLocalPlayer->GetVehicle();
 
 			if (pVehicle)
 			{
@@ -112,7 +112,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 			// Add our vehicle
 			pVehicle->SetId(g_pCore->GetGame()->GetVehicleManager()->Add(pVehicle));
 			pVehicle->Create();
-			g_pCore->GetGame()->GetLocalPlayer()->WarpIntoVehicle(pVehicle);
+			g_pCore->GetGame()->GetLocalPlayer()->PutInVehicle(pVehicle, 0);
 		}
 		return true;
 	}
@@ -130,14 +130,14 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		if(pPlayer) {
 			pPlayer->SetModel(7);
 			pPlayer->Create();
-			pPlayer->Teleport(vecCreatePos);
+			pPlayer->SetPosition(vecCreatePos);
 		}
 		return true;
 	}
 	else if(strCommand == "engine") 
 	{
-		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity() != NULL)
-			g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->SetEngineState(!g_pCore->GetGame()->GetLocalPlayer()->GetVehicleEntity()->GetEngineState());
+		if(g_pCore->GetGame()->GetLocalPlayer()->GetVehicle() != NULL)
+			g_pCore->GetGame()->GetLocalPlayer()->GetVehicle()->SetEngineState(!g_pCore->GetGame()->GetLocalPlayer()->GetVehicle()->GetEngineState());
 		
 		return true;
 	}
@@ -215,7 +215,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 		}
 
 		g_pCore->GetGraphics()->GetChat()->Print(CString("Setting clothes part %d to %d", atoi(strCommand2.c_str()), atoi(strParams.c_str())));
-		g_pCore->GetGame()->GetLocalPlayer()->SetPedClothes(atoi(strCommand2.c_str()), atoi(strParams.c_str()));
+		g_pCore->GetGame()->GetLocalPlayer()->SetClothes(atoi(strCommand2.c_str()), atoi(strParams.c_str()));
 
 		return true;
 	}
@@ -300,9 +300,9 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 	else if (strCommand == "getP")
 	{
 		CVector3 vecPosition;
-		g_pCore->GetGame()->GetLocalPlayer()->GetPosition(vecPosition);
+		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->GetPosition(vecPosition);
 		vecPosition.fX += 2.0f;
-		g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->SetPosition(vecPosition);
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(vecPosition);
 	}
 	else if (strCommand == "vehicleSync")
 	{

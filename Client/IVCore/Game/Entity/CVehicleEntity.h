@@ -223,6 +223,7 @@ public:
 	CPlayerEntity						*GetOccupant(BYTE byteSeatId);
 
 	void								SetDriver(CPlayerEntity * pDriver) { m_pDriver = pDriver; }
+	void								SetPassenger(CPlayerEntity * pPassenger, BYTE byteSeat) { m_pPassengers[byteSeat] = pPassenger; }
 	virtual CPlayerEntity				*GetDriver() { return m_pDriver; }
 
 	virtual EFLC::CVehicle					*GetGameVehicle() { return m_pVehicle; }

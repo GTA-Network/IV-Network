@@ -583,19 +583,6 @@ void CVehicle::SetCarCanBeDamaged(bool bDamage)
 	}
 }
 
-void CVehicle::RemoveCarWindow(int iWindow)
-{
-	IVehicle * pVehicle = GetVehicle();
-	if(pVehicle)
-	{
-		DWORD dwFunctionAddress = COffsets::FUNC_CVehicle__RemoveVehicleWindow;
-		
-		_asm	push iWindow;
-		_asm	mov ecx, pVehicle;
-		_asm	call COffsets::FUNC_CVehicle__RemoveVehicleWindow;
-	}
-}
-
 void CVehicle::SetLightsState(int iState)
 {
 	IVehicle * pVehicle = GetVehicle();
