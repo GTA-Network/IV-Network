@@ -221,7 +221,7 @@ bool CClientCommands::HandleUserInput(CString strCommand, CString strParameters)
 	}
 	else if(strCommand == "bahama")
 	{
-		g_pCore->GetGame()->GetLocalPlayer()->CPlayerEntity::SetPosition(CVector3(-15.9453f, -13.5865f, -11.7456f));
+		g_pCore->GetGame()->GetLocalPlayer()->SetPosition(CVector3(-15.9453f, -13.5865f, -11.7456f));
 		return true;
 	}
 	else if(strCommand == "spawnvehs")

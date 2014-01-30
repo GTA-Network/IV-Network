@@ -558,9 +558,11 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 		// Are we not in a vehicle and not entering a vehicle?
 		if(!InternalIsInVehicle() && !HasVehicleEnterExit())
 		{
+			m_pPlayerPed->RemoveFromWorld();
 			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
 			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
-			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
+			//m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
+			m_pPlayerPed->AddToWorld();
 		}
 
 	// Just update the position
@@ -1644,7 +1646,13 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 	{
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		VehiclePacket.vehicleId = m_pVehicle->GetId();
+
+#ifdef USE_QUAT
+		m_pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
+#else
 		m_pVehicle->GetGameVehicle()->GetMatrix(VehiclePacket.matrix);
+#endif
+
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 		g_pCore->GetGame()->GetPad()->GetCurrentControlState(VehiclePacket.ControlState);
@@ -1718,9 +1726,11 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 			matrix.vecForward = PlayerPacket.matrix.vecForward;
 			matrix.vecRight = PlayerPacket.matrix.vecRight;
 			matrix.vecUp = PlayerPacket.matrix.vecUp;
+			m_pPlayerPed->RemoveFromWorld();
 			GetPlayerPed()->SetMatrix(matrix);
-			GetPlayerPed()->GetPed()->UpdatePhysicsMatrix(true);
-
+			m_pPlayerPed->AddToWorld();
+			//GetPlayerPed()->GetPed()->UpdatePhysicsMatrix(true);
+			
 			SetTargetPosition(PlayerPacket.matrix.vecPosition, interpolationTime);
 			
 			
@@ -1763,15 +1773,17 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 #endif
 				SetControlState(&VehiclePacket.ControlState);
 
-				m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
-				matrix.vecForward = VehiclePacket.matrix.vecForward;
-				matrix.vecRight = VehiclePacket.matrix.vecRight;
-				matrix.vecUp = VehiclePacket.matrix.vecUp;
-				m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
-				m_pVehicle->GetGameVehicle()->GetVehicle()->UpdatePhysicsMatrix(true);
-				
+				//m_pVehicle->GetGameVehicle()->GetMatrix(matrix);
+				//matrix.vecForward = VehiclePacket.matrix.vecForward;
+				//matrix.vecRight = VehiclePacket.matrix.vecRight;
+				//matrix.vecUp = VehiclePacket.matrix.vecUp;
+				//m_pVehicle->RemoveFromWorld();
+				//m_pVehicle->GetGameVehicle()->SetMatrix(matrix);
+				//m_pVehicle->AddToWorld();
+				//m_pVehicle->GetGameVehicle()->GetVehicle()->UpdatePhysicsMatrix(true);
+
+
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
-				//m_pVehicle->SetTargetHeading(VehiclePacket.fHeading, interpolationTime);
 
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
@@ -1781,6 +1793,10 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 				SetArmour(VehiclePacket.playerArmor);
 				SetHealth(VehiclePacket.playerHealth);
+
+#ifdef USE_QUAT
+				GetVehicle()->SetQuaternion(VehiclePacket.matrix.quat);
+#endif
 
 				m_pVehicle->SetLastSyncPacket(VehiclePacket);
 			}

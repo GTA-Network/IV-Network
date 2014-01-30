@@ -193,7 +193,27 @@ void RecieveSyncPackage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 		CPlayerEntity *pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(1);
 #ifndef TASKINFO_TEST
 		pPlayer->Deserialize(pBitStream);
+
+		if (g_pCore->GetGame()->GetPlayerManager()->DoesExists(1) && !g_pCore->GetGame()->GetVehicleManager()->DoesExists(1))
+		{
+			g_pCore->GetGame()->GetLocalPlayer()->PutInVehicle(g_pCore->GetGame()->GetVehicleManager()->GetAt(0), 0);
+			CVector3 vecPosition;
+			g_pCore->GetGame()->GetPlayerManager()->GetAt(1)->GetPosition(vecPosition);
+			CVehicleEntity * pVehicle = new CVehicleEntity(90, vecPosition, 90, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF);
+			if (pVehicle)
+			{
+				//	// Add our vehicle
+				g_pCore->GetGame()->GetVehicleManager()->Add(1, pVehicle);
+				pVehicle->SetId(1);
+				pVehicle->Create();
+				pVehicle->SetPosition(vecPosition, true);
+			}
+		}
+		
 #endif
+
+
+
 	}
 #endif
 

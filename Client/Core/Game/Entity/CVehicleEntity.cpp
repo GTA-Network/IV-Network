@@ -93,7 +93,7 @@ CVehicleEntity::CVehicleEntity(int iVehicleModel, CVector3 vecPos, float fAngle,
 	m_lastVehicleSyncPacket.matrix.vecPosition = CVector3();
 
 	// Set the spawn position
-	memcpy(&m_vecSpawnPosition,&vecPos,sizeof(CVector3));
+	memcpy(&m_vecSpawnPosition, &vecPos, sizeof(CVector3));
 
 }
 
@@ -123,17 +123,14 @@ bool CVehicleEntity::Create()
 	if(IsSpawned())
 		return false;
 
-	EFLC::CScript::RequestModel(m_pModelInfo->GetHash());
-
-	while (!EFLC::CScript::HasModelLoaded(m_pModelInfo->GetHash()))
-		EFLC::CScript::LoadAllObjectsNow(false);
+	m_pModelInfo->AddReference(true);
 
 	EFLC::IVehicle * pVehicle = pIVehicleFactory->Create(m_pModelInfo->GetIndex(), 1, 0, 0);
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
-		pVehicle->m_byteFlags1 |= 4u;
-		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
+		//pVehicle->m_byteFlags1 |= 4u;
+		//pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
 
 		CWorld__AddEntity(pVehicle, false);
 		CVehicleModelInfo__AddReference(m_pModelInfo->GetModelInfo());
@@ -150,8 +147,8 @@ bool CVehicleEntity::Create()
 			pVehicle->CreatePhysics();
 			pVehicle->ProcessInput();
 		}
-		
-		EFLC::CScript::MarkModelAsNoLongerNeeded(m_pModelInfo->GetHash());
+
+		m_pModelInfo->RemoveReference();
 
 		m_pVehicle = new EFLC::CVehicle(pVehicle);
 
@@ -388,15 +385,63 @@ void CVehicleEntity::GetColors(DWORD &dwColor1, DWORD &dwColor2, DWORD &dwColor3
 	}
 }
 
+
+#define sub_9D92E0 ((int(__thiscall *)(EFLC::IVehicle*))((dwsub_9D92E0)))
+#define sub_9FFFC0 ((int( __thiscall *)(EFLC::IVehicle*, char))(g_pCore->GetBase() + 0x9FFFC0))
+#define sub_5C9D60 ((int( __thiscall *)(void*, char))(g_pCore->GetBase() + 0x5C9D60))
+
 void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTasks, bool bResetInterpolation)
 {
 	if (IsSpawned())
 	{
-		m_pVehicle->RemoveFromWorld();
+		if (!bDontCancelTasks)
+			EFLC::CScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+		else
+		{
+			// Set the position in the matrix
+			m_pVehicle->SetPosition(vecPosition);
+
+			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+		}
+
+		m_vecPosition = vecPosition;
+
+		// Reset interpolation if requested
+		if (bResetInterpolation)
+			RemoveTargetPosition();
+
+		return;
+
+		//
 		Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
 		m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
 		m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
-		m_pVehicle->AddToWorld();
+		m_pVehicle->GetVehicle()->Function100();
+		
+		DWORD dwsub_9D92E0 = g_pCore->GetBase() + 0x9D92E0;
+
+		if (sub_9D92E0(m_pVehicle->GetVehicle()))
+		{
+			int v8 = sub_9D92E0(m_pVehicle->GetVehicle());
+			(*(void(__thiscall **)(int))(*(DWORD *)v8 + 16))(v8);
+			if (*(DWORD *)(sub_9D92E0(m_pVehicle->GetVehicle()) + 24))
+			{
+				int v9 = sub_9D92E0(m_pVehicle->GetVehicle());
+				sub_5C9D60(*(void **)(v9 + 24), 1);
+			}
+		}
+
+		//__debugbreak();
+		sub_9FFFC0(m_pVehicle->GetVehicle(), 1);
+		//
+
+		//m_pVehicle->RemoveFromWorld();
+		//m_pVehicle->GetVehicle()->Function31(&coords, 0, 1);
+		//m_pVehicle->AddToWorld();
+		//m_pVehicle->RemoveFromWorld();
+		//EFLC::CScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+		//EFLC::CScript::SetCarCoordinates(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+		//m_pVehicle->AddToWorld();
 	}
 
 	m_vecPosition = vecPosition;
@@ -513,14 +558,25 @@ float CVehicleEntity::GetPetrolTankHealth()
 
 void CVehicleEntity::SetQuaternion(float * quat)
 {
-	if(IsSpawned())
-		EFLC::CScript::SetVehicleQuaternion(GetScriptingHandle(), quat[0], quat[1], quat[2], quat[3]);
+	assert(quat);
+
+	if (IsSpawned())
+	{
+		Matrix34 mat = *m_pVehicle->GetVehicle()->m_pMatrix;
+		((int(__thiscall*)(Matrix34 *, float *))(g_pCore->GetBase() + 0x462F30))(&mat, quat);
+		m_pVehicle->GetVehicle()->SetMatrix(&mat, 0, 0);
+		((void(__thiscall*)(EFLC::IVehicle *))(g_pCore->GetBase() + 0x9D3700))(m_pVehicle->GetVehicle());
+	}
 }
 
 void CVehicleEntity::GetQuaternion(float * quat)
 {
-	if(IsSpawned())
-		EFLC::CScript::GetVehicleQuaternion(GetScriptingHandle(), &quat[0], &quat[1], &quat[2], &quat[3]);
+	assert(quat);
+
+	if (IsSpawned())
+	{
+		((Matrix34 *(__thiscall *)(float*, Matrix34*))(g_pCore->GetBase() + 0x44F810))(quat, m_pVehicle->GetVehicle()->m_pMatrix);
+	}
 }
 
 void CVehicleEntity::SetMoveSpeed(const CVector3& vecMoveSpeed)
@@ -538,7 +594,7 @@ void CVehicleEntity::GetMoveSpeed(CVector3& vecMoveSpeed)
 	if(IsSpawned())
 		m_pVehicle->GetMoveSpeed(vecMoveSpeed);
 	else
-	vecMoveSpeed = m_vecMoveSpeed;
+		vecMoveSpeed = m_vecMoveSpeed;
 }
 
 void CVehicleEntity::SetTurnSpeed(const CVector3& vecTurnSpeed)
@@ -689,12 +745,20 @@ void CVehicleEntity::UpdateTargetPosition()
         // Calculate the new position
         CVector3 vecNewPosition = (vecCurrentPosition + vecCompensation);
 
-		if (!((vecCurrentPosition - m_interp.pos.vecTarget).Length() <= 3.0 /* maybe adjust this value a bit if we need earlier correction */))
-        {
-            // Abort position interpolation
-            m_interp.pos.ulFinishTime = 0;
-            vecNewPosition = m_interp.pos.vecTarget;
-        }
+		// Check if the distance to interpolate is too far
+		if ((vecCurrentPosition - m_interp.pos.vecTarget).Length() > 20)
+		{
+			// Abort position interpolation
+			m_interp.pos.ulFinishTime = 0;
+			vecNewPosition = m_interp.pos.vecTarget;
+
+			// Abort target interpolation
+			if (HasTargetRotation())
+			{
+				SetRotation(m_interp.rot.vecTarget);
+				m_interp.rot.ulFinishTime = 0;
+			}
+		}
 
         // Set our new position
         SetPosition(vecNewPosition, true, false);
@@ -739,6 +803,9 @@ void CVehicleEntity::Interpolate()
 	// Do we have a driver?
 	if(GetDriver())
 	{
+
+		g_pCore->GetGraphics()->GetChat()->Print("Interpolate");
+
 		// Update our target position
 		UpdateTargetPosition();
 

@@ -182,6 +182,21 @@ struct stXMLData //this name is not correct
 #define sub_454D70 ((int (__thiscall*) (stXMLNode**))(g_pCore->GetBase() + 0x454D70))
 #define sub_8B34D0 ((char (__thiscall*) (void*, int a2))(g_pCore->GetBase() + 0x8B34D0))
 
+#define LOAD_IVN
+#ifdef LOAD_IVN 
+#define IVN_EPISODE_ID 1
+#define TLAD_EPISODE_ID 2
+#define TBOGT_EPISODE_ID 3
+#elif LOAD_TLAD
+#define TLAD_EPISODE_ID 1
+#define IVN_EPISODE_ID 2
+#define TBOGT_EPISODE_ID 3
+#elif LOAD_TBOGT
+#define TBOGT_EPISODE_ID 1
+#define TLAD_EPISODE_ID 2
+#define IVN_EPISODE_ID 3
+#endif
+
 char EpisodeManagerDummy::loadEpisodes(int id)
 {
 	CheckDLCs(this);
@@ -227,7 +242,7 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 		episode.field_222 = 0;
 		episode.networkGame = -1;
 		episode.id = 2;
-		episode.episode = 1;
+		episode.episode = IVN_EPISODE_ID;
 		sub_8B3AE0(this, &episode);
 	}
 	else if (id == 1)
@@ -269,7 +284,7 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 		episode.field_222 = 0;
 		episode.networkGame = -1;
 		episode.id = 4;
-		episode.episode = 2;
+		episode.episode = TLAD_EPISODE_ID;
 		sub_8B3AE0(this, &episode);
 	}
 	else if (id == 2)
@@ -311,7 +326,7 @@ char EpisodeManagerDummy::loadEpisodes(int id)
 		episode.field_222 = 0;
 		episode.networkGame = -1;
 		episode.id = 6;
-		episode.episode = 3;
+		episode.episode = TBOGT_EPISODE_ID;
 		sub_8B3AE0(this, &episode);
 	}
 	else

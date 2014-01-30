@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client;$(SolutionDir)\Client\Core\;$(SolutionDir)\Client\Core\General;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;./</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;TASKINFO_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
@@ -625,6 +625,7 @@
     <ClInclude Include="Graphics\CMainMenu.h" />
     <ClInclude Include="Graphics\CSnapShot.h" />
     <ClInclude Include="Graphics\CTags.h" />
+    <ClInclude Include="Graphics\CChatWindow.h" />
     <ClInclude Include="Graphics\IDirect3D9Proxy.h" />
     <ClInclude Include="Graphics\IDirect3DDevice9Proxy.h" />
     <ClInclude Include="Graphics\Input.h" />

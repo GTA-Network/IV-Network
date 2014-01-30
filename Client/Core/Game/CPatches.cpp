@@ -80,6 +80,14 @@ void CPatches::Initialize()
 
 	return;
 #else
+
+	/*
+		87017F
+		mov esi, offset g_pPlayerInfos
+		replace with our own array
+	
+	*/
+
 	// Skip main menu #1
 	*(BYTE *) COffsets::IV_Hook__PatchUnkownByte1 = 0xE0;
 

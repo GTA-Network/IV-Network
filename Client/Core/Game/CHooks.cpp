@@ -513,7 +513,7 @@ void __cdecl GetLoadingText(char* buffer)
 
 void CHooks::Intialize()
 {
-#if 0
+#if 1
 	// Hook GetPlayerInfoFromIndex to use our own function
 	CPatcher::InstallJmpPatch(COffsets::FUNC_CPlayer__GetPlayerByNumber, (DWORD) GetPlayerInfoFromIndex_Hook);
 	

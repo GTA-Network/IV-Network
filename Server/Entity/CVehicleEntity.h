@@ -28,6 +28,7 @@ private:
 	float			m_fHeading;
 	int				m_iModelId;
 	DWORD			m_dwColor[5];
+	float			m_fQuat[4];
 
 public:
 										CVehicleEntity();
@@ -38,6 +39,9 @@ public:
 
 	void								SetMatrix(Matrix &matrix) { m_Matrix = matrix; }
 	void								GetMatrix(Matrix &matrix) { matrix = m_Matrix; }
+
+	void								SetQuaternion(float quat[4]) { memcpy(m_fQuat, quat, sizeof(m_fQuat)); }
+	void								GetQuaternion(float * quat) { memcpy(quat, m_fQuat, sizeof(m_fQuat)); }
 
 	void								SetHealth(float fHealth) { m_fHealth = fHealth; }
 	float								GetHealth() { return m_fHealth; }

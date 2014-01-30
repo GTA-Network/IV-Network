@@ -114,7 +114,7 @@ public:
 									static	CContextData			* CreateContextData(EFLC::CPlayerInfo * pPlayerInfo);
 	static	void					DestroyContextData(CContextData * pContextData);
 
-	static CContextData				* GetContextData(BYTE bytePlayerNumber);
+	static CContextData				* GetContextData(unsigned int bytePlayerNumber);
 	static CContextData				* GetContextData(EFLC::CPlayerInfo * pPlayerInfo);
 	static CContextData				* GetContextData(EFLC::IPlayerInfo * pPlayerInfo);
 	static CContextData				* GetContextData(EFLC::CPlayerPed * pPlayerPed);

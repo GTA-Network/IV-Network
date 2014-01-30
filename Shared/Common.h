@@ -167,6 +167,8 @@ using namespace std; // Conflicts with string(std::string) in network stuff
 typedef unsigned short EntityId;
 
 
+#define USE_QUAT
+
 #include "CNetSync.h"
 
 // Version defines
@@ -293,6 +295,5 @@ typedef unsigned short EntityId;
 #define GET_RPC_CODEX(x) CString("IVN0xF%dF", int(x)).Get()
 #define CHECK_VALID(x) if(!x) return false;
 #define CHECK_VALID_VOID(x) if(!x) return;
-
 
 #endif // Common_h

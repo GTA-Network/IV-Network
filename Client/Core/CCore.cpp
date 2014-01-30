@@ -151,8 +151,9 @@ void CCore::OnGameLoad()
 
 void CCore::OnGameUpdate()
 {
+
 	// Pulse network connection
-	if(GetNetworkManager())
+	if (GetNetworkManager())
 		GetNetworkManager()->Pulse();
 
 	// Pulse our IV environment
@@ -299,7 +300,4 @@ void CCore::OnDeviceRender(IDirect3DDevice9 * pDevice)
 	}
 
 	GetGraphics()->Render();
-
-
-
 }

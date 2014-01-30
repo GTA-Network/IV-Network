@@ -74,7 +74,7 @@ void CContextDataManager::DestroyContextData(CContextData * pContextData)
 	delete pContextData;
 }
 
-CContextData * CContextDataManager::GetContextData(BYTE bytePlayerNumber)
+CContextData * CContextDataManager::GetContextData(unsigned int bytePlayerNumber)
 {
 	// Loop through the context data list
 	for(std::list<CContextData *>::iterator iter = m_contextDataList.begin(); iter != m_contextDataList.end(); iter++)

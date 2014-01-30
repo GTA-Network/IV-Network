@@ -40,7 +40,7 @@ CPlayerInfo::CPlayerInfo() :
 {
 }
 
-CPlayerInfo::CPlayerInfo(BYTE bytePlayerNumber) :
+CPlayerInfo::CPlayerInfo(unsigned int bytePlayerNumber) :
 	m_bCreatedByUs(true)
 {
 	unsigned char * pPlayerInfo = (unsigned char *) CGameFunction::Alloc(sizeof(IPlayerInfo));
@@ -51,6 +51,8 @@ CPlayerInfo::CPlayerInfo(BYTE bytePlayerNumber) :
 	((IPlayerInfo *(__thiscall *) (IPlayerInfo *))(COffsets::FUNC_CPlayerInfo__Constructor))((IPlayerInfo *) pPlayerInfo);
 
 	((IPlayerInfo *)pPlayerInfo)->m_bytePlayerNumber = bytePlayerNumber;
+
+	//m_uiPlayerNumber = bytePlayerNumber;
 
 	*(BYTE *)(pPlayerInfo + 0x15B) = 0;
 	*(BYTE *)(pPlayerInfo + 0x15C) = 0;
@@ -94,14 +96,17 @@ IPlayerInfo * CPlayerInfo::GetPlayerInfo()
 	return m_pPlayerInfo;
 }
 
-void CPlayerInfo::SetPlayerNumber(BYTE bytePlayerNumber)
+void CPlayerInfo::SetPlayerNumber(unsigned int uiPlayerNumber)
 {
 	if(m_pPlayerInfo)
-		m_pPlayerInfo->m_bytePlayerNumber = bytePlayerNumber;
+		m_pPlayerInfo->m_bytePlayerNumber = uiPlayerNumber;
+	m_uiPlayerNumber = uiPlayerNumber;
 }
 
-BYTE CPlayerInfo::GetPlayerNumber()
+unsigned int CPlayerInfo::GetPlayerNumber()
 {
+	//return m_uiPlayerNumber;
+
 	if(m_pPlayerInfo)
 		return m_pPlayerInfo->m_bytePlayerNumber;
 

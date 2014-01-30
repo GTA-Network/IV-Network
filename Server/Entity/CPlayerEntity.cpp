@@ -453,7 +453,12 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 				VehiclePacket.vehicleId = pVehicle->GetId();
 				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
+
+#ifdef USE_QUAT
+				pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
+#else
 				pVehicle->GetMatrix(VehiclePacket.matrix);
+#endif
 
 				VehiclePacket.vehHealth = pVehicle->GetHealth();
 				//VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
@@ -536,7 +541,12 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 				pVehicle->SetPosition(VehiclePacket.matrix.vecPosition);
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
+
+#ifdef USE_QUAT
+				pVehicle->SetQuaternion(VehiclePacket.matrix.quat);
+#else
 				pVehicle->SetMatrix(VehiclePacket.matrix);
+#endif
 				pVehicle->SetHealth(VehiclePacket.vehHealth);
 				//pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 

@@ -1804,6 +1804,9 @@
     <ClInclude Include="Game\Entity\CPlayerWeapons.h">
       <Filter>Source Files\Network\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\CChatWindow.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Libraries\DXSDK\Include\d3dx9math.inl">

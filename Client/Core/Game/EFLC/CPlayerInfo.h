@@ -101,20 +101,21 @@ public:
 class CPlayerInfo
 {
 private:
-	bool					m_bCreatedByUs;
+	bool				  m_bCreatedByUs;
 	IPlayerInfo			* m_pPlayerInfo;
+	unsigned int		  m_uiPlayerNumber;
 
 public:
 	CPlayerInfo();
-	CPlayerInfo(BYTE bytePlayerNumber);
+	CPlayerInfo(unsigned int bytePlayerNumber);
 	CPlayerInfo(IPlayerInfo * pPlayerInfo);
 	~CPlayerInfo();
 
 	void				SetPlayerInfo(IPlayerInfo * pPlayerInfo);
 	IPlayerInfo		* GetPlayerInfo();
 
-	void				SetPlayerNumber(BYTE bytePlayerNumber);
-	BYTE				GetPlayerNumber();
+	void				SetPlayerNumber(unsigned int bytePlayerNumber);
+	unsigned int		GetPlayerNumber();
 
 	void				SetPlayerPed(IPlayerPed * pPlayerPed);
 	IPlayerPed			* GetPlayerPed();

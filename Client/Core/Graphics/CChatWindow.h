@@ -28,18 +28,17 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CNameTags_h
-#define CNameTags_h
+#ifndef CChatWindow_h
+#define CChatWindow_h
 
 #include <Common.h>
 
-class CTags
+class CChatWindow
 {
 public:
-		CTags();
-		~CTags();
-
-		void Draw();
+	CChatWindow();
+	~CChatWindow();
 };
 
-#endif CNameTags_h
+
+#endif // CChatWindow_h
