@@ -538,6 +538,10 @@ void CHooks::Intialize()
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
 
+	g_pRageScriptThread = new sRAGETHREAD;
+	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x82E7E0, (DWORD) GetRunningScriptThread, 5);
+
 #if 0
 	// Disable wanted circles on the minimap(we have no cops which are following you atm ^^)
 	*(BYTE *) (g_pCore->GetBase() + 0x83C216) = 0xEB;

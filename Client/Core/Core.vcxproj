@@ -615,6 +615,7 @@
     <ClInclude Include="General\CModuleManager.h" />
     <ClInclude Include="General\Ptrs.h" />
     <ClInclude Include="Graphics\CChat.h" />
+    <ClInclude Include="Graphics\CChatBox.h" />
     <ClInclude Include="Graphics\CDirect3D9Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Hook.h" />
     <ClInclude Include="Graphics\CDirectInput8Proxy.h" />

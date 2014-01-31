@@ -317,7 +317,7 @@ struct SetupPedData
 
 bool CPlayerEntity::Create()
 {
-#ifdef TASKINFO_TEST
+#if 1
 	// Is this the localplayer or are we alread spawned?
 	if (IsLocalPlayer() && IsSpawned())
 		return false;
@@ -561,7 +561,7 @@ void CPlayerEntity::SetPosition(CVector3& vecPosition, bool bForce)
 			m_pPlayerPed->RemoveFromWorld();
 			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
 			m_pPlayerPed->GetPed()->SetCoordinates(&coords, 1, 0);
-			//m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
+			m_pPlayerPed->GetPed()->UpdatePhysicsMatrix(true);
 			m_pPlayerPed->AddToWorld();
 		}
 
@@ -832,6 +832,36 @@ void CPlayerEntity::InternalPutInVehicle(CVehicleEntity * pVehicle, BYTE byteSea
 	// Is the player spawned and not in a vehicle?
 	if(IsSpawned() && !InternalIsInVehicle())
 	{
+
+		//if (IsSpawned() && !InternalIsInVehicle())
+		//{
+		//	// Get the door
+		//	int iDoor = -2;
+
+		//	if (byteSeat == 0)
+		//		iDoor = 0;
+		//	else if (byteSeat == 1)
+		//		iDoor = 2;
+		//	else if (byteSeat == 2)
+		//		iDoor = 1;
+		//	else if (byteSeat == 3)
+		//		iDoor = 3;
+
+		//	// Create the car set ped in vehicle task
+		//	EFLC::CTaskSimpleCarSetPedInVehicle * pTask = new EFLC::CTaskSimpleCarSetPedInVehicle(pVehicle->GetGameVehicle(), iDoor, 0, 0);
+
+		//	// Did the task create successfully?
+		//	if (pTask)
+		//	{
+		//		// Process the ped
+		//		pTask->ProcessPed(m_pPlayerPed);
+
+		//		// Destroy the task
+		//		pTask->Destroy();
+		//	}
+		//}
+
+		//return;
 		// Is this the driver seat?
 		if(byteSeat == 0)
 		{
