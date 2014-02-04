@@ -15,6 +15,15 @@ _GAME_BEGIN
 #define CComplexJumpTaskInfo__CComplexJumpTaskInfo (*(IComplexJumpTaskInfo* (__thiscall *)(IComplexJumpTaskInfo*, bool bHasPedJumped, bool bJumpOnSpot, bool bForceInAir)) (g_pCore->GetBase() + 0xA1E600))
 #define CMeleeTaskInfo__CMeleeTaskInfo (*(IMeleeTaskInfo* (__thiscall *)(IMeleeTaskInfo*)) (g_pCore->GetBase() + 0xA19DA0))
 
+class IPed;
+
+class INetCloneTask
+{
+public:
+	virtual ~INetCloneTask();
+	virtual bool CreateTasks(IPed * pPed);
+};
+
 class ITaskInfo
 {
 public:
@@ -32,10 +41,10 @@ public:
 	virtual void Function6();
 	virtual void DebugText(); // does nothing because debug log function is a nullsub
 	virtual void Function8();
-	virtual void* Function9();
+	virtual void* CreateNetCloneTask();
 	virtual void Function10();
 	virtual void Function11();
-	virtual void Function12();
+	virtual int GetField14();
 	virtual void Function13();
 	virtual void Function14();
 	virtual void Function15();

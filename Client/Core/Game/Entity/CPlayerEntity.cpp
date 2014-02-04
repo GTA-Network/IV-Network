@@ -389,6 +389,8 @@ bool CPlayerEntity::Create()
 
 	m_pPlayerWeapons = new CPlayerWeapons(m_pPlayerPed->GetPedWeapons());
 
+	EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_SET_PLAYER_CONTROL_FOR_NETWORK, m_bytePlayerNumber, false, false);
+
 	// Mark as spawned
 	m_bSpawned = true;
 
@@ -2111,7 +2113,7 @@ void CPlayerEntity::DeserializeTaskInfo(RakNet::BitStream* pBitStream)
 					return;
 				}
 
-				EFLC::ITask * pTask = (EFLC::ITask*)pCTaskInfo->GetTaskInfo()->Function9();
+				EFLC::ITask * pTask = (EFLC::ITask*)pCTaskInfo->GetTaskInfo()->CreateNetCloneTask();
 
 				if (pTask)
 				{

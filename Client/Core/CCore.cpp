@@ -151,7 +151,6 @@ void CCore::OnGameLoad()
 
 void CCore::OnGameUpdate()
 {
-
 	// Pulse network connection
 	if (GetNetworkManager())
 		GetNetworkManager()->Pulse();

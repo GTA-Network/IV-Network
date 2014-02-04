@@ -517,6 +517,7 @@
     <ClInclude Include="Game\COffsets.h" />
     <ClInclude Include="Game\CPatches.h" />
     <ClInclude Include="Game\CPools.h" />
+    <ClInclude Include="Game\CStreamer.h" />
     <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\CTrafficHandler.h" />
     <ClInclude Include="Game\EFLC\CCam.h" />

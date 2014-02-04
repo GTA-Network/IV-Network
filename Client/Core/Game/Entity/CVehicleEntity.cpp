@@ -129,8 +129,8 @@ bool CVehicleEntity::Create()
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
-		//pVehicle->m_byteFlags1 |= 4u;
-		//pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
+		pVehicle->m_byteFlags1 |= 4u;
+		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
 
 		CWorld__AddEntity(pVehicle, false);
 		CVehicleModelInfo__AddReference(m_pModelInfo->GetModelInfo());
@@ -165,7 +165,7 @@ bool CVehicleEntity::Create()
 		// Reset the vehicle
 		Reset();
 
-		SetPosition(m_vecSpawnPosition, true);
+		SetPosition(m_vecSpawnPosition);
 
 		CLogFile::Printf("Created vehicle! (Id: %d, Handle: %X)", m_vehicleId, g_pCore->GetGame()->GetPools()->GetVehiclePool()->HandleOf(pVehicle));
 		return true;
@@ -395,7 +395,13 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 	if (IsSpawned())
 	{
 		if (!bDontCancelTasks)
-			EFLC::CScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+		{
+			m_pVehicle->RemoveFromWorld();
+			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
+			m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
+			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+			m_pVehicle->AddToWorld();
+		}
 		else
 		{
 			// Set the position in the matrix

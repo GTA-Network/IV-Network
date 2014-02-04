@@ -271,6 +271,7 @@
     <ClInclude Include="..\Shared\Scripting\SQL\CSQLite.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CServer.h" />
+    <ClInclude Include="CStreamer.h" />
     <ClInclude Include="CTimer.h" />
     <ClInclude Include="CTimerManager.h" />
     <ClInclude Include="Entity\C3DLabelEntity.h" />
