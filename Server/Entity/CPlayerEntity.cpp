@@ -380,11 +380,13 @@ void CScriptPlayer::SetColor(DWORD dwColor)
 
 void CScriptPlayer::SendPlayerMessage(CString sMessage, DWORD dwColor, bool bAllowFormatting)
 {
+	bool bAllowFormattingEx = false;
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(RakNet::RakString(sMessage.C_String()));
-	bitStream.Write(dwColor);
-	bitStream.Write(bAllowFormatting);
+	bitStream.Write(CString(sMessage)); 
+	bitStream.Write((DWORD) dwColor);
+	bAllowFormattingEx = (bAllowFormatting != 0);
+	bitStream.Write(bAllowFormattingEx);
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
