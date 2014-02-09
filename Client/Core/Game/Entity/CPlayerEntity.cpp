@@ -317,7 +317,7 @@ struct SetupPedData
 
 bool CPlayerEntity::Create()
 {
-#if 1
+#if 0
 	// Is this the localplayer or are we alread spawned?
 	if (IsLocalPlayer() && IsSpawned())
 		return false;
@@ -1681,6 +1681,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 
 #ifdef USE_QUAT
 		m_pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
+		m_pVehicle->GetPosition(VehiclePacket.matrix.vecPosition);
 #else
 		m_pVehicle->GetGameVehicle()->GetMatrix(VehiclePacket.matrix);
 #endif
@@ -2299,6 +2300,8 @@ CString GetPedTasks(EFLC::CPed* pPed)
 CString CPlayerEntity::GetDebugText()
 {
 	CString strDebug = "";
+
+#ifdef TASKINFO_TEST
 	{
 		EFLC::IPed* pIPed = m_pPlayerPed->GetPed();
 
@@ -2343,6 +2346,7 @@ CString CPlayerEntity::GetDebugText()
 
 		strDebug += GetPedTasks(m_pPlayerPed);
 	}
+#endif
 
 	return strDebug;
 }

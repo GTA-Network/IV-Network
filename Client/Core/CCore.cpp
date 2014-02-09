@@ -31,6 +31,7 @@
 #include	"CCore.h"
 #include    <Game/EFLC/CScript.h>
 #include	<Scripting/CEvents.h>
+#include <Math/CRectangle.h>
 
 extern	CCore			* g_pCore;
 bool					g_bDeviceLost = false;

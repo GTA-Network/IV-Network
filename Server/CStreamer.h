@@ -53,6 +53,8 @@ private:
 	Vector2 m_vecBottomLeft;
 	Vector2 m_vecTopRight;
 
+	std::vector<CStreamEntity*> m_vecEntities;
+
 	bool m_bIsExtra = false;
 
 #ifdef USE_3D_STREAMER
@@ -71,6 +73,44 @@ public:
 	}
 
 	~CStreamCell();
+
+
+	Vector2 GetBottomLeft()
+	{
+		return m_vecBottomLeft;
+	}
+
+	Vector2 GetTopRight()
+	{
+		return m_vecTopRight;
+	}
+
+	template <typename T>
+	void remove(std::vector<T>& vec, size_t pos)
+	{
+		std::vector<T>::iterator it = vec.begin();
+		std::advance(it, pos);
+		vec.erase(it);
+	}
+
+	void AddEntity(CStreamEntity * pEntity)
+	{
+		m_vecEntities.push_back(pEntity);
+	}
+
+	void RemoveEntity(CStreamEntity * pEntity)
+	{
+		int i = 0;
+		for (auto entity : m_vecEntities)
+		{
+			if (entity == pEntity)
+			{
+				remove(m_vecEntities, i);
+				return;
+			}
+			i++;
+		}
+	}
 
 	__forceinline void SetLeft(CStreamCell * pLeftCell)
 	{
@@ -175,6 +215,7 @@ public:
 		for (auto entity : m_vecEntities)
 			vec.push_back(entity);
 	}
+
 
 	__forceinline void GetSurroundingSectors(CStreamCell ** pArray)
 	{
@@ -287,7 +328,7 @@ public:
 	}
 
 
-	__forceinline void DoPule()
+	__forceinline void DoPulse()
 	{
 
 	}
@@ -305,7 +346,6 @@ public:
 		//	// Connect the other rows to us
 		//	if (pRow->m_pTop) pRow->m_pTop->m_pBottom = pRow;
 		//	if (pRow->m_pBottom) pRow->m_pBottom->m_pTop = pRow;
-		Math::IsPointInCircle
 	}
 
 	__forceinline CStreamCell* FindOrCreateCell(const CVector3 &vecPosition)
@@ -333,6 +373,20 @@ public:
 		return pCell;
 	}
 
+	void OnEntityLeaveCell(CStreamEntity * pEntity, CStreamCell * pCell)
+	{
+		pCell->RemoveEntity(pEntity);
+
+		// TODO: notify affected clients
+	}
+
+	void OnEntityEnterCell(CStreamEntity * pEntity, CStreamCell * pCell)
+	{
+		pCell->AddEntity(pEntity);
+
+		// TODO: notify affected clients
+	}
+
 	__forceinline void OnUpdateStreamPosition(CStreamEntity * pEntity)
 	{
 		auto vecPosition = pEntity->GetStreamPosition();
@@ -344,26 +398,40 @@ public:
 		// Have we changed cell?
 		if (!pCell->Contains(vecPosition))
 		{
+			OnEntityLeaveCell(pEntity, pCell);
 			pCell = FindOrCreateCell(vecPosition);
 			pEntity->SetStreamCell(pCell);
-			//OnEntityEnterCell(pEntity, pCell);
+			OnEntityEnterCell(pEntity, pCell);
 		}
 	}
 
-	void GetConnectedEntites(CStreamEntity * pEntity)
+	std::vector<CStreamEntity *> GetConnectedEntites(CStreamEntity * pEntity)
 	{
 		int iDepth = 0;
 		std::vector<CStreamEntity *> m_vecConnectedEntities;
 		CStreamCell * pCell = pEntity->GetStreamCell();
 
+#ifdef GET_ALL_CELLS_IN_SYNC_RANGE
 		std::function<void(CStreamCell*, CStreamEntity*, decltype(m_vecConnectedEntities)&)> keks = [&](CStreamCell* pCell, CStreamEntity* pEntity, decltype(m_vecConnectedEntities) &output)
 		{
+			const CVector3 vecPosition = pEntity->GetStreamPosition();
+
 			CStreamCell * pCells[8];
 			pCell->GetSurroundingSectors(pCells);
 			for (int i = 0; i < 8; ++i)
 			{
 				if (pCells[i])
 				{
+
+
+					//	0 = TOP_LEFT
+					//	1 = TOP
+					//	2 = TOP_RIGHT
+					//	4 = LEFT
+					//	5 = BOTTOM_LEFT
+					//	6 = BOTTOM
+					//	7 = BOTTOM RIGHT
+
 					pCells[i]->GetEntities(output);
 					keks(pCells[i], pEntity, output);
 				}
@@ -371,6 +439,14 @@ public:
 		};
 
 		keks(pCell, pEntity, m_vecConnectedEntities);
+#endif
+
+		CStreamCell * pCells[8];
+		pCell->GetSurroundingSectors(pCells);
+		for (int i = 0; i < 8; ++i)
+			pCells[i]->GetEntities(m_vecConnectedEntities);
+
+		return m_vecConnectedEntities; // vector is not copied here, thx to the move semantics, so no performance loss
 	}
 
 };

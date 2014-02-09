@@ -908,6 +908,9 @@
     <ClCompile Include="Game\Entity\CPlayerWeapons.cpp">
       <Filter>Source Files\Network\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\CChatBox.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">

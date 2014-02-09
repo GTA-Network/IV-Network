@@ -76,6 +76,7 @@ namespace CScript
 
 	// Char
 	static bool DoesCharExist(unsigned int ped) { return EFLC::CNativeInvoke::Invoke<bool>(NATIVE_DOES_CHAR_EXIST, ped); }
+	static bool IsPedInCover(unsigned int ped) { return EFLC::CNativeInvoke::Invoke<bool>(NATIVE_IS_PED_IN_COVER, ped); }
 	static void GiveWeaponToChar(unsigned int ped, eWeapon weapon, unsigned int ammo, bool unknown0) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_WEAPON_TO_CHAR, ped, weapon, ammo, unknown0); }
 	static void GiveWeaponToChar(unsigned int ped, unsigned int weapon, unsigned int ammo, bool unknown0) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_GIVE_WEAPON_TO_CHAR, ped, weapon, ammo, unknown0); }
 	static void GetCharCoordinates(unsigned int ped, float *pX, float *pY, float *pZ) { EFLC::CNativeInvoke::Invoke<unsigned int>(NATIVE_GET_CHAR_COORDINATES, ped, pX, pY, pZ); }

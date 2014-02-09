@@ -318,6 +318,7 @@
     <ClCompile Include="General\CModule.cpp" />
     <ClCompile Include="General\CModuleManager.cpp" />
     <ClCompile Include="Graphics\CChat.cpp" />
+    <ClCompile Include="Graphics\CChatBox.cpp" />
     <ClCompile Include="Graphics\CDirect3D9Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Hook.cpp" />
     <ClCompile Include="Graphics\CDirectInput8Proxy.cpp" />

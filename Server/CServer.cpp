@@ -30,9 +30,14 @@
 
 #include "CServer.h"
 #include <Common.h>
+
 #include <CSettings.h>
 #include <SharedUtility.h>
 #include <CLogFile.h>
+#include <Scripting/CEvents.h>
+#include <thread>
+
+#include "Scripting/Natives/Natives_Server.h"
 
 CServer* CServer::s_pInstance = nullptr;
 
@@ -64,10 +69,6 @@ CServer::~CServer()
 	SAFE_DELETE(m_pCheckpointManager);
 }
 
-#include <Scripting/CEvents.h>
-
-#include "Scripting/Natives/Natives_Server.h"
-
 void OnCreateVM(CScriptVM* pVM)
 {
 	CScriptClasses::Register(pVM);
@@ -95,11 +96,7 @@ bool CServer::Startup()
 	if(!CSettings::Open(SharedUtility::GetAbsolutePath("settings.xml"), true, false))
 	{
 		CLogFile::Print("Failed to open settings.xml..");
-#ifdef _WIN32
-		Sleep(3000);
-#else
-		sleep(3);
-#endif
+		std::this_thread::sleep_for(std::chrono::seconds(3));
 		return false;
 	}
 
@@ -256,7 +253,6 @@ bool CServer::Startup()
 }
 unsigned long m_ulLastProcess = 0;
 float delay;
-#include <thread>
 
 
 double PCFreq = 0.0;

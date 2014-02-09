@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{B416D3CF-6
 	ProjectSection(SolutionItems) = preProject
 		Shared\Math\CIVVector.h = Shared\Math\CIVVector.h
 		Shared\Math\CMaths.h = Shared\Math\CMaths.h
+		Shared\Math\CRectangle.h = Shared\Math\CRectangle.h
+		Shared\Math\CVector2.h = Shared\Math\CVector2.h
 		Shared\Math\CVector3.h = Shared\Math\CVector3.h
 	EndProjectSection
 EndProject

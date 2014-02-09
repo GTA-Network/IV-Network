@@ -129,8 +129,8 @@ bool CVehicleEntity::Create()
 	if (pVehicle)
 	{
 		pVehicle->Function76(0);
-		pVehicle->m_byteFlags1 |= 4u;
-		pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
+		//pVehicle->m_byteFlags1 |= 4u;
+		//pVehicle->m_dwFlags1 |= 8u; // set fixed wait for collision/
 
 		CWorld__AddEntity(pVehicle, false);
 		CVehicleModelInfo__AddReference(m_pModelInfo->GetModelInfo());
@@ -396,18 +396,21 @@ void CVehicleEntity::SetPosition(const CVector3& vecPosition, bool bDontCancelTa
 	{
 		if (!bDontCancelTasks)
 		{
-			m_pVehicle->RemoveFromWorld();
-			Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
-			m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
-			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
-			m_pVehicle->AddToWorld();
+			EFLC::CScript::SetCarCoordinatesNoOffset(GetScriptingHandle(), vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+			g_pCore->GetGraphics()->GetChat()->Print("!bDontCancelTasks");
 		}
 		else
 		{
+			m_pVehicle->RemoveFromWorld();
 			// Set the position in the matrix
 			m_pVehicle->SetPosition(vecPosition);
+			m_pVehicle->AddToWorld();
 
-			m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+			//m_pVehicle->RemoveFromWorld();
+			//Vector4 coords(vecPosition.fX, vecPosition.fY, vecPosition.fZ, 0);
+			//m_pVehicle->GetVehicle()->SetCoordinates(&coords, 1, 0);
+			//m_pVehicle->GetVehicle()->UpdatePhysicsMatrix(true);
+			//m_pVehicle->AddToWorld();
 		}
 
 		m_vecPosition = vecPosition;
@@ -764,6 +767,8 @@ void CVehicleEntity::UpdateTargetPosition()
 				SetRotation(m_interp.rot.vecTarget);
 				m_interp.rot.ulFinishTime = 0;
 			}
+
+			g_pCore->GetGraphics()->GetChat()->Print(CString("Intepolate abort"));
 		}
 
         // Set our new position
@@ -809,8 +814,6 @@ void CVehicleEntity::Interpolate()
 	// Do we have a driver?
 	if(GetDriver())
 	{
-
-		g_pCore->GetGraphics()->GetChat()->Print("Interpolate");
 
 		// Update our target position
 		UpdateTargetPosition();

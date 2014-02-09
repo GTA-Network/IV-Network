@@ -456,6 +456,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 
 #ifdef USE_QUAT
 				pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
+				pVehicle->GetPosition(VehiclePacket.matrix.vecPosition);
+				
 #else
 				pVehicle->GetMatrix(VehiclePacket.matrix);
 #endif
@@ -539,6 +541,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			if (pVehicle)
 			{
 				pVehicle->SetPosition(VehiclePacket.matrix.vecPosition);
+				CLogFile::Printf("%f, %f, %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 

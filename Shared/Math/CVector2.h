@@ -28,114 +28,109 @@
 * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef CVector3_h
-#define CVector3_h
+#ifndef CVector2_h
+#define CVector2_h
 
 #include <math.h>
 
-class CVector3
+class CVector2
 {
 public:
         float fX;
         float fY;
-        float fZ;
 
-        CVector3()
+        CVector2()
         {
-                fX = fY = fZ = 0.0f;
+                fX = fY = 0.0f;
         }
 
-        CVector3(float _fX, float _fY, float _fZ)
+        CVector2(float _fX, float _fY)
         {
-                fX = _fX; fY = _fY; fZ = _fZ;
+                fX = _fX; fY = _fY;
         }
 
         bool IsEmpty() const
         {
-                return (fX == 0 && fY == 0 && fZ == 0);
+                return (fX == 0 && fY == 0);
         }
 
         float Length() const
         {
-                return sqrt((fX * fX) + (fY * fY) + (fZ * fZ));
+                return sqrt((fX * fX) + (fY * fY));
         }
 
-        CVector3 operator+ (const CVector3& vecRight) const
+        CVector2 operator+ (const CVector2& vecRight) const
         {
-                return CVector3(fX + vecRight.fX, fY + vecRight.fY, fZ + vecRight.fZ);
+                return CVector2(fX + vecRight.fX, fY + vecRight.fY);
         }
 
-        CVector3 operator+ (float fRight) const
+        CVector2 operator+ (float fRight) const
         {
-                return CVector3(fX + fRight, fY + fRight, fZ + fRight);
+                return CVector2(fX + fRight, fY + fRight);
         }
 
-        CVector3 operator- (const CVector3& vecRight) const
+        CVector2 operator- (const CVector2& vecRight) const
         {
-                return CVector3(fX - vecRight.fX, fY - vecRight.fY, fZ - vecRight.fZ);
+                return CVector2(fX - vecRight.fX, fY - vecRight.fY);
         }
 
-        CVector3 operator- (float fRight) const
+        CVector2 operator- (float fRight) const
         {
-                return CVector3(fX - fRight, fY - fRight, fZ - fRight);
+                return CVector2(fX - fRight, fY - fRight);
         }
 
-        CVector3 operator* (const CVector3& vecRight) const
+        CVector2 operator* (const CVector2& vecRight) const
         {
-                return CVector3(fX * vecRight.fX, fY * vecRight.fY, fZ * vecRight.fZ);
+                return CVector2(fX * vecRight.fX, fY * vecRight.fY);
         }
 
-        CVector3 operator* (float fRight) const
+        CVector2 operator* (float fRight) const
         {
-                return CVector3(fX * fRight, fY * fRight, fZ * fRight);
+                return CVector2(fX * fRight, fY * fRight);
         }
 
-        CVector3 operator/ (const CVector3& vecRight) const
+        CVector2 operator/ (const CVector2& vecRight) const
         {
-                return CVector3(fX / vecRight.fX, fY / vecRight.fY, fZ / vecRight.fZ);
+                return CVector2(fX / vecRight.fX, fY / vecRight.fY);
         }
 
-        CVector3 operator/ (float fRight) const
+        CVector2 operator/ (float fRight) const
         {
-                return CVector3(fX / fRight, fY / fRight, fZ / fRight);
+                return CVector2(fX / fRight, fY / fRight);
         }
 
-        CVector3 operator - () const
+        CVector2 operator - () const
         {
-                return CVector3(-fX, -fY, -fZ);
+                return CVector2(-fX, -fY);
         }
 
         void operator += (float fRight)
         {
                 fX += fRight;
                 fY += fRight;
-                fZ += fRight;
         }
 
         void operator -= (float fRight)
         {
                 fX -= fRight;
                 fY -= fRight;
-                fZ -= fRight;
         }
 
         void operator *= (float fRight)
         {
                 fX *= fRight;
                 fY *= fRight;
-                fZ *= fRight;
         }
 
         void operator /= (float fRight)
         {
                 fX /= fRight;
                 fY /= fRight;
-                fZ /= fRight;
         }
 
-		bool operator == (const CVector3& vecRight) const
+		bool operator == (const CVector2& vecRight) const
 		{
-			return ((!memcmp(this, &vecRight, sizeof(CVector3))) != 0);
+			return ((!memcmp(this, &vecRight, sizeof(CVector2))) != 0);
 		}
 };
-#endif // CVector3_h
+#endif // CVector2_h

@@ -40,8 +40,8 @@ DWORD getValue<DWORD>(CScriptVM* pVM, int idx)
 {
 	DWORD dw = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
-	//pVM->Pop(dw);
-	printf("Warning: unable to pop this type [%s]\n", __FUNCSIG__);
+	pVM->Pop(dw);
+	printf("Warning: not sure if this goes right [%s]\n", __FUNCSIG__);
 	return dw;
 }
 

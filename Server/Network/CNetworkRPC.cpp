@@ -170,6 +170,7 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CVector3 vecPosition;
 			pVehicle->GetPosition(vecPosition);
 			bitStream.Write(vecPosition);
+			CLogFile::Printf("Create vehicle %f, %f, %f", vecPosition.fX, vecPosition.fY, vecPosition.fZ);
 
 			CVector3 vecRotation;
 			pVehicle->GetRotation(vecRotation);

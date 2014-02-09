@@ -407,7 +407,7 @@ void __cdecl renderMenus() //render Main and pause menu
 
 void __cdecl sub_47F080()
 {
-	
+	g_pCore->OnGameUpdate();
 	//g_pCore->GetGraphics()->GetChat()->Print("sub_47F080()");
 }
 
@@ -419,7 +419,31 @@ void __cdecl sub_47BA60()
 
 void __cdecl runStartupScript()
 {
-	EFLC::AddScriptToThreadCollection(new EFLC::CGameMainScript());
+	unsigned int pid = 0;
+
+
+#ifdef TASKINFO_TEST
+	if (!reloaded)
+	{
+		reloaded = true;
+
+		EFLC::CNativeInvoke::Invoke<unsigned int>(EFLC::CScript::NATIVE_SHUTDOWN_AND_LAUNCH_SINGLE_PLAYER_GAME);
+	}
+#endif
+
+
+	EFLC::CScript::CreatePlayer(0, 756.774f, -214.403f, 4.8223f, &pid);
+
+#ifdef TASKINFO_TEST
+	createNetworkPools(true);
+#endif
+
+	//disable police
+	EFLC::CScript::SetMaxWantedLevel(0);
+	EFLC::CScript::SetWantedMultiplier(0.0f);
+
+	g_pCore->OnGameLoad();
+	//EFLC::AddScriptToThreadCollection(new EFLC::CGameMainScript());
 }
 
 enum eRAGETHREAD_States
@@ -537,6 +561,7 @@ void CHooks::Intialize()
 
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
 	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x834098, g_pCore->GetBase() + 0x8340F4);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD)sub_47F080);
 
 	g_pRageScriptThread = new sRAGETHREAD;
 	memset(g_pRageScriptThread, NULL, sizeof(sRAGETHREAD));
@@ -549,7 +574,7 @@ void CHooks::Intialize()
 
 	//CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x47BFED, (DWORD) renderMenus);
 
-	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
+	CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47F080, (DWORD) sub_47F080);
 
 	//CPatcher::InstallJmpPatch(g_pCore->GetBase() + 0x47BA60, (DWORD) sub_47BA60);
 	CPatcher::InstallCallPatch(g_pCore->GetBase() + 0x834093, (DWORD)runStartupScript);
