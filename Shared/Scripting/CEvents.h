@@ -33,7 +33,7 @@
 
 #include <Common.h>
 #include <map>
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 #include "CEventHandler.h"
 
 class CEvents {
@@ -55,12 +55,12 @@ public:
 
 	bool Remove(CString strName, CEventHandler* pEventHandler);
 
-	bool RemoveScript(CScriptVM* pVM);
+	bool RemoveScript(IScriptVM* pVM);
 	bool IsEventRegistered(CString eventName);
 
 	void Clear();
 
-	CScriptArguments Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM);
+	CScriptArguments Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM);
 };
 
 #endif // CEvents_h

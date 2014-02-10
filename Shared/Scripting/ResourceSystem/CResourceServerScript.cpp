@@ -25,13 +25,16 @@ CResourceServerScript::~CResourceServerScript()
 
 bool CResourceServerScript::Start()
 {
-	m_resource->GetVM()->LoadScript(m_strShortName);
+	if (m_resource->GetVM()->LoadScript(m_strShortName))
+	{
 
-	// Call the scripting event
-	CScriptArguments args;
-	args.push(m_strShortName.Get());
-	CEvents::GetInstance()->Call("scriptLoaded", &args, CEventHandler::eEventType::NATIVE_EVENT, m_resource->GetVM());
-	return true;
+		// Call the scripting event
+		CScriptArguments args;
+		args.push(m_strShortName.Get());
+		CEvents::GetInstance()->Call("scriptLoaded", &args, CEventHandler::eEventType::NATIVE_EVENT, m_resource->GetVM());
+		return true;
+	}
+	return false;
 }
 
 bool CResourceServerScript::Stop()

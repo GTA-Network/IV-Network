@@ -16,7 +16,7 @@
 #include <SharedUtility.h>
 #include <CInput.h>
 
-void CServerNatives::Register(CScriptVM* pVM)
+void CServerNatives::Register(IScriptVM* pVM)
 {
 	pVM->RegisterFunction("getConfig", GetConfig);
 	pVM->RegisterFunction("getTickCount", GetTickCount);

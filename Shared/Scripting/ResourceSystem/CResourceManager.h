@@ -41,7 +41,7 @@ private:
 	std::list<CResource*>	m_resources;
 	static CResourceManager*s_pInstance;
 
-	typedef void(*CreateVM_t)(CScriptVM*);
+	typedef void(*CreateVM_t)(IScriptVM*);
 	CreateVM_t						m_fnCreateVM = nullptr;
 
 public:

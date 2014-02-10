@@ -10,7 +10,7 @@
 #ifndef CMathNatives_h
 #define CMathNatives_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CMathNatives {
 
@@ -24,7 +24,7 @@ private:
 	static int	IsPointInCuboid(int * pVM);
 	static int	IsPointInPolygon(int * pVM);
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CMathNatives_h

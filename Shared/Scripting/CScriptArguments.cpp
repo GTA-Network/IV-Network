@@ -9,7 +9,7 @@
 
 #include "CScriptArguments.h"
 #include "CScriptArgument.h"
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 
 CScriptArguments::~CScriptArguments()
 {

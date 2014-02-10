@@ -69,7 +69,7 @@ CServer::~CServer()
 	SAFE_DELETE(m_pCheckpointManager);
 }
 
-void OnCreateVM(CScriptVM* pVM)
+void OnCreateVM(IScriptVM* pVM)
 {
 	CScriptClasses::Register(pVM);
 }

@@ -40,7 +40,7 @@ void CResourceManager::AddResource(CResource * pResource)
 	
 	m_resources.push_back(pResource);
 
-	CScriptVM* pVM = pResource->GetVM();
+	IScriptVM* pVM = pResource->GetVM();
 	assert(!pVM);
 }
 
@@ -110,9 +110,13 @@ bool CResourceManager::StartResource(CResource * pResource, std::list<CResource*
 		// If it's not running yet
 		if(!pResource->IsActive())
 		{
-			CLogFile::Printf("Resource started");
+			
 			// Start it
-			return pResource->Start(dependents, bStartedManually, bStartIncludedResources);
+			if (pResource->Start(dependents, bStartedManually, bStartIncludedResources))
+			{
+				CLogFile::Printf("Resource started");
+				return true;
+			}
 		}
 		return false;
 	}

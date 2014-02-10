@@ -78,9 +78,9 @@ bool CResource::Load()
 		// Not really important coming soon
 		// Well its important to specify the script type so you can use any file ending
 		CString strScriptType = pMetaXML->getAttribute("scriptType");
-		/*if(strScriptType == "Lua")
+		if(strScriptType == "Lua")
 			m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
-		else*/ if(strScriptType == "Squirrel")
+		else if(strScriptType == "Squirrel")
 			m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
 		else 
 			m_resourceScriptType = eResourceScriptType::UNKNOWN;
@@ -128,9 +128,9 @@ bool CResource::Load()
 					if (m_resourceScriptType == eResourceScriptType::UNKNOWN)
 					{
 						// Try to detect the resource script type
-						/*if (strScript.EndsWith(".lua")) {
+						if (strScript.EndsWith(".lua")) {
 							m_resourceScriptType = eResourceScriptType::LUA_RESOURCE;
-						} else*/ if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
+						} else if(strScript.EndsWith(".nut") || strScript.EndsWith(".sq")) {
 							m_resourceScriptType = eResourceScriptType::SQUIRREL_RESOURCE;
 						} else {
 							CLogFile::Printf("Unknown script type! Please specify the script type you use!");

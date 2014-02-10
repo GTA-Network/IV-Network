@@ -35,7 +35,7 @@
 #include <list>
 
 class CScriptArgument;
-class CScriptVM;
+class IScriptVM;
 
 class CScriptEntity;
 

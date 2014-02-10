@@ -458,9 +458,6 @@
     <ClInclude Include="Entity\Entities.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\Shared\Scripting\CScriptVM.h">
-      <Filter>Header Files\Shared\Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Shared\Scripting\ResourceSystem\CResource.h">
       <Filter>Header Files\Shared\Scripting\ResourceSystem</Filter>
     </ClInclude>
@@ -619,6 +616,9 @@
     </ClInclude>
     <ClInclude Include="CStreamer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Scripting\IScriptVM.h">
+      <Filter>Header Files\Shared\Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

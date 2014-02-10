@@ -33,7 +33,7 @@ void PrintFunction(SQVM * pVM, const char * szFormat, ...)
 }
 
 CSquirrelVM::CSquirrelVM(CResource * pResource)
-	: CScriptVM(pResource),
+	: IScriptVM(pResource),
 	m_iStackIndex(2)
 {
 	m_pVM = sq_open(1024);
@@ -126,7 +126,7 @@ extern int iFuncIndex;
 int oldtop = 0;
 
 
-void CSquirrelVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
+void CSquirrelVM::BeginRegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
 {
 
 	iFuncIndex = 0;

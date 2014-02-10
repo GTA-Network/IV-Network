@@ -41,7 +41,7 @@ CCore::CCore()
 
 }
 
-void OnCreateVM(CScriptVM * pVM)
+void OnCreateVM(IScriptVM * pVM)
 {
 	// Register dat natives
 	/*CScriptClasses::Register(pVM);*/

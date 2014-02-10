@@ -31,14 +31,14 @@
 #ifndef CScriptNatives_h
 #define CScriptNatives_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CScriptNatives {
 
 private:
 
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CScriptNatives_h

@@ -4,47 +4,47 @@
 
 #include <Common.h>
 
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 #include <stdint.h>
 #include <tuple>
 #include <assert.h>
 
 template<typename T>
-T getValue(CScriptVM*, int idx);
+T getValue(IScriptVM*, int idx);
 
 template<>
-int getValue<int>(CScriptVM* pVM, int idx);
+int getValue<int>(IScriptVM* pVM, int idx);
 
 template<>
-double getValue<double>(CScriptVM* pVM, int idx);
+double getValue<double>(IScriptVM* pVM, int idx);
 
 template<>
-float getValue<float>(CScriptVM* pVM, int idx);
+float getValue<float>(IScriptVM* pVM, int idx);
 
 template<>
-DWORD getValue<DWORD>(CScriptVM* pVM, int idx);
+DWORD getValue<DWORD>(IScriptVM* pVM, int idx);
 
 template<>
-bool getValue<bool>(CScriptVM* pVM, int idx);
+bool getValue<bool>(IScriptVM* pVM, int idx);
 
 template<>
-char getValue < char>(CScriptVM* pVM, int idx);
+char getValue < char>(IScriptVM* pVM, int idx);
 
 template<>
-unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx);
+unsigned int getValue<unsigned int>(IScriptVM* pVM, int idx);
 
 template<>
-const char *getValue<const char *>(CScriptVM* pVM, int idx);
+const char *getValue<const char *>(IScriptVM* pVM, int idx);
 
 template<>
-CString getValue<CString>(CScriptVM* pVM, int idx);
+CString getValue<CString>(IScriptVM* pVM, int idx);
 
 template<>
-stScriptFunction getValue<stScriptFunction>(CScriptVM* pVM, int idx);
+stScriptFunction getValue<stScriptFunction>(IScriptVM* pVM, int idx);
 
 #if 1
 template<class T>
-T getValue_(CScriptVM *pVM, unsigned int idx, std::true_type)
+T getValue_(IScriptVM *pVM, unsigned int idx, std::true_type)
 {
 	{
 		return (T) pVM->GetUserData(idx);
@@ -57,7 +57,7 @@ return 0;
 }
 
 template<class T>
-T getValue_(CScriptVM* pVM, unsigned int idx, std::false_type)
+T getValue_(IScriptVM* pVM, unsigned int idx, std::false_type)
 {
 	{
 		return *(T*) (T) pVM->GetUserData(idx);
@@ -71,57 +71,57 @@ return T();
 #endif
 
 template<class T>
-T getValue(CScriptVM* pVM, int idx)
+T getValue(IScriptVM* pVM, int idx)
 {
 	return getValue_<T>(pVM, idx, std::is_pointer<T>());
 }
 
 template<typename T>
-void returnValue(CScriptVM* pVM, T);
+void returnValue(IScriptVM* pVM, T);
 
 template<>
-void returnValue(CScriptVM* pVM, int v);
+void returnValue(IScriptVM* pVM, int v);
 
 template<>
-void returnValue(CScriptVM* pVM, double v);
+void returnValue(IScriptVM* pVM, double v);
 
 template<>
-void returnValue(CScriptVM* pVM, const char *v);
+void returnValue(IScriptVM* pVM, const char *v);
 
 template<>
-void returnValue(CScriptVM* pVM, CString v);
+void returnValue(IScriptVM* pVM, CString v);
 
 template<>
-void returnValue(CScriptVM* pVM, float v);
+void returnValue(IScriptVM* pVM, float v);
 
 template<>
-void returnValue(CScriptVM* pVM, unsigned int v);
+void returnValue(IScriptVM* pVM, unsigned int v);
 
 template<>
-void returnValue(CScriptVM* pVM, char v);
+void returnValue(IScriptVM* pVM, char v);
 
 template<>
-void returnValue(CScriptVM* pVM, bool v);
+void returnValue(IScriptVM* pVM, bool v);
 
 template<>
-void returnValue(CScriptVM * pVM, DWORD v);
+void returnValue(IScriptVM * pVM, DWORD v);
 
 template<>
-void returnValue(CScriptVM * pVM, CVector3 v);
+void returnValue(IScriptVM * pVM, CVector3 v);
 
 template<class T>
-void returnValue(CScriptVM* pVM, T *v);
+void returnValue(IScriptVM* pVM, T *v);
 
 #ifndef _CLIENT
 class CVehicleEntity;
 template<>
-void returnValue(CScriptVM* pVM, CVehicleEntity* v);
+void returnValue(IScriptVM* pVM, CVehicleEntity* v);
 #endif
 
 // this is currently a source of memory leaks :(
 // need to tell the code that lua owns it somehow
 template<class T>
-void returnValue(CScriptVM* pVM, T v);
+void returnValue(IScriptVM* pVM, T v);
 
 
 // original apply tuple code:
@@ -141,7 +141,7 @@ template < int N >
 struct apply_obj_func
 {
 	template < typename T, typename R, typename... ArgsF, typename... ArgsT, typename... Args >
-	static R applyTuple(CScriptVM* pVM, T* pObj,
+	static R applyTuple(IScriptVM* pVM, T* pObj,
 		R (T::*f)( ArgsF... ),
 		const std::tuple<ArgsT...> &t,
 		Args... args )
@@ -168,7 +168,7 @@ template <>
 struct apply_obj_func<0>
 {
 	template < typename T, typename R, typename... ArgsF, typename... ArgsT, typename... Args >
-	static R applyTuple(CScriptVM* pVM, T* pObj,
+	static R applyTuple(IScriptVM* pVM, T* pObj,
 		R (T::*f)( ArgsF... ),
 		const std::tuple<ArgsT...> &/* t */,
 		Args... args )
@@ -184,7 +184,7 @@ struct apply_obj_func<0>
 */
 // Actual apply function
 template < typename T, typename R, typename... ArgsF, typename... ArgsT >
-R applyTuple(CScriptVM* pVM, T* pObj,
+R applyTuple(IScriptVM* pVM, T* pObj,
 			 R (T::*f)( ArgsF... ),
 			 const std::tuple<ArgsT...> &t )
 {
@@ -209,7 +209,7 @@ template < uint N >
 struct apply_func
 {
 	template < typename R, typename... ArgsF, typename... ArgsT, typename... Args >
-	static R applyTuple(CScriptVM *pVM, R (*f)( ArgsF... ),
+	static R applyTuple(IScriptVM *pVM, R (*f)( ArgsF... ),
 		const std::tuple<ArgsT...>& t,
 		Args... args )
 	{
@@ -235,7 +235,7 @@ template <>
 struct apply_func<0>
 {
 	template < typename R, typename... ArgsF, typename... ArgsT, typename... Args >
-	static R applyTuple(CScriptVM *, R (*f)( ArgsF... ),
+	static R applyTuple(IScriptVM *, R (*f)( ArgsF... ),
 		const std::tuple<ArgsT...>& /* t */,
 		Args... args )
 	{
@@ -250,7 +250,7 @@ struct apply_func<0>
 */
 // Actual apply function
 template < typename R, typename... ArgsF, typename... ArgsT >
-R applyTuple(CScriptVM *pVM, R (*f)(ArgsF...),
+R applyTuple(IScriptVM *pVM, R (*f)(ArgsF...),
 			 const std::tuple<ArgsT...> & t )
 {
 	return apply_func<sizeof...(ArgsT)>::applyTuple(pVM, f, std::forward<decltype(t)>(t) );
@@ -275,7 +275,7 @@ template <class C, uint N >
 struct apply_ctor_func
 {
 	template < typename... ArgsT, typename... Args >
-	static C *applyTuple(CScriptVM *pVM, const std::tuple<ArgsT...>& t,
+	static C *applyTuple(IScriptVM *pVM, const std::tuple<ArgsT...>& t,
 		Args... args )
 	{
 		const static int argCount = sizeof...(ArgsT);
@@ -300,7 +300,7 @@ template <class C>
 struct apply_ctor_func<C, 0>
 {
 	template < typename... ArgsT, typename... Args >
-	static C *applyTuple(CScriptVM *pVM,  const std::tuple<ArgsT...>& /* t */,
+	static C *applyTuple(IScriptVM *pVM,  const std::tuple<ArgsT...>& /* t */,
 		Args... args )
 	{
 		return new C( args... );
@@ -314,7 +314,7 @@ struct apply_ctor_func<C, 0>
 */
 // Actual apply function
 template < typename C, typename... ArgsT >
-C *applyTuple(CScriptVM *pVM, const std::tuple<ArgsT...> & t )
+C *applyTuple(IScriptVM *pVM, const std::tuple<ArgsT...> & t )
 {
 	return apply_ctor_func<C, sizeof...(ArgsT)>::applyTuple(pVM, std::forward<decltype(t)>(t) );
 }

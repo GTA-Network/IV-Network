@@ -255,7 +255,7 @@
     <ClInclude Include="..\Shared\Scripting\CScriptArgument.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptArguments.h" />
     <ClInclude Include="..\Shared\Scripting\CScriptClass.h" />
-    <ClInclude Include="..\Shared\Scripting\CScriptVM.h" />
+    <ClInclude Include="..\Shared\Scripting\IScriptVM.h" />
     <ClInclude Include="..\Shared\Scripting\CSquirrelVM.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CEventNatives.h" />
     <ClInclude Include="..\Shared\Scripting\Natives\CSystemNatives.h" />

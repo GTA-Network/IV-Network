@@ -33,11 +33,11 @@
 
 #include <lua/lua.hpp>
 #include <Common.h>
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 
 #include "CScriptArgument.h"
 
-class CLuaVM : public CScriptVM {
+class CLuaVM : public IScriptVM {
 
 private:
 	lua_State* m_pVM;
@@ -92,14 +92,14 @@ public:
 	int			 GetArgumentCount() { return lua_gettop(m_pVM); }
 	void		 Call(stScriptFunction, CScriptArguments * pArgument = 0) { }
 
-	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
+	void		 BeginRegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	void		 FinishRegisterScriptClass();
 	void		*GetUserData(int idx);
 
 	void		 SetClassInstance(const char* szClassName, void * pInstance);
 	void		*GetClassInstance(const char* szClassName);
-	void		 PushInstance(const char* szClassName, void * pInstance) { }
+	void		 PushInstance(const char* szClassName, void * pInstance) { SetClassInstance(szClassName, pInstance); };
 	void		 RegisterFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL, bool bPushRootTable = false);
 };
 

@@ -15,7 +15,7 @@
 #include "CScriptClass.h"
 
 CLuaVM::CLuaVM(CResource* pResource)
-	: CScriptVM(pResource),
+	: IScriptVM(pResource),
 	m_iStackIndex(1)
 {
 	m_pVM = luaL_newstate();
@@ -40,6 +40,53 @@ public:
 	static void aaa() { printf("aaa!\n"); }
 };
 
+int LuaErrorReport(lua_State * L, int status)
+{
+	if (status && !lua_isnil(L, -1))
+	{
+		const char* msg = lua_tostring(L, -1);
+		if (msg)
+		{
+			lua_getfield(L, LUA_RIDX_GLOBALS, "debug");
+			if (!lua_istable(L, -1))
+			{
+				lua_pop(L, 1);
+				return 1;
+			}
+			lua_getfield(L, -1, "traceback");
+			if (!lua_isfunction(L, -1))
+			{
+				lua_pop(L, 1);
+				return 1;
+			}
+
+			lua_pushvalue(L, 1);
+			lua_pushinteger(L, 2);
+			lua_call(L, 2, 1);
+
+			printf("[LUA] Error: %s\n", lua_tostring(L, -1));
+			lua_pop(L, 1);
+		}
+		
+	}
+	return 0;
+}
+#include <vector>
+
+auto split(const std::string& value, char separator)
+-> std::vector<std::string>
+{
+	std::vector<std::string> result;
+	std::string::size_type p = 0;
+	std::string::size_type q;
+	while ((q = value.find(separator, p)) != std::string::npos) {
+		result.emplace_back(value, p, q - p);
+		p = q + 1;
+	}
+	result.emplace_back(value, p);
+	return result;
+}
+
 bool CLuaVM::LoadScript(CString script)
 {
 	(new CScriptClass<Foo>("Foo"))->AddMethod("abc", &Foo::abc).AddMethod("new", &Foo::abc).Register(this);
@@ -49,10 +96,34 @@ bool CLuaVM::LoadScript(CString script)
 	{
 		CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
 		return false;
-	} else {
-		if(lua_pcall(m_pVM, 0, LUA_MULTRET, 0) == 0)
+	} 
+	else 
+	{
+		if (lua_pcall(m_pVM, 0, LUA_MULTRET, 0) == 0)
+		{
 			CLogFile::Printf("\t[%s] Loaded file %s.", GetResource()->GetName().Get(), script.Get());
-		return true;
+			return true;
+		}
+		else
+		{
+			std::string strRes = lua_tostring(m_pVM, -1);
+
+			std::vector <std::string> vecSplit;
+			vecSplit = split(strRes, ':');
+
+			if (vecSplit.size() >= 3)
+			{
+				std::string strFile = vecSplit[0];
+				int     iLine = atoi(vecSplit[1].c_str());
+				std::string strMsg = vecSplit[2].substr(1);
+
+				CLogFile::Printf("ERROR: %s:%d: %s", strFile.c_str(), iLine, strMsg.c_str());
+			}
+			else
+			{
+				CLogFile::Printf(strRes.c_str());
+			}
+		}
 	}
 	CLogFile::Printf("[%s] Failed to load file %s.", GetResource()->GetName().Get(), script.Get());
 	return false;
@@ -79,7 +150,7 @@ static int gc_obj(lua_State *L) {
 }
 static int clsIndex = 0;
 int metatable = 0;
-void CLuaVM::RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
+void CLuaVM::BeginRegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer, const char* baseClass)
 {
 	m_strClassName = className;
 
@@ -125,8 +196,7 @@ void CLuaVM::RegisterClassFunction(const char* szFunctionName, scriptFunction pf
 
 void CLuaVM::FinishRegisterScriptClass()
 {
-	lua_pushvalue(m_pVM, -1);
-	lua_setfield(m_pVM, -1, "__index");
+
 }
 
 void CLuaVM::Pop(bool& b)

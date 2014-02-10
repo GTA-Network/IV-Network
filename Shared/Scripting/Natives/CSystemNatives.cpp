@@ -15,7 +15,7 @@
 #include <Scripting/ResourceSystem/CResourceManager.h>
 #include <time.h>
 
-void CSystemNatives::Register(CScriptVM * pVM)
+void CSystemNatives::Register(IScriptVM * pVM)
 {
 	pVM->RegisterFunction("print", Print);
 	pVM->RegisterFunction("log", Print);

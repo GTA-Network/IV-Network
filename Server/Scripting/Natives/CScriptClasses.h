@@ -10,14 +10,14 @@
 #ifndef CScriptClasses_h
 #define CScriptClasses_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CScriptClasses
 {
 private:
 	static int	CreateEntity(int * pVM);
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CScriptClasses_h

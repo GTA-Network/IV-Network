@@ -19,12 +19,12 @@
 #define GET_VM_UNKNOWN CResource* pResource = CResourceManager::GetInstance()->Get(VM); \
 					   if(!pResource) \
 					       return 1; \
-					   CScriptVM * pVM = pResource->GetVM();
+					   IScriptVM * pVM = pResource->GetVM();
 
 #define DEPRECATED(x) CLogFile::Printf("%s is deprecated", x);
 #define NOT_IMPLEMENTED(x) CLogFile::Printf("%s is not implemented", x);
 
-void CEventNatives::Register(CScriptVM * pVM)
+void CEventNatives::Register(IScriptVM * pVM)
 {
 	pVM->RegisterFunction("addEvent", AddEvent);
 	pVM->RegisterFunction("addGlobalEvent", AddGlobalEvent);

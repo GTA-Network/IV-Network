@@ -33,10 +33,10 @@
 
 #include <list>
 #include "CIncludedResource.h"
-#include "../CScriptVM.h"
+#include "../IScriptVM.h"
 #include "CResourceFile.h"
 
-class CScriptVM;
+class IScriptVM;
 class CIncludedResource;
 
 enum eResourceScriptType {
@@ -48,7 +48,7 @@ enum eResourceScriptType {
 class CResource
 {
 private:
-	CScriptVM	*m_pVM;
+	IScriptVM	*m_pVM;
 
 	std::list<CResource*>			m_dependents;
 	std::list<CIncludedResource*>	m_includedResources;
@@ -65,7 +65,7 @@ private:
 	CString							m_strAbsPath;
 	CString							m_strResourceDirectoryPath;
 
-	typedef void (*CreateVM_t)(CScriptVM*);
+	typedef void (*CreateVM_t)(IScriptVM*);
 	CreateVM_t						m_fnCreateVM = nullptr;
 public:
 	CResource();
@@ -84,7 +84,7 @@ public:
 	CString		GetResourceDirectoryPath() { return m_strResourceDirectoryPath;  }
 	bool		HasChanged() { return false; }
 
-	CScriptVM*	GetVM() { return m_pVM; };
+	IScriptVM*	GetVM() { return m_pVM; };
 	bool		CreateVM();
 	void		DestroyVM();
 

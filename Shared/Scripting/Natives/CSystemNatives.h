@@ -10,7 +10,7 @@
 #ifndef CSystemNatives_h
 #define CSystemNatives_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CSystemNatives {
 
@@ -20,7 +20,7 @@ private:
 	static int	CreateEntity(int * pVM);
 	static int  Date(int * pVM); 
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CSystemNatives_h

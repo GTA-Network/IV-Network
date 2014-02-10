@@ -8,7 +8,7 @@
 //==============================================================================
 
 #include "CScriptArgument.h"
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 #include <assert.h>
 
 #include "../Server/Entity/Entities.h"
@@ -34,7 +34,7 @@ void CScriptArgument::reset()
 }
 
 
-void CScriptArgument::Push(CScriptVM * pVM)
+void CScriptArgument::Push(IScriptVM * pVM)
 {
 	switch(GetType())
 	{
@@ -109,7 +109,7 @@ void CScriptArgument::set(const CScriptArgument& p)
 
 
 
-bool CScriptArgument::pushFromStack(CScriptVM * pVM, int idx)
+bool CScriptArgument::pushFromStack(IScriptVM * pVM, int idx)
 {
 	pVM->SetStackIndex(idx);
 	switch(pVM->GetType(idx))

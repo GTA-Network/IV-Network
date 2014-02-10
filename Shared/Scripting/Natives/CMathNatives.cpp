@@ -14,7 +14,7 @@
 #include <CLogFile.h>
 #include <Scripting/ResourceSystem/CResourceManager.h>
 
-void CMathNatives::Register(CScriptVM * pVM)
+void CMathNatives::Register(IScriptVM * pVM)
 {
 	pVM->RegisterFunction("getDistanceBetweenPoints2D", GetDistanceBetweenPoints2D);
 	pVM->RegisterFunction("getDistanceBetweenPoints3D", GetDistanceBetweenPoints3D);

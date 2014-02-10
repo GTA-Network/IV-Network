@@ -10,7 +10,7 @@
 #ifndef CEventNatives_h
 #define CEventNatives_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CEventNatives {
 
@@ -23,7 +23,7 @@ private:
 	static int	TriggerGlobalEvent(int * pVM);
 	static int	TriggerRemoteEvent(int * pVM);
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CEventNatives_h

@@ -33,7 +33,7 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 	return true;
 }
 
-CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, CScriptVM * pVM)
+CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM)
 {
 	CScriptArguments returnArguments;
 	auto itEvent = m_Events.find(strName);

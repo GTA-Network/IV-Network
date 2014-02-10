@@ -9,7 +9,7 @@
 #endif
 
 template<>
-int getValue<int>(CScriptVM* pVM, int idx)
+int getValue<int>(IScriptVM* pVM, int idx)
 {
 	int v;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -18,7 +18,7 @@ int getValue<int>(CScriptVM* pVM, int idx)
 }
 
 template<>
-double getValue<double>(CScriptVM* pVM, int idx)
+double getValue<double>(IScriptVM* pVM, int idx)
 {
 	float f;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ?  0 : 1));
@@ -27,7 +27,7 @@ double getValue<double>(CScriptVM* pVM, int idx)
 }
 
 template<>
-float getValue<float>(CScriptVM* pVM, int idx)
+float getValue<float>(IScriptVM* pVM, int idx)
 {
 	float f;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -36,7 +36,7 @@ float getValue<float>(CScriptVM* pVM, int idx)
 }
 
 template<>
-DWORD getValue<DWORD>(CScriptVM* pVM, int idx)
+DWORD getValue<DWORD>(IScriptVM* pVM, int idx)
 {
 	DWORD dw = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -46,7 +46,7 @@ DWORD getValue<DWORD>(CScriptVM* pVM, int idx)
 }
 
 template<>
-bool getValue<bool>(CScriptVM* pVM, int idx)
+bool getValue<bool>(IScriptVM* pVM, int idx)
 {
 	bool b;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -55,14 +55,14 @@ bool getValue<bool>(CScriptVM* pVM, int idx)
 }
 
 template<>
-char getValue<char>(CScriptVM* pVM, int idx)
+char getValue<char>(IScriptVM* pVM, int idx)
 {
 	printf("Warning: unable to pop this type [%s]\n", __FUNCSIG__);
 	return 0;
 }
 
 template<>
-unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx)
+unsigned int getValue<unsigned int>(IScriptVM* pVM, int idx)
 {
 	unsigned int ui = 0;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -72,7 +72,7 @@ unsigned int getValue<unsigned int>(CScriptVM* pVM, int idx)
 }
 
 template<>
-const char *getValue<const char *>(CScriptVM* pVM, int idx)
+const char *getValue<const char *>(IScriptVM* pVM, int idx)
 {
 	CString str;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -84,7 +84,7 @@ const char *getValue<const char *>(CScriptVM* pVM, int idx)
 }
 
 template<>
-CString getValue<CString>(CScriptVM* pVM, int idx)
+CString getValue<CString>(IScriptVM* pVM, int idx)
 {
 	CString str;
 	pVM->SetStackIndex(idx - (pVM->GetVMType() == LUA_VM ? 0 : 1));
@@ -94,7 +94,7 @@ CString getValue<CString>(CScriptVM* pVM, int idx)
 
 
 template<>
-stScriptFunction getValue<stScriptFunction>(CScriptVM* pVM, int idx)
+stScriptFunction getValue<stScriptFunction>(IScriptVM* pVM, int idx)
 {
 	stScriptFunction function;
 	pVM->Pop(function);
@@ -102,55 +102,55 @@ stScriptFunction getValue<stScriptFunction>(CScriptVM* pVM, int idx)
 }
 
 template<>
-void returnValue(CScriptVM* pVM, int v)
+void returnValue(IScriptVM* pVM, int v)
 {
 	pVM->Push(v);
 }
 
 template<>
-void returnValue(CScriptVM* pVM, double v)
+void returnValue(IScriptVM* pVM, double v)
 {
 	pVM->Push((float) v);
 }
 
 template<>
-void returnValue(CScriptVM* pVM, float v)
+void returnValue(IScriptVM* pVM, float v)
 {
 	pVM->Push(v);
 }
 
 template<>
-void returnValue(CScriptVM* pVM, unsigned int v)
+void returnValue(IScriptVM* pVM, unsigned int v)
 {
 	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 template<>
-void returnValue(CScriptVM* pVM, const char *v)
+void returnValue(IScriptVM* pVM, const char *v)
 {
 	pVM->Push(CString(v));
 }
 
 template<>
-void returnValue(CScriptVM* pVM, CString v)
+void returnValue(IScriptVM* pVM, CString v)
 {
 	pVM->Push(v);
 }
 
 template<>
-void returnValue(CScriptVM* pVM, char v)
+void returnValue(IScriptVM* pVM, char v)
 {
 	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 template<>
-void returnValue(CScriptVM * pVM, DWORD v)
+void returnValue(IScriptVM * pVM, DWORD v)
 {
 	pVM->Push((int) v);
 }
 
 template<>
-void returnValue(CScriptVM * pVM, CVector3 v)
+void returnValue(IScriptVM * pVM, CVector3 v)
 {
 	CScriptArguments vec;
 	vec.push(v.fX);
@@ -160,14 +160,14 @@ void returnValue(CScriptVM * pVM, CVector3 v)
 }
 
 template<>
-void returnValue(CScriptVM* pVM, bool v)
+void returnValue(IScriptVM* pVM, bool v)
 {
 	pVM->Push(v);
 }
 
 #ifndef _CLIENT
 template<>
-void returnValue(CScriptVM* pVM, CVehicleEntity* v)
+void returnValue(IScriptVM* pVM, CVehicleEntity* v)
 {
 	if (v)
 	{
@@ -181,14 +181,14 @@ void returnValue(CScriptVM* pVM, CVehicleEntity* v)
 #endif
 
 template<class T>
-void returnValue(CScriptVM* pVM, T *v)
+void returnValue(IScriptVM* pVM, T *v)
 {
 	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }
 
 
 template<class T>
-void returnValue(CScriptVM* pVM, T v)
+void returnValue(IScriptVM* pVM, T v)
 {
 	printf("Warning: unable to push this type [%s]\n", __FUNCSIG__);
 }

@@ -31,14 +31,15 @@
 #ifndef CSquirrelVM_h
 #define CSquirrelVM_h
 
-#include "CScriptVM.h"
+#include "IScriptVM.h"
 
 #include <map>
 #include <Squirrel/squirrel.h>
 #include <Squirrel/sqvm.h>
 #include "CScriptArgument.h"
 
-class CSquirrelVM : public CScriptVM {
+class CSquirrelVM : public IScriptVM 
+{
 
 private:
 	SQVM*		m_pVM;
@@ -91,9 +92,13 @@ public:
 
 	void		 SetStackIndex(int iStackIndex) { m_iStackIndex = iStackIndex; }
 	void		 ResetStackIndex() { m_iStackIndex = 2; }
+
+
 	void		 Call(stScriptFunction, CScriptArguments * pArgument = 0);
 
-	void		 RegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
+	
+	
+	void		 BeginRegisterScriptClass(const char* className, scriptFunction pfnFunction, void* userPointer = 0, const char* baseClass = 0);
 	void		 RegisterClassFunction(const char* szFunctionName, scriptFunction pfnFunction, int iParameterCount = -1, const char* szFunctionTemplate = NULL);
 	void		 FinishRegisterScriptClass();
 	void		*GetUserData(int idx);

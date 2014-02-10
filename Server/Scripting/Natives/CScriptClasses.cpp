@@ -259,7 +259,7 @@ public:
 	~CScriptMysql();
 };
 
-void CScriptClasses::Register(CScriptVM * pVM)
+void CScriptClasses::Register(IScriptVM * pVM)
 {
 	pVM->RegisterFunction("createVehicle", CreateVehicle);
 	pVM->RegisterFunction("getPlayerById", GetPlayerById);

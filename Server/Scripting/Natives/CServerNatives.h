@@ -31,7 +31,7 @@
 #ifndef CServerNatives_h
 #define CServerNatives_h
 
-#include <Scripting/CScriptVM.h>
+#include <Scripting/IScriptVM.h>
 
 class CServerNatives {
 
@@ -41,7 +41,7 @@ private:
 	static int	GetTickCount(int * pVM);
 	static int	SendConsoleInput(int * pVM);
 public:
-	static void Register(CScriptVM* pVM);
+	static void Register(IScriptVM* pVM);
 };
 
 #endif // CServerNatives_h
