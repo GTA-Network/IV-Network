@@ -383,7 +383,7 @@ void CScriptPlayer::SendPlayerMessage(CString sMessage, DWORD dwColor, bool bAll
 	bool bAllowFormattingEx = false;
 	RakNet::BitStream bitStream;
 	bitStream.Write(GetEntity()->GetId());
-	bitStream.Write(CString(sMessage)); 
+	bitStream.Write(RakNet::RakString(sMessage)); 
 	bitStream.Write((DWORD) dwColor);
 	bAllowFormattingEx = (bAllowFormatting != 0);
 	bitStream.Write(bAllowFormattingEx);
