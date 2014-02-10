@@ -19,6 +19,7 @@
 #include <atomic>
 #include <exception>
 #include <memory>
+#include <stdexcept>
 
 /*
 Object part, some lua stuff and some ideas taken from
