@@ -338,7 +338,8 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CPlayerEntity* pKiller = CServer::GetInstance()->GetPlayerManager()->GetAt(killerId);
 
 			// Is the killer valid?
-			if (pKiller) {
+			if (pKiller) 
+			{
 				args.push(1);
 				args.push(pPlayer->GetScriptPlayer());
 				//CLogFile::Printf("[death] %s has been killed by %s!", pPlayer->GetName().Get(), pKiller->GetName().Get());
@@ -418,6 +419,8 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
+		args.push(vehicleId);
+		args.push(byteSeat);
 		CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 
 	}
@@ -452,6 +455,7 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
+		args.push(vehicleId);
 		CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 	}
 
