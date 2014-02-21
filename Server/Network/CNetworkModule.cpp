@@ -30,6 +30,7 @@
 
 #include "CNetworkModule.h"
 
+#include <Scripting/CEvents.h>
 #include <CServer.h>
 #include <CSettings.h>
 #include <CLogFile.h>
@@ -160,6 +161,10 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
+					CScriptArguments args;
+					args.push(pPlayer->GetScriptPlayer());
+					args.push(1);
+					CEvents::GetInstance()->Call("playerLeave", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);					
 					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(1).Get());
 					
 					RakNet::BitStream bitStream;
@@ -178,6 +183,10 @@ void CNetworkModule::UpdateNetwork(void)
 				if(CServer::GetInstance()->GetPlayerManager()->Exists((EntityId)pPacket->systemAddress.systemIndex))
 				{
 					CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt((EntityId)pPacket->systemAddress.systemIndex);
+					CScriptArguments args;
+					args.push(pPlayer->GetScriptPlayer());
+					args.push(0);
+					CEvents::GetInstance()->Call("playerLeave", &args, CEventHandler::eEventType::NATIVE_EVENT, 0);					
 					CLogFile::Printf("[quit] %s has left the server (%s).", pPlayer->GetName().Get(), SharedUtility::DiconnectReasonToString(0).Get());
 					
 					RakNet::BitStream bitStream;
@@ -186,7 +195,6 @@ void CNetworkModule::UpdateNetwork(void)
 
 					// Delete the player from the manager
 					CServer::GetInstance()->GetPlayerManager()->Delete((EntityId)pPacket->systemAddress.systemIndex);
-
 				}
 				break;
 			}
