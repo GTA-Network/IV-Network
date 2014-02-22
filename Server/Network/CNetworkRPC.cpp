@@ -341,7 +341,7 @@ void PlayerDeath(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			if (pKiller) 
 			{
 				args.push(1);
-				args.push(pPlayer->GetScriptPlayer());
+				args.push(pKiller->GetScriptPlayer());
 				//CLogFile::Printf("[death] %s has been killed by %s!", pPlayer->GetName().Get(), pKiller->GetName().Get());
 			}
 			else
