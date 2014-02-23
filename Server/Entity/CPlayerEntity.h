@@ -188,7 +188,7 @@ public:
 	void		 SetHealth(float fHealth);
 
 	void		SetPosition(float fX, float fY, float fZ);
-	CVector3	GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; }
+	CVector3	GetPosition() { CVector3 vecPos; if (IsOnFoot()) GetEntity()->GetPosition(vecPos); else GetVehicle()->GetPosition(vecPos); return vecPos; }
 
 	void		SetRotation(float fX, float fY, float fZ);
 	CVector3	GetRotation() { CVector3 vecRot; GetEntity()->GetRotation(vecRot); return vecRot; }
@@ -203,7 +203,7 @@ public:
 
 	int			GetId() { return GetEntity()->GetId(); }
 
-	bool		IsOnFoot() { return true; }
+	bool		IsOnFoot() { return GetVehicle() == nullptr ? true : false; }
 	void		GiveWeapon(int id, int uiAmmo);
 
 	CVehicleEntity* GetVehicle() { return GetEntity()->GetVehicle(); }
