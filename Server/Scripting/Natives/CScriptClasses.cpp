@@ -326,6 +326,7 @@ void CScriptClasses::Register(IScriptVM * pVM)
 	{ // ScriptVehicle
 		static CScriptClass<CScriptVehicle>* pScriptVehicle = &(new CScriptClass<CScriptVehicle>("CVehicleEntity"))->
 			AddMethod("setPosition", &CScriptVehicle::SetPosition).
+			AddMethod("getPosition", &CScriptVehicle::GetPosition).
 			AddMethod("setRotation", &CScriptVehicle::SetRotation).
 			AddMethod("setMoveSpeed", &CScriptVehicle::SetMoveSpeed).
 			AddMethod("setTurnSpeed", &CScriptVehicle::SetTurnSpeed).
