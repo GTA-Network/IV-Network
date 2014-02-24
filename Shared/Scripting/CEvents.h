@@ -61,6 +61,7 @@ public:
 	void Clear();
 
 	CScriptArguments Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM);
+	int GetCallReturn(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM);
 };
 
 #endif // CEvents_h

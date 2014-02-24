@@ -261,17 +261,19 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CLogFile::Printf((!bIsCommand) ? ("[chat] %s: %s") : ("[command] %s: %s"), pPlayer->GetName().Get(), strInput.C_String());
 			CScriptArguments args;
 			args.push(strInput);
-			args.push(pPlayer->GetScriptPlayer());
-			CEvents::GetInstance()->Call((!bIsCommand) ? ("playerChat") : ("playerCommand"), &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
-			if (!bIsCommand)
+			args.push(pPlayer->GetScriptPlayer());			
+			if (bIsCommand) CEvents::GetInstance()->Call("playerCommand", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+			else
 			{	
 				if (!CEvents::GetInstance()->IsEventRegistered("playerChat"))
 				{
-					// Send the RPC back to other players
-					RakNet::BitStream bitStream;
-					bitStream.Write(playerId);
-					bitStream.Write(strInput);
-					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+					if (CEvents::GetInstance()->GetCallReturn("playerChat", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr) != 1) {
+						// Send the RPC back to other players
+						RakNet::BitStream bitStream;
+						bitStream.Write(playerId);
+						bitStream.Write(strInput);
+						CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+					}
 				}
 			}
 		}
