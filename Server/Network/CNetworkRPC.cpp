@@ -265,7 +265,7 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CEvents::GetInstance()->Call((!bIsCommand) ? ("playerChat") : ("playerCommand"), &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
 			if (!bIsCommand)
 			{	
-				if (CEvents::GetInstance()->IsEventRegistered("playerChat"))
+				if (!CEvents::GetInstance()->IsEventRegistered("playerChat"))
 				{
 					// Send the RPC back to other players
 					RakNet::BitStream bitStream;
