@@ -34,30 +34,6 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 	return true;
 }
 
-int CEvents::GetCallReturn(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM)
-{
-	auto itEvent = m_Events.find(strName);
-	CScriptArgument ret;	
-	if(itEvent != m_Events.end())
-	{
-		for(auto pEvent : itEvent->second)
-		{
-			if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
-				&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT) pEvent->Call(pArguments, &ret);		
-			else if(EventType == CEventHandler::eEventType::RESOURCE_EVENT
-				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
-				&& pEvent->GetVM() == pVM) pEvent->Call(pArguments, &ret);			
-			else if (EventType == CEventHandler::eEventType::NATIVE_EVENT
-				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
-				&& pVM == nullptr) pEvent->Call(pArguments, &ret);			
-			else if (EventType == CEventHandler::eEventType::NATIVE_EVENT
-				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
-				&& pEvent->GetVM() == pVM) pEvent->Call(pArguments, &ret);			
-		}
-	}
-	return ret.GetInteger();
-}
-
 CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM)
 {
 	CScriptArguments returnArguments;

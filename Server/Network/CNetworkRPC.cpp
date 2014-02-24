@@ -265,10 +265,20 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			if (bIsCommand) CEvents::GetInstance()->Call("playerCommand", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
 			else
 			{	
-				if (!CEvents::GetInstance()->IsEventRegistered("playerChat"))
+				if (!CEvents::GetInstance()->IsEventRegistered("playerChat")) 
+				{ 
+					// Send the RPC back to other players
+					RakNet::BitStream bitStream;
+					bitStream.Write(playerId);
+					bitStream.Write(strInput);
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+				}
+				else
 				{
-					if (CEvents::GetInstance()->GetCallReturn("playerChat", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr) != 1) {
-						// Send the RPC back to other players
+					CEvents::GetInstance()->Call("playerChat", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+					CScriptArgument argt;
+					args.push(argt);
+					if (!argt.GetInteger()) {
 						RakNet::BitStream bitStream;
 						bitStream.Write(playerId);
 						bitStream.Write(strInput);
