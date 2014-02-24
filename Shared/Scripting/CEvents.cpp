@@ -39,12 +39,12 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 	auto itEvent = m_Events.find(strName);
 	if(itEvent != m_Events.end())
 	{
+		CScriptArgument ret;	
 		for(auto pEvent : itEvent->second)
 		{
 			if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
 				&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT)
-			{
-				CScriptArgument ret;
+			{		
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -52,7 +52,6 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
 				&& pEvent->GetVM() == pVM)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -60,7 +59,6 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pVM == nullptr)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -68,7 +66,6 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pEvent->GetVM() == pVM)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
