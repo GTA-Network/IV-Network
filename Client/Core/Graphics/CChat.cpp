@@ -214,6 +214,7 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		else if (dwChar == VK_RETURN && m_bTypeing)
 		{
 			m_bTypeing = false;
+			EFLC::CScript::SetPlayerControl(0, 1);	
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
@@ -265,6 +266,7 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 			m_szTypeing.Clear();
 			m_iCurrent = CHAT_MAX_LINES;
 			m_iPos = -1;
+			EFLC::CScript::SetPlayerControl(0, 0);	
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);
