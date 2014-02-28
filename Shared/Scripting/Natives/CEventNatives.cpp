@@ -85,8 +85,7 @@ int CEventNatives::AddCommandHandler(int * VM)
 	strName.Format("CMD_%s", strName.C_String());
 	CEventHandler * pEvent = new CEventHandler(pVM, ref, pFunction, CEventHandler::RESOURCE_EVENT);
 	CEvents::GetInstance()->Add(strName, pEvent);
-	CLogFile::Printf("COMMAND: %s is registered.", strName.C_String());
-
+	
 	return 0;
 }
 

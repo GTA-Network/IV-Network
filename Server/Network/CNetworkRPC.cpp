@@ -288,23 +288,21 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 						{
 							if (argument->GetInteger() == 1)
 							{
-								RakNet::BitStream bitStream;
-								bitStream.Write(playerId);
-								bitStream.Write(strInput);
-								CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+								return;
 							}
 						}
 						else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
 						{
 							if (argument->GetBool() == true)
 							{
-								RakNet::BitStream bitStream;
-								bitStream.Write(playerId);
-								bitStream.Write(strInput);
-								CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+								return;
 							}
 						}
 					}
+					RakNet::BitStream bitStream;
+					bitStream.Write(playerId);
+					bitStream.Write(strInput);
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 				}
 			}
 		}
