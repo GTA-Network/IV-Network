@@ -22,6 +22,8 @@ private:
 	static int	TriggerEvent(int * pVM);
 	static int	TriggerGlobalEvent(int * pVM);
 	static int	TriggerRemoteEvent(int * pVM);
+	
+	static int	AddCommandHandler(int * pVM);
 public:
 	static void Register(IScriptVM* pVM);
 };
