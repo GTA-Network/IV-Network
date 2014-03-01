@@ -262,14 +262,48 @@ void PlayerChat(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CScriptArguments args;
 			args.push(strInput);
 			args.push(pPlayer->GetScriptPlayer());
-			CEvents::GetInstance()->Call((!bIsCommand) ? ("playerChat") : ("playerCommand"), &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
-			if (!bIsCommand)
-			{
-				// Send the RPC back to other players
-				RakNet::BitStream bitStream;
-				bitStream.Write(playerId);
-				bitStream.Write(strInput);
-				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+			if (bIsCommand) {
+				CString cmdName = strInput.C_String();
+				size_t sSplit = cmdName.Find(' ', 0);
+				cmdName = cmdName.Substring(0, sSplit++);
+				cmdName.Format("CMD_%s", cmdName.C_String());
+				CEvents::GetInstance()->Call((!CEvents::GetInstance()->IsEventRegistered(cmdName.C_String())) ? ("playerCommand") : cmdName.C_String(), &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+			}
+			else
+			{	
+				if (!CEvents::GetInstance()->IsEventRegistered("playerChat")) 
+				{ 
+					// Send the RPC back to other players
+					RakNet::BitStream bitStream;
+					bitStream.Write(playerId);
+					bitStream.Write(strInput);
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+				}
+				else
+				{		
+					auto arguments = CEvents::GetInstance()->Call("playerChat", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+					for (auto argument : arguments.m_Arguments)
+					{
+						if (argument->GetType() == CScriptArgument::ArgumentType::ST_INTEGER)
+						{
+							if (argument->GetInteger() == 1)
+							{
+								return;
+							}
+						}
+						else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
+						{
+							if (argument->GetBool() == true)
+							{
+								return;
+							}
+						}
+					}
+					RakNet::BitStream bitStream;
+					bitStream.Write(playerId);
+					bitStream.Write(strInput);
+					CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+				}
 			}
 		}
 	}

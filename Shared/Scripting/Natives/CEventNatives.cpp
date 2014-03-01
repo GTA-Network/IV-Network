@@ -26,13 +26,15 @@
 
 void CEventNatives::Register(IScriptVM * pVM)
 {
-	pVM->RegisterFunction("addEvent", AddEvent);
+	pVM->RegisterFunction("addEvent", AddEvent);	
 	pVM->RegisterFunction("addGlobalEvent", AddGlobalEvent);
 	pVM->RegisterFunction("addRemoteEvent", AddRemoteEvent);
 
 	pVM->RegisterFunction("triggerEvent", TriggerEvent);
 	pVM->RegisterFunction("triggerGlobalEvent", TriggerGlobalEvent);
 	pVM->RegisterFunction("triggerRemoteEvent", TriggerRemoteEvent);
+	
+	pVM->RegisterFunction("addCommandHandler", AddCommandHandler);
 }
 
 int CEventNatives::AddEvent(int * VM)
@@ -57,6 +59,33 @@ int CEventNatives::AddEvent(int * VM)
 	CEventHandler * pEvent = new CEventHandler(pVM, ref, pFunction, CEventHandler::RESOURCE_EVENT);
 	CEvents::GetInstance()->Add(strName, pEvent);
 
+	return 0;
+}
+
+int CEventNatives::AddCommandHandler(int * VM)
+{
+	GET_VM_UNKNOWN;
+	CString strName;
+	pVM->ResetStackIndex();
+	pVM->Pop(strName);
+	int ref = -1;
+	SQObjectPtr pFunction;
+	if(pVM->GetVMType() == LUA_VM)
+	{
+		if(lua_isfunction((lua_State*)VM, 2))
+		{
+			ref = luaL_ref((lua_State*)VM, LUA_REGISTRYINDEX);
+		}
+	} else {
+		
+		pFunction = stack_get((SQVM*)VM, 3);
+	}
+	pVM->ResetStackIndex();
+	
+	strName.Format("CMD_%s", strName.C_String());
+	CEventHandler * pEvent = new CEventHandler(pVM, ref, pFunction, CEventHandler::RESOURCE_EVENT);
+	CEvents::GetInstance()->Add(strName, pEvent);
+	
 	return 0;
 }
 

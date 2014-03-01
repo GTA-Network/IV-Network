@@ -8,6 +8,7 @@
 //==============================================================================
 
 #include "CEvents.h"
+#include "CScriptArgument.h"
 
 CEvents* CEvents::s_pInstance = 0;
 
@@ -36,15 +37,15 @@ bool CEvents::Add(CString strName, CEventHandler* pEventHandler)
 CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CEventHandler::eEventType EventType, IScriptVM * pVM)
 {
 	CScriptArguments returnArguments;
-	auto itEvent = m_Events.find(strName);
+	auto itEvent = m_Events.find(strName);	
 	if(itEvent != m_Events.end())
 	{
+		CScriptArgument ret;
 		for(auto pEvent : itEvent->second)
 		{
 			if(EventType == CEventHandler::eEventType::GLOBAL_EVENT
 				&& pEvent->GetType() == CEventHandler::GLOBAL_EVENT)
-			{
-				CScriptArgument ret;
+			{		
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -52,7 +53,6 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::RESOURCE_EVENT
 				&& pEvent->GetVM() == pVM)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -60,7 +60,6 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pVM == nullptr)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
@@ -68,13 +67,11 @@ CScriptArguments CEvents::Call(CString strName, CScriptArguments* pArguments, CE
 				&& pEvent->GetType() == CEventHandler::eEventType::RESOURCE_EVENT
 				&& pEvent->GetVM() == pVM)
 			{
-				CScriptArgument ret;
 				pEvent->Call(pArguments, &ret);
 				returnArguments.push(ret);
 			}
 		}
 	}
-
 	return returnArguments;
 }
 
