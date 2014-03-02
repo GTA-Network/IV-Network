@@ -122,7 +122,7 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bitStream.Write(pPlayer->GetColor());
 
 	// Write the server name
-	bitStream.Write(RakNet::RakString("IV:Network DEV Server"));
+	bitStream.Write(RakNet::RakString(CVAR_GET_STRING("hostname")));
 
 	// Write the max player count
 	bitStream.Write(CVAR_GET_INTEGER("maxplayers"));

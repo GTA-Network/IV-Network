@@ -54,6 +54,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Read the server name string
 	RakNet::RakString strServerName;
 	pBitStream->Read(strServerName);
+	g_pCore->SetServerName(strServerName.C_String());
 
 	// Read the max player count
 	int iMaxPlayers;
