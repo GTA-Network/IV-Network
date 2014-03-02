@@ -272,7 +272,7 @@ public:
 class CStreamer
 {
 private:
-	float m_fStreamDistance = 500;
+	float m_fStreamDistance = CVAR_GET_INTEGER("streamdistance");
 
 	Vector2 m_vecBottomLeft = Vector2(-WORLD_SIZE, -WORLD_SIZE);
 	Vector2 m_vecTopRight = Vector2(WORLD_SIZE, WORLD_SIZE);

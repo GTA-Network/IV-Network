@@ -44,6 +44,7 @@ void CSettings::LoadDefaults(bool bClient)
 	if(!bClient) {
 		AddInteger("port", 9999, 1024, 65535);
 		AddInteger("maxplayers", MAX_PLAYERS, 1, MAX_PLAYERS);
+		AddInteger("streamdistance", 500, 10, 6000);
 		AddString("password", "");
 		AddString("hostname", VERSION_IDENTIFIER_2 " Server");
 		AddString("hostaddress", "");

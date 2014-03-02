@@ -605,6 +605,32 @@ void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	EFLC::CScript::DoScreenFadeIn(3000);
 }
 
+void SetPlayerHudElementVisible(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	EntityId playerId;
+	pBitStream->Read(playerId);	
+	
+	int componentid;	
+	pBitStream->Read(componentid);
+	
+	bool visible;
+	pBitStream->Read(visible);
+	
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		switch(componentid) {
+			case 0: CGameFunction::SetHudVisible(visible);
+			case 1: CGameFunction::SetRadarVisible(visible);
+			case 2: CGameFunction::SetAreaNamesEnabled(visible);
+		}
+	}
+}
+
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId vehicleId;
@@ -1195,6 +1221,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE), SendPlayerMessage);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), SpawnPlayer);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), SetPlayerHudElementVisible);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);
@@ -1261,6 +1288,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE));
 
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION));

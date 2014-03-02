@@ -1679,12 +1679,8 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		CNetworkPlayerVehicleSyncPacket VehiclePacket;
 		VehiclePacket.vehicleId = m_pVehicle->GetId();
 
-#ifdef USE_QUAT
 		m_pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
 		m_pVehicle->GetPosition(VehiclePacket.matrix.vecPosition);
-#else
-		m_pVehicle->GetGameVehicle()->GetMatrix(VehiclePacket.matrix);
-#endif
 
 		m_pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
 		m_pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
@@ -1817,7 +1813,8 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
-
+				m_pVehicle->SetQuaternion(VehiclePacket.matrix.quat);			
+				
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
 				m_pVehicle->SetHealth(VehiclePacket.vehHealth);
@@ -1826,10 +1823,6 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 				SetArmour(VehiclePacket.playerArmor);
 				SetHealth(VehiclePacket.playerHealth);
-
-#ifdef USE_QUAT
-				GetVehicle()->SetQuaternion(VehiclePacket.matrix.quat);
-#endif
 
 				m_pVehicle->SetLastSyncPacket(VehiclePacket);
 			}
