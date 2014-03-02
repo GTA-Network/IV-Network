@@ -89,6 +89,8 @@ public:
 	void					SetMoveSpeed(float fX, float fY, float fZ);
 	void					SetTurnSpeed(float fX, float fY, float fZ);
 
+	CVector3				GetPosition() { CVector3 vecPos; GetEntity()->GetPosition(vecPos); return vecPos; };
+
 	void					SetHealth(float fHealth);
 	float					GetHealth() { return GetEntity()->GetHealth(); };
 
