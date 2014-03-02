@@ -12,6 +12,9 @@
 
 #include "CNetworkEntity.h"
 
+#include "CVehicleEntity.h"
+
+
 #include <Common.h>
 #include "Game/eInput.h"
 
