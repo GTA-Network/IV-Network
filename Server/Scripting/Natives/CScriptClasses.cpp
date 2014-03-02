@@ -317,6 +317,7 @@ void CScriptClasses::Register(IScriptVM * pVM)
 			AddMethod("getColor", &CScriptPlayer::GetColor). // Synced
 			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
+			AddMethod("setHudElementVisible", &CScriptPlayer::SetHudElementVisible). // Synced		
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("spawn", &CScriptPlayer::Spawn).
 			AddMethod("getVehicle", &CScriptPlayer::GetVehicle);

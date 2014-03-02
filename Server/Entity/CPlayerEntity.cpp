@@ -337,6 +337,15 @@ void CScriptPlayer::SetDimension(int iDimension)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
+void CScriptPlayer::SetHudElementVisible(int componentid, bool visible)
+{
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(componentid);
+	bitStream.Write(visible);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
 void CScriptPlayer::SetName(CString szName)
 {
 	GetEntity()->SetName(szName);

@@ -212,6 +212,8 @@ public:
 	CVehicleEntity* GetVehicle() { return GetEntity()->GetVehicle(); }
 
 	void		Spawn(float fX, float fY, float fZ, float fA);
+	
+	void 		SetHudElementVisible(int componentid, bool visible);
 };
 
 #endif // CPlayerEntity_h
