@@ -453,16 +453,12 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream, ePackageType pType
 			if (pVehicle)
 			{
 				VehiclePacket.vehicleId = pVehicle->GetId();
-				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
-				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 
-#ifdef USE_QUAT
 				pVehicle->GetQuaternion(VehiclePacket.matrix.quat);
 				pVehicle->GetPosition(VehiclePacket.matrix.vecPosition);
-				
-#else
-				pVehicle->GetMatrix(VehiclePacket.matrix);
-#endif
+
+				pVehicle->GetMoveSpeed(VehiclePacket.vecMoveSpeed);
+				pVehicle->GetTurnSpeed(VehiclePacket.vecTurnSpeed);
 
 				VehiclePacket.vehHealth = pVehicle->GetHealth();
 				//VehiclePacket.petrol = pVehicle->GetPetrolTankHealth();
@@ -542,16 +538,12 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 
 			if (pVehicle)
 			{
+				pVehicle->SetQuaternion(VehiclePacket.matrix.quat);
 				pVehicle->SetPosition(VehiclePacket.matrix.vecPosition);
 				CLogFile::Printf("%f, %f, %f", VehiclePacket.matrix.vecPosition.fX, VehiclePacket.matrix.vecPosition.fY, VehiclePacket.matrix.vecPosition.fZ);
 				pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
-				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);
-
-#ifdef USE_QUAT
-				pVehicle->SetQuaternion(VehiclePacket.matrix.quat);
-#else
-				pVehicle->SetMatrix(VehiclePacket.matrix);
-#endif
+				pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);			
+				
 				pVehicle->SetHealth(VehiclePacket.vehHealth);
 				//pVehicle->SetPetrolTankHealth(VehiclePacket.petrol);
 
