@@ -1813,9 +1813,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream)
 
 
 				m_pVehicle->SetTargetPosition(VehiclePacket.matrix.vecPosition, interpolationTime);
-
-				GetVehicle()->SetQuaternion(VehiclePacket.matrix.quat);
-				GetVehicle()->GetPosition(VehiclePacket.matrix.vecPosition);				
+				m_pVehicle->SetQuaternion(VehiclePacket.matrix.quat);			
 				
 				m_pVehicle->SetMoveSpeed(VehiclePacket.vecMoveSpeed);
 				m_pVehicle->SetTurnSpeed(VehiclePacket.vecTurnSpeed);

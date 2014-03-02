@@ -129,6 +129,8 @@ bool CServer::Startup()
 	if(CVAR_GET_STRING("hostaddress").IsNotEmpty())
 		CLogFile::Printf(" Host Address: %s", CVAR_GET_STRING("hostaddress").Get());
 
+	CLogFile::Printf(" Stream distance: %i", CVAR_GET_INTEGER("streamdistance"));		
+		
 	CLogFile::Printf(" Max Players: %d", CVAR_GET_INTEGER("maxplayers"));
 
 #ifdef _WIN32
