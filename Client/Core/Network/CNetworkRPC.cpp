@@ -624,9 +624,9 @@ void SetPlayerHudElementVisible(RakNet::BitStream * pBitStream, RakNet::Packet *
 	if (pPlayer)
 	{
 		switch(componentid) {
-			case 0: CGameFunction::SetHudVisible(visible);
-			case 1: CGameFunction::SetRadarVisible(visible);
-			case 2: CGameFunction::SetAreaNamesEnabled(visible);
+			case 0: return CGameFunction::SetHudVisible(visible);
+			case 1: return CGameFunction::SetRadarVisible(visible);
+			case 2: return CGameFunction::SetAreaNamesEnabled(visible);
 		}
 	}
 }
