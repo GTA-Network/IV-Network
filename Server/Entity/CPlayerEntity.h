@@ -41,6 +41,7 @@ private:
 	DWORD		m_dwColor;
 
 	int			m_iModel;
+	unsigned char m_iClothes[11];
 	int			m_iMoney;
 	int			m_iWantedLevel;
 	int			m_iDimension;
@@ -99,6 +100,9 @@ public:
 	void		SetHeading(float fHeading) { m_fHeading = fHeading; }
 	float		GetHeading() { return m_fHeading; }
 
+	void 		SetClothes(unsigned char iPart, unsigned char iClothes) { m_iClothes[iPart] = iClothes; }
+	int			GetClothes(int iPart) { return m_iClothes[iPart] ; }
+	
 	void		SetModel(int iModel) { m_iModel = iModel; }
 	int			GetModel() { return m_iModel; }
 
@@ -174,6 +178,9 @@ public:
 	int GetModel() { return GetEntity()->GetModel(); }
 
 	void SetMoney(int iMoney);
+	
+	void SetClothes(int iPart, int iClothes);
+	int  GetClothes(int iPart) { return GetEntity()->GetClothes(iPart) ; }
 
 	int	GetMoney() { return GetEntity()->GetMoney(); }
 

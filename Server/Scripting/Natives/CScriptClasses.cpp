@@ -318,6 +318,8 @@ void CScriptClasses::Register(IScriptVM * pVM)
 			AddMethod("sendMessage", &CScriptPlayer::SendPlayerMessage). // Synced
 			AddMethod("getId", &CScriptPlayer::GetId). // Synced
 			AddMethod("setHudElementVisible", &CScriptPlayer::SetHudElementVisible). // Synced		
+			AddMethod("setClothes", &CScriptPlayer::SetClothes). // Synced	
+			AddMethod("getClothes", &CScriptPlayer::GetClothes). // Synced	
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("spawn", &CScriptPlayer::Spawn).
 			AddMethod("getVehicle", &CScriptPlayer::GetVehicle);

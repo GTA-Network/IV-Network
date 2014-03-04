@@ -317,6 +317,17 @@ void CScriptPlayer::SetModel(int iModel)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
 }
 
+void CScriptPlayer::SetClothes(int iPart, int iClothes)
+{
+	GetEntity()->SetClothes(iPart, iClothes);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(GetEntity()->GetId());
+	bitStream.Write(iPart);
+	bitStream.Write(iClothes);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_CLOTHES), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+}
+
 void CScriptPlayer::SetMoney(int iMoney)
 {
 	GetEntity()->SetMoney(iMoney);
