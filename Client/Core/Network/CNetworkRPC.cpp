@@ -439,6 +439,29 @@ void SetPlayerModel(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void SetPlayerClothes(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	EntityId playerId;
+	pBitStream->Read(playerId);
+
+	// Get a pointer to the player
+	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player pointer valid?
+	if (pPlayer)
+	{
+		int iPart;
+
+		pBitStream->Read(iPart);
+		
+		int iClothes;
+
+		pBitStream->Read(iClothes);
+			
+		pPlayer->SetClothes(iPart, iClothes);
+	}
+}
+
 void SetPlayerMoney(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId playerId;
@@ -1212,6 +1235,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH), SetPlayerHealth);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOUR), SetPlayerArmour);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL), SetPlayerModel);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_CLOTHES), SetPlayerClothes);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY), SetPlayerMoney);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL), SetPlayerWantedLevel);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION), SetPlayerDimension);
@@ -1279,6 +1303,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HEALTH));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_ARMOUR));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MODEL));
+		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_CLOTHES));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_MONEY));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_WANTED_LEVEL));
 		pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_DIMENSION));
