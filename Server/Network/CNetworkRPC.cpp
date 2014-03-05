@@ -144,18 +144,12 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 	}
-
-	for (EntityId i = 0; i < CServer::GetInstance()->GetPlayerManager()->GetMax(); ++i)
-	{
-		if (CServer::GetInstance()->GetPlayerManager()->DoesExists(i) && i != playerId)
-		{
-			bitStream.Reset();
-			bitStream.Write(playerId);
-			bitStream.Write(pPlayer->GetName().Get());
-			bitStream.Write(pPlayer->GetColor());
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, i, false);
-		}
-	}
+	
+	bitStream.Reset();
+	bitStream.Write(playerId);
+	bitStream.Write(pPlayer->GetName().Get());
+	bitStream.Write(pPlayer->GetColor());
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 
 
 	for (EntityId i = 0; i < CServer::GetInstance()->GetVehicleManager()->GetMax(); ++i)
