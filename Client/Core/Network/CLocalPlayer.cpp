@@ -362,6 +362,20 @@ void CLocalPlayer::SetPlayerControlAdvanced(bool bControl, bool bCamera, bool bF
 	}
 }
 
+void CLocalPlayer::ChangeNick(const CString &strNick)
+{
+	// Show the change in chat
+	g_pCore->GetGraphics()->GetChat()->Print(CString("%s is now called %s", GetNick().Get(), strNick.Get()));
+
+	// Assign the new nick to the local player
+	SetNick(strNick);
+
+	// Send the new nick to the server
+	BitStream bitStream;
+	bitStream.Write(strNick.Get());
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+}
+
 unsigned short CLocalPlayer::GetPing()
 {
 	return (unsigned short)g_pCore->GetNetworkManager()->GetRakPeer()->GetLastPing(g_pCore->GetNetworkManager()->GetRakPeer()->GetMyGUID());

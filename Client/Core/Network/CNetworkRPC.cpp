@@ -278,9 +278,10 @@ void SetPlayerName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Is the player pointer valid?
 	if (pPlayer)
 	{
+		// Assign the new name to the player
 		RakNet::RakString strName;
 		pBitStream->Read(strName);
-
+		g_pCore->GetGraphics()->GetChat()->Print(CString("%s is now called %s", pPlayer->GetNick().Get(), strName.C_String()));
 		pPlayer->SetNick(strName.C_String());
 	}
 }
