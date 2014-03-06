@@ -119,6 +119,8 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Read the playerid
 	EntityId playerId;
 	pBitStream->Read(playerId);
+	
+	if(playerId == g_pCore->GetGame()->GetLocalPlayer()->GetId()) return;
 
 	// Read the player name
 	RakNet::RakString _strName;
