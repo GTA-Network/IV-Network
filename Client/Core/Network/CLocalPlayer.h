@@ -81,6 +81,8 @@ public:
 		inline bool						GetAdvancedControlState() { return m_bAdvancedControlState; }
 		inline bool						GetAdvancedCameraState() { return m_bAdvancedCameraState; }
 
+		void							ChangeNick(const CString &strNick);
+		
 		unsigned short					GetPing();
 
 		void	CheckVehicleEnterExit();

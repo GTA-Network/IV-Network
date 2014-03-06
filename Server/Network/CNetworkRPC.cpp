@@ -420,6 +420,38 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 	}
 }
 
+void PlayerChangeName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Get the playerid
+	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+
+	// Read the input
+	RakNet::RakString newNick;
+	pBitStream->Read(newNick);
+
+	// Is the player active?
+	if (CServer::GetInstance()->GetPlayerManager()->DoesExists(playerId))
+	{
+		// Get a pointer to the player
+		CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
+
+		// Is the pointer valid?
+		if (pPlayer)
+		{
+			CLogFile::Printf("%s is now called %s", pPlayer->GetName().Get(), newNick.C_String());
+
+			// Change the nick of the player
+			pPlayer->SetName(CString(newNick.C_String()));
+
+			// Send the info to the other players
+			RakNet::BitStream bitStream;
+			bitStream.Write(playerId);
+			bitStream.Write(newNick);
+			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, true);
+		}
+	}
+}
+
 void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
@@ -563,6 +595,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE), PlayerSync);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_DEATH), PlayerDeath);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), PlayerRequestSpawn);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), PlayerChangeName);
 
 	// Vehicle rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), VehicleEnter);
@@ -588,6 +621,7 @@ void CNetworkRPC::Unregister(RakNet::RPC4 * pRPC)
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_SYNC_PACKAGE));
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_DEATH));
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN));
+	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE));
 
 	// Vehicle rpcs
 	pRPC->UnregisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE));
