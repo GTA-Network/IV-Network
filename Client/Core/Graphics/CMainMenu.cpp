@@ -539,7 +539,7 @@ bool CMainMenu::OnSettingsEditBoxKeyUp(const CEGUI::EventArgs &eventArgs)
 
 void CMainMenu::OnSettingsApply()
 {
-	g_pCore->GetGame()->GetLocalPlayer()->SetNick(CString(m_pSettingsEditBox->getText()));
+	g_pCore->GetGame()->GetLocalPlayer()->ChangeNick(CString(m_pSettingsEditBox->getText()));
 	CVAR_SET_STRING("nick", m_pSettingsEditBox->getText());
 
 	// Save the settings

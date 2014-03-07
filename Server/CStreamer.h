@@ -2,7 +2,7 @@
 #define CStreamer_h
 
 #include <Common.h>
-
+#include <CSettings.h>
 #include <vector>
 #include <cassert>
 
