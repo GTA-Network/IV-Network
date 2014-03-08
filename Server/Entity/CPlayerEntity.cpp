@@ -537,6 +537,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetArmour(PlayerPacket.fArmor);
 
 			m_vehicleId = 0xFFFF;
+			m_vehicleSeatId = 255;
 
 			m_Weapon.weaponType = PlayerPacket.weapon.weaponType;
 			m_Weapon.iAmmo = PlayerPacket.weapon.iAmmo;
@@ -603,7 +604,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetHealth(PassengerPacket.playerHealth);
 
 			m_vehicleId = PassengerPacket.vehicleId;
-			m_vehicleSeatId = PassengerPacket.byteSeatId;
+			//m_vehicleSeatId = PassengerPacket.byteSeatId;
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

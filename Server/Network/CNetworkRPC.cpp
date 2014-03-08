@@ -37,6 +37,7 @@
 #include <Scripting/CEvents.h>
 #include <CSettings.h>
 #include <time.h>
+#include <Entity/CPlayerEntity.h>
 
 #ifndef _WIN32
 typedef unsigned char byte;
@@ -479,6 +480,7 @@ void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+		pPlayer->m_vehicleSeatId = byteSeat;
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		args.push(pVehicle->GetScriptVehicle());
@@ -517,6 +519,7 @@ void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		bitStream.Write(vehicleId);
 		bitStream.Write(byteSeat);
 		CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+		pPlayer->m_vehicleSeatId = 255;
 		CScriptArguments args;
 		args.push(pPlayer->GetScriptPlayer());
 		args.push(pVehicle->GetScriptVehicle());

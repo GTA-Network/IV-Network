@@ -25,6 +25,8 @@ class CScriptPlayer;
 class CVehicleEntity;
 class CPlayerEntity : public CNetworkEntity
 {
+friend void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket);
+friend void VehicleExit(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket);
 private:
 	unsigned long m_ulLastSyncReceived;
 	unsigned long m_ulLastSyncSent;
@@ -142,6 +144,8 @@ public:
 	void		Deserialize(RakNet::BitStream * bitStream, ePackageType pType);
 
 	CVehicleEntity* GetVehicle();
+	
+	int 		GetVehicleSeat() { return m_vehicleSeatId; }
 
 	void		GiveWeapon(int id, int uiAmmo);
 
@@ -220,6 +224,8 @@ public:
 	void		GiveWeapon(int id, int uiAmmo);
 
 	CVehicleEntity* GetVehicle() { return GetEntity()->GetVehicle(); }
+	
+	int 		GetVehicleSeat() { return GetEntity()->GetVehicleSeat(); }
 
 	void		Spawn(float fX, float fY, float fZ, float fA);
 	
