@@ -152,34 +152,7 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	bitStream.Write(pPlayer->GetColor());
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_NEW_PLAYER), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
 
-
-	for (EntityId i = 0; i < CServer::GetInstance()->GetVehicleManager()->GetMax(); ++i)
-	{
-		if (CServer::GetInstance()->GetVehicleManager()->DoesExists(i))
-		{
-			bitStream.Reset();
-			CVehicleEntity * pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(i);
-			bitStream.Write(pVehicle->GetId());
-			bitStream.Write(pVehicle->GetModelId());
-
-			CVector3 vecPosition;
-			pVehicle->GetPosition(vecPosition);
-			bitStream.Write(vecPosition);
-			CLogFile::Printf("Create vehicle %f, %f, %f", vecPosition.fX, vecPosition.fY, vecPosition.fZ);
-
-			CVector3 vecRotation;
-			pVehicle->GetRotation(vecRotation);
-			bitStream.Write(vecRotation.fX);
-
-			bitStream.Write(pVehicle->GetColor(1));
-			bitStream.Write(pVehicle->GetColor(2));
-			bitStream.Write(pVehicle->GetColor(3));
-			bitStream.Write(pVehicle->GetColor(4));
-			bitStream.Write(pVehicle->GetColor(5));
-
-			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
-		}
-	}
+	CVector3 vecPosition;
 
 	for (EntityId i = 0; i < CServer::GetInstance()->GetCheckpointManager()->GetMax(); ++i)
 	{
@@ -193,7 +166,6 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 				bitStream.Write(pCheckpoint->GetId());
 				bitStream.Write(pCheckpoint->GetType());
 
-				CVector3 vecPosition;
 				pCheckpoint->GetPosition(vecPosition);
 				bitStream.Write(vecPosition);
 
@@ -208,19 +180,20 @@ void DownloadFinished(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		}
 	}
 
+	CBlipEntity * pBlip;
+	
 	for (EntityId i = 0; i < CServer::GetInstance()->GetBlipManager()->GetMax(); ++i)
 	{
 		if (CServer::GetInstance()->GetBlipManager()->DoesExists(i))
 		{
 			bitStream.Reset();
-			CBlipEntity * pBlip = CServer::GetInstance()->GetBlipManager()->GetAt(i);
+			pBlip = CServer::GetInstance()->GetBlipManager()->GetAt(i);
 
 			if (pBlip->GetVisible())
 			{
 				bitStream.Write(pBlip->GetId());
 				bitStream.Write(pBlip->GetIcon());
 
-				CVector3 vecPosition;
 				pBlip->GetPosition(vecPosition);
 				bitStream.Write(vecPosition);
 
@@ -418,6 +391,37 @@ void PlayerRequestSpawn(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket
 			CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SPAWN), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
 		}
 		CLogFile::Printf("[spawn] %s has requestred a spawn.", pPlayer->GetName().Get());
+
+		RakNet::BitStream bitStream;
+		CVector3 vecPosition;
+		CVehicleEntity * pVehicle;
+		CVector3 vecRotation;
+
+		for (EntityId i = 0; i < CServer::GetInstance()->GetVehicleManager()->GetMax(); ++i)
+		{
+			if (CServer::GetInstance()->GetVehicleManager()->DoesExists(i))
+			{
+				bitStream.Reset();
+				pVehicle = CServer::GetInstance()->GetVehicleManager()->GetAt(i);
+				bitStream.Write(pVehicle->GetId());
+				bitStream.Write(pVehicle->GetModelId());
+
+				pVehicle->GetPosition(vecPosition);
+				bitStream.Write(vecPosition);
+				CLogFile::Printf("Create vehicle %f, %f, %f", vecPosition.fX, vecPosition.fY, vecPosition.fZ);
+
+				pVehicle->GetRotation(vecRotation);
+				bitStream.Write(vecRotation.fX);
+
+				bitStream.Write(pVehicle->GetColor(1));
+				bitStream.Write(pVehicle->GetColor(2));
+				bitStream.Write(pVehicle->GetColor(3));
+				bitStream.Write(pVehicle->GetColor(4));
+				bitStream.Write(pVehicle->GetColor(5));
+
+				CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_CREATE_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, playerId, false);
+			}
+		}
 	}
 }
 

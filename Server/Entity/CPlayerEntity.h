@@ -11,12 +11,8 @@
 #define CPlayerEntity_h
 
 #include "CNetworkEntity.h"
-
-#ifdef _WIN32
-
 #include "CVehicleEntity.h"
 
-#endif
 
 #include <Common.h>
 #include "Game/eInput.h"
