@@ -119,6 +119,8 @@ void PlayerJoin(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	// Read the playerid
 	EntityId playerId;
 	pBitStream->Read(playerId);
+	
+	if(playerId == g_pCore->GetGame()->GetLocalPlayer()->GetId()) return;
 
 	// Read the player name
 	RakNet::RakString _strName;
@@ -631,27 +633,16 @@ void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 
 void SetPlayerHudElementVisible(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
-
-	EntityId playerId;
-	pBitStream->Read(playerId);	
-	
 	int componentid;	
 	pBitStream->Read(componentid);
 	
 	bool visible;
 	pBitStream->Read(visible);
 	
-	// Get a pointer to the player
-	CPlayerEntity * pPlayer = g_pCore->GetGame()->GetPlayerManager()->GetAt(playerId);
-
-	// Is the player pointer valid?
-	if (pPlayer)
-	{
-		switch(componentid) {
-			case 0: return CGameFunction::SetHudVisible(visible);
-			case 1: return CGameFunction::SetRadarVisible(visible);
-			case 2: return CGameFunction::SetAreaNamesEnabled(visible);
-		}
+	switch(componentid) {
+		case 0: return CGameFunction::SetHudVisible(visible);
+		case 1: return CGameFunction::SetRadarVisible(visible);
+		case 2: return CGameFunction::SetAreaNamesEnabled(visible);
 	}
 }
 

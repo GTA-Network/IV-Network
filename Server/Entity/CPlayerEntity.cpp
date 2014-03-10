@@ -351,10 +351,9 @@ void CScriptPlayer::SetDimension(int iDimension)
 void CScriptPlayer::SetHudElementVisible(int componentid, bool visible)
 {
 	RakNet::BitStream bitStream;
-	bitStream.Write(GetEntity()->GetId());
 	bitStream.Write(componentid);
 	bitStream.Write(visible);
-	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), &bitStream, HIGH_PRIORITY, UNRELIABLE_SEQUENCED, INVALID_ENTITY_ID, true);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
 void CScriptPlayer::SetName(CString szName)
@@ -538,6 +537,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetArmour(PlayerPacket.fArmor);
 
 			m_vehicleId = 0xFFFF;
+			m_vehicleSeatId = 255;
 
 			m_Weapon.weaponType = PlayerPacket.weapon.weaponType;
 			m_Weapon.iAmmo = PlayerPacket.weapon.iAmmo;
@@ -604,7 +604,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 			SetHealth(PassengerPacket.playerHealth);
 
 			m_vehicleId = PassengerPacket.vehicleId;
-			m_vehicleSeatId = PassengerPacket.byteSeatId;
+			//m_vehicleSeatId = PassengerPacket.byteSeatId;
 
 			m_eLastSyncPackageType = pType;
 			m_ulLastSyncReceived = SharedUtility::GetTime();

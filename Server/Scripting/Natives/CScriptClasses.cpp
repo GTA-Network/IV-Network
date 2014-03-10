@@ -322,7 +322,8 @@ void CScriptClasses::Register(IScriptVM * pVM)
 			AddMethod("getClothes", &CScriptPlayer::GetClothes). // Synced	
 			AddMethod("isOnFoot", &CScriptPlayer::IsOnFoot).
 			AddMethod("spawn", &CScriptPlayer::Spawn).
-			AddMethod("getVehicle", &CScriptPlayer::GetVehicle);
+			AddMethod("getVehicle", &CScriptPlayer::GetVehicle).
+			AddMethod("getVehicleSeat", &CScriptPlayer::GetVehicleSeat);
 		(pScriptPlayer)->Register(pVM);
 	}
 

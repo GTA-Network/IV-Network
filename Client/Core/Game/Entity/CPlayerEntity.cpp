@@ -1708,7 +1708,7 @@ void CPlayerEntity::Serialize(RakNet::BitStream * pBitStream)
 		PassengerPacket.playerHealth = GetHealth();
 		GetPosition(PassengerPacket.vecPosition);
 		PassengerPacket.vehicleId = m_pVehicle->GetId();
-		PassengerPacket.byteSeatId = m_byteSeat;
+		//PassengerPacket.byteSeatId = m_byteSeat;
 		
 		pBitStream->Write(RPC_PACKAGE_TYPE_PLAYER_PASSENGER);
 		pBitStream->Write(PassengerPacket);
