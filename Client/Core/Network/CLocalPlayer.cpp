@@ -59,7 +59,8 @@ void HandleLocalPlayerSpawn()
 			CPlayerPed__Respawn(*(EFLC::IPhysical* *) (((unsigned char*)g_pPlayerInfos[LocalPlayerID]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
 	}
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
-
+	CScriptArguments args;
+	CEvents::GetInstance()->Call("playerRequestSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);+
 	_asm popad;
 }
 
@@ -130,6 +131,11 @@ void CLocalPlayer::DoDeathCheck()
 		bsSend.Write(weaponId);
 		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_DEATH), &bsSend, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
+		CScriptArguments args;
+		args.push(vehicleId);
+		args.push(weaponId);
+		CEvents::GetInstance()->Call("playerDeath", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);	
+		
 		// Mark ourselves as dead
 		m_bIsDead = true;
 
