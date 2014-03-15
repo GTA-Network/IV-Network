@@ -33,6 +33,7 @@
 #include <CCore.h>
 #include <Game/EFLC/CScript.h>
 #include <Game/CGameFuncs.h>
+#include <Scripting/CEvents.h>
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
@@ -203,6 +204,11 @@ void CLocalPlayer::CheckVehicleEnterExit()
 						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
 						bitStream.Write(byteSeat);
 						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+						
+						CScriptArguments args;
+						args.push(m_pVehicleEnterExit->pVehicle->GetId());
+						args.push(byteSeat);
+						CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);						
 
 						g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
 					}
@@ -230,6 +236,11 @@ void CLocalPlayer::CheckVehicleEnterExit()
 					bitStream.Write(GetSeat());
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
+					CScriptArguments args;
+					args.push(GetVehicle()->GetId());
+					args.push(GetSeat());
+					CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);											
+					
 					g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", GetVehicle()->GetId(), GetSeat()));
 				}
 			}
