@@ -31,6 +31,7 @@
 #include "CCheckpointEntity.h"
 #include <Game/EFLC/CScript.h>
 #include <CCore.h>
+#include <Scripting/CEvents.h>
 extern CCore * g_pCore;
 
 CCheckpointEntity::CCheckpointEntity(EFLC::CScript::eCheckpointType type, CVector3 vecPosition, CVector3 vecTargetPosition, float fRadius) :
@@ -152,22 +153,74 @@ void CCheckpointEntity::Pulse()
 	{
 		if (!m_bInCheckpoint)
 		{
+			m_bInCheckpoint = true;
 			RakNet::BitStream bitStream;
 			bitStream.Write(GetId());
-			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
-
-			m_bInCheckpoint = true;
+			if (!CEvents::GetInstance()->IsEventRegistered("playerEnterCheckpoint")) 
+			{ 
+				g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+			}
+			else 
+			{
+				CScriptArguments args;
+				args.push(GetId());
+				auto arguments = CEvents::GetInstance()->Call("playerEnterCheckpoint", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+				for (auto argument : arguments.m_Arguments)
+				{
+					if (argument->GetType() == CScriptArgument::ArgumentType::ST_INTEGER)
+					{
+						if (argument->GetInteger() == 1)
+						{
+							return;
+						}
+					}
+					else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
+					{
+						if (argument->GetBool() == true)
+						{
+							return;
+						}
+					}
+				}			
+				g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+			}			
 		}
 	}
 	else
 	{
 		if (m_bInCheckpoint)
 		{
+			m_bInCheckpoint = false;		
 			RakNet::BitStream bitStream;
 			bitStream.Write(GetId());
-			g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
-
-			m_bInCheckpoint = false;
-		}
+			if (!CEvents::GetInstance()->IsEventRegistered("playerExitCheckpoint")) 
+			{ 
+				g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+			}
+			else 
+			{
+				CScriptArguments args;
+				args.push(GetId());
+				auto arguments = CEvents::GetInstance()->Call("playerExitCheckpoint", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+				for (auto argument : arguments.m_Arguments)
+				{
+					if (argument->GetType() == CScriptArgument::ArgumentType::ST_INTEGER)
+					{
+						if (argument->GetInteger() == 1)
+						{
+							return;
+						}
+					}
+					else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
+					{
+						if (argument->GetBool() == true)
+						{
+							return;
+						}
+					}
+				}			
+				g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_CHECKPOINT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+			}			
+		}			
 	}
 }
