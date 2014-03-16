@@ -120,11 +120,13 @@ SQVM::SQVM(SQSharedState *ss)
 	_debughook_closure.Null();
 	_openouters = NULL;
 	ci = NULL;
+	_releasehook = NULL;
 	INIT_CHAIN();ADD_TO_CHAIN(&_ss(this)->_gc_chain,this);
 }
 
 void SQVM::Finalize()
 {
+	if(_releasehook) { _releasehook(_foreignptr,0); _releasehook = NULL; }
 	if(_openouters) CloseOuters(&_stack._vals[0]);
 	_roottable.Null();
 	_lasterror.Null();
@@ -576,7 +578,7 @@ bool SQVM::FOREACH_OP(SQObjectPtr &o1,SQObjectPtr &o2,SQObjectPtr
 bool SQVM::CLOSURE_OP(SQObjectPtr &target, SQFunctionProto *func)
 {
 	SQInteger nouters;
-	SQClosure *closure = SQClosure::Create(_ss(this), func);
+	SQClosure *closure = SQClosure::Create(_ss(this), func,_table(_roottable)->GetWeakRef(OT_TABLE));
 	if((nouters = func->_noutervalues)) {
 		for(SQInteger i = 0; i<nouters; i++) {
 			SQOuterVar &v = func->_outervalues[i];
@@ -656,7 +658,7 @@ bool SQVM::IsFalse(SQObjectPtr &o)
 	}
 	return false;
 }
-
+extern SQInstructionDesc g_InstrDesc[];
 bool SQVM::Execute(SQObjectPtr &closure, SQInteger nargs, SQInteger stackbase,SQObjectPtr &outres, SQBool raiseerror,ExecutionType et)
 {
 	if ((_nnativecalls + 1) > MAX_NATIVE_CALLS) { Raise_Error(_SC("Native stack overflow")); return false; }
@@ -697,7 +699,7 @@ exception_restore:
 		{
 			const SQInstruction &_i_ = *ci->_ip++;
 			//dumpstack(_stackbase);
-			//scprintf("\n[%d] %s %d %d %d %d\n",ci->_ip-ci->_iv->_vals,g_InstrDesc[_i_.op].name,arg0,arg1,arg2,arg3);
+			//scprintf("\n[%d] %s %d %d %d %d\n",ci->_ip-_closure(ci->_closure)->_function->_instructions,g_InstrDesc[_i_.op].name,arg0,arg1,arg2,arg3);
 			switch(_i_.op)
 			{
 			case _OP_LINE: if (_debughook) CallDebugHook(_SC('l'),arg1); continue;
@@ -846,7 +848,15 @@ exception_restore:
 				}
 				continue;
 			case _OP_LOADNULLS:{ for(SQInt32 n=0; n < arg1; n++) STK(arg0+n).Null(); }continue;
-			case _OP_LOADROOT:	TARGET = _roottable; continue;
+			case _OP_LOADROOT:	{
+				SQWeakRef *w = _closure(ci->_closure)->_root;
+				if(type(w->_obj) != OT_NULL) {
+					TARGET = w->_obj;
+				} else {
+					TARGET = _roottable; //shoud this be like this? or null
+				}
+								}
+				continue;
 			case _OP_LOADBOOL: TARGET = arg1?true:false; continue;
 			case _OP_DMOVE: STK(arg0) = STK(arg1); STK(arg2) = STK(arg3); continue;
 			case _OP_JMP: ci->_ip += (sarg1); continue;
@@ -1224,7 +1234,12 @@ bool SQVM::Get(const SQObjectPtr &self,const SQObjectPtr &key,SQObjectPtr &dest,
 	}
 //#ifdef ROOT_FALLBACK
 	if(selfidx == 0) {
-		if(_table(_roottable)->Get(key,dest)) return true;
+		SQWeakRef *w = _closure(ci->_closure)->_root;
+		if(type(w->_obj) != OT_NULL) 
+		{
+			if(Get(*((const SQObjectPtr *)&w->_obj),key,dest,false,DONT_FALL_BACK)) return true;
+		}
+		
 	}
 //#endif
 	Raise_IdxError(key);

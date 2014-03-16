@@ -81,6 +81,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (!strResource.IsEmpty())
 		{
 			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
+			g_pCore->GetGraphics()->GetChat()->Print(CString("Loading server's data..."));
 			if (CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()), strResource))
 			{
 				if (!m_pResourceManager->StartResource(pResource))

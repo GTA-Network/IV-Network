@@ -168,6 +168,7 @@ public:
 	SQSharedState *_sharedstate;
 	SQInteger _nnativecalls;
 	SQInteger _nmetamethodscall;
+	SQRELEASEHOOK _releasehook;
 	//suspend infos
 	SQBool _suspended;
 	SQBool _suspended_root;

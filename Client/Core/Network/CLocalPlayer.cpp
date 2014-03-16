@@ -60,7 +60,7 @@ void HandleLocalPlayerSpawn()
 	}
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
 	CScriptArguments args;
-	CEvents::GetInstance()->Call("playerRequestSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);+
+	CEvents::GetInstance()->Call("playerRequestSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
 	_asm popad;
 }
 
