@@ -32,7 +32,7 @@ int SendMessage(int * VM)
 	pVM->Pop(dwColor);
 	pVM->Pop(bAllowFormatting);
 	
-	g_pCore->GetGraphics()->GetChat()->Print(CString("#%s%s", dwColor, sMessage));
+	g_pCore->GetGraphics()->GetChat()->Print(CString("#%s%s", CString::DecimalToString(dwColor).Get(), sMessage.C_String()));
 	return 1;
 }
 
