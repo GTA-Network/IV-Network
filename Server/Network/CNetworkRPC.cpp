@@ -457,6 +457,30 @@ void PlayerChangeName(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 	}
 }
 
+void TriggerServerEvent(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+	// Get the player id
+	EntityId playerId = (EntityId)pPacket->guid.systemIndex;
+
+	RakNet::RakString eventName;
+	pBitStream->Read(eventName);
+
+	// Get the player instance
+	CPlayerEntity * pPlayer = CServer::GetInstance()->GetPlayerManager()->GetAt(playerId);
+
+	// Is the player instance valid?
+	if (pPlayer)
+	{
+		//RakNet::BitStream bitStream;
+		//bitStream.Write(playerId);
+		//CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, -1, true);
+		CScriptArguments args;
+		args.push(pPlayer->GetScriptPlayer());
+		CEvents::GetInstance()->Call(eventName.C_String(), &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+
+	}
+}
+
 void VehicleEnter(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	// Get the player id
@@ -603,6 +627,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_DEATH), PlayerDeath);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), PlayerRequestSpawn);
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_NAME_CHANGE), PlayerChangeName);
+	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_TRIGGER_EVENT), TriggerServerEvent);
 
 	// Vehicle rpcs
 	pRPC->RegisterFunction(GET_RPC_CODEX(RPC_ENTER_VEHICLE), VehicleEnter);

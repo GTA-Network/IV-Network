@@ -247,17 +247,13 @@ SQInteger SQFunctionProto::GetLine(SQInstruction *curr)
 			break;
 		}
 	}
-	
-	while(mid > 0 && _lineinfos[mid]._op >= op) mid--;
-	
-	line = _lineinfos[mid]._line;
 
+	line = _lineinfos[mid]._line;
 	return line;
 }
 
 SQClosure::~SQClosure()
 {
-	__ObjRelease(_root);
 	__ObjRelease(_env);
 	__ObjRelease(_base);
 	REMOVE_FROM_CHAIN(&_ss(this)->_gc_chain,this);
@@ -307,6 +303,7 @@ bool WriteObject(HSQUIRRELVM v,SQUserPointer up,SQWRITEFUNC write,SQObjectPtr &o
 		_CHECK_IO(SafeWrite(v,write,up,&_string(o)->_len,sizeof(SQInteger)));
 		_CHECK_IO(SafeWrite(v,write,up,_stringval(o),rsl(_string(o)->_len)));
 		break;
+	case OT_BOOL:
 	case OT_INTEGER:
 		_CHECK_IO(SafeWrite(v,write,up,&_integer(o),sizeof(SQInteger)));break;
 	case OT_FLOAT:
@@ -336,6 +333,10 @@ bool ReadObject(HSQUIRRELVM v,SQUserPointer up,SQREADFUNC read,SQObjectPtr &o)
 	case OT_INTEGER:{
 		SQInteger i;
 		_CHECK_IO(SafeRead(v,read,up,&i,sizeof(SQInteger))); o = i; break;
+					}
+	case OT_BOOL:{
+		SQInteger i;
+		_CHECK_IO(SafeRead(v,read,up,&i,sizeof(SQInteger))); o._type = OT_BOOL; o._unVal.nInteger = i; break;
 					}
 	case OT_FLOAT:{
 		SQFloat f;
@@ -371,8 +372,7 @@ bool SQClosure::Load(SQVM *v,SQUserPointer up,SQREADFUNC read,SQObjectPtr &ret)
 	SQObjectPtr func;
 	_CHECK_IO(SQFunctionProto::Load(v,up,read,func));
 	_CHECK_IO(CheckTag(v,read,up,SQ_CLOSURESTREAM_TAIL));
-	ret = SQClosure::Create(_ss(v),_funcproto(func),_table(v->_roottable)->GetWeakRef(OT_TABLE));
-	//FIXME: load an root for this closure
+	ret = SQClosure::Create(_ss(v),_funcproto(func));
 	return true;
 }
 

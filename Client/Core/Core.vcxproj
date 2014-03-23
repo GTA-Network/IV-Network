@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client;$(SolutionDir)\Client\Core\;$(SolutionDir)\Client\Core\General;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;./</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;NO_SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
@@ -341,6 +341,7 @@
     <ClCompile Include="Network\CNetworkManager.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
     <ClCompile Include="Scripting\CClientCommands.cpp" />
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\audio\CAudio.h" />
@@ -644,6 +645,9 @@
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h" />
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
+    <ClInclude Include="Scripting\Natives\Natives_Client.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Libraries\DXSDK\Include\D3DX10math.inl" />

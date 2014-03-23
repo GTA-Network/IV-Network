@@ -2,7 +2,7 @@
 //
 // File: CScriptClasses.cpp
 // Project: Client.Core
-// Author: xForce <xf0rc3.11@gmail.com>
+// Authors: xForce <xf0rc3.11@gmail.com>, g3o0or
 // License: See LICENSE in root directory
 //
 //==============================================================================
@@ -36,7 +36,7 @@ int SendMessage(int * VM)
 	return 1;
 }
 
-int GetRoot(int * VM)
+int GetLocalPlayer(int * VM)
 {
 	GET_SCRIPT_VM_SAFE;
 
@@ -46,8 +46,24 @@ int GetRoot(int * VM)
 	return 1;
 }
 
+int TriggerServerEvent(int * VM)
+{
+	GET_SCRIPT_VM_SAFE;
+
+	pVM->ResetStackIndex();
+
+	CString eventName;
+
+	pVM->Pop(eventName);
+
+	RakNet::BitStream bitStream;
+	bitStream.Write(eventName);
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+}
+
 void CScriptClasses::Register(IScriptVM * pVM)
 {
-	pVM->RegisterFunction("getRoot", GetRoot);
+	pVM->RegisterFunction("getLocalPlayer", GetLocalPlayer);
 	pVM->RegisterFunction("sendMessage", SendMessage);
+	pVM->RegisterFunction("triggerServerEvent", TriggerServerEvent);
 }

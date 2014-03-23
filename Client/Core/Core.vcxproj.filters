@@ -180,6 +180,12 @@
     <Filter Include="Source Files\Game\EFLC\TaskInfo">
       <UniqueIdentifier>{6961e075-3dce-4862-8ee2-7dca5de7b79a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scripting\Natives">
+      <UniqueIdentifier>{73d61ccd-b21f-4eef-aa19-2eaebd92e12c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scripting\Natives">
+      <UniqueIdentifier>{c486f4fc-88b5-44c9-8750-a3bb5f56087a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -910,6 +916,9 @@
     </ClCompile>
     <ClCompile Include="Graphics\CChatBox.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp">
+      <Filter>Source Files\Scripting\Natives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1815,6 +1824,15 @@
     </ClInclude>
     <ClInclude Include="Game\CStreamer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting\Natives\Natives_Client.h">
+      <Filter>Header Files\Scripting\Natives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

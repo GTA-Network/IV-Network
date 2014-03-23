@@ -32,6 +32,7 @@
 #include "CNetworkManager.h"
 #include <Game/EFLC/CScript.h>
 #include <Game/EFLC/CWeather.h>
+#include <Scripting/CEvents.h>
 #include <CCore.h>
 #include <RakNet/FileListTransferCBInterface.h>
 #include "CDownloadManager.h"
@@ -647,6 +648,16 @@ void SetPlayerHudElementVisible(RakNet::BitStream * pBitStream, RakNet::Packet *
 	}
 }
 
+void TriggerPlayerEvent(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	RakNet::RakString eventName;
+	pBitStream->Read(eventName);
+
+	CScriptArguments args;
+	CEvents::GetInstance()->Call(eventName.C_String(), &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
+}
+
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 {
 	EntityId vehicleId;
@@ -1239,6 +1250,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), SpawnPlayer);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), SetPlayerHudElementVisible);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_TRIGGER_EVENT), TriggerPlayerEvent);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);

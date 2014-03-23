@@ -276,10 +276,10 @@ SQInteger SQLexer::Lex()
 	return 0;    
 }
 	
-SQInteger SQLexer::GetIDType(const SQChar *s,SQInteger len)
+SQInteger SQLexer::GetIDType(SQChar *s)
 {
 	SQObjectPtr t;
-	if(_keywords->GetStr(s,len, t)) {
+	if(_keywords->Get(SQString::Create(_sharedstate, s), t)) {
 		return SQInteger(_integer(t));
 	}
 	return TK_IDENTIFIER;
@@ -481,7 +481,7 @@ SQInteger SQLexer::ReadID()
 		NEXT();
 	} while(scisalnum(CUR_CHAR) || CUR_CHAR == _SC('_'));
 	TERMINATE_BUFFER();
-	res = GetIDType(&_longstr[0],_longstr.size() - 1);
+	res = GetIDType(&_longstr[0]);
 	if(res == TK_IDENTIFIER || res == TK_CONSTRUCTOR) {
 		_svalue = &_longstr[0];
 	}
