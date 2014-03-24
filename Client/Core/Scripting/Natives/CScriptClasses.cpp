@@ -32,7 +32,7 @@ int SendMessage(int * VM)
 	pVM->Pop(dwColor);
 	pVM->Pop(bAllowFormatting);
 	
-	g_pCore->GetGraphics()->GetChat()->Print(CString("#%s%s", CString::DecimalToString(dwColor).Get(), sMessage.C_String()));
+	g_pCore->GetGraphics()->GetChat()->Print(CString("#%x%s", dwColor, sMessage.C_String()));
 	return 1;
 }
 
@@ -58,7 +58,7 @@ int TriggerServerEvent(int * VM)
 
 	RakNet::BitStream bitStream;
 	bitStream.Write(eventName);
-	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_TRIGGER_EVENT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 	return 1;
 }
 
