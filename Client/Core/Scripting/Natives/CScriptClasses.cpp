@@ -59,6 +59,7 @@ int TriggerServerEvent(int * VM)
 	RakNet::BitStream bitStream;
 	bitStream.Write(eventName);
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+	return 1;
 }
 
 void CScriptClasses::Register(IScriptVM * pVM)

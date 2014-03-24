@@ -84,7 +84,7 @@ void CGame::Setup()
 #endif
 
 	// Setup the weapon handle hook
-	//CWeaponHandler::InstallAimSyncHooks();
+	CWeaponHandler::InstallAimSyncHooks();
 
 	// Setup the traffic handle hook
 	CTrafficHandler::InstallTrafficHook();

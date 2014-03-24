@@ -56,6 +56,7 @@
 #include "Game/CPatches.h"
 #include "Game/CHooks.h"
 #include "Game/CCrashFixes.h"
+#include "Game/CWeaponHandler.h"
 
 #include "Network/CLocalPlayer.h"
 #include "Game/Entity/CPlayerEntity.h"

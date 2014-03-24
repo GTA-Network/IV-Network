@@ -56,7 +56,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
       <AdditionalIncludeDirectories>$(SolutionDir)\Shared;$(SolutionDir)\Libraries/DXSDK/include;$(SolutionDir)Libraries\CEGUI\cegui\include;$(SolutionDir)\Libraries;$(SolutionDir)\Client;$(SolutionDir)\Client\Core\;$(SolutionDir)\Client\Core\General;$(SolutionDir)\Libraries\bass;$(SolutionDir)\Libraries\Squirrel;./</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;NO_SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CLIENT;CEGUI_STATIC;LOGGER;SYNC_TEST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
@@ -235,6 +235,7 @@
     <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
     <ClCompile Include="Game\CTrafficHandler.cpp" />
+    <ClCompile Include="Game\CWeaponHandler.cpp" />
     <ClCompile Include="Game\EFLC\CCam.cpp" />
     <ClCompile Include="Game\EFLC\CDynamicEntity.cpp" />
     <ClCompile Include="Game\EFLC\CEntity.cpp" />
@@ -522,6 +523,7 @@
     <ClInclude Include="Game\CStreamer.h" />
     <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\CTrafficHandler.h" />
+    <ClInclude Include="Game\CWeaponHandler.h" />
     <ClInclude Include="Game\EFLC\CCam.h" />
     <ClInclude Include="Game\EFLC\CDynamicEntity.h" />
     <ClInclude Include="Game\EFLC\CEntity.h" />
