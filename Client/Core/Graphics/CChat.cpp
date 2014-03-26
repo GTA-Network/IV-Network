@@ -211,11 +211,12 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		if (dwChar == VK_ESCAPE && m_bTypeing)
 		{
 			m_bTypeing = false;
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true, true);
 		}
 		else if (dwChar == VK_RETURN && m_bTypeing)
 		{
 			m_bTypeing = false;
-			EFLC::CScript::SetPlayerControl(0, 1);	
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true, true);
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
@@ -320,10 +321,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		else if((dwChar == 'T' || dwChar == 't') && !m_bTypeing)
 		{
 			m_bTypeing = true;
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false, false);
 			m_szTypeing.Clear();
 			m_iCurrent = CHAT_MAX_LINES;
 			m_iPos = -1;
-			EFLC::CScript::SetPlayerControl(0, 0);	
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);

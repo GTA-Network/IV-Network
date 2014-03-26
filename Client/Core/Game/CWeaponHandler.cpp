@@ -73,7 +73,6 @@ void StoreArmHeadingUpDown(EFLC::IPed * pPed, float * fArmHeading, float * fArmU
 	{
 		// Get the remote players context data
 		CContextData * pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *)pPed);
-		//pContextData->GetWeaponAimTarget(*vecWeaponTarget);
 
 		// Do we have a valid context data?
 		if(pContextData)
