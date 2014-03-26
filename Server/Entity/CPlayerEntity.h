@@ -226,6 +226,8 @@ public:
 	void		Spawn(float fX, float fY, float fZ, float fA);
 	
 	void 		SetHudElementVisible(int componentid, bool visible);
+
+	void 		TriggerPlayerEvent(CString eventName);
 };
 
 #endif // CPlayerEntity_h

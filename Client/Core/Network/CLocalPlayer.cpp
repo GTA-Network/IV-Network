@@ -33,6 +33,7 @@
 #include <CCore.h>
 #include <Game/EFLC/CScript.h>
 #include <Game/CGameFuncs.h>
+#include <Scripting/CEvents.h>
 
 extern CCore *	 g_pCore;
 extern bool      g_bControlsDisabled;
@@ -58,7 +59,8 @@ void HandleLocalPlayerSpawn()
 			CPlayerPed__Respawn(*(EFLC::IPhysical* *) (((unsigned char*)g_pPlayerInfos[LocalPlayerID]) + 1420), &(CVector3(0.0f, 0.0f, 0.0f)), 0.0f);
 	}
 	g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_REQUEST_SPAWN), NULL, HIGH_PRIORITY, RELIABLE, true);
-
+	CScriptArguments args;
+	CEvents::GetInstance()->Call("playerRequestSpawn", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
 	_asm popad;
 }
 
@@ -129,6 +131,11 @@ void CLocalPlayer::DoDeathCheck()
 		bsSend.Write(weaponId);
 		g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_DEATH), &bsSend, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
+		CScriptArguments args;
+		args.push(vehicleId);
+		args.push(weaponId);
+		CEvents::GetInstance()->Call("playerDeath", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);	
+		
 		// Mark ourselves as dead
 		m_bIsDead = true;
 
@@ -203,6 +210,11 @@ void CLocalPlayer::CheckVehicleEnterExit()
 						bitStream.Write(m_pVehicleEnterExit->pVehicle->GetId());
 						bitStream.Write(byteSeat);
 						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_ENTER_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+						
+						CScriptArguments args;
+						args.push(m_pVehicleEnterExit->pVehicle->GetId());
+						args.push(byteSeat);
+						CEvents::GetInstance()->Call("playerEnterVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);						
 
 						g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleEntry(%d, %d)", pVehicle->GetId(), byteSeat));
 					}
@@ -230,6 +242,11 @@ void CLocalPlayer::CheckVehicleEnterExit()
 					bitStream.Write(GetSeat());
 					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_EXIT_VEHICLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
 
+					CScriptArguments args;
+					args.push(GetVehicle()->GetId());
+					args.push(GetSeat());
+					CEvents::GetInstance()->Call("playerExitVehicle", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);											
+					
 					g_pCore->GetGraphics()->GetChat()->Print(CString("HandleVehicleExit(%d, %d)", GetVehicle()->GetId(), GetSeat()));
 				}
 			}

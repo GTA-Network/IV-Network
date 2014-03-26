@@ -356,6 +356,13 @@ void CScriptPlayer::SetHudElementVisible(int componentid, bool visible)
 	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
 }
 
+void CScriptPlayer::TriggerPlayerEvent(CString eventName)
+{
+	RakNet::BitStream bitStream;
+	bitStream.Write(eventName);
+	CServer::GetInstance()->GetNetworkModule()->Call(GET_RPC_CODEX(RPC_PLAYER_TRIGGER_EVENT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, GetEntity()->GetId(), false);
+}
+
 void CScriptPlayer::SetName(CString szName)
 {
 	GetEntity()->SetName(szName);
@@ -592,6 +599,7 @@ void CPlayerEntity::Deserialize(RakNet::BitStream * pBitStream, ePackageType pTy
 
 			m_Weapon.weaponType = WeaponPacket.weapon.weaponType;
 			m_Weapon.iAmmo = WeaponPacket.weapon.iAmmo;
+			CLogFile::Printf("Weapon sync 1: %i, %i, |%f, %f, %f|. 2: |%f, %f, %f|", WeaponPacket.weapon.weaponType, WeaponPacket.weapon.iAmmo, WeaponPacket.vecAimShotAtCoordinates.fX, WeaponPacket.vecAimShotAtCoordinates.fY, WeaponPacket.vecAimShotAtCoordinates.fZ, WeaponPacket.vecShotSource.fX, WeaponPacket.vecShotSource.fY, WeaponPacket.vecShotSource.fZ);
 		}
 		break;
 	case RPC_PACKAGE_TYPE_PLAYER_PASSENGER:

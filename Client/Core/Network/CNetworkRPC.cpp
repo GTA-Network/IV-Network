@@ -32,6 +32,7 @@
 #include "CNetworkManager.h"
 #include <Game/EFLC/CScript.h>
 #include <Game/EFLC/CWeather.h>
+#include <Scripting/CEvents.h>
 #include <CCore.h>
 #include <RakNet/FileListTransferCBInterface.h>
 #include "CDownloadManager.h"
@@ -81,6 +82,7 @@ void InitialData(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		if (!strResource.IsEmpty())
 		{
 			CLogFile::Printf("Loading resource (%s)", strResource.C_String());
+			g_pCore->GetGraphics()->GetChat()->Print(CString("Loading server's data..."));
 			if (CResource* pResource = m_pResourceManager->Load(SharedUtility::GetAbsolutePath(m_pResourceManager->GetResourceDirectory()), strResource))
 			{
 				if (!m_pResourceManager->StartResource(pResource))
@@ -600,7 +602,7 @@ void SendPlayerMessage(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetGraphics()->GetChat()->Print(sMessage.C_String());
+		g_pCore->GetGraphics()->GetChat()->Print(CString("#%x%s", dwColor, sMessage.C_String()));
 	}
 }
 
@@ -614,7 +616,7 @@ void SendPlayerMessageToAll(RakNet::BitStream * pBitStream, RakNet::Packet * pPa
 		pBitStream->Read(dwColor);
 		pBitStream->Read(bAllowFormatting);
 
-		g_pCore->GetGraphics()->GetChat()->Print(sMessage.C_String());
+		g_pCore->GetGraphics()->GetChat()->Print(CString("#%x%s", dwColor, sMessage.C_String()));
 }
 
 void SpawnPlayer(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -644,6 +646,16 @@ void SetPlayerHudElementVisible(RakNet::BitStream * pBitStream, RakNet::Packet *
 		case 1: return CGameFunction::SetRadarVisible(visible);
 		case 2: return CGameFunction::SetAreaNamesEnabled(visible);
 	}
+}
+
+void TriggerPlayerEvent(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
+{
+
+	RakNet::RakString eventName;
+	pBitStream->Read(eventName);
+
+	CScriptArguments args;
+	CEvents::GetInstance()->Call(eventName.C_String(), &args, CEventHandler::eEventType::NATIVE_EVENT, 0);
 }
 
 void CreateVehicle(RakNet::BitStream * pBitStream, RakNet::Packet * pPacket)
@@ -1238,6 +1250,7 @@ void CNetworkRPC::Register(RakNet::RPC4 * pRPC)
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_MESSAGE_TO_ALL), SendPlayerMessageToAll);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SPAWN), SpawnPlayer);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_SET_HUD_VISIBLE), SetPlayerHudElementVisible);
+		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_PLAYER_TRIGGER_EVENT), TriggerPlayerEvent);
 
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_POSITION), SetVehiclePosition);
 		pRPC->RegisterFunction(GET_RPC_CODEX(RPC_VEHICLE_SET_ROTATION), SetVehicleRotation);

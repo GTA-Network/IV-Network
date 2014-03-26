@@ -235,6 +235,7 @@
     <ClCompile Include="Game\CPools.cpp" />
     <ClCompile Include="Game\CTaskManager.cpp" />
     <ClCompile Include="Game\CTrafficHandler.cpp" />
+    <ClCompile Include="Game\CWeaponHandler.cpp" />
     <ClCompile Include="Game\EFLC\CCam.cpp" />
     <ClCompile Include="Game\EFLC\CDynamicEntity.cpp" />
     <ClCompile Include="Game\EFLC\CEntity.cpp" />
@@ -341,6 +342,7 @@
     <ClCompile Include="Network\CNetworkManager.cpp" />
     <ClCompile Include="Network\CNetworkRPC.cpp" />
     <ClCompile Include="Scripting\CClientCommands.cpp" />
+    <ClCompile Include="Scripting\Natives\CScriptClasses.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\audio\CAudio.h" />
@@ -521,6 +523,7 @@
     <ClInclude Include="Game\CStreamer.h" />
     <ClInclude Include="Game\CTaskManager.h" />
     <ClInclude Include="Game\CTrafficHandler.h" />
+    <ClInclude Include="Game\CWeaponHandler.h" />
     <ClInclude Include="Game\EFLC\CCam.h" />
     <ClInclude Include="Game\EFLC\CDynamicEntity.h" />
     <ClInclude Include="Game\EFLC\CEntity.h" />
@@ -644,6 +647,9 @@
     <ClInclude Include="Network\CNetworkRPC.h" />
     <ClInclude Include="Scripting\CClientCommands.h" />
     <ClInclude Include="Network\CLocalPlayer.h" />
+    <ClInclude Include="Scripting\Natives\CScriptClasses.h" />
+    <ClInclude Include="Scripting\Natives\CScriptNatives.h" />
+    <ClInclude Include="Scripting\Natives\Natives_Client.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Libraries\DXSDK\Include\D3DX10math.inl" />

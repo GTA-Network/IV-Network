@@ -3,6 +3,7 @@
 #include <Scripting/CClientCommands.h>
 #include "CChat.h"
 #include "..\Game\EFLC\CScript.h"
+#include <Scripting/CEvents.h>
 
 extern CCore * g_pCore;
 
@@ -210,11 +211,12 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		if (dwChar == VK_ESCAPE && m_bTypeing)
 		{
 			m_bTypeing = false;
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true, true);
 		}
 		else if (dwChar == VK_RETURN && m_bTypeing)
 		{
 			m_bTypeing = false;
-			EFLC::CScript::SetPlayerControl(0, 1);	
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(true, true);
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), false);
@@ -247,7 +249,63 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 						bitStream.Write0();
 
 					bitStream.Write(m_szTypeing.Get());
-					g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+					
+					CScriptArguments args;
+					args.push(m_szTypeing.Get());
+					if (m_szTypeing.GetChar(0) == '/') {
+						CString cmdName = m_szTypeing.Get();
+						size_t sSplit = cmdName.Find(' ', 0);
+						cmdName = cmdName.Substring(0, sSplit++);
+						cmdName.Format("CMD_%s", cmdName.C_String());
+						auto arguments = CEvents::GetInstance()->Call((!CEvents::GetInstance()->IsEventRegistered(cmdName.C_String())) ? ("playerCommand") : cmdName.C_String(), &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+						for (auto argument : arguments.m_Arguments)
+						{
+							if (argument->GetType() == CScriptArgument::ArgumentType::ST_INTEGER)
+							{
+								if (argument->GetInteger() == 1)
+								{
+									return;
+								}
+							}
+							else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
+							{
+								if (argument->GetBool() == true)
+								{
+									return;
+								}
+							}						
+						}
+						g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+					}
+					else
+					{	
+						if (!CEvents::GetInstance()->IsEventRegistered("playerChat")) 
+						{ 
+							g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+						}
+						else
+						{		
+							auto arguments = CEvents::GetInstance()->Call("playerChat", &args, CEventHandler::eEventType::NATIVE_EVENT, nullptr);
+							for (auto argument : arguments.m_Arguments)
+							{
+								if (argument->GetType() == CScriptArgument::ArgumentType::ST_INTEGER)
+								{
+									if (argument->GetInteger() == 1)
+									{
+										return;
+									}
+								}
+								else if (argument->GetType() == CScriptArgument::ArgumentType::ST_BOOL)
+								{
+									if (argument->GetBool() == true)
+									{
+										return;
+									}
+								}
+							}
+							g_pCore->GetNetworkManager()->Call(GET_RPC_CODEX(RPC_PLAYER_CHAT), &bitStream, HIGH_PRIORITY, RELIABLE_ORDERED, true);
+						}
+					}					
 				}
 			}
 		}
@@ -263,10 +321,10 @@ void CChat::HandleUserInput(unsigned int uMsg, WPARAM dwChar)
 		else if((dwChar == 'T' || dwChar == 't') && !m_bTypeing)
 		{
 			m_bTypeing = true;
+			g_pCore->GetGame()->GetLocalPlayer()->SetPlayerControlAdvanced(false, false);
 			m_szTypeing.Clear();
 			m_iCurrent = CHAT_MAX_LINES;
 			m_iPos = -1;
-			EFLC::CScript::SetPlayerControl(0, 0);	
 
 #ifndef TASKINFO_TEST
 			//EFLC::CScript::SetPlayerControlForTextChat(g_pCore->GetGame()->GetLocalPlayer()->GetScriptingHandle(), true);

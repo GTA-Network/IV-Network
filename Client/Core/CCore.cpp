@@ -29,6 +29,7 @@
 */
 
 #include	"CCore.h"
+#include "Scripting/Natives/Natives_Client.h"
 #include    <Game/EFLC/CScript.h>
 #include	<Scripting/CEvents.h>
 #include <Math/CRectangle.h>
@@ -44,7 +45,7 @@ CCore::CCore()
 void OnCreateVM(IScriptVM * pVM)
 {
 	// Register dat natives
-	/*CScriptClasses::Register(pVM);*/
+	CScriptClasses::Register(pVM);
 }
 
 bool CCore::Initialize()

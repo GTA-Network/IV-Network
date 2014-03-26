@@ -33,21 +33,21 @@
 extern CCore * g_pCore;
 
 DWORD      dwFunctionAddress = NULL;
-IVPed    * g_pIKPed = NULL;
+EFLC::IPed * g_pIKPed = NULL;
 float      g_fArmHeading = 0.0f;
 float      g_fArmUpDown = 0.0f;
-IVPed    * g_pWeaponPed = NULL;
+EFLC::IPed * g_pWeaponPed = NULL;
 CVector3 * g_vecWeaponShotSource = NULL;
 CVector3 * g_vecWeaponShotTarget = NULL;
 CVector3 * g_vecAimTarget = NULL;
 
-void StoreAimTarget(IVPed * pPed, CVector3 * vecWeaponTarget)
+void StoreAimTarget(EFLC::IPed * pPed, CVector3 * vecWeaponTarget)
 {
 	// Do we have a valid ped pointer and target pointer?
 	if(pPed && vecWeaponTarget)
 	{
 		// Get the remote players context data
-		CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
+		CContextData * pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *)pPed);
 
 		// Do we have a valid context data?
 		if(pContextData)
@@ -66,13 +66,13 @@ void StoreAimTarget(IVPed * pPed, CVector3 * vecWeaponTarget)
 			CLogFile::PrintDebugf("StoreAimTarget Warning: Invalid Player Ped");
 	}
 }
-void StoreArmHeadingUpDown(IVPed * pPed, float * fArmHeading, float * fArmUpDown)
+void StoreArmHeadingUpDown(EFLC::IPed * pPed, float * fArmHeading, float * fArmUpDown)
 {
 	// Do we have a valid ped pointer?
 	if(pPed)
 	{
 		// Get the remote players context data
-		CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
+		CContextData * pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *)pPed);
 
 		// Do we have a valid context data?
 		if(pContextData)
@@ -94,13 +94,13 @@ void StoreArmHeadingUpDown(IVPed * pPed, float * fArmHeading, float * fArmUpDown
 	}
 }
 
-void StoreShotSourceTarget(IVPed * pPed, CVector3 * pWeaponSource, CVector3 * pWeaponTarget)
+void StoreShotSourceTarget(EFLC::IPed * pPed, CVector3 * pWeaponSource, CVector3 * pWeaponTarget)
 {
 	// Do we have a valid ped pointer, source pointer and target pointer?
 	if(pPed && pWeaponSource && pWeaponTarget)
 	{
 		// Get the remote players context data
-		CContextData * pContextData = CContextDataManager::GetContextData((IVPlayerPed *)pPed);
+		CContextData * pContextData = CContextDataManager::GetContextData((EFLC::IPlayerPed *)pPed);
 
 		// Do we have a valid context data?
 		if(pContextData)
